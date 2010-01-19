@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/app">
+        <file alias="settings">resources/tools.ico</file>
+        <file alias="tv">resources/television.ico</file>
+        <file alias="record">resources/record.ico</file>
+        <file alias="play">resources/play.ico</file>
+        <file alias="time">resources/clock.ico</file>
+        <file alias="info">resources/info.ico</file>
+        <file alias="quit">resources/quit.ico</file>
+        <file alias="reload">resources/refresh.ico</file>
+    </qresource>
+    <qresource prefix="/flags">
+        <file alias="de">resources/de.png</file>
+        <file alias="ru">resources/ru.png</file>
+        <file alias="en">resources/us.png</file>
+    </qresource>
+    <qresource prefix="/png">
+        <file alias="back">resources/back.png</file>
+        <file alias="next">resources/next.png</file>
+        <file alias="play">resources/play.png</file>
+        <file alias="record">resources/record.png</file>
+    </qresource>
+</RCC>

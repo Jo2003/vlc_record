@@ -1,0 +1,11 @@
+vlc "http://localhost/kartina/stream.php?id=2&user=165997&pass=668697" --sout "#duplicate{dst=display, dst=std{access=file, mux=avi, url=f:\kartina.tv\file.avi}}"
+
+vcodec=h264
+acodec=a52
+mux=avi
+
+vlc "http://localhost/kartina/stream.php?id=2&user=165997&pass=668697" --sout="#duplicate{dst=std{access=file,mux=avi,url='F:\kartina.tv\test.avi'},dst=display}"
+
+std{access=file, mux=mpeg1, url=C:\file_name.mpg}' 
+
+vlc -vvv "http://localhost/kartina/stream.php?id=2&user=165997&pass=668697" --sout "#duplicate{dst=display, dst=std{access=file,mux=ts,dst=f:\kartina.tv\test.ts}}"
