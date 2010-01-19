@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/cwaittrigger.h $
+| $HeadURL$
 | 
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:50:35
 | 
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 | 
-| $Id: cwaittrigger.h 176 2010-01-19 15:29:52Z joergn $
+| $Id$
 \*************************************************************/
 #ifndef __011910__CWAITTRIGGER_H
    #define __011910__CWAITTRIGGER_H

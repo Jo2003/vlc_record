@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/defdef.h $
+| $HeadURL$
 | 
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 09:19:48
 | 
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 | 
-| $Id: defdef.h 175 2010-01-19 14:22:13Z joergn $
+| $Id$
 \*************************************************************/
 #ifndef __011810__DEFDEF_H
    #define __011810__DEFDEF_H

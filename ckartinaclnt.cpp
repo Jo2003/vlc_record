@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/ckartinaclnt.cpp $
+| $HeadURL$
 |
 | Author: Joerg Neubert
 |
-| last changed by: $Author: joergn $
+| last changed by: $Author$
 |
 | Begin: Monday, January 04, 2010 16:13:58
 |
-| $Id: ckartinaclnt.cpp 173 2010-01-18 15:43:19Z joergn $
+| $Id$
 |
 \=============================================================================*/
 #include "ckartinaclnt.h"

@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/ckartinaxmlparser.h $
+| $HeadURL$
 |
 | Author: Joerg Neubert
 |
-| last changed by: $Author: joergn $
+| last changed by: $Author$
 |
 | Begin: Tuesday, January 05, 2010 07:54:59
 |
-| $Id: ckartinaxmlparser.h 176 2010-01-19 15:29:52Z joergn $
+| $Id$
 |
 \=============================================================================*/
 #ifndef __201005075459_CKARTINAXMLPARSER_H

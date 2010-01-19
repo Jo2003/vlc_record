@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/cepgbrowser.cpp $
+| $HeadURL$
 |
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 16:07:29
 |
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 |
-| $Id: cepgbrowser.cpp 175 2010-01-19 14:22:13Z joergn $
+| $Id$
 \*************************************************************/
 #include "cepgbrowser.h"
 

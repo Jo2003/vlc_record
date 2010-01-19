@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/templates.h $
+| $HeadURL$
 | 
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:58:18
 | 
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 | 
-| $Id: templates.h 176 2010-01-19 15:29:52Z joergn $
+| $Id$
 \*************************************************************/
 #ifndef __011910__TEMPLATES_H
    #define __011910__TEMPLATES_H

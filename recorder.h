@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/recorder.h $
+| $HeadURL$
 | 
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:59:00
 | 
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 | 
-| $Id: recorder.h 176 2010-01-19 15:29:52Z joergn $
+| $Id$
 \*************************************************************/
 #ifndef __011910__RECORDER_H
    #define __011910__RECORDER_H

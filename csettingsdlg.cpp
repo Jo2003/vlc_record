@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/csettingsdlg.cpp $
+| $HeadURL$
 | 
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:43:08
 | 
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 | 
-| $Id: csettingsdlg.cpp 176 2010-01-19 15:29:52Z joergn $
+| $Id$
 \*************************************************************/
 #include "csettingsdlg.h"
 #include "ui_csettingsdlg.h"

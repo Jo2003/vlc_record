@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/cinifile.cpp $
+| $HeadURL$
 | 
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 16:25:48
 | 
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 | 
-| $Id: cinifile.cpp 175 2010-01-19 14:22:13Z joergn $
+| $Id$
 \*************************************************************/
 #include "cinifile.h"
 

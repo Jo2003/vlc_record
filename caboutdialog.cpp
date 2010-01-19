@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: svn://172.25.1.40/joergn/trunk/vlc-record/caboutdialog.cpp $
+| $HeadURL$
 | 
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 16:13:41
 | 
-| Last edited by: $Author: joergn $
+| Last edited by: $Author$
 | 
-| $Id: caboutdialog.cpp 175 2010-01-19 14:22:13Z joergn $
+| $Id$
 \*************************************************************/
 #include "caboutdialog.h"
 #include "ui_caboutdialog.h"
