@@ -89,7 +89,7 @@ void CAboutDialog::FillInfo()
       "<tr><td><b>Version:</b></td><td style='padding-left: 15px;'>%1</td></tr>\n"
       "<tr><td><b>Author:</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>J&ouml;rg Neubert</a></td></tr>\n"
       "<tr><td><b>Inspired by:</b></td><td style='padding-left: 15px;'>Olga!</td></tr>\n"
-      "<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt 4.6 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>\n"
+      "<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>\n"
       "<tr><td><b>Icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>\n"
       "</table>\n"
       "<br /> <br />\n"
@@ -107,7 +107,7 @@ void CAboutDialog::FillInfo()
       "<br /> <br />\n"
       "Thank you,<br />\n"
       "&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg"
-   ).arg(__MY__VERSION__);
+   ).arg(__MY__VERSION__).arg(qVersion());
 }
 
 /************************* History ***************************\

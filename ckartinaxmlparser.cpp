@@ -374,39 +374,31 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
      Try to find out the real difference between the
      time kartina.tv assumes for us and the real time
      running on this machine ...
+     Round offset to full 30 minutes (min. timezone step)
      */
 
    VlcLog.LogInfo(tr("%1 / %2():%3 Kartina.tv reports client time as %4\n")
                   .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(str));
 
+
    // get difference between kartina.tv and our time ...
    int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t()
                           - QDateTime::fromString(str, DEF_TIME_FORMAT).toTime_t());
-   int iHalfHours = 0;
 
-   if (abs(iOffSec) > DEF_MAX_DIFF) // maybe the time of the comp is not that accurate ...
+   // round offset to full timezone step ...
+   int iHalfHours = qRound ((double)iOffSec / (double)DEF_TZ_STEP);
+
+   if (iHalfHours)
    {
-      iHalfHours = (int)(abs(iOffSec) / DEF_TZ_STEP);
-
-      iHalfHours ++;
-
-      if ((iHalfHours * DEF_TZ_STEP - abs(iOffSec)) > DEF_MAX_DIFF)
-      {
-         iHalfHours --;
-      }
-
-      if (iOffSec > 0)
-      {
-         iOffset = iHalfHours * DEF_TZ_STEP;
-      }
-      else
-      {
-         iOffset = 0 - iHalfHours * DEF_TZ_STEP;
-      }
-
-      VlcLog.LogInfo(tr("%1 / %2():%3 Set time offset to %4 seconds!\n")
-                     .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iOffset));
+      iOffset = iHalfHours * DEF_TZ_STEP;
    }
+   else
+   {
+      iOffset = 0;
+   }
+
+   VlcLog.LogInfo(tr("%1 / %2():%3 Set time offset to %4 seconds!\n")
+                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iOffset));
 }
 
 /* -----------------------------------------------------------------\

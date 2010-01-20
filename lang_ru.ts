@@ -13,7 +13,7 @@
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;%1&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;J&amp;ouml;rg Neubert&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Inspired by:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Olga!&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt 4.6 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt %2 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
@@ -34,7 +34,7 @@ Thank you,&lt;br /&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;%1&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;J&amp;ouml;rg Neubert&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Inspired by:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Olga!&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt 4.6 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt %2 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
@@ -55,7 +55,7 @@ Thank you,&lt;br /&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Версия:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;%1&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Автор:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;J&amp;ouml;rg Neubert&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Для:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Ольги!&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt 4.6 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt %2 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Перевод:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Ольга Нойберт&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
@@ -182,35 +182,35 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaXMLParser</name>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="76"/>
+        <location filename="ckartinaxmlparser.cpp" line="106"/>
         <source>TimeShift is set to %1 hours.
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="127"/>
-        <location filename="ckartinaxmlparser.cpp" line="185"/>
-        <location filename="ckartinaxmlparser.cpp" line="229"/>
-        <location filename="ckartinaxmlparser.cpp" line="282"/>
+        <location filename="ckartinaxmlparser.cpp" line="157"/>
+        <location filename="ckartinaxmlparser.cpp" line="226"/>
+        <location filename="ckartinaxmlparser.cpp" line="280"/>
+        <location filename="ckartinaxmlparser.cpp" line="343"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="128"/>
-        <location filename="ckartinaxmlparser.cpp" line="186"/>
-        <location filename="ckartinaxmlparser.cpp" line="230"/>
-        <location filename="ckartinaxmlparser.cpp" line="283"/>
+        <location filename="ckartinaxmlparser.cpp" line="158"/>
+        <location filename="ckartinaxmlparser.cpp" line="227"/>
+        <location filename="ckartinaxmlparser.cpp" line="281"/>
+        <location filename="ckartinaxmlparser.cpp" line="344"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="307"/>
+        <location filename="ckartinaxmlparser.cpp" line="380"/>
         <source>%1 / %2():%3 Kartina.tv reports client time as %4
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="335"/>
+        <location filename="ckartinaxmlparser.cpp" line="400"/>
         <source>%1 / %2():%3 Set time offset to %4 seconds!
 </source>
         <translation></translation>
@@ -239,22 +239,22 @@ p, li { white-space: pre-wrap; }
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="76"/>
+        <location filename="csettingsdlg.cpp" line="141"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="71"/>
+        <location filename="csettingsdlg.cpp" line="136"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="73"/>
+        <location filename="csettingsdlg.cpp" line="138"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="84"/>
+        <location filename="csettingsdlg.cpp" line="159"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
@@ -425,7 +425,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="141"/>
+        <location filename="recorder.cpp" line="201"/>
         <source>&lt;b style=&apos;color: red;&apos;&gt;%1&lt;/b&gt;&lt;br&gt;
 &lt;b&gt;Programm:&lt;/b&gt; %2&lt;br&gt;
 &lt;b&gt;Start:&lt;/b&gt; %3&lt;br&gt;
@@ -436,32 +436,32 @@ p, li { white-space: pre-wrap; }
 &lt;b&gt;Окончание:&lt;/b&gt; %4</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="164"/>
+        <location filename="recorder.cpp" line="234"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как...</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="165"/>
+        <location filename="recorder.cpp" line="235"/>
         <source>Transport Stream (*.ts);;AVI File (*.avi)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="185"/>
+        <location filename="recorder.cpp" line="255"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="185"/>
+        <location filename="recorder.cpp" line="255"/>
         <source>Can&apos;t recognice file extension!</source>
         <translation>Неизвестный формат файла!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="257"/>
+        <location filename="recorder.cpp" line="362"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="258"/>
+        <location filename="recorder.cpp" line="363"/>
         <source>Kartina.tv Client API reports some errors: %1</source>
         <translation></translation>
     </message>
