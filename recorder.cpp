@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 16:01:09
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #include "recorder.h"
@@ -164,7 +164,9 @@ void Recorder::show()
    pEpgNavbar->addTab(tr("Thu"));
    pEpgNavbar->addTab(tr("Fri"));
    pEpgNavbar->addTab(tr("Sat"));
+   pEpgNavbar->setTabTextColor(5, QColor("blue"));
    pEpgNavbar->addTab(tr("Sun"));
+   pEpgNavbar->setTabTextColor(6, QColor("red"));
 
    // fill in tooltip for navi buttons ...
    QToolButton *pBtn;
@@ -184,6 +186,41 @@ void Recorder::show()
 }
 
 /* -----------------------------------------------------------------\
+|  Method: TranslateDays
+|  Begin: 19.01.2010 / 16:05:00
+|  Author: Joerg Neubert
+|  Description: translate days stuuf on language change event
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::TranslateDays ()
+{
+   pEpgNavbar->setTabText(0, tr("Mon"));
+   pEpgNavbar->setTabText(1, tr("Tue"));
+   pEpgNavbar->setTabText(2, tr("Wed"));
+   pEpgNavbar->setTabText(3, tr("Thu"));
+   pEpgNavbar->setTabText(4, tr("Fri"));
+   pEpgNavbar->setTabText(5, tr("Sat"));
+   pEpgNavbar->setTabText(6, tr("Sun"));
+
+   // fill in tooltip for navi buttons ...
+   QToolButton *pBtn;
+   int          iIdx;
+
+   // back button ...
+   iIdx = 0;
+   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+   pBtn->setToolTip(tr("1 week backward"));
+
+   // next button ...
+   iIdx = ui->hLayoutEpgNavi->count() - 1;
+   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+   pBtn->setToolTip(tr("1 week forward"));
+}
+
+/* -----------------------------------------------------------------\
 |  Method: changeEvent
 |  Begin: 19.01.2010 / 16:05:00
 |  Author: Joerg Neubert
@@ -199,6 +236,7 @@ void Recorder::changeEvent(QEvent *e)
     switch (e->type()) {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
+        TranslateDays ();
         break;
     default:
         break;
@@ -756,7 +794,7 @@ void Recorder::SetProgress(const QString &start, const QString &end)
 |  Method: on_pushAbout_clicked
 |  Begin: 19.01.2010 / 16:15:56
 |  Author: Joerg Neubert
-|  Description: show about dialog 
+|  Description: show about dialog
 |
 |  Parameters: --
 |
@@ -826,7 +864,7 @@ void Recorder::slotLogosReady()
 |  Method: slotReloadLogos
 |  Begin: 19.01.2010 / 16:17:54
 |  Author: Joerg Neubert
-|  Description: trigger reload of channel logos 
+|  Description: trigger reload of channel logos
 |
 |  Parameters: --
 |
@@ -913,6 +951,7 @@ void Recorder::slotbtnNext_clicked()
 void Recorder::slotArchivURL(QString str)
 {
    QString              sChan, sUrl;
+
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
    XMLParser.SetByteArray(str.toUtf8());

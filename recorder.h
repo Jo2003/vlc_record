@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:59:00
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #ifndef __011910__RECORDER_H
@@ -93,6 +93,7 @@ protected:
     void EnableDisableDlg (bool bEnable = true);
     void SetProgress (const QString &start, const QString &end);
     void changeEvent(QEvent *e);
+    void TranslateDays ();
 
  public slots:
     virtual void show();

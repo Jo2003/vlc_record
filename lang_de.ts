@@ -424,7 +424,61 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Recorder</name>
     <message>
+        <location filename="recorder.cpp" line="161"/>
+        <location filename="recorder.cpp" line="200"/>
+        <source>Mon</source>
+        <translation>Mo.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="162"/>
         <location filename="recorder.cpp" line="201"/>
+        <source>Tue</source>
+        <translation>Di.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="163"/>
+        <location filename="recorder.cpp" line="202"/>
+        <source>Wed</source>
+        <translation>Mi.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="164"/>
+        <location filename="recorder.cpp" line="203"/>
+        <source>Thu</source>
+        <translation>Do.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="165"/>
+        <location filename="recorder.cpp" line="204"/>
+        <source>Fri</source>
+        <translation>Fr.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="166"/>
+        <location filename="recorder.cpp" line="205"/>
+        <source>Sat</source>
+        <translation>Sa.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="168"/>
+        <location filename="recorder.cpp" line="206"/>
+        <source>Sun</source>
+        <translation>So.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="178"/>
+        <location filename="recorder.cpp" line="215"/>
+        <source>1 week backward</source>
+        <translation>1 Woche zurück</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="183"/>
+        <location filename="recorder.cpp" line="220"/>
+        <source>1 week forward</source>
+        <translation>1 Woche nach vorn</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="304"/>
         <source>&lt;b style=&apos;color: red;&apos;&gt;%1&lt;/b&gt;&lt;br&gt;
 &lt;b&gt;Programm:&lt;/b&gt; %2&lt;br&gt;
 &lt;b&gt;Start:&lt;/b&gt; %3&lt;br&gt;
@@ -435,32 +489,32 @@ p, li { white-space: pre-wrap; }
 &lt;b&gt;Ende:&lt;/b&gt; %4</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="234"/>
+        <location filename="recorder.cpp" line="337"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="235"/>
+        <location filename="recorder.cpp" line="338"/>
         <source>Transport Stream (*.ts);;AVI File (*.avi)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="255"/>
+        <location filename="recorder.cpp" line="358"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="255"/>
+        <location filename="recorder.cpp" line="358"/>
         <source>Can&apos;t recognice file extension!</source>
         <translation>Nicht unterstützte Dateierweiterung!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="362"/>
+        <location filename="recorder.cpp" line="465"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="363"/>
+        <location filename="recorder.cpp" line="466"/>
         <source>Kartina.tv Client API reports some errors: %1</source>
         <translation>Die Kartina.tv Client API meldet folgenden Fehler: %1</translation>
     </message>
@@ -509,113 +563,107 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">EPG für den markierten Sender</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="215"/>
-        <location filename="recorder.ui" line="245"/>
-        <source>...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="recorder.ui" line="334"/>
+        <location filename="recorder.ui" line="319"/>
         <source>Set TimeShift in hours.</source>
         <translation>Setze TimeShift.</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="337"/>
+        <location filename="recorder.ui" line="322"/>
         <source>TimeShift Selector</source>
         <translation>TimeShift-Auswahl</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="341"/>
+        <location filename="recorder.ui" line="326"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="346"/>
+        <location filename="recorder.ui" line="331"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="351"/>
+        <location filename="recorder.ui" line="336"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="356"/>
+        <location filename="recorder.ui" line="341"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="361"/>
+        <location filename="recorder.ui" line="346"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="366"/>
+        <location filename="recorder.ui" line="351"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="371"/>
+        <location filename="recorder.ui" line="356"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="376"/>
+        <location filename="recorder.ui" line="361"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="381"/>
+        <location filename="recorder.ui" line="366"/>
         <source>11</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="402"/>
+        <location filename="recorder.ui" line="387"/>
         <source>Play selected Channel</source>
         <translation>Zeige markierten Sender</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="418"/>
+        <location filename="recorder.ui" line="403"/>
         <source>Alt+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="437"/>
+        <location filename="recorder.ui" line="422"/>
         <source>Record selected Channel</source>
         <translation>Nehme markierten Sender auf</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="453"/>
+        <location filename="recorder.ui" line="438"/>
         <source>Alt+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="502"/>
+        <location filename="recorder.ui" line="487"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="518"/>
+        <location filename="recorder.ui" line="503"/>
         <source>Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="540"/>
+        <location filename="recorder.ui" line="525"/>
         <source>About ...</source>
         <translation>Über ...</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="556"/>
+        <location filename="recorder.ui" line="541"/>
         <source>Alt+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="578"/>
+        <location filename="recorder.ui" line="563"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="594"/>
+        <location filename="recorder.ui" line="579"/>
         <source>Alt+Q</source>
         <translation></translation>
     </message>
