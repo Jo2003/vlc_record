@@ -16,6 +16,7 @@
 #include <QString>
 #include <QFile>
 #include <QMessageBox>
+#include <QTabBar>
 #include <QRegExp>
 #include <QTextStream>
 #include <QListWidgetItem>
@@ -82,6 +83,7 @@ private:
     CChanLogo                      dwnLogos;
     QString                        sLogoPath;
     int                            iEpgOffset;
+    QTabBar                       *pEpgNavbar;
 
 protected:
     int FillChannelList (QVector<cparser::SChan> chanlist);
@@ -90,6 +92,9 @@ protected:
     void EnableDisableDlg (bool bEnable = true);
     void SetProgress (const QString &start, const QString &end);
     void changeEvent(QEvent *e);
+
+ public slots:
+    virtual void show();
 
 private slots:
     void on_btnNext_clicked();

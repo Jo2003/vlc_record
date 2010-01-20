@@ -84,6 +84,33 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (pSettings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv, SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
 
+   // -------------------------------------------
+   // create epg nav bar ...
+   // -------------------------------------------
+   QToolButton *pBtn;
+   pBtn = new QToolButton;
+   pBtn->setIcon(QIcon(":png/back"));
+   pBtn->setAutoRaise(true);
+   pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+   connect (pBtn, SIGNAL(clicked()), this, SLOT(on_btnBack_clicked()));
+   ui->hLayoutEpgNavi->addWidget(pBtn);
+
+   pEpgNavbar = new QTabBar;
+   pEpgNavbar->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+   ui->hLayoutEpgNavi->addStretch();
+   ui->hLayoutEpgNavi->addWidget(pEpgNavbar);
+   ui->hLayoutEpgNavi->addStretch();
+
+   pBtn = new QToolButton;
+   pBtn->setIcon(QIcon(":png/next"));
+   pBtn->setAutoRaise(true);
+   pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+   connect (pBtn, SIGNAL(clicked()), this, SLOT(on_btnNext_clicked()));
+   ui->hLayoutEpgNavi->addWidget(pBtn);
+   // -------------------------------------------
+   // end epg nav bar ...
+   // -------------------------------------------
+
    // enebale button ...
    EnableDisableDlg(false);
 
@@ -116,6 +143,29 @@ Recorder::~Recorder()
    }
 
    delete ui;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: show
+|  Begin: 19.01.2010 / 16:05:00
+|  Author: Joerg Neubert
+|  Description: add days before show dialog ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::show()
+{
+   pEpgNavbar->addTab(tr("Mon"));
+   pEpgNavbar->addTab(tr("Tue"));
+   pEpgNavbar->addTab(tr("Wed"));
+   pEpgNavbar->addTab(tr("Thu"));
+   pEpgNavbar->addTab(tr("Fri"));
+   pEpgNavbar->addTab(tr("Sat"));
+   pEpgNavbar->addTab(tr("Sun"));
+
+   QDialog::show();
 }
 
 /* -----------------------------------------------------------------\
