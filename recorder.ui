@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>436</height>
+    <height>450</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -216,26 +216,18 @@ color: white;
               <enum>QFrame::Sunken</enum>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <property name="margin">
+              <property name="leftMargin">
+               <number>6</number>
+              </property>
+              <property name="topMargin">
                <number>2</number>
               </property>
-              <item>
-               <widget class="QToolButton" name="btnBack">
-                <property name="text">
-                 <string>...</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="vlc-record.qrc">
-                  <normaloff>:/png/back</normaloff>:/png/back</iconset>
-                </property>
-                <property name="autoRaise">
-                 <bool>true</bool>
-                </property>
-                <property name="arrowType">
-                 <enum>Qt::NoArrow</enum>
-                </property>
-               </widget>
-              </item>
+              <property name="rightMargin">
+               <number>6</number>
+              </property>
+              <property name="bottomMargin">
+               <number>2</number>
+              </property>
               <item>
                <widget class="QLabel" name="labCurrDay">
                 <property name="styleSheet">
@@ -246,23 +238,6 @@ color: white;
                 </property>
                 <property name="text">
                  <string/>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QToolButton" name="btnNext">
-                <property name="text">
-                 <string>...</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="vlc-record.qrc">
-                  <normaloff>:/png/next</normaloff>:/png/next</iconset>
-                </property>
-                <property name="autoRaise">
-                 <bool>true</bool>
-                </property>
-                <property name="arrowType">
-                 <enum>Qt::NoArrow</enum>
                 </property>
                </widget>
               </item>

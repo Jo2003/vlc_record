@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QTabBar>
+#include <QToolButton>
 #include <QRegExp>
 #include <QTextStream>
 #include <QListWidgetItem>
@@ -97,8 +98,8 @@ protected:
     virtual void show();
 
 private slots:
-    void on_btnNext_clicked();
-    void on_btnBack_clicked();
+    void slotbtnNext_clicked();
+    void slotbtnBack_clicked();
     void on_pushAbout_clicked();
     void on_cbxChannelGroup_activated(int index);
     void on_listWidget_currentRowChanged(int currentRow);
@@ -116,6 +117,7 @@ private slots:
     void slotArchivAnchor (const QUrl & link);
     void slotLogosReady ();
     void slotReloadLogos ();
+    void slotDayTabChanged (int iIdx);
 };
 
 #endif /* __011910__RECORDER_H */

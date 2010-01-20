@@ -92,11 +92,12 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    pBtn->setIcon(QIcon(":png/back"));
    pBtn->setAutoRaise(true);
    pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
-   connect (pBtn, SIGNAL(clicked()), this, SLOT(on_btnBack_clicked()));
+   connect (pBtn, SIGNAL(clicked()), this, SLOT(slotbtnBack_clicked()));
    ui->hLayoutEpgNavi->addWidget(pBtn);
 
    pEpgNavbar = new QTabBar;
    pEpgNavbar->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+   connect (pEpgNavbar, SIGNAL(currentChanged(int)), this, SLOT(slotDayTabChanged(int)));
    ui->hLayoutEpgNavi->addStretch();
    ui->hLayoutEpgNavi->addWidget(pEpgNavbar);
    ui->hLayoutEpgNavi->addStretch();
@@ -105,7 +106,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    pBtn->setIcon(QIcon(":png/next"));
    pBtn->setAutoRaise(true);
    pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
-   connect (pBtn, SIGNAL(clicked()), this, SLOT(on_btnNext_clicked()));
+   connect (pBtn, SIGNAL(clicked()), this, SLOT(slotbtnNext_clicked()));
    ui->hLayoutEpgNavi->addWidget(pBtn);
    // -------------------------------------------
    // end epg nav bar ...
@@ -164,6 +165,20 @@ void Recorder::show()
    pEpgNavbar->addTab(tr("Fri"));
    pEpgNavbar->addTab(tr("Sat"));
    pEpgNavbar->addTab(tr("Sun"));
+
+   // fill in tooltip for navi buttons ...
+   QToolButton *pBtn;
+   int          iIdx;
+
+   // back button ...
+   iIdx = 0;
+   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+   pBtn->setToolTip(tr("1 week backward"));
+
+   // next button ...
+   iIdx = ui->hLayoutEpgNavi->count() - 1;
+   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+   pBtn->setToolTip(tr("1 week forward"));
 
    QDialog::show();
 }
@@ -545,6 +560,8 @@ void Recorder::slotEPG(QString str)
    ui->labChanName->setText(sDlgTitle);
    ui->labCurrDay->setText(epgTime.toString("dd. MMM. yyyy"));
 
+   pEpgNavbar->setCurrentIndex(epgTime.date().dayOfWeek() - 1);
+
    EnableDisableDlg();
    ui->listWidget->setFocus(Qt::OtherFocusReason);
 }
@@ -844,41 +861,41 @@ void Recorder::slotReloadLogos()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnBack_clicked
+|  Method: slotbtnBack_clicked
 |  Begin: 19.01.2010 / 16:18:30
 |  Author: Joerg Neubert
-|  Description: one day backward in epg 
+|  Description: one week backward in epg
 |
 |  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::on_btnBack_clicked()
+void Recorder::slotbtnBack_clicked()
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
    if (pItem && (pItem->GetId() != -1))
    {
-      iEpgOffset --;
+      iEpgOffset = iEpgOffset - 7;
       Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
    }
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnNext_clicked
+|  Method: slotbtnNext_clicked
 |  Begin: 19.01.2010 / 16:18:30
 |  Author: Joerg Neubert
-|  Description: one day forward in epg 
+|  Description: one week forward in epg
 |
 |  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::on_btnNext_clicked()
+void Recorder::slotbtnNext_clicked()
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
    if (pItem && (pItem->GetId() != -1))
    {
-      iEpgOffset ++;
+      iEpgOffset = iEpgOffset + 7;
       Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
    }
 }
@@ -917,6 +934,44 @@ void Recorder::slotArchivURL(QString str)
    }
 
    EnableDisableDlg();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotDayTabChanged
+|  Begin: 19.01.2010 / 16:19:25
+|  Author: Joerg Neubert
+|  Description: day in epg navi bar changed ...
+|
+|  Parameters: day index (0 - 6)
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotDayTabChanged(int iIdx)
+{
+   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
+   if (pItem && (pItem->GetId() != -1))
+   {
+      QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
+      int       iDay    = epgTime.date().dayOfWeek() - 1;
+
+      // earlier or later ... ?
+      if (iIdx < iDay)
+      {
+         // earlier ...
+         iEpgOffset -= iDay - iIdx;
+      }
+      else if (iIdx > iDay)
+      {
+         // later ...
+         iEpgOffset += iIdx - iDay;
+      }
+
+      // get epg for requested day ...
+      if (iIdx != iDay)
+      {
+         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+      }
+   }
 }
 
 /************************* History ***************************\
