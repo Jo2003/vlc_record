@@ -110,7 +110,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
        <property name="title">
         <string> EPG - Electronic Program Guide </string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,10">
+       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,10,0">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -259,6 +259,66 @@ color: white;
            <bool>false</bool>
           </property>
          </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="hLayoutSearch">
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="labSearch">
+            <property name="styleSheet">
+             <string notr="true">QLabel#labSearch {
+font-weight: bold;
+color: white;
+}</string>
+            </property>
+            <property name="text">
+             <string>Search: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineSearch">
+            <property name="minimumSize">
+             <size>
+              <width>170</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="btnSearch">
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="vlc-record.qrc">
+              <normaloff>:/app/search</normaloff>:/app/search</iconset>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+F</string>
+            </property>
+            <property name="autoRaise">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

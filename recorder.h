@@ -96,6 +96,7 @@ protected:
     void TouchEpgNavi (bool bCreate);
 
 private slots:
+    void on_btnSearch_clicked();
     void on_listWidget_itemDoubleClicked(QListWidgetItem* item);
     void slotbtnNext_clicked();
     void slotbtnBack_clicked();

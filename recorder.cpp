@@ -1080,6 +1080,21 @@ void Recorder::slotSetHttpBuffer(int iTime)
    Trigger.TriggerRequest(Kartina::REQ_HTTPBUFF, iTime);
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_btnSearch_clicked
+|  Begin: 21.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: search button was pressed
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_btnSearch_clicked()
+{
+   ui->textEpg->find(ui->lineSearch->text());
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
