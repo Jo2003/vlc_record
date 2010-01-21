@@ -259,6 +259,27 @@ void CKartinaClnt::SetServer(int iSrv)
 }
 
 /*-----------------------------------------------------------------------------\
+| Function:    SetHttpBuffer
+|
+| Author:      Joerg Neubert
+|
+| Begin:       Thursday, January 21, 2010 11:49:52
+|
+| Description: set http buffer time
+|
+| Parameters:  time in msec. (1500, 3000, 5000, 8000, 15000)
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::SetHttpBuffer(int iTime)
+{
+   VlcLog.LogInfo(tr("%1 / %2():%3 Set Http Buffer to %4 msec.\n")
+                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iTime));
+   PostRequest(Kartina::REQ_SERVER, "/",
+               QString("m=clients&act=x_set_http_cache&htc=%1").arg(iTime));
+}
+
+/*-----------------------------------------------------------------------------\
 | Function:    GetEPG
 |
 | Author:      Joerg Neubert
@@ -402,6 +423,9 @@ void CKartinaClnt::handleEndRequest(bool err)
          break;
       case Kartina::REQ_SERVER:
          emit sigServerChanged();
+         break;
+      case Kartina::REQ_HTTPBUFF:
+         emit sigBufferSet();
          break;
       case Kartina::REQ_STREAM:
          emit sigGotStreamURL(QString::fromUtf8(baPageContent.constData()));

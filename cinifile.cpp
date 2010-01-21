@@ -137,11 +137,11 @@ int CIniFile::DelData(const QString &sKey)
    int iRV = 0;
    QVector<Ini::SIniEntry> tmpVec;
 
-   for (cit = IniEntries.begin(); cit != IniEntries.end(); cit ++)
+   for (int i = 0; i < IniEntries.size(); i++)
    {
-      if (sKey != (*cit).sKey)
+      if (sKey != IniEntries[i].sKey)
       {
-         tmpVec.push_back(*cit);
+         tmpVec.push_back(IniEntries[i]);
          iRV ++;
       }
    }
@@ -165,11 +165,11 @@ int CIniFile::DelData(const QString &sKey)
 QString CIniFile::GetStringData(const QString &sKey)
 {
    QString sRV = "";
-   for (cit = IniEntries.begin(); cit != IniEntries.end(); cit ++)
+   for (int i = 0; i < IniEntries.size(); i++)
    {
-      if (sKey == (*cit).sKey)
+      if (sKey == IniEntries[i].sKey)
       {
-         sRV = (*cit).sData;
+         sRV = IniEntries[i].sData;
          break;
       }
    }
@@ -190,11 +190,11 @@ QString CIniFile::GetStringData(const QString &sKey)
 long CIniFile::GetIntData (const QString &sKey)
 {
    long lRV = 0;
-   for (cit = IniEntries.begin(); cit != IniEntries.end(); cit ++)
+   for (int i = 0; i < IniEntries.size(); i++)
    {
-      if (sKey == (*cit).sKey)
+      if (sKey == IniEntries[i].sKey)
       {
-         lRV = (*cit).sData.toLong();
+         lRV = IniEntries[i].sData.toLong();
          break;
       }
    }
@@ -215,11 +215,11 @@ long CIniFile::GetIntData (const QString &sKey)
 double CIniFile::GetFloatData (const QString &sKey)
 {
    double dRV = 0;
-   for (cit = IniEntries.begin(); cit != IniEntries.end(); cit ++)
+   for (int i = 0; i < IniEntries.size(); i++)
    {
-      if (sKey == (*cit).sKey)
+      if (sKey == IniEntries[i].sKey)
       {
-         dRV = (*cit).sData.toDouble();
+         dRV = IniEntries[i].sData.toDouble();
          break;
       }
    }
@@ -248,9 +248,9 @@ int CIniFile::SaveIni()
    QFile       fIni(IniFileName);
 
    // create file content ...
-   for (cit = IniEntries.begin(); cit != IniEntries.end(); cit ++)
+   for (int i = 0; i < IniEntries.size(); i++)
    {
-      str << (*cit).sKey << " = " << (*cit).sData << endl;
+      str << IniEntries[i].sKey << " = " << IniEntries[i].sData << endl;
    }
 
    if (!AppDir.exists())

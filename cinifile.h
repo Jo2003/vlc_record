@@ -62,26 +62,21 @@ public:
    |
    |  Parameters: key, value
    |
-   |  Returns: 0 ==> ok
-   |          -1 ==> any error
+   |  Returns: 0 ==> added
+   |           1 ==> updated
    \----------------------------------------------------------------- */
    template <typename T>
          int AddData (const QString &sKey, const T& val)
    {
-      int         iRV = 0;
-      QTextStream str;
+      int iRV = 0;
 
       // check if we should update an entry ...
-      for (it = IniEntries.begin(); it != IniEntries.end(); it ++)
+      for (int i = 0; i < IniEntries.size(); i++)
       {
-         if (sKey == (*it).sKey)
+         if (sKey == IniEntries[i].sKey)
          {
-            // delete old data ...
-            (*it).sData = "";
-
-            // create text stream to store value ...
-            str.setString(&(*it).sData);
-            str << val;
+            // update data ...
+            IniEntries[i].sData = QString("%1").arg(val);
             iRV = 1;
             break;
          }
@@ -89,11 +84,10 @@ public:
 
       if (!iRV)
       {
+         // not updated --> add new entry ...
          Ini::SIniEntry entry;
-         entry.sKey = sKey;
-         str.setString(&entry.sData);
-         str << val;
-
+         entry.sKey  = sKey;
+         entry.sData = QString("%1").arg(val);
          IniEntries.push_back(entry);
       }
 
@@ -108,8 +102,8 @@ public:
    |
    |  Parameters: key, value
    |
-   |  Returns: 0 ==> ok
-   |          -1 ==> any error
+   |  Returns: 0 ==> added
+   |           1 ==> updated
    \----------------------------------------------------------------- */
    template <typename T>
          int UpdateData (const QString &sKey, const T& val)
@@ -123,11 +117,6 @@ protected:
    QVector<Ini::SIniEntry> IniEntries;
    QString sIniFile;
    QString sAppDir;
-
-
-private:
-   QVector<Ini::SIniEntry>::const_iterator cit;
-   QVector<Ini::SIniEntry>::iterator it;
 };
 
 #endif /* __011810__CINIFILE_H */

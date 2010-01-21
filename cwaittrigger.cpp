@@ -120,6 +120,9 @@ void CWaitTrigger::run()
             case Kartina::REQ_SERVER:
                pClient->SetServer(iOptArg1);
                break;
+            case Kartina::REQ_HTTPBUFF:
+               pClient->SetHttpBuffer(iOptArg1);
+               break;
             case Kartina::REQ_STREAM:
                pClient->GetStreamURL(iOptArg1);
                break;

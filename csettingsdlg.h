@@ -70,8 +70,12 @@ private:
 
 signals:
     void sigReloadLogos ();
+    void sigSetServer (int iSrv);
+    void sigSetBuffer (int iBuffer);
 
 private slots:
+    void on_btnSaveBuffer_clicked();
+    void on_btnSaveStreamServer_clicked();
     void on_pushDelLogos_clicked();
     void on_cbxLanguage_currentIndexChanged(QString str);
     void on_pushSave_clicked();

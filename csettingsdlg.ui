@@ -24,7 +24,7 @@
      </property>
      <widget class="QWidget" name="genSettings">
       <attribute name="title">
-       <string>General Settings</string>
+       <string>&amp;General Settings</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
@@ -271,141 +271,127 @@
      </widget>
      <widget class="QWidget" name="advSettings">
       <attribute name="title">
-       <string>Advanced Settings</string>
+       <string>&amp;Advanced Settings</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
-        <widget class="QGroupBox" name="groupProxy">
-         <property name="title">
-          <string> Proxy Access </string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QCheckBox" name="useProxy">
-            <property name="text">
-             <string>Enable Proxy</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="hLayoutProxyAddr">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QGroupBox" name="groupStreamServer">
+           <property name="title">
+            <string> Sream Server </string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
-             <widget class="QLabel" name="label_5">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
+             <widget class="QLabel" name="labStreamServer">
               <property name="text">
-               <string>Address: </string>
+               <string>Server: </string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineProxyHost">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
+             <widget class="QComboBox" name="cbxStreamServer">
+              <item>
+               <property name="text">
+                <string>1</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>2</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_6">
-              <property name="text">
-               <string>Port:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineProxyPort">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
+             <widget class="QToolButton" name="btnSaveStreamServer">
               <property name="maximumSize">
                <size>
-                <width>50</width>
+                <width>32</width>
                 <height>16777215</height>
                </size>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="hLayoutProxyAcc">
-            <item>
-             <widget class="QLabel" name="label_8">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
               <property name="text">
-               <string>User: </string>
+               <string/>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineProxyUser">
-              <property name="enabled">
-               <bool>false</bool>
+              <property name="icon">
+               <iconset resource="vlc-record.qrc">
+                <normaloff>:/app/save</normaloff>:/app/save</iconset>
               </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>Password: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineProxyPassword">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="echoMode">
-               <enum>QLineEdit::Password</enum>
+              <property name="autoRaise">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBuffer">
+           <property name="title">
+            <string> Buffering </string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLabel" name="labBuffer">
+              <property name="text">
+               <string>Time (sec.):</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbxBufferSeconds">
+              <item>
+               <property name="text">
+                <string>1.5</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>3</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>5</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>8</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>15</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="btnSaveBuffer">
+              <property name="maximumSize">
+               <size>
+                <width>32</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="vlc-record.qrc">
+                <normaloff>:/app/save</normaloff>:/app/save</iconset>
+              </property>
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QGroupBox" name="groupFixTime">
@@ -540,6 +526,146 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="proxySettings">
+      <attribute name="title">
+       <string>&amp;Proxy Settings</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_9">
+       <item>
+        <widget class="QGroupBox" name="groupProxy">
+         <property name="title">
+          <string> Proxy Access </string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <widget class="QCheckBox" name="useProxy">
+            <property name="text">
+             <string>Enable Proxy</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutProxyAddr">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Address: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineProxyHost">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Port:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineProxyPort">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutProxyAcc">
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>User: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineProxyUser">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Password: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineProxyPassword">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="echoMode">
+               <enum>QLineEdit::Password</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -606,66 +732,18 @@
  </resources>
  <connections>
   <connection>
-   <sender>useProxy</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineProxyHost</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>81</x>
-     <y>79</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>112</x>
-     <y>94</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useProxy</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineProxyPort</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>246</x>
-     <y>79</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>376</x>
-     <y>94</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>useProxy</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineProxyUser</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>152</x>
-     <y>79</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>198</x>
-     <y>128</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>checkRefresh</sender>
    <signal>toggled(bool)</signal>
    <receiver>lineInterval</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>48</x>
-     <y>237</y>
+     <x>77</x>
+     <y>362</y>
     </hint>
     <hint type="destinationlabel">
-     <x>172</x>
-     <y>236</y>
+     <x>261</x>
+     <y>365</y>
     </hint>
    </hints>
   </connection>
@@ -676,8 +754,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>287</y>
+     <x>195</x>
+     <y>429</y>
     </hint>
     <hint type="destinationlabel">
      <x>188</x>
@@ -692,8 +770,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>322</x>
-     <y>289</y>
+     <x>388</x>
+     <y>429</y>
     </hint>
     <hint type="destinationlabel">
      <x>366</x>
@@ -704,16 +782,64 @@
   <connection>
    <sender>useProxy</sender>
    <signal>toggled(bool)</signal>
+   <receiver>lineProxyHost</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>101</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>132</x>
+     <y>169</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useProxy</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineProxyPort</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>49</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>437</x>
+     <y>164</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useProxy</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineProxyUser</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>242</x>
+     <y>89</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>151</x>
+     <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useProxy</sender>
+   <signal>toggled(bool)</signal>
    <receiver>lineProxyPassword</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>42</x>
-     <y>70</y>
+     <x>180</x>
+     <y>85</y>
     </hint>
     <hint type="destinationlabel">
-     <x>318</x>
-     <y>122</y>
+     <x>454</x>
+     <y>307</y>
     </hint>
    </hints>
   </connection>

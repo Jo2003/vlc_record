@@ -244,7 +244,10 @@ QString CKartinaXMLParser::ParseURL()
 {
    QString              url;
    QXmlStreamAttributes attrs;
-   QRegExp              rx("^.*//([^ ]*).*$");
+   // QRegExp              rx("^.*//([^ ]*).*$");
+
+   // use whole url with params ...
+   QRegExp              rx("^.*//(.*)$");
 
    xml.clear();
    xml.addData(stream);
@@ -307,7 +310,9 @@ QString CKartinaXMLParser::ParseArchivURL()
 {
    QString              url;
    QXmlStreamAttributes attrs;
-   QRegExp              rx("^.*//([^ ]*).*$");
+   // QRegExp              rx("^.*//([^ ]*).*$");
+   // use whole url with params ...
+   QRegExp              rx("^.*//(.*)$");
 
    xml.clear();
    xml.addData(stream);

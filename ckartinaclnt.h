@@ -37,6 +37,7 @@ namespace Kartina {
       REQ_TIMESHIFT,
       REQ_EPG,
       REQ_SERVER,
+      REQ_HTTPBUFF,
       REQ_ARCHIV,
       REQ_UNKNOWN = 255
    };
@@ -70,6 +71,7 @@ public:
    void GetStreamURL (int iChanID);
    void GetArchivURL (const QString &prepared);
    void SetServer (int iSrv);
+   void SetHttpBuffer (int iTime);
    void GetEPG (int iChanID, int iOffset = 0);
    bool busy ();
 
@@ -100,6 +102,7 @@ signals:
    void sigGotStreamURL (QString str);
    void sigGotArchivURL (QString str);
    void sigServerChanged ();
+   void sigBufferSet ();
    void sigError (QString str);
 };
 

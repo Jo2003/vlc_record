@@ -83,6 +83,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&dwnLogos, SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
    connect (pSettings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv, SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
+   connect (pSettings, SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
+   connect (pSettings, SIGNAL(sigSetBuffer(int)), this, SLOT(slotSetHttpBuffer(int)));
 
    // -------------------------------------------
    // create epg nav bar ...
@@ -359,7 +361,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 
       if (bArchiv)
       {
-         sCmdLine += " --rtsp-tcp";
+         // sCmdLine += " --rtsp-tcp";
       }
 
       // Start the QProcess instance.
@@ -394,7 +396,7 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
 
    if (bArchiv)
    {
-      sCmdLine += " --rtsp-tcp";
+      // sCmdLine += " --rtsp-tcp";
    }
 
    // Start the QProcess instance.
@@ -491,7 +493,6 @@ void Recorder::slotErr(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotChanList (QString str)
 {
-   VlcLog.LogInfo(QString("%1\n").arg(__FUNCTION__));
    QVector<cparser::SChan> chanList;
    XMLParser.SetByteArray(str.toUtf8());
 
@@ -533,6 +534,8 @@ void Recorder::slotStreamURL(QString str)
    XMLParser.SetByteArray(str.toUtf8());
 
    sUrl = XMLParser.ParseURL();
+
+   VlcLog.LogInfo(sUrl + "\n");
 
    if (pItem)
    {
@@ -1045,6 +1048,36 @@ void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
       EnableDisableDlg(false);
       Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSetSServer
+|  Begin: 21.01.2010 / 12:19:25
+|  Author: Joerg Neubert
+|  Description: set stream server request
+|
+|  Parameters: new server number
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotSetSServer(int iSrv)
+{
+   Trigger.TriggerRequest(Kartina::REQ_SERVER, iSrv);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSetHttpBuffer
+|  Begin: 21.01.2010 / 12:20:25
+|  Author: Joerg Neubert
+|  Description: set http buffer size request
+|
+|  Parameters: new buffer time
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotSetHttpBuffer(int iTime)
+{
+   Trigger.TriggerRequest(Kartina::REQ_HTTPBUFF, iTime);
 }
 
 /************************* History ***************************\

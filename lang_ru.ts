@@ -131,49 +131,49 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="276"/>
+        <location filename="ckartinaclnt.cpp" line="297"/>
         <source>%1 / %2():%3 Request EPG for Channel %4
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="301"/>
+        <location filename="ckartinaclnt.cpp" line="322"/>
         <source>%1 / %2():%3 Request Archiv URL:
 %4
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="332"/>
+        <location filename="ckartinaclnt.cpp" line="353"/>
         <source>%1 / %2():%3 We&apos;ve got Response for Authentification!
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="339"/>
+        <location filename="ckartinaclnt.cpp" line="360"/>
         <source>%1 / %2():%3 Got cookie: %4!
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="347"/>
+        <location filename="ckartinaclnt.cpp" line="368"/>
         <source>%1 / %2():%3 Error: Can&apos;t authenticate!
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="349"/>
+        <location filename="ckartinaclnt.cpp" line="370"/>
         <source>Can&apos;t authenticate you at kartina.tv! Please check username and password!</source>
         <translation>Неверный ввод данных! Соединение с kartina.tv невозможно! Проверите, пожалуйста, логин и пароль!</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="385"/>
+        <location filename="ckartinaclnt.cpp" line="406"/>
         <source>%1 / %2():%3 Request done!
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="418"/>
+        <location filename="ckartinaclnt.cpp" line="442"/>
         <source>%1 / %2():%3 Error in Request: %4!
 </source>
         <translation></translation>
@@ -190,27 +190,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaxmlparser.cpp" line="157"/>
         <location filename="ckartinaxmlparser.cpp" line="226"/>
-        <location filename="ckartinaxmlparser.cpp" line="280"/>
-        <location filename="ckartinaxmlparser.cpp" line="343"/>
+        <location filename="ckartinaxmlparser.cpp" line="283"/>
+        <location filename="ckartinaxmlparser.cpp" line="348"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="158"/>
         <location filename="ckartinaxmlparser.cpp" line="227"/>
-        <location filename="ckartinaxmlparser.cpp" line="281"/>
-        <location filename="ckartinaxmlparser.cpp" line="344"/>
+        <location filename="ckartinaxmlparser.cpp" line="284"/>
+        <location filename="ckartinaxmlparser.cpp" line="349"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="380"/>
+        <location filename="ckartinaxmlparser.cpp" line="385"/>
         <source>%1 / %2():%3 Kartina.tv reports client time as %4
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="400"/>
+        <location filename="ckartinaxmlparser.cpp" line="405"/>
         <source>%1 / %2():%3 Set time offset to %4 seconds!
 </source>
         <translation></translation>
@@ -219,22 +219,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CSettingsDlg</name>
     <message>
-        <location filename="csettingsdlg.ui" line="443"/>
+        <location filename="csettingsdlg.ui" line="429"/>
         <source>Log disabled</source>
         <translation>Протокол выкл.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="448"/>
+        <location filename="csettingsdlg.ui" line="434"/>
         <source>Log Errors only</source>
         <translation>Только протокол ошибок</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="453"/>
+        <location filename="csettingsdlg.ui" line="439"/>
         <source>Log Errors and Warnings</source>
         <translation>Протокол ошибок и предпреждений</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="458"/>
+        <location filename="csettingsdlg.ui" line="444"/>
         <source>Log everything</source>
         <translation>Все протоколы</translation>
     </message>
@@ -265,8 +265,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="27"/>
-        <source>General Settings</source>
-        <translation>Опции</translation>
+        <source>&amp;General Settings</source>
+        <oldsource>General Settings</oldsource>
+        <translation>&amp;Опции</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="35"/>
@@ -315,13 +316,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="168"/>
-        <location filename="csettingsdlg.ui" line="364"/>
+        <location filename="csettingsdlg.ui" line="621"/>
         <source>User: </source>
         <translation>Логин:</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="178"/>
-        <location filename="csettingsdlg.ui" line="391"/>
+        <location filename="csettingsdlg.ui" line="648"/>
         <source>Password: </source>
         <translation>Пароль:</translation>
     </message>
@@ -353,71 +354,132 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="274"/>
-        <source>Advanced Settings</source>
-        <translation>Дополнительные опции</translation>
+        <source>&amp;Advanced Settings</source>
+        <oldsource>Advanced Settings</oldsource>
+        <translation>&amp;Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="280"/>
+        <location filename="csettingsdlg.ui" line="282"/>
+        <source> Sream Server </source>
+        <translation>Сервер стрима</translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="288"/>
+        <source>Server: </source>
+        <translation>Сервер:</translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="296"/>
+        <source>1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="301"/>
+        <source>2</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="332"/>
+        <source> Buffering </source>
+        <translation>Буффер</translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="338"/>
+        <source>Time (sec.):</source>
+        <translation>Фремя (сек.):</translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="346"/>
+        <source>1.5</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="351"/>
+        <source>3</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="356"/>
+        <source>5</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="361"/>
+        <source>8</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="366"/>
+        <source>15</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="531"/>
+        <source>&amp;Proxy Settings</source>
+        <translation>Опции &amp;Прокси</translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="537"/>
         <source> Proxy Access </source>
         <translation>Прокси-сервер</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="286"/>
+        <location filename="csettingsdlg.ui" line="543"/>
         <source>Enable Proxy</source>
         <translation>Вкл. Прокси</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="301"/>
+        <location filename="csettingsdlg.ui" line="558"/>
         <source>Address: </source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="328"/>
+        <location filename="csettingsdlg.ui" line="585"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="413"/>
+        <location filename="csettingsdlg.ui" line="399"/>
         <source> Time Correction </source>
         <translation>Корректировка времени</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="419"/>
+        <location filename="csettingsdlg.ui" line="405"/>
         <source>Try to fix time offset</source>
         <translation>Попытка синхронизация времени</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="429"/>
+        <location filename="csettingsdlg.ui" line="415"/>
         <source> Logging </source>
         <translation>Протоколирование</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="435"/>
+        <location filename="csettingsdlg.ui" line="421"/>
         <source>Log Level: </source>
         <translation>Уровень:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="482"/>
+        <location filename="csettingsdlg.ui" line="468"/>
         <source> Refresh </source>
         <translation>Обновление</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="493"/>
+        <location filename="csettingsdlg.ui" line="479"/>
         <source>Refresh EPG every ...</source>
         <translation>Обновлять программу передачь каждые </translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="519"/>
+        <location filename="csettingsdlg.ui" line="505"/>
         <source>Minute(s)</source>
         <translation>минут(ы)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="563"/>
+        <location filename="csettingsdlg.ui" line="689"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="583"/>
+        <location filename="csettingsdlg.ui" line="709"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -425,61 +487,61 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="264"/>
-        <location filename="recorder.cpp" line="277"/>
+        <location filename="recorder.cpp" line="200"/>
+        <location filename="recorder.cpp" line="213"/>
         <source>Mon</source>
         <translation>Пон.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="265"/>
-        <location filename="recorder.cpp" line="278"/>
+        <location filename="recorder.cpp" line="201"/>
+        <location filename="recorder.cpp" line="214"/>
         <source>Tue</source>
         <translation>Вт.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="266"/>
-        <location filename="recorder.cpp" line="279"/>
+        <location filename="recorder.cpp" line="202"/>
+        <location filename="recorder.cpp" line="215"/>
         <source>Wed</source>
         <translation>Ср.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="267"/>
-        <location filename="recorder.cpp" line="280"/>
+        <location filename="recorder.cpp" line="203"/>
+        <location filename="recorder.cpp" line="216"/>
         <source>Thu</source>
         <translation>Чт.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="268"/>
-        <location filename="recorder.cpp" line="281"/>
+        <location filename="recorder.cpp" line="204"/>
+        <location filename="recorder.cpp" line="217"/>
         <source>Fri</source>
         <translation>Пят.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="269"/>
-        <location filename="recorder.cpp" line="282"/>
+        <location filename="recorder.cpp" line="205"/>
+        <location filename="recorder.cpp" line="218"/>
         <source>Sat</source>
         <translation>Суб.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="271"/>
-        <location filename="recorder.cpp" line="283"/>
+        <location filename="recorder.cpp" line="207"/>
+        <location filename="recorder.cpp" line="219"/>
         <source>Sun</source>
         <translation>Воск.</translation>
     </message>
     <message>
+        <location filename="recorder.cpp" line="162"/>
         <location filename="recorder.cpp" line="226"/>
-        <location filename="recorder.cpp" line="290"/>
         <source>1 week backward</source>
         <translation>1 неделя назад</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="255"/>
-        <location filename="recorder.cpp" line="295"/>
+        <location filename="recorder.cpp" line="191"/>
+        <location filename="recorder.cpp" line="231"/>
         <source>1 week forward</source>
         <translation>1 неделя вперед</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="380"/>
+        <location filename="recorder.cpp" line="318"/>
         <source>&lt;b style=&apos;color: red;&apos;&gt;%1&lt;/b&gt;&lt;br&gt;
 &lt;b&gt;Programm:&lt;/b&gt; %2&lt;br&gt;
 &lt;b&gt;Start:&lt;/b&gt; %3&lt;br&gt;
@@ -490,32 +552,32 @@ p, li { white-space: pre-wrap; }
 &lt;b&gt;Окончание:&lt;/b&gt; %4</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="413"/>
+        <location filename="recorder.cpp" line="351"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как...</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="414"/>
+        <location filename="recorder.cpp" line="352"/>
         <source>Transport Stream (*.ts);;AVI File (*.avi)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="434"/>
+        <location filename="recorder.cpp" line="372"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="434"/>
+        <location filename="recorder.cpp" line="372"/>
         <source>Can&apos;t recognice file extension!</source>
         <translation>Неизвестный формат файла!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="541"/>
+        <location filename="recorder.cpp" line="479"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="542"/>
+        <location filename="recorder.cpp" line="480"/>
         <source>Kartina.tv Client API reports some errors: %1</source>
         <translation></translation>
     </message>

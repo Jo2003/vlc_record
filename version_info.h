@@ -11,15 +11,20 @@
 \*************************************************************/
 #ifndef __011910__VERSION_INFO_H
    #define __011910__VERSION_INFO_H
+#include <QtGlobal>
 
-#ifdef WIN32
+#if defined Q_OS_WIN32
    #define MY_BUILD_SYS "Windows"
-#else
+#elif defined Q_OS_LINUX
    #define MY_BUILD_SYS "Linux (x86)"
+#elif defined Q_OS_DARWIN
+   #define MY_BUILD_SYS "Mac"
+#else
+   #define MY_BUILD_SYS "unknown"
 #endif
 
 #define __MY__VERSION__ \
-   "1.06 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.07 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
@@ -34,5 +39,10 @@
 | 2010-01-21: Version 1.06
 | - create / translate epg navbar using only one function
 | - double click on channel list starts channel play
+| 2010-01-21: Version 1.07
+| - can now set stream server
+| - can now set http cache time
+| - parsing stream url no longer removes additional params
+|    (needs testing!!)
 \*************************************************************/
 

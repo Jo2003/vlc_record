@@ -229,6 +229,65 @@ void CSettingsDlg::on_pushDelLogos_clicked()
    emit sigReloadLogos();
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_btnSaveStreamServer_clicked
+|  Begin: 21.01.2010 / 11:22:39
+|  Author: Joerg Neubert
+|  Description: signal set of stream server
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_btnSaveStreamServer_clicked()
+{
+   // which server was choosed ... ?
+   // available servers: 1 and 3!
+   // index 0 --> server 1
+   // index 1 --> server 3
+   int iSrv = m_ui->cbxStreamServer->currentIndex();
+
+   if (iSrv == 0)
+   {
+      iSrv = 1;
+   }
+   else if (iSrv == 1)
+   {
+      iSrv = 3;
+   }
+   else
+   {
+      iSrv = -1;
+   }
+
+   if (iSrv != -1)
+   {
+      emit sigSetServer(iSrv);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnSaveBuffer_clicked
+|  Begin: 21.01.2010 / 11:24:39
+|  Author: Joerg Neubert
+|  Description: signal set of http buffer
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_btnSaveBuffer_clicked()
+{
+   float fBuf = m_ui->cbxBufferSeconds->currentText().toFloat();
+
+   if (fBuf != (float)0.0)
+   {
+      int iBuf = (int)(fBuf * (float)1000);  // msec. ...
+
+      emit sigSetBuffer(iBuf);
+   }
+}
+
 //===================================================================
 // return internal stored values ==>
 //===================================================================
