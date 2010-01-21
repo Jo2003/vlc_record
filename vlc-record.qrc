@@ -10,6 +10,7 @@
         <file alias="reload">resources/refresh.ico</file>
         <file alias="save">resources/save.ico</file>
         <file alias="search">resources/search.ico</file>
+        <file alias="find">resources/find.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

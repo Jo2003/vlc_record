@@ -296,8 +296,19 @@ color: white;
             <property name="minimumSize">
              <size>
               <width>170</width>
-              <height>0</height>
+              <height>24</height>
              </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLineEdit#lineSearch {
+  color: #800;   
+  font: bold;
+   background-image: url(:/app/search);
+   background-repeat: no-repeat;
+   background-position: LEFT;
+   border: 1px inset;
+   border-color: #555;
+ }</string>
             </property>
            </widget>
           </item>
@@ -308,7 +319,13 @@ color: white;
             </property>
             <property name="icon">
              <iconset resource="vlc-record.qrc">
-              <normaloff>:/app/search</normaloff>:/app/search</iconset>
+              <normaloff>:/app/find</normaloff>:/app/find</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
             </property>
             <property name="shortcut">
              <string>Ctrl+F</string>
@@ -332,7 +349,7 @@ color: white;
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.7 grey, stop:1 #dedede);
 background-image: url(:/app/time);
 background-position: left center;
-background-repeat: no;
+background-repeat: no-repeat;
 background-attachment: fixed;
 };</string>
      </property>
