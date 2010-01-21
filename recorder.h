@@ -93,12 +93,10 @@ protected:
     void EnableDisableDlg (bool bEnable = true);
     void SetProgress (const QString &start, const QString &end);
     void changeEvent(QEvent *e);
-    void TranslateDays ();
-
- public slots:
-    virtual void show();
+    void TouchEpgNavi (bool bCreate);
 
 private slots:
+    void on_listWidget_itemDoubleClicked(QListWidgetItem* item);
     void slotbtnNext_clicked();
     void slotbtnBack_clicked();
     void on_pushAbout_clicked();
@@ -115,7 +113,7 @@ private slots:
     void slotArchivURL (QString str);
     void slotCookie ();
     void slotTimeShift ();
-    void slotArchivAnchor (const QUrl & link);
+    void slotEpgAnchor (const QUrl & link);
     void slotLogosReady ();
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);

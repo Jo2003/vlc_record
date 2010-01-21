@@ -79,7 +79,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&KartinaTv, SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
    connect (&KartinaTv, SIGNAL(sigTimeShiftSet()), this, SLOT(slotTimeShift()));
    connect (&Refresh,   SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
-   connect (ui->textEpg, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotArchivAnchor(QUrl)));
+   connect (ui->textEpg, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
    connect (&dwnLogos, SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
    connect (pSettings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv, SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
@@ -87,32 +87,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // -------------------------------------------
    // create epg nav bar ...
    // -------------------------------------------
-   QToolButton *pBtn;
-   pBtn = new QToolButton;
-   pBtn->setIcon(QIcon(":png/back"));
-   pBtn->setAutoRaise(true);
-   pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
-   connect (pBtn, SIGNAL(clicked()), this, SLOT(slotbtnBack_clicked()));
-   ui->hLayoutEpgNavi->addWidget(pBtn);
+   TouchEpgNavi (true);
 
-   pEpgNavbar = new QTabBar;
-   pEpgNavbar->setMaximumHeight(EPG_NAVBAR_HEIGHT);
-   connect (pEpgNavbar, SIGNAL(currentChanged(int)), this, SLOT(slotDayTabChanged(int)));
-   ui->hLayoutEpgNavi->addStretch();
-   ui->hLayoutEpgNavi->addWidget(pEpgNavbar);
-   ui->hLayoutEpgNavi->addStretch();
-
-   pBtn = new QToolButton;
-   pBtn->setIcon(QIcon(":png/next"));
-   pBtn->setAutoRaise(true);
-   pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
-   connect (pBtn, SIGNAL(clicked()), this, SLOT(slotbtnNext_clicked()));
-   ui->hLayoutEpgNavi->addWidget(pBtn);
-   // -------------------------------------------
-   // end epg nav bar ...
-   // -------------------------------------------
-
-   // enebale button ...
+   // enable button ...
    EnableDisableDlg(false);
 
    // request authorisation ...
@@ -147,77 +124,110 @@ Recorder::~Recorder()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: show
+|  Method: TouchEpgNavi
 |  Begin: 19.01.2010 / 16:05:00
 |  Author: Joerg Neubert
-|  Description: add days before show dialog ...
+|  Description: create / translate EPG navbar
 |
-|  Parameters: --
+|  Parameters: create flag
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::show()
+void Recorder::TouchEpgNavi (bool bCreate)
 {
-   pEpgNavbar->addTab(tr("Mon"));
-   pEpgNavbar->addTab(tr("Tue"));
-   pEpgNavbar->addTab(tr("Wed"));
-   pEpgNavbar->addTab(tr("Thu"));
-   pEpgNavbar->addTab(tr("Fri"));
-   pEpgNavbar->addTab(tr("Sat"));
-   pEpgNavbar->setTabTextColor(5, QColor("blue"));
-   pEpgNavbar->addTab(tr("Sun"));
-   pEpgNavbar->setTabTextColor(6, QColor("red"));
-
-   // fill in tooltip for navi buttons ...
    QToolButton *pBtn;
-   int          iIdx;
 
-   // back button ...
-   iIdx = 0;
-   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
-   pBtn->setToolTip(tr("1 week backward"));
+   if (bCreate)
+   {
+      /*
+        Note: We can't create the navbar in Qt Creator or
+        Designer because QTabBar isn't supported there.
+        Therefore we create it manually here.
 
-   // next button ...
-   iIdx = ui->hLayoutEpgNavi->count() - 1;
-   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
-   pBtn->setToolTip(tr("1 week forward"));
+        Format navbar:
 
-   QDialog::show();
-}
+        /-----------------------------------------------------\
+        | <-- |\/\/| /Mon/Tue/Wed/Thu/Fri/Sat/Sun/ |\/\/| --> |
+        \-----------------------------------------------------/
 
-/* -----------------------------------------------------------------\
-|  Method: TranslateDays
-|  Begin: 19.01.2010 / 16:05:00
-|  Author: Joerg Neubert
-|  Description: translate days stuuf on language change event
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::TranslateDays ()
-{
-   pEpgNavbar->setTabText(0, tr("Mon"));
-   pEpgNavbar->setTabText(1, tr("Tue"));
-   pEpgNavbar->setTabText(2, tr("Wed"));
-   pEpgNavbar->setTabText(3, tr("Thu"));
-   pEpgNavbar->setTabText(4, tr("Fri"));
-   pEpgNavbar->setTabText(5, tr("Sat"));
-   pEpgNavbar->setTabText(6, tr("Sun"));
+      */
 
-   // fill in tooltip for navi buttons ...
-   QToolButton *pBtn;
-   int          iIdx;
+      // create back button and set style ...
+      pBtn = new QToolButton;
+      pBtn->setIcon(QIcon(":png/back"));
+      pBtn->setAutoRaise(true);
+      pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+      pBtn->setToolTip(tr("1 week backward"));
 
-   // back button ...
-   iIdx = 0;
-   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
-   pBtn->setToolTip(tr("1 week backward"));
+      // connect signal with slot ...
+      connect (pBtn, SIGNAL(clicked()), this, SLOT(slotbtnBack_clicked()));
 
-   // next button ...
-   iIdx = ui->hLayoutEpgNavi->count() - 1;
-   pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
-   pBtn->setToolTip(tr("1 week forward"));
+      // add button to layout ...
+      ui->hLayoutEpgNavi->addWidget(pBtn);
+
+      // create tabbar (epg navbar) and set height ...
+      pEpgNavbar = new QTabBar;
+      pEpgNavbar->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+
+      // connect signal with slot ...
+      connect (pEpgNavbar, SIGNAL(currentChanged(int)), this, SLOT(slotDayTabChanged(int)));
+
+      // add h spacer ...
+      ui->hLayoutEpgNavi->addStretch();
+
+      // add navbar ...
+      ui->hLayoutEpgNavi->addWidget(pEpgNavbar);
+
+      // add h spacer ...
+      ui->hLayoutEpgNavi->addStretch();
+
+      // create next button and set style ...
+      pBtn = new QToolButton;
+      pBtn->setIcon(QIcon(":png/next"));
+      pBtn->setAutoRaise(true);
+      pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+      pBtn->setToolTip(tr("1 week forward"));
+
+      // connect signal with slot ...
+      connect (pBtn, SIGNAL(clicked()), this, SLOT(slotbtnNext_clicked()));
+
+      // add button to layout ...
+      ui->hLayoutEpgNavi->addWidget(pBtn);
+
+      // create day tabs ...
+      pEpgNavbar->addTab(tr("Mon"));
+      pEpgNavbar->addTab(tr("Tue"));
+      pEpgNavbar->addTab(tr("Wed"));
+      pEpgNavbar->addTab(tr("Thu"));
+      pEpgNavbar->addTab(tr("Fri"));
+      pEpgNavbar->addTab(tr("Sat"));
+      pEpgNavbar->setTabTextColor(5, QColor("blue"));
+      pEpgNavbar->addTab(tr("Sun"));
+      pEpgNavbar->setTabTextColor(6, QColor("red"));
+   }
+   else
+   {
+      // no creation, only translation ...
+      pEpgNavbar->setTabText(0, tr("Mon"));
+      pEpgNavbar->setTabText(1, tr("Tue"));
+      pEpgNavbar->setTabText(2, tr("Wed"));
+      pEpgNavbar->setTabText(3, tr("Thu"));
+      pEpgNavbar->setTabText(4, tr("Fri"));
+      pEpgNavbar->setTabText(5, tr("Sat"));
+      pEpgNavbar->setTabText(6, tr("Sun"));
+
+      // fill in tooltip for navi buttons ...
+      int iIdx;
+      // back button ...
+      iIdx = 0;
+      pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+      pBtn->setToolTip(tr("1 week backward"));
+
+      // next button ...
+      iIdx = ui->hLayoutEpgNavi->count() - 1;
+      pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+      pBtn->setToolTip(tr("1 week forward"));
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -236,7 +246,9 @@ void Recorder::changeEvent(QEvent *e)
     switch (e->type()) {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
-        TranslateDays ();
+
+        // translate manual created navbar ...
+        TouchEpgNavi (false);
         break;
     default:
         break;
@@ -807,16 +819,16 @@ void Recorder::on_pushAbout_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotArchivAnchor
+|  Method: slotEpgAnchor
 |  Begin: 19.01.2010 / 16:16:17
 |  Author: Joerg Neubert
-|  Description: archiv link in epg browser was clicked,
-|               request archiv stream url for play / record
+|  Description: link in epg browser was clicked,
+|               parse and handle request
 |  Parameters: clicked link
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotArchivAnchor (const QUrl &link)
+void Recorder::slotEpgAnchor (const QUrl &link)
 {
    // create request string ...
    QString action = link.encodedQueryItemValue(QByteArray("action"));
@@ -1010,6 +1022,28 @@ void Recorder::slotDayTabChanged(int iIdx)
       {
          Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
       }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_listWidget_itemDoubleClicked
+|  Begin: 19.01.2010 / 16:19:25
+|  Author: Joerg Neubert
+|  Description: double click on channel list -> start play channel
+|
+|  Parameters: pointer to listwidgetitem ...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+{
+   CChanListWidgetItem *pItem = (CChanListWidgetItem *)item;
+
+   if (pItem && (pItem->GetId() != -1))
+   {
+      bRecord = false;
+      EnableDisableDlg(false);
+      Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
    }
 }
 

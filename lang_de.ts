@@ -424,61 +424,61 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="161"/>
-        <location filename="recorder.cpp" line="200"/>
+        <location filename="recorder.cpp" line="264"/>
+        <location filename="recorder.cpp" line="277"/>
         <source>Mon</source>
         <translation>Mo.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="162"/>
-        <location filename="recorder.cpp" line="201"/>
+        <location filename="recorder.cpp" line="265"/>
+        <location filename="recorder.cpp" line="278"/>
         <source>Tue</source>
         <translation>Di.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="163"/>
-        <location filename="recorder.cpp" line="202"/>
+        <location filename="recorder.cpp" line="266"/>
+        <location filename="recorder.cpp" line="279"/>
         <source>Wed</source>
         <translation>Mi.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="164"/>
-        <location filename="recorder.cpp" line="203"/>
+        <location filename="recorder.cpp" line="267"/>
+        <location filename="recorder.cpp" line="280"/>
         <source>Thu</source>
         <translation>Do.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="165"/>
-        <location filename="recorder.cpp" line="204"/>
+        <location filename="recorder.cpp" line="268"/>
+        <location filename="recorder.cpp" line="281"/>
         <source>Fri</source>
         <translation>Fr.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="166"/>
-        <location filename="recorder.cpp" line="205"/>
+        <location filename="recorder.cpp" line="269"/>
+        <location filename="recorder.cpp" line="282"/>
         <source>Sat</source>
         <translation>Sa.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="168"/>
-        <location filename="recorder.cpp" line="206"/>
+        <location filename="recorder.cpp" line="271"/>
+        <location filename="recorder.cpp" line="283"/>
         <source>Sun</source>
         <translation>So.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="178"/>
-        <location filename="recorder.cpp" line="215"/>
+        <location filename="recorder.cpp" line="226"/>
+        <location filename="recorder.cpp" line="290"/>
         <source>1 week backward</source>
         <translation>1 Woche zurück</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="183"/>
-        <location filename="recorder.cpp" line="220"/>
+        <location filename="recorder.cpp" line="255"/>
+        <location filename="recorder.cpp" line="295"/>
         <source>1 week forward</source>
         <translation>1 Woche nach vorn</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="304"/>
+        <location filename="recorder.cpp" line="380"/>
         <source>&lt;b style=&apos;color: red;&apos;&gt;%1&lt;/b&gt;&lt;br&gt;
 &lt;b&gt;Programm:&lt;/b&gt; %2&lt;br&gt;
 &lt;b&gt;Start:&lt;/b&gt; %3&lt;br&gt;
@@ -489,32 +489,32 @@ p, li { white-space: pre-wrap; }
 &lt;b&gt;Ende:&lt;/b&gt; %4</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="337"/>
+        <location filename="recorder.cpp" line="413"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="338"/>
+        <location filename="recorder.cpp" line="414"/>
         <source>Transport Stream (*.ts);;AVI File (*.avi)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="358"/>
+        <location filename="recorder.cpp" line="434"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="358"/>
+        <location filename="recorder.cpp" line="434"/>
         <source>Can&apos;t recognice file extension!</source>
         <translation>Nicht unterstützte Dateierweiterung!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="465"/>
+        <location filename="recorder.cpp" line="541"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="466"/>
+        <location filename="recorder.cpp" line="542"/>
         <source>Kartina.tv Client API reports some errors: %1</source>
         <translation>Die Kartina.tv Client API meldet folgenden Fehler: %1</translation>
     </message>
