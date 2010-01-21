@@ -382,7 +382,7 @@ background-attachment: fixed;
        <widget class="QComboBox" name="cbxTimeShift">
         <property name="minimumSize">
          <size>
-          <width>40</width>
+          <width>50</width>
           <height>0</height>
          </size>
         </property>

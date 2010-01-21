@@ -344,7 +344,7 @@ int Recorder::FillChannelList (QVector<cparser::SChan> chanlist)
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv)
+int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv)
 {
    QDateTime now    = QDateTime::currentDateTime();
    QString sTarget  = QString("%1\\%2_%3").arg(pSettings->GetTargetDir()).arg(sChannel).arg(now.toString("yyyy-MM-dd_hh-mm-ss"));
@@ -361,8 +361,16 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 
       if (bArchiv)
       {
-         // sCmdLine += " --rtsp-tcp";
+         // standard cache time: 3000 ... but give a little more ...
+         sCmdLine += " --rtsp-tcp --rtsp-caching 5000";
       }
+      else
+      {
+         // add buffer value from kartina ...
+         sCmdLine += QString(" --http-caching %1 --no-http-reconnect").arg(iCacheTime);
+      }
+
+      VlcLog.LogInfo(QString("Starting VLC using following command line:\n%1\n").arg(sCmdLine));
 
       // Start the QProcess instance.
       QProcess::startDetached(sCmdLine);
@@ -388,7 +396,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
+int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
 {
    QString sCmdLine = VLC_PLAY_TEMPL;
    sCmdLine.replace(TMPL_VLC, pSettings->GetVLCPath());
@@ -396,8 +404,16 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
 
    if (bArchiv)
    {
-      // sCmdLine += " --rtsp-tcp";
+      // standard cache time: 3000 ... but give a little more ...
+      sCmdLine += " --rtsp-tcp --rtsp-caching 5000";
    }
+   else
+   {
+      // add buffer value from kartina ...
+      sCmdLine += QString(" --http-caching %1 --no-http-reconnect").arg(iCacheTime);
+   }
+
+   VlcLog.LogInfo(QString("Starting VLC using following command line:\n%1\n").arg(sCmdLine));
 
    // Start the QProcess instance.
    QProcess::startDetached(sCmdLine);
@@ -529,13 +545,12 @@ void Recorder::slotChanList (QString str)
 void Recorder::slotStreamURL(QString str)
 {
    QString              sChan, sUrl;
+   int                  iCacheTime;
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
    XMLParser.SetByteArray(str.toUtf8());
 
-   sUrl = XMLParser.ParseURL();
-
-   VlcLog.LogInfo(sUrl + "\n");
+   sUrl = XMLParser.ParseURL(iCacheTime);
 
    if (pItem)
    {
@@ -544,11 +559,11 @@ void Recorder::slotStreamURL(QString str)
 
    if (bRecord)
    {
-      StartVlcRec(sUrl, sChan);
+      StartVlcRec(sUrl, sChan, iCacheTime);
    }
    else
    {
-      StartVlcPlay(sUrl);
+      StartVlcPlay(sUrl, iCacheTime);
    }
 
    EnableDisableDlg();
@@ -973,6 +988,8 @@ void Recorder::slotArchivURL(QString str)
 
    sUrl = XMLParser.ParseArchivURL();
 
+   VlcLog.LogInfo(sUrl + "\n");
+
    if (pItem)
    {
       sChan = pItem->text();
@@ -980,11 +997,11 @@ void Recorder::slotArchivURL(QString str)
 
    if (bRecord)
    {
-      StartVlcRec(sUrl, sChan, true);
+      StartVlcRec(sUrl, sChan, 0, true);
    }
    else
    {
-      StartVlcPlay(sUrl, true);
+      StartVlcPlay(sUrl, 0, true);
    }
 
    EnableDisableDlg();

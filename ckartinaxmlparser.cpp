@@ -240,14 +240,15 @@ QVector<cparser::SEpg> CKartinaXMLParser::ParseEpg(int &iChanID, uint &uiGmt, bo
 |
 |  Returns: stream url
 \----------------------------------------------------------------- */
-QString CKartinaXMLParser::ParseURL()
+QString CKartinaXMLParser::ParseURL(int &iCacheTime)
 {
    QString              url;
    QXmlStreamAttributes attrs;
-   // QRegExp              rx("^.*//([^ ]*).*$");
+   QRegExp              rx("^.*//([^ ]*) :.*=([0-9]*) .*$");
 
+   // :http-caching=15000 :no-http-reconnect
    // use whole url with params ...
-   QRegExp              rx("^.*//(.*)$");
+//QRegExp              rx("^.*//(.*)$");
 
    xml.clear();
    xml.addData(stream);
@@ -286,11 +287,13 @@ QString CKartinaXMLParser::ParseURL()
 
    if (rx.indexIn(url) > -1)
    {
-      url = QString("http://%1").arg(rx.cap(1));
+      url        = QString("http://%1").arg(rx.cap(1));
+      iCacheTime = rx.cap(2).toInt();
    }
    else
    {
-      url = "";
+      url        = "";
+      iCacheTime = 0;
    }
 
    return url;
@@ -310,9 +313,7 @@ QString CKartinaXMLParser::ParseArchivURL()
 {
    QString              url;
    QXmlStreamAttributes attrs;
-   // QRegExp              rx("^.*//([^ ]*).*$");
-   // use whole url with params ...
-   QRegExp              rx("^.*//(.*)$");
+   QRegExp              rx("^.*//([^ ]*).*$");
 
    xml.clear();
    xml.addData(stream);

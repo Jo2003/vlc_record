@@ -26,7 +26,7 @@
 //===================================================================
 // namespace
 //===================================================================
-namespace cparser 
+namespace cparser
 {
    struct SChan
    {
@@ -62,7 +62,7 @@ public:
    void SetByteArray (const QByteArray &ba);
    QVector<cparser::SChan> ParseChannelList (bool bFixTime);
    QVector<cparser::SEpg> ParseEpg (int &iChanID, uint &uiGmt, bool &bArchiv);
-   QString ParseURL();
+   QString ParseURL(int &iCacheTime);
    QString ParseArchivURL();
    int FixTime (QString &sTime);
    int GetTimeShift () { return iTimeShift; }
@@ -82,6 +82,6 @@ private:
 /*=============================================================================\
 |                                    History:
 | ---------------------------------------------------------------------------
-| 05.Jan.2010 - 
+| 05.Jan.2010 -
 \=============================================================================*/
 

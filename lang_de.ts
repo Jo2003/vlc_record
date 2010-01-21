@@ -130,6 +130,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
+        <location filename="ckartinaclnt.cpp" line="276"/>
+        <source>%1 / %2():%3 Set Http Buffer to %4 msec.
+</source>
+        <translation></translation>
+    </message>
+    <message>
         <location filename="ckartinaclnt.cpp" line="297"/>
         <source>%1 / %2():%3 Request EPG for Channel %4
 </source>
@@ -189,27 +195,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaxmlparser.cpp" line="157"/>
         <location filename="ckartinaxmlparser.cpp" line="226"/>
-        <location filename="ckartinaxmlparser.cpp" line="283"/>
-        <location filename="ckartinaxmlparser.cpp" line="348"/>
+        <location filename="ckartinaxmlparser.cpp" line="284"/>
+        <location filename="ckartinaxmlparser.cpp" line="349"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="158"/>
         <location filename="ckartinaxmlparser.cpp" line="227"/>
-        <location filename="ckartinaxmlparser.cpp" line="284"/>
-        <location filename="ckartinaxmlparser.cpp" line="349"/>
+        <location filename="ckartinaxmlparser.cpp" line="285"/>
+        <location filename="ckartinaxmlparser.cpp" line="350"/>
         <source>XML Error String: %1</source>
         <translation>XML Fehler String: %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="385"/>
+        <location filename="ckartinaxmlparser.cpp" line="386"/>
         <source>%1 / %2():%3 Kartina.tv reports client time as %4
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="405"/>
+        <location filename="ckartinaxmlparser.cpp" line="406"/>
         <source>%1 / %2():%3 Set time offset to %4 seconds!
 </source>
         <translation></translation>
@@ -218,22 +224,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CSettingsDlg</name>
     <message>
-        <location filename="csettingsdlg.ui" line="429"/>
+        <location filename="csettingsdlg.ui" line="441"/>
         <source>Log disabled</source>
         <translation>kein Logging</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="434"/>
+        <location filename="csettingsdlg.ui" line="446"/>
         <source>Log Errors only</source>
         <translation>logge nur Fehler</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="439"/>
+        <location filename="csettingsdlg.ui" line="451"/>
         <source>Log Errors and Warnings</source>
         <translation>Logge Fehler und Warnungen</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="444"/>
+        <location filename="csettingsdlg.ui" line="456"/>
         <source>Log everything</source>
         <translation>Logge alles</translation>
     </message>
@@ -315,13 +321,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="168"/>
-        <location filename="csettingsdlg.ui" line="621"/>
+        <location filename="csettingsdlg.ui" line="633"/>
         <source>User: </source>
         <translation>Benutzer: </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="178"/>
-        <location filename="csettingsdlg.ui" line="648"/>
+        <location filename="csettingsdlg.ui" line="660"/>
         <source>Password: </source>
         <translation>Passwort: </translation>
     </message>
@@ -378,107 +384,107 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="332"/>
+        <location filename="csettingsdlg.ui" line="338"/>
         <source> Buffering </source>
         <translation>Puffer</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="338"/>
+        <location filename="csettingsdlg.ui" line="344"/>
         <source>Time (sec.):</source>
         <translation>Zeit (s.):</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="346"/>
+        <location filename="csettingsdlg.ui" line="352"/>
         <source>1.5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="351"/>
+        <location filename="csettingsdlg.ui" line="357"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="356"/>
+        <location filename="csettingsdlg.ui" line="362"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="361"/>
+        <location filename="csettingsdlg.ui" line="367"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="366"/>
+        <location filename="csettingsdlg.ui" line="372"/>
         <source>15</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="531"/>
+        <location filename="csettingsdlg.ui" line="543"/>
         <source>&amp;Proxy Settings</source>
         <translation>&amp;Proxy Einstellungen</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="537"/>
+        <location filename="csettingsdlg.ui" line="549"/>
         <source> Proxy Access </source>
         <translation> Proxy Zugang </translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="543"/>
+        <location filename="csettingsdlg.ui" line="555"/>
         <source>Enable Proxy</source>
         <translation>Proxy einschalten</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="558"/>
+        <location filename="csettingsdlg.ui" line="570"/>
         <source>Address: </source>
         <translation>Adresse: </translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="585"/>
+        <location filename="csettingsdlg.ui" line="597"/>
         <source>Port:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="399"/>
+        <location filename="csettingsdlg.ui" line="411"/>
         <source> Time Correction </source>
         <translation> Zeit Korrektur </translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="405"/>
+        <location filename="csettingsdlg.ui" line="417"/>
         <source>Try to fix time offset</source>
         <translation>Versuche die Zeitverschiebung auszugleichen</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="415"/>
+        <location filename="csettingsdlg.ui" line="427"/>
         <source> Logging </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="421"/>
+        <location filename="csettingsdlg.ui" line="433"/>
         <source>Log Level: </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="468"/>
+        <location filename="csettingsdlg.ui" line="480"/>
         <source> Refresh </source>
         <translation> Neu laden </translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="479"/>
+        <location filename="csettingsdlg.ui" line="491"/>
         <source>Refresh EPG every ...</source>
         <translation>Lade das EPG alle ...</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="505"/>
+        <location filename="csettingsdlg.ui" line="517"/>
         <source>Minute(s)</source>
         <translation>Minute(n)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="689"/>
+        <location filename="csettingsdlg.ui" line="701"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="709"/>
+        <location filename="csettingsdlg.ui" line="721"/>
         <source>&amp;Cancel</source>
         <translation>A&amp;bbrechen</translation>
     </message>
@@ -561,22 +567,22 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="372"/>
+        <location filename="recorder.cpp" line="380"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="372"/>
+        <location filename="recorder.cpp" line="380"/>
         <source>Can&apos;t recognice file extension!</source>
         <translation>Nicht unterstützte Dateierweiterung!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="479"/>
+        <location filename="recorder.cpp" line="495"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="480"/>
+        <location filename="recorder.cpp" line="496"/>
         <source>Kartina.tv Client API reports some errors: %1</source>
         <translation>Die Kartina.tv Client API meldet folgenden Fehler: %1</translation>
     </message>
@@ -625,107 +631,122 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">EPG für den markierten Sender</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="319"/>
-        <source>Set TimeShift in hours.</source>
-        <translation>Setze TimeShift.</translation>
+        <location filename="recorder.ui" line="290"/>
+        <source>Search: </source>
+        <translation>Suche: </translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="322"/>
-        <source>TimeShift Selector</source>
-        <translation>TimeShift-Auswahl</translation>
-    </message>
-    <message>
-        <location filename="recorder.ui" line="326"/>
-        <source>0</source>
+        <location filename="recorder.ui" line="318"/>
+        <source>...</source>
         <translation></translation>
     </message>
     <message>
         <location filename="recorder.ui" line="331"/>
+        <source>Ctrl+F</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.ui" line="396"/>
+        <source>Set TimeShift in hours.</source>
+        <translation>Setze TimeShift.</translation>
+    </message>
+    <message>
+        <location filename="recorder.ui" line="399"/>
+        <source>TimeShift Selector</source>
+        <translation>TimeShift-Auswahl</translation>
+    </message>
+    <message>
+        <location filename="recorder.ui" line="403"/>
+        <source>0</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.ui" line="408"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="336"/>
+        <location filename="recorder.ui" line="413"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="341"/>
+        <location filename="recorder.ui" line="418"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="346"/>
+        <location filename="recorder.ui" line="423"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="351"/>
+        <location filename="recorder.ui" line="428"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="356"/>
+        <location filename="recorder.ui" line="433"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="361"/>
+        <location filename="recorder.ui" line="438"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="366"/>
+        <location filename="recorder.ui" line="443"/>
         <source>11</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="387"/>
+        <location filename="recorder.ui" line="464"/>
         <source>Play selected Channel</source>
         <translation>Zeige markierten Sender</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="403"/>
+        <location filename="recorder.ui" line="480"/>
         <source>Alt+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="422"/>
+        <location filename="recorder.ui" line="499"/>
         <source>Record selected Channel</source>
         <translation>Nehme markierten Sender auf</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="438"/>
+        <location filename="recorder.ui" line="515"/>
         <source>Alt+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="487"/>
+        <location filename="recorder.ui" line="567"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="503"/>
+        <location filename="recorder.ui" line="583"/>
         <source>Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="525"/>
+        <location filename="recorder.ui" line="608"/>
         <source>About ...</source>
         <translation>Über ...</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="541"/>
+        <location filename="recorder.ui" line="624"/>
         <source>Alt+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="563"/>
+        <location filename="recorder.ui" line="649"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="579"/>
+        <location filename="recorder.ui" line="665"/>
         <source>Alt+Q</source>
         <translation></translation>
     </message>

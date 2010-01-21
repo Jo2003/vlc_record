@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>440</height>
+    <width>440</width>
+    <height>340</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -308,7 +308,7 @@
               <property name="maximumSize">
                <size>
                 <width>32</width>
-                <height>16777215</height>
+                <height>32</height>
                </size>
               </property>
               <property name="text">
@@ -317,6 +317,12 @@
               <property name="icon">
                <iconset resource="vlc-record.qrc">
                 <normaloff>:/app/save</normaloff>:/app/save</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
               </property>
               <property name="autoRaise">
                <bool>true</bool>
@@ -373,7 +379,7 @@
               <property name="maximumSize">
                <size>
                 <width>32</width>
-                <height>16777215</height>
+                <height>32</height>
                </size>
               </property>
               <property name="text">
@@ -382,6 +388,12 @@
               <property name="icon">
                <iconset resource="vlc-record.qrc">
                 <normaloff>:/app/save</normaloff>:/app/save</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
               </property>
               <property name="autoRaise">
                <bool>true</bool>

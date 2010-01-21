@@ -24,7 +24,7 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.07 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.08 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
@@ -44,5 +44,8 @@
 | - can now set http cache time
 | - parsing stream url no longer removes additional params
 |    (needs testing!!)
+| 2010-01-21: Version 1.08
+| - need stream url as former
+| - add params for VLC (buffer)
 \*************************************************************/
 
