@@ -1092,7 +1092,30 @@ void Recorder::slotSetHttpBuffer(int iTime)
 \----------------------------------------------------------------- */
 void Recorder::on_btnSearch_clicked()
 {
-   ui->textEpg->find(ui->lineSearch->text());
+   if(!ui->textEpg->find(ui->lineSearch->text()))
+   {
+      // not found --> set cursor to document start ...
+      ui->textEpg->moveCursor(QTextCursor::Start);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_lineSearch_returnPressed
+|  Begin: 21.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: search line enter pressed --> search
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_lineSearch_returnPressed()
+{
+   if(!ui->textEpg->find(ui->lineSearch->text()))
+   {
+      // not found --> set cursor to document start ...
+      ui->textEpg->moveCursor(QTextCursor::Start);
+   }
 }
 
 /************************* History ***************************\
