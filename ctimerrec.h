@@ -8,6 +8,8 @@
 #include <QTimer>
 #include <QVector>
 #include <QMap>
+#include <QFile>
+#include <QXmlStreamReader>
 
 #include "defdef.h"
 #include "ckartinaxmlparser.h"
@@ -43,6 +45,8 @@ public:
    void SetChanList  (const QVector<cparser::SChan> &chanList);
    void SetRecInfo (uint uiStart, uint uiEnd, int cid);
    void SetLogoPath (const QString &str);
+   int SaveRecordList ();
+   int ReadRecordList ();
 
 
 protected:
@@ -54,6 +58,11 @@ private:
    QString sLogoPath;
    QMap<uint, Ui::SRecEntry> JobList;
    QMap<int, Ui::SChanEntry> ChanList;
+   QString sListFile;
+
+private slots:
+    void on_pushOK_clicked();
+    void on_btnSet_clicked();
 };
 
 #endif // CTIMERREC_H

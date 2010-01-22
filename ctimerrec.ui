@@ -191,12 +191,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
      </attribute>
      <column>
       <property name="text">
-       <string>No</string>
+       <string>Date</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Chan.</string>
+       <string>Neue Spalte</string>
       </property>
      </column>
      <column>
@@ -206,7 +206,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
      </column>
      <column>
       <property name="text">
-       <string>Stop</string>
+       <string>Chan.</string>
       </property>
      </column>
      <column>
