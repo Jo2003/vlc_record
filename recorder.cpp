@@ -171,6 +171,9 @@ void Recorder::TouchEpgNavi (bool bCreate)
       pEpgNavbar = new QTabBar;
       pEpgNavbar->setMaximumHeight(EPG_NAVBAR_HEIGHT);
 
+      // set style so tabs look like whole design ...
+      pEpgNavbar->setStyleSheet(QString(NAVBAR_STYLE));
+
       // connect signal with slot ...
       connect (pEpgNavbar, SIGNAL(currentChanged(int)), this, SLOT(slotDayTabChanged(int)));
 
@@ -203,6 +206,13 @@ void Recorder::TouchEpgNavi (bool bCreate)
       pEpgNavbar->addTab(tr("Thu"));
       pEpgNavbar->addTab(tr("Fri"));
       pEpgNavbar->addTab(tr("Sat"));
+
+      // set color for normal week days ...
+      for (int i = 0; i < 5; i++)
+      {
+         pEpgNavbar->setTabTextColor(i, QColor("white"));
+      }
+
       pEpgNavbar->setTabTextColor(5, QColor("blue"));
       pEpgNavbar->addTab(tr("Sun"));
       pEpgNavbar->setTabTextColor(6, QColor("red"));

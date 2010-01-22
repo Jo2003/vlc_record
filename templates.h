@@ -71,6 +71,24 @@ TMPL_ROWS \
 #define EPG_HEAD \
 "<div align='center' style='width: 100%; text-align: center;'>" TMPL_HEAD "</div>\n"
 
+#define NAVBAR_STYLE \
+"QTabBar::tab {\n"\
+"  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
+"  border: 1px solid gray;\n"\
+"  border-top-left-radius: 5px;\n"\
+"  border-top-right-radius: 5px;\n"\
+"  min-width: 35px;\n"\
+"  padding: 4px;\n"\
+"  font: bold;\n"\
+"}\n"\
+"QTabBar::tab:selected {\n"\
+"  background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
+"  border-bottom-color: #eee;\n"\
+"}\n"\
+"QTabBar::tab:hover {\n"\
+"  border-bottom-color: #eee;\n"\
+"}\n"
+
 #endif /* __011910__TEMPLATES_H */
 /************************* History ***************************\
 | $Log$
