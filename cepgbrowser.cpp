@@ -122,6 +122,22 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
          }
       }
 
+      // timer record stuff ...
+      if (dtStartThis > QDateTime::currentDateTime())
+      {
+         // has not started so far ... add timer record link ...
+
+         // try to get end time ...
+         uint uiEnd = ((i + 1) < epglist.size()) ? epglist[i + 1].uiGmt : 0;
+
+
+         // add timer rec link ...
+         sStartTime += QString("&nbsp;<a href='vlc-record?action=timerrec&cid=%1&start=%2&end=%3'>"
+                               "<img src=':png/timer' width='16' height='16' /></a>&nbsp;")
+                               .arg(iChanID).arg(epglist[i].uiGmt).arg(uiEnd);
+      }
+
+
       sRow.replace(TMPL_PROG, sProgCell);
       sRow.replace(TMPL_TIME, sStartTime);
 

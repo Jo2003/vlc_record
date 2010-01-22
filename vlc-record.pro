@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     cepgbrowser.cpp \
     caboutdialog.cpp \
     clogfile.cpp \
-    cchanlogo.cpp
+    cchanlogo.cpp \
+    ctimerrec.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     cinifile.h \
@@ -30,10 +31,12 @@ HEADERS += recorder.h \
     clogfile.h \
     chttptime.h \
     cchanlogo.h \
-    defdef.h
+    defdef.h \
+    ctimerrec.h
 FORMS += recorder.ui \
     csettingsdlg.ui \
-    caboutdialog.ui
+    caboutdialog.ui \
+    ctimerrec.ui
 RESOURCES += vlc-record.qrc
 OTHER_FILES += resources/tools.ico \
     vlc-record.rc \

@@ -38,6 +38,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    sLogoPath    = dwnLogos.GetLogoPath();
 
    ui->textEpg->SetLogoDir(sLogoPath);
+   timeRec.SetLogoPath(sLogoPath);
 
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), "vlc-record.log");
 
@@ -277,7 +278,7 @@ void Recorder::changeEvent(QEvent *e)
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::FillChannelList (QVector<cparser::SChan> chanlist)
+int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 {
    QString  sLine;
    QString  sToolTip;
@@ -528,6 +529,10 @@ void Recorder::slotChanList (QString str)
    ui->textEpg->SetTimeShift(XMLParser.GetTimeShift());
 
    FillChannelList(chanList);
+
+   // set channel list in timeRec class ...
+   timeRec.SetTimeShift(XMLParser.GetTimeShift());
+   timeRec.SetChanList(chanList);
 
    // only download channel logos, if they aren't there ...
    if (!dwnLogos.IsRunning() && !bLogosReady)
@@ -871,6 +876,15 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    {
       ok      = true;
       bRecord = false;
+   }
+   else if(action == "timerrec")
+   {
+      uint uiStart = link.encodedQueryItemValue(QByteArray("start")).toUInt();
+      uint uiEnd   = link.encodedQueryItemValue(QByteArray("end")).toUInt();
+      int  iChan   = link.encodedQueryItemValue(QByteArray("cid")).toInt();
+
+      timeRec.SetRecInfo(uiStart, uiEnd, iChan);
+      timeRec.exec();
    }
 
    if (ok)

@@ -38,6 +38,7 @@
 #include "templates.h"
 #include "caboutdialog.h"
 #include "cchanlogo.h"
+#include "ctimerrec.h"
 
 // for logging ...
 extern CLogFile VlcLog;
@@ -85,9 +86,10 @@ private:
     QString                        sLogoPath;
     int                            iEpgOffset;
     QTabBar                       *pEpgNavbar;
+    CTimerRec                      timeRec;
 
 protected:
-    int FillChannelList (QVector<cparser::SChan> chanlist);
+    int FillChannelList (const QVector<cparser::SChan> &chanlist);
     int StartVlcRec (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv = false);
     int StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv = false);
     void EnableDisableDlg (bool bEnable = true);
