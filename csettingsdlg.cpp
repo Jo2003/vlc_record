@@ -25,44 +25,42 @@ extern CLogFile VlcLog;
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CSettingsDlg::CSettingsDlg(QTranslator *trans, QWidget *parent) :
+CSettingsDlg::CSettingsDlg(QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::CSettingsDlg)
 {
    m_ui->setupUi(this);
-   pTranslator = trans;
 
    // set ini file name and open ini file ...
    IniFile.SetFileName(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), INI_FILE);
-   IniFile.ReadIni();
+   
+   if (!IniFile.ReadIni())
+   {
+      // fill in values ...
 
-   // fill in values ...
+      // line edits ...
+      m_ui->lineVLC->setText (IniFile.GetStringData("VLCPath"));
+      m_ui->lineDir->setText (IniFile.GetStringData("TargetDir"));
+      m_ui->lineUsr->setText (IniFile.GetStringData("User"));
+      m_ui->linePass->setText (IniFile.GetStringData("Passwd"));
 
-   // line edits ...
-   m_ui->lineVLC->setText (IniFile.GetStringData("VLCPath"));
-   m_ui->lineDir->setText (IniFile.GetStringData("TargetDir"));
-   m_ui->lineUsr->setText (IniFile.GetStringData("User"));
-   m_ui->linePass->setText (IniFile.GetStringData("Passwd"));
+      m_ui->lineProxyHost->setText(IniFile.GetStringData("ProxyHost"));
+      m_ui->lineProxyPort->setText(IniFile.GetStringData("ProxyPort"));
+      m_ui->lineProxyUser->setText(IniFile.GetStringData("ProxyUser"));
+      m_ui->lineProxyPassword->setText(IniFile.GetStringData("ProxyPasswd"));
+      m_ui->lineInterval->setText(IniFile.GetStringData("RefIntv"));
 
-   m_ui->lineProxyHost->setText(IniFile.GetStringData("ProxyHost"));
-   m_ui->lineProxyPort->setText(IniFile.GetStringData("ProxyPort"));
-   m_ui->lineProxyUser->setText(IniFile.GetStringData("ProxyUser"));
-   m_ui->lineProxyPassword->setText(IniFile.GetStringData("ProxyPasswd"));
-   m_ui->lineInterval->setText(IniFile.GetStringData("RefIntv"));
+      // check boxes ...
+      m_ui->useProxy->setCheckState((Qt::CheckState)IniFile.GetIntData("UseProxy"));
+      m_ui->checkAdult->setCheckState((Qt::CheckState)IniFile.GetIntData("AllowAdult"));
+      m_ui->checkFixTime->setCheckState((Qt::CheckState)IniFile.GetIntData("FixTime"));
+      m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
 
-   // check boxes ...
-   m_ui->useProxy->setCheckState((Qt::CheckState)IniFile.GetIntData("UseProxy"));
-   m_ui->checkAdult->setCheckState((Qt::CheckState)IniFile.GetIntData("AllowAdult"));
-   m_ui->checkFixTime->setCheckState((Qt::CheckState)IniFile.GetIntData("FixTime"));
-   m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
-
-   // combo boxes ...
-   int iIdx = m_ui->cbxLanguage->findText(IniFile.GetStringData("Language"));
-   m_ui->cbxLanguage->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
-   m_ui->cbxLogLevel->setCurrentIndex((int)IniFile.GetIntData("LogLevel"));
-
-   // set language as read ...
-   pTranslator->load(QString("lang_%1").arg(m_ui->cbxLanguage->currentText()), QApplication::applicationDirPath());
+      // combo boxes ...
+      int iIdx = m_ui->cbxLanguage->findText(IniFile.GetStringData("Language"));
+      m_ui->cbxLanguage->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
+      m_ui->cbxLogLevel->setCurrentIndex((int)IniFile.GetIntData("LogLevel"));
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -367,11 +365,6 @@ int CSettingsDlg::GetRefrInt()
    }
 
    return i;
-}
-
-void CSettingsDlg::on_cbxLanguage_currentIndexChanged(QString str)
-{
-   pTranslator->load(QString("lang_%1").arg(str), QApplication::applicationDirPath());
 }
 
 vlclog::eLogLevel CSettingsDlg::GetLogLevel()

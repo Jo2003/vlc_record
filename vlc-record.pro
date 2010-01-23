@@ -3,7 +3,7 @@
 # -------------------------------------------------
 TARGET = vlc-record
 QT += network
-CONFIG += static
+# CONFIG += static
 TEMPLATE = app
 SOURCES += main.cpp \
     recorder.cpp \

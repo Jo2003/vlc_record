@@ -46,6 +46,15 @@
              <widget class="QComboBox" name="cbxLanguage">
               <item>
                <property name="text">
+                <string>en</string>
+               </property>
+               <property name="icon">
+                <iconset resource="vlc-record.qrc">
+                 <normaloff>:/flags/en</normaloff>:/flags/en</iconset>
+               </property>
+              </item>
+              <item>
+               <property name="text">
                 <string>de</string>
                </property>
                <property name="icon">
@@ -60,15 +69,6 @@
                <property name="icon">
                 <iconset resource="vlc-record.qrc">
                  <normaloff>:/flags/ru</normaloff>:/flags/ru</iconset>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>en</string>
-               </property>
-               <property name="icon">
-                <iconset resource="vlc-record.qrc">
-                 <normaloff>:/flags/en</normaloff>:/flags/en</iconset>
                </property>
               </item>
              </widget>

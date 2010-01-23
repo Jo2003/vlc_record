@@ -34,7 +34,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    bLogosReady  = false;
    pTranslator  = trans;
    iEpgOffset   = 0;
-   pSettings    = new CSettingsDlg(pTranslator, this);
+   pSettings    = new CSettingsDlg(this);
    sLogoPath    = dwnLogos.GetLogoPath();
 
    ui->textEpg->SetLogoDir(sLogoPath);
@@ -67,6 +67,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       dwnLogos.setProxy(pSettings->GetProxyHost(), pSettings->GetProxyPort(),
                         pSettings->GetProxyUser(), pSettings->GetProxyPasswd());
    }
+
+   // set language as read ...
+   pTranslator->load(QString("lang_%1").arg(pSettings->GetLanguage ()), QApplication::applicationDirPath());
 
    // configure trigger and start it ...
    Trigger.SetKartinaClient(&KartinaTv);
@@ -467,6 +470,9 @@ void Recorder::on_pushSettings_clicked()
          dwnLogos.setProxy(pSettings->GetProxyHost(), pSettings->GetProxyPort(),
                            pSettings->GetProxyUser(), pSettings->GetProxyPasswd());
       }
+
+      // set language as read ...
+      pTranslator->load(QString("lang_%1").arg(pSettings->GetLanguage ()), QApplication::applicationDirPath());
 
       EnableDisableDlg(false);
 

@@ -77,7 +77,7 @@ TMPL_ROWS \
 "  border: 1px solid gray;\n"\
 "  border-top-left-radius: 5px;\n"\
 "  border-top-right-radius: 5px;\n"\
-"  min-width: 35px;\n"\
+"  min-width: 33px;\n"\
 "  padding: 4px;\n"\
 "  font: bold;\n"\
 "}\n"\

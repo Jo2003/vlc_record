@@ -15,7 +15,6 @@
 #include <QtGui/QDialog>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QTranslator>
 
 #include "cinifile.h"
 #include "clogfile.h"
@@ -41,7 +40,7 @@ class CSettingsDlg : public QDialog
     Q_OBJECT
 
 public:
-    CSettingsDlg(QTranslator *trans = 0, QWidget *parent = 0);
+    CSettingsDlg(QWidget *parent = 0);
     ~CSettingsDlg();
 
     QString GetVLCPath ();
@@ -66,7 +65,6 @@ protected:
 private:
     Ui::CSettingsDlg *m_ui;
     CIniFile IniFile;
-    QTranslator *pTranslator;
 
 signals:
     void sigReloadLogos ();
@@ -77,7 +75,6 @@ private slots:
     void on_btnSaveBuffer_clicked();
     void on_btnSaveStreamServer_clicked();
     void on_pushDelLogos_clicked();
-    void on_cbxLanguage_currentIndexChanged(QString str);
     void on_pushSave_clicked();
     void on_pushDir_clicked();
     void on_pushVLC_clicked();

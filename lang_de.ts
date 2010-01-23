@@ -244,22 +244,22 @@ p, li { white-space: pre-wrap; }
         <translation>Logge alles</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="141"/>
+        <location filename="csettingsdlg.cpp" line="147"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="136"/>
+        <location filename="csettingsdlg.cpp" line="142"/>
         <source>Executables (*.exe)</source>
         <translation>ausführbar (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="138"/>
+        <location filename="csettingsdlg.cpp" line="144"/>
         <source>Executables (*)</source>
         <translation>ausführbar (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="159"/>
+        <location filename="csettingsdlg.cpp" line="165"/>
         <source>Target Folder</source>
         <translation>Zielverzeichnis</translation>
     </message>
@@ -490,63 +490,142 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CTimerRec</name>
+    <message>
+        <location filename="ctimerrec.cpp" line="50"/>
+        <source>Insert end time!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="199"/>
+        <source>Error in %1</source>
+        <translation type="unfinished">Fehler in %1</translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="200"/>
+        <source>XML Error String: %1</source>
+        <translation type="unfinished">XML Fehler String: %1</translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="14"/>
+        <source>Timer Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="50"/>
+        <source>Start: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="60"/>
+        <source>End: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="80"/>
+        <source>Name: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="100"/>
+        <source>Channel: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="136"/>
+        <location filename="ctimerrec.ui" line="162"/>
+        <source>...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="194"/>
+        <source>Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="199"/>
+        <source>Neue Spalte</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="204"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="209"/>
+        <source>Chan.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="214"/>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="240"/>
+        <source>&amp;OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="200"/>
-        <location filename="recorder.cpp" line="213"/>
+        <location filename="recorder.cpp" line="204"/>
+        <location filename="recorder.cpp" line="224"/>
         <source>Mon</source>
         <translation>Mo.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="201"/>
-        <location filename="recorder.cpp" line="214"/>
+        <location filename="recorder.cpp" line="205"/>
+        <location filename="recorder.cpp" line="225"/>
         <source>Tue</source>
         <translation>Di.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="202"/>
-        <location filename="recorder.cpp" line="215"/>
+        <location filename="recorder.cpp" line="206"/>
+        <location filename="recorder.cpp" line="226"/>
         <source>Wed</source>
         <translation>Mi.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="203"/>
-        <location filename="recorder.cpp" line="216"/>
+        <location filename="recorder.cpp" line="207"/>
+        <location filename="recorder.cpp" line="227"/>
         <source>Thu</source>
         <translation>Do.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="204"/>
-        <location filename="recorder.cpp" line="217"/>
+        <location filename="recorder.cpp" line="208"/>
+        <location filename="recorder.cpp" line="228"/>
         <source>Fri</source>
         <translation>Fr.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="205"/>
-        <location filename="recorder.cpp" line="218"/>
+        <location filename="recorder.cpp" line="209"/>
+        <location filename="recorder.cpp" line="229"/>
         <source>Sat</source>
         <translation>Sa.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="207"/>
-        <location filename="recorder.cpp" line="219"/>
+        <location filename="recorder.cpp" line="218"/>
+        <location filename="recorder.cpp" line="230"/>
         <source>Sun</source>
         <translation>So.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="162"/>
-        <location filename="recorder.cpp" line="226"/>
+        <location filename="recorder.cpp" line="163"/>
+        <location filename="recorder.cpp" line="237"/>
         <source>1 week backward</source>
         <translation>1 Woche zurück</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="191"/>
-        <location filename="recorder.cpp" line="231"/>
+        <location filename="recorder.cpp" line="195"/>
+        <location filename="recorder.cpp" line="242"/>
         <source>1 week forward</source>
         <translation>1 Woche nach vorn</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="318"/>
+        <location filename="recorder.cpp" line="329"/>
         <source>&lt;b style=&apos;color: red;&apos;&gt;%1&lt;/b&gt;&lt;br&gt;
 &lt;b&gt;Programm:&lt;/b&gt; %2&lt;br&gt;
 &lt;b&gt;Start:&lt;/b&gt; %3&lt;br&gt;
@@ -557,32 +636,32 @@ p, li { white-space: pre-wrap; }
 &lt;b&gt;Ende:&lt;/b&gt; %4</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="351"/>
+        <location filename="recorder.cpp" line="362"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="352"/>
+        <location filename="recorder.cpp" line="363"/>
         <source>Transport Stream (*.ts);;AVI File (*.avi)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="380"/>
+        <location filename="recorder.cpp" line="391"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="380"/>
+        <location filename="recorder.cpp" line="391"/>
         <source>Can&apos;t recognice file extension!</source>
         <translation>Nicht unterstützte Dateierweiterung!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="495"/>
+        <location filename="recorder.cpp" line="506"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="496"/>
+        <location filename="recorder.cpp" line="507"/>
         <source>Kartina.tv Client API reports some errors: %1</source>
         <translation>Die Kartina.tv Client API meldet folgenden Fehler: %1</translation>
     </message>
