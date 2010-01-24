@@ -24,7 +24,7 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.08 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.09 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
@@ -47,5 +47,8 @@
 | 2010-01-21: Version 1.08
 | - need stream url as former
 | - add params for VLC (buffer)
+| 2010-01-23: Version 1.09
+| - switch language only when settings are saved
+|   (bugfix for segfault on some XP and Linux)
 \*************************************************************/
 

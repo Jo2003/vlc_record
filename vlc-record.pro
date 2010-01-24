@@ -3,7 +3,7 @@
 # -------------------------------------------------
 TARGET = vlc-record
 QT += network
-# CONFIG += static
+CONFIG += static
 TEMPLATE = app
 SOURCES += main.cpp \
     recorder.cpp \
@@ -52,7 +52,7 @@ TRANSLATIONS = lang_de.ts \
     lang_ru.ts
 
 # for static build ...
-static { 
+static {
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qico \

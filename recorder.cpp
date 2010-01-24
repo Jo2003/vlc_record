@@ -34,7 +34,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    bLogosReady  = false;
    pTranslator  = trans;
    iEpgOffset   = 0;
-   pSettings    = new CSettingsDlg(this);
    sLogoPath    = dwnLogos.GetLogoPath();
 
    ui->textEpg->SetLogoDir(sLogoPath);
@@ -43,33 +42,32 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), "vlc-record.log");
 
    // if main settings aren't done, start settings dialog ...
-   if (pSettings &&
-       ((pSettings->GetPasswd() == "")
-        || (pSettings->GetVLCPath() == "")
-        || (pSettings->GetUser() == "")))
+   if ((Settings.GetPasswd() == "")
+        || (Settings.GetVLCPath() == "")
+        || (Settings.GetUser() == ""))
    {
-      pSettings->exec();
+      Settings.exec();
    }
 
    // set log level ...
-   VlcLog.SetLogLevel(pSettings->GetLogLevel());
+   VlcLog.SetLogLevel(Settings.GetLogLevel());
 
    // set connection data ...
-   KartinaTv.SetData(KARTINA_HOST, pSettings->GetUser(), pSettings->GetPasswd(), pSettings->AllowEros());
+   KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(), Settings.AllowEros());
 
 
    // set proxy stuff ...
-   if (pSettings->UseProxy())
+   if (Settings.UseProxy())
    {
-      KartinaTv.setProxy(pSettings->GetProxyHost(), pSettings->GetProxyPort(),
-                         pSettings->GetProxyUser(), pSettings->GetProxyPasswd());
+      KartinaTv.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                         Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
-      dwnLogos.setProxy(pSettings->GetProxyHost(), pSettings->GetProxyPort(),
-                        pSettings->GetProxyUser(), pSettings->GetProxyPasswd());
+      dwnLogos.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                        Settings.GetProxyUser(), Settings.GetProxyPasswd());
    }
 
    // set language as read ...
-   pTranslator->load(QString("lang_%1").arg(pSettings->GetLanguage ()), QApplication::applicationDirPath());
+   pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()), QApplication::applicationDirPath());
 
    // configure trigger and start it ...
    Trigger.SetKartinaClient(&KartinaTv);
@@ -85,10 +83,10 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&Refresh,   SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
    connect (ui->textEpg, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
    connect (&dwnLogos, SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
-   connect (pSettings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
+   connect (&Settings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv, SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
-   connect (pSettings, SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
-   connect (pSettings, SIGNAL(sigSetBuffer(int)), this, SLOT(slotSetHttpBuffer(int)));
+   connect (&Settings, SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
+   connect (&Settings, SIGNAL(sigSetBuffer(int)), this, SLOT(slotSetHttpBuffer(int)));
 
    // -------------------------------------------
    // create epg nav bar ...
@@ -102,9 +100,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    Trigger.TriggerRequest(Kartina::REQ_COOKIE);
 
    // start refresh timer, if needed ...
-   if (pSettings->DoRefresh())
+   if (Settings.DoRefresh())
    {
-      Refresh.start(pSettings->GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
+      Refresh.start(Settings.GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
    }
 }
 
@@ -120,12 +118,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 \----------------------------------------------------------------- */
 Recorder::~Recorder()
 {
-   if (pSettings)
-   {
-      delete pSettings;
-      pSettings = NULL;
-   }
-
    delete ui;
 }
 
@@ -361,14 +353,14 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv)
 {
    QDateTime now    = QDateTime::currentDateTime();
-   QString sTarget  = QString("%1\\%2_%3").arg(pSettings->GetTargetDir()).arg(sChannel).arg(now.toString("yyyy-MM-dd_hh-mm-ss"));
+   QString sTarget  = QString("%1\\%2_%3").arg(Settings.GetTargetDir()).arg(sChannel).arg(now.toString("yyyy-MM-dd_hh-mm-ss"));
    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
                        sTarget, tr("Transport Stream (*.ts);;AVI File (*.avi)"));
    QRegExp rx("^.*[.]{1}([a-zA-Z]*)$");
    if(rx.indexIn(fileName) > -1)
    {
       QString sCmdLine = VLC_REC_TEMPL;
-      sCmdLine.replace(TMPL_VLC, pSettings->GetVLCPath());
+      sCmdLine.replace(TMPL_VLC, Settings.GetVLCPath());
       sCmdLine.replace(TMPL_URL, sURL);
       sCmdLine.replace(TMPL_MUX, rx.cap(1));
       sCmdLine.replace(TMPL_DST, fileName);
@@ -413,7 +405,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
 int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
 {
    QString sCmdLine = VLC_PLAY_TEMPL;
-   sCmdLine.replace(TMPL_VLC, pSettings->GetVLCPath());
+   sCmdLine.replace(TMPL_VLC, Settings.GetVLCPath());
    sCmdLine.replace(TMPL_URL, sURL);
 
    if (bArchiv)
@@ -450,29 +442,29 @@ int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
 \----------------------------------------------------------------- */
 void Recorder::on_pushSettings_clicked()
 {
-   if (pSettings->exec() == QDialog::Accepted)
+   if (Settings.exec() == QDialog::Accepted)
    {
       // if changes where saved, accept it here ...
-      VlcLog.SetLogLevel(pSettings->GetLogLevel());
+      VlcLog.SetLogLevel(Settings.GetLogLevel());
 
       ui->listWidget->clear();
       KartinaTv.abort();
 
       // update connection data ...
-      KartinaTv.SetData(KARTINA_HOST, pSettings->GetUser(), pSettings->GetPasswd(), pSettings->AllowEros());
+      KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(), Settings.AllowEros());
 
       // set proxy ...
-      if (pSettings->UseProxy())
+      if (Settings.UseProxy())
       {
-         KartinaTv.setProxy(pSettings->GetProxyHost(), pSettings->GetProxyPort(),
-                            pSettings->GetProxyUser(), pSettings->GetProxyPasswd());
+         KartinaTv.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                            Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
-         dwnLogos.setProxy(pSettings->GetProxyHost(), pSettings->GetProxyPort(),
-                           pSettings->GetProxyUser(), pSettings->GetProxyPasswd());
+         dwnLogos.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
       }
 
       // set language as read ...
-      pTranslator->load(QString("lang_%1").arg(pSettings->GetLanguage ()), QApplication::applicationDirPath());
+      pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()), QApplication::applicationDirPath());
 
       EnableDisableDlg(false);
 
@@ -480,11 +472,11 @@ void Recorder::on_pushSettings_clicked()
       Trigger.TriggerRequest(Kartina::REQ_COOKIE);
 
       // set refresh timer ...
-      if (pSettings->DoRefresh())
+      if (Settings.DoRefresh())
       {
          if (!Refresh.isActive())
          {
-            Refresh.start(pSettings->GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
+            Refresh.start(Settings.GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
          }
       }
       else
@@ -529,7 +521,7 @@ void Recorder::slotChanList (QString str)
    QVector<cparser::SChan> chanList;
    XMLParser.SetByteArray(str.toUtf8());
 
-   chanList = XMLParser.ParseChannelList(pSettings->FixTime());
+   chanList = XMLParser.ParseChannelList(Settings.FixTime());
 
    // set timeshift in epg browser ...
    ui->textEpg->SetTimeShift(XMLParser.GetTimeShift());

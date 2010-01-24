@@ -74,7 +74,7 @@ public:
 
 private:
     Ui::Recorder                  *ui;
-    CSettingsDlg                  *pSettings;
+    CSettingsDlg                   Settings;
     CKartinaClnt                   KartinaTv;
     CKartinaXMLParser              XMLParser;
     CWaitTrigger                   Trigger;
