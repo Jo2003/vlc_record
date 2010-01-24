@@ -12,9 +12,9 @@
 #include "ctimerrec.h"
 #include "ui_ctimerrec.h"
 
-CTimerRec::CTimerRec(QWidget *parent) :
-    QDialog(parent),
-    r_ui(new Ui::CTimerRec)
+extern CLogFile VlcLog;
+
+CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
 {
    r_ui->setupUi(this);
    iTimeShift = 0;
@@ -31,7 +31,9 @@ CTimerRec::~CTimerRec()
 void CTimerRec::changeEvent(QEvent *e)
 {
    QDialog::changeEvent(e);
-   switch (e->type()) {
+
+   switch (e->type())
+   {
    case QEvent::LanguageChange:
        r_ui->retranslateUi(this);
        break;
@@ -150,6 +152,9 @@ void CTimerRec::on_btnSet_clicked()
    JobList.insert(entry.id, entry);
 
    AddRow(entry);
+
+   VlcLog.LogInfo(QString("%1 - %2():%3 set set set\n")
+                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
 }
 
 void CTimerRec::on_pushOK_clicked()

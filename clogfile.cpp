@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:35:41
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #include "clogfile.h"
@@ -128,6 +128,7 @@ void CLogFile::WriteLog(const QString &str)
    {
       mutex.lock();
       QTextStream stream(&logFile);
+      stream.setCodec("UTF-8");
       stream << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss.zzz") << ": " << str.toUtf8();
       mutex.unlock();
    }
