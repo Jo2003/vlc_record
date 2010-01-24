@@ -122,7 +122,6 @@ private slots:
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);
     void slotSetSServer (int iSrv);
-    void slotSetHttpBuffer (int iTime);
 };
 
 #endif /* __011910__RECORDER_H */

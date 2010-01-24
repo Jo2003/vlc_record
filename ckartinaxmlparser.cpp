@@ -240,15 +240,11 @@ QVector<cparser::SEpg> CKartinaXMLParser::ParseEpg(int &iChanID, uint &uiGmt, bo
 |
 |  Returns: stream url
 \----------------------------------------------------------------- */
-QString CKartinaXMLParser::ParseURL(int &iCacheTime)
+QString CKartinaXMLParser::ParseURL()
 {
    QString              url;
    QXmlStreamAttributes attrs;
-   QRegExp              rx("^.*//([^ ]*) :.*=([0-9]*) .*$");
-
-   // :http-caching=15000 :no-http-reconnect
-   // use whole url with params ...
-//QRegExp              rx("^.*//(.*)$");
+   QRegExp              rx("^.*//([^ ]*).*$");
 
    xml.clear();
    xml.addData(stream);
@@ -288,12 +284,10 @@ QString CKartinaXMLParser::ParseURL(int &iCacheTime)
    if (rx.indexIn(url) > -1)
    {
       url        = QString("http://%1").arg(rx.cap(1));
-      iCacheTime = rx.cap(2).toInt();
    }
    else
    {
       url        = "";
-      iCacheTime = 0;
    }
 
    return url;

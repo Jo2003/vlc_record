@@ -86,7 +86,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&Settings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv, SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
    connect (&Settings, SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
-   connect (&Settings, SIGNAL(sigSetBuffer(int)), this, SLOT(slotSetHttpBuffer(int)));
 
    // -------------------------------------------
    // create epg nav bar ...
@@ -367,13 +366,13 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
 
       if (bArchiv)
       {
-         // standard cache time: 3000 ... but give a little more ...
-         sCmdLine += " --rtsp-tcp --rtsp-caching 5000";
+         // add buffer value ...
+         sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1").arg(iCacheTime);
       }
       else
       {
-         // add buffer value from kartina ...
-         sCmdLine += QString(" --http-caching %1 --no-http-reconnect").arg(iCacheTime);
+         // add buffer value ...
+         sCmdLine += QString(" --http-caching=%1 --no-http-reconnect").arg(iCacheTime);
       }
 
       VlcLog.LogInfo(QString("Starting VLC using following command line:\n%1\n").arg(sCmdLine));
@@ -410,13 +409,13 @@ int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
 
    if (bArchiv)
    {
-      // standard cache time: 3000 ... but give a little more ...
-      sCmdLine += " --rtsp-tcp --rtsp-caching 5000";
+      // add buffer value ...
+      sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1").arg(iCacheTime);
    }
    else
    {
-      // add buffer value from kartina ...
-      sCmdLine += QString(" --http-caching %1 --no-http-reconnect").arg(iCacheTime);
+      // add buffer value ...
+      sCmdLine += QString(" --http-caching=%1 --no-http-reconnect").arg(iCacheTime);
    }
 
    VlcLog.LogInfo(QString("Starting VLC using following command line:\n%1\n").arg(sCmdLine));
@@ -558,12 +557,11 @@ void Recorder::slotChanList (QString str)
 void Recorder::slotStreamURL(QString str)
 {
    QString              sChan, sUrl;
-   int                  iCacheTime;
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
    XMLParser.SetByteArray(str.toUtf8());
 
-   sUrl = XMLParser.ParseURL(iCacheTime);
+   sUrl = XMLParser.ParseURL();
 
    if (pItem)
    {
@@ -572,11 +570,11 @@ void Recorder::slotStreamURL(QString str)
 
    if (bRecord)
    {
-      StartVlcRec(sUrl, sChan, iCacheTime);
+      StartVlcRec(sUrl, sChan, Settings.GetBufferTime());
    }
    else
    {
-      StartVlcPlay(sUrl, iCacheTime);
+      StartVlcPlay(sUrl, Settings.GetBufferTime());
    }
 
    EnableDisableDlg();
@@ -965,7 +963,9 @@ void Recorder::slotbtnBack_clicked()
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
    if (pItem && (pItem->GetId() != -1))
    {
-      iEpgOffset = iEpgOffset - 7;
+      // set actual day in previous week to munday ...
+      int iActDay  = pEpgNavbar->currentIndex();
+      iEpgOffset  -= 7 + iActDay;
       Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
    }
 }
@@ -985,7 +985,9 @@ void Recorder::slotbtnNext_clicked()
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
    if (pItem && (pItem->GetId() != -1))
    {
-      iEpgOffset = iEpgOffset + 7;
+      // set actual day in next week to munday ...
+      int iActDay  = pEpgNavbar->currentIndex();
+      iEpgOffset  += 7 - iActDay;
       Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
    }
 }
@@ -1019,11 +1021,11 @@ void Recorder::slotArchivURL(QString str)
 
    if (bRecord)
    {
-      StartVlcRec(sUrl, sChan, 0, true);
+      StartVlcRec(sUrl, sChan, Settings.GetBufferTime(), true);
    }
    else
    {
-      StartVlcPlay(sUrl, 0, true);
+      StartVlcPlay(sUrl, Settings.GetBufferTime(), true);
    }
 
    EnableDisableDlg();
@@ -1102,21 +1104,6 @@ void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
 void Recorder::slotSetSServer(int iSrv)
 {
    Trigger.TriggerRequest(Kartina::REQ_SERVER, iSrv);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotSetHttpBuffer
-|  Begin: 21.01.2010 / 12:20:25
-|  Author: Joerg Neubert
-|  Description: set http buffer size request
-|
-|  Parameters: new buffer time
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotSetHttpBuffer(int iTime)
-{
-   Trigger.TriggerRequest(Kartina::REQ_HTTPBUFF, iTime);
 }
 
 /* -----------------------------------------------------------------\

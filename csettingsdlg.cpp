@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:43:08
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #include "csettingsdlg.h"
@@ -33,7 +33,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 
    // set ini file name and open ini file ...
    IniFile.SetFileName(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), INI_FILE);
-   
+
    if (!IniFile.ReadIni())
    {
       // fill in values ...
@@ -57,28 +57,15 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
 
       // combo boxes ...
-      int iIdx = m_ui->cbxLanguage->findText(IniFile.GetStringData("Language"));
+      int iIdx;
+      iIdx = m_ui->cbxLanguage->findText(IniFile.GetStringData("Language"));
       m_ui->cbxLanguage->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
+
+      iIdx = m_ui->cbxBufferSeconds->findText(IniFile.GetStringData("HttpCache"));
+      m_ui->cbxBufferSeconds->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
+
       m_ui->cbxLogLevel->setCurrentIndex((int)IniFile.GetIntData("LogLevel"));
    }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: exec
-|  Begin: 19.01.2010 / 15:44:46
-|  Author: Joerg Neubert
-|  Description: show dialog window, make sure right value in
-|               log level is shown
-|
-|  Parameters: --
-|
-|  Returns: 0 ==> ok
-|          -1 ==> any error
-\----------------------------------------------------------------- */
-int CSettingsDlg::exec ()
-{
-   m_ui->cbxLogLevel->setCurrentIndex((int)IniFile.GetIntData("LogLevel"));
-   return QDialog::exec();
 }
 
 /* -----------------------------------------------------------------\
@@ -111,8 +98,20 @@ void CSettingsDlg::changeEvent(QEvent *e)
     QDialog::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
-        m_ui->retranslateUi(this);
-        break;
+       {
+          // save current index from comboboxes ...
+          int iLanIdx = m_ui->cbxLanguage->currentIndex();
+          int iLogIdx = m_ui->cbxLogLevel->currentIndex();
+          int iBufIdx = m_ui->cbxBufferSeconds->currentIndex();
+
+          m_ui->retranslateUi(this);
+
+          // re-set index to comboboxes ...
+          m_ui->cbxLanguage->setCurrentIndex(iLanIdx);
+          m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
+          m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
+       }
+       break;
     default:
         break;
     }
@@ -164,7 +163,7 @@ void CSettingsDlg::on_pushDir_clicked()
 |  Method: on_pushSave_clicked
 |  Begin: 19.01.2010 / 15:47:50
 |  Author: Joerg Neubert
-|  Description: save all settings to ini file 
+|  Description: save all settings to ini file
 |
 |  Parameters: --
 |
@@ -192,6 +191,7 @@ void CSettingsDlg::on_pushSave_clicked()
 
    // combo boxes ...
    IniFile.AddData("Language", m_ui->cbxLanguage->currentText());
+   IniFile.AddData("HttpCache", m_ui->cbxBufferSeconds->currentText());
    IniFile.AddData("LogLevel", m_ui->cbxLogLevel->currentIndex());
 
    IniFile.SaveIni();
@@ -261,28 +261,6 @@ void CSettingsDlg::on_btnSaveStreamServer_clicked()
    if (iSrv != -1)
    {
       emit sigSetServer(iSrv);
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: on_btnSaveBuffer_clicked
-|  Begin: 21.01.2010 / 11:24:39
-|  Author: Joerg Neubert
-|  Description: signal set of http buffer
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CSettingsDlg::on_btnSaveBuffer_clicked()
-{
-   float fBuf = m_ui->cbxBufferSeconds->currentText().toFloat();
-
-   if (fBuf != (float)0.0)
-   {
-      int iBuf = (int)(fBuf * (float)1000);  // msec. ...
-
-      emit sigSetBuffer(iBuf);
    }
 }
 
@@ -370,6 +348,11 @@ int CSettingsDlg::GetRefrInt()
 vlclog::eLogLevel CSettingsDlg::GetLogLevel()
 {
    return (vlclog::eLogLevel)m_ui->cbxLogLevel->currentIndex();
+}
+
+int CSettingsDlg::GetBufferTime()
+{
+   return m_ui->cbxBufferSeconds->currentText().toInt();
 }
 
 //===================================================================

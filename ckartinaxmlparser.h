@@ -62,7 +62,7 @@ public:
    void SetByteArray (const QByteArray &ba);
    QVector<cparser::SChan> ParseChannelList (bool bFixTime);
    QVector<cparser::SEpg> ParseEpg (int &iChanID, uint &uiGmt, bool &bArchiv);
-   QString ParseURL(int &iCacheTime);
+   QString ParseURL();
    QString ParseArchivURL();
    int FixTime (QString &sTime);
    int GetTimeShift () { return iTimeShift; }

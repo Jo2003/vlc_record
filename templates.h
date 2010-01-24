@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:58:18
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #ifndef __011910__TEMPLATES_H
@@ -20,7 +20,7 @@
 #define TMPL_MUX "{[%MUX%]}"
 #define TMPL_DST "{[%DST%]}"
 
-#define VLC_REC_TEMPL  "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout \"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
+#define VLC_REC_TEMPL  "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
 #define VLC_PLAY_TEMPL "\"" TMPL_VLC "\" \"" TMPL_URL "\""
 
 

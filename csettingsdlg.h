@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:41:34
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #ifndef __011910__CSETTINGSDLG_H
@@ -23,7 +23,7 @@
 //===================================================================
 // namespace
 //===================================================================
-namespace Ui 
+namespace Ui
 {
     class CSettingsDlg;
 }
@@ -35,7 +35,7 @@ namespace Ui
 |  Description: dialog to configure needed settings
 |
 \********************************************************************/
-class CSettingsDlg : public QDialog 
+class CSettingsDlg : public QDialog
 {
     Q_OBJECT
 
@@ -57,6 +57,7 @@ public:
     bool DoRefresh ();
     int GetRefrInt ();
     int GetProxyPort ();
+    int GetBufferTime ();
     vlclog::eLogLevel GetLogLevel ();
 
 protected:
@@ -72,15 +73,11 @@ signals:
     void sigSetBuffer (int iBuffer);
 
 private slots:
-    void on_btnSaveBuffer_clicked();
     void on_btnSaveStreamServer_clicked();
     void on_pushDelLogos_clicked();
     void on_pushSave_clicked();
     void on_pushDir_clicked();
     void on_pushVLC_clicked();
-
- public slots:
-    virtual int exec ();
 };
 
 #endif /* __011910__CSETTINGSDLG_H */

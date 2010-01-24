@@ -186,17 +186,21 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
      </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
      <attribute name="verticalHeaderStretchLastSection">
-      <bool>true</bool>
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderStretchLastSection">
+      <bool>false</bool>
      </attribute>
      <column>
       <property name="text">
        <string>Date</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Neue Spalte</string>
       </property>
      </column>
      <column>
@@ -206,7 +210,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
      </column>
      <column>
       <property name="text">
-       <string>Chan.</string>
+       <string>End</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Ch.</string>
       </property>
      </column>
      <column>

@@ -1,36 +1,54 @@
-#ifndef CTIMERREC_H
-#define CTIMERREC_H
+/*********************** Information *************************\
+| $HeadURL$
+|
+| Author: Joerg Neubert
+|
+| Begin: 24.01.2010 / 15:41:34
+|
+| Last edited by: $Author$
+|
+| $Id$
+\*************************************************************/
+#ifndef __012410__CTIMERREC_H
+   #define __012410__CTIMERREC_H
 
-#include <QDialog>
+#include <QtGui/QDialog>
 #include <QDateTime>
-#include <QString>
-#include <QTextStream>
 #include <QTimer>
 #include <QVector>
 #include <QMap>
-#include <QFile>
 #include <QXmlStreamReader>
+#include <QFile>
+#include <QString>
+#include <QTextStream>
 
 #include "defdef.h"
 #include "ckartinaxmlparser.h"
 
+//===================================================================
+// namespace
+//===================================================================
 namespace Ui
 {
-    class  CTimerRec;
-    struct SChanEntry
-    {
-       int     cid;
-       QString Name;
-    };
+   class  CTimerRec;
+}
 
-    struct SRecEntry
-    {
-       uint id;
-       int  cid;
-       uint uiStart;
-       uint uiEnd;
-       QString sName;
-    };
+namespace rec
+{
+   struct SChanEntry
+   {
+      int     cid;
+      QString Name;
+   };
+
+   struct SRecEntry
+   {
+      uint id;
+      int  cid;
+      uint uiStart;
+      uint uiEnd;
+      QString sName;
+   };
 }
 
 class CTimerRec : public QDialog
@@ -47,22 +65,28 @@ public:
    void SetLogoPath (const QString &str);
    int SaveRecordList ();
    int ReadRecordList ();
+   int AddRow (const rec::SRecEntry &entry);
 
+   void InitTab ();
 
 protected:
    void changeEvent(QEvent *e);
 
 private:
-   Ui::CTimerRec *ui;
+   Ui::CTimerRec *r_ui;
    int     iTimeShift;
    QString sLogoPath;
-   QMap<uint, Ui::SRecEntry> JobList;
-   QMap<int, Ui::SChanEntry> ChanList;
+   QMap<uint, rec::SRecEntry> JobList;
+   QMap<int, rec::SChanEntry> ChanList;
    QString sListFile;
+   uint    uiActId;
 
 private slots:
     void on_pushOK_clicked();
     void on_btnSet_clicked();
 };
 
-#endif // CTIMERREC_H
+#endif /* __012410__CTIMERREC_H */
+/************************* History ***************************\
+| $Log$
+\*************************************************************/

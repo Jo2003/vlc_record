@@ -38,19 +38,9 @@ FORMS += recorder.ui \
     caboutdialog.ui \
     ctimerrec.ui
 RESOURCES += vlc-record.qrc
-OTHER_FILES += resources/tools.ico \
-    vlc-record.rc \
-    resources/television.ico \
-    resources/record.ico \
-    example.txt \
-    resources/play.ico \
-    resources/logo.png \
-    resources/info.ico \
-    resources/quit.ico
 RC_FILE = vlc-record.rc
 TRANSLATIONS = lang_de.ts \
     lang_ru.ts
-
 # for static build ...
 static {
     DEFINES += DSTATIC
