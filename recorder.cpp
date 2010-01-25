@@ -36,9 +36,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    iEpgOffset   = 0;
    sLogoPath    = dwnLogos.GetLogoPath();
 
-   ui->textEpg->SetLogoDir(sLogoPath);
-   timeRec.SetLogoPath(sLogoPath);
-
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), "vlc-record.log");
 
    // if main settings aren't done, start settings dialog ...
@@ -73,6 +70,11 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    Trigger.SetKartinaClient(&KartinaTv);
    Trigger.start();
 
+   // give timerRec all needed infos ...
+   timeRec.SetXmlParser(&XMLParser);
+   timeRec.SetKartinaTrigger(&Trigger);
+   timeRec.SetSettings(&Settings);
+
    // connect signals and slots ...
    connect (&KartinaTv, SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
    connect (&KartinaTv, SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
@@ -86,11 +88,17 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&Settings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv, SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
    connect (&Settings, SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
+   connect (&KartinaTv, SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
+   connect (&timeRec, SIGNAL(sigAllDone()), this, SLOT(slotTimerRecordDone()));
 
    // -------------------------------------------
    // create epg nav bar ...
    // -------------------------------------------
    TouchEpgNavi (true);
+
+   // set logo path for epg browser and timer record ...
+   ui->textEpg->SetLogoDir(sLogoPath);
+   timeRec.SetLogoPath(sLogoPath);
 
    // enable button ...
    EnableDisableDlg(false);
@@ -530,6 +538,7 @@ void Recorder::slotChanList (QString str)
    // set channel list in timeRec class ...
    timeRec.SetTimeShift(XMLParser.GetTimeShift());
    timeRec.SetChanList(chanList);
+   timeRec.StartTimer();
 
    // only download channel logos, if they aren't there ...
    if (!dwnLogos.IsRunning() && !bLogosReady)
@@ -592,7 +601,18 @@ void Recorder::slotStreamURL(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotCookie()
 {
-   Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+   // if there are pending records, we need the timeshift
+   // from the timer record ...
+   if (timeRec.PendingRecords())
+   {
+      VlcLog.LogInfo(tr("timeRec reports pending records!\n"));
+      Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, timeRec.GetTimerRecTimeShift());
+   }
+   else
+   {
+      VlcLog.LogInfo(tr("timeRec doesn't report pending records!\n"));
+      Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -732,8 +752,29 @@ void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
 \----------------------------------------------------------------- */
 void Recorder::EnableDisableDlg (bool bEnable)
 {
+   QPixmap pic;
+
+   if (bEnable && timeRec.PendingRecords())
+   {
+      bEnable = false;
+   }
+
+   if (bEnable)
+   {
+      pic.load(":leds/darkred");
+      ui->labLedRed->setPixmap(pic);
+      pic.load(":leds/green");
+      ui->labLedGreen->setPixmap(pic);
+   }
+   else
+   {
+      pic.load(":leds/red");
+      ui->labLedRed->setPixmap(pic);
+      pic.load(":leds/darkgreen");
+      ui->labLedGreen->setPixmap(pic);
+   }
+
    ui->cbxTimeShift->setEnabled(bEnable);
-   ui->listWidget->setEnabled(bEnable);
    ui->pushPlay->setEnabled(bEnable);
    ui->pushRecord->setEnabled(bEnable);
 }
@@ -759,11 +800,8 @@ void Recorder::on_listWidget_currentRowChanged(int currentRow)
       // was this a refresh or was channel changed ... ?
       if (pItem->GetId() != ui->textEpg->GetCid())
       {
-         // channel changed ...
-         iEpgOffset = 0;
-
          // load epg ...
-         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId());
+         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
       }
       else // same channel ...
       {
@@ -881,6 +919,15 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
       timeRec.SetRecInfo(uiStart, uiEnd, iChan);
       timeRec.exec();
+
+      if (timeRec.PendingRecords())
+      {
+         EnableDisableDlg(false);
+      }
+      else
+      {
+         EnableDisableDlg();
+      }
    }
 
    if (ok)
@@ -1081,13 +1128,16 @@ void Recorder::slotDayTabChanged(int iIdx)
 \----------------------------------------------------------------- */
 void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
 {
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)item;
-
-   if (pItem && (pItem->GetId() != -1))
+   if (!timeRec.PendingRecords())
    {
-      bRecord = false;
-      EnableDisableDlg(false);
-      Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+      CChanListWidgetItem *pItem = (CChanListWidgetItem *)item;
+
+      if (pItem && (pItem->GetId() != -1))
+      {
+         bRecord = false;
+         EnableDisableDlg(false);
+         Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+      }
    }
 }
 
@@ -1142,6 +1192,28 @@ void Recorder::on_lineSearch_returnPressed()
       // not found --> set cursor to document start ...
       ui->textEpg->moveCursor(QTextCursor::Start);
    }
+}
+
+void Recorder::on_pushTimerRec_clicked()
+{
+   uint now = QDateTime::currentDateTime().toTime_t();
+   timeRec.SetRecInfo(now, now, -1);
+   timeRec.exec();
+
+   if (timeRec.PendingRecords())
+   {
+      EnableDisableDlg(false);
+   }
+   else
+   {
+      EnableDisableDlg();
+   }
+}
+
+void Recorder::slotTimerRecordDone()
+{
+   VlcLog.LogInfo(tr("timeRec reports: All done!\n"));
+   EnableDisableDlg();
 }
 
 /************************* History ***************************\

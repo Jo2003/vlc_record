@@ -52,7 +52,20 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="edtStart"/>
+         <widget class="QDateTimeEdit" name="dtEdtStart"/>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="QLabel" name="labEnd">
@@ -62,7 +75,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="edtEnd"/>
+         <widget class="QDateTimeEdit" name="dtEdtEnd"/>
         </item>
        </layout>
       </item>
@@ -185,12 +198,6 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
     <widget class="QTableWidget" name="tableRecordEntries">
      <attribute name="horizontalHeaderStretchLastSection">
       <bool>true</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderStretchLastSection">
-      <bool>false</bool>
      </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>

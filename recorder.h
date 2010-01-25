@@ -98,6 +98,7 @@ protected:
     void TouchEpgNavi (bool bCreate);
 
 private slots:
+    void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
     void on_btnSearch_clicked();
     void on_listWidget_itemDoubleClicked(QListWidgetItem* item);
@@ -122,6 +123,7 @@ private slots:
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);
     void slotSetSServer (int iSrv);
+    void slotTimerRecordDone ();
 };
 
 #endif /* __011910__RECORDER_H */

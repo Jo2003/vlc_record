@@ -29,6 +29,7 @@
 #define DEF_MAX_DIFF      600   // accept inaccuracy up too xxx sec. ...
 #define EPG_NAVBAR_HEIGHT 24
 #define TIMER_REC_OFFSET  300   // 300 sec ... (5 minutes)
+#define INVALID_ID        0xFFFFFFFF
 
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\

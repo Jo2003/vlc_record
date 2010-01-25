@@ -23,7 +23,10 @@
 #include <QTextStream>
 
 #include "defdef.h"
+#include "templates.h"
 #include "ckartinaxmlparser.h"
+#include "cwaittrigger.h"
+#include "csettingsdlg.h"
 
 //===================================================================
 // namespace
@@ -48,6 +51,7 @@ namespace rec
       uint uiStart;
       uint uiEnd;
       QString sName;
+      bool bIsStarted;
    };
 }
 
@@ -63,14 +67,24 @@ public:
    void SetChanList  (const QVector<cparser::SChan> &chanList);
    void SetRecInfo (uint uiStart, uint uiEnd, int cid);
    void SetLogoPath (const QString &str);
+   void SetXmlParser (CKartinaXMLParser *pParser);
+   void SetKartinaTrigger (CWaitTrigger *pTrig);
+   void SetSettings (CSettingsDlg *pSet);
    int SaveRecordList ();
    int ReadRecordList ();
    int AddRow (const rec::SRecEntry &entry);
-
+   void AddJob (rec::SRecEntry &entry);
+   void DelRow (uint uiId);
    void InitTab ();
+   int  GetTimerRecTimeShift ();
+   bool PendingRecords ();
+   void StartTimer ();
 
 protected:
    void changeEvent(QEvent *e);
+   int SanityCheck (const QDateTime &start, const QDateTime &end);
+   void GmtToTimeShift (uint &when);
+   void TimeShiftToGmt (uint &when);
 
 private:
    Ui::CTimerRec *r_ui;
@@ -78,12 +92,24 @@ private:
    QString sLogoPath;
    QMap<uint, rec::SRecEntry> JobList;
    QMap<int, rec::SChanEntry> ChanList;
+   QMap<uint, rec::SRecEntry>::iterator itActJob;
    QString sListFile;
    uint    uiActId;
+   uint    uiEdtId;
+   QTimer  recTimer;
+   CKartinaXMLParser *pXmlParser;
+   CWaitTrigger      *pTrigger;
+   CSettingsDlg      *pSettings;
+
+signals:
+   void sigAllDone ();
 
 private slots:
-    void on_pushOK_clicked();
-    void on_btnSet_clicked();
+   void on_btnDel_clicked();
+   void on_tableRecordEntries_cellDoubleClicked(int row, int column);
+   void on_btnSet_clicked();
+   void slotRecTimer ();
+   void slotTimerStreamUrl (QString str);
 };
 
 #endif /* __012410__CTIMERREC_H */

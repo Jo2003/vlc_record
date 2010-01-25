@@ -19,6 +19,7 @@
 #include <QRegExp>
 #include <QDateTime>
 #include <QString>
+#include <QMutex>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -76,6 +77,7 @@ private:
    QXmlStreamReader xml;
    int iOffset;
    int iTimeShift;
+   QMutex mutex;
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

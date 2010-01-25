@@ -39,6 +39,7 @@ namespace Kartina {
       REQ_SERVER,
       REQ_HTTPBUFF,
       REQ_ARCHIV,
+      REQ_TIMERREC,
       REQ_UNKNOWN = 255
    };
 }
@@ -68,7 +69,7 @@ public:
    void GetCookie ();
    void GetChannelList ();
    void SetTimeShift (int iHours);
-   void GetStreamURL (int iChanID);
+   void GetStreamURL (int iChanID, bool bTimerRec = false);
    void GetArchivURL (const QString &prepared);
    void SetServer (int iSrv);
    void SetHttpBuffer (int iTime);
@@ -100,6 +101,7 @@ signals:
    void sigGotChannelList (QString str);
    void sigGotEPG (QString str);
    void sigGotStreamURL (QString str);
+   void sigGotTimerStreamURL (QString str);
    void sigGotArchivURL (QString str);
    void sigServerChanged ();
    void sigBufferSet ();

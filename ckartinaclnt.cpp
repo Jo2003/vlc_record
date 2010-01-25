@@ -222,7 +222,7 @@ void CKartinaClnt::SetTimeShift (int iHours)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetStreamURL(int iChanID)
+void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 {
    VlcLog.LogInfo(tr("%1 / %2():%3 Request URL for channel %4\n")
                   .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iChanID));
@@ -234,7 +234,7 @@ void CKartinaClnt::GetStreamURL(int iChanID)
       req += QString("&protect_code=%1").arg(sPw);
    }
 
-   PostRequest(Kartina::REQ_STREAM, "/", req);
+   PostRequest((bTimerRec) ? Kartina::REQ_TIMERREC : Kartina::REQ_STREAM, "/", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -429,6 +429,9 @@ void CKartinaClnt::handleEndRequest(bool err)
          break;
       case Kartina::REQ_STREAM:
          emit sigGotStreamURL(QString::fromUtf8(baPageContent.constData()));
+         break;
+      case Kartina::REQ_TIMERREC:
+         emit sigGotTimerStreamURL (QString::fromUtf8(baPageContent.constData()));
          break;
       case Kartina::REQ_ARCHIV:
          emit sigGotArchivURL(QString::fromUtf8(baPageContent.constData()));

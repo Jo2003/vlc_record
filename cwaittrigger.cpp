@@ -126,6 +126,9 @@ void CWaitTrigger::run()
             case Kartina::REQ_STREAM:
                pClient->GetStreamURL(iOptArg1);
                break;
+            case Kartina::REQ_TIMERREC:
+               pClient->GetStreamURL(iOptArg1, true);
+               break;
             case Kartina::REQ_ARCHIV:
                pClient->GetArchivURL(sOptArg);
                break;

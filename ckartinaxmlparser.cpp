@@ -44,6 +44,7 @@ CKartinaXMLParser::CKartinaXMLParser(const QByteArray &ba, QObject * parent) : Q
 \----------------------------------------------------------------- */
 void CKartinaXMLParser::SetByteArray(const QByteArray &ba)
 {
+   mutex.lock();
    stream  = ba;
 }
 
@@ -158,6 +159,8 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
                             tr("XML Error String: %1").arg(xml.errorString()));
    }
 
+   mutex.unlock();
+
    return chanlist;
 }
 
@@ -227,6 +230,8 @@ QVector<cparser::SEpg> CKartinaXMLParser::ParseEpg(int &iChanID, uint &uiGmt, bo
                             tr("XML Error String: %1").arg(xml.errorString()));
    }
 
+   mutex.unlock();
+
    return epglist;
 }
 
@@ -290,6 +295,8 @@ QString CKartinaXMLParser::ParseURL()
       url        = "";
    }
 
+   mutex.unlock();
+
    return url;
 }
 
@@ -352,6 +359,8 @@ QString CKartinaXMLParser::ParseArchivURL()
    {
       url = "";
    }
+
+   mutex.unlock();
 
    return url;
 }

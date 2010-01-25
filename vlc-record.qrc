@@ -12,6 +12,7 @@
         <file alias="search">resources/search.ico</file>
         <file alias="find">resources/find.png</file>
         <file alias="trash">resources/trash.ico</file>
+        <file alias="timerrec">resources/timerrec.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
@@ -24,5 +25,11 @@
         <file alias="play">resources/play.png</file>
         <file alias="record">resources/record.png</file>
         <file alias="timer">resources/old_clock.png</file>
+    </qresource>
+    <qresource prefix="/leds">
+        <file alias="green">resources/green_btn.png</file>
+        <file alias="darkgreen">resources/green_btn_dark.png</file>
+        <file alias="red">resources/red_btn.png</file>
+        <file alias="darkred">resources/red_btn_dark.png</file>
     </qresource>
 </RCC>
