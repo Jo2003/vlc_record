@@ -216,9 +216,9 @@ void Recorder::TouchEpgNavi (bool bCreate)
          pEpgNavbar->setTabTextColor(i, QColor("white"));
       }
 
-      pEpgNavbar->setTabTextColor(5, QColor("blue"));
+      pEpgNavbar->setTabTextColor(5, QColor("#00a"));
       pEpgNavbar->addTab(tr("Sun"));
-      pEpgNavbar->setTabTextColor(6, QColor("red"));
+      pEpgNavbar->setTabTextColor(6, QColor("#800"));
    }
    else
    {
@@ -752,26 +752,9 @@ void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
 \----------------------------------------------------------------- */
 void Recorder::EnableDisableDlg (bool bEnable)
 {
-   QPixmap pic;
-
    if (bEnable && timeRec.PendingRecords())
    {
       bEnable = false;
-   }
-
-   if (bEnable)
-   {
-      pic.load(":leds/darkred");
-      ui->labLedRed->setPixmap(pic);
-      pic.load(":leds/green");
-      ui->labLedGreen->setPixmap(pic);
-   }
-   else
-   {
-      pic.load(":leds/red");
-      ui->labLedRed->setPixmap(pic);
-      pic.load(":leds/darkgreen");
-      ui->labLedGreen->setPixmap(pic);
    }
 
    ui->cbxTimeShift->setEnabled(bEnable);

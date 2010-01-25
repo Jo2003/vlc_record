@@ -26,10 +26,4 @@
         <file alias="record">resources/record.png</file>
         <file alias="timer">resources/old_clock.png</file>
     </qresource>
-    <qresource prefix="/leds">
-        <file alias="green">resources/green_btn.png</file>
-        <file alias="darkgreen">resources/green_btn_dark.png</file>
-        <file alias="red">resources/red_btn.png</file>
-        <file alias="darkred">resources/red_btn_dark.png</file>
-    </qresource>
 </RCC>

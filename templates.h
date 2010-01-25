@@ -84,6 +84,7 @@ TMPL_ROWS \
 "QTabBar::tab:selected {\n"\
 "  background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
 "  border-bottom-color: #eee;\n"\
+"  border-top-color: #fa0;\n"\
 "}\n"\
 "QTabBar::tab:hover {\n"\
 "  border-bottom-color: #eee;\n"\
