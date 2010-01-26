@@ -29,7 +29,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
     ui(new Ui::Recorder)
 {
    ui->setupUi(this);
-
+   trayIcon       = NULL;
    bRecord        = true;
    bLogosReady    = false;
    bPendingRecord = false;
@@ -161,20 +161,23 @@ Recorder::~Recorder()
 \----------------------------------------------------------------- */
 void Recorder::CreateSystray()
 {
-   trayIcon = new QSystemTrayIcon (this);
-
-   if (trayIcon)
+   if (!trayIcon)
    {
-      // set icon ...
-      trayIcon->setIcon(QIcon(":/app/tv"));
+      trayIcon = new QSystemTrayIcon (this);
 
-      // set tooltip ...
-      trayIcon->setToolTip(tr("vlc-record - Click to activate!"));
+      if (trayIcon)
+      {
+         // set icon ...
+         trayIcon->setIcon(QIcon(":/app/tv"));
 
-      // connect any click with slot ...
-      connect (trayIcon,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-               this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
+         // connect any click with slot ...
+         connect (trayIcon,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                  this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
+      }
    }
+
+   // set tooltip ...
+   trayIcon->setToolTip(tr("vlc-record - Click to activate!"));
 }
 
 /* -----------------------------------------------------------------\
@@ -344,6 +347,9 @@ void Recorder::changeEvent(QEvent *e)
 
       // translate manual created navbar ...
       TouchEpgNavi (false);
+
+      // translate systray tooltip ...
+      CreateSystray();
       break;
 
    case QEvent::WindowStateChange:
@@ -463,7 +469,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
    int       iRV      = -1;
    QDateTime now      = QDateTime::currentDateTime();
    QString   sTarget  = QString("%1/%2 (%3)").arg(Settings.GetTargetDir())
-                       .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh:mm"));
+                       .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh-mm"));
 
    QString   sExt     = "ts", sFilter;
    QString   fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
@@ -986,6 +992,7 @@ void Recorder::SetProgress(const QString &start, const QString &end)
 void Recorder::on_pushAbout_clicked()
 {
    CAboutDialog dlg;
+   dlg.setParent(this, Qt::Dialog);
    dlg.exec();
 }
 
@@ -1331,9 +1338,12 @@ void Recorder::on_pushTimerRec_clicked()
 \----------------------------------------------------------------- */
 void Recorder::slotTimerRecordDone()
 {
-   VlcLog.LogInfo(tr("timeRec reports: record done!"));
-   bPendingRecord = false;
-   EnableDisableDlg();
+   if (bPendingRecord)
+   {
+      VlcLog.LogInfo(tr("timeRec reports: record done!"));
+      bPendingRecord = false;
+      EnableDisableDlg();
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -1365,8 +1375,11 @@ void Recorder::slotTimerRecActive()
 \----------------------------------------------------------------- */
 void Recorder::slotTimerStatusMsg(const QString &sMsg, const QString &sColor)
 {
-   ui->labTimerInfo->setText(sMsg);
-   ui->labTimerInfo->setStyleSheet(QString(LABEL_STYLE).arg("labTimerInfo").arg(sColor));
+   if (ui->labTimerInfo->text() != sMsg)
+   {
+      ui->labTimerInfo->setText(sMsg);
+      ui->labTimerInfo->setStyleSheet(QString(LABEL_STYLE).arg("labTimerInfo").arg(sColor));
+   }
 }
 
 /* -----------------------------------------------------------------\

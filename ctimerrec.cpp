@@ -215,7 +215,7 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
    if (name != "")
    {
       r_ui->edtName->setText(QString("%1 (%2)").arg(name)
-                             .arg(dtStart.toString("yyyy-MM-dd, hh:mm")));
+                             .arg(dtStart.toString("yyyy-MM-dd, hh-mm")));
    }
    else
    {
@@ -225,11 +225,11 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
       if (cit != ChanList.constEnd())
       {
          r_ui->edtName->setText(QString("%1-%2").arg((*cit).Name)
-                                .arg(dtStart.toString("yyyy-MM-dd, hh:mm")));
+                                .arg(dtStart.toString("yyyy-MM-dd, hh-mm")));
       }
       else
       {
-         r_ui->edtName->setText(dtStart.toString("yyyy-MM-dd, hh:mm"));
+         r_ui->edtName->setText(dtStart.toString("yyyy-MM-dd, hh-mm"));
       }
    }
 }
@@ -853,7 +853,7 @@ void CTimerRec::slotTimerStreamUrl(QString str)
    sCmdLine.replace(TMPL_DST, QString("%1/%2.ts").arg(pSettings->GetTargetDir())
                                                  .arg((*itActJob).sName));
 
-   sCmdLine += QString(" --http-caching=%1 --no-http-reconnect --run-time=%2")
+   sCmdLine += QString(" --http-caching=%1 --no-http-reconnect --run-time=%2 vlc://quit")
                .arg(pSettings->GetBufferTime())
                .arg(uiRunTime);
 

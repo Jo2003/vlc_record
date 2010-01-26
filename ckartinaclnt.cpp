@@ -159,7 +159,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetCookie ()
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Request Authentication\n")
+   VlcLog.LogInfo(tr("%1 / %2():%3 Request Authentication")
                   .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
 
    bRenewCookie = true;
@@ -183,7 +183,7 @@ void CKartinaClnt::GetCookie ()
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetChannelList ()
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Request Channel List\n")
+   VlcLog.LogInfo(tr("%1 / %2():%3 Request Channel List")
                   .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
    PostRequest(Kartina::REQ_CHANNELLIST, "/", "m=channels&act=get_list_xml");
 }
