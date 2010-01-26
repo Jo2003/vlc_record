@@ -12,7 +12,9 @@
 #ifndef __011810__DEFDEF_H
    #define __011810__DEFDEF_H
 
-#ifdef WIN32
+#include <QtGlobal>
+
+#ifdef Q_OS_WIN32
    #define INI_DIR         "%1/vlc-record"
    #define APPDATA         "APPDATA"
 #else
@@ -30,6 +32,8 @@
 #define EPG_NAVBAR_HEIGHT 24
 #define TIMER_REC_OFFSET  300   // 300 sec ... (5 minutes)
 #define INVALID_ID        0xFFFFFFFF
+#define TIMER_STBY_TIME   30    // 30 sec. before we should start record
+#define MAX_NAME_LEN      10    // max. length of show name ...
 
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\

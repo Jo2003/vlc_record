@@ -13,6 +13,7 @@
    #define __011810__CEPGBROWSER_H
 
 #include <QTextBrowser>
+#include <QMap>
 #include "ckartinaxmlparser.h"
 #include "templates.h"
 
@@ -39,15 +40,17 @@ public:
     void SetTimeShift (int iTs) { iTimeShift = iTs; }
     void SetLogoDir (const QString &sDir) { sLogoDir = sDir; }
     int  GetCid () { return iCid; }
+    QString ShowName (uint uiTimeT);
 
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());
     bool ArchivAvailable (uint uiThisShow, uint uiNextShow = 0);
 
 private:
-    int     iTimeShift;
-    int     iCid;
-    QString sLogoDir;
+    int                 iTimeShift;
+    int                 iCid;
+    QString             sLogoDir;
+    QMap<uint, QString> mProgram;
 };
 
 #endif /* __011810__CEPGBROWSER_H */

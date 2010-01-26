@@ -129,7 +129,7 @@ void CLogFile::WriteLog(const QString &str)
       mutex.lock();
       QTextStream stream(&logFile);
       stream.setCodec("UTF-8");
-      stream << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss.zzz") << ": " << str.toUtf8();
+      stream << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss.zzz") << ": " << str << endl;
       mutex.unlock();
    }
 }

@@ -25,18 +25,24 @@
 |  Returns: --
 \----------------------------------------------------------------- */
 Recorder::Recorder(QTranslator *trans, QWidget *parent)
-    : QDialog(parent, Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowMinMaxButtonsHint),
+    : QDialog(parent, Qt::Window),
     ui(new Ui::Recorder)
 {
    ui->setupUi(this);
 
-   bRecord      = true;
-   bLogosReady  = false;
-   pTranslator  = trans;
-   iEpgOffset   = 0;
-   sLogoPath    = dwnLogos.GetLogoPath();
+   bRecord        = true;
+   bLogosReady    = false;
+   bPendingRecord = false;
+   pTranslator    = trans;
+   iEpgOffset     = 0;
+   uiArchivGmt    = 0;
+   sLogoPath      = dwnLogos.GetLogoPath();
 
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), "vlc-record.log");
+
+   // set this dialog as parent for settings and timerRec ...
+   Settings.setParent(this, Qt::Dialog);
+   timeRec.setParent(this, Qt::Dialog);
 
    // if main settings aren't done, start settings dialog ...
    if ((Settings.GetPasswd() == "")
@@ -75,26 +81,35 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.SetKartinaTrigger(&Trigger);
    timeRec.SetSettings(&Settings);
 
+   // create systray ...
+
    // connect signals and slots ...
-   connect (&KartinaTv, SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
-   connect (&KartinaTv, SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
-   connect (&KartinaTv, SIGNAL(sigGotStreamURL(QString)), this, SLOT(slotStreamURL(QString)));
-   connect (&KartinaTv, SIGNAL(sigGotCookie()), this, SLOT(slotCookie()));
-   connect (&KartinaTv, SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
-   connect (&KartinaTv, SIGNAL(sigTimeShiftSet()), this, SLOT(slotTimeShift()));
-   connect (&Refresh,   SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
+   connect (&KartinaTv,  SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
+   connect (&KartinaTv,  SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
+   connect (&KartinaTv,  SIGNAL(sigGotStreamURL(QString)), this, SLOT(slotStreamURL(QString)));
+   connect (&KartinaTv,  SIGNAL(sigGotCookie()), this, SLOT(slotCookie()));
+   connect (&KartinaTv,  SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
+   connect (&KartinaTv,  SIGNAL(sigTimeShiftSet()), this, SLOT(slotTimeShift()));
+   connect (&Refresh,    SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
    connect (ui->textEpg, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
-   connect (&dwnLogos, SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
-   connect (&Settings, SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
-   connect (&KartinaTv, SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
-   connect (&Settings, SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
-   connect (&KartinaTv, SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
-   connect (&timeRec, SIGNAL(sigAllDone()), this, SLOT(slotTimerRecordDone()));
+   connect (&dwnLogos,   SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
+   connect (&Settings,   SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
+   connect (&KartinaTv,  SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
+   connect (&Settings,   SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
+   connect (&KartinaTv,  SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
+   connect (&timeRec,    SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
+   connect (&timeRec,    SIGNAL(sigRecActive()), this, SLOT(slotTimerRecActive()));
+   connect (&timeRec,    SIGNAL(sigSendStatusMsg(QString,QString)), this, SLOT(slotTimerStatusMsg(QString,QString)));
 
    // -------------------------------------------
    // create epg nav bar ...
    // -------------------------------------------
    TouchEpgNavi (true);
+
+   // -------------------------------------------
+   // create systray ...
+   // -------------------------------------------
+   CreateSystray();
 
    // set logo path for epg browser and timer record ...
    ui->textEpg->SetLogoDir(sLogoPath);
@@ -125,7 +140,71 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 \----------------------------------------------------------------- */
 Recorder::~Recorder()
 {
+   // systray stuff ...
+   if (trayIcon)
+   {
+      delete trayIcon;
+   }
+
    delete ui;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: CreateSystray
+|  Begin: 26.01.2010 / 16:05:00
+|  Author: Joerg Neubert
+|  Description: create systray icon
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::CreateSystray()
+{
+   trayIcon = new QSystemTrayIcon (this);
+
+   if (trayIcon)
+   {
+      // set icon ...
+      trayIcon->setIcon(QIcon(":/app/tv"));
+
+      // set tooltip ...
+      trayIcon->setToolTip(tr("vlc-record - Click to activate!"));
+
+      // connect any click with slot ...
+      connect (trayIcon,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+               this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSystrayActivated
+|  Begin: 26.01.2010 / 16:05:00
+|  Author: Joerg Neubert
+|  Description: systray icon clicked, restore app window ...
+|
+|  Parameters: what kind of click ...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
+{
+   switch (reason)
+   {
+   case QSystemTrayIcon::MiddleClick:
+   case QSystemTrayIcon::DoubleClick:
+   case QSystemTrayIcon::Trigger:
+   case QSystemTrayIcon::Context:
+      if (isHidden())
+      {
+         showNormal();
+         resize(760, 460);
+         trayIcon->hide();
+      }
+      break;
+   default:
+      break;
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -257,17 +336,36 @@ void Recorder::TouchEpgNavi (bool bCreate)
 \----------------------------------------------------------------- */
 void Recorder::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
+   QDialog::changeEvent(e);
+   switch (e->type())
+   {
+   case QEvent::LanguageChange:
+      ui->retranslateUi(this);
 
-        // translate manual created navbar ...
-        TouchEpgNavi (false);
-        break;
-    default:
-        break;
-    }
+      // translate manual created navbar ...
+      TouchEpgNavi (false);
+      break;
+
+   case QEvent::WindowStateChange:
+      // only hide window, if trayicon stuff is available ...
+      if (QSystemTrayIcon::isSystemTrayAvailable ())
+      {
+         if (isMinimized())
+         {
+            if (Settings.HideToSystray())
+            {
+               // Call the Hide Slot after 250ms
+               // to prozess other events ....
+               QTimer::singleShot(250, this, SLOT(hide()));
+               trayIcon->show();
+            }
+         }
+      }
+      break;
+
+   default:
+      break;
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -327,6 +425,9 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem = new CChanListWidgetItem (sLine, chanlist[i].iId, chanlist[i].sName, ui->listWidget);
          }
 
+         // store program ...
+         pItem->SetProgram(chanlist[i].sProgramm);
+
          // create tool tip with programm info ...
          sToolTip = tr("<b style='color: red;'>%1</b><br>\n"
                        "<b>Programm:</b> %2<br>\n"
@@ -359,17 +460,38 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 \----------------------------------------------------------------- */
 int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv)
 {
-   QDateTime now    = QDateTime::currentDateTime();
-   QString sTarget  = QString("%1\\%2_%3").arg(Settings.GetTargetDir()).arg(sChannel).arg(now.toString("yyyy-MM-dd_hh-mm-ss"));
-   QString fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
-                       sTarget, tr("Transport Stream (*.ts);;AVI File (*.avi)"));
-   QRegExp rx("^.*[.]{1}([a-zA-Z]*)$");
-   if(rx.indexIn(fileName) > -1)
+   int       iRV      = -1;
+   QDateTime now      = QDateTime::currentDateTime();
+   QString   sTarget  = QString("%1/%2 (%3)").arg(Settings.GetTargetDir())
+                       .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh:mm"));
+
+   QString   sExt     = "ts", sFilter;
+   QString   fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
+                        sTarget, QString("Transport Stream (*.ts);;AVI File (*.avi)"),
+                        &sFilter);
+
+   if (fileName != "")
    {
+      // which filter was used ... ?
+      if (sFilter == "Transport Stream (*.ts)")
+      {
+         sExt = "ts";
+      }
+      else if (sFilter ==  "AVI File (*.avi)")
+      {
+         sExt = "avi";
+      }
+
+      QFileInfo info(fileName);
+
+      // re-create complete file name ...
+      fileName = QString ("%1/%2.%3").arg(info.absolutePath())
+                 .arg(info.completeBaseName()).arg(sExt);
+
       QString sCmdLine = VLC_REC_TEMPL;
       sCmdLine.replace(TMPL_VLC, Settings.GetVLCPath());
       sCmdLine.replace(TMPL_URL, sURL);
-      sCmdLine.replace(TMPL_MUX, rx.cap(1));
+      sCmdLine.replace(TMPL_MUX, sExt);
       sCmdLine.replace(TMPL_DST, fileName);
 
       if (bArchiv)
@@ -383,20 +505,20 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
          sCmdLine += QString(" --http-caching=%1 --no-http-reconnect").arg(iCacheTime);
       }
 
-      VlcLog.LogInfo(QString("Starting VLC using following command line:\n%1\n").arg(sCmdLine));
+      VlcLog.LogInfo(tr("Starting VLC using following command line:\n") + sCmdLine);
 
       // Start the QProcess instance.
-      QProcess::startDetached(sCmdLine);
-   }
-   else
-   {
-      QMessageBox::critical(this, tr("Error!"), tr("Can't recognice file extension!"));
+      if(!QProcess::startDetached(sCmdLine))
+      {
+         QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+      }
+      else
+      {
+         iRV = 0;
+      }
    }
 
-   /* O.k., everything is fine now, leave the Qt application. The external program
-    * will continue running.
-    */
-   return 0;
+   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -411,6 +533,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
 \----------------------------------------------------------------- */
 int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
 {
+   int     iRV      = -1;
    QString sCmdLine = VLC_PLAY_TEMPL;
    sCmdLine.replace(TMPL_VLC, Settings.GetVLCPath());
    sCmdLine.replace(TMPL_URL, sURL);
@@ -426,15 +549,19 @@ int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
       sCmdLine += QString(" --http-caching=%1 --no-http-reconnect").arg(iCacheTime);
    }
 
-   VlcLog.LogInfo(QString("Starting VLC using following command line:\n%1\n").arg(sCmdLine));
+   VlcLog.LogInfo(tr("Starting VLC using following command line:\n") + sCmdLine);
 
    // Start the QProcess instance.
-   QProcess::startDetached(sCmdLine);
+   if(!QProcess::startDetached(sCmdLine))
+   {
+      QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+   }
+   else
+   {
+      iRV = 0;
+   }
 
-   /* O.k., everything is fine now, leave the Qt application. The external program
-    * will continue running.
-    */
-   return 0;
+   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -574,7 +701,12 @@ void Recorder::slotStreamURL(QString str)
 
    if (pItem)
    {
-      sChan = pItem->text();
+      sChan = CleanShowName(pItem->GetProgram());
+
+      if (sChan == "")
+      {
+         sChan = pItem->text();
+      }
    }
 
    if (bRecord)
@@ -601,18 +733,7 @@ void Recorder::slotStreamURL(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotCookie()
 {
-   // if there are pending records, we need the timeshift
-   // from the timer record ...
-   if (timeRec.PendingRecords())
-   {
-      VlcLog.LogInfo(tr("timeRec reports pending records!\n"));
-      Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, timeRec.GetTimerRecTimeShift());
-   }
-   else
-   {
-      VlcLog.LogInfo(tr("timeRec doesn't report pending records!\n"));
-      Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
-   }
+   Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
 }
 
 /* -----------------------------------------------------------------\
@@ -752,7 +873,7 @@ void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
 \----------------------------------------------------------------- */
 void Recorder::EnableDisableDlg (bool bEnable)
 {
-   if (bEnable && timeRec.PendingRecords())
+   if (bEnable && bPendingRecord)
    {
       bEnable = false;
    }
@@ -900,27 +1021,27 @@ void Recorder::slotEpgAnchor (const QUrl &link)
       uint uiEnd   = link.encodedQueryItemValue(QByteArray("end")).toUInt();
       int  iChan   = link.encodedQueryItemValue(QByteArray("cid")).toInt();
 
-      timeRec.SetRecInfo(uiStart, uiEnd, iChan);
+      timeRec.SetRecInfo(uiStart, uiEnd, iChan, CleanShowName(ui->textEpg->ShowName(uiStart)));
       timeRec.exec();
-
-      if (timeRec.PendingRecords())
-      {
-         EnableDisableDlg(false);
-      }
-      else
-      {
-         EnableDisableDlg();
-      }
    }
 
    if (ok)
    {
-      QString cid    = link.encodedQueryItemValue(QByteArray("cid"));
-      QString gmt    = link.encodedQueryItemValue(QByteArray("gmt"));
-      QString req    = QString("m=channels&act=get_stream_url&cid=%1&gmt=%2")
-                       .arg(cid.toInt()).arg(gmt.toUInt());
+      if (!bPendingRecord)
+      {
+         QString cid    = link.encodedQueryItemValue(QByteArray("cid"));
+         QString gmt    = link.encodedQueryItemValue(QByteArray("gmt"));
+         QString req    = QString("m=channels&act=get_stream_url&cid=%1&gmt=%2")
+                          .arg(cid.toInt()).arg(gmt.toUInt());
 
-      Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req);
+         uiArchivGmt    = gmt.toUInt();
+
+         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req);
+      }
+      else
+      {
+         QMessageBox::warning(this, tr("Warning!"), tr("Timer Record active!"));
+      }
    }
 }
 
@@ -1036,18 +1157,22 @@ void Recorder::slotArchivURL(QString str)
 {
    QString              sChan, sUrl;
 
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
+   sChan = CleanShowName(ui->textEpg->ShowName(uiArchivGmt));
+
+   if (sChan == "")
+   {
+      // if we can't get name from show, use channel name ...
+      CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
+
+      if (pItem)
+      {
+         sChan = pItem->text();
+      }
+   }
 
    XMLParser.SetByteArray(str.toUtf8());
 
    sUrl = XMLParser.ParseArchivURL();
-
-   VlcLog.LogInfo(sUrl + "\n");
-
-   if (pItem)
-   {
-      sChan = pItem->text();
-   }
 
    if (bRecord)
    {
@@ -1111,7 +1236,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 \----------------------------------------------------------------- */
 void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
 {
-   if (!timeRec.PendingRecords())
+   if (!bPendingRecord)
    {
       CChanListWidgetItem *pItem = (CChanListWidgetItem *)item;
 
@@ -1177,26 +1302,119 @@ void Recorder::on_lineSearch_returnPressed()
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_pushTimerRec_clicked
+|  Begin: 26.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: timeRec button clicked --> show window
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
 void Recorder::on_pushTimerRec_clicked()
 {
    uint now = QDateTime::currentDateTime().toTime_t();
    timeRec.SetRecInfo(now, now, -1);
    timeRec.exec();
+}
 
-   if (timeRec.PendingRecords())
+/* -----------------------------------------------------------------\
+|  Method: slotTimerRecordDone
+|  Begin: 26.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: recording done, enable dialog items
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotTimerRecordDone()
+{
+   VlcLog.LogInfo(tr("timeRec reports: record done!"));
+   bPendingRecord = false;
+   EnableDisableDlg();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotTimerRecActive
+|  Begin: 26.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: recording starts, disable dialog items
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotTimerRecActive()
+{
+   VlcLog.LogInfo(tr("timeRec reports: record active!"));
+   bPendingRecord = true;
+   EnableDisableDlg(false);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotTimerStatusMsg
+|  Begin: 26.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: change record timer status message
+|
+|  Parameters: message, color as string
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotTimerStatusMsg(const QString &sMsg, const QString &sColor)
+{
+   ui->labTimerInfo->setText(sMsg);
+   ui->labTimerInfo->setStyleSheet(QString(LABEL_STYLE).arg("labTimerInfo").arg(sColor));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: CleanShowName
+|  Begin: 26.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: try to create a nice looking program name
+|
+|  Parameters: ref. to org. name
+|
+|  Returns: cleaned name
+\----------------------------------------------------------------- */
+QString Recorder::CleanShowName(const QString &str)
+{
+   QString sName = str;
+   sName.replace(QString("&quot;"), QString(" "));
+   sName.replace(QString("\""), QString(" "));
+   sName.replace(QString("'"), QString(" "));
+   sName.replace(QString("-"), QString(" "));
+   sName.replace(QString("."), QString(" "));
+   sName.replace(QString(","), QString(" "));
+   sName = sName.simplified();
+
+   // find space at good position ...
+   int iIdx = sName.indexOf(QChar(' '), MAX_NAME_LEN - 1);
+
+   if (iIdx <= (MAX_NAME_LEN + 5))
    {
-      EnableDisableDlg(false);
+      // found space at needed position ...
+      sName = sName.left(iIdx);
    }
    else
    {
-      EnableDisableDlg();
-   }
-}
+      iIdx = sName.indexOf(QChar(' '));
 
-void Recorder::slotTimerRecordDone()
-{
-   VlcLog.LogInfo(tr("timeRec reports: All done!\n"));
-   EnableDisableDlg();
+      if ((iIdx > 1) && (iIdx <= (MAX_NAME_LEN + 5)))
+      {
+         // find cut position shorter than name length ...
+         sName = sName.left(iIdx);
+      }
+      else
+      {
+         // can't find good cut position ...
+         sName = sName.left(MAX_NAME_LEN);
+      }
+   }
+
+   return sName;
 }
 
 /************************* History ***************************\

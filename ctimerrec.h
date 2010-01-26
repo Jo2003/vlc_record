@@ -44,17 +44,34 @@ namespace rec
       QString Name;
    };
 
+   enum eRecState
+   {
+      REC_READY,
+      REC_STBY,
+      REC_RUNNING,
+      REC_DONE,
+      REC_UNKNOWN = 255
+   };
+
    struct SRecEntry
    {
-      uint id;
-      int  cid;
-      uint uiStart;
-      uint uiEnd;
-      QString sName;
-      bool bIsStarted;
+      uint      id;
+      int       cid;
+      int       iTimeShift;
+      uint      uiStart;
+      uint      uiEnd;
+      QString   sName;
+      eRecState eState;
    };
 }
 
+/********************************************************************\
+|  Class: CTimerRec
+|  Date:  19.01.2010 / 16:00:28
+|  Author: Joerg Neubert
+|  Description: dialog class for timer record stuff
+|
+\********************************************************************/
 class CTimerRec : public QDialog
 {
     Q_OBJECT
@@ -65,7 +82,7 @@ public:
 
    void SetTimeShift (int iTs);
    void SetChanList  (const QVector<cparser::SChan> &chanList);
-   void SetRecInfo (uint uiStart, uint uiEnd, int cid);
+   void SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &name = QString());
    void SetLogoPath (const QString &str);
    void SetXmlParser (CKartinaXMLParser *pParser);
    void SetKartinaTrigger (CWaitTrigger *pTrig);
@@ -76,15 +93,13 @@ public:
    void AddJob (rec::SRecEntry &entry);
    void DelRow (uint uiId);
    void InitTab ();
-   int  GetTimerRecTimeShift ();
-   bool PendingRecords ();
    void StartTimer ();
 
 protected:
    void changeEvent(QEvent *e);
    int SanityCheck (const QDateTime &start, const QDateTime &end);
-   void GmtToTimeShift (uint &when);
-   void TimeShiftToGmt (uint &when);
+   void GmtToTimeShift (uint &when, int iEntryTimeShift);
+   void TimeShiftToGmt (uint &when, int iEntryTimeShift);
 
 private:
    Ui::CTimerRec *r_ui;
@@ -102,7 +117,9 @@ private:
    CSettingsDlg      *pSettings;
 
 signals:
-   void sigAllDone ();
+   void sigRecDone ();
+   void sigRecActive ();
+   void sigSendStatusMsg (const QString &sMsg, const QString &sColor);
 
 private slots:
    void on_btnDel_clicked();

@@ -55,6 +55,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->checkAdult->setCheckState((Qt::CheckState)IniFile.GetIntData("AllowAdult"));
       m_ui->checkFixTime->setCheckState((Qt::CheckState)IniFile.GetIntData("FixTime"));
       m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
+      m_ui->checkHideToSystray->setCheckState((Qt::CheckState)IniFile.GetIntData("TrayHide"));
 
       // combo boxes ...
       int iIdx;
@@ -188,6 +189,7 @@ void CSettingsDlg::on_pushSave_clicked()
    IniFile.AddData("AllowAdult", (int)m_ui->checkAdult->checkState());
    IniFile.AddData("FixTime", (int)m_ui->checkFixTime->checkState());
    IniFile.AddData("Refresh", (int)m_ui->checkRefresh->checkState());
+   IniFile.AddData("TrayHide", (int)m_ui->checkHideToSystray->checkState());
 
    // combo boxes ...
    IniFile.AddData("Language", m_ui->cbxLanguage->currentText());
@@ -325,6 +327,11 @@ bool CSettingsDlg::FixTime()
 bool CSettingsDlg::DoRefresh()
 {
    return (m_ui->checkRefresh->checkState() == Qt::Checked) ? true : false;
+}
+
+bool CSettingsDlg::HideToSystray()
+{
+   return (m_ui->checkHideToSystray->checkState() == Qt::Checked) ? true : false;
 }
 
 int CSettingsDlg::GetProxyPort ()

@@ -31,26 +31,18 @@ public:
    {
       sChan  = sName;
       id     = iId;
-      sStart = "";
-      sEnd   = "";
    }
 
    CChanListWidgetItem (const QString &sText, int iId, QListWidget * parent)
          : QListWidgetItem (sText, parent)
    {
-      sChan  = "";
       id     = iId;
-      sStart = "";
-      sEnd   = "";
    }
 
    CChanListWidgetItem (const QString &sText, QListWidget * parent)
          : QListWidgetItem (sText, parent)
    {
-      sChan  = "";
       id     = -1;
-      sStart = "";
-      sEnd   = "";
    }
 
    CChanListWidgetItem (const QIcon &icon, const QString &sText, int iId, const QString &sName, QListWidget * parent)
@@ -58,17 +50,12 @@ public:
    {
       sChan  = sName;
       id     = iId;
-      sStart = "";
-      sEnd   = "";
    }
 
    CChanListWidgetItem (const QIcon &icon, const QString &sText, int iId, QListWidget * parent)
          : QListWidgetItem (icon, sText, parent)
    {
-      sChan  = "";
       id     = iId;
-      sStart = "";
-      sEnd   = "";
    }
 
    void SetName (const QString &sName)
@@ -107,8 +94,18 @@ public:
       return sEnd;
    }
 
+   void SetProgram (const QString &prog)
+   {
+      sProgram = prog;
+   }
+
+   QString &GetProgram ()
+   {
+      return sProgram;
+   }
+
 protected:
-   QString sChan, sStart, sEnd;
+   QString sChan, sStart, sEnd, sProgram;
    int     id;
 };
 

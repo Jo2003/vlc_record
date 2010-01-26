@@ -90,6 +90,12 @@ TMPL_ROWS \
 "  border-bottom-color: #eee;\n"\
 "}\n"
 
+#define LABEL_STYLE \
+"QLabel#%1 {\n"\
+"  font-weight: bold;\n"\
+"  color: %2;\n"\
+"}\n"
+
 #endif /* __011910__TEMPLATES_H */
 /************************* History ***************************\
 | $Log$

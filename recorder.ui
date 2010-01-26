@@ -464,7 +464,7 @@ background-attachment: fixed;
           <number>2</number>
          </property>
          <property name="rightMargin">
-          <number>4</number>
+          <number>6</number>
          </property>
          <property name="bottomMargin">
           <number>2</number>
@@ -590,7 +590,7 @@ color: white;
 }</string>
            </property>
            <property name="text">
-            <string>Timer Record State</string>
+            <string>Timer Ready</string>
            </property>
           </widget>
          </item>

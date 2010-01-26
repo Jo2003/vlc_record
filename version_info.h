@@ -24,7 +24,7 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.09 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.10 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
@@ -50,5 +50,7 @@
 | 2010-01-23: Version 1.09
 | - switch language only when settings are saved
 |   (bugfix for segfault on some XP and Linux)
+| 2010-01-26: Version 1.10
+| - first version with working timer record (more tests needed)
 \*************************************************************/
 

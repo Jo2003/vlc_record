@@ -15,6 +15,7 @@
 #include <QtGui/QDialog>
 #include <QString>
 #include <QFile>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QTabBar>
 #include <QToolButton>
@@ -30,6 +31,8 @@
 #include <QPixmap>
 #include <QTimer>
 #include <QTranslator>
+#include <QSystemTrayIcon>
+#include <QMenu>
 
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
@@ -82,11 +85,14 @@ private:
     QTimer                         Refresh;
     bool                           bRecord;
     bool                           bLogosReady;
+    bool                           bPendingRecord;
     CChanLogo                      dwnLogos;
     QString                        sLogoPath;
     int                            iEpgOffset;
     QTabBar                       *pEpgNavbar;
     CTimerRec                      timeRec;
+    uint                           uiArchivGmt;
+    QSystemTrayIcon               *trayIcon;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -96,6 +102,8 @@ protected:
     void SetProgress (const QString &start, const QString &end);
     void changeEvent(QEvent *e);
     void TouchEpgNavi (bool bCreate);
+    QString CleanShowName (const QString &str);
+    void CreateSystray ();
 
 private slots:
     void on_pushTimerRec_clicked();
@@ -123,7 +131,10 @@ private slots:
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);
     void slotSetSServer (int iSrv);
+    void slotTimerRecActive ();
     void slotTimerRecordDone ();
+    void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
+    void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
 };
 
 #endif /* __011910__RECORDER_H */

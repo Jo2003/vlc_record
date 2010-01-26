@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
+    <width>530</width>
     <height>360</height>
    </rect>
   </property>
@@ -46,6 +46,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <height>0</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+   font-weight: bold;
+   color: white;
+}</string>
+          </property>
           <property name="text">
            <string>Start: </string>
           </property>
@@ -69,6 +75,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
         </item>
         <item>
          <widget class="QLabel" name="labEnd">
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+   font-weight: bold;
+   color: white;
+}</string>
+          </property>
           <property name="text">
            <string>End: </string>
           </property>
@@ -88,6 +100,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <width>60</width>
             <height>0</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+   font-weight: bold;
+   color: white;
+}</string>
           </property>
           <property name="text">
            <string>Name: </string>
@@ -109,6 +127,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <height>0</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+   font-weight: bold;
+   color: white;
+}</string>
+          </property>
           <property name="text">
            <string>Channel: </string>
           </property>
@@ -122,6 +146,74 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <height>0</height>
            </size>
           </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labTimeShift">
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+   font-weight: bold;
+   color: white;
+}</string>
+          </property>
+          <property name="text">
+           <string>Time Shift:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="cbxTimeShift">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <item>
+           <property name="text">
+            <string>0</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>2</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>3</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>8</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>9</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>10</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>11</string>
+           </property>
+          </item>
          </widget>
         </item>
         <item>
@@ -223,6 +315,11 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
      <column>
       <property name="text">
        <string>Ch.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>TS.</string>
       </property>
      </column>
      <column>

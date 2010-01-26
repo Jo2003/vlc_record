@@ -55,6 +55,7 @@ public:
     bool AllowEros ();
     bool FixTime ();
     bool DoRefresh ();
+    bool HideToSystray ();
     int GetRefrInt ();
     int GetProxyPort ();
     int GetBufferTime ();

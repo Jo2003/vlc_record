@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>340</height>
+    <width>473</width>
+    <height>381</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -380,20 +380,40 @@
         </layout>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupFixTime">
-         <property name="title">
-          <string> Time Correction </string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QCheckBox" name="checkFixTime">
-            <property name="text">
-             <string>Try to fix time offset</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QHBoxLayout" name="hLayoutTimeSystray">
+         <item>
+          <widget class="QGroupBox" name="groupSystray">
+           <property name="title">
+            <string> Minimize </string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QCheckBox" name="checkHideToSystray">
+              <property name="text">
+               <string>Minimize to Systray</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupFixTime">
+           <property name="title">
+            <string> Time Correction </string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QCheckBox" name="checkFixTime">
+              <property name="text">
+               <string>Try to fix time offset</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QGroupBox" name="groupLogging">

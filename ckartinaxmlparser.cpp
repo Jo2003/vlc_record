@@ -104,7 +104,7 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
                      iTimeShift    = rx.cap(1).toInt();
                      bGotTimeShift = true;
 
-                     VlcLog.LogInfo(tr("TimeShift is set to %1 hours.\n").arg(iTimeShift));
+                     VlcLog.LogInfo(tr("TimeShift is set to %1 hours.").arg(iTimeShift));
                   }
                }
             }
@@ -386,7 +386,7 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
      Round offset to full 30 minutes (min. timezone step)
      */
 
-   VlcLog.LogInfo(tr("%1 / %2():%3 Kartina.tv reports client time as %4\n")
+   VlcLog.LogInfo(tr("%1 / %2():%3 Kartina.tv reports client time as %4")
                   .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(str));
 
 
@@ -406,7 +406,7 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
       iOffset = 0;
    }
 
-   VlcLog.LogInfo(tr("%1 / %2():%3 Set time offset to %4 seconds!\n")
+   VlcLog.LogInfo(tr("%1 / %2():%3 Set time offset to %4 seconds!")
                   .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iOffset));
 }
 

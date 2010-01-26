@@ -30,6 +30,7 @@ CEpgBrowser::CEpgBrowser(QWidget *parent) :
    iTimeShift = 0;
    iCid       = 0;
    sLogoDir   = "";
+   mProgram.clear();
 }
 
 /* -----------------------------------------------------------------\
@@ -51,6 +52,9 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
    QDateTime dtStartThis, dtStartNext;
    bool      bMark;
 
+   // clear program ...
+   mProgram.clear();
+
    // store channel id ...
    iCid = iChanID;
 
@@ -65,6 +69,9 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
 
    for (int i = 0; i < epglist.size(); i ++)
    {
+      // store start time and show name ...
+      mProgram[epglist[i].uiGmt] = epglist[i].sName;
+
       bMark       = false;
       sProgCell   = "";
       dtStartThis = QDateTime::fromTime_t(epglist[i].uiGmt + iTimeShift * 3600);
@@ -218,6 +225,21 @@ bool CEpgBrowser::ArchivAvailable(uint uiThisShow, uint uiNextShow)
    }
 
    return bArchiv;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ShowName
+|  Begin: 16.01.2010 / 10:52:12
+|  Author: Joerg Neubert
+|  Description: get the program name
+|
+|  Parameters: timestamp for this show
+|
+|  Returns: show name
+\----------------------------------------------------------------- */
+QString CEpgBrowser::ShowName(uint uiTimeT)
+{
+   return mProgram[uiTimeT];
 }
 
 /************************* History ***************************\
