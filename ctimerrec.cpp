@@ -758,6 +758,7 @@ void CTimerRec::slotRecTimer()
       if (JobList.isEmpty())
       {
          emit sigSendStatusMsg(tr("Timer Ready"), QString("white"));
+         emit sigRecDone();
       }
       else
       {
