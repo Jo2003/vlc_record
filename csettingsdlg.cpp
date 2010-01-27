@@ -266,6 +266,68 @@ void CSettingsDlg::on_btnSaveStreamServer_clicked()
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: SaveWindowRect
+|  Begin: 27.01.2010 / 11:22:39
+|  Author: Joerg Neubert
+|  Description: save windows position in ini file
+|
+|  Parameters: windows position / size
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SaveWindowRect (const QRect &wnd)
+{
+   QString sGeo = QString("%1;%2;%3;%4").arg(wnd.x()).arg(wnd.y())
+                  .arg(wnd.width()).arg(wnd.height());
+
+   IniFile.AddData ("WndRect", sGeo);
+
+   IniFile.SaveIni();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: GetWindowRect
+|  Begin: 27.01.2010 / 11:22:39
+|  Author: Joerg Neubert
+|  Description: get windows position / size from ini file
+|
+|  Parameters: ref. to QRect
+|
+|  Returns:  0 ==> ok
+|           -1 ==> any error
+\----------------------------------------------------------------- */
+QRect CSettingsDlg::GetWindowRect (bool *ok)
+{
+   QString sGeo = IniFile.GetStringData("WndRect");
+   QRect   wnd;
+
+   if (ok)
+   {
+      *ok = false;
+   }
+
+   if (sGeo.length() > 0)
+   {
+      QRegExp rx("^([0-9]*);([0-9]*);([0-9]*);([0-9]*).*$");
+
+      if (rx.indexIn(sGeo) > -1)
+      {
+         wnd.setX(rx.cap(1).toInt());
+         wnd.setY(rx.cap(2).toInt());
+         wnd.setWidth(rx.cap(3).toInt());
+         wnd.setHeight(rx.cap(4).toInt());
+
+         if (ok)
+         {
+            *ok = true;
+         }
+      }
+   }
+
+   return wnd;
+}
+
 //===================================================================
 // return internal stored values ==>
 //===================================================================

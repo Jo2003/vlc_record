@@ -20,17 +20,20 @@
 #define TMPL_MUX "{[%MUX%]}"
 #define TMPL_DST "{[%DST%]}"
 
-#define VLC_REC_TEMPL  "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
-#define VLC_PLAY_TEMPL "\"" TMPL_VLC "\" \"" TMPL_URL "\""
+#define VLC_REC_TEMPL        "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
+#define VLC_REC_TEMPL_SILENT "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}\" --qt-start-minimized"
+#define VLC_PLAY_TEMPL       "\"" TMPL_VLC "\" \"" TMPL_URL "\""
 
 
 /**********************************************************/
 /*                      HTML templates                    */
 /**********************************************************/
-#define TMPL_TIME "{[%TIME%]}"
-#define TMPL_PROG "{[%PROG%]}"
-#define TMPL_ROWS "{[%ROWS%]}"
-#define TMPL_HEAD "{[%HEAD%]}"
+#define TMPL_TIME  "{[%TIME%]}"
+#define TMPL_PROG  "{[%PROG%]}"
+#define TMPL_ROWS  "{[%ROWS%]}"
+#define TMPL_HEAD  "{[%HEAD%]}"
+#define TMPL_START "{[%START%]}"
+#define TMPL_END   "{[%END%]}"
 
 #define EPG_TMPL  \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
@@ -95,6 +98,12 @@ TMPL_ROWS \
 "  font-weight: bold;\n"\
 "  color: %2;\n"\
 "}\n"
+
+#define PROG_INFO_TOOL_TIP \
+"<b style='color: red;'>%1</b><br />\n"\
+"<b>" TMPL_PROG  "</b> %2<br />\n"\
+"<b>" TMPL_START "</b> %3<br />\n"\
+"<b>" TMPL_END   "</b> %4\n"
 
 #endif /* __011910__TEMPLATES_H */
 /************************* History ***************************\

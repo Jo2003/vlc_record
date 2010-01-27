@@ -33,6 +33,7 @@
 #include <QTranslator>
 #include <QSystemTrayIcon>
 #include <QMenu>
+#include <QWindowStateChangeEvent>
 
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
@@ -92,7 +93,9 @@ private:
     QTabBar                       *pEpgNavbar;
     CTimerRec                      timeRec;
     uint                           uiArchivGmt;
-    QSystemTrayIcon               *trayIcon;
+    QSystemTrayIcon                trayIcon;
+    QRect                          sizePos;
+
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -104,6 +107,9 @@ protected:
     void TouchEpgNavi (bool bCreate);
     QString CleanShowName (const QString &str);
     void CreateSystray ();
+
+    virtual void showEvent (QShowEvent * event);
+    virtual void hideEvent(QHideEvent * event);
 
 private slots:
     void on_pushTimerRec_clicked();
@@ -135,6 +141,10 @@ private slots:
     void slotTimerRecordDone ();
     void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
     void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
+
+signals:
+    void sigShow ();
+    void sigHide ();
 };
 
 #endif /* __011910__RECORDER_H */

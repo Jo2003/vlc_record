@@ -61,6 +61,9 @@ public:
     int GetBufferTime ();
     vlclog::eLogLevel GetLogLevel ();
 
+    void SaveWindowRect (const QRect &wnd);
+    QRect GetWindowRect (bool *ok = NULL);
+
 protected:
     void changeEvent(QEvent *e);
 

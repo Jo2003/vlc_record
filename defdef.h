@@ -27,6 +27,7 @@
 #define LOGO_PATH         "/img/ico/24"
 #define LOGO_DIR          INI_DIR "/logos"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"
+#define LOG_FILE_NAME     "vlc-record.log"
 #define DEF_TZ_STEP       1800  // time zone step is min. 30 minutes (1800 sec.) ...
 #define DEF_MAX_DIFF      600   // accept inaccuracy up too xxx sec. ...
 #define EPG_NAVBAR_HEIGHT 24

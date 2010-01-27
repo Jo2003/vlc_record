@@ -25,5 +25,6 @@
         <file alias="play">resources/play.png</file>
         <file alias="record">resources/record.png</file>
         <file alias="timer">resources/old_clock.png</file>
+        <file alias="systray">resources/television.png</file>
     </qresource>
 </RCC>

@@ -29,7 +29,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
     ui(new Ui::Recorder)
 {
    ui->setupUi(this);
-   trayIcon       = NULL;
    bRecord        = true;
    bLogosReady    = false;
    bPendingRecord = false;
@@ -38,7 +37,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    uiArchivGmt    = 0;
    sLogoPath      = dwnLogos.GetLogoPath();
 
-   VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), "vlc-record.log");
+   VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), LOG_FILE_NAME);
 
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
@@ -81,8 +80,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.SetKartinaTrigger(&Trigger);
    timeRec.SetSettings(&Settings);
 
-   // create systray ...
-
    // connect signals and slots ...
    connect (&KartinaTv,  SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
    connect (&KartinaTv,  SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
@@ -100,6 +97,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&timeRec,    SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,    SIGNAL(sigRecActive()), this, SLOT(slotTimerRecActive()));
    connect (&timeRec,    SIGNAL(sigSendStatusMsg(QString,QString)), this, SLOT(slotTimerStatusMsg(QString,QString)));
+   connect (&trayIcon,   SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
+   connect (this,        SIGNAL(sigHide()), &trayIcon, SLOT(show()));
+   connect (this,        SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
 
    // -------------------------------------------
    // create epg nav bar ...
@@ -117,6 +117,15 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // enable button ...
    EnableDisableDlg(false);
+
+   // set last windows size / position ...
+   bool ok = false;
+   sizePos = Settings.GetWindowRect(&ok);
+
+   if (ok)
+   {
+      setGeometry(sizePos);
+   }
 
    // request authorisation ...
    Trigger.TriggerRequest(Kartina::REQ_COOKIE);
@@ -140,11 +149,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 \----------------------------------------------------------------- */
 Recorder::~Recorder()
 {
-   // systray stuff ...
-   if (trayIcon)
-   {
-      delete trayIcon;
-   }
+   // save last windows position / size ...
+   Settings.SaveWindowRect(geometry());
 
    delete ui;
 }
@@ -161,23 +167,9 @@ Recorder::~Recorder()
 \----------------------------------------------------------------- */
 void Recorder::CreateSystray()
 {
-   if (!trayIcon)
-   {
-      trayIcon = new QSystemTrayIcon (this);
-
-      if (trayIcon)
-      {
-         // set icon ...
-         trayIcon->setIcon(QIcon(":/app/tv"));
-
-         // connect any click with slot ...
-         connect (trayIcon,  SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                  this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
-      }
-   }
-
-   // set tooltip ...
-   trayIcon->setToolTip(tr("vlc-record - Click to activate!"));
+   trayIcon.setParent(this);
+   trayIcon.setIcon(QIcon(":/png/systray"));
+   trayIcon.setToolTip(tr("vlc-record - Click to activate!"));
 }
 
 /* -----------------------------------------------------------------\
@@ -201,8 +193,7 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
       if (isHidden())
       {
          showNormal();
-         resize(760, 460);
-         trayIcon->hide();
+         setGeometry(sizePos);
       }
       break;
    default:
@@ -340,8 +331,29 @@ void Recorder::TouchEpgNavi (bool bCreate)
 void Recorder::changeEvent(QEvent *e)
 {
    QDialog::changeEvent(e);
+
    switch (e->type())
    {
+   // catch minimize event ...
+   case QEvent::WindowStateChange:
+
+      // only hide window, if trayicon stuff is available ...
+      if (QSystemTrayIcon::isSystemTrayAvailable ())
+      {
+         if (isMinimized())
+         {
+            sizePos = geometry();
+
+            if (Settings.HideToSystray())
+            {
+               // hide dialog ...
+               hide ();
+            }
+         }
+      }
+      break;
+
+   // language switch ...
    case QEvent::LanguageChange:
       ui->retranslateUi(this);
 
@@ -350,23 +362,6 @@ void Recorder::changeEvent(QEvent *e)
 
       // translate systray tooltip ...
       CreateSystray();
-      break;
-
-   case QEvent::WindowStateChange:
-      // only hide window, if trayicon stuff is available ...
-      if (QSystemTrayIcon::isSystemTrayAvailable ())
-      {
-         if (isMinimized())
-         {
-            if (Settings.HideToSystray())
-            {
-               // Call the Hide Slot after 250ms
-               // to prozess other events ....
-               QTimer::singleShot(250, this, SLOT(hide()));
-               trayIcon->show();
-            }
-         }
-      }
       break;
 
    default:
@@ -435,11 +430,13 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          pItem->SetProgram(chanlist[i].sProgramm);
 
          // create tool tip with programm info ...
-         sToolTip = tr("<b style='color: red;'>%1</b><br>\n"
-                       "<b>Programm:</b> %2<br>\n"
-                       "<b>Start:</b> %3<br>\n<b>End:</b> %4")
-                       .arg(chanlist[i].sName).arg(chanlist[i].sProgramm)
-                       .arg(chanlist[i].sStart).arg(chanlist[i].sEnd);
+         sToolTip = PROG_INFO_TOOL_TIP;
+         sToolTip.replace(TMPL_PROG, tr("Program:"));
+         sToolTip.replace(TMPL_START, tr("Start:"));
+         sToolTip.replace(TMPL_END, tr("End:"));
+
+         sToolTip = sToolTip.arg(chanlist[i].sName).arg(chanlist[i].sProgramm)
+                            .arg(chanlist[i].sStart).arg(chanlist[i].sEnd);
 
          pItem->setToolTip(sToolTip);
 
@@ -1428,6 +1425,18 @@ QString Recorder::CleanShowName(const QString &str)
    }
 
    return sName;
+}
+
+void Recorder::showEvent(QShowEvent *event)
+{
+   emit sigShow();
+   QWidget::showEvent(event);
+}
+
+void Recorder::hideEvent(QHideEvent *event)
+{
+   emit sigHide();
+   QWidget::hideEvent(event);
 }
 
 /************************* History ***************************\
