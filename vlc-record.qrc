@@ -13,6 +13,8 @@
         <file alias="find">resources/find.png</file>
         <file alias="trash">resources/trash.ico</file>
         <file alias="timerrec">resources/timerrec.png</file>
+        <file alias="add">resources/add.png</file>
+        <file alias="del">resources/delete.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

@@ -500,12 +500,14 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
       if (bArchiv)
       {
          // add buffer value ...
-         sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1").arg(iCacheTime);
+         sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1 --video-title=\"%2\"")
+                     .arg(iCacheTime).arg(sChannel);
       }
       else
       {
          // add buffer value ...
-         sCmdLine += QString(" --http-caching=%1 --no-http-reconnect").arg(iCacheTime);
+         sCmdLine += QString(" --http-caching=%1 --no-http-reconnect --video-title=\"%2\"")
+                     .arg(iCacheTime).arg(sChannel);
       }
 
       VlcLog.LogInfo(tr("Starting VLC using following command line:\n") + sCmdLine);
@@ -534,7 +536,8 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
+int Recorder::StartVlcPlay (const QString &sURL, const QString &sChannel,
+                            int iCacheTime, bool bArchiv)
 {
    int     iRV      = -1;
    QString sCmdLine = VLC_PLAY_TEMPL;
@@ -544,12 +547,14 @@ int Recorder::StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv)
    if (bArchiv)
    {
       // add buffer value ...
-      sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1").arg(iCacheTime);
+      sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1 --video-title=\"%2\"")
+                  .arg(iCacheTime).arg(sChannel);
    }
    else
    {
       // add buffer value ...
-      sCmdLine += QString(" --http-caching=%1 --no-http-reconnect").arg(iCacheTime);
+      sCmdLine += QString(" --http-caching=%1 --no-http-reconnect --video-title=\"%2\"")
+                  .arg(iCacheTime).arg(sChannel);
    }
 
    VlcLog.LogInfo(tr("Starting VLC using following command line:\n") + sCmdLine);
@@ -696,6 +701,7 @@ void Recorder::slotChanList (QString str)
 void Recorder::slotStreamURL(QString str)
 {
    QString              sChan, sUrl;
+
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
    XMLParser.SetByteArray(str.toUtf8());
@@ -718,7 +724,7 @@ void Recorder::slotStreamURL(QString str)
    }
    else
    {
-      StartVlcPlay(sUrl, Settings.GetBufferTime());
+      StartVlcPlay(sUrl, sChan, Settings.GetBufferTime());
    }
 
    EnableDisableDlg();
@@ -1184,7 +1190,7 @@ void Recorder::slotArchivURL(QString str)
    }
    else
    {
-      StartVlcPlay(sUrl, Settings.GetBufferTime(), true);
+      StartVlcPlay(sUrl, sChan, Settings.GetBufferTime(), true);
    }
 
    EnableDisableDlg();

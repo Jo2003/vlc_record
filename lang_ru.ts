@@ -402,7 +402,7 @@ p, li { white-space: pre-wrap; }
         <location filename="csettingsdlg.ui" line="344"/>
         <source>Time (msec.):</source>
         <oldsource>Time (sec.):</oldsource>
-        <translation>Фремя (м-сек.):</translation>
+        <translation>Время (м-сек.):</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="352"/>

@@ -100,7 +100,7 @@ private:
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
     int StartVlcRec (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv = false);
-    int StartVlcPlay (const QString &sURL, int iCacheTime, bool bArchiv = false);
+    int StartVlcPlay (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv = false);
     void EnableDisableDlg (bool bEnable = true);
     void SetProgress (const QString &start, const QString &end);
     void changeEvent(QEvent *e);
