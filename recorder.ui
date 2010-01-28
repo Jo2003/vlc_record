@@ -19,7 +19,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog#Recorder {
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.7 grey, stop:1 #dedede);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);
 }</string>
   </property>
   <property name="locale">

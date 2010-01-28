@@ -56,6 +56,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->checkFixTime->setCheckState((Qt::CheckState)IniFile.GetIntData("FixTime"));
       m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
       m_ui->checkHideToSystray->setCheckState((Qt::CheckState)IniFile.GetIntData("TrayHide"));
+      m_ui->checkAskForName->setCheckState((Qt::CheckState)IniFile.GetIntData("AskRecFile"));
 
       // combo boxes ...
       int iIdx;
@@ -190,6 +191,7 @@ void CSettingsDlg::on_pushSave_clicked()
    IniFile.AddData("FixTime", (int)m_ui->checkFixTime->checkState());
    IniFile.AddData("Refresh", (int)m_ui->checkRefresh->checkState());
    IniFile.AddData("TrayHide", (int)m_ui->checkHideToSystray->checkState());
+   IniFile.AddData("AskRecFile", (int)m_ui->checkAskForName->checkState());
 
    // combo boxes ...
    IniFile.AddData("Language", m_ui->cbxLanguage->currentText());
@@ -373,27 +375,32 @@ QString CSettingsDlg::GetLanguage()
 
 bool CSettingsDlg::UseProxy ()
 {
-   return (m_ui->useProxy->checkState() == Qt::Checked) ? true : false;
+   return m_ui->useProxy->isChecked();
 }
 
 bool CSettingsDlg::AllowEros()
 {
-   return (m_ui->checkAdult->checkState() == Qt::Checked) ? true : false;
+   return m_ui->checkAdult->isChecked();
 }
 
 bool CSettingsDlg::FixTime()
 {
-   return (m_ui->checkFixTime->checkState() == Qt::Checked) ? true : false;
+   return m_ui->checkFixTime->isChecked();
 }
 
 bool CSettingsDlg::DoRefresh()
 {
-   return (m_ui->checkRefresh->checkState() == Qt::Checked) ? true : false;
+   return m_ui->checkRefresh->isChecked();
 }
 
 bool CSettingsDlg::HideToSystray()
 {
-   return (m_ui->checkHideToSystray->checkState() == Qt::Checked) ? true : false;
+   return m_ui->checkHideToSystray->isChecked();
+}
+
+bool CSettingsDlg::AskForRecFile()
+{
+   return m_ui->checkAskForName->isChecked();
 }
 
 int CSettingsDlg::GetProxyPort ()

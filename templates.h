@@ -21,7 +21,7 @@
 #define TMPL_DST "{[%DST%]}"
 
 #define VLC_REC_TEMPL        "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
-#define VLC_REC_TEMPL_SILENT "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}\" --qt-start-minimized"
+#define VLC_REC_TEMPL_SILENT "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}\""
 #define VLC_PLAY_TEMPL       "\"" TMPL_VLC "\" \"" TMPL_URL "\""
 
 

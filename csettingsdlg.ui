@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>473</width>
-    <height>381</height>
+    <width>461</width>
+    <height>452</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,179 +16,48 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="genSettings">
+     <widget class="QWidget" name="tabConnection">
       <attribute name="title">
-       <string>&amp;General Settings</string>
+       <string>&amp;Access</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="60,40">
-         <item>
-          <widget class="QGroupBox" name="groupLanguage">
-           <property name="title">
-            <string> Language </string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="label_10">
-              <property name="text">
-               <string>Choose a language: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="cbxLanguage">
-              <item>
-               <property name="text">
-                <string>en</string>
-               </property>
-               <property name="icon">
-                <iconset resource="vlc-record.qrc">
-                 <normaloff>:/flags/en</normaloff>:/flags/en</iconset>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>de</string>
-               </property>
-               <property name="icon">
-                <iconset resource="vlc-record.qrc">
-                 <normaloff>:/flags/de</normaloff>:/flags/de</iconset>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>ru</string>
-               </property>
-               <property name="icon">
-                <iconset resource="vlc-record.qrc">
-                 <normaloff>:/flags/ru</normaloff>:/flags/ru</iconset>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupLogos">
-           <property name="title">
-            <string> Logos </string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <spacer name="horizontalSpacer_7">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_12">
-              <property name="text">
-               <string>Reload Logos:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="pushDelLogos">
-              <property name="minimumSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>32</width>
-                <height>36</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>&amp;reload Logos</string>
-              </property>
-              <property name="icon">
-               <iconset resource="vlc-record.qrc">
-                <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0" colspan="2">
         <widget class="QGroupBox" name="groupAccount">
          <property name="title">
-          <string> Kartina.tv Account Settings </string>
+          <string> Kartina.tv Account </string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <layout class="QHBoxLayout" name="hLayoutUsrPw">
-            <property name="leftMargin">
-             <number>0</number>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>User: </string>
             </property>
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="minimumSize">
-               <size>
-                <width>76</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>76</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>User: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineUsr"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="text">
-               <string>Password: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="linePass">
-              <property name="echoMode">
-               <enum>QLineEdit::Password</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           </widget>
           </item>
-          <item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineUsr"/>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Password: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLineEdit" name="linePass">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="checkAdult">
             <property name="text">
              <string>Allow Adult Channels</string>
@@ -198,237 +67,332 @@
          </layout>
         </widget>
        </item>
-       <item>
-        <widget class="QGroupBox" name="groupPath">
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupStreamServer">
          <property name="title">
-          <string> Path Settings </string>
+          <string> Sream Server </string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <layout class="QHBoxLayout" name="hLayoutTarget">
-            <item>
-             <widget class="QLabel" name="label_3">
-              <property name="minimumSize">
-               <size>
-                <width>76</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Record Dir:</string>
-              </property>
-              <property name="margin">
-               <number>2</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineDir"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushDir">
-              <property name="text">
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QLabel" name="labStreamServer">
+            <property name="text">
+             <string>Server: </string>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="hLayoutVLCPath">
+           <widget class="QComboBox" name="cbxStreamServer">
             <item>
-             <widget class="QLabel" name="label">
-              <property name="minimumSize">
-               <size>
-                <width>76</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>VLC Path:</string>
-              </property>
-              <property name="margin">
-               <number>2</number>
-              </property>
-             </widget>
+             <property name="text">
+              <string>1</string>
+             </property>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineVLC"/>
+             <property name="text">
+              <string>2</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="btnSaveStreamServer">
+            <property name="maximumSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="vlc-record.qrc">
+              <normaloff>:/app/save</normaloff>:/app/save</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="autoRaise">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QGroupBox" name="groupBuffer">
+         <property name="title">
+          <string> Buffering </string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="margin">
+           <number>4</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labBuffer">
+            <property name="text">
+             <string>Time (msec.):</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="cbxBufferSeconds">
+            <item>
+             <property name="text">
+              <string>1500</string>
+             </property>
             </item>
             <item>
-             <widget class="QPushButton" name="pushVLC">
-              <property name="text">
-               <string>...</string>
-              </property>
-             </widget>
+             <property name="text">
+              <string>3000</string>
+             </property>
             </item>
-           </layout>
+            <item>
+             <property name="text">
+              <string>5000</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>8000</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>15000</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupProxy">
+         <property name="title">
+          <string> Proxy Server </string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3" columnstretch="0,60,0,40">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="useProxy">
+            <property name="text">
+             <string>Enable Proxy</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_5">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Address: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineProxyHost">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Port:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLineEdit" name="lineProxyPort">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>User: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="lineProxyUser">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Password: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLineEdit" name="lineProxyPassword">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="advSettings">
+     <widget class="QWidget" name="tabStdSettings">
       <attribute name="title">
-       <string>&amp;Advanced Settings</string>
+       <string>&amp;Settings</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
-         <item>
-          <widget class="QGroupBox" name="groupStreamServer">
-           <property name="title">
-            <string> Sream Server </string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
-            <item>
-             <widget class="QLabel" name="labStreamServer">
-              <property name="text">
-               <string>Server: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="cbxStreamServer">
-              <item>
-               <property name="text">
-                <string>1</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>2</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="btnSaveStreamServer">
-              <property name="maximumSize">
-               <size>
-                <width>32</width>
-                <height>32</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="vlc-record.qrc">
-                <normaloff>:/app/save</normaloff>:/app/save</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
-              </property>
-              <property name="autoRaise">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBuffer">
-           <property name="title">
-            <string> Buffering </string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_8">
-            <item>
-             <widget class="QLabel" name="labBuffer">
-              <property name="text">
-               <string>Time (msec.):</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="cbxBufferSeconds">
-              <item>
-               <property name="text">
-                <string>1500</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>3000</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>5000</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>8000</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>15000</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="hLayoutTimeSystray">
-         <item>
-          <widget class="QGroupBox" name="groupSystray">
-           <property name="title">
-            <string> Minimize </string>
-           </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
-            <item>
-             <widget class="QCheckBox" name="checkHideToSystray">
-              <property name="text">
-               <string>Minimize to Systray</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupFixTime">
-           <property name="title">
-            <string> Time Correction </string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <item>
-             <widget class="QCheckBox" name="checkFixTime">
-              <property name="text">
-               <string>Try to fix time offset</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupLogging">
+        <widget class="QGroupBox" name="groupPath">
          <property name="title">
-          <string> Logging </string>
+          <string> Path Settings </string>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QLabel" name="label_11">
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
-             <string>Log Level: </string>
+             <string>Record Dir:</string>
+            </property>
+            <property name="margin">
+             <number>2</number>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineDir"/>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="pushDir">
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>VLC Path:</string>
+            </property>
+            <property name="margin">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lineVLC"/>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="pushVLC">
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupStdSettings">
+         <property name="title">
+          <string>Program Settings </string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>Language: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="cbxLanguage">
+            <property name="minimumSize">
+             <size>
+              <width>100</width>
+              <height>0</height>
+             </size>
+            </property>
+            <item>
+             <property name="text">
+              <string>en</string>
+             </property>
+             <property name="icon">
+              <iconset resource="vlc-record.qrc">
+               <normaloff>:/flags/en</normaloff>:/flags/en</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>de</string>
+             </property>
+             <property name="icon">
+              <iconset resource="vlc-record.qrc">
+               <normaloff>:/flags/de</normaloff>:/flags/de</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ru</string>
+             </property>
+             <property name="icon">
+              <iconset resource="vlc-record.qrc">
+               <normaloff>:/flags/ru</normaloff>:/flags/ru</iconset>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Log Level:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
            <widget class="QComboBox" name="cbxLogLevel">
             <item>
              <property name="text">
@@ -452,40 +416,55 @@
             </item>
            </widget>
           </item>
-          <item>
-           <spacer name="horizontalSpacer_8">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Reload Logos:</string>
             </property>
-            <property name="sizeHint" stdset="0">
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QToolButton" name="pushDelLogos">
+            <property name="minimumSize">
              <size>
-              <width>40</width>
-              <height>20</height>
+              <width>24</width>
+              <height>24</height>
              </size>
             </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupRefresh">
-         <property name="title">
-          <string> Refresh </string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="spacing">
-             <number>4</number>
+            <property name="text">
+             <string>&amp;reload Logos</string>
             </property>
-            <item>
-             <widget class="QCheckBox" name="checkRefresh">
-              <property name="text">
-               <string>Refresh EPG every ...</string>
-              </property>
-             </widget>
-            </item>
+            <property name="icon">
+             <iconset resource="vlc-record.qrc">
+              <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="autoRaise">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="checkHideToSystray">
+            <property name="text">
+             <string>Minimize to Systray</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="checkRefresh">
+            <property name="text">
+             <string>Refresh EPG every:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QLineEdit" name="lineInterval">
               <property name="enabled">
@@ -493,7 +472,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>60</width>
+                <width>40</width>
                 <height>0</height>
                </size>
               </property>
@@ -513,66 +492,6 @@
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="proxySettings">
-      <attribute name="title">
-       <string>&amp;Proxy Settings</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_9">
-       <item>
-        <widget class="QGroupBox" name="groupProxy">
-         <property name="title">
-          <string> Proxy Access </string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QCheckBox" name="useProxy">
-            <property name="text">
-             <string>Enable Proxy</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="hLayoutProxyAddr">
-            <item>
-             <widget class="QLabel" name="label_5">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Address: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineProxyHost">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
              <spacer name="horizontalSpacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -585,87 +504,21 @@
               </property>
              </spacer>
             </item>
-            <item>
-             <widget class="QLabel" name="label_6">
-              <property name="text">
-               <string>Port:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineProxyPort">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>50</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
-          <item>
-           <layout class="QHBoxLayout" name="hLayoutProxyAcc">
-            <item>
-             <widget class="QLabel" name="label_8">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>User: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineProxyUser">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>Password: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineProxyPassword">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="echoMode">
-               <enum>QLineEdit::Password</enum>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="checkFixTime">
+            <property name="text">
+             <string>Try to fix time offset</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="checkAskForName">
+            <property name="text">
+             <string>Ask for Record Filename</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

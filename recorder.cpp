@@ -465,32 +465,48 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
 {
    int       iRV      = -1;
    QDateTime now      = QDateTime::currentDateTime();
-   QString   sTarget  = QString("%1/%2 (%3)").arg(Settings.GetTargetDir())
-                       .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh-mm"));
-
-   QString   sExt     = "ts", sFilter;
-   QString   fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
-                        sTarget, QString("Transport Stream (*.ts);;AVI File (*.avi)"),
-                        &sFilter);
+   QString   sExt     = "ts", fileName;
+   
+   // should we ask for file name ... ?
+   if (Settings.AskForRecFile())
+   {
+      // yes! Create file save dialog ...
+      QString   sFilter;
+      QString   sTarget  = QString("%1/%2 (%3)").arg(Settings.GetTargetDir())
+                          .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh-mm"));
+         
+      fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
+                 sTarget, QString("Transport Stream (*.ts);;AVI File (*.avi)"),
+                 &sFilter);
+   
+      if (fileName != "")
+      {
+         // which filter was used ... ?
+         if (sFilter == "Transport Stream (*.ts)")
+         {
+            sExt = "ts";
+         }
+         else if (sFilter ==  "AVI File (*.avi)")
+         {
+            sExt = "avi";
+         }
+   
+         QFileInfo info(fileName);
+   
+         // re-create complete file name ...
+         fileName = QString ("%1/%2.%3").arg(info.absolutePath())
+                    .arg(info.completeBaseName()).arg(sExt);
+      }
+   }
+   else
+   {
+      // create filename as we think it's good ...
+      fileName = QString("%1/%2 (%3).%4").arg(Settings.GetTargetDir())
+                 .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh-mm")).arg(sExt);
+   }
 
    if (fileName != "")
    {
-      // which filter was used ... ?
-      if (sFilter == "Transport Stream (*.ts)")
-      {
-         sExt = "ts";
-      }
-      else if (sFilter ==  "AVI File (*.avi)")
-      {
-         sExt = "avi";
-      }
-
-      QFileInfo info(fileName);
-
-      // re-create complete file name ...
-      fileName = QString ("%1/%2.%3").arg(info.absolutePath())
-                 .arg(info.completeBaseName()).arg(sExt);
-
       QString sCmdLine = VLC_REC_TEMPL;
       sCmdLine.replace(TMPL_VLC, Settings.GetVLCPath());
       sCmdLine.replace(TMPL_URL, sURL);

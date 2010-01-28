@@ -24,7 +24,7 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.10 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.11 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
@@ -52,5 +52,10 @@
 |   (bugfix for segfault on some XP and Linux)
 | 2010-01-26: Version 1.10
 | - first version with working timer record (more tests needed)
+| 2010-01-28: Version 1.11
+| - supports silent record
+| - rework settings dialog
+| - better systray handling
+| - save and restore window position
 \*************************************************************/
 

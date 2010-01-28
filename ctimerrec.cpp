@@ -530,8 +530,8 @@ void CTimerRec::InitTab()
    r_ui->tableRecordEntries->clearContents();
    r_ui->tableRecordEntries->setIconSize(QSize(24, 24));
    r_ui->tableRecordEntries->setColumnWidth(0, 80);
-   r_ui->tableRecordEntries->setColumnWidth(1, 60);
-   r_ui->tableRecordEntries->setColumnWidth(2, 60);
+   r_ui->tableRecordEntries->setColumnWidth(1, 70);
+   r_ui->tableRecordEntries->setColumnWidth(2, 70);
    r_ui->tableRecordEntries->setColumnWidth(3, 40);
    r_ui->tableRecordEntries->setColumnWidth(4, 25);
 }
