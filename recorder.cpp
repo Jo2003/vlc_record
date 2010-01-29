@@ -44,9 +44,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.setParent(this, Qt::Dialog);
 
    // if main settings aren't done, start settings dialog ...
-   if ((Settings.GetPasswd() == "")
+   if ((Settings.GetPasswd()      == "")
         || (Settings.GetVLCPath() == "")
-        || (Settings.GetUser() == ""))
+        || (Settings.GetUser()    == ""))
    {
       Settings.exec();
    }
@@ -168,7 +168,7 @@ Recorder::~Recorder()
 void Recorder::CreateSystray()
 {
    trayIcon.setParent(this);
-   trayIcon.setIcon(QIcon(":/png/systray"));
+   trayIcon.setIcon(QIcon(":/app/tv"));
    trayIcon.setToolTip(tr("vlc-record - Click to activate!"));
 }
 
@@ -192,8 +192,9 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
    case QSystemTrayIcon::Context:
       if (isHidden())
       {
-         showNormal();
+         // showNormal();
          setGeometry(sizePos);
+         QTimer::singleShot(300, this, SLOT(showNormal()));
       }
       break;
    default:
@@ -347,7 +348,7 @@ void Recorder::changeEvent(QEvent *e)
             if (Settings.HideToSystray())
             {
                // hide dialog ...
-               hide ();
+               QTimer::singleShot(300, this, SLOT(hide()));
             }
          }
       }
@@ -466,7 +467,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
    int       iRV      = -1;
    QDateTime now      = QDateTime::currentDateTime();
    QString   sExt     = "ts", fileName;
-   
+
    // should we ask for file name ... ?
    if (Settings.AskForRecFile())
    {
@@ -474,11 +475,11 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
       QString   sFilter;
       QString   sTarget  = QString("%1/%2 (%3)").arg(Settings.GetTargetDir())
                           .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh-mm"));
-         
+
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
                  sTarget, QString("Transport Stream (*.ts);;AVI File (*.avi)"),
                  &sFilter);
-   
+
       if (fileName != "")
       {
          // which filter was used ... ?
@@ -490,9 +491,9 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
          {
             sExt = "avi";
          }
-   
+
          QFileInfo info(fileName);
-   
+
          // re-create complete file name ...
          fileName = QString ("%1/%2.%3").arg(info.absolutePath())
                     .arg(info.completeBaseName()).arg(sExt);
