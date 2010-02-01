@@ -101,19 +101,23 @@ private:
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
-    int StartVlcRec (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv = false);
-    int StartVlcPlay (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv = false);
+    int StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv = false);
+    int StartVlcPlay (const QString &sURL, bool bArchiv = false);
     void EnableDisableDlg (bool bEnable = true);
     void SetProgress (const QString &start, const QString &end);
     void changeEvent(QEvent *e);
     void TouchEpgNavi (bool bCreate);
     QString CleanShowName (const QString &str);
     void CreateSystray ();
+    bool WantToClose ();
 
     virtual void showEvent (QShowEvent * event);
-    virtual void hideEvent(QHideEvent * event);
+    virtual void hideEvent (QHideEvent * event);
+    virtual void closeEvent (QCloseEvent *event);
+    virtual void keyPressEvent (QKeyEvent *event);
 
 private slots:
+    void on_pushStop_clicked();
     void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
     void on_btnSearch_clicked();

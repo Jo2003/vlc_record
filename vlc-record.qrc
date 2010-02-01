@@ -15,6 +15,7 @@
         <file alias="timerrec">resources/timerrec.png</file>
         <file alias="add">resources/add.png</file>
         <file alias="del">resources/delete.png</file>
+        <file alias="stop">resources/stop.ico</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

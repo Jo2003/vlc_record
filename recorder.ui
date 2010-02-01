@@ -14,7 +14,7 @@
    <string>VLC Recorder</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="vlc-record.qrc">
+   <iconset>
     <normaloff>:/app/tv</normaloff>:/app/tv</iconset>
   </property>
   <property name="styleSheet">
@@ -318,7 +318,7 @@ color: white;
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset resource="vlc-record.qrc">
+             <iconset>
               <normaloff>:/app/find</normaloff>:/app/find</iconset>
             </property>
             <property name="iconSize">
@@ -484,7 +484,7 @@ background-attachment: fixed;
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="vlc-record.qrc">
+            <iconset>
              <normaloff>:/app/play</normaloff>:/app/play</iconset>
            </property>
            <property name="iconSize">
@@ -519,7 +519,7 @@ background-attachment: fixed;
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="vlc-record.qrc">
+            <iconset>
              <normaloff>:/app/record</normaloff>:/app/record</iconset>
            </property>
            <property name="iconSize">
@@ -530,6 +530,44 @@ background-attachment: fixed;
            </property>
            <property name="shortcut">
             <string>Alt+R</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushStop">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>34</width>
+             <height>34</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Stop VLC ...</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>:/app/stop</normaloff>:/app/stop</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
            </property>
            <property name="autoDefault">
             <bool>false</bool>
@@ -561,7 +599,7 @@ background-attachment: fixed;
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="vlc-record.qrc">
+            <iconset>
              <normaloff>:/app/timerrec</normaloff>:/app/timerrec</iconset>
            </property>
            <property name="iconSize">
@@ -638,7 +676,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="vlc-record.qrc">
+         <iconset>
           <normaloff>:/app/settings</normaloff>:/app/settings</iconset>
         </property>
         <property name="iconSize">
@@ -679,7 +717,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="vlc-record.qrc">
+         <iconset>
           <normaloff>:/app/info</normaloff>:/app/info</iconset>
         </property>
         <property name="iconSize">
@@ -720,7 +758,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="vlc-record.qrc">
+         <iconset>
           <normaloff>:/app/quit</normaloff>:/app/quit</iconset>
         </property>
         <property name="iconSize">
@@ -765,9 +803,7 @@ color: white;
   <tabstop>pushQuit</tabstop>
   <tabstop>pushAbout</tabstop>
  </tabstops>
- <resources>
-  <include location="vlc-record.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>pushQuit</sender>

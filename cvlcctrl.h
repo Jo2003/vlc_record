@@ -14,8 +14,25 @@
 
 #include <QProcess>
 #include <QTimer>
+#include <QMessageBox>
 
 #include "clogfile.h"
+#include "templates.h"
+
+namespace vlcctrl
+{
+   class CVlcCtrl;
+   enum eVlcAct
+   {
+      VLC_PLAY_HTTP,
+      VLC_PLAY_RTSP,
+      VLC_REC_HTTP,
+      VLC_REC_RTSP,
+      VLC_REC_HTTP_SILENT,
+      VLC_REC_RTSP_SILENT,
+      VLC_UNKNOWN = 255
+   };
+}
 
 /********************************************************************\
 |  Class: CVlcCtrl
@@ -33,12 +50,16 @@ public:
    virtual ~CVlcCtrl();
 
    void    SetProgPath(const QString &str);
+   void    SetCache (int iTime);
    Q_PID   start (const QString& clargs, int iRunTime = -1);
    void    CancelTimer ();
+   void    SetTimer (uint uiTime);
    void    stop ();
    bool    IsRunning ();
+   QString CreateClArgs (vlcctrl::eVlcAct eAct, const QString &url, const QString &dst = QString(), const QString &mux = QString());
 
 private:
+   int     iCacheTime;
    QString sProgPath;
    QTimer  tRunTime;
 

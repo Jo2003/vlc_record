@@ -159,8 +159,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetCookie ()
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Request Authentication")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+   mInfo(tr("Request Authentication"));
 
    bRenewCookie = true;
 
@@ -183,8 +182,8 @@ void CKartinaClnt::GetCookie ()
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetChannelList ()
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Request Channel List")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+   mInfo(tr("Request Channel List"));
+
    PostRequest(Kartina::REQ_CHANNELLIST, "/", "m=channels&act=get_list_xml");
 }
 
@@ -203,8 +202,8 @@ void CKartinaClnt::GetChannelList ()
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetTimeShift (int iHours)
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Set TimeShift to: %4 hours")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iHours));
+   mInfo(tr("Set TimeShift to %1 hour(s)").arg(iHours));
+
    PostRequest(Kartina::REQ_TIMESHIFT, "/",
                QString("m=clients&act=x_set_timeshift&ts=%1").arg(iHours));
 }
@@ -224,8 +223,7 @@ void CKartinaClnt::SetTimeShift (int iHours)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Request URL for channel %4")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iChanID));
+   mInfo(tr("Request URL for channel %1").arg(iChanID));
 
    QString req = QString("m=channels&act=get_stream_url&cid=%1").arg(iChanID);
 
@@ -252,8 +250,8 @@ void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetServer(int iSrv)
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Set Streaming Server to No %4")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iSrv));
+   mInfo(tr("Set Streaming Server to No %1").arg(iSrv));
+
    PostRequest(Kartina::REQ_SERVER, "/",
                QString("m=clients&act=x_set_sserv&ssrv=%1").arg(iSrv));
 }
@@ -273,8 +271,8 @@ void CKartinaClnt::SetServer(int iSrv)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetHttpBuffer(int iTime)
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Set Http Buffer to %4 msec.")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iTime));
+   mInfo(tr("Set Http Buffer to %1 msec.").arg(iTime));
+
    PostRequest(Kartina::REQ_SERVER, "/",
                QString("m=clients&act=x_set_http_cache&htc=%1").arg(iTime));
 }
@@ -294,8 +292,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Request EPG for Channel %4")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(iChanID));
+   mInfo(tr("Request EPG for Channel %1").arg(iChanID));
 
    QDate now = QDate::currentDate().addDays(iOffset);
 
@@ -319,9 +316,7 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetArchivURL (const QString &prepared)
 {
-   VlcLog.LogInfo(tr("%1 / %2():%3 Request Archiv URL:\n%4")
-                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
-                  .arg(prepared));
+   mInfo(tr("Request Archiv URL:\n%1").arg(prepared));
 
    QString req = prepared;
 
@@ -350,23 +345,21 @@ void CKartinaClnt::getResponseHeader (const QHttpResponseHeader &resp)
 {
    if (bRenewCookie)
    {
-      VlcLog.LogInfo(tr("%1 / %2():%3 We've got Response for Authentification!")
-                     .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+      mInfo(tr("We've got Response for Authentification!"));
 
       sCookie      = resp.value("Set-Cookie");
 
       if (sCookie != "")
       {
-         VlcLog.LogInfo(tr("%1 / %2():%3 Got cookie: %4!")
-                        .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(sCookie));
+         mInfo(tr("Got cookie:\n%1!").arg(sCookie));
 
          // we have catched the cookie ...
          emit sigGotCookie();
       }
       else
       {
-         VlcLog.LogErr(tr("%1 / %2():%3 Error: Can't authenticate!")
-                        .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+         mErr(tr("Error: Can't authenticate!"));
+
          emit sigError(tr("Can't authenticate you at kartina.tv! Please check username and password!"));
       }
 
@@ -403,8 +396,7 @@ void CKartinaClnt::handleEndRequest(bool err)
 
    if (!err)
    {
-      VlcLog.LogInfo(tr("%1 / %2():%3 Request done!")
-                     .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+      mInfo(tr("Request done!"));
 
       // send signals dependet on ended request ...
       switch (eReq)
@@ -442,8 +434,7 @@ void CKartinaClnt::handleEndRequest(bool err)
    }
    else
    {
-      VlcLog.LogErr(tr("%1 / %2():%3 Error in Request: %4!")
-                     .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(errorString()));
+      mErr(tr("Error in Request: %1!").arg(errorString()));
 
       // send error signal ...
       emit sigError(errorString());

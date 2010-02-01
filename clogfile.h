@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 19.01.2010 / 15:34:39
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #ifndef __011910__CLOGFILE_H
@@ -19,9 +19,16 @@
 #include <QDateTime>
 
 //===================================================================
+// some macros to make logging easier ...
+//===================================================================
+#define mInfo(a) VlcLog.LogInfo (QString("%1 / %2():%3: %4").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(a))
+#define mWarn(a) VlcLog.LogWarn (QString("%1 / %2():%3: %4").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(a))
+#define mErr(a) VlcLog.LogErr (QString("%1 / %2():%3: %4").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(a))
+
+//===================================================================
 // namespace
 //===================================================================
-namespace vlclog 
+namespace vlclog
 {
    class CLogFile;
    enum eLogLevel

@@ -15,10 +15,16 @@
 /**********************************************************/
 /*                      PATH templates                    */
 /**********************************************************/
-#define TMPL_VLC "{[%VLCPATH%]}"
-#define TMPL_URL "{[%URL%]}"
-#define TMPL_MUX "{[%MUX%]}"
-#define TMPL_DST "{[%DST%]}"
+#define TMPL_VLC   "{[%VLCPATH%]}"
+#define TMPL_URL   "{[%URL%]}"
+#define TMPL_MUX   "{[%MUX%]}"
+#define TMPL_DST   "{[%DST%]}"
+#define TMPL_CACHE "{[%CACHE%]}"
+
+#define TMPL_PLAY_HTTP  "\"" TMPL_URL "\" --no-http-reconnect --http-caching=" TMPL_CACHE
+#define TMPL_PLAY_RTSP  "\"" TMPL_URL "\" --rtsp-tcp --rtsp-caching=" TMPL_CACHE
+#define TMPL_REC        " --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
+#define TMPL_SILENT_REC " --sout=\"std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}\""
 
 #define VLC_REC_TEMPL        "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
 #define VLC_REC_TEMPL_SILENT "\"" TMPL_VLC "\" \"" TMPL_URL "\" --sout=\"std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}\""
@@ -28,17 +34,24 @@
 /**********************************************************/
 /*                      HTML templates                    */
 /**********************************************************/
-#define TMPL_TIME  "{[%TIME%]}"
-#define TMPL_PROG  "{[%PROG%]}"
-#define TMPL_ROWS  "{[%ROWS%]}"
-#define TMPL_HEAD  "{[%HEAD%]}"
-#define TMPL_START "{[%START%]}"
-#define TMPL_END   "{[%END%]}"
+#define TMPL_TIME  "<!--{[%TIME%]}-->"
+#define TMPL_PROG  "<!--{[%PROG%]}-->"
+#define TMPL_ROWS  "<!--{[%ROWS%]}-->"
+#define TMPL_HEAD  "<!--{[%HEAD%]}-->"
+#define TMPL_START "<!--{[%START%]}-->"
+#define TMPL_END   "<!--{[%END%]}-->"
+#define TMPL_TITLE "<!--{[%TITLE%]}-->"
+#define TMPL_CONT  "<!--{[%CONTENT%]}-->"
 
 #define EPG_TMPL  \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
 TMPL_ROWS \
 "</table>\n"
+
+#define HTML_SITE \
+"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"\
+"<html><head><title>" TMPL_TITLE "</title></head>\n"\
+"<body>" TMPL_CONT "</body></html>\n"
 
 
 #define TR_TMPL_A \

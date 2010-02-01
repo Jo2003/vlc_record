@@ -339,10 +339,22 @@ int CTimerRec::SaveRecordList()
 \----------------------------------------------------------------- */
 void CTimerRec::on_btnSet_clicked()
 {
+/**************** UPDATE OR NEW ENTRY ???? *******************/
+/**************** UPDATE OR NEW ENTRY ???? *******************/
+/**************** UPDATE OR NEW ENTRY ???? *******************/
+/**************** UPDATE OR NEW ENTRY ???? *******************/
+/**************** UPDATE OR NEW ENTRY ???? *******************/
+/**************** UPDATE OR NEW ENTRY ???? *******************/
+/**************** UPDATE OR NEW ENTRY ???? *******************/
+
    if (uiEdtId != INVALID_ID)
    {
+      // delete from joblist ...
       JobList.remove(uiEdtId);
+
+      // delete from job tab ...
       DelRow(uiEdtId);
+
       uiEdtId = INVALID_ID;
    }
 
@@ -563,9 +575,7 @@ void CTimerRec::InitTab()
 \----------------------------------------------------------------- */
 void CTimerRec::AddJob(rec::SRecEntry &entry)
 {
-   VlcLog.LogInfo(QString("%1 - %2():%3 Add Job #%4")
-                  .arg(__FILE__).arg(__FUNCTION__)
-                  .arg(__LINE__).arg(uiActId));
+   mInfo(tr("Add Job #%1").arg(uiActId));
 
    entry.id = uiActId;
 
@@ -807,6 +817,12 @@ void CTimerRec::slotRecTimer()
                   DelRow((*it).id);
                   it = JobList.erase(it);
 
+                  // stop job (vlc) ...
+                  if (pVlcCtrl->IsRunning())
+                  {
+                     pVlcCtrl->stop();
+                  }
+
                   emit sigRecDone();
                   emit sigSendStatusMsg(tr("Timer Ready"), QString("white"));
                }
@@ -820,6 +836,12 @@ void CTimerRec::slotRecTimer()
                   emit sigRecActive();
                   emit sigSendStatusMsg(tr("Timer StBY"), QString("#fc0"));
                   (*it).eState = rec::REC_STBY;
+
+                  // stop any running vlc ...
+                  if (pVlcCtrl->IsRunning())
+                  {
+                     pVlcCtrl->stop();
+                  }
 
                   // set timeshift ...
                   pTrigger->TriggerRequest(Kartina::REQ_TIMESHIFT, (*it).iTimeShift);
@@ -854,40 +876,32 @@ void CTimerRec::slotTimerStreamUrl(QString str)
 {
    pXmlParser->SetByteArray(str.toUtf8());
 
-   QString sUrl   = pXmlParser->ParseURL();
-
-   uint uiRunTime = (*itActJob).uiEnd;
-   GmtToTimeShift(uiRunTime, (*itActJob).iTimeShift);
-   uiRunTime      = uiRunTime - QDateTime::currentDateTime().toTime_t();
-
    QString sCmdLine;
+   QString sUrl   = pXmlParser->ParseURL();
+   QString sDst   = QString("%1/%2.ts").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
 
    if (r_ui->checkRecMini->isChecked())
    {
       // silent record ...
-      sCmdLine = VLC_REC_TEMPL_SILENT;
+      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP_SILENT, sUrl, sDst, "ts");
    }
    else
    {
       // normal record ...
-      sCmdLine = VLC_REC_TEMPL;
+      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP, sUrl, sDst, "ts");
    }
 
-   sCmdLine.replace(TMPL_VLC, pSettings->GetVLCPath());
-   sCmdLine.replace(TMPL_URL, sUrl);
-   sCmdLine.replace(TMPL_MUX, QString("ts"));
-   sCmdLine.replace(TMPL_DST, QString("%1/%2.ts").arg(pSettings->GetTargetDir())
-                                                 .arg((*itActJob).sName));
+   Q_PID vlcpid = pVlcCtrl->start(sCmdLine);
 
-   sCmdLine += QString(" --http-caching=%1 --no-http-reconnect --run-time=%2 vlc://quit")
-               .arg(pSettings->GetBufferTime())
-               .arg(uiRunTime);
-
-   VlcLog.LogInfo(tr("Start VLC using following command line:\n") + sCmdLine);
-
-   QProcess::startDetached(sCmdLine);
-
-   itActJob = NULL;
+   // successfully started ?
+   if (!vlcpid)
+   {
+      QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+   }
+   else
+   {
+      mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
+   }
 }
 
 /************************* History ***************************\

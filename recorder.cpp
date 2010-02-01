@@ -77,6 +77,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // give vlcCtrl needed infos ...
    vlcCtrl.SetProgPath(Settings.GetVLCPath());
+   vlcCtrl.SetCache(Settings.GetBufferTime());
 
    // give timerRec all needed infos ...
    timeRec.SetXmlParser(&XMLParser);
@@ -375,6 +376,86 @@ void Recorder::changeEvent(QEvent *e)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: closeEvent
+|  Begin: 01.02.2010 / 15:05:00
+|  Author: Joerg Neubert
+|  Description: catch close event
+|
+|  Parameters: pointer to close event
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::closeEvent(QCloseEvent *event)
+{
+   // if vlc is running, ask if we want
+   // to close it ...
+   if (vlcCtrl.IsRunning())
+   {
+      if (WantToClose())
+      {
+         event->accept();
+      }
+      else
+      {
+         event->ignore();
+      }
+   }
+   else
+   {
+      event->accept();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: keyPressEvent
+|  Begin: 01.02.2010 / 15:05:00
+|  Author: Joerg Neubert
+|  Description: catch esc key
+|
+|  Parameters: pointer to keypress event
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::keyPressEvent(QKeyEvent *event)
+{
+   if (event->key() == Qt::Key_Escape)
+   {
+      // ignore escape key ...
+      event->ignore();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: WantToClose
+|  Begin: 01.02.2010 / 15:05:00
+|  Author: Joerg Neubert
+|  Description: ask if we want to clse vlc-record
+|
+|  Parameters: --
+|
+|  Returns: true --> close
+|          false --> don't close
+\----------------------------------------------------------------- */
+bool Recorder::WantToClose()
+{
+   QString sText = HTML_SITE;
+   sText.replace(TMPL_CONT, tr("VLC is still running.<br />"
+                               "<b>Closing VLC record will also close the started VLC-Player.</b>"
+                               "<br /> <br />"
+                               "Do you really want to close VLC Record now?"));
+
+   if (QMessageBox::question(this, tr("Question"), sText,
+                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+/* -----------------------------------------------------------------\
 |  Method: FillChannelList
 |  Begin: 19.01.2010 / 16:05:24
 |  Author: Joerg Neubert
@@ -466,7 +547,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCacheTime, bool bArchiv)
+int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv)
 {
    int       iRV      = -1;
    QDateTime now      = QDateTime::currentDateTime();
@@ -512,35 +593,29 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
 
    if (fileName != "")
    {
-      QString sCmdLine = VLC_REC_TEMPL;
-      sCmdLine.replace(TMPL_VLC, Settings.GetVLCPath());
-      sCmdLine.replace(TMPL_URL, sURL);
-      sCmdLine.replace(TMPL_MUX, sExt);
-      sCmdLine.replace(TMPL_DST, fileName);
+      Q_PID vlcpid = 0;
 
       if (bArchiv)
       {
-         // add buffer value ...
-         sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1 --video-title=\"%2\"")
-                     .arg(iCacheTime).arg(sChannel);
+         // archiv using RTSP ...
+         vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_RTSP, sURL, fileName, sExt));
       }
       else
       {
-         // add buffer value ...
-         sCmdLine += QString(" --http-caching=%1 --no-http-reconnect --video-title=\"%2\"")
-                     .arg(iCacheTime).arg(sChannel);
+         // normal stream using HTTP ...
+         vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_HTTP, sURL, fileName, sExt));
       }
 
-      VlcLog.LogInfo(tr("Starting VLC using following command line:\n") + sCmdLine);
-
-      // Start the QProcess instance.
-      if(!QProcess::startDetached(sCmdLine))
+      // successfully started ?
+      if (!vlcpid)
       {
+         iRV = -1;
          QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
       }
       else
       {
          iRV = 0;
+         mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
       }
    }
 
@@ -557,37 +632,31 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, int iCa
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::StartVlcPlay (const QString &sURL, const QString &sChannel,
-                            int iCacheTime, bool bArchiv)
+int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
 {
-   int     iRV      = -1;
-   QString sCmdLine = VLC_PLAY_TEMPL;
-   sCmdLine.replace(TMPL_VLC, Settings.GetVLCPath());
-   sCmdLine.replace(TMPL_URL, sURL);
+   int iRV      = 0;
+   Q_PID vlcpid = 0;
 
    if (bArchiv)
    {
-      // add buffer value ...
-      sCmdLine += QString(" --rtsp-tcp --rtsp-caching=%1 --video-title=\"%2\"")
-                  .arg(iCacheTime).arg(sChannel);
+      // archiv using RTSP ...
+      vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_RTSP, sURL));
    }
    else
    {
-      // add buffer value ...
-      sCmdLine += QString(" --http-caching=%1 --no-http-reconnect --video-title=\"%2\"")
-                  .arg(iCacheTime).arg(sChannel);
+      // normal stream using HTTP ...
+      vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_HTTP, sURL));
    }
 
-   VlcLog.LogInfo(tr("Starting VLC using following command line:\n") + sCmdLine);
-
-   // Start the QProcess instance.
-   if(!QProcess::startDetached(sCmdLine))
+   // successfully started ?
+   if (!vlcpid)
    {
+      iRV = -1;
       QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
    }
    else
    {
-      iRV = 0;
+      mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
    }
 
    return iRV;
@@ -628,6 +697,10 @@ void Recorder::on_pushSettings_clicked()
 
       // set language as read ...
       pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()), QApplication::applicationDirPath());
+
+      // give vlcCtrl needed infos ...
+      vlcCtrl.SetProgPath(Settings.GetVLCPath());
+      vlcCtrl.SetCache(Settings.GetBufferTime());
 
       EnableDisableDlg(false);
 
@@ -741,11 +814,11 @@ void Recorder::slotStreamURL(QString str)
 
    if (bRecord)
    {
-      StartVlcRec(sUrl, sChan, Settings.GetBufferTime());
+      StartVlcRec(sUrl, sChan);
    }
    else
    {
-      StartVlcPlay(sUrl, sChan, Settings.GetBufferTime());
+      StartVlcPlay(sUrl);
    }
 
    EnableDisableDlg();
@@ -1207,11 +1280,11 @@ void Recorder::slotArchivURL(QString str)
 
    if (bRecord)
    {
-      StartVlcRec(sUrl, sChan, Settings.GetBufferTime(), true);
+      StartVlcRec(sUrl, sChan, true);
    }
    else
    {
-      StartVlcPlay(sUrl, sChan, Settings.GetBufferTime(), true);
+      StartVlcPlay(sUrl, true);
    }
 
    EnableDisableDlg();
@@ -1364,7 +1437,7 @@ void Recorder::slotTimerRecordDone()
 {
    if (bPendingRecord)
    {
-      VlcLog.LogInfo(tr("timeRec reports: record done!"));
+      mInfo(tr("timeRec reports: record done!"));
       bPendingRecord = false;
       EnableDisableDlg();
    }
@@ -1382,7 +1455,7 @@ void Recorder::slotTimerRecordDone()
 \----------------------------------------------------------------- */
 void Recorder::slotTimerRecActive()
 {
-   VlcLog.LogInfo(tr("timeRec reports: record active!"));
+   mInfo(tr("timeRec reports: record active!"));
    bPendingRecord = true;
    EnableDisableDlg(false);
 }
@@ -1464,6 +1537,11 @@ void Recorder::hideEvent(QHideEvent *event)
 {
    emit sigHide();
    QWidget::hideEvent(event);
+}
+
+void Recorder::on_pushStop_clicked()
+{
+   vlcCtrl.stop();
 }
 
 /************************* History ***************************\
