@@ -27,6 +27,7 @@
 #include "ckartinaxmlparser.h"
 #include "cwaittrigger.h"
 #include "csettingsdlg.h"
+#include "cvlcctrl.h"
 
 //===================================================================
 // namespace
@@ -87,9 +88,10 @@ public:
    void SetXmlParser (CKartinaXMLParser *pParser);
    void SetKartinaTrigger (CWaitTrigger *pTrig);
    void SetSettings (CSettingsDlg *pSet);
-   int SaveRecordList ();
-   int ReadRecordList ();
-   int AddRow (const rec::SRecEntry &entry);
+   void SetVlcCtrl (CVlcCtrl *pCtrl);
+   int  SaveRecordList ();
+   int  ReadRecordList ();
+   int  AddRow (const rec::SRecEntry &entry);
    void AddJob (rec::SRecEntry &entry);
    void DelRow (uint uiId);
    void InitTab ();
@@ -115,6 +117,7 @@ private:
    CKartinaXMLParser *pXmlParser;
    CWaitTrigger      *pTrigger;
    CSettingsDlg      *pSettings;
+   CVlcCtrl          *pVlcCtrl;
 
 signals:
    void sigRecDone ();

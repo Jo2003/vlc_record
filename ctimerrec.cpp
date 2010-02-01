@@ -176,6 +176,21 @@ void CTimerRec::SetSettings(CSettingsDlg *pSet)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: SetVlcCtrl
+|  Begin: 01.02.2010 / 11:05:00
+|  Author: Joerg Neubert
+|  Description: set vlc control
+|
+|  Parameters: pointer to vlc control class
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CTimerRec::SetVlcCtrl(CVlcCtrl *pCtrl)
+{
+   pVlcCtrl = pCtrl;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: SetRecInfo
 |  Begin: 26.01.2010 / 16:05:00
 |  Author: Joerg Neubert

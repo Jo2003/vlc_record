@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     caboutdialog.cpp \
     clogfile.cpp \
     cchanlogo.cpp \
-    ctimerrec.cpp
+    ctimerrec.cpp \
+    cvlcctrl.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     cinifile.h \
@@ -32,7 +33,8 @@ HEADERS += recorder.h \
     chttptime.h \
     cchanlogo.h \
     defdef.h \
-    ctimerrec.h
+    ctimerrec.h \
+    cvlcctrl.h
 FORMS += recorder.ui \
     csettingsdlg.ui \
     caboutdialog.ui \
@@ -41,8 +43,9 @@ RESOURCES += vlc-record.qrc
 RC_FILE = vlc-record.rc
 TRANSLATIONS = lang_de.ts \
     lang_ru.ts
+
 # for static build ...
-static {
+static { 
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qico \

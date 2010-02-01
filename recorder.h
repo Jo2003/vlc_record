@@ -43,6 +43,7 @@
 #include "caboutdialog.h"
 #include "cchanlogo.h"
 #include "ctimerrec.h"
+#include "cvlcctrl.h"
 
 // for logging ...
 extern CLogFile VlcLog;
@@ -95,6 +96,7 @@ private:
     uint                           uiArchivGmt;
     QSystemTrayIcon                trayIcon;
     QRect                          sizePos;
+    CVlcCtrl                       vlcCtrl;
 
 
 protected:

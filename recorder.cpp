@@ -75,10 +75,14 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    Trigger.SetKartinaClient(&KartinaTv);
    Trigger.start();
 
+   // give vlcCtrl needed infos ...
+   vlcCtrl.SetProgPath(Settings.GetVLCPath());
+
    // give timerRec all needed infos ...
    timeRec.SetXmlParser(&XMLParser);
    timeRec.SetKartinaTrigger(&Trigger);
    timeRec.SetSettings(&Settings);
+   timeRec.SetVlcCtrl(&vlcCtrl);
 
    // connect signals and slots ...
    connect (&KartinaTv,  SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
