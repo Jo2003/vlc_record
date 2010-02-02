@@ -254,7 +254,10 @@ QString CEpgBrowser::ShowName(uint uiTimeT)
 \----------------------------------------------------------------- */
 void CEpgBrowser::EnlargeFont()
 {
-   setFontPointSize(fontPointSize() + (qreal)1);
+   QFont epgFont = font();
+   epgFont.setPointSize(epgFont.pointSize() + 1);
+   setFont(epgFont);
+   scrollToAnchor("nowPlaying");
 }
 
 /* -----------------------------------------------------------------\
@@ -269,7 +272,10 @@ void CEpgBrowser::EnlargeFont()
 \----------------------------------------------------------------- */
 void CEpgBrowser::ReduceFont()
 {
-   setFontPointSize(fontPointSize() - (qreal)1);
+   QFont epgFont = font();
+   epgFont.setPointSize(epgFont.pointSize() - 1);
+   setFont(epgFont);
+   scrollToAnchor("nowPlaying");
 }
 
 /************************* History ***************************\

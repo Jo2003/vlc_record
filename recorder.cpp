@@ -1699,6 +1699,38 @@ void Recorder::slotShutdown()
    QDialog::accept();
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_btnFontSmaller_clicked
+|  Begin: 02.02.2010 / 15:05:00
+|  Author: Joerg Neubert
+|  Description: reduce font size in epg view
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_btnFontSmaller_clicked()
+{
+   ui->textEpg->ReduceFont();
+   ui->textEpgShort->ReduceFont();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnFontLarger_clicked
+|  Begin: 02.02.2010 / 15:05:00
+|  Author: Joerg Neubert
+|  Description: enlarge font size in epg view
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_btnFontLarger_clicked()
+{
+   ui->textEpg->EnlargeFont();
+   ui->textEpgShort->EnlargeFont();
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

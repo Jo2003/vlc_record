@@ -24,10 +24,14 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.12 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.13 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2010-02-02: Version 1.13
+| - add enlarge / reduce text size function
+| - some new and updated icons
+|
 | 2010-02-02: Version 1.12
 | - don't start vlc detached
 | - more control vlc using vlc-record

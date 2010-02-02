@@ -16,6 +16,8 @@
         <file alias="add">resources/add.png</file>
         <file alias="del">resources/delete.png</file>
         <file alias="stop">resources/stop.ico</file>
+        <file alias="zoom-in">resources/add.ico</file>
+        <file alias="zoom-out">resources/remove.ico</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

@@ -122,6 +122,8 @@ protected:
     virtual void keyPressEvent (QKeyEvent *event);
 
 private slots:
+    void on_btnFontSmaller_clicked();
+    void on_btnFontLarger_clicked();
     void on_pushStop_clicked();
     void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
