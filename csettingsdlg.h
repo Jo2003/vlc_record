@@ -51,6 +51,7 @@ public:
     QString GetProxyUser ();
     QString GetProxyPasswd ();
     QString GetLanguage ();
+    QString GetShutdownCmd ();
     bool UseProxy ();
     bool AllowEros ();
     bool FixTime ();

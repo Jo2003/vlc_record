@@ -34,7 +34,9 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    // set ini file name and open ini file ...
    IniFile.SetFileName(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), INI_FILE);
 
-   if (!IniFile.ReadIni())
+   IniFile.ReadIni();
+
+   // if (!IniFile.ReadIni())
    {
       // fill in values ...
 
@@ -43,6 +45,14 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->lineDir->setText (IniFile.GetStringData("TargetDir"));
       m_ui->lineUsr->setText (IniFile.GetStringData("User"));
       m_ui->linePass->setText (IniFile.GetStringData("Passwd"));
+      m_ui->lineShutdown->setText(IniFile.GetStringData("ShutdwnCmd"));
+
+#ifdef Q_OS_WIN32
+      if (m_ui->lineShutdown->text() == "")
+      {
+         m_ui->lineShutdown->setText ("shutdown.exe -s -f -t 5");
+      }
+#endif
 
       m_ui->lineProxyHost->setText(IniFile.GetStringData("ProxyHost"));
       m_ui->lineProxyPort->setText(IniFile.GetStringData("ProxyPort"));
@@ -184,6 +194,7 @@ void CSettingsDlg::on_pushSave_clicked()
    IniFile.AddData("ProxyUser", m_ui->lineProxyUser->text());
    IniFile.AddData("ProxyPasswd", m_ui->lineProxyPassword->text());
    IniFile.AddData("RefIntv", m_ui->lineInterval->text());
+   IniFile.AddData("ShutdwnCmd", m_ui->lineShutdown->text());
 
    // check boxes ...
    IniFile.AddData("UseProxy", (int)m_ui->useProxy->checkState());
@@ -429,6 +440,11 @@ vlclog::eLogLevel CSettingsDlg::GetLogLevel()
 int CSettingsDlg::GetBufferTime()
 {
    return m_ui->cbxBufferSeconds->currentText().toInt();
+}
+
+QString CSettingsDlg::GetShutdownCmd()
+{
+   return m_ui->lineShutdown->text();
 }
 
 //===================================================================

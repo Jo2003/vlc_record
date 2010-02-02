@@ -96,6 +96,7 @@ public:
    void DelRow (uint uiId);
    void InitTab ();
    void StartTimer ();
+   void ShutDown ();
 
 protected:
    void changeEvent(QEvent *e);
@@ -123,6 +124,7 @@ signals:
    void sigRecDone ();
    void sigRecActive ();
    void sigSendStatusMsg (const QString &sMsg, const QString &sColor);
+   void sigShutdown ();
 
 private slots:
    void on_btnDel_clicked();

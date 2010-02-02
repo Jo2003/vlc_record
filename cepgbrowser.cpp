@@ -242,6 +242,36 @@ QString CEpgBrowser::ShowName(uint uiTimeT)
    return mProgram[uiTimeT];
 }
 
+/* -----------------------------------------------------------------\
+|  Method: EnlargeFont
+|  Begin: 02.02.2010 / 16:52:12
+|  Author: Joerg Neubert
+|  Description: enlarge font size by one
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CEpgBrowser::EnlargeFont()
+{
+   setFontPointSize(fontPointSize() + (qreal)1);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ReduceFont
+|  Begin: 02.02.2010 / 16:52:12
+|  Author: Joerg Neubert
+|  Description: reduce font size by one
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CEpgBrowser::ReduceFont()
+{
+   setFontPointSize(fontPointSize() - (qreal)1);
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

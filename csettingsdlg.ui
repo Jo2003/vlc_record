@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>461</width>
-    <height>393</height>
+    <height>427</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -416,14 +416,14 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="label_12">
             <property name="text">
              <string>Reload Logos:</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="4" column="1">
            <widget class="QToolButton" name="pushDelLogos">
             <property name="minimumSize">
              <size>
@@ -449,21 +449,21 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="checkHideToSystray">
             <property name="text">
              <string>Minimize to Systray</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="6" column="0">
            <widget class="QCheckBox" name="checkRefresh">
             <property name="text">
              <string>Refresh EPG every:</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="6" column="1">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QLineEdit" name="lineInterval">
@@ -506,17 +506,27 @@
             </item>
            </layout>
           </item>
-          <item row="5" column="0">
+          <item row="7" column="0">
            <widget class="QCheckBox" name="checkFixTime">
             <property name="text">
              <string>Try to fix time offset</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="8" column="0">
            <widget class="QCheckBox" name="checkAskForName">
             <property name="text">
              <string>Ask for Record Filename</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="lineShutdown"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Shutdown Command:</string>
             </property>
            </widget>
           </item>

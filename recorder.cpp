@@ -109,6 +109,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (this,        SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
    connect (&vlcCtrl,    SIGNAL(sigVlcStarts()), this, SLOT(slotVlcStarts()));
    connect (&vlcCtrl,    SIGNAL(sigVlcEnds()), this, SLOT(slotVlcEnds()));
+   connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
 
    // -------------------------------------------
    // create epg nav bar ...
@@ -800,6 +801,8 @@ void Recorder::slotStreamURL(QString str)
 {
    QString              sChan, sUrl;
 
+   mInfo(tr("Kartina.tv sends following url:\n  --> %1").arg(str));
+
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
    XMLParser.SetByteArray(str.toUtf8());
@@ -1267,6 +1270,8 @@ void Recorder::slotArchivURL(QString str)
 {
    QString              sChan, sUrl;
 
+   mInfo(tr("Kartina.tv sends following url:\n  --> %1").arg(str));
+
    sChan = CleanShowName(ui->textEpg->ShowName(uiArchivGmt));
 
    if (sChan == "")
@@ -1570,18 +1575,48 @@ QString Recorder::CleanShowName(const QString &str)
    return sName;
 }
 
+/* -----------------------------------------------------------------\
+|  Method: showEvent
+|  Begin: 30.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: catch show event and emit show signal
+|
+|  Parameters: event pointer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
 void Recorder::showEvent(QShowEvent *event)
 {
    emit sigShow();
    QWidget::showEvent(event);
 }
 
+/* -----------------------------------------------------------------\
+|  Method: hideEvent
+|  Begin: 30.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: catch hide event and emit hide signal
+|
+|  Parameters: event pointer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
 void Recorder::hideEvent(QHideEvent *event)
 {
    emit sigHide();
    QWidget::hideEvent(event);
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_pushStop_clicked
+|  Begin: 30.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: stop button was pressed, stop vlc after request
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
 void Recorder::on_pushStop_clicked()
 {
    if (vlcCtrl.IsRunning())
@@ -1593,6 +1628,16 @@ void Recorder::on_pushStop_clicked()
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: accept
+|  Begin: 30.01.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: override accept slot to ask if we want to close
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
 void Recorder::accept()
 {
    // if vlc is running, ask if we want
@@ -1637,6 +1682,21 @@ bool Recorder::WantToQuitVlc()
    {
       return false;
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotShutdown
+|  Begin: 02.02.2010 / 15:05:00
+|  Author: Joerg Neubert
+|  Description: close vlc-record when timer record shuts down system
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotShutdown()
+{
+   QDialog::accept();
 }
 
 /************************* History ***************************\

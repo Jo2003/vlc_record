@@ -31,6 +31,8 @@
 | 2010-02-02: Version 1.12
 | - don't start vlc detached
 | - more control vlc using vlc-record
+| - shutdown added
+| - logging macros added
 |
 | 2010-01-28: Version 1.11
 | - supports silent record

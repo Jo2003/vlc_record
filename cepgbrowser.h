@@ -41,6 +41,8 @@ public:
     void SetLogoDir (const QString &sDir) { sLogoDir = sDir; }
     int  GetCid () { return iCid; }
     QString ShowName (uint uiTimeT);
+    void EnlargeFont ();
+    void ReduceFont ();
 
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());

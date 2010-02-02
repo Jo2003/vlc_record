@@ -152,6 +152,7 @@ private slots:
     void slotTimerRecordDone ();
     void slotVlcStarts ();
     void slotVlcEnds ();
+    void slotShutdown ();
     void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
     void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
 

@@ -173,6 +173,11 @@ void CTimerRec::SetKartinaTrigger(CWaitTrigger *pTrig)
 void CTimerRec::SetSettings(CSettingsDlg *pSet)
 {
    pSettings = pSet;
+
+   if (pSettings->GetShutdownCmd() == "")
+   {
+      r_ui->checkShutdown->setDisabled(true);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -855,6 +860,13 @@ void CTimerRec::slotRecTimer()
 
                   emit sigRecDone();
                   emit sigSendStatusMsg(tr("Timer Ready"), QString("white"));
+
+                  // shut we shut down the system ... ?
+                  if (JobList.isEmpty()                     // all done ...
+                     && r_ui->checkShutdown->isChecked())   // we want to shut down ...
+                  {
+                     ShutDown();
+                  }
                }
             }
             else
@@ -935,6 +947,23 @@ void CTimerRec::slotTimerStreamUrl(QString str)
    {
       mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ShutDown
+|  Begin: 02.02.2010 / 15:05:00
+|  Author: Joerg Neubert
+|  Description: shutdown system with user set command
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CTimerRec::ShutDown()
+{
+   mInfo(tr("All records done. Shutdown system using command line:\n  --> %1").arg(pSettings->GetShutdownCmd()));
+   QProcess::startDetached(pSettings->GetShutdownCmd());
+   emit sigShutdown();
 }
 
 /************************* History ***************************\

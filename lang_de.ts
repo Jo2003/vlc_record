@@ -101,99 +101,76 @@ p, li { white-space: pre-wrap; }
     <name>CKartinaClnt</name>
     <message>
         <location filename="ckartinaclnt.cpp" line="162"/>
-        <source>%1 / %2():%3 Request Authentication</source>
-        <oldsource>%1 / %2():%3 Request Authentication
-</oldsource>
+        <source>Request Authentication ...</source>
+        <oldsource>%1 / %2():%3 Request Authentication</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="186"/>
-        <source>%1 / %2():%3 Request Channel List</source>
-        <oldsource>%1 / %2():%3 Request Channel List
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="185"/>
+        <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="206"/>
-        <source>%1 / %2():%3 Set TimeShift to: %4 hours</source>
-        <oldsource>%1 / %2():%3 Set TimeShift to: %4 hours
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="205"/>
+        <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="227"/>
-        <source>%1 / %2():%3 Request URL for channel %4</source>
-        <oldsource>%1 / %2():%3 Request URL for channel %4
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="226"/>
+        <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="255"/>
-        <source>%1 / %2():%3 Set Streaming Server to No %4</source>
-        <oldsource>%1 / %2():%3 Set Streaming Server to No %4
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="253"/>
+        <source>Set Streaming Server to No %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="276"/>
-        <source>%1 / %2():%3 Set Http Buffer to %4 msec.</source>
-        <oldsource>%1 / %2():%3 Set Http Buffer to %4 msec.
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="274"/>
+        <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="297"/>
-        <source>%1 / %2():%3 Request EPG for Channel %4</source>
-        <oldsource>%1 / %2():%3 Request EPG for Channel %4
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="295"/>
+        <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="322"/>
-        <source>%1 / %2():%3 Request Archiv URL:
-%4</source>
-        <oldsource>%1 / %2():%3 Request Archiv URL:
-%4
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="319"/>
+        <source>Request Archiv URL:
+  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="353"/>
-        <source>%1 / %2():%3 We&apos;ve got Response for Authentification!</source>
-        <oldsource>%1 / %2():%3 We&apos;ve got Response for Authentification!
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="348"/>
+        <source>We&apos;ve got Response for Authentification!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="360"/>
-        <source>%1 / %2():%3 Got cookie: %4!</source>
-        <oldsource>%1 / %2():%3 Got cookie: %4!
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="354"/>
+        <source>Got cookie:
+  --&gt; %1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="368"/>
-        <source>%1 / %2():%3 Error: Can&apos;t authenticate!</source>
-        <oldsource>%1 / %2():%3 Error: Can&apos;t authenticate!
-</oldsource>
+        <location filename="ckartinaclnt.cpp" line="361"/>
+        <source>Error: Can&apos;t authenticate!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="370"/>
+        <location filename="ckartinaclnt.cpp" line="399"/>
+        <source>Request done!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ckartinaclnt.cpp" line="437"/>
+        <source>Error in Request: %1!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ckartinaclnt.cpp" line="363"/>
         <source>Can&apos;t authenticate you at kartina.tv! Please check username and password!</source>
         <translation>Authentifizierung bei kartina.tv nicht möglich! Bitte Benutzername und Passwort überprüfen!</translation>
-    </message>
-    <message>
-        <location filename="ckartinaclnt.cpp" line="406"/>
-        <source>%1 / %2():%3 Request done!</source>
-        <oldsource>%1 / %2():%3 Request done!
-</oldsource>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ckartinaclnt.cpp" line="445"/>
-        <source>%1 / %2():%3 Error in Request: %4!</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -221,12 +198,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="389"/>
-        <source>%1 / %2():%3 Kartina.tv reports client time as %4</source>
+        <source>Kartina.tv reports client time as %1</source>
+        <oldsource>%1 / %2():%3 Kartina.tv reports client time as %4</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="409"/>
-        <source>%1 / %2():%3 Set time offset to %4 seconds!</source>
+        <location filename="ckartinaxmlparser.cpp" line="407"/>
+        <source>Set time offset to %1 seconds!</source>
         <translation></translation>
     </message>
 </context>
@@ -253,22 +231,22 @@ p, li { white-space: pre-wrap; }
         <translation>Logge alles</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="140"/>
+        <location filename="csettingsdlg.cpp" line="150"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="135"/>
+        <location filename="csettingsdlg.cpp" line="145"/>
         <source>Executables (*.exe)</source>
         <translation>ausführbar (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="137"/>
+        <location filename="csettingsdlg.cpp" line="147"/>
         <source>Executables (*)</source>
         <translation>ausführbar (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="158"/>
+        <location filename="csettingsdlg.cpp" line="168"/>
         <source>Target Folder</source>
         <translation>Zielverzeichnis</translation>
     </message>
@@ -379,16 +357,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="27"/>
         <source>&amp;Access</source>
-        <translation type="unfinished"></translation>
+        <translation>Zugang</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="33"/>
         <source> Kartina.tv Account </source>
-        <translation type="unfinished"></translation>
+        <translation>Kartina.tv Zugangsdaten</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="73"/>
-        <source> Sream Server </source>
+        <source> Stream Server </source>
+        <oldsource> Sream Server </oldsource>
         <translation></translation>
     </message>
     <message>
@@ -450,22 +429,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="338"/>
         <source>Program Settings </source>
-        <translation type="unfinished"></translation>
+        <translation> Programmeinstellungen </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="347"/>
         <source>Language: </source>
-        <translation type="unfinished"></translation>
+        <translation>Sprache: </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="391"/>
         <source>Log Level:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="462"/>
         <source>Refresh EPG every:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lade das EPG alle ...</translation>
     </message>
     <message>
         <source> Minimize </source>
@@ -524,15 +503,20 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="519"/>
         <source>Ask for Record Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Frage nach Zieldateinamen</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="548"/>
+        <location filename="csettingsdlg.ui" line="529"/>
+        <source>Shutdown Command:</source>
+        <translation>Shutdown Kommando: </translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="558"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="568"/>
+        <location filename="csettingsdlg.ui" line="578"/>
         <source>&amp;Cancel</source>
         <translation>A&amp;bbrechen</translation>
     </message>
@@ -540,55 +524,98 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CTimerRec</name>
     <message>
-        <location filename="ctimerrec.cpp" line="356"/>
-        <location filename="ctimerrec.cpp" line="362"/>
+        <location filename="ctimerrec.cpp" line="408"/>
+        <location filename="ctimerrec.cpp" line="414"/>
         <source>Please Correct!</source>
         <translation>Bitte korrigieren!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="357"/>
+        <location filename="ctimerrec.cpp" line="409"/>
         <source>Please insert a name!</source>
         <translation>Bitte einen Namen eingeben!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="363"/>
+        <location filename="ctimerrec.cpp" line="415"/>
         <source>The entry you want to add overlapps with an existing entry!
 Or start time is later than end time!</source>
-        <oldsource>The entry you want to add overlapps with an existing entry!
-Or start time is later than end time!</oldsource>
         <translation>Der Eintrag, den Sie eintragen wollen, überschneidet sich mit einem anderen Eintrag!
 Oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="432"/>
+        <location filename="ctimerrec.cpp" line="484"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="433"/>
+        <location filename="ctimerrec.cpp" line="485"/>
         <source>XML Error String: %1</source>
         <translation>XML Fehler String: %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="760"/>
-        <location filename="ctimerrec.cpp" line="796"/>
+        <location filename="ctimerrec.cpp" line="603"/>
+        <source>Add Job #%1 (%2) to Joblist!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="657"/>
+        <source>Don&apos;t check ID %1 (it will be updated).</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="818"/>
+        <location filename="ctimerrec.cpp" line="862"/>
         <source>Timer Ready</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="806"/>
+        <location filename="ctimerrec.cpp" line="844"/>
+        <source>Delete old entry #%1 (%2) from Joblist.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="851"/>
+        <source>Stopping timer record #%1 (%2). End time reached!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="879"/>
         <source>Timer StBY</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="815"/>
+        <location filename="ctimerrec.cpp" line="888"/>
+        <source>Record #%1 (%2) starts soon. Set timer to standby!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="896"/>
+        <source>Start record #%1 (%2)!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="897"/>
         <source>Record Active</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="871"/>
-        <source>Start VLC using following command line:
-</source>
+        <location filename="ctimerrec.cpp" line="944"/>
+        <source>Error!</source>
+        <translation>Fehler!</translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="944"/>
+        <source>Can&apos;t start VLC-Media Player!</source>
+        <translation>Kann den VLC Mediaplayer nicht starten!</translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="948"/>
+        <source>Started VLC with pid #%1!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="964"/>
+        <source>All records done. Shutdown system using command line:
+  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
@@ -617,7 +644,7 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Kanal:</translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="272"/>
+        <location filename="ctimerrec.ui" line="285"/>
         <source>Time Shift:</source>
         <translation></translation>
     </message>
@@ -629,7 +656,7 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="ctimerrec.ui" line="25"/>
         <source> Job Control </source>
-        <translation type="unfinished"></translation>
+        <translation> Timerliste </translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="129"/>
@@ -674,12 +701,12 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="ctimerrec.ui" line="198"/>
         <source>Silent Record</source>
-        <translation type="unfinished"></translation>
+        <translation>Leise Aufnahme</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="211"/>
         <source>Add / Update Job</source>
-        <translation type="unfinished"></translation>
+        <translation>Timereintrag hinzufügen / updaten</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="214"/>
@@ -690,150 +717,216 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="ctimerrec.ui" line="240"/>
         <source>Delete Job from Joblist</source>
-        <translation type="unfinished"></translation>
+        <translation>Lösche Eintrag von der Timerliste</translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="295"/>
+        <location filename="ctimerrec.ui" line="269"/>
+        <source>Shutdown when all is done</source>
+        <translation>Shutdown wenn fertig</translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.ui" line="317"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="305"/>
+        <location filename="ctimerrec.ui" line="327"/>
         <source>End</source>
         <translation>Ende</translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="310"/>
+        <location filename="ctimerrec.ui" line="332"/>
         <source>Ch.</source>
         <translation>Kn.</translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="315"/>
+        <location filename="ctimerrec.ui" line="337"/>
         <source>TS.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="346"/>
+        <location filename="ctimerrec.ui" line="368"/>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zurück</translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="300"/>
+        <location filename="ctimerrec.ui" line="322"/>
         <source>Start</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.ui" line="320"/>
+        <location filename="ctimerrec.ui" line="342"/>
         <source>Name</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>CVlcCtrl</name>
+    <message>
+        <location filename="cvlcctrl.cpp" line="90"/>
+        <source>Warning!</source>
+        <translation>Warnung!</translation>
+    </message>
+    <message>
+        <location filename="cvlcctrl.cpp" line="90"/>
+        <source>Vlc Player is already running!</source>
+        <translation>Der VLC Mediaplayer läuft bereits!</translation>
+    </message>
+    <message>
+        <location filename="cvlcctrl.cpp" line="96"/>
+        <source>Start vlc player using folling command line:
+  --&gt; %1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cvlcctrl.cpp" line="298"/>
+        <source>Vlc was started ...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cvlcctrl.cpp" line="302"/>
+        <source>Vlc has ended ...</source>
         <translation></translation>
     </message>
 </context>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="279"/>
-        <location filename="recorder.cpp" line="299"/>
+        <location filename="recorder.cpp" line="290"/>
+        <location filename="recorder.cpp" line="310"/>
         <source>Mon</source>
         <translation>Mo.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="280"/>
-        <location filename="recorder.cpp" line="300"/>
+        <location filename="recorder.cpp" line="291"/>
+        <location filename="recorder.cpp" line="311"/>
         <source>Tue</source>
         <translation>Di.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="281"/>
-        <location filename="recorder.cpp" line="301"/>
+        <location filename="recorder.cpp" line="292"/>
+        <location filename="recorder.cpp" line="312"/>
         <source>Wed</source>
         <translation>Mi.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="282"/>
-        <location filename="recorder.cpp" line="302"/>
+        <location filename="recorder.cpp" line="293"/>
+        <location filename="recorder.cpp" line="313"/>
         <source>Thu</source>
         <translation>Do.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="283"/>
-        <location filename="recorder.cpp" line="303"/>
+        <location filename="recorder.cpp" line="294"/>
+        <location filename="recorder.cpp" line="314"/>
         <source>Fri</source>
         <translation>Fr.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="284"/>
-        <location filename="recorder.cpp" line="304"/>
+        <location filename="recorder.cpp" line="295"/>
+        <location filename="recorder.cpp" line="315"/>
         <source>Sat</source>
         <translation>Sa.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="293"/>
-        <location filename="recorder.cpp" line="305"/>
+        <location filename="recorder.cpp" line="304"/>
+        <location filename="recorder.cpp" line="316"/>
         <source>Sun</source>
         <translation>So.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="434"/>
+        <location filename="recorder.cpp" line="447"/>
+        <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
+        <translation>Der VLC Mediaplayer läuft noch.&lt;br /&gt;&lt;b&gt;Wenn Du vlc-record jetzt schließt, wird auch der VLC Player geschlossen.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du das willst?</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="452"/>
+        <location filename="recorder.cpp" line="1676"/>
+        <source>Question</source>
+        <translation>Frage</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="525"/>
         <source>Program:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendung:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="435"/>
+        <location filename="recorder.cpp" line="526"/>
         <source>Start:</source>
-        <translation type="unfinished"></translation>
+        <translation>Beginn:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="436"/>
+        <location filename="recorder.cpp" line="527"/>
         <source>End:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ende:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="529"/>
-        <location filename="recorder.cpp" line="576"/>
-        <source>Starting VLC using following command line:
-</source>
+        <location filename="recorder.cpp" line="804"/>
+        <location filename="recorder.cpp" line="1273"/>
+        <source>Kartina.tv sends following url:
+  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="534"/>
-        <location filename="recorder.cpp" line="581"/>
+        <location filename="recorder.cpp" line="1488"/>
+        <source>vlcCtrl reports: vlc player ended!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="1506"/>
+        <source>vlcCtrl reports: vlc player active!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="1672"/>
+        <source>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</source>
+        <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="618"/>
+        <location filename="recorder.cpp" line="660"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1069"/>
+        <location filename="recorder.cpp" line="623"/>
+        <location filename="recorder.cpp" line="664"/>
+        <source>Started VLC with pid #%1!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="1156"/>
         <source>Warning!</source>
         <translation>Warnung!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1069"/>
+        <location filename="recorder.cpp" line="1156"/>
         <source>Timer Record active!</source>
         <translation>Timer Record aktiv!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1362"/>
+        <location filename="recorder.cpp" line="1451"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1380"/>
+        <location filename="recorder.cpp" line="1469"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="238"/>
-        <location filename="recorder.cpp" line="312"/>
+        <location filename="recorder.cpp" line="249"/>
+        <location filename="recorder.cpp" line="323"/>
         <source>1 week backward</source>
         <translation>1 Woche zurück</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="172"/>
+        <location filename="recorder.cpp" line="182"/>
         <source>vlc-record - Click to activate!</source>
         <translation>vlc-record - Klicken zum aktivieren!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="270"/>
-        <location filename="recorder.cpp" line="317"/>
+        <location filename="recorder.cpp" line="281"/>
+        <location filename="recorder.cpp" line="328"/>
         <source>1 week forward</source>
         <translation>1 Woche nach vorn</translation>
     </message>
@@ -848,13 +941,13 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
 &lt;b&gt;Ende:&lt;/b&gt; %4</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="478"/>
+        <location filename="recorder.cpp" line="569"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="534"/>
-        <location filename="recorder.cpp" line="581"/>
+        <location filename="recorder.cpp" line="618"/>
+        <location filename="recorder.cpp" line="660"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
@@ -863,12 +956,12 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Nicht unterstützte Dateierweiterung!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="662"/>
+        <location filename="recorder.cpp" line="745"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="663"/>
+        <location filename="recorder.cpp" line="746"/>
         <source>Kartina.tv Client API reports some errors: %1</source>
         <translation>Die Kartina.tv Client API meldet folgenden Fehler: %1</translation>
     </message>
@@ -1007,47 +1100,52 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="558"/>
+        <location filename="recorder.ui" line="560"/>
+        <source>Stop VLC ...</source>
+        <translation>Schließe den VLC Player ...</translation>
+    </message>
+    <message>
+        <location filename="recorder.ui" line="599"/>
         <source>Timer Record</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="574"/>
+        <location filename="recorder.ui" line="615"/>
         <source>Ctrl+T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="593"/>
+        <location filename="recorder.ui" line="634"/>
         <source>Timer Ready</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="635"/>
+        <location filename="recorder.ui" line="676"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="651"/>
+        <location filename="recorder.ui" line="692"/>
         <source>Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="676"/>
+        <location filename="recorder.ui" line="717"/>
         <source>About ...</source>
         <translation>Über ...</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="692"/>
+        <location filename="recorder.ui" line="733"/>
         <source>Alt+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="717"/>
+        <location filename="recorder.ui" line="758"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="733"/>
+        <location filename="recorder.ui" line="774"/>
         <source>Alt+Q</source>
         <translation></translation>
     </message>
