@@ -32,6 +32,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    bRecord        = true;
    bLogosReady    = false;
    bPendingRecord = false;
+   bVlcRuns       = false;
    pTranslator    = trans;
    iEpgOffset     = 0;
    uiArchivGmt    = 0;
@@ -76,6 +77,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    Trigger.start();
 
    // give vlcCtrl needed infos ...
+   vlcCtrl.setParent(this);
    vlcCtrl.SetProgPath(Settings.GetVLCPath());
    vlcCtrl.SetCache(Settings.GetBufferTime());
 
@@ -105,6 +107,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&trayIcon,   SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
    connect (this,        SIGNAL(sigHide()), &trayIcon, SLOT(show()));
    connect (this,        SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
+   connect (&vlcCtrl,    SIGNAL(sigVlcStarts()), this, SLOT(slotVlcStarts()));
+   connect (&vlcCtrl,    SIGNAL(sigVlcEnds()), this, SLOT(slotVlcEnds()));
 
    // -------------------------------------------
    // create epg nav bar ...
@@ -976,7 +980,7 @@ void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
 \----------------------------------------------------------------- */
 void Recorder::EnableDisableDlg (bool bEnable)
 {
-   if (bEnable && bPendingRecord)
+   if (bEnable && (bPendingRecord || bVlcRuns))
    {
       bEnable = false;
    }
@@ -984,6 +988,8 @@ void Recorder::EnableDisableDlg (bool bEnable)
    ui->cbxTimeShift->setEnabled(bEnable);
    ui->pushPlay->setEnabled(bEnable);
    ui->pushRecord->setEnabled(bEnable);
+
+   ui->pushStop->setDisabled(bEnable);
 }
 
 /* -----------------------------------------------------------------\
@@ -1461,6 +1467,43 @@ void Recorder::slotTimerRecActive()
 }
 
 /* -----------------------------------------------------------------\
+|  Method: slotVlcEnds
+|  Begin: 02.02.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: vlc ends, enable dialog items
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotVlcEnds()
+{
+   if (bVlcRuns)
+   {
+      mInfo(tr("vlcCtrl reports: vlc player ended!"));
+      bVlcRuns = false;
+      EnableDisableDlg();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotVlcStarts
+|  Begin: 02.02.2010 / 13:58:25
+|  Author: Joerg Neubert
+|  Description: vlc starts, disable dialog items
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotVlcStarts()
+{
+   mInfo(tr("vlcCtrl reports: vlc player active!"));
+   bVlcRuns = true;
+   EnableDisableDlg(false);
+}
+
+/* -----------------------------------------------------------------\
 |  Method: slotTimerStatusMsg
 |  Begin: 26.01.2010 / 13:58:25
 |  Author: Joerg Neubert
@@ -1541,7 +1584,59 @@ void Recorder::hideEvent(QHideEvent *event)
 
 void Recorder::on_pushStop_clicked()
 {
-   vlcCtrl.stop();
+   if (vlcCtrl.IsRunning())
+   {
+      if (WantToQuitVlc())
+      {
+         vlcCtrl.stop();
+      }
+   }
+}
+
+void Recorder::accept()
+{
+   // if vlc is running, ask if we want
+   // to close it ...
+   if (vlcCtrl.IsRunning())
+   {
+      if (WantToClose())
+      {
+         QDialog::accept();
+      }
+   }
+   else
+   {
+      QDialog::accept();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: WantToQuitVlc
+|  Begin: 02.02.2010 / 10:05:00
+|  Author: Joerg Neubert
+|  Description: ask if we want to clse vlc
+|
+|  Parameters: --
+|
+|  Returns: true --> close
+|          false --> don't close
+\----------------------------------------------------------------- */
+bool Recorder::WantToQuitVlc()
+{
+   QString sText = HTML_SITE;
+   sText.replace(TMPL_CONT, tr("VLC is still running."
+                               "<br /> <br />"
+                               "Do you really want to close the VLC Player now?"));
+
+   if (QMessageBox::question(this, tr("Question"), sText,
+                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
 }
 
 /************************* History ***************************\

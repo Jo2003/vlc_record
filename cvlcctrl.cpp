@@ -28,6 +28,7 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
 {
    sProgPath  = path;
    iCacheTime = 0;
+   connect (this, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(slotStateChanged(QProcess::ProcessState)));
 }
 
 /* -----------------------------------------------------------------\
@@ -92,7 +93,7 @@ Q_PID CVlcCtrl::start(const QString &clargs, int iRunTime)
    {
       QString sCmdLine = QString("\"%1\" %2").arg(sProgPath).arg(clargs);
 
-      mInfo(tr("Start vlc player using folling command line:\n%1").arg(sCmdLine));
+      mInfo(tr("Start vlc player using folling command line:\n  --> %1").arg(sCmdLine));
 
       QProcess::start(sCmdLine);
 
@@ -277,6 +278,33 @@ QString CVlcCtrl::CreateClArgs(vlcctrl::eVlcAct eAct,
 void CVlcCtrl::SetCache(int iTime)
 {
    iCacheTime = iTime;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStateChanged
+|  Begin: 02.02.2010 / 14:05:00
+|  Author: Joerg Neubert
+|  Description: send signal when vlc starts / ends ...
+|
+|  Parameters: new process state
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVlcCtrl::slotStateChanged(QProcess::ProcessState newState)
+{
+   switch (newState)
+   {
+   case QProcess::NotRunning:
+      mInfo(tr("Vlc was started ..."));
+      emit sigVlcEnds();
+      break;
+   case QProcess::Running:
+      mInfo(tr("Vlc has ended ..."));
+      emit sigVlcStarts();
+      break;
+   default:
+      break;
+   }
 }
 
 /************************* History ***************************\

@@ -77,6 +77,9 @@ public:
     Recorder(QTranslator *trans = 0, QWidget *parent = 0);
     ~Recorder();
 
+ public slots:
+    virtual void accept();
+
 private:
     Ui::Recorder                  *ui;
     CSettingsDlg                   Settings;
@@ -88,6 +91,7 @@ private:
     bool                           bRecord;
     bool                           bLogosReady;
     bool                           bPendingRecord;
+    bool                           bVlcRuns;
     CChanLogo                      dwnLogos;
     QString                        sLogoPath;
     int                            iEpgOffset;
@@ -110,6 +114,7 @@ protected:
     QString CleanShowName (const QString &str);
     void CreateSystray ();
     bool WantToClose ();
+    bool WantToQuitVlc ();
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -145,6 +150,8 @@ private slots:
     void slotSetSServer (int iSrv);
     void slotTimerRecActive ();
     void slotTimerRecordDone ();
+    void slotVlcStarts ();
+    void slotVlcEnds ();
     void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
     void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
 

@@ -13,6 +13,7 @@
    #define __020110__CVLCCTRL_H
 
 #include <QProcess>
+#include <QObject>
 #include <QTimer>
 #include <QMessageBox>
 
@@ -41,7 +42,7 @@ namespace vlcctrl
 |  Description: class to control vlc, inherits QProcess
 |
 \********************************************************************/
-class CVlcCtrl : QProcess
+class CVlcCtrl : public QProcess
 {
 Q_OBJECT
 
@@ -63,7 +64,12 @@ private:
    QString sProgPath;
    QTimer  tRunTime;
 
+private slots:
+   void slotStateChanged (QProcess::ProcessState newState);
+
 signals:
+   void sigVlcEnds ();
+   void sigVlcStarts ();
 
 public slots:
 };

@@ -159,7 +159,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetCookie ()
 {
-   mInfo(tr("Request Authentication"));
+   mInfo(tr("Request Authentication ..."));
 
    bRenewCookie = true;
 
@@ -182,7 +182,7 @@ void CKartinaClnt::GetCookie ()
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetChannelList ()
 {
-   mInfo(tr("Request Channel List"));
+   mInfo(tr("Request Channel List ..."));
 
    PostRequest(Kartina::REQ_CHANNELLIST, "/", "m=channels&act=get_list_xml");
 }
@@ -202,7 +202,7 @@ void CKartinaClnt::GetChannelList ()
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetTimeShift (int iHours)
 {
-   mInfo(tr("Set TimeShift to %1 hour(s)").arg(iHours));
+   mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
    PostRequest(Kartina::REQ_TIMESHIFT, "/",
                QString("m=clients&act=x_set_timeshift&ts=%1").arg(iHours));
@@ -223,7 +223,7 @@ void CKartinaClnt::SetTimeShift (int iHours)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 {
-   mInfo(tr("Request URL for channel %1").arg(iChanID));
+   mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
    QString req = QString("m=channels&act=get_stream_url&cid=%1").arg(iChanID);
 
@@ -250,7 +250,7 @@ void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetServer(int iSrv)
 {
-   mInfo(tr("Set Streaming Server to No %1").arg(iSrv));
+   mInfo(tr("Set Streaming Server to No %1 ...").arg(iSrv));
 
    PostRequest(Kartina::REQ_SERVER, "/",
                QString("m=clients&act=x_set_sserv&ssrv=%1").arg(iSrv));
@@ -271,7 +271,7 @@ void CKartinaClnt::SetServer(int iSrv)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetHttpBuffer(int iTime)
 {
-   mInfo(tr("Set Http Buffer to %1 msec.").arg(iTime));
+   mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
    PostRequest(Kartina::REQ_SERVER, "/",
                QString("m=clients&act=x_set_http_cache&htc=%1").arg(iTime));
@@ -292,7 +292,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 {
-   mInfo(tr("Request EPG for Channel %1").arg(iChanID));
+   mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
 
    QDate now = QDate::currentDate().addDays(iOffset);
 
@@ -316,7 +316,7 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetArchivURL (const QString &prepared)
 {
-   mInfo(tr("Request Archiv URL:\n%1").arg(prepared));
+   mInfo(tr("Request Archiv URL:\n  --> %1").arg(prepared));
 
    QString req = prepared;
 
@@ -351,7 +351,7 @@ void CKartinaClnt::getResponseHeader (const QHttpResponseHeader &resp)
 
       if (sCookie != "")
       {
-         mInfo(tr("Got cookie:\n%1!").arg(sCookie));
+         mInfo(tr("Got cookie:\n  --> %1!").arg(sCookie));
 
          // we have catched the cookie ...
          emit sigGotCookie();

@@ -339,44 +339,64 @@ int CTimerRec::SaveRecordList()
 \----------------------------------------------------------------- */
 void CTimerRec::on_btnSet_clicked()
 {
-/**************** UPDATE OR NEW ENTRY ???? *******************/
-/**************** UPDATE OR NEW ENTRY ???? *******************/
-/**************** UPDATE OR NEW ENTRY ???? *******************/
-/**************** UPDATE OR NEW ENTRY ???? *******************/
-/**************** UPDATE OR NEW ENTRY ???? *******************/
-/**************** UPDATE OR NEW ENTRY ???? *******************/
-/**************** UPDATE OR NEW ENTRY ???? *******************/
-
-   if (uiEdtId != INVALID_ID)
-   {
-      // delete from joblist ...
-      JobList.remove(uiEdtId);
-
-      // delete from job tab ...
-      DelRow(uiEdtId);
-
-      uiEdtId = INVALID_ID;
-   }
-
    // sanity check ...
-   if (!SanityCheck(r_ui->dtEdtStart->dateTime(), r_ui->dtEdtEnd->dateTime()))
+   if (!SanityCheck(r_ui->dtEdtStart->dateTime(), r_ui->dtEdtEnd->dateTime(), uiEdtId))
    {
       if (r_ui->edtName->text() != "")
       {
-         rec::SRecEntry entry;
-         entry.cid        = r_ui->cbxChannel->itemData(r_ui->cbxChannel->currentIndex()).toInt();
-         entry.uiStart    = r_ui->dtEdtStart->dateTime().toTime_t();
-         entry.uiEnd      = r_ui->dtEdtEnd->dateTime().toTime_t();
-         entry.sName      = r_ui->edtName->text();
-         entry.iTimeShift = r_ui->cbxTimeShift->currentText().toInt();
-         entry.eState     = rec::REC_READY;
+         // update or new entry ... ?
+         if (uiEdtId != INVALID_ID)
+         {
+            // update ...
 
-         // we need times in GMT ...
-         TimeShiftToGmt(entry.uiStart, entry.iTimeShift);
-         TimeShiftToGmt(entry.uiEnd, entry.iTimeShift);
+            // find entry to update ...
+            QMap<uint, rec::SRecEntry>::iterator it = JobList.find(uiEdtId);
 
-         // AddJob also adds the table row ...
-         AddJob (entry);
+            // if found, update ...
+            if (it != JobList.end())
+            {
+               (*it).cid        = r_ui->cbxChannel->itemData(r_ui->cbxChannel->currentIndex()).toInt();
+               (*it).iTimeShift = r_ui->cbxTimeShift->currentText().toInt();
+               (*it).uiStart    = r_ui->dtEdtStart->dateTime().toTime_t();
+               (*it).uiEnd      = r_ui->dtEdtEnd->dateTime().toTime_t();
+               (*it).sName      = r_ui->edtName->text();
+
+               // leave id and record state untouched ...
+
+               // we need times in GMT ...
+               TimeShiftToGmt((*it).uiStart, (*it).iTimeShift);
+               TimeShiftToGmt((*it).uiEnd, (*it).iTimeShift);
+
+               // delete from job tab ...
+               DelRow(uiEdtId);
+
+               // add row to job tab ...
+               AddRow(*it);
+            }
+
+            // we're done ...
+            uiEdtId = INVALID_ID;
+         }
+         else
+         {
+            // new entry ...
+            rec::SRecEntry entry;
+            entry.cid        = r_ui->cbxChannel->itemData(r_ui->cbxChannel->currentIndex()).toInt();
+            entry.uiStart    = r_ui->dtEdtStart->dateTime().toTime_t();
+            entry.uiEnd      = r_ui->dtEdtEnd->dateTime().toTime_t();
+            entry.sName      = r_ui->edtName->text();
+            entry.iTimeShift = r_ui->cbxTimeShift->currentText().toInt();
+            entry.eState     = rec::REC_READY;
+
+            // we need times in GMT ...
+            TimeShiftToGmt(entry.uiStart, entry.iTimeShift);
+            TimeShiftToGmt(entry.uiEnd, entry.iTimeShift);
+
+            // AddJob also adds the table row ...
+            AddJob (entry);
+
+            uiEdtId = INVALID_ID;
+         }
       }
       else
       {
@@ -575,7 +595,7 @@ void CTimerRec::InitTab()
 \----------------------------------------------------------------- */
 void CTimerRec::AddJob(rec::SRecEntry &entry)
 {
-   mInfo(tr("Add Job #%1").arg(uiActId));
+   mInfo(tr("Add Job #%1 (%2) to Joblist!").arg(uiActId).arg(entry.sName));
 
    entry.id = uiActId;
 
@@ -597,7 +617,7 @@ void CTimerRec::AddJob(rec::SRecEntry &entry)
 |  Returns:  0 ==> check ok
 |           -1 ==> check not passed
 \----------------------------------------------------------------- */
-int CTimerRec::SanityCheck(const QDateTime &start, const QDateTime &end)
+int CTimerRec::SanityCheck(const QDateTime &start, const QDateTime &end, uint uiUpdId)
 {
    int iRV = 0;
 
@@ -607,21 +627,29 @@ int CTimerRec::SanityCheck(const QDateTime &start, const QDateTime &end)
 
       for (int i = 0; i < JobList.size(); i++)
       {
-         uiStart = JobList[i].uiStart;
-         uiEnd   = JobList[i].uiEnd;
-
-         GmtToTimeShift(uiStart, JobList[i].iTimeShift);
-         GmtToTimeShift(uiEnd, JobList[i].iTimeShift);
-
-            /* start this between start/end other ...                         */
-         if (((start.toTime_t() >= uiStart) && (start.toTime_t() <= uiEnd))
-            /* end this between start/end other ...                           */
-            || ((end.toTime_t() >= uiStart) && (end.toTime_t() <= uiEnd))
-            /* start this before start other and end this after end other ... */
-            || ((start.toTime_t() < uiStart) && (end.toTime_t() > uiEnd)))
+         if ((uiUpdId == INVALID_ID) || (uiUpdId != JobList[i].id))
          {
-            iRV = -1;
-            break;
+            uiStart = JobList[i].uiStart;
+            uiEnd   = JobList[i].uiEnd;
+
+            GmtToTimeShift(uiStart, JobList[i].iTimeShift);
+            GmtToTimeShift(uiEnd, JobList[i].iTimeShift);
+
+               /* start this between start/end other ...                         */
+            if (((start.toTime_t() >= uiStart) && (start.toTime_t() <= uiEnd))
+               /* end this between start/end other ...                           */
+               || ((end.toTime_t() >= uiStart) && (end.toTime_t() <= uiEnd))
+               /* start this before start other and end this after end other ... */
+               || ((start.toTime_t() < uiStart) && (end.toTime_t() > uiEnd)))
+            {
+               iRV = -1;
+               break;
+            }
+         }
+         else
+         {
+            // ignore id we try to update ...
+            mInfo(tr("Don't check ID %1 (it will be updated).").arg(uiUpdId));
          }
       }
    }
@@ -808,12 +836,14 @@ void CTimerRec::slotRecTimer()
                if ((*it).eState != rec::REC_RUNNING)
                {
                   // old record ... delete without sending signals ...
+                  mInfo(tr("Delete old entry #%1 (%2) from Joblist.").arg((*it).id).arg((*it).sName));
                   DelRow((*it).id);
                   it = JobList.erase(it);
                }
                else
                {
                   // record was active ... is now done ...
+                  mInfo(tr("Stopping timer record #%1 (%2). End time reached!").arg((*it).id).arg((*it).sName));
                   DelRow((*it).id);
                   it = JobList.erase(it);
 
@@ -843,12 +873,15 @@ void CTimerRec::slotRecTimer()
                      pVlcCtrl->stop();
                   }
 
+                  mInfo(tr("Record #%1 (%2) starts soon. Set timer to standby!").arg((*it).id).arg((*it).sName));
+
                   // set timeshift ...
                   pTrigger->TriggerRequest(Kartina::REQ_TIMESHIFT, (*it).iTimeShift);
                }
                else if ((start <= now) && ((*it).eState == rec::REC_STBY))
                {
                   // start record ...
+                  mInfo(tr("Start record #%1 (%2)!").arg((*it).id).arg((*it).sName));
                   emit sigSendStatusMsg(tr("Record Active"), QString("red"));
                   (*it).eState = rec::REC_RUNNING;
                   itActJob     = it;

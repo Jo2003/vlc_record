@@ -24,38 +24,50 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.11 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.12 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
-| 2010-01-19: Version 1.00
-| - missing comments added
-| - prepare for linux build
-| - reload epg only if we are at current day
-| 2010-01-20: Version 1.01
-| - try to fix time offset problem
-| 2010-01-20: Version 1.05
-| - add advanced epg navbar
-| 2010-01-21: Version 1.06
-| - create / translate epg navbar using only one function
-| - double click on channel list starts channel play
-| 2010-01-21: Version 1.07
-| - can now set stream server
-| - can now set http cache time
-| - parsing stream url no longer removes additional params
-|    (needs testing!!)
-| 2010-01-21: Version 1.08
-| - need stream url as former
-| - add params for VLC (buffer)
-| 2010-01-23: Version 1.09
-| - switch language only when settings are saved
-|   (bugfix for segfault on some XP and Linux)
-| 2010-01-26: Version 1.10
-| - first version with working timer record (more tests needed)
+| 2010-02-02: Version 1.12
+| - don't start vlc detached
+| - more control vlc using vlc-record
+|
 | 2010-01-28: Version 1.11
 | - supports silent record
 | - rework settings dialog
 | - better systray handling
 | - save and restore window position
+|
+| 2010-01-26: Version 1.10
+| - first version with working timer record (more tests needed)
+|
+| 2010-01-23: Version 1.09
+| - switch language only when settings are saved
+|   (bugfix for segfault on some XP and Linux)
+|
+| 2010-01-21: Version 1.08
+| - need stream url as former
+| - add params for VLC (buffer)
+|
+| 2010-01-21: Version 1.07
+| - can now set stream server
+| - can now set http cache time
+| - parsing stream url no longer removes additional params
+|    (needs testing!!)
+|
+| 2010-01-21: Version 1.06
+| - create / translate epg navbar using only one function
+| - double click on channel list starts channel play
+|
+| 2010-01-20: Version 1.05
+| - add advanced epg navbar
+|
+| 2010-01-20: Version 1.01
+| - try to fix time offset problem
+|
+| 2010-01-19: Version 1.00
+| - missing comments added
+| - prepare for linux build
+| - reload epg only if we are at current day
 \*************************************************************/
 

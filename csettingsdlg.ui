@@ -70,7 +70,7 @@
        <item row="1" column="0">
         <widget class="QGroupBox" name="groupStreamServer">
          <property name="title">
-          <string> Sream Server </string>
+          <string> Stream Server </string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>

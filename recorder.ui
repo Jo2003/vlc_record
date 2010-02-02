@@ -14,7 +14,7 @@
    <string>VLC Recorder</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="vlc-record.qrc">
     <normaloff>:/app/tv</normaloff>:/app/tv</iconset>
   </property>
   <property name="styleSheet">
@@ -318,7 +318,7 @@ color: white;
              <string>...</string>
             </property>
             <property name="icon">
-             <iconset>
+             <iconset resource="vlc-record.qrc">
               <normaloff>:/app/find</normaloff>:/app/find</iconset>
             </property>
             <property name="iconSize">
@@ -484,7 +484,7 @@ background-attachment: fixed;
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="vlc-record.qrc">
              <normaloff>:/app/play</normaloff>:/app/play</iconset>
            </property>
            <property name="iconSize">
@@ -519,7 +519,7 @@ background-attachment: fixed;
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="vlc-record.qrc">
              <normaloff>:/app/record</normaloff>:/app/record</iconset>
            </property>
            <property name="iconSize">
@@ -541,6 +541,9 @@ background-attachment: fixed;
          </item>
          <item>
           <widget class="QPushButton" name="pushStop">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -560,7 +563,7 @@ background-attachment: fixed;
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="vlc-record.qrc">
              <normaloff>:/app/stop</normaloff>:/app/stop</iconset>
            </property>
            <property name="iconSize">
@@ -599,7 +602,7 @@ background-attachment: fixed;
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="vlc-record.qrc">
              <normaloff>:/app/timerrec</normaloff>:/app/timerrec</iconset>
            </property>
            <property name="iconSize">
@@ -676,7 +679,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="vlc-record.qrc">
           <normaloff>:/app/settings</normaloff>:/app/settings</iconset>
         </property>
         <property name="iconSize">
@@ -717,7 +720,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="vlc-record.qrc">
           <normaloff>:/app/info</normaloff>:/app/info</iconset>
         </property>
         <property name="iconSize">
@@ -758,7 +761,7 @@ color: white;
          <string/>
         </property>
         <property name="icon">
-         <iconset>
+         <iconset resource="vlc-record.qrc">
           <normaloff>:/app/quit</normaloff>:/app/quit</iconset>
         </property>
         <property name="iconSize">
@@ -803,7 +806,9 @@ color: white;
   <tabstop>pushQuit</tabstop>
   <tabstop>pushAbout</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="vlc-record.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>pushQuit</sender>
