@@ -102,7 +102,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="147"/>
         <source>Request #%1 postet.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="165"/>
@@ -166,7 +166,7 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaclnt.cpp" line="404"/>
         <source>Request #%1 done!</source>
         <oldsource>Request done!</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="442"/>

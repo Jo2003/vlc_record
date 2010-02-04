@@ -103,7 +103,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="147"/>
         <source>Request #%1 postet.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="165"/>
@@ -167,7 +167,7 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaclnt.cpp" line="404"/>
         <source>Request #%1 done!</source>
         <oldsource>Request done!</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="442"/>
@@ -521,12 +521,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="519"/>
         <source>Ask for Record Filename</source>
-        <translation>Попроси целевой файл</translation>
+        <translation>Запрос исходного файла</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="529"/>
         <source>Shutdown Command:</source>
-        <translation>Команда закрытия системы: </translation>
+        <translation>Команда отключения системы: </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="558"/>
@@ -641,7 +641,7 @@ Or start time is later than end time!</oldsource>
     <message>
         <location filename="ctimerrec.ui" line="14"/>
         <source>Timer Record</source>
-        <translation></translation>
+        <translation>Планировщик записи</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="43"/>
@@ -721,12 +721,12 @@ Or start time is later than end time!</oldsource>
     <message>
         <location filename="ctimerrec.ui" line="198"/>
         <source>Silent Record</source>
-        <translation>Тихая запись</translation>
+        <translation>Запись без просмотра</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="211"/>
         <source>Add / Update Job</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить/Обновить задание</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="214"/>
@@ -737,12 +737,12 @@ Or start time is later than end time!</oldsource>
     <message>
         <location filename="ctimerrec.ui" line="240"/>
         <source>Delete Job from Joblist</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить запись</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="269"/>
         <source>Shutdown when all is done</source>
-        <translation>Выключить комп.</translation>
+        <translation>Выключить компьютер</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="317"/>
