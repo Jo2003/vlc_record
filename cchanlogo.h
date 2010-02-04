@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 16:16:25
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #ifndef __011810__CCHANLOGO_H
@@ -16,7 +16,6 @@
 #include <QHttpRequestHeader>
 #include <QHttpResponseHeader>
 #include <QBuffer>
-#include <QMutex>
 #include <QDir>
 
 #include "ckartinaclnt.h"
@@ -57,7 +56,6 @@ private:
    QBuffer dataBuffer;
    QVector<cparser::SChan> chanList;
    QVector<cparser::SChan>::const_iterator cit;
-   QMutex mutex;
    bool bRun;
    bool bIsAnswer;
    int  iReq;

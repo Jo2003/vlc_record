@@ -21,7 +21,6 @@
 #include <QMessageBox>
 #include <QtNetwork>
 #include <QDate>
-#include <QMutex>
 
 #include "clogfile.h"
 #include "chttptime.h"
@@ -59,12 +58,12 @@ class CKartinaClnt : public QHttp
    Q_OBJECT
 
 public:
-   CKartinaClnt(const QString &host, const QString &usr = QString(), 
+   CKartinaClnt(const QString &host, const QString &usr = QString(),
                 const QString &pw = QString(), bool bAllowErotic = false);
    CKartinaClnt();
    ~CKartinaClnt();
 
-   void SetData(const QString &host, const QString &usr = QString(), 
+   void SetData(const QString &host, const QString &usr = QString(),
                 const QString &pw = QString(), bool bAllowErotic = false);
    void GetCookie ();
    void GetChannelList ();
@@ -89,10 +88,10 @@ private:
    QByteArray    baPageContent;
    QBuffer       bufReq;
    bool          bRenewCookie;
-   QMutex        mutexBuffer;
+   int           iReq;
 
 private slots:
-   void handleEndRequest (/* int id, */bool err);
+   void handleEndRequest (int id, bool err);
    void getResponseHeader (const QHttpResponseHeader &resp);
 
 signals:

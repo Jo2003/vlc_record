@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 16:17:24
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #include "cchanlogo.h"
@@ -99,7 +99,6 @@ void CChanLogo::StartDownLoad()
    {
       if (!QFile::exists(QString("%1/%2.gif").arg(sPath).arg((*cit).iId)))
       {
-         mutex.lock();
          dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
          iReq = get(QString("%1/%2.gif").arg(LOGO_PATH).arg((*cit).iId), &dataBuffer);
       }
@@ -145,7 +144,6 @@ void CChanLogo::slotCheckResp(int iReqID, bool err)
       }
 
       dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
-      mutex.unlock();
 
       // if no error, save file ...
       if (!err)

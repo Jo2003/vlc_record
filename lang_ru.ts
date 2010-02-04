@@ -101,75 +101,81 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaClnt</name>
     <message>
-        <location filename="ckartinaclnt.cpp" line="162"/>
+        <location filename="ckartinaclnt.cpp" line="147"/>
+        <source>Request #%1 postet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ckartinaclnt.cpp" line="165"/>
         <source>Request Authentication ...</source>
         <oldsource>%1 / %2():%3 Request Authentication</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="185"/>
+        <location filename="ckartinaclnt.cpp" line="188"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="205"/>
+        <location filename="ckartinaclnt.cpp" line="208"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="226"/>
+        <location filename="ckartinaclnt.cpp" line="229"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="253"/>
+        <location filename="ckartinaclnt.cpp" line="256"/>
         <source>Set Streaming Server to No %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="274"/>
+        <location filename="ckartinaclnt.cpp" line="277"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="295"/>
+        <location filename="ckartinaclnt.cpp" line="298"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="319"/>
+        <location filename="ckartinaclnt.cpp" line="322"/>
         <source>Request Archiv URL:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="348"/>
+        <location filename="ckartinaclnt.cpp" line="351"/>
         <source>We&apos;ve got Response for Authentification!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="354"/>
+        <location filename="ckartinaclnt.cpp" line="357"/>
         <source>Got cookie:
   --&gt; %1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="361"/>
+        <location filename="ckartinaclnt.cpp" line="364"/>
         <source>Error: Can&apos;t authenticate!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="399"/>
-        <source>Request done!</source>
-        <translation></translation>
+        <location filename="ckartinaclnt.cpp" line="404"/>
+        <source>Request #%1 done!</source>
+        <oldsource>Request done!</oldsource>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="437"/>
+        <location filename="ckartinaclnt.cpp" line="442"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="363"/>
+        <location filename="ckartinaclnt.cpp" line="366"/>
         <source>Can&apos;t authenticate you at kartina.tv! Please check username and password!</source>
         <translation>Неверный ввод данных! Соединение с kartina.tv невозможно! Проверите, пожалуйста, логин и пароль!</translation>
     </message>

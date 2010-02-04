@@ -31,6 +31,7 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr, const QStrin
 {
    sUsr           = usr;
    sPw            = pw;
+   iReq           = -1;
    bEros          = bAllowErotic;
    sCookie        = "";
    sHost          = host;
@@ -39,7 +40,7 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr, const QStrin
 
    bufReq.open(QIODevice::WriteOnly);
 
-   connect(this, SIGNAL(done(bool)), this, SLOT(handleEndRequest(bool)));
+   connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
    connect(this, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(getResponseHeader(QHttpResponseHeader)));
 }
 
@@ -59,6 +60,7 @@ CKartinaClnt::CKartinaClnt() :QHttp()
 {
    sUsr           = "";
    sPw            = "";
+   iReq           = -1;
    bEros          = false;
    sCookie        = "";
    sHost          = "";
@@ -67,7 +69,7 @@ CKartinaClnt::CKartinaClnt() :QHttp()
 
    bufReq.open(QIODevice::WriteOnly);
 
-   connect(this, SIGNAL(done(bool)), this, SLOT(handleEndRequest(bool)));
+   connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
    connect(this, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(getResponseHeader(QHttpResponseHeader)));
 }
 
@@ -128,7 +130,6 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr, const QStrin
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QString &content)
 {
-   mutexBuffer.lock();
    eReq = req;
    QHttpRequestHeader header("POST", path.toAscii());
    header.addValue("Host", sHost);
@@ -141,7 +142,9 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
       header.addValue("Cookie", sCookie);
    }
    header.setContentLength(content.toAscii().size());
-   request(header, content.toAscii(), &bufReq);
+   iReq = request(header, content.toAscii(), &bufReq);
+
+   mInfo(tr("Request #%1 postet.").arg(iReq));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -380,68 +383,71 @@ void CKartinaClnt::getResponseHeader (const QHttpResponseHeader &resp)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::handleEndRequest(bool err)
+void CKartinaClnt::handleEndRequest(int id, bool err)
 {
-   // close buffer device and open for read only...
-   bufReq.close();
-   bufReq.open(QIODevice::ReadOnly);
-
-   // read all content ...
-   baPageContent = bufReq.readAll();
-
-   // close buffer device and open for write only...
-   bufReq.close();
-   bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
-   mutexBuffer.unlock();
-
-   if (!err)
+   // is this our request ... ?
+   if (id == iReq)
    {
-      mInfo(tr("Request done!"));
+      // close buffer device and open for read only...
+      bufReq.close();
+      bufReq.open(QIODevice::ReadOnly);
 
-      // send signals dependet on ended request ...
-      switch (eReq)
+      // read all content ...
+      baPageContent = bufReq.readAll();
+
+      // close buffer device and open for write only...
+      bufReq.close();
+      bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
+
+      if (!err)
       {
-      case Kartina::REQ_COOKIE:
-         // signal already emitted when cookie was catched from response header ...
-         break;
-      case Kartina::REQ_CHANNELLIST:
-         emit sigGotChannelList(QString::fromUtf8(baPageContent.constData()));
-         break;
-      case Kartina::REQ_TIMESHIFT:
-         emit sigTimeShiftSet();
-         break;
-      case Kartina::REQ_EPG:
-         emit sigGotEPG(QString::fromUtf8(baPageContent.constData()));
-         break;
-      case Kartina::REQ_SERVER:
-         emit sigServerChanged();
-         break;
-      case Kartina::REQ_HTTPBUFF:
-         emit sigBufferSet();
-         break;
-      case Kartina::REQ_STREAM:
-         emit sigGotStreamURL(QString::fromUtf8(baPageContent.constData()));
-         break;
-      case Kartina::REQ_TIMERREC:
-         emit sigGotTimerStreamURL (QString::fromUtf8(baPageContent.constData()));
-         break;
-      case Kartina::REQ_ARCHIV:
-         emit sigGotArchivURL(QString::fromUtf8(baPageContent.constData()));
-         break;
-      default:
-         break;
+         mInfo(tr("Request #%1 done!").arg(id));
+
+         // send signals dependet on ended request ...
+         switch (eReq)
+         {
+         case Kartina::REQ_COOKIE:
+            // signal already emitted when cookie was catched from response header ...
+            break;
+         case Kartina::REQ_CHANNELLIST:
+            emit sigGotChannelList(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_TIMESHIFT:
+            emit sigTimeShiftSet();
+            break;
+         case Kartina::REQ_EPG:
+            emit sigGotEPG(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_SERVER:
+            emit sigServerChanged();
+            break;
+         case Kartina::REQ_HTTPBUFF:
+            emit sigBufferSet();
+            break;
+         case Kartina::REQ_STREAM:
+            emit sigGotStreamURL(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_TIMERREC:
+            emit sigGotTimerStreamURL (QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_ARCHIV:
+            emit sigGotArchivURL(QString::fromUtf8(baPageContent.constData()));
+            break;
+         default:
+            break;
+         }
       }
-   }
-   else
-   {
-      mErr(tr("Error in Request: %1!").arg(errorString()));
+      else
+      {
+         mErr(tr("Error in Request: %1!").arg(errorString()));
 
-      // send error signal ...
-      emit sigError(errorString());
-   }
+         // send error signal ...
+         emit sigError(errorString());
+      }
 
-   // mark request as ended so the API is "free for use" again ...
-   eReq = Kartina::REQ_UNKNOWN;
+      // mark request as ended so the API is "free for use" again ...
+      eReq = Kartina::REQ_UNKNOWN;
+   }
 }
 
 /* -----------------------------------------------------------------\
