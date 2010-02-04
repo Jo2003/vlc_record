@@ -56,7 +56,7 @@ Thank you,&lt;br /&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Автор:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;J&amp;ouml;rg Neubert&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Для:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Ольги!&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt %2 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;Перевод:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Ольга Нойберт&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Перевод:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Ольга Нойберт и Alex1808&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
@@ -254,12 +254,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="14"/>
         <source>Settings Dialog</source>
-        <translation>Настройка</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <source>&amp;General Settings</source>
         <oldsource>General Settings</oldsource>
-        <translation type="obsolete">&amp;Опции</translation>
+        <translation type="obsolete">&amp;Генеральные</translation>
     </message>
     <message>
         <source> Language </source>
@@ -291,7 +291,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="422"/>
         <source>Reload Logos:</source>
-        <translation>Перегрузка логотипа:</translation>
+        <translation>Обновить логотипы:</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="435"/>
@@ -317,17 +317,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="63"/>
         <source>Allow Adult Channels</source>
-        <translation>Открыть эротические каналы</translation>
+        <translation>Разрешить эротические каналы</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="177"/>
         <source> Proxy Server </source>
-        <translation>Прокси-сервер</translation>
+        <translation>Прокси сервер</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="271"/>
         <source>&amp;Settings</source>
-        <translation>&amp;Опции</translation>
+        <translation>Опции</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="277"/>
@@ -353,22 +353,25 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&amp;Advanced Settings</source>
         <oldsource>Advanced Settings</oldsource>
-        <translation type="obsolete">&amp;Дополнительные опции</translation>
+        <translation type="obsolete">&amp;Дополнительные</translation>
+    </message>
+    <message>
+        <source> Sream Server </source>
+        <translation type="obsolete">Сервер вещания</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="27"/>
         <source>&amp;Access</source>
-        <translation type="unfinished"></translation>
+        <translation>Доступ</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="33"/>
         <source> Kartina.tv Account </source>
-        <translation type="unfinished">Данные абонента Kartina.tv</translation>
+        <translation>Данные доступа для Kartina.tv</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="73"/>
         <source> Stream Server </source>
-        <oldsource> Sream Server </oldsource>
         <translation>Сервер вещания</translation>
     </message>
     <message>
@@ -395,7 +398,7 @@ p, li { white-space: pre-wrap; }
         <location filename="csettingsdlg.ui" line="138"/>
         <source>Time (msec.):</source>
         <oldsource>Time (sec.):</oldsource>
-        <translation>Время (м-сек.):</translation>
+        <translation>Время (в м-сек.):</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="146"/>
@@ -430,35 +433,35 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="338"/>
         <source>Program Settings </source>
-        <translation type="unfinished"></translation>
+        <translation>Опции программы</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="347"/>
         <source>Language: </source>
-        <translation type="unfinished">Язык:</translation>
+        <translation>Язык: </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="391"/>
         <source>Log Level:</source>
-        <translation type="unfinished">Протоколирование:</translation>
+        <translation>Уровень Протокола: </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="462"/>
         <source>Refresh EPG every:</source>
-        <translation type="unfinished">Обновлять программу передач каждые </translation>
+        <translation>Обновлять EPG каждые:</translation>
     </message>
     <message>
         <source> Minimize </source>
-        <translation type="obsolete">Свёртывание</translation>
+        <translation type="obsolete">Фоновый режим</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="455"/>
         <source>Minimize to Systray</source>
-        <translation>Сворачивать в панель инструментов</translation>
+        <translation>Сворачивать в трей</translation>
     </message>
     <message>
         <source>&amp;Proxy Settings</source>
-        <translation type="obsolete">Опции &amp;Прокси</translation>
+        <translation type="obsolete">Прокси сервер</translation>
     </message>
     <message>
         <source> Proxy Access </source>
@@ -486,7 +489,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="512"/>
         <source>Try to fix time offset</source>
-        <translation>Попытка синхронизация времени</translation>
+        <translation>Синхронизировать время</translation>
     </message>
     <message>
         <source> Logging </source>
@@ -498,11 +501,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source> Refresh </source>
-        <translation type="obsolete">Обновление</translation>
+        <translation type="obsolete">Обновление программы передач</translation>
     </message>
     <message>
         <source>Refresh EPG every ...</source>
-        <translation type="obsolete">Обновлять программу передач каждые </translation>
+        <translation type="obsolete">Обновлять каждые </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="490"/>
@@ -512,12 +515,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="519"/>
         <source>Ask for Record Filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Попроси целевой файл</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="529"/>
         <source>Shutdown Command:</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда закрытия системы: </translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="558"/>
@@ -547,7 +550,10 @@ p, li { white-space: pre-wrap; }
         <location filename="ctimerrec.cpp" line="415"/>
         <source>The entry you want to add overlapps with an existing entry!
 Or start time is later than end time!</source>
-        <translation>На заданное время уже поставлена запись в очередь. Пожалуйста выберете другое время!</translation>
+        <oldsource>The entry you want to add overlapps with an existing entry!
+Or start time is later than end time!</oldsource>
+        <translation type="unfinished">На заданное время уже запись запланированна!
+Пожалуйста выберете другое время!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="484"/>
@@ -562,28 +568,28 @@ Or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.cpp" line="603"/>
         <source>Add Job #%1 (%2) to Joblist!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="657"/>
         <source>Don&apos;t check ID %1 (it will be updated).</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="818"/>
         <location filename="ctimerrec.cpp" line="862"/>
         <source>Timer Ready</source>
-        <translation></translation>
+        <translation>Планировка записи</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="844"/>
         <source>Delete old entry #%1 (%2) from Joblist.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="851"/>
         <source>Stopping timer record #%1 (%2). End time reached!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="879"/>
@@ -593,12 +599,12 @@ Or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.cpp" line="888"/>
         <source>Record #%1 (%2) starts soon. Set timer to standby!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="896"/>
         <source>Start record #%1 (%2)!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="897"/>
@@ -608,23 +614,23 @@ Or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.cpp" line="944"/>
         <source>Error!</source>
-        <translation type="unfinished">Ошибка!</translation>
+        <translation>Ошибка!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="944"/>
         <source>Can&apos;t start VLC-Media Player!</source>
-        <translation type="unfinished">Невозможно заупстить VLC-Media Player!</translation>
+        <translation>Невозможно заупстить VLC-Media Player!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="948"/>
         <source>Started VLC with pid #%1!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="964"/>
         <source>All records done. Shutdown system using command line:
   --&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="14"/>
@@ -664,7 +670,7 @@ Or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.ui" line="25"/>
         <source> Job Control </source>
-        <translation type="unfinished"></translation>
+        <translation>Список таймера</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="129"/>
@@ -709,7 +715,7 @@ Or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.ui" line="198"/>
         <source>Silent Record</source>
-        <translation type="unfinished"></translation>
+        <translation>Тихая запись</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="211"/>
@@ -730,7 +736,7 @@ Or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.ui" line="269"/>
         <source>Shutdown when all is done</source>
-        <translation type="unfinished"></translation>
+        <translation>Выключить комп.</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="317"/>
@@ -755,7 +761,7 @@ Or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.ui" line="368"/>
         <source>&amp;Back</source>
-        <translation type="unfinished"></translation>
+        <translation>На&amp;зад</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="322"/>
@@ -773,28 +779,28 @@ Or start time is later than end time!</source>
     <message>
         <location filename="cvlcctrl.cpp" line="90"/>
         <source>Warning!</source>
-        <translation type="unfinished">Внимание!</translation>
+        <translation>Внимание!</translation>
     </message>
     <message>
         <location filename="cvlcctrl.cpp" line="90"/>
         <source>Vlc Player is already running!</source>
-        <translation type="unfinished"></translation>
+        <translation>VLC-Media Player уже работает!</translation>
     </message>
     <message>
         <location filename="cvlcctrl.cpp" line="96"/>
         <source>Start vlc player using folling command line:
   --&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cvlcctrl.cpp" line="298"/>
         <source>Vlc was started ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cvlcctrl.cpp" line="302"/>
         <source>Vlc has ended ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -844,50 +850,43 @@ Or start time is later than end time!</source>
     <message>
         <location filename="recorder.cpp" line="447"/>
         <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
-        <translation type="unfinished"></translation>
+        <translation>VLC Mediaplayer ещё работает.&lt;br /&gt;&lt;b&gt;Если вы теперь закрывайте VLC-Record, и VLC-Player закрывается.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Уверены ли Вы?</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="452"/>
         <location filename="recorder.cpp" line="1676"/>
         <source>Question</source>
-        <translation type="unfinished"></translation>
+        <translation>Вопрос</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="525"/>
         <source>Program:</source>
-        <translation type="unfinished"></translation>
+        <translation>Передача:</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="526"/>
         <source>Start:</source>
-        <translation type="unfinished">Начало:</translation>
+        <translation>Начало:</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="527"/>
         <source>End:</source>
-        <translation type="unfinished">Окончание:</translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="804"/>
-        <location filename="recorder.cpp" line="1273"/>
-        <source>Kartina.tv sends following url:
-  --&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Окончание:</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1488"/>
         <source>vlcCtrl reports: vlc player ended!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1506"/>
         <source>vlcCtrl reports: vlc player active!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1672"/>
         <source>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</source>
-        <translation type="unfinished"></translation>
+        <translation>VLC Mediaplayer ещё работает.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="618"/>
@@ -899,7 +898,14 @@ Or start time is later than end time!</source>
         <location filename="recorder.cpp" line="623"/>
         <location filename="recorder.cpp" line="664"/>
         <source>Started VLC with pid #%1!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="804"/>
+        <location filename="recorder.cpp" line="1273"/>
+        <source>Kartina.tv sends following url:
+  --&gt; %1</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1156"/>
@@ -1014,142 +1020,149 @@ Or start time is later than end time!</source>
         <translation>Программа передач</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="290"/>
+        <location filename="recorder.ui" line="367"/>
         <source>Search: </source>
         <translation>Поиск:</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="318"/>
+        <location filename="recorder.ui" line="292"/>
+        <location filename="recorder.ui" line="325"/>
+        <location filename="recorder.ui" line="395"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="331"/>
+        <location filename="recorder.ui" line="318"/>
+        <source>Textsize</source>
+        <translation>Размер шрифта</translation>
+    </message>
+    <message>
+        <location filename="recorder.ui" line="408"/>
         <source>Ctrl+F</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="396"/>
+        <location filename="recorder.ui" line="473"/>
         <source>Set TimeShift in hours.</source>
         <translation>Задержка вещания</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="399"/>
+        <location filename="recorder.ui" line="476"/>
         <source>TimeShift Selector</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="403"/>
+        <location filename="recorder.ui" line="480"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="408"/>
+        <location filename="recorder.ui" line="485"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="413"/>
+        <location filename="recorder.ui" line="490"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="418"/>
+        <location filename="recorder.ui" line="495"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="423"/>
+        <location filename="recorder.ui" line="500"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="428"/>
+        <location filename="recorder.ui" line="505"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="433"/>
+        <location filename="recorder.ui" line="510"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="438"/>
+        <location filename="recorder.ui" line="515"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="443"/>
+        <location filename="recorder.ui" line="520"/>
         <source>11</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="481"/>
+        <location filename="recorder.ui" line="558"/>
         <source>Play selected Channel</source>
         <translation>Просмотр передачи</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="497"/>
+        <location filename="recorder.ui" line="574"/>
         <source>Alt+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="516"/>
+        <location filename="recorder.ui" line="593"/>
         <source>Record selected Channel</source>
         <translation>Запись передачи</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="532"/>
+        <location filename="recorder.ui" line="609"/>
         <source>Alt+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="560"/>
+        <location filename="recorder.ui" line="637"/>
         <source>Stop VLC ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть VLC Player ...</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="599"/>
+        <location filename="recorder.ui" line="676"/>
         <source>Timer Record</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="615"/>
+        <location filename="recorder.ui" line="692"/>
         <source>Ctrl+T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="634"/>
+        <location filename="recorder.ui" line="711"/>
         <source>Timer Ready</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="676"/>
+        <location filename="recorder.ui" line="753"/>
         <source>Settings</source>
         <translation>Опции</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="692"/>
+        <location filename="recorder.ui" line="769"/>
         <source>Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="717"/>
+        <location filename="recorder.ui" line="794"/>
         <source>About ...</source>
         <translation>О программе...</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="733"/>
+        <location filename="recorder.ui" line="810"/>
         <source>Alt+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="758"/>
+        <location filename="recorder.ui" line="835"/>
         <source>Quit</source>
         <translation>Выключить</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="774"/>
+        <location filename="recorder.ui" line="851"/>
         <source>Alt+Q</source>
         <translation></translation>
     </message>

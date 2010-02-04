@@ -444,7 +444,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="462"/>
         <source>Refresh EPG every:</source>
-        <translation>Lade das EPG alle ...</translation>
+        <translation>Lade das EPG alle: </translation>
     </message>
     <message>
         <source> Minimize </source>
@@ -538,7 +538,9 @@ p, li { white-space: pre-wrap; }
         <location filename="ctimerrec.cpp" line="415"/>
         <source>The entry you want to add overlapps with an existing entry!
 Or start time is later than end time!</source>
-        <translation>Der Eintrag, den Sie eintragen wollen, überschneidet sich mit einem anderen Eintrag!
+        <oldsource>The entry you want to add overlapps with an existing entry!
+Or start time is later than end time!</oldsource>
+        <translation type="unfinished">Der Eintrag, den Sie eintragen wollen, überschneidet sich mit einem anderen Eintrag!
 Oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
@@ -1010,142 +1012,149 @@ Oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">EPG für den markierten Sender</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="290"/>
+        <location filename="recorder.ui" line="367"/>
         <source>Search: </source>
         <translation>Suche: </translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="318"/>
+        <location filename="recorder.ui" line="292"/>
+        <location filename="recorder.ui" line="325"/>
+        <location filename="recorder.ui" line="395"/>
         <source>...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="331"/>
+        <location filename="recorder.ui" line="318"/>
+        <source>Textsize</source>
+        <translation>Textgröße</translation>
+    </message>
+    <message>
+        <location filename="recorder.ui" line="408"/>
         <source>Ctrl+F</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="396"/>
+        <location filename="recorder.ui" line="473"/>
         <source>Set TimeShift in hours.</source>
         <translation>Setze TimeShift.</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="399"/>
+        <location filename="recorder.ui" line="476"/>
         <source>TimeShift Selector</source>
         <translation>TimeShift-Auswahl</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="403"/>
+        <location filename="recorder.ui" line="480"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="408"/>
+        <location filename="recorder.ui" line="485"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="413"/>
+        <location filename="recorder.ui" line="490"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="418"/>
+        <location filename="recorder.ui" line="495"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="423"/>
+        <location filename="recorder.ui" line="500"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="428"/>
+        <location filename="recorder.ui" line="505"/>
         <source>8</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="433"/>
+        <location filename="recorder.ui" line="510"/>
         <source>9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="438"/>
+        <location filename="recorder.ui" line="515"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="443"/>
+        <location filename="recorder.ui" line="520"/>
         <source>11</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="481"/>
+        <location filename="recorder.ui" line="558"/>
         <source>Play selected Channel</source>
         <translation>Zeige markierten Sender</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="497"/>
+        <location filename="recorder.ui" line="574"/>
         <source>Alt+P</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="516"/>
+        <location filename="recorder.ui" line="593"/>
         <source>Record selected Channel</source>
         <translation>Nehme markierten Sender auf</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="532"/>
+        <location filename="recorder.ui" line="609"/>
         <source>Alt+R</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="560"/>
+        <location filename="recorder.ui" line="637"/>
         <source>Stop VLC ...</source>
         <translation>Schließe den VLC Player ...</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="599"/>
+        <location filename="recorder.ui" line="676"/>
         <source>Timer Record</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="615"/>
+        <location filename="recorder.ui" line="692"/>
         <source>Ctrl+T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="634"/>
+        <location filename="recorder.ui" line="711"/>
         <source>Timer Ready</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="676"/>
+        <location filename="recorder.ui" line="753"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="692"/>
+        <location filename="recorder.ui" line="769"/>
         <source>Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="717"/>
+        <location filename="recorder.ui" line="794"/>
         <source>About ...</source>
         <translation>Über ...</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="733"/>
+        <location filename="recorder.ui" line="810"/>
         <source>Alt+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="758"/>
+        <location filename="recorder.ui" line="835"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="recorder.ui" line="774"/>
+        <location filename="recorder.ui" line="851"/>
         <source>Alt+Q</source>
         <translation></translation>
     </message>

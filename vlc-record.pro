@@ -3,7 +3,16 @@
 # -------------------------------------------------
 TARGET = vlc-record
 QT += network
-CONFIG += static
+CONFIG += debug_and_release \
+    windows
+# debug version will be built shared ...
+CONFIG(debug, debug|release) {
+   CONFIG += shared
+}
+else {
+   CONFIG += static
+}
+
 TEMPLATE = app
 SOURCES += main.cpp \
     recorder.cpp \
@@ -52,3 +61,11 @@ static {
         qgif \
         qjpeg
 }
+win32:TARGET = vlc-record
+else { 
+    static:TARGET = release/vlc-record
+    shared:TARGET = debug/vlc-record
+}
+
+# translation stuff ...
+include (language.pri)
