@@ -143,8 +143,6 @@ void CChanLogo::slotCheckResp(int iReqID, bool err)
          dataBuffer.close();
       }
 
-      dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
-
       // if no error, save file ...
       if (!err)
       {

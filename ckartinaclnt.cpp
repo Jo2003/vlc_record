@@ -142,6 +142,11 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
       header.addValue("Cookie", sCookie);
    }
    header.setContentLength(content.toAscii().size());
+
+   // open and clean data buffer ...
+   bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
+
+   // post request ...
    iReq = request(header, content.toAscii(), &bufReq);
 
    mInfo(tr("Request #%1 postet.").arg(iReq));
@@ -395,9 +400,8 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
       // read all content ...
       baPageContent = bufReq.readAll();
 
-      // close buffer device and open for write only...
+      // close buffer device ...
       bufReq.close();
-      bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
 
       if (!err)
       {

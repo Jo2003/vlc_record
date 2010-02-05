@@ -96,85 +96,100 @@ p, li { white-space: pre-wrap; }
         <source>Ar.</source>
         <translation>Ar.</translation>
     </message>
+    <message>
+        <location filename="cepgbrowser.cpp" line="123"/>
+        <source>play from archive ...</source>
+        <translation>Aus dem Archiv ansehen ...</translation>
+    </message>
+    <message>
+        <location filename="cepgbrowser.cpp" line="130"/>
+        <source>record from archive ...</source>
+        <translation>Aufnahme vom Archiv ...</translation>
+    </message>
+    <message>
+        <location filename="cepgbrowser.cpp" line="150"/>
+        <source>add timer record ...</source>
+        <translation>Timer Record hinzufügen ...</translation>
+    </message>
 </context>
 <context>
     <name>CKartinaClnt</name>
     <message>
-        <location filename="ckartinaclnt.cpp" line="147"/>
+        <location filename="ckartinaclnt.cpp" line="152"/>
         <source>Request #%1 postet.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="165"/>
+        <location filename="ckartinaclnt.cpp" line="170"/>
         <source>Request Authentication ...</source>
         <oldsource>%1 / %2():%3 Request Authentication</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="188"/>
+        <location filename="ckartinaclnt.cpp" line="193"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="208"/>
+        <location filename="ckartinaclnt.cpp" line="213"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="229"/>
+        <location filename="ckartinaclnt.cpp" line="234"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="256"/>
+        <location filename="ckartinaclnt.cpp" line="261"/>
         <source>Set Streaming Server to No %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="277"/>
+        <location filename="ckartinaclnt.cpp" line="282"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="298"/>
+        <location filename="ckartinaclnt.cpp" line="303"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="322"/>
+        <location filename="ckartinaclnt.cpp" line="327"/>
         <source>Request Archiv URL:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="351"/>
+        <location filename="ckartinaclnt.cpp" line="356"/>
         <source>We&apos;ve got Response for Authentification!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="357"/>
+        <location filename="ckartinaclnt.cpp" line="362"/>
         <source>Got cookie:
   --&gt; %1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="364"/>
+        <location filename="ckartinaclnt.cpp" line="369"/>
         <source>Error: Can&apos;t authenticate!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="404"/>
+        <location filename="ckartinaclnt.cpp" line="408"/>
         <source>Request #%1 done!</source>
         <oldsource>Request done!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="442"/>
+        <location filename="ckartinaclnt.cpp" line="446"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="366"/>
+        <location filename="ckartinaclnt.cpp" line="371"/>
         <source>Can&apos;t authenticate you at kartina.tv! Please check username and password!</source>
         <translation>Authentifizierung bei kartina.tv nicht möglich! Bitte Benutzername und Passwort überprüfen!</translation>
     </message>
@@ -542,12 +557,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="415"/>
-        <source>The entry you want to add overlapps with an existing entry!
-Or start time is later than end time!</source>
-        <oldsource>The entry you want to add overlapps with an existing entry!
-Or start time is later than end time!</oldsource>
-        <translation type="unfinished">Der Eintrag, den Sie eintragen wollen, überschneidet sich mit einem anderen Eintrag!
-Oder die Startzeit liegt nach der Endzeit!</translation>
+        <source>The entry you want to add overlapps with an existing entry
+or start time is later than end time!</source>
+        <oldsource>The entry you want to add overlapps with an existing entry or start time is later than end time!</oldsource>
+        <translation>Der Eintrag, den Sie eintragen wollen, überschneidet sich mit einem anderen Eintrag
+oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="484"/>

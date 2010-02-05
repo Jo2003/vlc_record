@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 09:19:48
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #ifndef __011810__DEFDEF_H
@@ -28,13 +28,15 @@
 #define LOGO_DIR          INI_DIR "/logos"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"
 #define LOG_FILE_NAME     "vlc-record.log"
-#define DEF_TZ_STEP       1800  // time zone step is min. 30 minutes (1800 sec.) ...
-#define DEF_MAX_DIFF      600   // accept inaccuracy up too xxx sec. ...
-#define EPG_NAVBAR_HEIGHT 24
-#define TIMER_REC_OFFSET  300   // 300 sec ... (5 minutes)
-#define INVALID_ID        0xFFFFFFFF
-#define TIMER_STBY_TIME   30    // 30 sec. before we should start record
-#define MAX_NAME_LEN      10    // max. length of show name ...
+#define DEF_TZ_STEP       1800        // time zone step is min. 30 minutes (1800 sec.) ...
+#define DEF_MAX_DIFF      600         // accept system clock inaccuracy up too 600 sec
+#define EPG_NAVBAR_HEIGHT 24          // default height for EPG navbar
+#define TIMER_REC_OFFSET  300         // 5 minutes in seconds
+#define INVALID_ID        0xFFFFFFFF  // mark an id as invalid
+#define TIMER_STBY_TIME   30          // 30 sec. before we should start record
+#define MAX_NAME_LEN      10          // max. length of show name
+#define ARCHIV_OFFSET     600         // 10 minutes after show start, archiv should be available
+#define MAX_ARCHIV_AGE    1209600     // 2 weeks in seconds
 
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\

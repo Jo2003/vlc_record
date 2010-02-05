@@ -24,13 +24,20 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.13 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.14 - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2010-02-05: Version 1.14
+| - remove mutex from http classes, use request id instead
+| - archive available for 2 weeks only
+| - archive available 10 minutes after the show starts
+| - title tags in epg view for icons added
+|
 | 2010-02-02: Version 1.13
 | - add enlarge / reduce text size function
 | - some new and updated icons
+| - replace icons with PNGs to reduce app size
 |
 | 2010-02-02: Version 1.12
 | - don't start vlc detached

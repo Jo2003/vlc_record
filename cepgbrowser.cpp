@@ -110,20 +110,24 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
       if (bHasArchiv)
       {
          // only show archiv links if this show already has ended ...
-         if (ArchivAvailable(epglist[i].uiGmt, ((i + 1) < epglist.size()) ? epglist[i + 1].uiGmt : 0))
+         if (ArchivAvailable(epglist[i].uiGmt))
          {
             QString sArchivLinks = QString("<hr /><b>%1:</b> &nbsp;")
                                    .arg(tr("Ar."));
 
             // play ...
             sArchivLinks += QString("<a href='vlc-record?action=archivplay&cid=%1&gmt=%2'>"
-                                    "<img src=':png/play' width='16' height='16' /></a>&nbsp;")
-                                    .arg(iChanID).arg(epglist[i].uiGmt);
+                                    "<img src=':png/play' width='16' height='16' alt='play' "
+                                    "title='%3' /></a>&nbsp;")
+                                    .arg(iChanID).arg(epglist[i].uiGmt)
+                                    .arg(tr("play from archive ..."));
 
             // record ...
             sArchivLinks += QString("<a href='vlc-record?action=archivrec&cid=%1&gmt=%2'>"
-                                    "<img src=':png/record' width='16' height='16' /></a>")
-                                    .arg(iChanID).arg(epglist[i].uiGmt);
+                                    "<img src=':png/record' width='16' height='16' alt='record' "
+                                    "title='%3' /></a>")
+                                    .arg(iChanID).arg(epglist[i].uiGmt)
+                                    .arg(tr("record from archive ..."));
 
             sStartTime += sArchivLinks;
          }
@@ -140,8 +144,10 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
 
          // add timer rec link ...
          sStartTime += QString("&nbsp;<a href='vlc-record?action=timerrec&cid=%1&start=%2&end=%3'>"
-                               "<img src=':png/timer' width='16' height='16' /></a>&nbsp;")
-                               .arg(iChanID).arg(epglist[i].uiGmt).arg(uiEnd);
+                               "<img src=':png/timer' width='16' height='16' alt='timer' "
+                               "title='%4' /></a>&nbsp;")
+                               .arg(iChanID).arg(epglist[i].uiGmt).arg(uiEnd)
+                               .arg(tr("add timer record ..."));
       }
 
 
@@ -205,22 +211,21 @@ bool CEpgBrowser::NowRunning (const QDateTime &startThis, const QDateTime &start
 |  Author: Joerg Neubert
 |  Description: check if archiv is avalable for given show
 |
-|  Parameters: timestamp for this show, timestamp for next show
+|  Parameters: timestamp for this show
 |
 |  Returns: true ==> archiv available
 |          false ==> not available
 \----------------------------------------------------------------- */
-bool CEpgBrowser::ArchivAvailable(uint uiThisShow, uint uiNextShow)
+bool CEpgBrowser::ArchivAvailable(uint uiThisShow)
 {
-   bool      bArchiv   = false;
-   uint      uiCompare = (uiNextShow) ? uiNextShow : uiThisShow;
-   QDateTime AnyTime   = QDateTime::fromTime_t(uiCompare);
+   bool bArchiv = false;
+   uint now     = QDateTime::currentDateTime().toTime_t();
 
-   // next show already started ...
-   if (AnyTime < QDateTime::currentDateTime())
+   // archiv should be available 10 minutes after show start
+   // in a time frame of 2 weeks ...
+   if (((now - ARCHIV_OFFSET) > uiThisShow)        // 10 mins. up
+      && (uiThisShow > (now - MAX_ARCHIV_AGE)))    // within the 2 weeks
    {
-      // this means:
-      // former show should be already in archiv ...
       bArchiv = true;
    }
 

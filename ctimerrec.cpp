@@ -412,8 +412,8 @@ void CTimerRec::on_btnSet_clicked()
    else
    {
       QMessageBox::warning(this, tr("Please Correct!"),
-                           tr("The entry you want to add overlapps with an existing entry!\r\n"
-                              "Or start time is later than end time!"));
+                           tr("The entry you want to add overlapps with an existing entry\n"
+                              "or start time is later than end time!"));
    }
 }
 

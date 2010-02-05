@@ -46,7 +46,7 @@ public:
 
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());
-    bool ArchivAvailable (uint uiThisShow, uint uiNextShow = 0);
+    bool ArchivAvailable (uint uiThisShow);
 
 private:
     int                 iTimeShift;
