@@ -136,6 +136,11 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    {
       setGeometry(sizePos);
    }
+   else
+   {
+      // store default size ...
+      sizePos = geometry();
+   }
 
    // request authorisation ...
    Trigger.TriggerRequest(Kartina::REQ_COOKIE);
@@ -159,8 +164,12 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 \----------------------------------------------------------------- */
 Recorder::~Recorder()
 {
-   // save last windows position / size ...
-   Settings.SaveWindowRect(geometry());
+   // save last windows position / size
+   // only, if window wasn't maximized ...
+   if (windowState() != Qt::WindowMaximized)
+   {
+      Settings.SaveWindowRect(geometry());
+   }
 
    delete ui;
 }
@@ -202,7 +211,6 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
    case QSystemTrayIcon::Context:
       if (isHidden())
       {
-         // showNormal();
          setGeometry(sizePos);
          QTimer::singleShot(300, this, SLOT(showNormal()));
       }
@@ -353,7 +361,13 @@ void Recorder::changeEvent(QEvent *e)
       {
          if (isMinimized())
          {
-            sizePos = geometry();
+            QWindowStateChangeEvent *pEvent = (QWindowStateChangeEvent *)e;
+
+            // store last position only, if it wasn't maximized ...
+            if (pEvent->oldState() != Qt::WindowMaximized)
+            {
+               sizePos = geometry();
+            }
 
             if (Settings.HideToSystray())
             {

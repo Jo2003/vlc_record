@@ -33,6 +33,7 @@
 | - archive available for 2 weeks only
 | - archive available 10 minutes after the show starts
 | - title tags in epg view for icons added
+| - don't store window position if maximized
 |
 | 2010-02-02: Version 1.13
 | - add enlarge / reduce text size function
