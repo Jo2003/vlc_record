@@ -438,11 +438,6 @@ color: white;
             </widget>
            </item>
           </layout>
-          <zorder>frTextsize</zorder>
-          <zorder>btnSearch</zorder>
-          <zorder>lineSearch</zorder>
-          <zorder>labSearch</zorder>
-          <zorder>horizontalSpacer_3</zorder>
          </widget>
         </item>
        </layout>
