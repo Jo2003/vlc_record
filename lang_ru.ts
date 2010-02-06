@@ -17,8 +17,8 @@
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
-&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; sent from &lt;a href=&apos;http://www.kartina.tv&apos;&gt;Kartina.tv&lt;/a&gt;. To do this it will authenticate you with username and password at kartina.tv. It then will start the &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt; to display (and record) the selected stream. It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.&lt;br /&gt;
-For News and Updates please visit my site at &lt;a href=&apos;http://www.coujo.de&apos;&gt;http://www.coujo.de&lt;/a&gt;.
+&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; sent from %3. To do this it will authenticate you with username and password at %4. It then will start the &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt; to display (and record) the selected stream. It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.&lt;br /&gt;
+For News and Updates please visit my site at &lt;a href=&apos;http://www.coujo.de/ib2/index.php?act=module&amp;module=include&amp;incl_name=vlc-record&apos;&gt;http://www.coujo.de&lt;/a&gt;.
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record is free software!&lt;/b&gt; 
 Nevertheless ... if you like this software, please support me: 
@@ -38,11 +38,11 @@ Thank you,&lt;br /&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
-&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; sent from &lt;a href=&apos;http://www.kartina.tv&apos;&gt;Kartina.tv&lt;/a&gt;. To do this it will authenticate you with username and password at kartina.tv. It then will start the &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt; to display (and record) the selected stream. It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.&lt;br /&gt;
+&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; sent from %3. To do this it will authenticate you with username and password at %4. It then will start the &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt; to display (and record) the selected stream. It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.&lt;br /&gt;
 For News and Updates please visit my site at &lt;a href=&apos;http://www.coujo.de&apos;&gt;http://www.coujo.de&lt;/a&gt;.
 &lt;br /&gt; &lt;br /&gt;
-&lt;b&gt;vlc-record is free software!&lt;/b&gt;
-Nevertheless ... if you like this software, please support me:
+&lt;b&gt;vlc-record is free software!&lt;/b&gt; 
+Nevertheless ... if you like this software, please support me: 
 &lt;a href=&apos;https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=11286909&apos;&gt;Donate some $ and / or &amp;euro;&lt;/a&gt; at PayPal for my work.
 &lt;br /&gt; &lt;br /&gt;
 Thank you,&lt;br /&gt;
@@ -60,8 +60,8 @@ Thank you,&lt;br /&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
-&lt;b&gt;vlc-record&lt;/b&gt; - программа для &lt;b&gt;просмотра и записи видео потока&lt;/b&gt; с &lt;a href=&apos;http://www4.kartina.tv&apos;&gt;Kartina.tv&lt;/a&gt;. Программа подключается к kartina.tv при помощи Вашей информации абонента (Логин/Пароль). После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt;.  В &lt;b&gt;vlc-record&lt;/b&gt; отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.&lt;br /&gt;
-Для чтения новостей и обновлений, посетите мою Интернет-страницу &lt;a href=&apos;http://www.coujo.de&apos;&gt;http://www.coujo.de&lt;/a&gt;.
+&lt;b&gt;vlc-record&lt;/b&gt; - программа для &lt;b&gt;просмотра и записи видео потока&lt;/b&gt; с %3. Программа подключается к %4 при помощи Вашей информации абонента (Логин/Пароль). После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt;.  В &lt;b&gt;vlc-record&lt;/b&gt; отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.&lt;br /&gt;
+Для чтения новостей и обновлений, посетите мою Интернет-страницу &lt;a href=&apos;http://www.coujo.de/ib2/index.php?act=module&amp;module=include&amp;incl_name=vlc-record&apos;&gt;http://www.coujo.de&lt;/a&gt;.
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record бесплатно!&lt;/b&gt;
 Но ... если Вам понравилась моя программа, вы можете отблагодарить меня:
@@ -253,22 +253,22 @@ p, li { white-space: pre-wrap; }
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="150"/>
+        <location filename="csettingsdlg.cpp" line="154"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="145"/>
+        <location filename="csettingsdlg.cpp" line="149"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="147"/>
+        <location filename="csettingsdlg.cpp" line="151"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="168"/>
+        <location filename="csettingsdlg.cpp" line="172"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
@@ -387,8 +387,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="33"/>
-        <source> Kartina.tv Account </source>
-        <translation>Данные доступа для Kartina.tv</translation>
+        <source> %1 Account </source>
+        <oldsource> Kartina.tv Account </oldsource>
+        <translation>Данные доступа для %1</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="73"/>

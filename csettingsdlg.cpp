@@ -122,6 +122,10 @@ void CSettingsDlg::changeEvent(QEvent *e)
           m_ui->cbxLanguage->setCurrentIndex(iLanIdx);
           m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
           m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
+
+          // set company name ...
+          QString s = m_ui->groupAccount->title();
+          m_ui->groupAccount->setTitle(s.arg(COMPANY_NAME));
        }
        break;
     default:

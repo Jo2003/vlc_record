@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Joerg Neubert
 |
 | Begin: 18.01.2010 / 16:13:41
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #include "caboutdialog.h"
@@ -94,11 +94,11 @@ void CAboutDialog::FillInfo()
       "</table>\n"
       "<br /> <br />\n"
       "<b>vlc-record</b> - a tool to <b>view / record program streams</b> sent from "
-      "<a href='http://www.kartina.tv'>Kartina.tv</a>. "
-      "To do this it will authenticate you with username and password at kartina.tv. "
+      "%3. "
+      "To do this it will authenticate you with username and password at %4. "
       "It then will start the <a href='http://www.videolan.org'>vlc media player</a> "
       "to display (and record) the selected stream. It supports <b>EPG and TimeShift</b>.<br />\n"
-      "For News and Updates please visit my site at <a href='http://www.coujo.de'>http://www.coujo.de</a>.\n"
+      "For News and Updates please visit my site at <a href='http://www.coujo.de/ib2/index.php?act=module&module=include&incl_name=vlc-record'>http://www.coujo.de</a>.\n"
       "<br /> <br />\n"
       "<b>vlc-record is free software!</b> \n"
       "Nevertheless ... if you like this software, please support me: \n"
@@ -107,7 +107,7 @@ void CAboutDialog::FillInfo()
       "<br /> <br />\n"
       "Thank you,<br />\n"
       "&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg"
-   ).arg(__MY__VERSION__).arg(qVersion());
+   ).arg(__MY__VERSION__).arg(qVersion()).arg(COMPANY_LINK).arg(COMPANY_NAME);
 }
 
 /************************* History ***************************\

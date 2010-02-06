@@ -30,7 +30,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QGroupBox" name="groupAccount">
          <property name="title">
-          <string> Kartina.tv Account </string>
+          <string> %1 Account </string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">

@@ -19,6 +19,7 @@
 #include "cinifile.h"
 #include "clogfile.h"
 #include "defdef.h"
+#include "customization.h"
 
 //===================================================================
 // namespace

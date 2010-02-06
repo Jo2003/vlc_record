@@ -12,6 +12,7 @@
 #ifndef __011910__VERSION_INFO_H
    #define __011910__VERSION_INFO_H
 #include <QtGlobal>
+#include "customization.h"
 
 #if defined Q_OS_WIN32
    #define MY_BUILD_SYS "Windows"
@@ -24,7 +25,7 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.14 - " MY_BUILD_SYS ", built at " __DATE__
+   "1.14" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\

@@ -30,14 +30,14 @@
 /**********************************************************/
 /*                      HTML templates                    */
 /**********************************************************/
-#define TMPL_TIME  "<!--{[%TIME%]}-->"
-#define TMPL_PROG  "<!--{[%PROG%]}-->"
-#define TMPL_ROWS  "<!--{[%ROWS%]}-->"
-#define TMPL_HEAD  "<!--{[%HEAD%]}-->"
-#define TMPL_START "<!--{[%START%]}-->"
-#define TMPL_END   "<!--{[%END%]}-->"
-#define TMPL_TITLE "<!--{[%TITLE%]}-->"
-#define TMPL_CONT  "<!--{[%CONTENT%]}-->"
+#define TMPL_TIME      "<!--{[%TIME%]}-->"
+#define TMPL_PROG      "<!--{[%PROG%]}-->"
+#define TMPL_ROWS      "<!--{[%ROWS%]}-->"
+#define TMPL_HEAD      "<!--{[%HEAD%]}-->"
+#define TMPL_START     "<!--{[%START%]}-->"
+#define TMPL_END       "<!--{[%END%]}-->"
+#define TMPL_TITLE     "<!--{[%TITLE%]}-->"
+#define TMPL_CONT      "<!--{[%CONTENT%]}-->"
 
 #define EPG_TMPL  \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\

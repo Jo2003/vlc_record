@@ -5,14 +5,10 @@ TARGET = vlc-record
 QT += network
 CONFIG += debug_and_release \
     windows
-# debug version will be built shared ...
-CONFIG(debug, debug|release) {
-   CONFIG += shared
-}
-else {
-   CONFIG += static
-}
 
+# debug version will be built shared ...
+CONFIG(debug, debug|release):CONFIG += shared
+else:CONFIG += static
 TEMPLATE = app
 SOURCES += main.cpp \
     recorder.cpp \
@@ -43,7 +39,8 @@ HEADERS += recorder.h \
     cchanlogo.h \
     defdef.h \
     ctimerrec.h \
-    cvlcctrl.h
+    cvlcctrl.h \
+    customization.h
 FORMS += recorder.ui \
     csettingsdlg.ui \
     caboutdialog.ui \
@@ -54,7 +51,7 @@ TRANSLATIONS = lang_de.ts \
     lang_ru.ts
 
 # for static build ...
-static { 
+static {
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qico \
@@ -62,10 +59,17 @@ static {
         qjpeg
 }
 win32:TARGET = vlc-record
-else { 
+else {
     static:TARGET = release/vlc-record
     shared:TARGET = debug/vlc-record
 }
+
+# -------------------------------------
+# customization ...
+# - make a define here and put needed
+#   values into customization.h
+# -------------------------------------
+# DEFINES += _CUST_RUSS_TELEK
 
 # translation stuff ...
 include (language.pri)
