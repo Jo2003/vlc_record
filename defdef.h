@@ -35,8 +35,8 @@
 #define INVALID_ID        0xFFFFFFFF  // mark an id as invalid
 #define TIMER_STBY_TIME   30          // 30 sec. before we should start record
 #define MAX_NAME_LEN      10          // max. length of show name
-#define ARCHIV_OFFSET     600         // 10 minutes after show start, archiv should be available
-#define MAX_ARCHIV_AGE    1209600     // 2 weeks in seconds
+#define ARCHIV_OFFSET     900         // 15 minutes after show start, archiv should be available
+#define MAX_ARCHIV_AGE    1209000     // < 2 weeks in seconds
 
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\
