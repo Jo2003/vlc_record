@@ -18,6 +18,7 @@
 #include <QMessageBox>
 
 #include "clogfile.h"
+#include "defdef.h"
 #include "templates.h"
 
 namespace vlcctrl
