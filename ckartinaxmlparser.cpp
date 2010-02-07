@@ -386,7 +386,7 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
      Round offset to full 30 minutes (min. timezone step)
      */
 
-   mInfo(tr("Kartina.tv reports client time as %1").arg(str));
+   mInfo(tr("%1 reports client time as %2").arg(COMPANY_NAME).arg(str));
 
    // get difference between kartina.tv and our time ...
    int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t()

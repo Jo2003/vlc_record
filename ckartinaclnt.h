@@ -25,6 +25,7 @@
 #include "clogfile.h"
 #include "chttptime.h"
 #include "defdef.h"
+#include "customization.h"
 
 
 namespace Kartina {

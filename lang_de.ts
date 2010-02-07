@@ -178,20 +178,21 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="408"/>
+        <location filename="ckartinaclnt.cpp" line="409"/>
         <source>Request #%1 done!</source>
         <oldsource>Request done!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="446"/>
+        <location filename="ckartinaclnt.cpp" line="447"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="371"/>
-        <source>Can&apos;t authenticate you at kartina.tv! Please check username and password!</source>
-        <translation>Authentifizierung bei kartina.tv nicht möglich! Bitte Benutzername und Passwort überprüfen!</translation>
+        <source>Can&apos;t authenticate you at %1! Please check username and password!</source>
+        <oldsource>Can&apos;t authenticate you at kartina.tv! Please check username and password!</oldsource>
+        <translation>Authentifizierung bei %1 nicht möglich! Bitte Benutzername und Passwort überprüfen!</translation>
     </message>
 </context>
 <context>
@@ -219,8 +220,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="389"/>
-        <source>Kartina.tv reports client time as %1</source>
-        <oldsource>%1 / %2():%3 Kartina.tv reports client time as %4</oldsource>
+        <source>%1 reports client time as %2</source>
+        <oldsource>Kartina.tv reports client time as %1</oldsource>
         <translation></translation>
     </message>
     <message>
@@ -786,28 +787,28 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>CVlcCtrl</name>
     <message>
-        <location filename="cvlcctrl.cpp" line="90"/>
+        <location filename="cvlcctrl.cpp" line="92"/>
         <source>Warning!</source>
         <translation>Warnung!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="90"/>
+        <location filename="cvlcctrl.cpp" line="92"/>
         <source>Vlc Player is already running!</source>
         <translation>Der VLC Mediaplayer läuft bereits!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="96"/>
+        <location filename="cvlcctrl.cpp" line="98"/>
         <source>Start vlc player using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="298"/>
+        <location filename="cvlcctrl.cpp" line="300"/>
         <source>Vlc was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="302"/>
+        <location filename="cvlcctrl.cpp" line="304"/>
         <source>Vlc has ended ...</source>
         <translation></translation>
     </message>
@@ -863,7 +864,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="466"/>
-        <location filename="recorder.cpp" line="1690"/>
+        <location filename="recorder.cpp" line="1691"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
@@ -883,24 +884,17 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Ende:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="818"/>
-        <location filename="recorder.cpp" line="1287"/>
-        <source>Kartina.tv sends following url:
-  --&gt; %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="1502"/>
+        <location filename="recorder.cpp" line="1503"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1520"/>
+        <location filename="recorder.cpp" line="1521"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1686"/>
+        <location filename="recorder.cpp" line="1687"/>
         <source>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</source>
         <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
     </message>
@@ -917,22 +911,29 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1170"/>
+        <location filename="recorder.cpp" line="819"/>
+        <location filename="recorder.cpp" line="1288"/>
+        <source>%1 sends following url:
+  --&gt; %2</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="1171"/>
         <source>Warning!</source>
         <translation>Warnung!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1170"/>
+        <location filename="recorder.cpp" line="1171"/>
         <source>Timer Record active!</source>
         <translation>Timer Record aktiv!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1465"/>
+        <location filename="recorder.cpp" line="1466"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1483"/>
+        <location filename="recorder.cpp" line="1484"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
@@ -985,8 +986,9 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="760"/>
-        <source>Kartina.tv Client API reports some errors: %1</source>
-        <translation>Die Kartina.tv Client API meldet folgenden Fehler: %1</translation>
+        <source>%1 Client API reports some errors: %2</source>
+        <oldsource>Kartina.tv Client API reports some errors: %1</oldsource>
+        <translation>Die %1 Client API meldet folgenden Fehler: %2</translation>
     </message>
     <message>
         <location filename="recorder.ui" line="14"/>

@@ -368,7 +368,8 @@ void CKartinaClnt::getResponseHeader (const QHttpResponseHeader &resp)
       {
          mErr(tr("Error: Can't authenticate!"));
 
-         emit sigError(tr("Can't authenticate you at kartina.tv! Please check username and password!"));
+         emit sigError(tr("Can't authenticate you at %1! Please check username and password!")
+                       .arg(COMPANY_NAME));
       }
 
       bRenewCookie = false;

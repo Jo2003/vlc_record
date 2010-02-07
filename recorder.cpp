@@ -757,7 +757,8 @@ void Recorder::on_pushSettings_clicked()
 void Recorder::slotErr(QString str)
 {
    QMessageBox::critical(this, tr("Error"),
-                         tr("Kartina.tv Client API reports some errors: %1").arg(str));
+                         tr("%1 Client API reports some errors: %2")
+                         .arg(COMPANY_NAME).arg(str));
    EnableDisableDlg();
 }
 
@@ -815,7 +816,7 @@ void Recorder::slotStreamURL(QString str)
 {
    QString              sChan, sUrl;
 
-   mInfo(tr("Kartina.tv sends following url:\n  --> %1").arg(str));
+   mInfo(tr("%1 sends following url:\n  --> %2").arg(COMPANY_NAME).arg(str));
 
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
@@ -1284,7 +1285,7 @@ void Recorder::slotArchivURL(QString str)
 {
    QString              sChan, sUrl;
 
-   mInfo(tr("Kartina.tv sends following url:\n  --> %1").arg(str));
+   mInfo(tr("%1 sends following url:\n  --> %2").arg(COMPANY_NAME).arg(str));
 
    sChan = CleanShowName(ui->textEpg->ShowName(uiArchivGmt));
 
