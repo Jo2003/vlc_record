@@ -246,7 +246,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="409"/>
         <source>Log Errors and Warnings</source>
-        <translation>Протокол ошибок и предпреждений</translation>
+        <translation>Протокол ошибок и предупреждений</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="414"/>
@@ -349,7 +349,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="271"/>
         <source>&amp;Settings</source>
-        <translation>Опции</translation>
+        <translation>Дополнительные</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="277"/>
@@ -390,7 +390,7 @@ p, li { white-space: pre-wrap; }
         <location filename="csettingsdlg.ui" line="33"/>
         <source> %1 Account </source>
         <oldsource> Kartina.tv Account </oldsource>
-        <translation>Данные доступа для %1</translation>
+        <translation>Ваш номер абонемента и Ваш пароль от %1</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="73"/>
@@ -456,7 +456,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.ui" line="338"/>
         <source>Program Settings </source>
-        <translation>Опции программы</translation>
+        <translation>Настройки программы</translation>
     </message>
     <message>
         <location filename="csettingsdlg.ui" line="347"/>
@@ -601,7 +601,7 @@ or start time is later than end time!</source>
         <location filename="ctimerrec.cpp" line="818"/>
         <location filename="ctimerrec.cpp" line="862"/>
         <source>Timer Ready</source>
-        <translation>Планировка записи</translation>
+        <translation>Планировщик записи</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="844"/>
@@ -616,7 +616,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.cpp" line="879"/>
         <source>Timer StBY</source>
-        <translation></translation>
+        <translation>Подготовка к записи</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="888"/>
@@ -742,7 +742,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.ui" line="211"/>
         <source>Add / Update Job</source>
-        <translation>Добавить/Обновить задание</translation>
+        <translation>Добавить/Обновить задание в список</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="214"/>
@@ -753,12 +753,12 @@ or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.ui" line="240"/>
         <source>Delete Job from Joblist</source>
-        <translation>Удалить запись</translation>
+        <translation>Удалить запись из списка</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="269"/>
         <source>Shutdown when all is done</source>
-        <translation>Выключить компьютер</translation>
+        <translation>Выключить компютер</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="317"/>
@@ -783,7 +783,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="ctimerrec.ui" line="368"/>
         <source>&amp;Back</source>
-        <translation>На&amp;зад</translation>
+        <translation>За&amp;крыть</translation>
     </message>
     <message>
         <location filename="ctimerrec.ui" line="322"/>
@@ -806,7 +806,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="cvlcctrl.cpp" line="92"/>
         <source>Vlc Player is already running!</source>
-        <translation>VLC-Media Player уже работает!</translation>
+        <translation>VLC-Media Player уже в работе!</translation>
     </message>
     <message>
         <location filename="cvlcctrl.cpp" line="98"/>
@@ -872,7 +872,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.cpp" line="461"/>
         <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
-        <translation>VLC Mediaplayer ещё работает.&lt;br /&gt;&lt;b&gt;Если вы теперь закрывайте VLC-Record, и VLC-Player закрывается.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Уверены ли Вы?</translation>
+        <translation>VLC Mediaplayer ещё в работае.&lt;br /&gt;&lt;b&gt;Если вы остановите работу VLC-Record, то и VLC-Player закроется.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Уверены ли Вы?</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="466"/>
@@ -915,7 +915,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.cpp" line="1687"/>
         <source>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</source>
-        <translation>VLC Mediaplayer ещё работает.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
+        <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="632"/>
@@ -1015,12 +1015,12 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.ui" line="42"/>
         <source>Channel Group</source>
-        <translation>Группировка каналов</translation>
+        <translation>Группа каналов</translation>
     </message>
     <message>
         <location filename="recorder.ui" line="52"/>
         <source>Channel List</source>
-        <translation></translation>
+        <translation>Список каналов</translation>
     </message>
     <message>
         <location filename="recorder.ui" line="68"/>
@@ -1132,7 +1132,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.ui" line="619"/>
         <source>Record selected Channel</source>
-        <translation>Запись передачи</translation>
+        <translation>Запись выбранной передачи</translation>
     </message>
     <message>
         <location filename="recorder.ui" line="635"/>
@@ -1142,7 +1142,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.ui" line="663"/>
         <source>Stop VLC ...</source>
-        <translation>Закрыть VLC Player ...</translation>
+        <translation>Остановить VLC Player ...</translation>
     </message>
     <message>
         <location filename="recorder.ui" line="702"/>
@@ -1157,12 +1157,12 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.ui" line="737"/>
         <source>Timer Ready</source>
-        <translation>Планировка записи</translation>
+        <translation>Планировщик записи</translation>
     </message>
     <message>
         <location filename="recorder.ui" line="779"/>
         <source>Settings</source>
-        <translation>Опции</translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="recorder.ui" line="795"/>

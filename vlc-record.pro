@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     clogfile.cpp \
     cchanlogo.cpp \
     ctimerrec.cpp \
-    cvlcctrl.cpp
+    cvlcctrl.cpp \
+    ctranslit.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     cinifile.h \
@@ -40,7 +41,8 @@ HEADERS += recorder.h \
     defdef.h \
     ctimerrec.h \
     cvlcctrl.h \
-    customization.h
+    customization.h \
+    ctranslit.h
 FORMS += recorder.ui \
     csettingsdlg.ui \
     caboutdialog.ui \
@@ -51,7 +53,7 @@ TRANSLATIONS = lang_de.ts \
     lang_ru.ts
 
 # for static build ...
-static {
+static { 
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qico \
@@ -59,7 +61,7 @@ static {
         qjpeg
 }
 win32:TARGET = vlc-record
-else {
+else { 
     static:TARGET = release/vlc-record
     shared:TARGET = debug/vlc-record
 }
@@ -67,9 +69,8 @@ else {
 # -------------------------------------
 # customization ...
 # - make a define here and put needed
-#   values into customization.h
+# values into customization.h
 # -------------------------------------
 # DEFINES += _CUST_RUSS_TELEK
-
 # translation stuff ...
 include (language.pri)

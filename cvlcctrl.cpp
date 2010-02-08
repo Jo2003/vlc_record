@@ -28,8 +28,8 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
 {
    sProgPath  = path;
    iCacheTime = 0;
-   setStandardOutputFile(QString(INI_DIR).arg(getenv(APPDATA)) + "/player_out.log", QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
-   setStandardErrorFile(QString(INI_DIR).arg(getenv(APPDATA)) + "/player_err.log", QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+   setProcessChannelMode(QProcess::MergedChannels);
+   setStandardOutputFile(QString(PLAYER_LOG).arg(getenv(APPDATA)), QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
    connect (this, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(slotStateChanged(QProcess::ProcessState)));
 }
 

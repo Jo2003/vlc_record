@@ -44,6 +44,7 @@
 #include "cchanlogo.h"
 #include "ctimerrec.h"
 #include "cvlcctrl.h"
+#include "ctranslit.h"
 
 // for logging ...
 extern CLogFile VlcLog;
@@ -101,6 +102,7 @@ private:
     QSystemTrayIcon                trayIcon;
     QRect                          sizePos;
     CVlcCtrl                       vlcCtrl;
+    CTranslit                      translit;
 
 
 protected:

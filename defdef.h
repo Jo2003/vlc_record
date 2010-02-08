@@ -23,6 +23,7 @@
 #endif
 
 #define INI_FILE          "vlc-rcd.ini"
+#define PLAYER_LOG        INI_DIR "/player.log"
 #define KARTINA_HOST      "iptv.kartina.tv"
 #define LOGO_PATH         "/img/ico/24"
 #define LOGO_DIR          INI_DIR "/logos"
