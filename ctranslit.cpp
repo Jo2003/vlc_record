@@ -136,7 +136,7 @@ CTranslit::~CTranslit()
 |
 |  Returns: latin string
 \----------------------------------------------------------------- */
-QString CTranslit::CyrToLat(const QString &str)
+QString CTranslit::CyrToLat(const QString &str, bool fileName)
 {
    QString     sIn, sOut, sTok;
    QTextStream ts(&sOut);
@@ -166,6 +166,13 @@ QString CTranslit::CyrToLat(const QString &str)
       }
    }
 
+   if (fileName)
+   {
+      sOut.replace(" ", "_");
+      sOut.replace("'", "");
+      sOut.replace("´", "");
+   }
+
    return sOut;
 }
 
@@ -179,7 +186,7 @@ QString CTranslit::CyrToLat(const QString &str)
 |
 |  Returns: cyrillic string
 \----------------------------------------------------------------- */
-QString CTranslit::LatToCyr(const QString &str)
+QString CTranslit::LatToCyr(const QString &str, bool fileName)
 {
    QString     sIn, sOut, sTok;
    QTextStream ts(&sOut);
@@ -224,6 +231,13 @@ QString CTranslit::LatToCyr(const QString &str)
             i++;
          }
       }
+   }
+
+   if (fileName)
+   {
+      sOut.replace(" ", "_");
+      sOut.replace("'", "");
+      sOut.replace("´", "");
    }
 
    return sOut;

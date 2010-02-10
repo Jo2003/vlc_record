@@ -44,8 +44,8 @@ public:
     CTranslit(QObject *parent = 0);
     ~CTranslit ();
 
-    QString CyrToLat (const QString &str);
-    QString LatToCyr (const QString &str);
+    QString CyrToLat (const QString &str, bool fileName = true);
+    QString LatToCyr (const QString &str, bool fileName = true);
 
 private:
     QMap<QString, QString> mCyr2Lat;
