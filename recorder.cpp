@@ -86,6 +86,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.SetKartinaTrigger(&Trigger);
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
+   timeRec.SetTranslit(&translit);
 
    // connect signals and slots ...
    connect (&KartinaTv,  SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
@@ -570,15 +571,24 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 {
    int       iRV      = -1;
    QDateTime now      = QDateTime::currentDateTime();
-   QString   sExt     = "ts", fileName;
+   QString   sExt     = "ts", fileName, sShowName;
+
+   if (Settings.TranslitRecFile())
+   {
+      sShowName = translit.CyrToLat(sChannel);
+   }
+   else
+   {
+      sShowName = sChannel;
+   }
 
    // should we ask for file name ... ?
    if (Settings.AskForRecFile())
    {
       // yes! Create file save dialog ...
       QString   sFilter;
-      QString   sTarget  = QString("%1/%2 (%3)").arg(Settings.GetTargetDir())
-                          .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh-mm"));
+      QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
+                          .arg(sShowName).arg(now.toString("yyyy-MM-dd__hh-mm"));
 
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
                  sTarget, QString("Transport Stream (*.ts);;AVI File (*.avi)"),
@@ -606,8 +616,8 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
    else
    {
       // create filename as we think it's good ...
-      fileName = QString("%1/%2 (%3).%4").arg(Settings.GetTargetDir())
-                 .arg(sChannel).arg(now.toString("yyyy-MM-dd, hh-mm")).arg(sExt);
+      fileName = QString("%1/%2(%3).%4").arg(Settings.GetTargetDir())
+                 .arg(sShowName).arg(now.toString("yyyy-MM-dd__hh-mm")).arg(sExt);
    }
 
    if (fileName != "")

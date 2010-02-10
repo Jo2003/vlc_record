@@ -59,6 +59,7 @@ public:
     bool DoRefresh ();
     bool HideToSystray ();
     bool AskForRecFile ();
+    bool TranslitRecFile ();
     int GetRefrInt ();
     int GetProxyPort ();
     int GetBufferTime ();

@@ -146,6 +146,21 @@ void CTimerRec::SetXmlParser(CKartinaXMLParser *pParser)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: SetTranslit
+|  Begin: 10.02.2010 / 16:05:00
+|  Author: Joerg Neubert
+|  Description: set translit
+|
+|  Parameters: pointer to translit
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CTimerRec::SetTranslit(CTranslit *pTr)
+{
+   pTranslit = pTr;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: SetKartinaTrigger
 |  Begin: 26.01.2010 / 16:05:00
 |  Author: Joerg Neubert
@@ -234,8 +249,8 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
 
    if (name != "")
    {
-      r_ui->edtName->setText(QString("%1 (%2)").arg(name)
-                             .arg(dtStart.toString("yyyy-MM-dd, hh-mm")));
+      r_ui->edtName->setText(QString("%1(%2)").arg(name)
+                             .arg(dtStart.toString("yyyy-MM-dd__hh-mm")));
    }
    else
    {
@@ -245,7 +260,7 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
       if (cit != ChanList.constEnd())
       {
          r_ui->edtName->setText(QString("%1-%2").arg((*cit).Name)
-                                .arg(dtStart.toString("yyyy-MM-dd, hh-mm")));
+                                .arg(dtStart.toString("yyyy-MM-dd__hh-mm")));
       }
       else
       {
@@ -921,9 +936,19 @@ void CTimerRec::slotTimerStreamUrl(QString str)
 {
    pXmlParser->SetByteArray(str.toUtf8());
 
-   QString sCmdLine;
-   QString sUrl   = pXmlParser->ParseURL();
-   QString sDst   = QString("%1/%2.ts").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
+   QString sCmdLine, sFile;
+   QString sUrl = pXmlParser->ParseURL();
+
+   if (pSettings->TranslitRecFile())
+   {
+      sFile  = pTranslit->CyrToLat((*itActJob).sName);
+   }
+   else
+   {
+      sFile = (*itActJob).sName;
+   }
+
+   QString sDst   = QString("%1/%2.ts").arg(pSettings->GetTargetDir()).arg(sFile);
 
    if (r_ui->checkRecMini->isChecked())
    {

@@ -67,6 +67,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
       m_ui->checkHideToSystray->setCheckState((Qt::CheckState)IniFile.GetIntData("TrayHide"));
       m_ui->checkAskForName->setCheckState((Qt::CheckState)IniFile.GetIntData("AskRecFile"));
+      m_ui->checkTranslit->setCheckState((Qt::CheckState)IniFile.GetIntData("TranslitRecFile"));
 
       // combo boxes ...
       int iIdx;
@@ -207,6 +208,7 @@ void CSettingsDlg::on_pushSave_clicked()
    IniFile.AddData("Refresh", (int)m_ui->checkRefresh->checkState());
    IniFile.AddData("TrayHide", (int)m_ui->checkHideToSystray->checkState());
    IniFile.AddData("AskRecFile", (int)m_ui->checkAskForName->checkState());
+   IniFile.AddData("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
 
    // combo boxes ...
    IniFile.AddData("Language", m_ui->cbxLanguage->currentText());
@@ -416,6 +418,11 @@ bool CSettingsDlg::HideToSystray()
 bool CSettingsDlg::AskForRecFile()
 {
    return m_ui->checkAskForName->isChecked();
+}
+
+bool CSettingsDlg::TranslitRecFile()
+{
+   return m_ui->checkTranslit->isChecked();
 }
 
 int CSettingsDlg::GetProxyPort ()
