@@ -2,6 +2,7 @@
 # Player module for vlc-record.                                                #
 # Goal of this modules is to support multiple player in vlc-record without     #
 # the need to change the binary code of this program.                          #
+#            !!!!! Please store the files in UTF-8 format !!!!!                #
 ################################################################################
 # In this file you have to put the command line to run the player you like.    #
 # In case the player doesn't support all features of vlc-record, make an empty #

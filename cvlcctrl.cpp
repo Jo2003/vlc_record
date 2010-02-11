@@ -124,6 +124,7 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
 
       QTextStream str(&fModule);
       QString     sLine;
+      str.setCodec ("UTF-8");
 
       do
       {

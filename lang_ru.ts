@@ -817,49 +817,49 @@ or start time is later than end time!</source>
 <context>
     <name>CVlcCtrl</name>
     <message>
-        <location filename="cvlcctrl.cpp" line="171"/>
+        <location filename="cvlcctrl.cpp" line="172"/>
         <source>Player module &apos;%1&apos; successfully parsed ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="179"/>
-        <location filename="cvlcctrl.cpp" line="203"/>
+        <location filename="cvlcctrl.cpp" line="180"/>
+        <location filename="cvlcctrl.cpp" line="204"/>
         <source>Warning!</source>
         <translation>Внимание!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="179"/>
+        <location filename="cvlcctrl.cpp" line="180"/>
         <source>Can&apos;t parse player module &apos;%1&apos;!</source>
         <translation>Не могу разобрать модуль проигрывателя &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="180"/>
+        <location filename="cvlcctrl.cpp" line="181"/>
         <source>Can&apos;t parse player module &apos;%1&apos;</source>
         <translation>Не могу разобрать модуль проигрывателя &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="203"/>
+        <location filename="cvlcctrl.cpp" line="204"/>
         <source>Player is already running!</source>
         <translation>Player уже в работе!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="207"/>
+        <location filename="cvlcctrl.cpp" line="208"/>
         <source>Start player using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="343"/>
+        <location filename="cvlcctrl.cpp" line="344"/>
         <source>Remove double slash in target path ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="421"/>
+        <location filename="cvlcctrl.cpp" line="422"/>
         <source>Player was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="425"/>
+        <location filename="cvlcctrl.cpp" line="426"/>
         <source>Player has ended ...</source>
         <translation></translation>
     </message>
