@@ -26,10 +26,17 @@ extern CLogFile VlcLog;
 \----------------------------------------------------------------- */
 CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
 {
-   sProgPath  = path;
-   iCacheTime = 0;
+   bForcedTranslit = false;
+   bTranslit       = false;
+   pTranslit       = NULL;
+
+   if (path != "")
+   {
+      LoadPlayerModule(path);
+   }
+
+   setStandardOutputFile(QString(PLAYER_LOG).arg(getenv(APPDATA)), QIODevice::Truncate);
    setProcessChannelMode(QProcess::MergedChannels);
-   setStandardOutputFile(QString(PLAYER_LOG).arg(getenv(APPDATA)), QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
    connect (this, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(slotStateChanged(QProcess::ProcessState)));
 }
 
@@ -58,18 +65,122 @@ CVlcCtrl::~CVlcCtrl()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SetProgPath
-|  Begin: 01.02.2010 / 10:05:00
+|  Method: SetTranslitPointer
+|  Begin: 11.02.2010 / 12:05:00
 |  Author: Jo2003
-|  Description: set program path to vlc
+|  Description: set translit class pointer
 |
-|  Parameters: path
+|  Parameters: pointer to CTranslit
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CVlcCtrl::SetProgPath(const QString &str)
+void CVlcCtrl::SetTranslitPointer(CTranslit *pTr)
 {
-   sProgPath = str;
+   pTranslit = pTr;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: SetTranslitSettings
+|  Begin: 11.02.2010 / 12:05:00
+|  Author: Jo2003
+|  Description: set translit settings
+|
+|  Parameters: enable / disable translit
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVlcCtrl::SetTranslitSettings(bool bTr)
+{
+   bTranslit = bTr;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: LoadPlayerModule
+|  Begin: 11.02.2010 / 10:05:00
+|  Author: Jo2003
+|  Description: load player module
+|
+|  Parameters: path to player module
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CVlcCtrl::LoadPlayerModule(const QString &sPath)
+{
+   int iRV = -1;
+   QFile fModule(sPath);
+   QRegExp rx("^([^ =]*).*=.*<<(.*)>>.*$");
+
+   if (fModule.open(QIODevice::ReadOnly))
+   {
+      // reset strings ...
+      sHttpPlay       = "";
+      sRtspPlay       = "";
+      sHttpRec        = "";
+      sRtspRec        = "";
+      sHttpSilentRec  = "";
+      sRtspSilentRec  = "";
+      bForcedTranslit = false;
+
+      QTextStream str(&fModule);
+      QString     sLine;
+
+      do
+      {
+         // read line by line from mod file ...
+         sLine = str.readLine();
+
+         if (rx.indexIn(sLine) > -1)
+         {
+            if (rx.cap(1) == CMD_PLAY_HTTP)
+            {
+               sHttpPlay = rx.cap(2);
+            }
+            else if (rx.cap(1) == CMD_PLAY_RTSP)
+            {
+               sRtspPlay = rx.cap(2);
+            }
+            else if (rx.cap(1) == CMD_REC_HTTP)
+            {
+               sHttpRec = rx.cap(2);
+            }
+            else if (rx.cap(1) == CMD_REC_RTSP)
+            {
+               sRtspRec = rx.cap(2);
+            }
+            else if (rx.cap(1) == CMD_SIL_REC_HTTP)
+            {
+               sHttpSilentRec = rx.cap(2);
+            }
+            else if (rx.cap(1) == CMD_SIL_REC_RTSP)
+            {
+               sRtspSilentRec = rx.cap(2);
+            }
+            else if (rx.cap(1) == FLAG_TRANSLIT)
+            {
+               bForcedTranslit = (rx.cap(2) == "yes") ? true : false;
+            }
+         }
+      } while (!str.atEnd());
+
+      // if the http play stuff is set
+      // we assume that all is well ...
+      if (sHttpPlay != "")
+      {
+         iRV = 0;
+         mInfo(tr("Player module '%1' successfully parsed ...").arg(sPath));
+      }
+
+      fModule.close();
+   }
+
+   if (iRV)
+   {
+      QMessageBox::warning(NULL, tr("Warning!"), tr("Can't parse player module '%1'!").arg(sPath));
+      mWarn(tr("Can't parse player module '%1'").arg(sPath));
+   }
+
+   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -78,24 +189,22 @@ void CVlcCtrl::SetProgPath(const QString &str)
 |  Author: Jo2003
 |  Description: start vlc
 |
-|  Parameters: command line args, optional runtime in seconds
+|  Parameters: command line, optional runtime in seconds
 |
 |  Returns: <= 0 --> error starting vlc
 |           else --> process id
 \----------------------------------------------------------------- */
-Q_PID CVlcCtrl::start(const QString &clargs, int iRunTime)
+Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime)
 {
    Q_PID   vlcPid   = 0;
 
    if (IsRunning())
    {
-      QMessageBox::warning(NULL, tr("Warning!"), tr("Vlc Player is already running!"));
+      QMessageBox::warning(NULL, tr("Warning!"), tr("Player is already running!"));
    }
    else
    {
-      QString sCmdLine = QString("\"%1\" %2").arg(sProgPath).arg(clargs);
-
-      mInfo(tr("Start vlc player using folling command line:\n  --> %1").arg(sCmdLine));
+      mInfo(tr("Start player using folling command line:\n  --> %1").arg(sCmdLine));
 
       QProcess::start(sCmdLine);
 
@@ -207,79 +316,91 @@ bool CVlcCtrl::IsRunning()
 |
 |  Returns: command line arguments as string
 \----------------------------------------------------------------- */
-QString CVlcCtrl::CreateClArgs(vlcctrl::eVlcAct eAct,
-                               const QString &url,
-                               const QString &dst,
-                               const QString &mux)
+QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
+                                const QString &url, int iCacheTime,
+                                const QString &dst, const QString &mux)
 {
-   QString sCmdLine;
+   QString   sCmdLine;
+   QFileInfo dstInfo(dst);
+   QString   sDstFile;
+   QRegExp   rx ("^([a-zA-Z]{1})://(.*)$");
+
+   if (bTranslit || bForcedTranslit)
+   {
+      sDstFile = QString("%1/%2.%3").arg(dstInfo.path())
+                 .arg(pTranslit->CyrToLat(dstInfo.baseName()))
+                 .arg(dstInfo.completeSuffix());
+   }
+   else
+   {
+      sDstFile = dst;
+   }
+
+   // fix destination path to avoid double slashes ...
+   if (rx.indexIn(sDstFile) > -1)
+   {
+      // we found a double slash ...
+      mInfo(tr("Remove double slash in target path ..."));
+      sDstFile = QString("%1:/%2").arg(rx.cap(1)).arg(rx.cap(2));
+   }
 
    switch (eAct)
    {
    // play stream using http protocol ...
    case vlcctrl::VLC_PLAY_HTTP:
-      sCmdLine = TMPL_PLAY_HTTP;
+      sCmdLine = sHttpPlay;
+      sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       break;
    // play stream using rtsp protocol ...
    case vlcctrl::VLC_PLAY_RTSP:
-      sCmdLine = TMPL_PLAY_RTSP;
+      sCmdLine = sRtspPlay;
+      sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       break;
    // record stream using http protocol ...
    case vlcctrl::VLC_REC_HTTP:
-      sCmdLine = TMPL_PLAY_HTTP TMPL_REC;
+      sCmdLine = sHttpRec;
+      sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       sCmdLine.replace(TMPL_MUX, mux);
-      sCmdLine.replace(TMPL_DST, dst);
+      sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // record stream using rtsp protocol ...
    case vlcctrl::VLC_REC_RTSP:
-      sCmdLine = TMPL_PLAY_RTSP TMPL_REC;
+      sCmdLine = sRtspRec;
+      sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       sCmdLine.replace(TMPL_MUX, mux);
-      sCmdLine.replace(TMPL_DST, dst);
+      sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // silently record stream using http protocol ...
    case vlcctrl::VLC_REC_HTTP_SILENT:
-      sCmdLine = TMPL_PLAY_HTTP TMPL_SILENT_REC;
+      sCmdLine = sHttpSilentRec;
+      sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       sCmdLine.replace(TMPL_MUX, mux);
-      sCmdLine.replace(TMPL_DST, dst);
+      sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // silently record stream using rtsp protocol ...
    case vlcctrl::VLC_REC_RTSP_SILENT:
-      sCmdLine = TMPL_PLAY_RTSP TMPL_SILENT_REC;
+      sCmdLine = sRtspSilentRec;
+      sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       sCmdLine.replace(TMPL_MUX, mux);
-      sCmdLine.replace(TMPL_DST, dst);
+      sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    default:
       break;
    }
 
    return sCmdLine;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: SetCache
-|  Begin: 01.02.2010 / 14:05:00
-|  Author: Jo2003
-|  Description: set cache time
-|
-|  Parameters: new cache time value
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CVlcCtrl::SetCache(int iTime)
-{
-   iCacheTime = iTime;
 }
 
 /* -----------------------------------------------------------------\
@@ -297,11 +418,11 @@ void CVlcCtrl::slotStateChanged(QProcess::ProcessState newState)
    switch (newState)
    {
    case QProcess::NotRunning:
-      mInfo(tr("Vlc was started ..."));
+      mInfo(tr("Player was started ..."));
       emit sigVlcEnds();
       break;
    case QProcess::Running:
-      mInfo(tr("Vlc has ended ..."));
+      mInfo(tr("Player has ended ..."));
       emit sigVlcStarts();
       break;
    default:

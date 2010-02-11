@@ -27,10 +27,13 @@ extern CLogFile VlcLog;
 | Parameters:  host, username, password, erotic allowed (true / false)
 |
 \-----------------------------------------------------------------------------*/
-CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr, const QString &pw, bool bAllowErotic) :QHttp(host)
+CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr,
+                           const QString &pw, const QString &sEPw,
+                           bool bAllowErotic) :QHttp(host)
 {
    sUsr           = usr;
    sPw            = pw;
+   sErosPw        = sEPw;
    iReq           = -1;
    bEros          = bAllowErotic;
    sCookie        = "";
@@ -60,6 +63,7 @@ CKartinaClnt::CKartinaClnt() :QHttp()
 {
    sUsr           = "";
    sPw            = "";
+   sErosPw        = "";
    iReq           = -1;
    bEros          = false;
    sCookie        = "";
@@ -102,10 +106,13 @@ CKartinaClnt::~CKartinaClnt()
 | Parameters:  host, username, password, erotic allowed (true / false)
 |
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetData(const QString &host, const QString &usr, const QString &pw, bool bAllowErotic)
+void CKartinaClnt::SetData(const QString &host, const QString &usr,
+                           const QString &pw, const QString &sEPw,
+                           bool bAllowErotic)
 {
    sUsr           = usr;
    sPw            = pw;
+   sErosPw        = sEPw;
    bEros          = bAllowErotic;
    sHost          = host;
    sCookie        = "";
@@ -237,7 +244,7 @@ void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 
    if (bEros)
    {
-      req += QString("&protect_code=%1").arg(sPw);
+      req += QString("&protect_code=%1").arg(sErosPw);
    }
 
    PostRequest((bTimerRec) ? Kartina::REQ_TIMERREC : Kartina::REQ_STREAM, "/", req);
@@ -330,7 +337,7 @@ void CKartinaClnt::GetArchivURL (const QString &prepared)
 
    if (bEros)
    {
-      req += QString("&protect_code=%1").arg(sPw);
+      req += QString("&protect_code=%1").arg(sErosPw);
    }
 
    PostRequest(Kartina::REQ_ARCHIV, "/", req);

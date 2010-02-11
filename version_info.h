@@ -25,10 +25,16 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.14" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   "1.15" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2010-02-11: Version 1.15
+| - feature player modules (to support more than vlc only)
+| - option to start player detached
+| - option to translit file name
+| - update translation with Alex' hints
+|
 | 2010-02-05: Version 1.14
 | - remove mutex from http classes, use request id instead
 | - archive available for 2 weeks only

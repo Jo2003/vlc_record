@@ -146,21 +146,6 @@ void CTimerRec::SetXmlParser(CKartinaXMLParser *pParser)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SetTranslit
-|  Begin: 10.02.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: set translit
-|
-|  Parameters: pointer to translit
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTimerRec::SetTranslit(CTranslit *pTr)
-{
-   pTranslit = pTr;
-}
-
-/* -----------------------------------------------------------------\
 |  Method: SetKartinaTrigger
 |  Begin: 26.01.2010 / 16:05:00
 |  Author: Jo2003
@@ -936,29 +921,24 @@ void CTimerRec::slotTimerStreamUrl(QString str)
 {
    pXmlParser->SetByteArray(str.toUtf8());
 
-   QString sCmdLine, sFile;
+   QString sCmdLine;
    QString sUrl = pXmlParser->ParseURL();
 
-   if (pSettings->TranslitRecFile())
-   {
-      sFile  = pTranslit->CyrToLat((*itActJob).sName);
-   }
-   else
-   {
-      sFile = (*itActJob).sName;
-   }
-
-   QString sDst   = QString("%1/%2.ts").arg(pSettings->GetTargetDir()).arg(sFile);
+   QString sDst = QString("%1/%2.ts").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
 
    if (r_ui->checkRecMini->isChecked())
    {
       // silent record ...
-      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP_SILENT, sUrl, sDst, "ts");
+      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP_SILENT,
+                                        pSettings->GetVLCPath(), sUrl,
+                                        pSettings->GetBufferTime(), sDst, "ts");
    }
    else
    {
       // normal record ...
-      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP, sUrl, sDst, "ts");
+      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP,
+                                        pSettings->GetVLCPath(), sUrl,
+                                        pSettings->GetBufferTime(), sDst, "ts");
    }
 
    Q_PID vlcpid = pVlcCtrl->start(sCmdLine);

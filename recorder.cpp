@@ -56,7 +56,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    VlcLog.SetLogLevel(Settings.GetLogLevel());
 
    // set connection data ...
-   KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(), Settings.AllowEros());
+   KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(),
+                     Settings.GetErosPasswd(), Settings.AllowEros());
 
 
    // set proxy stuff ...
@@ -78,15 +79,15 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // give vlcCtrl needed infos ...
    vlcCtrl.setParent(this);
-   vlcCtrl.SetProgPath(Settings.GetVLCPath());
-   vlcCtrl.SetCache(Settings.GetBufferTime());
+   vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
+   vlcCtrl.SetTranslitPointer(&translit);
+   vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
 
    // give timerRec all needed infos ...
    timeRec.SetXmlParser(&XMLParser);
    timeRec.SetKartinaTrigger(&Trigger);
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
-   timeRec.SetTranslit(&translit);
 
    // connect signals and slots ...
    connect (&KartinaTv,  SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
@@ -572,15 +573,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
    int       iRV      = -1;
    QDateTime now      = QDateTime::currentDateTime();
    QString   sExt     = "ts", fileName, sShowName;
-
-   if (Settings.TranslitRecFile())
-   {
-      sShowName = translit.CyrToLat(sChannel);
-   }
-   else
-   {
-      sShowName = sChannel;
-   }
+   QString   sCmdLine;
 
    // should we ask for file name ... ?
    if (Settings.AskForRecFile())
@@ -588,7 +581,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       // yes! Create file save dialog ...
       QString   sFilter;
       QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                          .arg(sShowName).arg(now.toString("yyyy-MM-dd__hh-mm"));
+                          .arg(sChannel).arg(now.toString("yyyy-MM-dd__hh-mm"));
 
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
                  sTarget, QString("Transport Stream (*.ts);;AVI File (*.avi)"),
@@ -609,7 +602,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
          QFileInfo info(fileName);
 
          // re-create complete file name ...
-         fileName = QString ("%1/%2.%3").arg(info.absolutePath())
+         fileName = QString ("%1/%2.%3").arg(info.path())
                     .arg(info.completeBaseName()).arg(sExt);
       }
    }
@@ -617,7 +610,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
    {
       // create filename as we think it's good ...
       fileName = QString("%1/%2(%3).%4").arg(Settings.GetTargetDir())
-                 .arg(sShowName).arg(now.toString("yyyy-MM-dd__hh-mm")).arg(sExt);
+                 .arg(sChannel).arg(now.toString("yyyy-MM-dd__hh-mm")).arg(sExt);
    }
 
    if (fileName != "")
@@ -627,12 +620,35 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       if (bArchiv)
       {
          // archiv using RTSP ...
-         vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_RTSP, sURL, fileName, sExt));
+         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_RTSP,
+                                         Settings.GetVLCPath(),
+                                         sURL, Settings.GetBufferTime(),
+                                         fileName, sExt);
       }
       else
       {
          // normal stream using HTTP ...
-         vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_HTTP, sURL, fileName, sExt));
+         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_HTTP,
+                                         Settings.GetVLCPath(),
+                                         sURL, Settings.GetBufferTime(),
+                                         fileName, sExt);
+      }
+
+      if (sCmdLine != "")
+      {
+         if (Settings.DetachPlayer())
+         {
+            mInfo(tr("Start player using folling command line:\n  --> %1").arg(sCmdLine));
+
+            if (QProcess::startDetached(sCmdLine))
+            {
+               vlcpid = (Q_PID)99; // any value != 0 ...
+            }
+         }
+         else
+         {
+            vlcpid = vlcCtrl.start(sCmdLine);
+         }
       }
 
       // successfully started ?
@@ -663,18 +679,40 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 \----------------------------------------------------------------- */
 int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
 {
-   int iRV      = 0;
-   Q_PID vlcpid = 0;
+   int     iRV      = 0;
+   Q_PID   vlcpid   = 0;
+   QString sCmdLine;
 
    if (bArchiv)
    {
       // archiv using RTSP ...
-      vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_RTSP, sURL));
+      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_RTSP,
+                                      Settings.GetVLCPath(), sURL,
+                                      Settings.GetBufferTime());
    }
    else
    {
       // normal stream using HTTP ...
-      vlcpid = vlcCtrl.start(vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_HTTP, sURL));
+      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_HTTP,
+                                      Settings.GetVLCPath(), sURL,
+                                      Settings.GetBufferTime());
+   }
+
+   if (sCmdLine != "")
+   {
+      if (Settings.DetachPlayer())
+      {
+         mInfo(tr("Start player using folling command line:\n  --> %1").arg(sCmdLine));
+
+         if(QProcess::startDetached(sCmdLine))
+         {
+            vlcpid = (Q_PID)99; // any value != 0 ...
+         }
+      }
+      else
+      {
+         vlcpid = vlcCtrl.start(sCmdLine);
+      }
    }
 
    // successfully started ?
@@ -712,7 +750,8 @@ void Recorder::on_pushSettings_clicked()
       KartinaTv.abort();
 
       // update connection data ...
-      KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(), Settings.AllowEros());
+      KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(),
+                        Settings.GetErosPasswd(), Settings.AllowEros());
 
       // set proxy ...
       if (Settings.UseProxy())
@@ -728,8 +767,8 @@ void Recorder::on_pushSettings_clicked()
       pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()), QApplication::applicationDirPath());
 
       // give vlcCtrl needed infos ...
-      vlcCtrl.SetProgPath(Settings.GetVLCPath());
-      vlcCtrl.SetCache(Settings.GetBufferTime());
+      vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
+      vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
 
       EnableDisableDlg(false);
 

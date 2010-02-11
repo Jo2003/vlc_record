@@ -28,7 +28,6 @@
 #include "cwaittrigger.h"
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
-#include "ctranslit.h"
 
 //===================================================================
 // namespace
@@ -90,7 +89,6 @@ public:
    void SetKartinaTrigger (CWaitTrigger *pTrig);
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
-   void SetTranslit (CTranslit *pTr);
    int  SaveRecordList ();
    int  ReadRecordList ();
    int  AddRow (const rec::SRecEntry &entry);
@@ -121,7 +119,6 @@ private:
    CWaitTrigger      *pTrigger;
    CSettingsDlg      *pSettings;
    CVlcCtrl          *pVlcCtrl;
-   CTranslit         *pTranslit;
 
 signals:
    void sigRecDone ();

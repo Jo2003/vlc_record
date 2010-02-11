@@ -59,13 +59,15 @@ class CKartinaClnt : public QHttp
    Q_OBJECT
 
 public:
-   CKartinaClnt(const QString &host, const QString &usr = QString(),
-                const QString &pw = QString(), bool bAllowErotic = false);
+   CKartinaClnt(const QString &host, const QString &usr, const QString &pw,
+                const QString &sEPw = QString(), bool bAllowErotic = false);
+
    CKartinaClnt();
    ~CKartinaClnt();
 
-   void SetData(const QString &host, const QString &usr = QString(),
-                const QString &pw = QString(), bool bAllowErotic = false);
+   void SetData(const QString &host, const QString &usr, const QString &pw,
+                const QString &sEPw = QString(), bool bAllowErotic = false);
+
    void GetCookie ();
    void GetChannelList ();
    void SetTimeShift (int iHours);
@@ -84,6 +86,7 @@ private:
    QString       sUsr;
    QString       sPw;
    QString       sHost;
+   QString       sErosPw;
    bool          bEros;
    QString       sCookie;
    QByteArray    baPageContent;

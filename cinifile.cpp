@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:25:48
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #include "cinifile.h"
@@ -113,7 +113,7 @@ int CIniFile::ReadIni()
             }
          }
       }
-      while (sLine.length() > 0);
+      while (!str.atEnd());
 
       fIni.close();
    }

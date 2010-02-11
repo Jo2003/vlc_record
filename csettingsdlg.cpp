@@ -36,49 +36,61 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 
    IniFile.ReadIni();
 
-   // if (!IniFile.ReadIni())
-   {
-      // fill in values ...
+   // fill in values ...
 
-      // line edits ...
-      m_ui->lineVLC->setText (IniFile.GetStringData("VLCPath"));
-      m_ui->lineDir->setText (IniFile.GetStringData("TargetDir"));
-      m_ui->lineUsr->setText (IniFile.GetStringData("User"));
-      m_ui->linePass->setText (IniFile.GetStringData("Passwd"));
-      m_ui->lineShutdown->setText(IniFile.GetStringData("ShutdwnCmd"));
+   // line edits ...
+   m_ui->lineVLC->setText (IniFile.GetStringData("VLCPath"));
+   m_ui->lineDir->setText (IniFile.GetStringData("TargetDir"));
+   m_ui->lineUsr->setText (IniFile.GetStringData("User"));
+   m_ui->linePass->setText (IniFile.GetStringData("Passwd"));
+   m_ui->lineErosPass->setText(IniFile.GetStringData("ErosPasswd"));
+   m_ui->lineShutdown->setText(IniFile.GetStringData("ShutdwnCmd"));
 
 #ifdef Q_OS_WIN32
-      if (m_ui->lineShutdown->text() == "")
-      {
-         m_ui->lineShutdown->setText ("shutdown.exe -s -f -t 5");
-      }
+   if (m_ui->lineShutdown->text() == "")
+   {
+      m_ui->lineShutdown->setText ("shutdown.exe -s -f -t 5");
+   }
 #endif
 
-      m_ui->lineProxyHost->setText(IniFile.GetStringData("ProxyHost"));
-      m_ui->lineProxyPort->setText(IniFile.GetStringData("ProxyPort"));
-      m_ui->lineProxyUser->setText(IniFile.GetStringData("ProxyUser"));
-      m_ui->lineProxyPassword->setText(IniFile.GetStringData("ProxyPasswd"));
-      m_ui->lineInterval->setText(IniFile.GetStringData("RefIntv"));
+   m_ui->lineProxyHost->setText(IniFile.GetStringData("ProxyHost"));
+   m_ui->lineProxyPort->setText(IniFile.GetStringData("ProxyPort"));
+   m_ui->lineProxyUser->setText(IniFile.GetStringData("ProxyUser"));
+   m_ui->lineProxyPassword->setText(IniFile.GetStringData("ProxyPasswd"));
+   m_ui->lineInterval->setText(IniFile.GetStringData("RefIntv"));
 
-      // check boxes ...
-      m_ui->useProxy->setCheckState((Qt::CheckState)IniFile.GetIntData("UseProxy"));
-      m_ui->checkAdult->setCheckState((Qt::CheckState)IniFile.GetIntData("AllowAdult"));
-      m_ui->checkFixTime->setCheckState((Qt::CheckState)IniFile.GetIntData("FixTime"));
-      m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
-      m_ui->checkHideToSystray->setCheckState((Qt::CheckState)IniFile.GetIntData("TrayHide"));
-      m_ui->checkAskForName->setCheckState((Qt::CheckState)IniFile.GetIntData("AskRecFile"));
-      m_ui->checkTranslit->setCheckState((Qt::CheckState)IniFile.GetIntData("TranslitRecFile"));
+   // check boxes ...
+   m_ui->useProxy->setCheckState((Qt::CheckState)IniFile.GetIntData("UseProxy"));
+   m_ui->checkAdult->setCheckState((Qt::CheckState)IniFile.GetIntData("AllowAdult"));
+   m_ui->checkFixTime->setCheckState((Qt::CheckState)IniFile.GetIntData("FixTime"));
+   m_ui->checkRefresh->setCheckState((Qt::CheckState)IniFile.GetIntData("Refresh"));
+   m_ui->checkHideToSystray->setCheckState((Qt::CheckState)IniFile.GetIntData("TrayHide"));
+   m_ui->checkAskForName->setCheckState((Qt::CheckState)IniFile.GetIntData("AskRecFile"));
+   m_ui->checkTranslit->setCheckState((Qt::CheckState)IniFile.GetIntData("TranslitRecFile"));
+   m_ui->checkDetach->setCheckState((Qt::CheckState)IniFile.GetIntData("DetachPlayer"));
 
-      // combo boxes ...
-      int iIdx;
-      iIdx = m_ui->cbxLanguage->findText(IniFile.GetStringData("Language"));
-      m_ui->cbxLanguage->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
-
-      iIdx = m_ui->cbxBufferSeconds->findText(IniFile.GetStringData("HttpCache"));
-      m_ui->cbxBufferSeconds->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
-
-      m_ui->cbxLogLevel->setCurrentIndex((int)IniFile.GetIntData("LogLevel"));
+   // on update the password for adult channels may not be given ...
+   if (m_ui->checkAdult->isChecked() && (m_ui->lineErosPass->text() == ""))
+   {
+      m_ui->lineErosPass->setText(m_ui->linePass->text());
    }
+
+   // fill player module box with available modules ...
+   QDir appDir (QApplication::applicationDirPath());
+   m_ui->cbxPlayerMod->addItems(appDir.entryList(QStringList("*.mod"), QDir::Files, QDir::Name));
+
+   // combo boxes ...
+   int iIdx;
+   iIdx = m_ui->cbxLanguage->findText(IniFile.GetStringData("Language"));
+   m_ui->cbxLanguage->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
+
+   iIdx = m_ui->cbxBufferSeconds->findText(IniFile.GetStringData("HttpCache"));
+   m_ui->cbxBufferSeconds->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
+
+   m_ui->cbxLogLevel->setCurrentIndex((int)IniFile.GetIntData("LogLevel"));
+
+   iIdx = m_ui->cbxPlayerMod->findText(IniFile.GetStringData("PlayerModule"));
+   m_ui->cbxPlayerMod->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 }
 
 /* -----------------------------------------------------------------\
@@ -116,6 +128,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
           int iLanIdx = m_ui->cbxLanguage->currentIndex();
           int iLogIdx = m_ui->cbxLogLevel->currentIndex();
           int iBufIdx = m_ui->cbxBufferSeconds->currentIndex();
+          int iModIdx = m_ui->cbxPlayerMod->currentIndex();
 
           m_ui->retranslateUi(this);
 
@@ -123,6 +136,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
           m_ui->cbxLanguage->setCurrentIndex(iLanIdx);
           m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
           m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
+          m_ui->cbxPlayerMod->setCurrentIndex(iModIdx);
 
           // set company name ...
           QString s = m_ui->groupAccount->title();
@@ -193,6 +207,7 @@ void CSettingsDlg::on_pushSave_clicked()
    IniFile.AddData("User", m_ui->lineUsr->text());
    IniFile.AddData("TargetDir", m_ui->lineDir->text());
    IniFile.AddData("Passwd", m_ui->linePass->text());
+   IniFile.AddData("ErosPasswd", m_ui->lineErosPass->text());
 
    IniFile.AddData("ProxyHost", m_ui->lineProxyHost->text());
    IniFile.AddData("ProxyPort", m_ui->lineProxyPort->text());
@@ -209,11 +224,13 @@ void CSettingsDlg::on_pushSave_clicked()
    IniFile.AddData("TrayHide", (int)m_ui->checkHideToSystray->checkState());
    IniFile.AddData("AskRecFile", (int)m_ui->checkAskForName->checkState());
    IniFile.AddData("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
+   IniFile.AddData("DetachPlayer", (int)m_ui->checkDetach->checkState());
 
    // combo boxes ...
    IniFile.AddData("Language", m_ui->cbxLanguage->currentText());
    IniFile.AddData("HttpCache", m_ui->cbxBufferSeconds->currentText());
    IniFile.AddData("LogLevel", m_ui->cbxLogLevel->currentIndex());
+   IniFile.AddData("PlayerModule", m_ui->cbxPlayerMod->currentText());
 
    IniFile.SaveIni();
 }
@@ -370,6 +387,11 @@ QString CSettingsDlg::GetPasswd()
    return m_ui->linePass->text();
 }
 
+QString CSettingsDlg::GetErosPasswd()
+{
+   return m_ui->lineErosPass->text();
+}
+
 QString CSettingsDlg::GetProxyHost ()
 {
    return m_ui->lineProxyHost->text();
@@ -388,6 +410,12 @@ QString CSettingsDlg::GetProxyPasswd ()
 QString CSettingsDlg::GetLanguage()
 {
    return m_ui->cbxLanguage->currentText();
+}
+
+QString CSettingsDlg::GetPlayerModule()
+{
+   return QString("%1/%2").arg(QApplication::applicationDirPath())
+         .arg(m_ui->cbxPlayerMod->currentText());
 }
 
 bool CSettingsDlg::UseProxy ()
@@ -423,6 +451,11 @@ bool CSettingsDlg::AskForRecFile()
 bool CSettingsDlg::TranslitRecFile()
 {
    return m_ui->checkTranslit->isChecked();
+}
+
+bool CSettingsDlg::DetachPlayer()
+{
+   return m_ui->checkDetach->isChecked();
 }
 
 int CSettingsDlg::GetProxyPort ()

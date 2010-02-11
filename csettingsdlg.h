@@ -15,6 +15,7 @@
 #include <QtGui/QDialog>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDir>
 
 #include "cinifile.h"
 #include "clogfile.h"
@@ -48,11 +49,14 @@ public:
     QString GetTargetDir ();
     QString GetUser ();
     QString GetPasswd ();
+    QString GetErosPasswd ();
     QString GetProxyHost ();
     QString GetProxyUser ();
     QString GetProxyPasswd ();
     QString GetLanguage ();
     QString GetShutdownCmd ();
+    QString GetPlayerModule ();
+
     bool UseProxy ();
     bool AllowEros ();
     bool FixTime ();
@@ -60,6 +64,8 @@ public:
     bool HideToSystray ();
     bool AskForRecFile ();
     bool TranslitRecFile ();
+    bool DetachPlayer ();
+
     int GetRefrInt ();
     int GetProxyPort ();
     int GetBufferTime ();

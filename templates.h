@@ -15,17 +15,26 @@
 /**********************************************************/
 /*                      PATH templates                    */
 /**********************************************************/
-#define TMPL_VLC   "{[%VLCPATH%]}"
-#define TMPL_URL   "{[%URL%]}"
-#define TMPL_MUX   "{[%MUX%]}"
-#define TMPL_DST   "{[%DST%]}"
-#define TMPL_CACHE "{[%CACHE%]}"
+#define TMPL_PLAYER      "{[%PLAYER%]}"
+#define TMPL_URL         "{[%URL%]}"
+#define TMPL_MUX         "{[%MUX%]}"
+#define TMPL_DST         "{[%DST%]}"
+#define TMPL_CACHE       "{[%CACHE%]}"
 
+#define CMD_PLAY_HTTP    "HTTP_PLAY"
+#define CMD_PLAY_RTSP    "RTSP_PLAY"
+#define CMD_REC_HTTP     "HTTP_REC"
+#define CMD_REC_RTSP     "RTSP_REC"
+#define CMD_SIL_REC_HTTP "HTTP_SIL_REC"
+#define CMD_SIL_REC_RTSP "RTSP_SIL_REC"
+#define FLAG_TRANSLIT    "TRANSLIT"
+
+/*
 #define TMPL_PLAY_HTTP  "\"" TMPL_URL "\" --no-http-reconnect --http-caching=" TMPL_CACHE
 #define TMPL_PLAY_RTSP  "\"" TMPL_URL "\" --rtsp-tcp --rtsp-caching=" TMPL_CACHE
 #define TMPL_REC        " --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
 #define TMPL_SILENT_REC " --sout=\"#std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}\""
-
+*/
 
 /**********************************************************/
 /*                      HTML templates                    */

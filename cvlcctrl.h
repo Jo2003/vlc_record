@@ -16,10 +16,15 @@
 #include <QObject>
 #include <QTimer>
 #include <QMessageBox>
+#include <QTextStream>
+#include <QRegExp>
+#include <QFile>
+#include <QFileInfo>
 
 #include "clogfile.h"
 #include "defdef.h"
 #include "templates.h"
+#include "ctranslit.h"
 
 namespace vlcctrl
 {
@@ -52,18 +57,30 @@ public:
    virtual ~CVlcCtrl();
 
    void    SetProgPath(const QString &str);
-   void    SetCache (int iTime);
-   Q_PID   start (const QString& clargs, int iRunTime = -1);
+   Q_PID   start (const QString& sCmdLine, int iRunTime = -1);
    void    CancelTimer ();
    void    SetTimer (uint uiTime);
    void    stop ();
    bool    IsRunning ();
-   QString CreateClArgs (vlcctrl::eVlcAct eAct, const QString &url, const QString &dst = QString(), const QString &mux = QString());
+   void    SetTranslitPointer (CTranslit *pTr);
+   void    SetTranslitSettings (bool bTr);
+   QString CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
+                         const QString &url, int iCacheTime, const QString &dst = QString(),
+                         const QString &mux = QString());
+
+   int     LoadPlayerModule (const QString &sPath);
 
 private:
-   int     iCacheTime;
-   QString sProgPath;
-   QTimer  tRunTime;
+   QTimer     tRunTime;
+   QString    sHttpPlay;
+   QString    sRtspPlay;
+   QString    sHttpRec;
+   QString    sRtspRec;
+   QString    sHttpSilentRec;
+   QString    sRtspSilentRec;
+   bool       bForcedTranslit;
+   bool       bTranslit;
+   CTranslit *pTranslit;
 
 private slots:
    void slotStateChanged (QProcess::ProcessState newState);
