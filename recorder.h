@@ -80,6 +80,7 @@ public:
 
  public slots:
     virtual void accept();
+    virtual void show();
 
 private:
     Ui::Recorder                  *ui;

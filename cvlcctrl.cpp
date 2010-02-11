@@ -108,77 +108,81 @@ void CVlcCtrl::SetTranslitSettings(bool bTr)
 int CVlcCtrl::LoadPlayerModule(const QString &sPath)
 {
    int iRV = -1;
-   QFile fModule(sPath);
-   QRegExp rx("^([^ =]*).*=.*<<(.*)>>.*$");
 
-   if (fModule.open(QIODevice::ReadOnly))
+   if (sPath != "")
    {
-      // reset strings ...
-      sHttpPlay       = "";
-      sRtspPlay       = "";
-      sHttpRec        = "";
-      sRtspRec        = "";
-      sHttpSilentRec  = "";
-      sRtspSilentRec  = "";
-      bForcedTranslit = false;
+      QFile fModule(sPath);
+      QRegExp rx("^([^ =]*).*=.*<<(.*)>>.*$");
 
-      QTextStream str(&fModule);
-      QString     sLine;
-      str.setCodec ("UTF-8");
-
-      do
+      if (fModule.open(QIODevice::ReadOnly))
       {
-         // read line by line from mod file ...
-         sLine = str.readLine();
+         // reset strings ...
+         sHttpPlay       = "";
+         sRtspPlay       = "";
+         sHttpRec        = "";
+         sRtspRec        = "";
+         sHttpSilentRec  = "";
+         sRtspSilentRec  = "";
+         bForcedTranslit = false;
 
-         if (rx.indexIn(sLine) > -1)
+         QTextStream str(&fModule);
+         QString     sLine;
+         str.setCodec ("UTF-8");
+
+         do
          {
-            if (rx.cap(1) == CMD_PLAY_HTTP)
+            // read line by line from mod file ...
+            sLine = str.readLine();
+
+            if (rx.indexIn(sLine) > -1)
             {
-               sHttpPlay = rx.cap(2);
+               if (rx.cap(1) == CMD_PLAY_HTTP)
+               {
+                  sHttpPlay = rx.cap(2);
+               }
+               else if (rx.cap(1) == CMD_PLAY_RTSP)
+               {
+                  sRtspPlay = rx.cap(2);
+               }
+               else if (rx.cap(1) == CMD_REC_HTTP)
+               {
+                  sHttpRec = rx.cap(2);
+               }
+               else if (rx.cap(1) == CMD_REC_RTSP)
+               {
+                  sRtspRec = rx.cap(2);
+               }
+               else if (rx.cap(1) == CMD_SIL_REC_HTTP)
+               {
+                  sHttpSilentRec = rx.cap(2);
+               }
+               else if (rx.cap(1) == CMD_SIL_REC_RTSP)
+               {
+                  sRtspSilentRec = rx.cap(2);
+               }
+               else if (rx.cap(1) == FLAG_TRANSLIT)
+               {
+                  bForcedTranslit = (rx.cap(2) == "yes") ? true : false;
+               }
             }
-            else if (rx.cap(1) == CMD_PLAY_RTSP)
-            {
-               sRtspPlay = rx.cap(2);
-            }
-            else if (rx.cap(1) == CMD_REC_HTTP)
-            {
-               sHttpRec = rx.cap(2);
-            }
-            else if (rx.cap(1) == CMD_REC_RTSP)
-            {
-               sRtspRec = rx.cap(2);
-            }
-            else if (rx.cap(1) == CMD_SIL_REC_HTTP)
-            {
-               sHttpSilentRec = rx.cap(2);
-            }
-            else if (rx.cap(1) == CMD_SIL_REC_RTSP)
-            {
-               sRtspSilentRec = rx.cap(2);
-            }
-            else if (rx.cap(1) == FLAG_TRANSLIT)
-            {
-               bForcedTranslit = (rx.cap(2) == "yes") ? true : false;
-            }
+         } while (!str.atEnd());
+
+         // if the http play stuff is set
+         // we assume that all is well ...
+         if (sHttpPlay != "")
+         {
+            iRV = 0;
+            mInfo(tr("Player module '%1' successfully parsed ...").arg(sPath));
          }
-      } while (!str.atEnd());
 
-      // if the http play stuff is set
-      // we assume that all is well ...
-      if (sHttpPlay != "")
-      {
-         iRV = 0;
-         mInfo(tr("Player module '%1' successfully parsed ...").arg(sPath));
+         fModule.close();
       }
-
-      fModule.close();
    }
 
    if (iRV)
    {
-      QMessageBox::warning(NULL, tr("Warning!"), tr("Can't parse player module '%1'!").arg(sPath));
-      mWarn(tr("Can't parse player module '%1'").arg(sPath));
+      QMessageBox::warning(NULL, tr("Warning!"), tr("Sorry! Can't parse player module!"));
+      mWarn(tr("Can't parse player module!"));
    }
 
    return iRV;

@@ -43,6 +43,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
    timeRec.setParent(this, Qt::Dialog);
+   trayIcon.setParent(this);
+   vlcCtrl.setParent(this);
 
    // if main settings aren't done, start settings dialog ...
    if ((Settings.GetPasswd()      == "")
@@ -70,16 +72,11 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
                         Settings.GetProxyUser(), Settings.GetProxyPasswd());
    }
 
-   // set language as read ...
-   pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()), QApplication::applicationDirPath());
-
    // configure trigger and start it ...
    Trigger.SetKartinaClient(&KartinaTv);
    Trigger.start();
 
    // give vlcCtrl needed infos ...
-   vlcCtrl.setParent(this);
-   vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
    vlcCtrl.SetTranslitPointer(&translit);
    vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
 
@@ -88,6 +85,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.SetKartinaTrigger(&Trigger);
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
+
+
 
    // connect signals and slots ...
    connect (&KartinaTv,  SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
@@ -113,6 +112,35 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&vlcCtrl,    SIGNAL(sigVlcEnds()), this, SLOT(slotVlcEnds()));
    connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
 
+   // set logo path for epg browser and timer record ...
+   ui->textEpg->SetLogoDir(sLogoPath);
+   timeRec.SetLogoPath(sLogoPath);
+
+   // enable button ...
+   EnableDisableDlg(false);
+
+   // request authorisation ...
+   Trigger.TriggerRequest(Kartina::REQ_COOKIE);
+
+   // start refresh timer, if needed ...
+   if (Settings.DoRefresh())
+   {
+      Refresh.start(Settings.GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: show [slot]
+|  Begin: 19.01.2010 / 16:04:40
+|  Author: Jo2003
+|  Description: overwride show slot to init some more values ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::show()
+{
    // -------------------------------------------
    // create epg nav bar ...
    // -------------------------------------------
@@ -123,12 +151,11 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // -------------------------------------------
    CreateSystray();
 
-   // set logo path for epg browser and timer record ...
-   ui->textEpg->SetLogoDir(sLogoPath);
-   timeRec.SetLogoPath(sLogoPath);
+   // set language as read ...
+   pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()), QApplication::applicationDirPath());
 
-   // enable button ...
-   EnableDisableDlg(false);
+   // get player module ...
+   vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
 
    // set last windows size / position ...
    bool ok = false;
@@ -144,14 +171,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       sizePos = geometry();
    }
 
-   // request authorisation ...
-   Trigger.TriggerRequest(Kartina::REQ_COOKIE);
-
-   // start refresh timer, if needed ...
-   if (Settings.DoRefresh())
-   {
-      Refresh.start(Settings.GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
-   }
+   QWidget::show();
 }
 
 /* -----------------------------------------------------------------\
@@ -188,7 +208,6 @@ Recorder::~Recorder()
 \----------------------------------------------------------------- */
 void Recorder::CreateSystray()
 {
-   trayIcon.setParent(this);
    trayIcon.setIcon(QIcon(":/app/tv"));
    trayIcon.setToolTip(tr("vlc-record - Click to activate!"));
 }

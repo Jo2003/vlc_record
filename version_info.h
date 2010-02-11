@@ -25,10 +25,13 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.15" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   "1.16" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2010-02-11: Version 1.16
+| - bugfix for crash if no player module is there
+|
 | 2010-02-11: Version 1.15
 | - feature player modules (to support more than vlc only)
 | - option to start player detached

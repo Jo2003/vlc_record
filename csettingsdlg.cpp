@@ -414,8 +414,15 @@ QString CSettingsDlg::GetLanguage()
 
 QString CSettingsDlg::GetPlayerModule()
 {
-   return QString("%1/%2").arg(QApplication::applicationDirPath())
-         .arg(m_ui->cbxPlayerMod->currentText());
+   QString sPlayModule;
+
+   if (m_ui->cbxPlayerMod->currentText() != "")
+   {
+      sPlayModule = QString("%1/%2").arg(QApplication::applicationDirPath())
+                    .arg(m_ui->cbxPlayerMod->currentText());
+   }
+
+   return sPlayModule;
 }
 
 bool CSettingsDlg::UseProxy ()
