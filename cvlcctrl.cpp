@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 01.02.2010 / 10:50:35
 |
@@ -17,7 +17,7 @@ extern CLogFile VlcLog;
 /* -----------------------------------------------------------------\
 |  Method: CVlcCtrl / constructor
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create object, init values
 |
 |  Parameters: pointer to parent window
@@ -36,7 +36,7 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
 /* -----------------------------------------------------------------\
 |  Method: ~CVlcCtrl / destructor
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean at destruction, stop process, if running
 |
 |  Parameters: --
@@ -60,7 +60,7 @@ CVlcCtrl::~CVlcCtrl()
 /* -----------------------------------------------------------------\
 |  Method: SetProgPath
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set program path to vlc
 |
 |  Parameters: path
@@ -75,7 +75,7 @@ void CVlcCtrl::SetProgPath(const QString &str)
 /* -----------------------------------------------------------------\
 |  Method: start
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: start vlc
 |
 |  Parameters: command line args, optional runtime in seconds
@@ -121,7 +121,7 @@ Q_PID CVlcCtrl::start(const QString &clargs, int iRunTime)
 /* -----------------------------------------------------------------\
 |  Method: stop
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: stop vlc
 |
 |  Parameters: --
@@ -139,7 +139,7 @@ void CVlcCtrl::stop()
 /* -----------------------------------------------------------------\
 |  Method: CancelTimer
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: cancel run time timer
 |
 |  Parameters: --
@@ -154,7 +154,7 @@ void CVlcCtrl::CancelTimer()
 /* -----------------------------------------------------------------\
 |  Method: SetTimer
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: (re) set stop timer
 |
 |  Parameters: new timeout (sec.)
@@ -170,7 +170,7 @@ void CVlcCtrl::SetTimer(uint uiTime)
 /* -----------------------------------------------------------------\
 |  Method: IsRunning
 |  Begin: 01.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: is vlc running ?
 |
 |  Parameters: --
@@ -200,7 +200,7 @@ bool CVlcCtrl::IsRunning()
 /* -----------------------------------------------------------------\
 |  Method: CreateClArgs
 |  Begin: 01.02.2010 / 14:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create command line arguments for vlc ...
 |
 |  Parameters: vlc action enum, url, destination, mux
@@ -270,7 +270,7 @@ QString CVlcCtrl::CreateClArgs(vlcctrl::eVlcAct eAct,
 /* -----------------------------------------------------------------\
 |  Method: SetCache
 |  Begin: 01.02.2010 / 14:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set cache time
 |
 |  Parameters: new cache time value
@@ -285,7 +285,7 @@ void CVlcCtrl::SetCache(int iTime)
 /* -----------------------------------------------------------------\
 |  Method: slotStateChanged
 |  Begin: 02.02.2010 / 14:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: send signal when vlc starts / ends ...
 |
 |  Parameters: new process state

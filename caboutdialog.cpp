@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:13:41
 |
@@ -15,7 +15,7 @@
 /* -----------------------------------------------------------------\
 |  Method: CAboutDialog / constructor
 |  Begin: 18.01.2010 / 16:14:06
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: constructs about dialog class
 |
 |  Parameters: pointer to parent window
@@ -34,7 +34,7 @@ CAboutDialog::CAboutDialog(QWidget *parent) :
 /* -----------------------------------------------------------------\
 |  Method: ~CAboutDialog / destructor
 |  Begin: 18.01.2010 / 16:14:44
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean at destruction
 |
 |  Parameters: --
@@ -49,7 +49,7 @@ CAboutDialog::~CAboutDialog()
 /* -----------------------------------------------------------------\
 |  Method: changeEvent
 |  Begin: 18.01.2010 / 16:15:15
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch language change event
 |
 |  Parameters: pointer to event
@@ -71,7 +71,7 @@ void CAboutDialog::changeEvent(QEvent *e)
 /* -----------------------------------------------------------------\
 |  Method: FillInfo
 |  Begin: 18.01.2010 / 16:15:50
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: fill about info into string
 |
 |  Parameters: --
@@ -87,8 +87,8 @@ void CAboutDialog::FillInfo()
       "<span style='font-weight: bold; font-size: 16px;'>vlc-record</span><br />\n"
       "<table border='0' cellpadding='0' cellspacing='0'>\n"
       "<tr><td><b>Version:</b></td><td style='padding-left: 15px;'>%1</td></tr>\n"
-      "<tr><td><b>Author:</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>J&ouml;rg Neubert</a></td></tr>\n"
-      "<tr><td><b>Inspired by:</b></td><td style='padding-left: 15px;'>Olga!</td></tr>\n"
+      "<tr><td><b>Author:</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>\n"
+      "<tr><td><b>Inspired by:</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>\n"
       "<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>\n"
       "<tr><td><b>Icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>\n"
       "</table>\n"
@@ -98,7 +98,7 @@ void CAboutDialog::FillInfo()
       "To do this it will authenticate you with username and password at %4. "
       "It then will start the <a href='http://www.videolan.org'>vlc media player</a> "
       "to display (and record) the selected stream. It supports <b>EPG and TimeShift</b>.<br />\n"
-      "For News and Updates please visit my site at <a href='http://www.coujo.de/ib2/index.php?act=module&module=include&incl_name=vlc-record'>http://www.coujo.de</a>.\n"
+      "For News and Updates please visit my site at <a href='http://vlc-record.coujo.de'>http://vlc-record.coujo.de</a>.\n"
       "<br /> <br />\n"
       "<b>vlc-record is free software!</b> \n"
       "Nevertheless ... if you like this software, please support me: \n"

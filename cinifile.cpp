@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 | 
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:25:48
 | 
@@ -14,7 +14,7 @@
 /* -----------------------------------------------------------------\
 |  Method: CIniFile / constructor
 |  Begin: 18.01.2010 / 16:26:12
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: construct element
 |
 |  Parameters: --
@@ -29,7 +29,7 @@ CIniFile::CIniFile()
 /* -----------------------------------------------------------------\
 |  Method: ~CIniFile / destructor
 |  Begin: 18.01.2010 / 16:26:36
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean on dstruction
 |
 |  Parameters: --
@@ -44,7 +44,7 @@ CIniFile::~CIniFile()
 /* -----------------------------------------------------------------\
 |  Method: CIniFile / constructor
 |  Begin: 18.01.2010 / 16:27:07
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create object, set values
 |
 |  Parameters: ini file dir, file name
@@ -60,7 +60,7 @@ CIniFile::CIniFile (const char *sDir, const char *sFile)
 /* -----------------------------------------------------------------\
 |  Method: SetFileName
 |  Begin: 18.01.2010 / 16:27:07
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set file / path values
 |
 |  Parameters: ini file dir, file name
@@ -76,7 +76,7 @@ void CIniFile::SetFileName(const char *sDir, const char *sFile)
 /* -----------------------------------------------------------------\
 |  Method: ReadIni
 |  Begin: 18.01.2010 / 16:28:01
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: read ini file and store values in internal buffer
 |
 |  Parameters: --
@@ -124,7 +124,7 @@ int CIniFile::ReadIni()
 /* -----------------------------------------------------------------\
 |  Method: DelData
 |  Begin: 18.01.2010 / 16:28:37
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: delete data from internal buffer
 |
 |  Parameters: key
@@ -155,7 +155,7 @@ int CIniFile::DelData(const QString &sKey)
 /* -----------------------------------------------------------------\
 |  Method: GetStringData
 |  Begin: 18.01.2010 / 16:29:21
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: return string data from internal buffer
 |
 |  Parameters: key
@@ -180,7 +180,7 @@ QString CIniFile::GetStringData(const QString &sKey)
 /* -----------------------------------------------------------------\
 |  Method: GetIntData
 |  Begin: 18.01.2010 / 16:29:21
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: return int data from internal buffer
 |
 |  Parameters: key
@@ -205,7 +205,7 @@ long CIniFile::GetIntData (const QString &sKey)
 /* -----------------------------------------------------------------\
 |  Method: GetFloatData
 |  Begin: 18.01.2010 / 16:29:21
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: return float data from internal buffer
 |
 |  Parameters: key
@@ -230,7 +230,7 @@ double CIniFile::GetFloatData (const QString &sKey)
 /* -----------------------------------------------------------------\
 |  Method: SaveIni
 |  Begin: 18.01.2010 / 16:30:44
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: save ini file
 |
 |  Parameters: --

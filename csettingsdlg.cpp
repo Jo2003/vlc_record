@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:43:08
 |
@@ -18,7 +18,7 @@ extern CLogFile VlcLog;
 /* -----------------------------------------------------------------\
 |  Method: CSettingsDlg / constructor
 |  Begin: 19.01.2010 / 15:43:38
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: construct dialog, init values
 |
 |  Parameters: pointer to translater, pointer to parent widget
@@ -84,7 +84,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 /* -----------------------------------------------------------------\
 |  Method: ~CSettingsDlg / dstructor
 |  Begin: 19.01.2010 / 15:45:48
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean at destruction
 |
 |  Parameters: --
@@ -99,7 +99,7 @@ CSettingsDlg::~CSettingsDlg()
 /* -----------------------------------------------------------------\
 |  Method: changeEvent
 |  Begin: 19.01.2010 / 15:46:10
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch event when language changes
 |
 |  Parameters: pointer to event
@@ -137,7 +137,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
 /* -----------------------------------------------------------------\
 |  Method: on_pushVLC_clicked
 |  Begin: 19.01.2010 / 15:46:47
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: open file dialog to choose vlc binary
 |
 |  Parameters: --
@@ -161,7 +161,7 @@ void CSettingsDlg::on_pushVLC_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_pushDir_clicked
 |  Begin: 19.01.2010 / 15:47:19
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: open dir dialog to choose target dir for records
 |
 |  Parameters: --
@@ -179,7 +179,7 @@ void CSettingsDlg::on_pushDir_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_pushSave_clicked
 |  Begin: 19.01.2010 / 15:47:50
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: save all settings to ini file
 |
 |  Parameters: --
@@ -221,7 +221,7 @@ void CSettingsDlg::on_pushSave_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_pushDelLogos_clicked
 |  Begin: 19.01.2010 / 15:48:39
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: delete all former downloaded channel logos
 |
 |  Parameters: --
@@ -251,7 +251,7 @@ void CSettingsDlg::on_pushDelLogos_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_btnSaveStreamServer_clicked
 |  Begin: 21.01.2010 / 11:22:39
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: signal set of stream server
 |
 |  Parameters: --
@@ -288,7 +288,7 @@ void CSettingsDlg::on_btnSaveStreamServer_clicked()
 /* -----------------------------------------------------------------\
 |  Method: SaveWindowRect
 |  Begin: 27.01.2010 / 11:22:39
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: save windows position in ini file
 |
 |  Parameters: windows position / size
@@ -308,7 +308,7 @@ void CSettingsDlg::SaveWindowRect (const QRect &wnd)
 /* -----------------------------------------------------------------\
 |  Method: GetWindowRect
 |  Begin: 27.01.2010 / 11:22:39
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: get windows position / size from ini file
 |
 |  Parameters: ref. to QRect

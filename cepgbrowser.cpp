@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:07:29
 |
@@ -17,7 +17,7 @@ extern CLogFile VlcLog;
 /* -----------------------------------------------------------------\
 |  Method: CEpgBrowser / constructor
 |  Begin: 18.01.2010 / 16:07:59
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create object, init values
 |
 |  Parameters: pointer to parent widget
@@ -36,7 +36,7 @@ CEpgBrowser::CEpgBrowser(QWidget *parent) :
 /* -----------------------------------------------------------------\
 |  Method: DisplayEpg
 |  Begin: 18.01.2010 / 16:08:35
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: display EPG entries
 |
 |  Parameters: list of entries, channel name, channel id,
@@ -168,7 +168,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
 /* -----------------------------------------------------------------\
 |  Method: NowRunning
 |  Begin: 18.01.2010 / 16:09:56
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: check if given show is now running
 |
 |  Parameters: this shows start time, next shows start time
@@ -208,7 +208,7 @@ bool CEpgBrowser::NowRunning (const QDateTime &startThis, const QDateTime &start
 /* -----------------------------------------------------------------\
 |  Method: ArchivAvailable
 |  Begin: 18.01.2010 / 16:11:12
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: check if archiv is avalable for given show
 |
 |  Parameters: timestamp for this show
@@ -235,7 +235,7 @@ bool CEpgBrowser::ArchivAvailable(uint uiThisShow)
 /* -----------------------------------------------------------------\
 |  Method: ShowName
 |  Begin: 16.01.2010 / 10:52:12
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: get the program name
 |
 |  Parameters: timestamp for this show
@@ -250,7 +250,7 @@ QString CEpgBrowser::ShowName(uint uiTimeT)
 /* -----------------------------------------------------------------\
 |  Method: EnlargeFont
 |  Begin: 02.02.2010 / 16:52:12
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: enlarge font size by one
 |
 |  Parameters: --
@@ -268,7 +268,7 @@ void CEpgBrowser::EnlargeFont()
 /* -----------------------------------------------------------------\
 |  Method: ReduceFont
 |  Begin: 02.02.2010 / 16:52:12
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: reduce font size by one
 |
 |  Parameters: --

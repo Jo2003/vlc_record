@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 | 
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:57:06
 | 
@@ -25,7 +25,7 @@ CLogFile VlcLog;
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: program entry point
 |
 |  Parameters: command line parameters

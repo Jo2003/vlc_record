@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:05:56
 |
@@ -23,7 +23,7 @@
 /********************************************************************\
 |  Class: CEpgBrowser
 |  Date:  18.01.2010 / 16:06:32
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: textbrowser with epg functionality
 |
 \********************************************************************/

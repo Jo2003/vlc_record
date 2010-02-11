@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:59:00
 |
@@ -66,7 +66,7 @@ namespace Ui
 /********************************************************************\
 |  Class: Recorder
 |  Date:  19.01.2010 / 16:00:28
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: dialog class for the recorder gui
 |
 \********************************************************************/

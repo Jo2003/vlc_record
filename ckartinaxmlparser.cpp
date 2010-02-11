@@ -1,7 +1,7 @@
 /*=============================================================================\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | last changed by: $Author$
 |
@@ -18,7 +18,7 @@ extern CLogFile VlcLog;
 /* -----------------------------------------------------------------\
 |  Method: CKartinaXMLParser / constructor
 |  Begin: 19.01.2010 / 15:27:01
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: construct object and init values
 |
 |  Parameters: data to parse, pointer to parent object
@@ -35,7 +35,7 @@ CKartinaXMLParser::CKartinaXMLParser(const QByteArray &ba, QObject * parent) : Q
 /* -----------------------------------------------------------------\
 |  Method: SetByteArray
 |  Begin: 19.01.2010 / 15:27:54
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set data we have to parse
 |
 |  Parameters: data
@@ -51,7 +51,7 @@ void CKartinaXMLParser::SetByteArray(const QByteArray &ba)
 /* -----------------------------------------------------------------\
 |  Method: ParseChannelList
 |  Begin: 19.01.2010 / 15:28:20
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: parse channel list
 |
 |  Parameters: flag for time fixing
@@ -167,7 +167,7 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
 /* -----------------------------------------------------------------\
 |  Method: ParseEpg
 |  Begin: 19.01.2010 / 15:29:07
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: parse epg content
 |
 |  Parameters: ref. to channel id (out), ref. to timestamp (out),
@@ -238,7 +238,7 @@ QVector<cparser::SEpg> CKartinaXMLParser::ParseEpg(int &iChanID, uint &uiGmt, bo
 /* -----------------------------------------------------------------\
 |  Method: ParseURL
 |  Begin: 19.01.2010 / 15:30:51
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: parse stream url (xml)
 |
 |  Parameters: --
@@ -303,7 +303,7 @@ QString CKartinaXMLParser::ParseURL()
 /* -----------------------------------------------------------------\
 |  Method: ParseArchivURL
 |  Begin: 19.01.2010 / 15:31:18
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: parse url for archiv (xml)
 |
 |  Parameters: --
@@ -368,7 +368,7 @@ QString CKartinaXMLParser::ParseArchivURL()
 /* -----------------------------------------------------------------\
 |  Method: CheckTimeOffSet
 |  Begin: 19.01.2010 / 15:32:03
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: try to get offset between client and
 |               kartina.tv server
 |
@@ -410,7 +410,7 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
 /* -----------------------------------------------------------------\
 |  Method: FixTime
 |  Begin: 19.01.2010 / 15:32:54
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: fix time sent from kartina.tv as part from
 |               channel list
 |

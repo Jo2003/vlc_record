@@ -11,14 +11,14 @@
 &lt;span style=&apos;font-weight: bold; font-size: 16px;&apos;&gt;vlc-record&lt;/span&gt;&lt;br /&gt;
 &lt;table border=&apos;0&apos; cellpadding=&apos;0&apos; cellspacing=&apos;0&apos;&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;%1&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;J&amp;ouml;rg Neubert&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;Inspired by:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Olga!&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;Jo2003&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Inspired by:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Olenka!&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt %2 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Icons:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;by &lt;a href=&apos;http://dryicons.com&apos;&gt;dryicons.com&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; sent from %3. To do this it will authenticate you with username and password at %4. It then will start the &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt; to display (and record) the selected stream. It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.&lt;br /&gt;
-For News and Updates please visit my site at &lt;a href=&apos;http://www.coujo.de/ib2/index.php?act=module&amp;module=include&amp;incl_name=vlc-record&apos;&gt;http://www.coujo.de&lt;/a&gt;.
+For News and Updates please visit my site at &lt;a href=&apos;http://vlc-record.coujo.de&apos;&gt;http://vlc-record.coujo.de&lt;/a&gt;.
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record is free software!&lt;/b&gt; 
 Nevertheless ... if you like this software, please support me: 
@@ -39,7 +39,7 @@ Thank you,&lt;br /&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; sent from %3. To do this it will authenticate you with username and password at %4. It then will start the &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt; to display (and record) the selected stream. It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.&lt;br /&gt;
-For News and Updates please visit my site at &lt;a href=&apos;http://www.coujo.de&apos;&gt;http://www.coujo.de&lt;/a&gt;.
+For News and Updates please visit my site at &lt;a href=&apos;http://www.coujo.de/ib2/index.php?act=module&amp;module=include&amp;incl_name=vlc-record&apos;&gt;http://www.coujo.de&lt;/a&gt;.
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record is free software!&lt;/b&gt; 
 Nevertheless ... if you like this software, please support me: 
@@ -53,7 +53,7 @@ Thank you,&lt;br /&gt;
 &lt;span style=&apos;font-weight: bold; font-size: 16px;&apos;&gt;vlc-record&lt;/span&gt;&lt;br /&gt;
 &lt;table border=&apos;0&apos; cellpadding=&apos;0&apos; cellspacing=&apos;0&apos;&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Версия:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;%1&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;&lt;b&gt;Автор:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;J&amp;ouml;rg Neubert&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;b&gt;Автор:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;&lt;a href=&apos;mailto:coujo@gmx.net&apos;&gt;Jo2003&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Для:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Ольги!&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;SDK:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Qt %2 by &lt;a href=&apos;http://qt.nokia.com&apos;&gt;Nokia&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;b&gt;Перевод:&lt;/b&gt;&lt;/td&gt;&lt;td style=&apos;padding-left: 15px;&apos;&gt;Ольга Нойберт и Alex1808&lt;/td&gt;&lt;/tr&gt;
@@ -61,7 +61,7 @@ Thank you,&lt;br /&gt;
 &lt;/table&gt;
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record&lt;/b&gt; - программа для &lt;b&gt;просмотра и записи видео потока&lt;/b&gt; с %3. Программа подключается к %4 при помощи Вашей информации абонента (Логин/Пароль). После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью &lt;a href=&apos;http://www.videolan.org&apos;&gt;vlc media player&lt;/a&gt;.  В &lt;b&gt;vlc-record&lt;/b&gt; отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.&lt;br /&gt;
-Для чтения новостей и обновлений, посетите мою Интернет-страницу &lt;a href=&apos;http://www.coujo.de/ib2/index.php?act=module&amp;module=include&amp;incl_name=vlc-record&apos;&gt;http://www.coujo.de&lt;/a&gt;.
+Для чтения новостей и обновлений, посетите мою Интернет-страницу &lt;a href=&apos;http://vlc-record.coujo.de&apos;&gt;http://vlc-record.coujo.de&lt;/a&gt;.
 &lt;br /&gt; &lt;br /&gt;
 &lt;b&gt;vlc-record бесплатно!&lt;/b&gt;
 Но ... если Вам понравилась моя программа, вы можете отблагодарить меня:
@@ -254,22 +254,22 @@ p, li { white-space: pre-wrap; }
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="154"/>
+        <location filename="csettingsdlg.cpp" line="155"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="149"/>
+        <location filename="csettingsdlg.cpp" line="150"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="151"/>
+        <location filename="csettingsdlg.cpp" line="152"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="172"/>
+        <location filename="csettingsdlg.cpp" line="173"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
@@ -546,12 +546,17 @@ p, li { white-space: pre-wrap; }
         <translation>Команда отключения системы: </translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="558"/>
+        <location filename="csettingsdlg.ui" line="536"/>
+        <source>Translit Record Filename</source>
+        <translation>Транслит исходного файла</translation>
+    </message>
+    <message>
+        <location filename="csettingsdlg.ui" line="565"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.ui" line="578"/>
+        <location filename="csettingsdlg.ui" line="585"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -559,18 +564,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CTimerRec</name>
     <message>
-        <location filename="ctimerrec.cpp" line="408"/>
-        <location filename="ctimerrec.cpp" line="414"/>
+        <location filename="ctimerrec.cpp" line="423"/>
+        <location filename="ctimerrec.cpp" line="429"/>
         <source>Please Correct!</source>
         <translation>Пожалуйста корректируйте!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="409"/>
+        <location filename="ctimerrec.cpp" line="424"/>
         <source>Please insert a name!</source>
         <translation>Пожалуйста введите имя!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="415"/>
+        <location filename="ctimerrec.cpp" line="430"/>
         <source>The entry you want to add overlapps with an existing entry
 or start time is later than end time!</source>
         <oldsource>The entry you want to add overlapps with an existing entry or start time is later than end time!</oldsource>
@@ -578,78 +583,78 @@ or start time is later than end time!</source>
 Пожалуйста выберете другое время!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="484"/>
+        <location filename="ctimerrec.cpp" line="499"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="485"/>
+        <location filename="ctimerrec.cpp" line="500"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="603"/>
+        <location filename="ctimerrec.cpp" line="618"/>
         <source>Add Job #%1 (%2) to Joblist!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="657"/>
+        <location filename="ctimerrec.cpp" line="672"/>
         <source>Don&apos;t check ID %1 (it will be updated).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="818"/>
-        <location filename="ctimerrec.cpp" line="862"/>
+        <location filename="ctimerrec.cpp" line="833"/>
+        <location filename="ctimerrec.cpp" line="877"/>
         <source>Timer Ready</source>
         <translation>Планировщик записи</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="844"/>
+        <location filename="ctimerrec.cpp" line="859"/>
         <source>Delete old entry #%1 (%2) from Joblist.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="851"/>
+        <location filename="ctimerrec.cpp" line="866"/>
         <source>Stopping timer record #%1 (%2). End time reached!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="879"/>
+        <location filename="ctimerrec.cpp" line="894"/>
         <source>Timer StBY</source>
         <translation>Подготовка к записи</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="888"/>
+        <location filename="ctimerrec.cpp" line="903"/>
         <source>Record #%1 (%2) starts soon. Set timer to standby!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="896"/>
+        <location filename="ctimerrec.cpp" line="911"/>
         <source>Start record #%1 (%2)!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="897"/>
+        <location filename="ctimerrec.cpp" line="912"/>
         <source>Record Active</source>
         <translation>Идёт запись</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="944"/>
+        <location filename="ctimerrec.cpp" line="969"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="944"/>
+        <location filename="ctimerrec.cpp" line="969"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Невозможно заупстить VLC-Media Player!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="948"/>
+        <location filename="ctimerrec.cpp" line="973"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="964"/>
+        <location filename="ctimerrec.cpp" line="989"/>
         <source>All records done. Shutdown system using command line:
   --&gt; %1</source>
         <translation></translation>
@@ -828,141 +833,141 @@ or start time is later than end time!</source>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="298"/>
-        <location filename="recorder.cpp" line="318"/>
+        <location filename="recorder.cpp" line="299"/>
+        <location filename="recorder.cpp" line="319"/>
         <source>Mon</source>
         <translation>Пон.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="299"/>
-        <location filename="recorder.cpp" line="319"/>
+        <location filename="recorder.cpp" line="300"/>
+        <location filename="recorder.cpp" line="320"/>
         <source>Tue</source>
         <translation>Вт.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="300"/>
-        <location filename="recorder.cpp" line="320"/>
+        <location filename="recorder.cpp" line="301"/>
+        <location filename="recorder.cpp" line="321"/>
         <source>Wed</source>
         <translation>Ср.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="301"/>
-        <location filename="recorder.cpp" line="321"/>
+        <location filename="recorder.cpp" line="302"/>
+        <location filename="recorder.cpp" line="322"/>
         <source>Thu</source>
         <translation>Чт.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="302"/>
-        <location filename="recorder.cpp" line="322"/>
+        <location filename="recorder.cpp" line="303"/>
+        <location filename="recorder.cpp" line="323"/>
         <source>Fri</source>
         <translation>Пят.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="303"/>
-        <location filename="recorder.cpp" line="323"/>
+        <location filename="recorder.cpp" line="304"/>
+        <location filename="recorder.cpp" line="324"/>
         <source>Sat</source>
         <translation>Суб.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="312"/>
-        <location filename="recorder.cpp" line="324"/>
+        <location filename="recorder.cpp" line="313"/>
+        <location filename="recorder.cpp" line="325"/>
         <source>Sun</source>
         <translation>Воск.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="461"/>
+        <location filename="recorder.cpp" line="462"/>
         <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
         <translation>VLC Mediaplayer ещё в работае.&lt;br /&gt;&lt;b&gt;Если вы остановите работу VLC-Record, то и VLC-Player закроется.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Уверены ли Вы?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="466"/>
-        <location filename="recorder.cpp" line="1691"/>
+        <location filename="recorder.cpp" line="467"/>
+        <location filename="recorder.cpp" line="1701"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="539"/>
+        <location filename="recorder.cpp" line="540"/>
         <source>Program:</source>
         <translation>Передача:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="540"/>
+        <location filename="recorder.cpp" line="541"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="541"/>
+        <location filename="recorder.cpp" line="542"/>
         <source>End:</source>
         <translation>Окончание:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="819"/>
-        <location filename="recorder.cpp" line="1288"/>
+        <location filename="recorder.cpp" line="829"/>
+        <location filename="recorder.cpp" line="1298"/>
         <source>%1 sends following url:
   --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1503"/>
+        <location filename="recorder.cpp" line="1513"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1521"/>
+        <location filename="recorder.cpp" line="1531"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1687"/>
+        <location filename="recorder.cpp" line="1697"/>
         <source>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</source>
         <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="632"/>
-        <location filename="recorder.cpp" line="674"/>
+        <location filename="recorder.cpp" line="642"/>
+        <location filename="recorder.cpp" line="684"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Невозможно заупстить VLC-Media Player!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="637"/>
-        <location filename="recorder.cpp" line="678"/>
+        <location filename="recorder.cpp" line="647"/>
+        <location filename="recorder.cpp" line="688"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1171"/>
+        <location filename="recorder.cpp" line="1181"/>
         <source>Warning!</source>
         <translation>Внимание!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1171"/>
+        <location filename="recorder.cpp" line="1181"/>
         <source>Timer Record active!</source>
         <translation>Идёт запись!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1466"/>
+        <location filename="recorder.cpp" line="1476"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1484"/>
+        <location filename="recorder.cpp" line="1494"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="257"/>
-        <location filename="recorder.cpp" line="331"/>
+        <location filename="recorder.cpp" line="258"/>
+        <location filename="recorder.cpp" line="332"/>
         <source>1 week backward</source>
         <translation>1 неделя назад</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="191"/>
+        <location filename="recorder.cpp" line="192"/>
         <source>vlc-record - Click to activate!</source>
         <translation>vlc-record нажмите для запуска!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="289"/>
-        <location filename="recorder.cpp" line="336"/>
+        <location filename="recorder.cpp" line="290"/>
+        <location filename="recorder.cpp" line="337"/>
         <source>1 week forward</source>
         <translation>1 неделя вперед</translation>
     </message>
@@ -977,13 +982,13 @@ or start time is later than end time!</source>
 &lt;b&gt;Окончание:&lt;/b&gt; %4</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="583"/>
+        <location filename="recorder.cpp" line="593"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как...</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="632"/>
-        <location filename="recorder.cpp" line="674"/>
+        <location filename="recorder.cpp" line="642"/>
+        <location filename="recorder.cpp" line="684"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
@@ -992,12 +997,12 @@ or start time is later than end time!</source>
         <translation type="obsolete">Неизвестный формат файла!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="759"/>
+        <location filename="recorder.cpp" line="769"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="760"/>
+        <location filename="recorder.cpp" line="770"/>
         <source>%1 Client API reports some errors: %2</source>
         <oldsource>Kartina.tv Client API reports some errors: %1</oldsource>
         <translation></translation>

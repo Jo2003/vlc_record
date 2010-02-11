@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 24.01.2010 / 15:41:34
 |
@@ -70,7 +70,7 @@ namespace rec
 /********************************************************************\
 |  Class: CTimerRec
 |  Date:  19.01.2010 / 16:00:28
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: dialog class for timer record stuff
 |
 \********************************************************************/

@@ -1,7 +1,7 @@
 /*=============================================================================\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | last changed by: $Author$
 |
@@ -51,7 +51,7 @@ namespace cparser
 /********************************************************************\
 |  Class: CKartinaXMLParser
 |  Date:  19.01.2010 / 15:25:59
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: parser for kartina.tv sent xml content
 |
 \********************************************************************/

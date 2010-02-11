@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 | 
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:20:26
 | 
@@ -18,7 +18,7 @@
 /********************************************************************\
 |  Class: CChanListWidgetItem
 |  Date:  18.01.2010 / 16:20:57
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: advanced QListWidgetItem to store some more info
 |
 \********************************************************************/

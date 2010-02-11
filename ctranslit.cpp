@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 08.02.2010 / 10:50:35
 |
@@ -24,7 +24,7 @@
 /* -----------------------------------------------------------------\
 |  Method: CTranslit / constructor
 |  Begin: 08.02.2010 / 11:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: init translation tables
 |
 |  Parameters: pointer to parent object
@@ -114,7 +114,7 @@ CTranslit::CTranslit(QObject *parent) : QObject(parent)
 /* -----------------------------------------------------------------\
 |  Method: ~CTranslit / destructor
 |  Begin: 08.02.2010 / 11:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean at destruction
 |
 |  Parameters: --
@@ -129,7 +129,7 @@ CTranslit::~CTranslit()
 /* -----------------------------------------------------------------\
 |  Method: CyrToLat
 |  Begin: 08.02.2010 / 11:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: make translit cyrillic --> latin
 |
 |  Parameters: ref. to cyrillic string
@@ -179,7 +179,7 @@ QString CTranslit::CyrToLat(const QString &str, bool fileName)
 /* -----------------------------------------------------------------\
 |  Method: LatToCyr
 |  Begin: 08.02.2010 / 11:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: make translit latin --> cyrillic
 |
 |  Parameters: ref. to latin string

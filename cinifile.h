@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 | 
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:23:13
 | 
@@ -34,7 +34,7 @@ namespace Ini
 /********************************************************************\
 |  Class: CIniFile
 |  Date:  18.01.2010 / 16:23:41
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: class to handle ini file access
 |
 \********************************************************************/
@@ -57,7 +57,7 @@ public:
    /* -----------------------------------------------------------------\
    |  Method: AddData
    |  Begin: 18.01.2010 / 16:24:35
-   |  Author: Joerg Neubert
+   |  Author: Jo2003
    |  Description: add data to stored values
    |
    |  Parameters: key, value
@@ -97,7 +97,7 @@ public:
    /* -----------------------------------------------------------------\
    |  Method: UpdateData
    |  Begin: 18.01.2010 / 16:25:09
-   |  Author: Joerg Neubert
+   |  Author: Jo2003
    |  Description: update data stored in internal data struct
    |
    |  Parameters: key, value

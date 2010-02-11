@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 24.01.2010 / 15:41:34
 |
@@ -18,7 +18,7 @@ extern CLogFile VlcLog;
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create object, init values
 |
 |  Parameters: pointer to parent window
@@ -43,7 +43,7 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
 /* -----------------------------------------------------------------\
 |  Method: ~CTimerRec / destructor
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean on destruction
 |
 |  Parameters: --
@@ -59,7 +59,7 @@ CTimerRec::~CTimerRec()
 /* -----------------------------------------------------------------\
 |  Method: changeEvent
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch language change event
 |
 |  Parameters: event pointer
@@ -83,7 +83,7 @@ void CTimerRec::changeEvent(QEvent *e)
 /* -----------------------------------------------------------------\
 |  Method: SetTimeShift
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set timeshift
 |
 |  Parameters: new timeshift value
@@ -98,7 +98,7 @@ void CTimerRec::SetTimeShift(int iTs)
 /* -----------------------------------------------------------------\
 |  Method: SetLogoPath
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set logo path
 |
 |  Parameters: logo path
@@ -114,7 +114,7 @@ void CTimerRec::SetLogoPath(const QString &str)
 /* -----------------------------------------------------------------\
 |  Method: StartTimer
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: start timer loop
 |
 |  Parameters: --
@@ -133,7 +133,7 @@ void CTimerRec::StartTimer()
 /* -----------------------------------------------------------------\
 |  Method: SetXmlParser
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set xml parser
 |
 |  Parameters: pointer to xml parser
@@ -148,7 +148,7 @@ void CTimerRec::SetXmlParser(CKartinaXMLParser *pParser)
 /* -----------------------------------------------------------------\
 |  Method: SetTranslit
 |  Begin: 10.02.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set translit
 |
 |  Parameters: pointer to translit
@@ -163,7 +163,7 @@ void CTimerRec::SetTranslit(CTranslit *pTr)
 /* -----------------------------------------------------------------\
 |  Method: SetKartinaTrigger
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set wait trigger
 |
 |  Parameters: pointer to wait trigger
@@ -178,7 +178,7 @@ void CTimerRec::SetKartinaTrigger(CWaitTrigger *pTrig)
 /* -----------------------------------------------------------------\
 |  Method: SetSettings
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set settings
 |
 |  Parameters: pointer to settings
@@ -198,7 +198,7 @@ void CTimerRec::SetSettings(CSettingsDlg *pSet)
 /* -----------------------------------------------------------------\
 |  Method: SetVlcCtrl
 |  Begin: 01.02.2010 / 11:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set vlc control
 |
 |  Parameters: pointer to vlc control class
@@ -213,7 +213,7 @@ void CTimerRec::SetVlcCtrl(CVlcCtrl *pCtrl)
 /* -----------------------------------------------------------------\
 |  Method: SetRecInfo
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: fill in record info into dialog
 |
 |  Parameters: start time, end time, channel id, program name
@@ -272,7 +272,7 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
 /* -----------------------------------------------------------------\
 |  Method: SetChanList
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set channel list
 |
 |  Parameters: ref. to channel list
@@ -308,7 +308,7 @@ void CTimerRec::SetChanList(const QVector<cparser::SChan> &chanList)
 /* -----------------------------------------------------------------\
 |  Method: SaveRecordList
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: save record list to xml file
 |
 |  Parameters: --
@@ -350,7 +350,7 @@ int CTimerRec::SaveRecordList()
 /* -----------------------------------------------------------------\
 |  Method: on_btnSet_clicked
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: insert entry into tab and joblist
 |
 |  Parameters: --
@@ -435,7 +435,7 @@ void CTimerRec::on_btnSet_clicked()
 /* -----------------------------------------------------------------\
 |  Method: ReadRecordList
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: read old joblist from xml file
 |
 |  Parameters: --
@@ -509,7 +509,7 @@ int CTimerRec::ReadRecordList()
 /* -----------------------------------------------------------------\
 |  Method: AddRow
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: add one row to job tab
 |
 |  Parameters: ref. to job entry
@@ -585,7 +585,7 @@ int CTimerRec::AddRow(const rec::SRecEntry &entry)
 /* -----------------------------------------------------------------\
 |  Method: InitTab
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: init table view
 |
 |  Parameters: --
@@ -606,7 +606,7 @@ void CTimerRec::InitTab()
 /* -----------------------------------------------------------------\
 |  Method: AddJob
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: add job to joblist
 |
 |  Parameters: ref. to job entry
@@ -629,7 +629,7 @@ void CTimerRec::AddJob(rec::SRecEntry &entry)
 /* -----------------------------------------------------------------\
 |  Method: SanityCheck
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: check if we can add this job (check times)
 |
 |  Parameters: start time, end time
@@ -685,7 +685,7 @@ int CTimerRec::SanityCheck(const QDateTime &start, const QDateTime &end, uint ui
 /* -----------------------------------------------------------------\
 |  Method: on_tableRecordEntries_cellDoubleClicked
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: insert marked entry into edit fields
 |
 |  Parameters: row, col
@@ -734,7 +734,7 @@ void CTimerRec::on_tableRecordEntries_cellDoubleClicked(int row, int column)
 /* -----------------------------------------------------------------\
 |  Method: GmtToTimeShift
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: convert gmt into timeshift time
 |
 |  Parameters: ref. to timestamp, timeshift
@@ -749,7 +749,7 @@ void CTimerRec::GmtToTimeShift (uint &when, int iEntryTimeShift)
 /* -----------------------------------------------------------------\
 |  Method: TimeShiftToGmt
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: convert timeshift time into gmt
 |
 |  Parameters: ref. to timestamp, timeshift
@@ -764,7 +764,7 @@ void CTimerRec::TimeShiftToGmt(uint &when, int iEntryTimeShift)
 /* -----------------------------------------------------------------\
 |  Method: DelRow
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: del row from job tab
 |
 |  Parameters: entry id
@@ -793,7 +793,7 @@ void CTimerRec::DelRow(uint uiId)
 /* -----------------------------------------------------------------\
 |  Method: on_btnDel_clicked
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: del current job tab entry and matching joblist entry
 |
 |  Parameters: --
@@ -817,7 +817,7 @@ void CTimerRec::on_btnDel_clicked()
 /* -----------------------------------------------------------------\
 |  Method: slotRecTimer
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: timer signal, check joblist if we should start
 |               a record job
 |  Parameters: --
@@ -925,7 +925,7 @@ void CTimerRec::slotRecTimer()
 /* -----------------------------------------------------------------\
 |  Method: slotTimerStreamUrl
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: got stream url, start VLC
 |
 |  Parameters: stream url
@@ -977,7 +977,7 @@ void CTimerRec::slotTimerStreamUrl(QString str)
 /* -----------------------------------------------------------------\
 |  Method: ShutDown
 |  Begin: 02.02.2010 / 15:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: shutdown system with user set command
 |
 |  Parameters: --

@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 01.02.2010 / 10:50:35
 |
@@ -39,7 +39,7 @@ namespace vlcctrl
 /********************************************************************\
 |  Class: CVlcCtrl
 |  Date:  01.02.2010 / 10:00:28
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: class to control vlc, inherits QProcess
 |
 \********************************************************************/

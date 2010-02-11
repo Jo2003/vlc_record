@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:35:41
 |
@@ -14,7 +14,7 @@
 /* -----------------------------------------------------------------\
 |  Method: CLogFile / constructor
 |  Begin: 19.01.2010 / 15:36:07
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: construct object, init values
 |
 |  Parameters: log dir, log file, log level
@@ -33,7 +33,7 @@ CLogFile::CLogFile(const char *pDirName, const char *pFileName, vlclog::eLogLeve
 /* -----------------------------------------------------------------\
 |  Method: ~CLogFile / destructor
 |  Begin: 19.01.2010 / 15:36:58
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean at destruction
 |
 |  Parameters: --
@@ -52,7 +52,7 @@ CLogFile::~CLogFile()
 /* -----------------------------------------------------------------\
 |  Method: TouchLogFile
 |  Begin: 19.01.2010 / 15:37:46
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: open / clean log file if needed
 |
 |  Parameters: --
@@ -77,7 +77,7 @@ void CLogFile::TouchLogFile ()
 /* -----------------------------------------------------------------\
 |  Method: SetLogFile
 |  Begin: 19.01.2010 / 15:38:07
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set filename and dir name for logging
 |
 |  Parameters: log dir, log file
@@ -95,7 +95,7 @@ void CLogFile::SetLogFile(const char *pDirName, const char *pFileName)
 /* -----------------------------------------------------------------\
 |  Method: SetLogLevel
 |  Begin: 19.01.2010 / 15:38:42
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set log level
 |
 |  Parameters: new log level
@@ -115,7 +115,7 @@ void CLogFile::SetLogLevel(vlclog::eLogLevel ll)
 /* -----------------------------------------------------------------\
 |  Method: WriteLog
 |  Begin: 19.01.2010 / 15:39:08
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: internal function to write string to log file
 |
 |  Parameters: string to write
@@ -137,7 +137,7 @@ void CLogFile::WriteLog(const QString &str)
 /* -----------------------------------------------------------------\
 |  Method: GetLogLevel
 |  Begin: 19.01.2010 / 15:39:38
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: get log level
 |
 |  Parameters: --
@@ -152,7 +152,7 @@ vlclog::eLogLevel CLogFile::GetLogLevel()
 /* -----------------------------------------------------------------\
 |  Method: LogInfo
 |  Begin: 19.01.2010 / 15:40:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: log string at info level
 |
 |  Parameters: string to log
@@ -170,7 +170,7 @@ void CLogFile::LogInfo(const QString &str)
 /* -----------------------------------------------------------------\
 |  Method: LogWarn
 |  Begin: 19.01.2010 / 15:40:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: log string at warning level
 |
 |  Parameters: string to log
@@ -188,7 +188,7 @@ void CLogFile::LogWarn(const QString &str)
 /* -----------------------------------------------------------------\
 |  Method: LogErr
 |  Begin: 19.01.2010 / 15:40:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: log string at error level
 |
 |  Parameters: string to log

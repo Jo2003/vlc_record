@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:21:44
 |
@@ -30,7 +30,7 @@ namespace httptime {
 /********************************************************************\
 |  Class: CHttpTime
 |  Date:  18.01.2010 / 16:22:18
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: advanced QDateTime to give needed http timestamp
 |
 \********************************************************************/

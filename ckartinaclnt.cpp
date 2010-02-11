@@ -1,7 +1,7 @@
 /*=============================================================================\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | last changed by: $Author$
 |
@@ -18,7 +18,7 @@ extern CLogFile VlcLog;
 /*-----------------------------------------------------------------------------\
 | Function:    CKartinaClnt / constructor
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -47,7 +47,7 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr, const QStrin
 /*-----------------------------------------------------------------------------\
 | Function:    CKartinaClnt / constructor
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -76,7 +76,7 @@ CKartinaClnt::CKartinaClnt() :QHttp()
 /*-----------------------------------------------------------------------------\
 | Function:    ~CKartinaClnt / destructor
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Thursday, January 07, 2010 11:54:52
 |
@@ -93,7 +93,7 @@ CKartinaClnt::~CKartinaClnt()
 /*-----------------------------------------------------------------------------\
 | Function:    SetData
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -118,7 +118,7 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr, const QStrin
 /*-----------------------------------------------------------------------------\
 | Function:    PostRequest
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -155,7 +155,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
 /*-----------------------------------------------------------------------------\
 | Function:    GetCookie
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -178,7 +178,7 @@ void CKartinaClnt::GetCookie ()
 /*-----------------------------------------------------------------------------\
 | Function:    GetChannelList
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -198,7 +198,7 @@ void CKartinaClnt::GetChannelList ()
 /*-----------------------------------------------------------------------------\
 | Function:    SetTimeShift
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -219,7 +219,7 @@ void CKartinaClnt::SetTimeShift (int iHours)
 /*-----------------------------------------------------------------------------\
 | Function:    GetStreamURL
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -246,7 +246,7 @@ void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 /*-----------------------------------------------------------------------------\
 | Function:    SetServer
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -267,7 +267,7 @@ void CKartinaClnt::SetServer(int iSrv)
 /*-----------------------------------------------------------------------------\
 | Function:    SetHttpBuffer
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Thursday, January 21, 2010 11:49:52
 |
@@ -288,7 +288,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 /*-----------------------------------------------------------------------------\
 | Function:    GetEPG
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -312,7 +312,7 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 /*-----------------------------------------------------------------------------\
 | Function:    GetArchivURL
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 18, 2010 14:57:52
 |
@@ -339,7 +339,7 @@ void CKartinaClnt::GetArchivURL (const QString &prepared)
 /*-----------------------------------------------------------------------------\
 | Function:    getResponseHeader (slot)
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -379,7 +379,7 @@ void CKartinaClnt::getResponseHeader (const QHttpResponseHeader &resp)
 /*-----------------------------------------------------------------------------\
 | Function:    handleEndRequest (slot)
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
@@ -458,7 +458,7 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 /* -----------------------------------------------------------------\
 |  Method: busy
 |  Begin: 18.01.2010 / 16:32:33
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: is api busy ?
 |
 |  Parameters: --

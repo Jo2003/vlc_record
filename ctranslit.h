@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 08.02.2010 / 10:50:35
 |
@@ -32,7 +32,7 @@ namespace simple_translit
 /********************************************************************\
 |  Class: CTranslit
 |  Date:  08.02.2010 / 11:00:28
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: class to make translit between latin and cyrillic
 |
 \********************************************************************/

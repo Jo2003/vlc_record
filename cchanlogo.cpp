@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:17:24
 |
@@ -14,7 +14,7 @@
 /* -----------------------------------------------------------------\
 |  Method: CChanLogo / constructor
 |  Begin: 18.01.2010 / 16:17:51
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: init values
 |
 |  Parameters: --
@@ -43,7 +43,7 @@ CChanLogo::CChanLogo()
 /* -----------------------------------------------------------------\
 |  Method: ~CChanLogo / destructor
 |  Begin: 18.01.2010 / 16:18:13
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean on destruction
 |
 |  Parameters: --
@@ -58,7 +58,7 @@ CChanLogo::~CChanLogo()
 /* -----------------------------------------------------------------\
 |  Method: SetChanList
 |  Begin: 18.01.2010 / 16:18:33
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set channel list, start download
 |
 |  Parameters: channel list
@@ -86,7 +86,7 @@ void CChanLogo::SetChanList(const QVector<cparser::SChan> &list)
 /* -----------------------------------------------------------------\
 |  Method: StartDownLoad
 |  Begin: 18.01.2010 / 16:19:04
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: download logo if not exists
 |
 |  Parameters: --
@@ -120,7 +120,7 @@ void CChanLogo::StartDownLoad()
 /* -----------------------------------------------------------------\
 |  Method: slotCheckResp (slot)
 |  Begin: 18.01.2010 / 16:19:35
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: check http response (answer)
 |
 |  Parameters: request id, error flag

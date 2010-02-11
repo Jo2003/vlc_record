@@ -1,7 +1,7 @@
 /*=============================================================================\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | last changed by: $Author$
 |
@@ -47,7 +47,7 @@ namespace Kartina {
 /*=============================================================================\
 | Class:       CKartinaClnt
 |
-| Author:      Joerg Neubert
+| Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:12:28
 |

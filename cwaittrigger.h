@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 | 
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:50:35
 | 
@@ -20,7 +20,7 @@
 /********************************************************************\
 |  Class: CWaitTrigger
 |  Date:  19.01.2010 / 15:51:08
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: thread class to trigger kartina.tv requests
 |
 \********************************************************************/

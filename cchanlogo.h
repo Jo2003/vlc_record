@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:16:25
 |
@@ -30,7 +30,7 @@ extern CLogFile VlcLog;
 /********************************************************************\
 |  Class: CChanLogo
 |  Date:  18.01.2010 / 16:16:59
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: helper class to download channel logos
 |
 \********************************************************************/

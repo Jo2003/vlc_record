@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:12:40
 |
@@ -23,7 +23,7 @@ namespace Ui {
 /********************************************************************\
 |  Class: CAboutDialog
 |  Date:  18.01.2010 / 16:13:10
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: simple about dialog class to show info
 |
 \********************************************************************/

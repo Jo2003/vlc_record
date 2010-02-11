@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 | 
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:51:46
 | 
@@ -17,7 +17,7 @@ extern CLogFile VlcLog;
 /* -----------------------------------------------------------------\
 |  Method: CWaitTrigger / constructor
 |  Begin: 19.01.2010 / 15:52:15
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create object, init values
 |
 |  Parameters: parent pointer
@@ -35,7 +35,7 @@ CWaitTrigger::CWaitTrigger(QObject * parent) : QThread(parent)
 /* -----------------------------------------------------------------\
 |  Method: ~CWaitTrigger / destructor
 |  Begin: 19.01.2010 / 15:52:51
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean at destruction
 |
 |  Parameters: --
@@ -50,7 +50,7 @@ CWaitTrigger::~CWaitTrigger()
 /* -----------------------------------------------------------------\
 |  Method: SetKartinaClient
 |  Begin: 19.01.2010 / 15:53:14
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set kartina client class pointer 
 |
 |  Parameters: pointer to kartina connection
@@ -65,7 +65,7 @@ void CWaitTrigger::SetKartinaClient(CKartinaClnt *pKartinaClient)
 /* -----------------------------------------------------------------\
 |  Method: stop
 |  Begin: 19.01.2010 / 15:53:52
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: stop thread loop
 |
 |  Parameters: --
@@ -81,7 +81,7 @@ void CWaitTrigger::stop()
 /* -----------------------------------------------------------------\
 |  Method: run
 |  Begin: 19.01.2010 / 15:54:11
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: thread loop, wait for requests and throw it 
 |               when client becomes ready
 |  Parameters: --
@@ -149,7 +149,7 @@ void CWaitTrigger::run()
 /* -----------------------------------------------------------------\
 |  Method: TriggerRequest
 |  Begin: 19.01.2010 / 15:55:06
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: request kartina action
 |
 |  Parameters: action, action params
@@ -167,7 +167,7 @@ void CWaitTrigger::TriggerRequest(Kartina::EReq req, int iArg1, int iArg2)
 /* -----------------------------------------------------------------\
 |  Method: TriggerRequest
 |  Begin: 19.01.2010 / 15:55:06
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: request kartina action
 |
 |  Parameters: action, action params
@@ -185,7 +185,7 @@ void CWaitTrigger::TriggerRequest(Kartina::EReq req, const QString &sReq)
 /* -----------------------------------------------------------------\
 |  Method: slotReqChanList
 |  Begin: 19.01.2010 / 15:55:44
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: channel list request, signalized by refresh timer
 |
 |  Parameters: --

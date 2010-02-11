@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 16:01:09
 |
@@ -16,7 +16,7 @@
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
 |  Begin: 19.01.2010 / 16:01:44
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create recorder object, init values,
 |               make connections
 |
@@ -156,7 +156,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 /* -----------------------------------------------------------------\
 |  Method: ~Recorder / dstructor
 |  Begin: 19.01.2010 / 16:04:40
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: clean at destruction
 |
 |  Parameters: --
@@ -178,7 +178,7 @@ Recorder::~Recorder()
 /* -----------------------------------------------------------------\
 |  Method: CreateSystray
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create systray icon
 |
 |  Parameters: --
@@ -195,7 +195,7 @@ void Recorder::CreateSystray()
 /* -----------------------------------------------------------------\
 |  Method: slotSystrayActivated
 |  Begin: 26.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: systray icon clicked, restore app window ...
 |
 |  Parameters: what kind of click ...
@@ -224,7 +224,7 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
 /* -----------------------------------------------------------------\
 |  Method: TouchEpgNavi
 |  Begin: 19.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: create / translate EPG navbar
 |
 |  Parameters: create flag
@@ -341,7 +341,7 @@ void Recorder::TouchEpgNavi (bool bCreate)
 /* -----------------------------------------------------------------\
 |  Method: changeEvent
 |  Begin: 19.01.2010 / 16:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch language change event
 |
 |  Parameters: pointer to event
@@ -398,7 +398,7 @@ void Recorder::changeEvent(QEvent *e)
 /* -----------------------------------------------------------------\
 |  Method: closeEvent
 |  Begin: 01.02.2010 / 15:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch close event
 |
 |  Parameters: pointer to close event
@@ -429,7 +429,7 @@ void Recorder::closeEvent(QCloseEvent *event)
 /* -----------------------------------------------------------------\
 |  Method: keyPressEvent
 |  Begin: 01.02.2010 / 15:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch esc key
 |
 |  Parameters: pointer to keypress event
@@ -448,7 +448,7 @@ void Recorder::keyPressEvent(QKeyEvent *event)
 /* -----------------------------------------------------------------\
 |  Method: WantToClose
 |  Begin: 01.02.2010 / 15:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: ask if we want to clse vlc-record
 |
 |  Parameters: --
@@ -478,7 +478,7 @@ bool Recorder::WantToClose()
 /* -----------------------------------------------------------------\
 |  Method: FillChannelList
 |  Begin: 19.01.2010 / 16:05:24
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: fill channel list
 |
 |  Parameters: vector with channel elements
@@ -560,7 +560,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 /* -----------------------------------------------------------------\
 |  Method: StartVlcRec
 |  Begin: 19.01.2010 / 16:06:16
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: start VLC to record stream
 |
 |  Parameters: stream url, channel name, archiv flag
@@ -654,7 +654,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 /* -----------------------------------------------------------------\
 |  Method: StartVlcPlay
 |  Begin: 19.01.2010 / 16:06:16
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: start VLC to show stream
 |
 |  Parameters: stream url, archiv flag
@@ -694,7 +694,7 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
 /* -----------------------------------------------------------------\
 |  Method: on_pushSettings_clicked
 |  Begin: 19.01.2010 / 16:07:19
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: show settings dialog
 |
 |  Parameters: --
@@ -757,7 +757,7 @@ void Recorder::on_pushSettings_clicked()
 /* -----------------------------------------------------------------\
 |  Method: slotErr
 |  Begin: 19.01.2010 / 16:08:51
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: display errors signaled by other threads
 |
 |  Parameters: error string
@@ -775,7 +775,7 @@ void Recorder::slotErr(QString str)
 /* -----------------------------------------------------------------\
 |  Method: slotChanList
 |  Begin: 19.01.2010 / 16:09:23
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: handle requested channel list
 |
 |  Parameters: channel list (xml)
@@ -815,7 +815,7 @@ void Recorder::slotChanList (QString str)
 /* -----------------------------------------------------------------\
 |  Method: slotStreamURL
 |  Begin: 19.01.2010 / 16:09:54
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: handle requested stream url
 |
 |  Parameters: stream url (xml)
@@ -859,7 +859,7 @@ void Recorder::slotStreamURL(QString str)
 /* -----------------------------------------------------------------\
 |  Method: slotCookie
 |  Begin: 19.01.2010 / 16:10:23
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: authentication done, request channel list
 |
 |  Parameters: --
@@ -874,7 +874,7 @@ void Recorder::slotCookie()
 /* -----------------------------------------------------------------\
 |  Method: slotEPG
 |  Begin: 19.01.2010 / 16:10:49
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: handle requested epg info
 |
 |  Parameters: epg (xml)
@@ -924,7 +924,7 @@ void Recorder::slotEPG(QString str)
 /* -----------------------------------------------------------------\
 |  Method: slotTimeShift
 |  Begin: 19.01.2010 / 16:11:30
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: time shift set, reload channel list
 |
 |  Parameters: --
@@ -939,7 +939,7 @@ void Recorder::slotTimeShift ()
 /* -----------------------------------------------------------------\
 |  Method: on_pushRecord_clicked
 |  Begin: 19.01.2010 / 16:11:52
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: request stream url for record
 |
 |  Parameters: --
@@ -961,7 +961,7 @@ void Recorder::on_pushRecord_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_pushPlay_clicked
 |  Begin: 19.01.2010 / 16:12:20
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: request stream url for play
 |
 |  Parameters: --
@@ -983,7 +983,7 @@ void Recorder::on_pushPlay_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_cbxTimeShift_currentIndexChanged
 |  Begin: 19.01.2010 / 16:13:03
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set new timeshift
 |
 |  Parameters: --
@@ -999,7 +999,7 @@ void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
 /* -----------------------------------------------------------------\
 |  Method: EnableDisableDlg
 |  Begin: 19.01.2010 / 16:13:30
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: enable / disable buttons
 |
 |  Parameters: enable flag
@@ -1023,7 +1023,7 @@ void Recorder::EnableDisableDlg (bool bEnable)
 /* -----------------------------------------------------------------\
 |  Method: on_listWidget_currentRowChanged
 |  Begin: 19.01.2010 / 16:13:56
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: channel changed, request epg if needed
 |
 |  Parameters: slected row index
@@ -1058,7 +1058,7 @@ void Recorder::on_listWidget_currentRowChanged(int currentRow)
 /* -----------------------------------------------------------------\
 |  Method: on_cbxChannelGroup_activated
 |  Begin: 19.01.2010 / 16:14:40
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: jump tp other channel group
 |
 |  Parameters: new channel group index
@@ -1079,7 +1079,7 @@ void Recorder::on_cbxChannelGroup_activated(int index)
 /* -----------------------------------------------------------------\
 |  Method: SetProgress
 |  Begin: 19.01.2010 / 16:15:17
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set progress bar (program time)
 |
 |  Parameters: start and stop time as string
@@ -1113,7 +1113,7 @@ void Recorder::SetProgress(const QString &start, const QString &end)
 /* -----------------------------------------------------------------\
 |  Method: on_pushAbout_clicked
 |  Begin: 19.01.2010 / 16:15:56
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: show about dialog
 |
 |  Parameters: --
@@ -1130,7 +1130,7 @@ void Recorder::on_pushAbout_clicked()
 /* -----------------------------------------------------------------\
 |  Method: slotEpgAnchor
 |  Begin: 19.01.2010 / 16:16:17
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: link in epg browser was clicked,
 |               parse and handle request
 |  Parameters: clicked link
@@ -1186,7 +1186,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 /* -----------------------------------------------------------------\
 |  Method: slotLogosReady
 |  Begin: 19.01.2010 / 16:17:23
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: logo downloader told us that logos are ready ...
 |
 |  Parameters: --
@@ -1202,7 +1202,7 @@ void Recorder::slotLogosReady()
 /* -----------------------------------------------------------------\
 |  Method: slotReloadLogos
 |  Begin: 19.01.2010 / 16:17:54
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: trigger reload of channel logos
 |
 |  Parameters: --
@@ -1240,7 +1240,7 @@ void Recorder::slotReloadLogos()
 /* -----------------------------------------------------------------\
 |  Method: slotbtnBack_clicked
 |  Begin: 19.01.2010 / 16:18:30
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: one week backward in epg
 |
 |  Parameters: --
@@ -1262,7 +1262,7 @@ void Recorder::slotbtnBack_clicked()
 /* -----------------------------------------------------------------\
 |  Method: slotbtnNext_clicked
 |  Begin: 19.01.2010 / 16:18:30
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: one week forward in epg
 |
 |  Parameters: --
@@ -1284,7 +1284,7 @@ void Recorder::slotbtnNext_clicked()
 /* -----------------------------------------------------------------\
 |  Method: slotArchivURL
 |  Begin: 19.01.2010 / 16:19:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: got requested archiv url, start play / record
 |
 |  Parameters: archiv url (xml)
@@ -1329,7 +1329,7 @@ void Recorder::slotArchivURL(QString str)
 /* -----------------------------------------------------------------\
 |  Method: slotDayTabChanged
 |  Begin: 19.01.2010 / 16:19:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: day in epg navi bar changed ...
 |
 |  Parameters: day index (0 - 6)
@@ -1367,7 +1367,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 /* -----------------------------------------------------------------\
 |  Method: on_listWidget_itemDoubleClicked
 |  Begin: 19.01.2010 / 16:19:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: double click on channel list -> start play channel
 |
 |  Parameters: pointer to listwidgetitem ...
@@ -1392,7 +1392,7 @@ void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
 /* -----------------------------------------------------------------\
 |  Method: slotSetSServer
 |  Begin: 21.01.2010 / 12:19:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: set stream server request
 |
 |  Parameters: new server number
@@ -1407,7 +1407,7 @@ void Recorder::slotSetSServer(int iSrv)
 /* -----------------------------------------------------------------\
 |  Method: on_btnSearch_clicked
 |  Begin: 21.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: search button was pressed
 |
 |  Parameters: --
@@ -1426,7 +1426,7 @@ void Recorder::on_btnSearch_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_lineSearch_returnPressed
 |  Begin: 21.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: search line enter pressed --> search
 |
 |  Parameters: --
@@ -1445,7 +1445,7 @@ void Recorder::on_lineSearch_returnPressed()
 /* -----------------------------------------------------------------\
 |  Method: on_pushTimerRec_clicked
 |  Begin: 26.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: timeRec button clicked --> show window
 |
 |  Parameters: --
@@ -1462,7 +1462,7 @@ void Recorder::on_pushTimerRec_clicked()
 /* -----------------------------------------------------------------\
 |  Method: slotTimerRecordDone
 |  Begin: 26.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: recording done, enable dialog items
 |
 |  Parameters: --
@@ -1482,7 +1482,7 @@ void Recorder::slotTimerRecordDone()
 /* -----------------------------------------------------------------\
 |  Method: slotTimerRecActive
 |  Begin: 26.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: recording starts, disable dialog items
 |
 |  Parameters: --
@@ -1499,7 +1499,7 @@ void Recorder::slotTimerRecActive()
 /* -----------------------------------------------------------------\
 |  Method: slotVlcEnds
 |  Begin: 02.02.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: vlc ends, enable dialog items
 |
 |  Parameters: --
@@ -1519,7 +1519,7 @@ void Recorder::slotVlcEnds()
 /* -----------------------------------------------------------------\
 |  Method: slotVlcStarts
 |  Begin: 02.02.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: vlc starts, disable dialog items
 |
 |  Parameters: --
@@ -1536,7 +1536,7 @@ void Recorder::slotVlcStarts()
 /* -----------------------------------------------------------------\
 |  Method: slotTimerStatusMsg
 |  Begin: 26.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: change record timer status message
 |
 |  Parameters: message, color as string
@@ -1555,7 +1555,7 @@ void Recorder::slotTimerStatusMsg(const QString &sMsg, const QString &sColor)
 /* -----------------------------------------------------------------\
 |  Method: CleanShowName
 |  Begin: 26.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: try to create a nice looking program name
 |
 |  Parameters: ref. to org. name
@@ -1603,7 +1603,7 @@ QString Recorder::CleanShowName(const QString &str)
 /* -----------------------------------------------------------------\
 |  Method: showEvent
 |  Begin: 30.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch show event and emit show signal
 |
 |  Parameters: event pointer
@@ -1619,7 +1619,7 @@ void Recorder::showEvent(QShowEvent *event)
 /* -----------------------------------------------------------------\
 |  Method: hideEvent
 |  Begin: 30.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: catch hide event and emit hide signal
 |
 |  Parameters: event pointer
@@ -1635,7 +1635,7 @@ void Recorder::hideEvent(QHideEvent *event)
 /* -----------------------------------------------------------------\
 |  Method: on_pushStop_clicked
 |  Begin: 30.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: stop button was pressed, stop vlc after request
 |
 |  Parameters: --
@@ -1656,7 +1656,7 @@ void Recorder::on_pushStop_clicked()
 /* -----------------------------------------------------------------\
 |  Method: accept
 |  Begin: 30.01.2010 / 13:58:25
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: override accept slot to ask if we want to close
 |
 |  Parameters: --
@@ -1683,7 +1683,7 @@ void Recorder::accept()
 /* -----------------------------------------------------------------\
 |  Method: WantToQuitVlc
 |  Begin: 02.02.2010 / 10:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: ask if we want to clse vlc
 |
 |  Parameters: --
@@ -1712,7 +1712,7 @@ bool Recorder::WantToQuitVlc()
 /* -----------------------------------------------------------------\
 |  Method: slotShutdown
 |  Begin: 02.02.2010 / 15:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: close vlc-record when timer record shuts down system
 |
 |  Parameters: --
@@ -1727,7 +1727,7 @@ void Recorder::slotShutdown()
 /* -----------------------------------------------------------------\
 |  Method: on_btnFontSmaller_clicked
 |  Begin: 02.02.2010 / 15:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: reduce font size in epg view
 |
 |  Parameters: --
@@ -1743,7 +1743,7 @@ void Recorder::on_btnFontSmaller_clicked()
 /* -----------------------------------------------------------------\
 |  Method: on_btnFontLarger_clicked
 |  Begin: 02.02.2010 / 15:05:00
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: enlarge font size in epg view
 |
 |  Parameters: --

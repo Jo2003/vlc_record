@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:34:39
 |
@@ -43,7 +43,7 @@ namespace vlclog
 /********************************************************************\
 |  Class: CLogFile
 |  Date:  19.01.2010 / 15:35:20
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: a simple logging class
 |
 \********************************************************************/

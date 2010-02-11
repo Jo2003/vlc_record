@@ -1,7 +1,7 @@
 /*********************** Information *************************\
 | $HeadURL$
 |
-| Author: Joerg Neubert
+| Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:41:34
 |
@@ -32,7 +32,7 @@ namespace Ui
 /********************************************************************\
 |  Class: CSettingsDlg
 |  Date:  19.01.2010 / 15:42:24
-|  Author: Joerg Neubert
+|  Author: Jo2003
 |  Description: dialog to configure needed settings
 |
 \********************************************************************/
