@@ -113,16 +113,12 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
                }
             }
 
-            mInfo(tr("Parsed Channel entry... %1, %2, %3, %4").arg(sStart).arg(sEnd).arg(chan.uiStart).arg(chan.uiEnd));
-
             // fix time offset ...
             if (bFixTime)
             {
                FixTime(chan.uiStart);
                FixTime(chan.uiEnd);
             }
-
-            mInfo(tr("Parsed Channel entry... %1, %2, %3, %4").arg(sStart).arg(sEnd).arg(chan.uiStart).arg(chan.uiEnd));
 
             if ((chan.iId) && (chan.iIdx) && (chan.sName != ""))
             {

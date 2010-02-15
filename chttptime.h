@@ -42,7 +42,7 @@ public:
 
    /* -----------------------------------------------------------------\
    |  Method: GetHttpTime [static]
-   |  Begin: 15.05.2010 / 11:05:24
+   |  Begin: 15.02.2010 / 11:05:24
    |  Author: Jo2003
    |  Description: get http conform time string
    |
@@ -68,7 +68,7 @@ public:
 
    /* -----------------------------------------------------------------\
    |  Method: fromEnString [static]
-   |  Begin: 15.05.2010 / 11:05:24
+   |  Begin: 15.02.2010 / 11:05:24
    |  Author: Jo2003
    |  Description: get date time generated from english string
    |
