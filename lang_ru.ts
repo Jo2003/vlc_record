@@ -204,35 +204,29 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="116"/>
-        <location filename="ckartinaxmlparser.cpp" line="125"/>
-        <source>Parsed Channel entry... %1, %2, %3, %4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="166"/>
-        <location filename="ckartinaxmlparser.cpp" line="237"/>
-        <location filename="ckartinaxmlparser.cpp" line="293"/>
-        <location filename="ckartinaxmlparser.cpp" line="358"/>
+        <location filename="ckartinaxmlparser.cpp" line="162"/>
+        <location filename="ckartinaxmlparser.cpp" line="233"/>
+        <location filename="ckartinaxmlparser.cpp" line="289"/>
+        <location filename="ckartinaxmlparser.cpp" line="354"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="167"/>
-        <location filename="ckartinaxmlparser.cpp" line="238"/>
-        <location filename="ckartinaxmlparser.cpp" line="294"/>
-        <location filename="ckartinaxmlparser.cpp" line="359"/>
+        <location filename="ckartinaxmlparser.cpp" line="163"/>
+        <location filename="ckartinaxmlparser.cpp" line="234"/>
+        <location filename="ckartinaxmlparser.cpp" line="290"/>
+        <location filename="ckartinaxmlparser.cpp" line="355"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="397"/>
+        <location filename="ckartinaxmlparser.cpp" line="393"/>
         <source>%1 reports client time as %2</source>
         <oldsource>Kartina.tv reports client time as %1</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="415"/>
+        <location filename="ckartinaxmlparser.cpp" line="411"/>
         <source>Set time offset to %1 seconds!</source>
         <translation></translation>
     </message>
