@@ -65,6 +65,7 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
    QXmlStreamAttributes    attrs;
    QRegExp                 rx("^.*-([0-9]+)$");
    bool                    bGotTimeShift = false;
+   QString                 sStart, sEnd;
 
    // reset timeshift ...
    iTimeShift = 0;
@@ -90,8 +91,11 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
             chan.iId       = attrs.value(QString("id").toUtf8()).toString().toInt();
             chan.iIdx      = attrs.value(QString("idx").toUtf8()).toString().toInt();
             chan.sProgramm = attrs.value(QString("programm").toUtf8()).toString();
-            chan.sStart    = attrs.value(QString("sprog").toUtf8()).toString();
-            chan.sEnd      = attrs.value(QString("eprog").toUtf8()).toString();
+            sStart         = attrs.value(QString("sprog").toUtf8()).toString();
+            sEnd           = attrs.value(QString("eprog").toUtf8()).toString();
+
+            chan.uiStart   = CHttpTime::fromEnString(sStart).toTime_t();
+            chan.uiEnd     = CHttpTime::fromEnString(sEnd).toTime_t();
 
             // try to get time shift from 1-j channel ...
             if (!bGotTimeShift)
@@ -109,12 +113,16 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
                }
             }
 
+            mInfo(tr("Parsed Channel entry... %1, %2, %3, %4").arg(sStart).arg(sEnd).arg(chan.uiStart).arg(chan.uiEnd));
+
             // fix time offset ...
             if (bFixTime)
             {
-               FixTime(chan.sStart);
-               FixTime(chan.sEnd);
+               FixTime(chan.uiStart);
+               FixTime(chan.uiEnd);
             }
+
+            mInfo(tr("Parsed Channel entry... %1, %2, %3, %4").arg(sStart).arg(sEnd).arg(chan.uiStart).arg(chan.uiEnd));
 
             if ((chan.iId) && (chan.iIdx) && (chan.sName != ""))
             {
@@ -128,8 +136,8 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
             chan.iId       = -1;
             chan.iIdx      = -1;
             chan.sProgramm = attrs.value(QString("color").toUtf8()).toString();
-            chan.sStart    = "";
-            chan.sEnd      = "";
+            chan.uiStart   = 0;
+            chan.uiEnd     = 0;
 
             chanlist.push_back(chan);
          }
@@ -390,7 +398,7 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
 
    // get difference between kartina.tv and our time ...
    int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t()
-                          - QDateTime::fromString(str, DEF_TIME_FORMAT).toTime_t());
+                          - CHttpTime::fromEnString(str).toTime_t());
 
    // round offset to full timezone step ...
    int iHalfHours = qRound ((double)iOffSec / (double)DEF_TZ_STEP);
@@ -414,23 +422,19 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
 |  Description: fix time sent from kartina.tv as part from
 |               channel list
 |
-|  Parameters: ref. to time string (in, out)
+|  Parameters: ref. to time stamp
 |
 |  Returns: 0 ==> not touched
 |           1 ==> fixed
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::FixTime (QString &sTime)
+int CKartinaXMLParser::FixTime (uint &uiTime)
 {
    if (iOffset)
    {
-      // get time from string ...
-      QDateTime ts = QDateTime::fromString(sTime, DEF_TIME_FORMAT);
-
       // add offset ...
-      ts = ts.addSecs(iOffset);
+      // note that offset can be negative ...
+      uiTime += iOffset;
 
-      // create new time string ...
-      sTime = ts.toString(DEF_TIME_FORMAT);
       return 1;
    }
 

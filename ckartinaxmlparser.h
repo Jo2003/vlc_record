@@ -24,6 +24,7 @@
 #include "clogfile.h"
 #include "defdef.h"
 #include "customization.h"
+#include "chttptime.h"
 
 //===================================================================
 // namespace
@@ -34,8 +35,8 @@ namespace cparser
    {
       QString sName;
       QString sProgramm;
-      QString sStart;
-      QString sEnd;
+      uint    uiStart;
+      uint    uiEnd;
       int     iId;
       int     iIdx;
    };
@@ -66,7 +67,7 @@ public:
    QVector<cparser::SEpg> ParseEpg (int &iChanID, uint &uiGmt, bool &bArchiv);
    QString ParseURL();
    QString ParseArchivURL();
-   int FixTime (QString &sTime);
+   int FixTime (uint &uiTime);
    int GetTimeShift () { return iTimeShift; }
    int GetFixTime () { return iOffset; }
 

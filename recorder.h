@@ -105,13 +105,12 @@ private:
     CVlcCtrl                       vlcCtrl;
     CTranslit                      translit;
 
-
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
     int StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv = false);
     int StartVlcPlay (const QString &sURL, bool bArchiv = false);
     void EnableDisableDlg (bool bEnable = true);
-    void SetProgress (const QString &start, const QString &end);
+    void SetProgress (const uint &start, const uint &end);
     void changeEvent(QEvent *e);
     void TouchEpgNavi (bool bCreate);
     QString CleanShowName (const QString &str);

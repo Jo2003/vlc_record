@@ -25,10 +25,19 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.16" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   "1.17" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| --- new since last version ---
+|
+| 2010-02-15: Version 1.17
+| - add splitter between channels and epg
+| - own function to create time from string because
+|   localized string is needed in QDateTime::fromString()
+| - store time value as uint also in channel list
+| - textsize changes now also in channel list and group box
+|
 | 2010-02-11: Version 1.16
 | - bugfix for crash if no player module is there
 |

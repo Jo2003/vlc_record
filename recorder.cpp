@@ -562,11 +562,12 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          sToolTip.replace(TMPL_END, tr("End:"));
 
          sToolTip = sToolTip.arg(chanlist[i].sName).arg(chanlist[i].sProgramm)
-                            .arg(chanlist[i].sStart).arg(chanlist[i].sEnd);
+                     .arg(QDateTime::fromTime_t(chanlist[i].uiStart).toString(DEF_TIME_FORMAT))
+                     .arg(QDateTime::fromTime_t(chanlist[i].uiEnd).toString(DEF_TIME_FORMAT));
 
          pItem->setToolTip(sToolTip);
 
-         pItem->SetStartEnd(chanlist[i].sStart, chanlist[i].sEnd);
+         pItem->SetStartEnd(chanlist[i].uiStart, chanlist[i].uiEnd);
       }
    }
 
@@ -1140,28 +1141,24 @@ void Recorder::on_cbxChannelGroup_activated(int index)
 |  Author: Jo2003
 |  Description: set progress bar (program time)
 |
-|  Parameters: start and stop time as string
+|  Parameters: start and end timestamp
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::SetProgress(const QString &start, const QString &end)
+void Recorder::SetProgress (const uint &start, const uint &end)
 {
    int iPercent = 0;
 
-   if ((start != "") && (end != ""))
+   if (start && end)
    {
-      QDateTime dtStart  = QDateTime::fromString(start, DEF_TIME_FORMAT);
-      QDateTime dtEnd    = QDateTime::fromString(end, DEF_TIME_FORMAT);
-      QDateTime dtNow    = QDateTime::currentDateTime();
-
-      int       iLength  = (int)(dtEnd.toTime_t() - dtStart.toTime_t());
-      int       iNow     = (int)(dtNow.toTime_t() - dtStart.toTime_t());
+      int iLength  = (int)(end - start);
+      int iNow     = (int)(QDateTime::currentDateTime().toTime_t() - start);
 
       // error check (div / 0 PC doesn't like ;-) ) ...
       if ((iNow > 0) && (iLength > 0))
       {
          // get percent ...
-         iPercent        = (int)((iNow * 100) / iLength);
+         iPercent  = (int)((iNow * 100) / iLength);
       }
    }
 
@@ -1794,8 +1791,17 @@ void Recorder::slotShutdown()
 \----------------------------------------------------------------- */
 void Recorder::on_btnFontSmaller_clicked()
 {
+   QFont font;
    ui->textEpg->ReduceFont();
    ui->textEpgShort->ReduceFont();
+
+   font = ui->listWidget->font();
+   font.setPointSize(font.pointSize() - 1);
+   ui->listWidget->setFont(font);
+
+   font = ui->cbxChannelGroup->font();
+   font.setPointSize(font.pointSize() - 1);
+   ui->cbxChannelGroup->setFont(font);
 }
 
 /* -----------------------------------------------------------------\
@@ -1810,8 +1816,17 @@ void Recorder::on_btnFontSmaller_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_btnFontLarger_clicked()
 {
+   QFont font;
    ui->textEpg->EnlargeFont();
    ui->textEpgShort->EnlargeFont();
+
+   font = ui->listWidget->font();
+   font.setPointSize(font.pointSize() + 1);
+   ui->listWidget->setFont(font);
+
+   font = ui->cbxChannelGroup->font();
+   font.setPointSize(font.pointSize() + 1);
+   ui->cbxChannelGroup->setFont(font);
 }
 
 /************************* History ***************************\

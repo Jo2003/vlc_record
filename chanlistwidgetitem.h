@@ -78,20 +78,20 @@ public:
       return id;
    }
 
-   void SetStartEnd (const QString &start, const QString &end)
+   void SetStartEnd (const uint &start, const uint &end)
    {
-      sStart = start;
-      sEnd   = end;
+      uiStart = start;
+      uiEnd   = end;
    }
 
-   QString &GetStartTime ()
+   uint& GetStartTime ()
    {
-      return sStart;
+      return uiStart;
    }
 
-   QString &GetEndTime ()
+   uint& GetEndTime ()
    {
-      return sEnd;
+      return uiEnd;
    }
 
    void SetProgram (const QString &prog)
@@ -105,8 +105,9 @@ public:
    }
 
 protected:
-   QString sChan, sStart, sEnd, sProgram;
+   QString sChan, sProgram;
    int     id;
+   uint    uiStart, uiEnd;
 };
 
 #endif /* __011810__CHANLISTWIDGETITEM_H */

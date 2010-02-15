@@ -141,7 +141,6 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
    QHttpRequestHeader header("POST", path.toAscii());
    header.addValue("Host", sHost);
    header.setContentType("application/x-www-form-urlencoded");
-   header.addValue("Date", CHttpTime::GetHttpTime());
    header.addValue("User-Agent", "Mozilla/5.0");
    header.addValue("Connection", "close");
    if (sCookie != "")

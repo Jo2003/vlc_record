@@ -29,5 +29,8 @@
         <file alias="play">resources/play_sm.png</file>
         <file alias="record">resources/record_sm.png</file>
         <file alias="timer">resources/old_clock.png</file>
+        <file alias="h_split">resources/splitter.png</file>
+        <file alias="h_split_pressed">resources/splitter_pressed.png</file>
+        <file alias="h_split_hover">resources/splitter_hover.png</file>
     </qresource>
 </RCC>
