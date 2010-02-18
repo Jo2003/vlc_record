@@ -47,7 +47,7 @@ FORCE_MUX    = <<mp4>>
 ;-------------------------------------------------------------------------------
 HTTP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
 RTSP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]}>>
-HTTP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
-RTSP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+HTTP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{acodec=mp4a,ab=128}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+RTSP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#transcode{acodec=mp4a,ab=128}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
 HTTP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
 RTSP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
