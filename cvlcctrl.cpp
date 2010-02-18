@@ -442,11 +442,11 @@ void CVlcCtrl::slotStateChanged(QProcess::ProcessState newState)
    switch (newState)
    {
    case QProcess::NotRunning:
-      mInfo(tr("Player was started ..."));
+      mInfo(tr("Player has ended ..."));
       emit sigVlcEnds();
       break;
    case QProcess::Running:
-      mInfo(tr("Player has ended ..."));
+      mInfo(tr("Player was started ..."));
       emit sigVlcStarts();
       break;
    default:
