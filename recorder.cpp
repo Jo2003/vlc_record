@@ -644,7 +644,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 {
    int       iRV      = -1;
    QDateTime now      = QDateTime::currentDateTime();
-   QString   sExt     = "ts", fileName, sShowName;
+   QString   sExt     = "ts", fileName;
    QString   sCmdLine;
 
    // should we ask for file name ... ?
@@ -674,15 +674,15 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
          QFileInfo info(fileName);
 
          // re-create complete file name ...
-         fileName = QString ("%1/%2.%3").arg(info.path())
-                    .arg(info.completeBaseName()).arg(sExt);
+         fileName = QString ("%1/%2").arg(info.path())
+                    .arg(info.completeBaseName());
       }
    }
    else
    {
       // create filename as we think it's good ...
-      fileName = QString("%1/%2(%3).%4").arg(Settings.GetTargetDir())
-                 .arg(sChannel).arg(now.toString("yyyy-MM-dd__hh-mm")).arg(sExt);
+      fileName = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
+                 .arg(sChannel).arg(now.toString("yyyy-MM-dd__hh-mm"));
    }
 
    if (fileName != "")

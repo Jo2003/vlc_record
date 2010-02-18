@@ -15,6 +15,7 @@
 #  - HTTP_SIL_REC: silent record from http source                              #
 #  - RTSP_SIL_REC: silent record from rtsp source                              #
 #  - TRANSLIT:     translit save file name                                     #
+#  - FORCE_MUX:    force muxing to this container                              #
 # Also there are some placeholders which will be replaced with file names and  #
 # options:                                                                     #
 # {[%PLAYER%]} - full path to the player program                               #
@@ -25,7 +26,7 @@
 ################################################################################
 
 ###########################################
-# module for use with MPlayer             #
+# module for use with VideoLAN vlc player #
 ###########################################
 
 ;-------------------------------------------------------------------------------
@@ -33,23 +34,20 @@
 ; handle cyrillic file names?
 ; Options: yes, no
 ;-------------------------------------------------------------------------------
-TRANSLIT     = <<yes>>
+TRANSLIT     = <<no>>
 
 ;-------------------------------------------------------------------------------
 : force output format no matter what is given as settings
 ; Options: no, mp4, avi, ts, ...
 ;-------------------------------------------------------------------------------
-FORCE_MUX    = <<no>>
-
-HTTP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} -cache {[%CACHE%]}>>
-RTSP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} -rtsp-stream-over-tcp -cache {[%CACHE%]}>>
-HTTP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} -cache {[%CACHE%]} -dumpstream -dumpfile "{[%DST%]}.{[%MUX%]}">>
-RTSP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} -rtsp-stream-over-tcp -cache {[%CACHE%]} -dumpstream -dumpfile "{[%DST%]}.{[%MUX%]}">>
+FORCE_MUX    = <<mp4>>
 
 ;-------------------------------------------------------------------------------
-; Until now I don't know if there is an option to play and dump the stream
-; at same time. Therefore I use the same command line for normal record
-; as for silent record ...
+; complete command line vlc start with ...
 ;-------------------------------------------------------------------------------
-HTTP_REC     = <<"{[%PLAYER%]}" {[%URL%]} -cache {[%CACHE%]} -dumpstream -dumpfile "{[%DST%]}.{[%MUX%]}">>
-RTSP_REC     = <<"{[%PLAYER%]}" {[%URL%]} -rtsp-stream-over-tcp -cache {[%CACHE%]} -dumpstream -dumpfile "{[%DST%]}.{[%MUX%]}">>
+HTTP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
+RTSP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]}>>
+HTTP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+RTSP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+HTTP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
+RTSP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#transcode{acodec=mp4a,ab=128}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>

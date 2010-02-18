@@ -81,6 +81,7 @@ private:
    bool       bForcedTranslit;
    bool       bTranslit;
    CTranslit *pTranslit;
+   QString    sFrcMx;
 
 private slots:
    void slotStateChanged (QProcess::ProcessState newState);

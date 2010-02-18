@@ -817,13 +817,13 @@ or start time is later than end time!</source>
 <context>
     <name>CVlcCtrl</name>
     <message>
-        <location filename="cvlcctrl.cpp" line="175"/>
+        <location filename="cvlcctrl.cpp" line="182"/>
         <source>Player module &apos;%1&apos; successfully parsed ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="184"/>
-        <location filename="cvlcctrl.cpp" line="208"/>
+        <location filename="cvlcctrl.cpp" line="191"/>
+        <location filename="cvlcctrl.cpp" line="215"/>
         <source>Warning!</source>
         <translation>Внимание!</translation>
     </message>
@@ -832,38 +832,43 @@ or start time is later than end time!</source>
         <translation type="obsolete">Не могу разобрать модуль проигрывателя &apos;%1&apos;!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="184"/>
+        <location filename="cvlcctrl.cpp" line="191"/>
         <source>Sorry! Can&apos;t parse player module!</source>
         <translation>Ой! Не могу разобрать модуль проигрывателя!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="185"/>
+        <location filename="cvlcctrl.cpp" line="192"/>
         <source>Can&apos;t parse player module!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="208"/>
+        <location filename="cvlcctrl.cpp" line="215"/>
         <source>Player is already running!</source>
         <translation>Player уже в работе!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="212"/>
+        <location filename="cvlcctrl.cpp" line="219"/>
         <source>Start player using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="348"/>
+        <location filename="cvlcctrl.cpp" line="349"/>
+        <source>Muxing forced to &apos;%1&apos;!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cvlcctrl.cpp" line="367"/>
         <source>Remove double slash in target path ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="426"/>
+        <location filename="cvlcctrl.cpp" line="445"/>
         <source>Player was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="430"/>
+        <location filename="cvlcctrl.cpp" line="449"/>
         <source>Player has ended ...</source>
         <translation></translation>
     </message>

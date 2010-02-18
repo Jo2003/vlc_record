@@ -924,7 +924,7 @@ void CTimerRec::slotTimerStreamUrl(QString str)
    QString sCmdLine;
    QString sUrl = pXmlParser->ParseURL();
 
-   QString sDst = QString("%1/%2.ts").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
+   QString sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
 
    if (r_ui->checkRecMini->isChecked())
    {

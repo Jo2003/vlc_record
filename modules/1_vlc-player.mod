@@ -35,9 +35,15 @@
 ;-------------------------------------------------------------------------------
 TRANSLIT     = <<no>>
 
+;-------------------------------------------------------------------------------
+: force output format no matter what is given as settings
+; Options: no, mp4, avi, ts, ...
+;-------------------------------------------------------------------------------
+FORCE_MUX    = <<no>>
+
 HTTP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
 RTSP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]}>>
-HTTP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}'}}">>
-RTSP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}'}}">>
-HTTP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}'}">>
-RTSP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}'}">>
+HTTP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+RTSP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+HTTP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
+RTSP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>

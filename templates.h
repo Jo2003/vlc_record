@@ -28,6 +28,7 @@
 #define CMD_SIL_REC_HTTP "HTTP_SIL_REC"
 #define CMD_SIL_REC_RTSP "RTSP_SIL_REC"
 #define FLAG_TRANSLIT    "TRANSLIT"
+#define FORCE_MUX        "FORCE_MUX"
 
 /*
 #define TMPL_PLAY_HTTP  "\"" TMPL_URL "\" --no-http-reconnect --http-caching=" TMPL_CACHE

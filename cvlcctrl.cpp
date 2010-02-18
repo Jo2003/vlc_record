@@ -27,6 +27,7 @@ extern CLogFile VlcLog;
 CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
 {
    bForcedTranslit = false;
+   sFrcMx          = "no";
    bTranslit       = false;
    pTranslit       = NULL;
 
@@ -124,6 +125,7 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
          sHttpSilentRec  = "";
          sRtspSilentRec  = "";
          bForcedTranslit = false;
+         sFrcMx          = "no";
 
          QTextStream str(&fModule);
          QString     sLine;
@@ -162,7 +164,12 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
                }
                else if (rx.cap(1) == FLAG_TRANSLIT)
                {
-                  bForcedTranslit = (rx.cap(2) == "yes") ? true : false;
+                  bForcedTranslit = (rx.cap(2).toLower() == "yes") ? true : false;
+               }
+               else if (rx.cap(1) == FORCE_MUX)
+               {
+                  sFrcMx = rx.cap(2);
+                  sFrcMx = sFrcMx.toLower();
                }
             }
          } while (!str.atEnd());
@@ -328,13 +335,25 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
    QString   sCmdLine;
    QFileInfo dstInfo(dst);
    QString   sDstFile;
+   QString   sMux;
    QRegExp   rx ("^([a-zA-Z]{1})://(.*)$");
+
+   // is muxing forced ... ?
+   if (sFrcMx == "no")
+   {
+      // standard muxing ...
+      sMux = mux;
+   }
+   else
+   {
+      mInfo(tr("Muxing forced to '%1'!").arg(sFrcMx));
+      sMux = sFrcMx;
+   }
 
    if (bTranslit || bForcedTranslit)
    {
-      sDstFile = QString("%1/%2.%3").arg(dstInfo.path())
-                 .arg(pTranslit->CyrToLat(dstInfo.baseName()))
-                 .arg(dstInfo.completeSuffix());
+      sDstFile = QString("%1/%2").arg(dstInfo.path())
+                 .arg(pTranslit->CyrToLat(dstInfo.baseName()));
    }
    else
    {
@@ -371,7 +390,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
-      sCmdLine.replace(TMPL_MUX, mux);
+      sCmdLine.replace(TMPL_MUX, sMux);
       sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // record stream using rtsp protocol ...
@@ -380,7 +399,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
-      sCmdLine.replace(TMPL_MUX, mux);
+      sCmdLine.replace(TMPL_MUX, sMux);
       sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // silently record stream using http protocol ...
@@ -389,7 +408,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
-      sCmdLine.replace(TMPL_MUX, mux);
+      sCmdLine.replace(TMPL_MUX, sMux);
       sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // silently record stream using rtsp protocol ...
@@ -398,7 +417,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
-      sCmdLine.replace(TMPL_MUX, mux);
+      sCmdLine.replace(TMPL_MUX, sMux);
       sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    default:

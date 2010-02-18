@@ -53,7 +53,7 @@ TRANSLATIONS = lang_de.ts \
     lang_ru.ts
 
 # for static build ...
-static { 
+static {
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qico \
@@ -61,7 +61,7 @@ static {
         qjpeg
 }
 win32:TARGET = vlc-record
-else { 
+else {
     static:TARGET = release/vlc-record
     shared:TARGET = debug/vlc-record
 }
