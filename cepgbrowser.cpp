@@ -283,6 +283,24 @@ void CEpgBrowser::ReduceFont()
    scrollToAnchor("nowPlaying");
 }
 
+/* -----------------------------------------------------------------\
+|  Method: ChangeFontSize
+|  Begin: 18.02.2010 / 12:52:12
+|  Author: Jo2003
+|  Description: change font size with value given as option
+|
+|  Parameters: change value
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CEpgBrowser::ChangeFontSize(int iSz)
+{
+   QFont epgFont = font();
+   epgFont.setPointSize(epgFont.pointSize() + iSz);
+   setFont(epgFont);
+   scrollToAnchor("nowPlaying");
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

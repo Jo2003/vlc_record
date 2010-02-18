@@ -318,8 +318,6 @@ void CSettingsDlg::SaveWindowRect (const QRect &wnd)
                   .arg(wnd.width()).arg(wnd.height());
 
    IniFile.AddData ("WndRect", sGeo);
-
-   IniFile.SaveIni();
 }
 
 /* -----------------------------------------------------------------\
@@ -328,10 +326,9 @@ void CSettingsDlg::SaveWindowRect (const QRect &wnd)
 |  Author: Jo2003
 |  Description: get windows position / size from ini file
 |
-|  Parameters: ref. to QRect
+|  Parameters: pointer to ok flag
 |
-|  Returns:  0 ==> ok
-|           -1 ==> any error
+|  Returns:  position, size of window
 \----------------------------------------------------------------- */
 QRect CSettingsDlg::GetWindowRect (bool *ok)
 {
@@ -363,6 +360,147 @@ QRect CSettingsDlg::GetWindowRect (bool *ok)
 
    return wnd;
 }
+
+/* -----------------------------------------------------------------\
+|  Method: SaveSplitterSizes
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: save chanlist size (splitter position)
+|
+|  Parameters: splitter size
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SaveSplitterSizes (const QList<int> &sz)
+{
+   QString     sSz;
+   QTextStream str(&sSz);
+
+   for (int i = 0; i < sz.size(); i++)
+   {
+      str << sz[i] << ";";
+   }
+
+   IniFile.AddData ("SplitterSz", sSz);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: GetSplitterSizes
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: get chan list size
+|
+|  Parameters: pointer to ok flag
+|
+|  Returns:  size of chan list group box
+\----------------------------------------------------------------- */
+QList<int> CSettingsDlg::GetSplitterSizes(bool *ok)
+{
+   QString    sSz = IniFile.GetStringData("SplitterSz");
+   QList<int> sz;
+
+   if (ok)
+   {
+      *ok = false;
+   }
+
+   if (sSz.length() > 0)
+   {
+      for (int i = 0; i < sSz.count(';'); i++)
+      {
+         sz << sSz.section(';', i, i).toInt();
+      }
+
+      if (ok)
+      {
+         if (sz.size() > 0)
+         {
+            *ok = true;
+         }
+      }
+   }
+
+   return sz;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: SetIsMaximized
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: store windows state (maximized or something else)
+|
+|  Parameters: maximized flag
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SetIsMaximized(bool bMax)
+{
+   int iState = (bMax) ? 1 : 0;
+   IniFile.AddData("IsMaximized", iState);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: IsMaximized
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: get last windows state (maximized or something else)
+|
+|  Parameters: --
+|
+|  Returns:  true --> maximized
+|           false --> not maximized
+\----------------------------------------------------------------- */
+bool CSettingsDlg::IsMaximized()
+{
+   return (IniFile.GetIntData("IsMaximized")) ? true : false;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: SetCustFontSize
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: save customized font size
+|
+|  Parameters: font size change value
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SetCustFontSize(int iSize)
+{
+   IniFile.AddData("CustFontSz", iSize);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: GetCustFontSize
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: get customized font size
+|
+|  Parameters: --
+|
+|  Returns:  font size change value
+\----------------------------------------------------------------- */
+int CSettingsDlg::GetCustFontSize()
+{
+   return IniFile.GetIntData("CustFontSz");
+}
+
+/* -----------------------------------------------------------------\
+|  Method: SaveOtherSettings
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: write ini file to disk
+|
+|  Parameters: --
+|
+|  Returns:  0 --> ok
+|           -1 --> any error
+\----------------------------------------------------------------- */
+int CSettingsDlg::SaveOtherSettings()
+{
+   return IniFile.SaveIni();
+}
+
 
 //===================================================================
 // return internal stored values ==>

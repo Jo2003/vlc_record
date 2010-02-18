@@ -36,6 +36,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    pTranslator    = trans;
    iEpgOffset     = 0;
    uiArchivGmt    = 0;
+   iFontSzChg     = 0;
    sLogoPath      = dwnLogos.GetLogoPath();
 
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), LOG_FILE_NAME);
@@ -157,7 +158,9 @@ void Recorder::show()
    // get player module ...
    vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
 
+   // -------------------------------------------
    // set last windows size / position ...
+   // -------------------------------------------
    bool ok = false;
    sizePos = Settings.GetWindowRect(&ok);
 
@@ -169,6 +172,44 @@ void Recorder::show()
    {
       // store default size ...
       sizePos = geometry();
+   }
+
+   // -------------------------------------------
+   // maximize if it was maximized
+   // -------------------------------------------
+   if (Settings.IsMaximized())
+   {
+      setWindowState(Qt::WindowMaximized);
+   }
+
+   // -------------------------------------------
+   // set font size to last used
+   // -------------------------------------------
+   iFontSzChg = Settings.GetCustFontSize();
+
+   if (iFontSzChg)
+   {
+      QFont font;
+      ui->textEpg->ChangeFontSize(iFontSzChg);
+      ui->textEpgShort->ChangeFontSize(iFontSzChg);
+
+      font = ui->listWidget->font();
+      font.setPointSize(font.pointSize() + iFontSzChg);
+      ui->listWidget->setFont(font);
+
+      font = ui->cbxChannelGroup->font();
+      font.setPointSize(font.pointSize() + iFontSzChg);
+      ui->cbxChannelGroup->setFont(font);
+   }
+
+   // -------------------------------------------
+   // set splitter sizes as last used
+   // -------------------------------------------
+   QList<int> sSplit = Settings.GetSplitterSizes(&ok);
+
+   if (ok)
+   {
+      ui->splitter->setSizes(sSplit);
    }
 
    QWidget::show();
@@ -186,12 +227,23 @@ void Recorder::show()
 \----------------------------------------------------------------- */
 Recorder::~Recorder()
 {
-   // save last windows position / size
-   // only, if window wasn't maximized ...
+   // -------------------------------------------
+   // save gui settings ...
+   // -------------------------------------------
    if (windowState() != Qt::WindowMaximized)
    {
       Settings.SaveWindowRect(geometry());
+      Settings.SetIsMaximized(false);
    }
+   else
+   {
+      Settings.SetIsMaximized(true);
+   }
+
+   Settings.SaveSplitterSizes(ui->splitter->sizes());
+   Settings.SetCustFontSize(iFontSzChg);
+
+   Settings.SaveOtherSettings();
 
    delete ui;
 }
@@ -1802,6 +1854,8 @@ void Recorder::on_btnFontSmaller_clicked()
    font = ui->cbxChannelGroup->font();
    font.setPointSize(font.pointSize() - 1);
    ui->cbxChannelGroup->setFont(font);
+
+   iFontSzChg --;
 }
 
 /* -----------------------------------------------------------------\
@@ -1827,6 +1881,8 @@ void Recorder::on_btnFontLarger_clicked()
    font = ui->cbxChannelGroup->font();
    font.setPointSize(font.pointSize() + 1);
    ui->cbxChannelGroup->setFont(font);
+
+   iFontSzChg ++;
 }
 
 /************************* History ***************************\

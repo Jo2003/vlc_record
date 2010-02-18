@@ -104,6 +104,7 @@ private:
     QRect                          sizePos;
     CVlcCtrl                       vlcCtrl;
     CTranslit                      translit;
+    int                            iFontSzChg;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);

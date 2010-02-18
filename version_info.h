@@ -25,11 +25,16 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.17" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   "1.18" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| -
+|
+| 2010-02-18: Version 1.18
+| - store font size, splitter position and maximized
+|   option in ini file and load settings at next start
 |
 | 2010-02-15: Version 1.17
 | - add splitter between channels and epg

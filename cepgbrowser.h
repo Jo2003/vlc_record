@@ -43,6 +43,7 @@ public:
     QString ShowName (uint uiTimeT);
     void EnlargeFont ();
     void ReduceFont ();
+    void ChangeFontSize (int iSz);
 
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());

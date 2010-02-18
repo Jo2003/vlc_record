@@ -71,8 +71,15 @@ public:
     int GetBufferTime ();
     vlclog::eLogLevel GetLogLevel ();
 
-    void SaveWindowRect (const QRect &wnd);
+    void  SaveWindowRect (const QRect &wnd);
     QRect GetWindowRect (bool *ok = NULL);
+    void  SaveSplitterSizes (const QList<int> &sz);
+    QList<int> GetSplitterSizes (bool *ok = NULL);
+    bool  IsMaximized ();
+    void  SetIsMaximized (bool bMax);
+    int   GetCustFontSize ();
+    void  SetCustFontSize (int iSize);
+    int   SaveOtherSettings ();
 
 protected:
     void changeEvent(QEvent *e);
