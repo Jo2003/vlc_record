@@ -31,7 +31,7 @@
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CTranslit::CTranslit(QObject *parent) : QObject(parent)
+CTranslit::CTranslit()
 {
    // fill map (cyrillic -> latin) ...
    mCyr2Lat[QString::fromUtf8("а")] = "a";
@@ -171,6 +171,7 @@ QString CTranslit::CyrToLat(const QString &str, bool fileName)
       sOut.replace(" ", "_");
       sOut.replace("'", "");
       sOut.replace("´", "");
+      sOut = sOut.toUpper();
    }
 
    return sOut;
@@ -238,6 +239,7 @@ QString CTranslit::LatToCyr(const QString &str, bool fileName)
       sOut.replace(" ", "_");
       sOut.replace("'", "");
       sOut.replace("´", "");
+      sOut = sOut.toUpper();
    }
 
    return sOut;

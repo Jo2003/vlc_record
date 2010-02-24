@@ -31,6 +31,8 @@
 /************************* History ***************************\
 | --- new since last version ---
 | - add forced mux option to be more flexible in mod files
+| - on translit make whole filename uppercase
+| - add special AVI vlc module
 |
 | 2010-02-18: Version 1.18
 | - store font size, splitter position and maximized

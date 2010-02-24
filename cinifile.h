@@ -1,22 +1,23 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:23:13
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #ifndef __011810__CINIFILE_H
    #define __011810__CINIFILE_H
 
-#include <QFile>
+#include <QtCore>
 #include <QString>
+#include <QTextStream>
 #include <QStringList>
 #include <QVector>
-#include <QTextStream>
+#include <QFile>
 #include <QRegExp>
 #include <QDir>
 

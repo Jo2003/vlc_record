@@ -12,22 +12,14 @@
 #ifndef __020810__CTRANSLIT_H
    #define __020810__CTRANSLIT_H
 
-#include <QTextStream>
-#include <QObject>
+#include <QtCore>
 #include <QString>
+#include <QTextStream>
 #include <QChar>
 #include <QMap>
 
 // max. length of phrase ...
 #define MAX_LAT2CYR_LEN 4
-
-//--------------------------------------------------------------
-// namespace
-//--------------------------------------------------------------
-namespace simple_translit
-{
-   class CTranslit;
-}
 
 /********************************************************************\
 |  Class: CTranslit
@@ -36,12 +28,10 @@ namespace simple_translit
 |  Description: class to make translit between latin and cyrillic
 |
 \********************************************************************/
-class CTranslit : public QObject
+class CTranslit
 {
-Q_OBJECT
-
 public:
-    CTranslit(QObject *parent = 0);
+    CTranslit();
     ~CTranslit ();
 
     QString CyrToLat (const QString &str, bool fileName = true);

@@ -863,12 +863,12 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="445"/>
+        <location filename="cvlcctrl.cpp" line="449"/>
         <source>Player was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="449"/>
+        <location filename="cvlcctrl.cpp" line="445"/>
         <source>Player has ended ...</source>
         <translation></translation>
     </message>
