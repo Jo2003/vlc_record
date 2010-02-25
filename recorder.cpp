@@ -213,6 +213,11 @@ void Recorder::show()
       ui->splitter->setSizes(sSplit);
    }
 
+   // -------------------------------------------
+   // get favourites ...
+   // -------------------------------------------
+   lFavourites = Settings.GetFavourites();
+
    QWidget::show();
 }
 
@@ -243,6 +248,7 @@ Recorder::~Recorder()
 
    Settings.SaveSplitterSizes(ui->splitter->sizes());
    Settings.SetCustFontSize(iFontSzChg);
+   Settings.SaveFavourites(lFavourites);
 
    Settings.SaveOtherSettings();
 
@@ -1961,10 +1967,19 @@ void Recorder::slotHandleFavourites (QAction *pAct)
    // what to do ... ?
    if (action == kartinafav::FAV_ADD)
    {
-      // add new favourite ...
-      lFavourites.push_back(iCid);
+      if (lFavourites.count() < MAX_NO_FAVOURITES)
+      {
+         // add new favourite ...
+         lFavourites.push_back(iCid);
 
-      // to do ... favourite button handling ...
+         // to do ... favourite button handling ...
+      }
+      else
+      {
+         QMessageBox::information(this, tr("Note"),
+                                  tr("Max. number of favourites (%1) reached.")
+                                  .arg(MAX_NO_FAVOURITES));
+      }
    }
    else if (action == kartinafav::FAV_DEL)
    {

@@ -385,6 +385,29 @@ void CSettingsDlg::SaveSplitterSizes (const QList<int> &sz)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: SaveFavourites
+|  Begin: 25.02.2010 / 14:22:39
+|  Author: Jo2003
+|  Description: save favourites
+|
+|  Parameters: list of favourites
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SaveFavourites(const QList<int> &favList)
+{
+   QString     sFav;
+   QTextStream str(&sFav);
+
+   for (int i = 0; i < favList.size(); i++)
+   {
+      str << favList[i] << ";";
+   }
+
+   IniFile.AddData ("Favorites", sFav);
+}
+
+/* -----------------------------------------------------------------\
 |  Method: GetSplitterSizes
 |  Begin: 18.02.2010 / 11:22:39
 |  Author: Jo2003
@@ -421,6 +444,45 @@ QList<int> CSettingsDlg::GetSplitterSizes(bool *ok)
    }
 
    return sz;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: GetFavourites
+|  Begin: 25.02.2010 / 14:22:39
+|  Author: Jo2003
+|  Description: get favourites
+|
+|  Parameters: pointer to ok flag
+|
+|  Returns:  list of favourites
+\----------------------------------------------------------------- */
+QList<int> CSettingsDlg::GetFavourites(bool *ok)
+{
+   QString    sFav = IniFile.GetStringData("Favorites");
+   QList<int> lFav;
+
+   if (ok)
+   {
+      *ok = false;
+   }
+
+   if (sFav.length() > 0)
+   {
+      for (int i = 0; i < sFav.count(';'); i++)
+      {
+         lFav << sFav.section(';', i, i).toInt();
+      }
+
+      if (ok)
+      {
+         if (lFav.size() > 0)
+         {
+            *ok = true;
+         }
+      }
+   }
+
+   return lFav;
 }
 
 /* -----------------------------------------------------------------\

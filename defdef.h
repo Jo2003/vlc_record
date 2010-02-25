@@ -38,6 +38,7 @@
 #define MAX_NAME_LEN      10          // max. length of show name
 #define ARCHIV_OFFSET     900         // 15 minutes after show start, archiv should be available
 #define MAX_ARCHIV_AGE    1209000     // < 2 weeks in seconds
+#define MAX_NO_FAVOURITES 10          // max. number of favourites ...
 
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\

@@ -80,6 +80,8 @@ public:
     int   GetCustFontSize ();
     void  SetCustFontSize (int iSize);
     int   SaveOtherSettings ();
+    void  SaveFavourites (const QList<int> &favList);
+    QList<int> GetFavourites (bool *ok = NULL);
 
 protected:
     void changeEvent(QEvent *e);
