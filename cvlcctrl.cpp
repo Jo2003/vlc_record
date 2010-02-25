@@ -138,27 +138,27 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
 
             if (rx.indexIn(sLine) > -1)
             {
-               if (rx.cap(1) == CMD_PLAY_HTTP)
+               if (rx.cap(1) == CMD_PLAY_LIVE)
                {
                   sHttpPlay = rx.cap(2);
                }
-               else if (rx.cap(1) == CMD_PLAY_RTSP)
+               else if (rx.cap(1) == CMD_PLAY_ARCH)
                {
                   sRtspPlay = rx.cap(2);
                }
-               else if (rx.cap(1) == CMD_REC_HTTP)
+               else if (rx.cap(1) == CMD_REC_LIVE)
                {
                   sHttpRec = rx.cap(2);
                }
-               else if (rx.cap(1) == CMD_REC_RTSP)
+               else if (rx.cap(1) == CMD_REC_ARCH)
                {
                   sRtspRec = rx.cap(2);
                }
-               else if (rx.cap(1) == CMD_SIL_REC_HTTP)
+               else if (rx.cap(1) == CMD_SIL_REC_LIVE)
                {
                   sHttpSilentRec = rx.cap(2);
                }
-               else if (rx.cap(1) == CMD_SIL_REC_RTSP)
+               else if (rx.cap(1) == CMD_SIL_REC_ARCH)
                {
                   sRtspSilentRec = rx.cap(2);
                }
@@ -371,21 +371,21 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
    switch (eAct)
    {
    // play stream using http protocol ...
-   case vlcctrl::VLC_PLAY_HTTP:
+   case vlcctrl::VLC_PLAY_LIVE:
       sCmdLine = sHttpPlay;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       break;
    // play stream using rtsp protocol ...
-   case vlcctrl::VLC_PLAY_RTSP:
+   case vlcctrl::VLC_PLAY_ARCH:
       sCmdLine = sRtspPlay;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       break;
    // record stream using http protocol ...
-   case vlcctrl::VLC_REC_HTTP:
+   case vlcctrl::VLC_REC_LIVE:
       sCmdLine = sHttpRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
@@ -394,7 +394,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // record stream using rtsp protocol ...
-   case vlcctrl::VLC_REC_RTSP:
+   case vlcctrl::VLC_REC_ARCH:
       sCmdLine = sRtspRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
@@ -403,7 +403,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // silently record stream using http protocol ...
-   case vlcctrl::VLC_REC_HTTP_SILENT:
+   case vlcctrl::VLC_REC_LIVE_SILENT:
       sCmdLine = sHttpSilentRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
@@ -412,7 +412,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sCmdLine.replace(TMPL_DST, sDstFile);
       break;
    // silently record stream using rtsp protocol ...
-   case vlcctrl::VLC_REC_RTSP_SILENT:
+   case vlcctrl::VLC_REC_ARCH_SILENT:
       sCmdLine = sRtspSilentRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);

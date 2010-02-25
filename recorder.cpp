@@ -699,7 +699,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       if (bArchiv)
       {
          // archiv using RTSP ...
-         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_RTSP,
+         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_ARCH,
                                          Settings.GetVLCPath(),
                                          sURL, Settings.GetBufferTime(),
                                          fileName, sExt);
@@ -707,7 +707,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       else
       {
          // normal stream using HTTP ...
-         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_HTTP,
+         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE,
                                          Settings.GetVLCPath(),
                                          sURL, Settings.GetBufferTime(),
                                          fileName, sExt);
@@ -765,14 +765,14 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
    if (bArchiv)
    {
       // archiv using RTSP ...
-      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_RTSP,
+      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_ARCH,
                                       Settings.GetVLCPath(), sURL,
                                       Settings.GetBufferTime());
    }
    else
    {
       // normal stream using HTTP ...
-      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_HTTP,
+      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_LIVE,
                                       Settings.GetVLCPath(), sURL,
                                       Settings.GetBufferTime());
    }

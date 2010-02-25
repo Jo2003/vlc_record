@@ -929,14 +929,14 @@ void CTimerRec::slotTimerStreamUrl(QString str)
    if (r_ui->checkRecMini->isChecked())
    {
       // silent record ...
-      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP_SILENT,
+      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
                                         pSettings->GetVLCPath(), sUrl,
                                         pSettings->GetBufferTime(), sDst, "ts");
    }
    else
    {
       // normal record ...
-      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_HTTP,
+      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
                                         pSettings->GetVLCPath(), sUrl,
                                         pSettings->GetBufferTime(), sDst, "ts");
    }

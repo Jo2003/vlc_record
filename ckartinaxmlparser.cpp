@@ -318,7 +318,7 @@ QString CKartinaXMLParser::ParseArchivURL()
 {
    QString              url;
    QXmlStreamAttributes attrs;
-   QRegExp              rx("^.*//([^ ]*).*$");
+   QRegExp              rx("^([^ ]*).*$");
 
    xml.clear();
    xml.addData(stream);
@@ -357,7 +357,7 @@ QString CKartinaXMLParser::ParseArchivURL()
 
    if (rx.indexIn(url) > -1)
    {
-      url = QString("rtsp://%1").arg(rx.cap(1));
+      url = rx.cap(1);
    }
    else
    {
@@ -442,3 +442,4 @@ int CKartinaXMLParser::FixTime (uint &uiTime)
 | ---------------------------------------------------------------------------
 | 05.Jan.2010 -
 \=============================================================================*/
+

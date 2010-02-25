@@ -31,12 +31,12 @@ namespace vlcctrl
    class CVlcCtrl;
    enum eVlcAct
    {
-      VLC_PLAY_HTTP,
-      VLC_PLAY_RTSP,
-      VLC_REC_HTTP,
-      VLC_REC_RTSP,
-      VLC_REC_HTTP_SILENT,
-      VLC_REC_RTSP_SILENT,
+      VLC_PLAY_LIVE,
+      VLC_PLAY_ARCH,
+      VLC_REC_LIVE,
+      VLC_REC_ARCH,
+      VLC_REC_LIVE_SILENT,
+      VLC_REC_ARCH_SILENT,
       VLC_UNKNOWN = 255
    };
 }

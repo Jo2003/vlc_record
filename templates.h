@@ -21,12 +21,12 @@
 #define TMPL_DST         "{[%DST%]}"
 #define TMPL_CACHE       "{[%CACHE%]}"
 
-#define CMD_PLAY_HTTP    "HTTP_PLAY"
-#define CMD_PLAY_RTSP    "RTSP_PLAY"
-#define CMD_REC_HTTP     "HTTP_REC"
-#define CMD_REC_RTSP     "RTSP_REC"
-#define CMD_SIL_REC_HTTP "HTTP_SIL_REC"
-#define CMD_SIL_REC_RTSP "RTSP_SIL_REC"
+#define CMD_PLAY_LIVE    "LIVE_PLAY"
+#define CMD_PLAY_ARCH    "ARCH_PLAY"
+#define CMD_REC_LIVE     "LIVE_REC"
+#define CMD_REC_ARCH     "ARCH_REC"
+#define CMD_SIL_REC_LIVE "LIVE_SIL_REC"
+#define CMD_SIL_REC_ARCH "ARCH_SIL_REC"
 #define FLAG_TRANSLIT    "TRANSLIT"
 #define FORCE_MUX        "FORCE_MUX"
 
