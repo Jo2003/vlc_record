@@ -8,13 +8,14 @@
 # In case the player doesn't support all features of vlc-record, make an empty #
 # define for this feature.                                                     #
 # Defines to use:                                                              #
-#  - HTTP_PLAY:    play stream from http source                                #
-#  - RTSP_PLAY:    play stream from rtsp source                                #
-#  - HTTP_REC:     record stream from http source                              #
-#  - RTSP_REC:     record stream from rtsp source                              #
-#  - HTTP_SIL_REC: silent record from http source                              #
-#  - RTSP_SIL_REC: silent record from rtsp source                              #
+#  - LIVE_PLAY:    play stream from http source                                #
+#  - ARCH_PLAY:    play stream from rtsp source                                #
+#  - LIVE_REC:     record stream from http source                              #
+#  - ARCH_REC:     record stream from rtsp source                              #
+#  - LIVE_SIL_REC: silent record from http source                              #
+#  - ARCH_SIL_REC: silent record from rtsp source                              #
 #  - TRANSLIT:     translit save file name                                     #
+#  - FORCE_MUX:    force mux to this format                                    #
 # Also there are some placeholders which will be replaced with file names and  #
 # options:                                                                     #
 # {[%PLAYER%]} - full path to the player program                               #
@@ -41,9 +42,9 @@ TRANSLIT     = <<no>>
 ;-------------------------------------------------------------------------------
 FORCE_MUX    = <<no>>
 
-HTTP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
-RTSP_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]}>>
-HTTP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
-RTSP_REC     = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
-HTTP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
-RTSP_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --rtsp-tcp --rtsp-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
+LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
+LIVE_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+ARCH_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}">>
+LIVE_SIL_REC = <<"{[%PLAYER%]}" -I dummy {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
+ARCH_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}">>
