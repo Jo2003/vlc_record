@@ -45,6 +45,7 @@
 #include "ctimerrec.h"
 #include "cvlcctrl.h"
 #include "ctranslit.h"
+#include "cfavaction.h"
 
 // for logging ...
 extern CLogFile VlcLog;
@@ -78,7 +79,7 @@ public:
     Recorder(QTranslator *trans = 0, QWidget *parent = 0);
     ~Recorder();
 
- public slots:
+public slots:
     virtual void accept();
     virtual void show();
 
@@ -105,6 +106,7 @@ private:
     CVlcCtrl                       vlcCtrl;
     CTranslit                      translit;
     int                            iFontSzChg;
+    QList<int>                     lFavourites;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -160,6 +162,8 @@ private slots:
     void slotShutdown ();
     void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
     void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
+    void slotChanListContext (const QPoint &pt);
+    void slotHandleFavourites (QAction *pAct);
 
 signals:
     void sigShow ();

@@ -112,6 +112,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&vlcCtrl,    SIGNAL(sigVlcStarts()), this, SLOT(slotVlcStarts()));
    connect (&vlcCtrl,    SIGNAL(sigVlcEnds()), this, SLOT(slotVlcEnds()));
    connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
+   connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
 
    // set logo path for epg browser and timer record ...
    ui->textEpg->SetLogoDir(sLogoPath);
@@ -1883,6 +1884,95 @@ void Recorder::on_btnFontLarger_clicked()
    ui->cbxChannelGroup->setFont(font);
 
    iFontSzChg ++;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotChanListContext
+|  Begin: 25.02.2010 / 11:35:12
+|  Author: Jo2003
+|  Description: channel list right click -> display context menu
+|
+|  Parameters: clock position
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotChanListContext(const QPoint &pt)
+{
+   // get channel item under mouse pointer ...
+   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->itemAt(pt);
+
+   // do we have an item ... ?
+   if (pItem)
+   {
+      if (pItem->GetId() != -1) // real channel ...
+      {
+         // create context menu ...
+         QMenu      contMenu(this);
+         CFavAction action(&contMenu);
+         QString    sLogoFile = QString("%1/%2.gif").arg(sLogoPath).arg(pItem->GetId());
+
+         // is channel already in favourites ... ?
+         if (lFavourites.contains(pItem->GetId()))
+         {
+            // create remove menu ...
+            // action.setText(tr("Remove \"%1\" from favourites").arg(pItem->GetName()));
+            action.setText(tr("Remove from favourites"));
+            action.setIcon(QIcon(sLogoFile));
+            action.setFavData(pItem->GetId(), kartinafav::FAV_DEL);
+         }
+         else
+         {
+            // create add menu ...
+            // action.setText(tr("Add \"%1\" to favourites").arg(pItem->GetName()));
+            action.setText(tr("Add to favourites"));
+            action.setIcon(QIcon(sLogoFile));
+            action.setFavData(pItem->GetId(), kartinafav::FAV_ADD);
+         }
+
+         // add action to menu ...
+         contMenu.addAction(&action);
+         connect (&contMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotHandleFavourites(QAction*)));
+
+         // display menu ...
+         contMenu.exec(ui->listWidget->mapToGlobal(pt));
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotHandleFavourites
+|  Begin: 25.02.2010 / 11:35:12
+|  Author: Jo2003
+|  Description: remove / add favourite
+|
+|  Parameters: action pointer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotHandleFavourites (QAction *pAct)
+{
+   CFavAction      *pAction = (CFavAction *)pAct;
+   int              iCid    = 0;
+   kartinafav::eAct action  = kartinafav::FAV_WHAT;
+
+   // get action details ...
+   pAction->favData(iCid, action);
+
+   // what to do ... ?
+   if (action == kartinafav::FAV_ADD)
+   {
+      // add new favourite ...
+      lFavourites.push_back(iCid);
+
+      // to do ... favourite button handling ...
+   }
+   else if (action == kartinafav::FAV_DEL)
+   {
+      // remove favourite ...
+      lFavourites.removeOne(iCid);
+
+      // to do ... favourite button handling ...
+   }
 }
 
 /************************* History ***************************\
