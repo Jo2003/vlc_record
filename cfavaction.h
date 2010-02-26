@@ -70,8 +70,8 @@ public:
 
    void favData (int &cid, kartinafav::eAct &act)
    {
-      cid = iCid;
-      act = action;
+      cid  = iCid;
+      act  = action;
    }
 
 private:

@@ -39,6 +39,14 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    iFontSzChg     = 0;
    sLogoPath      = dwnLogos.GetLogoPath();
 
+   // init favourite buttons ...
+   for (int i = 0; i < MAX_NO_FAVOURITES; i++)
+   {
+      pFavBtn[i]     = NULL;
+      pFavAct[i]     = NULL;
+      pContextAct[i] = NULL;
+   }
+
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), LOG_FILE_NAME);
 
    // set this dialog as parent for settings and timerRec ...
@@ -46,6 +54,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.setParent(this, Qt::Dialog);
    trayIcon.setParent(this);
    vlcCtrl.setParent(this);
+   favContext.setParent(this, Qt::Popup);
 
    // if main settings aren't done, start settings dialog ...
    if ((Settings.GetPasswd()      == "")
@@ -113,10 +122,16 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&vlcCtrl,    SIGNAL(sigVlcEnds()), this, SLOT(slotVlcEnds()));
    connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
    connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
+   connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
 
    // set logo path for epg browser and timer record ...
    ui->textEpg->SetLogoDir(sLogoPath);
    timeRec.SetLogoPath(sLogoPath);
+
+   // -------------------------------------------
+   // get favourites ...
+   // -------------------------------------------
+   lFavourites = Settings.GetFavourites();
 
    // enable button ...
    EnableDisableDlg(false);
@@ -213,11 +228,6 @@ void Recorder::show()
       ui->splitter->setSizes(sSplit);
    }
 
-   // -------------------------------------------
-   // get favourites ...
-   // -------------------------------------------
-   lFavourites = Settings.GetFavourites();
-
    QWidget::show();
 }
 
@@ -252,7 +262,37 @@ Recorder::~Recorder()
 
    Settings.SaveOtherSettings();
 
+   // clean favourites ...
+   lFavourites.clear();
+   HandleFavourites();
+
+   // delete context menu stuff ...
+   CleanContextMenu();
+
    delete ui;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: CleanContextMenu
+|  Begin: 26.02.2010 / 14:05:00
+|  Author: Jo2003
+|  Description: clean context menu entries ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::CleanContextMenu()
+{
+   for (int i = 0; i < MAX_NO_FAVOURITES; i++)
+   {
+      if (pContextAct[i] != NULL)
+      {
+         favContext.removeAction(pContextAct[i]);
+         delete pContextAct[i];
+         pContextAct[i] = NULL;
+      }
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -551,6 +591,30 @@ bool Recorder::WantToClose()
    else
    {
       return false;
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: FillChanMap
+|  Begin: 26.02.2010 / 09:20:24
+|  Author: Jo2003
+|  Description: fill channel map
+|
+|  Parameters: vector with channel elements
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::FillChanMap(const QVector<cparser::SChan> &chanlist)
+{
+   chanMap.clear();
+
+   // create channel map ...
+   for (int i = 0; i < chanlist.count(); i++)
+   {
+      if (chanlist[i].iId != -1)
+      {
+         chanMap.insert(chanlist[i].iId, chanlist[i].sName);
+      }
    }
 }
 
@@ -911,6 +975,7 @@ void Recorder::slotChanList (QString str)
    ui->textEpg->SetTimeShift(XMLParser.GetTimeShift());
 
    FillChannelList(chanList);
+   FillChanMap(chanList);
 
    // set channel list in timeRec class ...
    timeRec.SetTimeShift(XMLParser.GetTimeShift());
@@ -921,6 +986,12 @@ void Recorder::slotChanList (QString str)
    if (!dwnLogos.IsRunning() && !bLogosReady)
    {
       dwnLogos.SetChanList(chanList);
+   }
+
+   // create favourite buttons if needed ...
+   if ((lFavourites.count() > 0) && (ui->gLayoutFav->count() == 0))
+   {
+      HandleFavourites();
    }
 
    // mark current timeshift value ...
@@ -1913,8 +1984,8 @@ void Recorder::slotChanListContext(const QPoint &pt)
       if (pItem->GetId() != -1) // real channel ...
       {
          // create context menu ...
-         QMenu      contMenu(this);
-         CFavAction action(&contMenu);
+         CleanContextMenu();
+         pContextAct[0] = new CFavAction (&favContext);
          QString    sLogoFile = QString("%1/%2.gif").arg(sLogoPath).arg(pItem->GetId());
 
          // is channel already in favourites ... ?
@@ -1922,31 +1993,30 @@ void Recorder::slotChanListContext(const QPoint &pt)
          {
             // create remove menu ...
             // action.setText(tr("Remove \"%1\" from favourites").arg(pItem->GetName()));
-            action.setText(tr("Remove from favourites"));
-            action.setIcon(QIcon(sLogoFile));
-            action.setFavData(pItem->GetId(), kartinafav::FAV_DEL);
+            pContextAct[0]->setText(tr("Remove from favourites"));
+            pContextAct[0]->setIcon(QIcon(sLogoFile));
+            pContextAct[0]->setFavData(pItem->GetId(), kartinafav::FAV_DEL);
          }
          else
          {
             // create add menu ...
             // action.setText(tr("Add \"%1\" to favourites").arg(pItem->GetName()));
-            action.setText(tr("Add to favourites"));
-            action.setIcon(QIcon(sLogoFile));
-            action.setFavData(pItem->GetId(), kartinafav::FAV_ADD);
+            pContextAct[0]->setText(tr("Add to favourites"));
+            pContextAct[0]->setIcon(QIcon(sLogoFile));
+            pContextAct[0]->setFavData(pItem->GetId(), kartinafav::FAV_ADD);
          }
 
          // add action to menu ...
-         contMenu.addAction(&action);
-         connect (&contMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotHandleFavourites(QAction*)));
+         favContext.addAction(pContextAct[0]);
 
          // display menu ...
-         contMenu.exec(ui->listWidget->mapToGlobal(pt));
+         favContext.exec(ui->listWidget->mapToGlobal(pt));
       }
    }
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotHandleFavourites
+|  Method: slotChgFavourites
 |  Begin: 25.02.2010 / 11:35:12
 |  Author: Jo2003
 |  Description: remove / add favourite
@@ -1955,7 +2025,7 @@ void Recorder::slotChanListContext(const QPoint &pt)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotHandleFavourites (QAction *pAct)
+void Recorder::slotChgFavourites (QAction *pAct)
 {
    CFavAction      *pAction = (CFavAction *)pAct;
    int              iCid    = 0;
@@ -1972,7 +2042,7 @@ void Recorder::slotHandleFavourites (QAction *pAct)
          // add new favourite ...
          lFavourites.push_back(iCid);
 
-         // to do ... favourite button handling ...
+         HandleFavourites();
       }
       else
       {
@@ -1986,8 +2056,179 @@ void Recorder::slotHandleFavourites (QAction *pAct)
       // remove favourite ...
       lFavourites.removeOne(iCid);
 
-      // to do ... favourite button handling ...
+      HandleFavourites();
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: HandleFavourites
+|  Begin: 26.02.2010 / 11:35:12
+|  Author: Jo2003
+|  Description: clean create favourite buttons
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::HandleFavourites()
+{
+   int i;
+   QMap<int, QString>::const_iterator cit;
+
+   // remove all favourite buttons ...
+   for (i = 0; i < MAX_NO_FAVOURITES; i++)
+   {
+      if (pFavBtn[i] != NULL)
+      {
+         ui->gLayoutFav->removeWidget(pFavBtn[i]);
+         delete pFavAct[i];
+         delete pFavBtn[i];
+         pFavBtn[i] = NULL;
+         pFavAct[i] = NULL;
+      }
+   }
+
+   // re-create all buttons ...
+   for (i = 0; i < lFavourites.count(); i++)
+   {
+      pFavBtn[i] = new QToolButton (this);
+      pFavAct[i] = new CFavAction (this);
+
+      if (pFavBtn[i] && pFavAct[i])
+      {
+         // -------------------------
+         // init action ...
+         // -------------------------
+
+         // add logo ...
+         pFavAct[i]->setIcon(QIcon(QString("%1/%2.gif").arg(sLogoPath).arg(lFavourites[i])));
+
+         // store channel id in action ...
+         pFavAct[i]->setFavData(lFavourites[i], kartinafav::FAV_WHAT);
+
+         // search for channel name ...
+         cit = chanMap.constFind(lFavourites[i]);
+         if (cit != chanMap.constEnd())
+         {
+            // add channel name as tooltip ...
+            pFavAct[i]->setToolTip(*cit);
+         }
+
+         // style the tool button ...
+         pFavBtn[i]->setStyleSheet(FAVBTN_STYLE);
+
+         // set action ...
+         pFavBtn[i]->setDefaultAction(pFavAct[i]);
+
+         // set icon size ...
+         pFavBtn[i]->setIconSize(QSize(32, 32));
+
+         // we will use own context menu ...
+         pFavBtn[i]->setContextMenuPolicy(Qt::CustomContextMenu);
+
+         // connect button trigger with slot function ...
+         connect (pFavBtn[i], SIGNAL(triggered(QAction*)), this, SLOT(slotHandleFavAction(QAction*)));
+
+         connect (pFavBtn[i], SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotFavBtnContext(QPoint)));
+
+         // add button to layout ...
+         ui->gLayoutFav->addWidget(pFavBtn[i], i / (MAX_NO_FAVOURITES / 2), i % (MAX_NO_FAVOURITES / 2), Qt::AlignCenter);
+      }
+      else
+      {
+         // memory allocation problem ... should never happen ...
+         if (pFavBtn[i])
+         {
+            delete pFavBtn[i];
+            pFavBtn[i] = NULL;
+         }
+
+         if (pFavAct[i])
+         {
+            delete pFavAct[i];
+            pFavAct[i] = NULL;
+         }
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotHandleFavAction
+|  Begin: 26.02.2010 / 11:35:12
+|  Author: Jo2003
+|  Description: favourite button pressed, mark in channel list
+|
+|  Parameters: action pointer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotHandleFavAction(QAction *pAct)
+{
+   CFavAction      *pAction = (CFavAction *)pAct;
+   int              iCid    = 0;
+   kartinafav::eAct act     = kartinafav::FAV_WHAT;
+
+   if (pAction)
+   {
+      pAction->favData(iCid, act);
+
+      // search in channel list for cannel id ...
+      CChanListWidgetItem *pItem;
+
+      // go through channel list ...
+      for (int i = 0; i < ui->listWidget->count(); i++)
+      {
+         pItem = (CChanListWidgetItem *)ui->listWidget->item(i);
+
+         if (pItem)
+         {
+            // check if this is favourite channel ...
+            if (pItem->GetId() == iCid)
+            {
+               // found --> mark row ...
+               ui->listWidget->setCurrentRow (i);
+               ui->listWidget->scrollToItem(pItem);
+               ui->listWidget->setFocus(Qt::OtherFocusReason);
+               break;
+            }
+         }
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotFavBtnContext
+|  Begin: 26.02.2010 / 11:35:12
+|  Author: Jo2003
+|  Description: favourite button context menu requested
+|
+|  Parameters: position of "click" ;-)
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotFavBtnContext(const QPoint &pt)
+{
+   QString     sLogoFile;
+
+   CleanContextMenu();
+
+   for (int i = 0; i < lFavourites.count(); i++)
+   {
+      pContextAct[i] = new CFavAction(&favContext);
+
+      if (pContextAct[i])
+      {
+         sLogoFile = QString("%1/%2.gif").arg(sLogoPath).arg(lFavourites[i]);
+         pContextAct[i]->setIcon(QIcon(sLogoFile));
+         pContextAct[i]->setText(tr("Remove from favourites"));
+         pContextAct[i]->setFavData(lFavourites[i], kartinafav::FAV_DEL);
+         favContext.addAction(pContextAct[i]);
+      }
+   }
+
+   // display menu over first button since we have no way
+   // to find out on over which button we clicked ...
+   favContext.exec(pFavBtn[0]->mapToGlobal(pt));
 }
 
 /************************* History ***************************\

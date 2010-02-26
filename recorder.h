@@ -34,6 +34,7 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QWindowStateChangeEvent>
+#include <QMap>
 
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
@@ -107,6 +108,11 @@ private:
     CTranslit                      translit;
     int                            iFontSzChg;
     QList<int>                     lFavourites;
+    QToolButton                   *pFavBtn[MAX_NO_FAVOURITES];
+    CFavAction                    *pFavAct[MAX_NO_FAVOURITES];
+    QMap<int, QString>             chanMap;
+    QMenu                          favContext;
+    CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -120,6 +126,9 @@ protected:
     void CreateSystray ();
     bool WantToClose ();
     bool WantToQuitVlc ();
+    void HandleFavourites ();
+    void FillChanMap (const QVector<cparser::SChan> &chanlist);
+    void CleanContextMenu ();
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -163,7 +172,9 @@ private slots:
     void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
     void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
     void slotChanListContext (const QPoint &pt);
-    void slotHandleFavourites (QAction *pAct);
+    void slotChgFavourites (QAction *pAct);
+    void slotHandleFavAction (QAction *pAct);
+    void slotFavBtnContext (const QPoint &pt);
 
 signals:
     void sigShow ();

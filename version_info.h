@@ -25,11 +25,15 @@
 #endif
 
 #define __MY__VERSION__ \
-   "1.18" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   "1.19" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-02-26: Version 1.19
+| - add favourites
+| - fix problem with new archiv protocol
 | - add forced mux option to be more flexible in mod files
 | - on translit make whole filename uppercase
 | - add special AVI vlc module
