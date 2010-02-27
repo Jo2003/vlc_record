@@ -112,6 +112,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&KartinaTv,  SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
    connect (&Settings,   SIGNAL(sigSetServer(int)), this, SLOT(slotSetSServer(int)));
    connect (&KartinaTv,  SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
+   connect (&KartinaTv,  SIGNAL(sigSrvForm(QString)), this, SLOT(slotServerForm(QString)));
    connect (&timeRec,    SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,    SIGNAL(sigRecActive()), this, SLOT(slotTimerRecActive()));
    connect (&timeRec,    SIGNAL(sigSendStatusMsg(QString,QString)), this, SLOT(slotTimerStatusMsg(QString,QString)));
@@ -1057,7 +1058,7 @@ void Recorder::slotStreamURL(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotCookie()
 {
-   Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+   Trigger.TriggerRequest(Kartina::REQ_GET_SERVER);
 }
 
 /* -----------------------------------------------------------------\
@@ -2229,6 +2230,25 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
    // display menu over first button since we have no way
    // to find out on over which button we clicked ...
    favContext.exec(pFavBtn[0]->mapToGlobal(pt));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotServerForm
+|  Begin: 27.02.2010 / 18:35:12
+|  Author: Jo2003
+|  Description: got server list form
+|
+|  Parameters: html form
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotServerForm(QString str)
+{
+   QVector<int> lSrv;
+   int          iActSrv = -1;
+   XMLParser.GetSelectOptions(str, lSrv, iActSrv);
+   mInfo(tr("Active stream server is No. %1").arg(iActSrv));
+   Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
 }
 
 /************************* History ***************************\

@@ -202,6 +202,26 @@ void CKartinaClnt::GetChannelList ()
 }
 
 /*-----------------------------------------------------------------------------\
+| Function:    GetServer
+|
+| Author:      Jo2003
+|
+| Begin:       17.02.2010, 18:30:52
+|
+| Description: request stream server list from kartina
+|
+| Parameters:  --
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetServer()
+{
+   mInfo(tr("Request Stream Server List ..."));
+
+   PostRequest(Kartina::REQ_GET_SERVER, "/", "m=clients&act=form_sserv");
+}
+
+/*-----------------------------------------------------------------------------\
 | Function:    SetTimeShift
 |
 | Author:      Jo2003
@@ -444,6 +464,8 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
          case Kartina::REQ_ARCHIV:
             emit sigGotArchivURL(QString::fromUtf8(baPageContent.constData()));
             break;
+         case Kartina::REQ_GET_SERVER:
+            emit sigSrvForm (QString::fromUtf8(baPageContent.constData()));
          default:
             break;
          }

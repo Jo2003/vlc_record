@@ -70,6 +70,7 @@ public:
    int FixTime (uint &uiTime);
    int GetTimeShift () { return iTimeShift; }
    int GetFixTime () { return iOffset; }
+   int GetSelectOptions (const QString &src, QVector<int> &lOpts, int &iActOpt);
 
 protected:
    void CheckTimeOffSet (const QString &str);

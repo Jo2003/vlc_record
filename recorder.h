@@ -157,6 +157,7 @@ private slots:
     void slotEPG(QString str);
     void slotStreamURL (QString str);
     void slotArchivURL (QString str);
+    void slotServerForm (QString str);
     void slotCookie ();
     void slotTimeShift ();
     void slotEpgAnchor (const QUrl & link);

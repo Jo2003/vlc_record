@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-| 
+|
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:51:46
-| 
+|
 | Last edited by: $Author$
-| 
+|
 | $Id$
 \*************************************************************/
 #include "cwaittrigger.h"
@@ -51,7 +51,7 @@ CWaitTrigger::~CWaitTrigger()
 |  Method: SetKartinaClient
 |  Begin: 19.01.2010 / 15:53:14
 |  Author: Jo2003
-|  Description: set kartina client class pointer 
+|  Description: set kartina client class pointer
 |
 |  Parameters: pointer to kartina connection
 |
@@ -82,7 +82,7 @@ void CWaitTrigger::stop()
 |  Method: run
 |  Begin: 19.01.2010 / 15:54:11
 |  Author: Jo2003
-|  Description: thread loop, wait for requests and throw it 
+|  Description: thread loop, wait for requests and throw it
 |               when client becomes ready
 |  Parameters: --
 |
@@ -134,6 +134,10 @@ void CWaitTrigger::run()
                break;
             case Kartina::REQ_TIMESHIFT:
                pClient->SetTimeShift(iOptArg1);
+               break;
+            case Kartina::REQ_GET_SERVER:
+               pClient->GetServer();
+               break;
             default:
                break;
             }
