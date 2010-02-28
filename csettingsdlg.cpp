@@ -294,24 +294,24 @@ void CSettingsDlg::SetStreamServerCbx (const QVector<int> &lSrvList, int iActSrv
 
    // mark active server ...
    m_ui->cbxStreamServer->setCurrentIndex(iActIdx);
-
-   // connect box with sig ...
-   connect (m_ui->cbxStreamServer, SIGNAL(currentIndexChanged(int)), this, SLOT(slotServerChanged(int)));
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotServerChanged
-|  Begin: 28.02.2010 / 18:22:39
+|  Method: on_btnSaveStreamServer_clicked
+|  Begin: 21.01.2010 / 11:22:39
 |  Author: Jo2003
-|  Description: stream server was changed --> set it at kartina
+|  Description: signal set of stream server
 |
-|  Parameters: new index from server cbx
+|  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::slotServerChanged(int Idx)
+void CSettingsDlg::on_btnSaveStreamServer_clicked()
 {
-   emit sigSetServer(m_ui->cbxStreamServer->itemData(Idx).toInt());
+   // which server was choosed ... ?
+   int iSrv = m_ui->cbxStreamServer->currentIndex();
+
+   emit sigSetServer(m_ui->cbxStreamServer->itemData(iSrv).toInt());
 }
 
 /* -----------------------------------------------------------------\
@@ -717,4 +717,6 @@ QString CSettingsDlg::GetShutdownCmd()
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+
+
 
