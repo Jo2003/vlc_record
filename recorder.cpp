@@ -2247,6 +2247,7 @@ void Recorder::slotServerForm(QString str)
    QVector<int> lSrv;
    int          iActSrv = -1;
    XMLParser.GetSelectOptions(str, lSrv, iActSrv);
+   Settings.SetStreamServerCbx(lSrv, iActSrv);
    mInfo(tr("Active stream server is No. %1").arg(iActSrv));
    Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
 }

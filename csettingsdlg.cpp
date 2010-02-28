@@ -266,40 +266,52 @@ void CSettingsDlg::on_pushDelLogos_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnSaveStreamServer_clicked
-|  Begin: 21.01.2010 / 11:22:39
+|  Method: SetStreamServerCbx
+|  Begin: 28.02.2010 / 16:55:39
 |  Author: Jo2003
-|  Description: signal set of stream server
+|  Description: fill / mark combobox for stream server
 |
-|  Parameters: --
+|  Parameters: ref. to server list, act server
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_btnSaveStreamServer_clicked()
+void CSettingsDlg::SetStreamServerCbx (const QVector<int> &lSrvList, int iActSrv)
 {
-   // which server was choosed ... ?
-   // available servers: 1 and 3!
-   // index 0 --> server 1
-   // index 1 --> server 3
-   int iSrv = m_ui->cbxStreamServer->currentIndex();
+   int iActIdx = 0;
 
-   if (iSrv == 0)
+   m_ui->cbxStreamServer->clear();
+
+   // add all servers ...
+   for (int i = 0; i < lSrvList.count(); i++)
    {
-      iSrv = 1;
-   }
-   else if (iSrv == 1)
-   {
-      iSrv = 3;
-   }
-   else
-   {
-      iSrv = -1;
+      m_ui->cbxStreamServer->addItem(QString::number(i + 1), QVariant(lSrvList[i]));
+
+      if (lSrvList[i] == iActSrv)
+      {
+         iActIdx = i;
+      }
    }
 
-   if (iSrv != -1)
-   {
-      emit sigSetServer(iSrv);
-   }
+   // mark active server ...
+   m_ui->cbxStreamServer->setCurrentIndex(iActIdx);
+
+   // connect box with sig ...
+   connect (m_ui->cbxStreamServer, SIGNAL(currentIndexChanged(int)), this, SLOT(slotServerChanged(int)));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotServerChanged
+|  Begin: 28.02.2010 / 18:22:39
+|  Author: Jo2003
+|  Description: stream server was changed --> set it at kartina
+|
+|  Parameters: new index from server cbx
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotServerChanged(int Idx)
+{
+   emit sigSetServer(m_ui->cbxStreamServer->itemData(Idx).toInt());
 }
 
 /* -----------------------------------------------------------------\

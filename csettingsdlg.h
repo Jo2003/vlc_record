@@ -82,6 +82,7 @@ public:
     int   SaveOtherSettings ();
     void  SaveFavourites (const QList<int> &favList);
     QList<int> GetFavourites (bool *ok = NULL);
+    void  SetStreamServerCbx (const QVector<int> &lSrvList, int iActSrv);
 
 protected:
     void changeEvent(QEvent *e);
@@ -96,11 +97,11 @@ signals:
     void sigSetBuffer (int iBuffer);
 
 private slots:
-    void on_btnSaveStreamServer_clicked();
     void on_pushDelLogos_clicked();
     void on_pushSave_clicked();
     void on_pushDir_clicked();
     void on_pushVLC_clicked();
+    void slotServerChanged (int Idx);
 };
 
 #endif /* __011910__CSETTINGSDLG_H */
