@@ -134,7 +134,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="219"/>
         <source>Request Stream Server List ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="239"/>
@@ -995,7 +995,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.cpp" line="2251"/>
         <source>Active stream server is No. %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="802"/>

@@ -98,18 +98,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="cbxStreamServer">
-            <item>
-             <property name="text">
-              <string>1</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>2</string>
-             </property>
-            </item>
-           </widget>
+           <widget class="QComboBox" name="cbxStreamServer"/>
           </item>
           <item>
            <widget class="QToolButton" name="btnSaveStreamServer">
