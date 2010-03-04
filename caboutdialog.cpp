@@ -80,34 +80,30 @@ void CAboutDialog::changeEvent(QEvent *e)
 \----------------------------------------------------------------- */
 void CAboutDialog::FillInfo()
 {
-   strAbout = tr(
-      "<style type='text/css'>\n"
-      "  a:link, a:visited, a:active { text-decoration: underline; color: #0482FE;}\n"
-      "</style>\n"
-      "<span style='font-weight: bold; font-size: 16px;'>vlc-record</span><br />\n"
-      "<table border='0' cellpadding='0' cellspacing='0'>\n"
-      "<tr><td><b>Version:</b></td><td style='padding-left: 15px;'>%1</td></tr>\n"
-      "<tr><td><b>Author:</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>\n"
-      "<tr><td><b>Inspired by:</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>\n"
-      "<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>\n"
-      "<tr><td><b>Icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>\n"
-      "</table>\n"
-      "<br /> <br />\n"
-      "<b>vlc-record</b> - a tool to <b>view / record program streams</b> sent from "
-      "%3. "
-      "To do this it will authenticate you with username and password at %4. "
-      "It then will start the <a href='http://www.videolan.org'>vlc media player</a> "
-      "to display (and record) the selected stream. It supports <b>EPG and TimeShift</b>.<br />\n"
-      "For News and Updates please visit my site at <a href='http://vlc-record.coujo.de'>http://vlc-record.coujo.de</a>.\n"
-      "<br /> <br />\n"
-      "<b>vlc-record is free software!</b> \n"
-      "Nevertheless ... if you like this software, please support me: \n"
-      "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
-      "Donate some $ and / or &euro;</a> at PayPal for my work.\n"
-      "<br /> <br />\n"
-      "Thank you,<br />\n"
-      "&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg"
-   ).arg(__MY__VERSION__).arg(qVersion()).arg(COMPANY_LINK).arg(COMPANY_NAME);
+   strAbout = "";
+   QTextStream str(&strAbout);
+
+   str << "<style type='text/css'>" << endl
+         << "a:link, a:visited, a:active { text-decoration: underline; color: #0482FE;}" << endl
+         << "</style>" << endl
+         << "<span style='font-weight: bold; font-size: 16px;'>vlc-record</span><br />" << endl
+         << "<table border='0' cellpadding='0' cellspacing='0'>" << endl
+         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Version:")).arg(__MY__VERSION__) << endl
+         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>").arg(tr("Author:")) << endl
+         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>").arg(tr("Inspired by:")) << endl
+         << QString("<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>").arg(qVersion()) << endl
+         << "<tr><td><b>Icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>" << endl
+         << "</table><br /> <br />" << endl
+         << tr("<b>vlc-record</b> - a tool to <b>view / record program streams</b> sent from %1.").arg(COMPANY_LINK) << endl
+         << tr("To do this it will authenticate you with username and password at %1.").arg(COMPANY_NAME) << endl
+         << tr("It then will start the %1 to display (and record) the selected stream.").arg("<a href='http://www.videolan.org'>vlc media player</a>") << endl
+         << QString("%1<br />").arg(tr("It supports <b>EPG and TimeShift</b>.")) << endl
+         << tr("For News and Updates please visit my site at %1.").arg("<a href='http://vlc-record.coujo.de'>http://vlc-record.coujo.de</a>") << endl
+         << "<br /> <br />" << tr("<b>vlc-record is free software!</b>") << endl
+         << tr("Nevertheless ... if you like this software, please support me: ") << endl
+         << "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
+         << tr("Donate some $ and / or &euro; at Paypal for my work.") << "</a><br /> <br />" << endl
+         << tr("Thank you,") << "<br />&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg" << endl;
 }
 
 /************************* History ***************************\

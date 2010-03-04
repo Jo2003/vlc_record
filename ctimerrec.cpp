@@ -922,9 +922,9 @@ void CTimerRec::slotTimerStreamUrl(QString str)
    pXmlParser->SetByteArray(str.toUtf8());
 
    QString sCmdLine;
-   QString sUrl = pXmlParser->ParseURL();
-
-   QString sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
+   Q_PID   vlcpid = 0;
+   QString sUrl   = pXmlParser->ParseURL();
+   QString sDst   = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
 
    if (r_ui->checkRecMini->isChecked())
    {
@@ -941,16 +941,16 @@ void CTimerRec::slotTimerStreamUrl(QString str)
                                         pSettings->GetBufferTime(), sDst, "ts");
    }
 
-   Q_PID vlcpid = pVlcCtrl->start(sCmdLine);
+   vlcpid = pVlcCtrl->start(sCmdLine);
 
    // successfully started ?
    if (!vlcpid)
    {
-      QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+      QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
    }
    else
    {
-      mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
+      mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
    }
 }
 

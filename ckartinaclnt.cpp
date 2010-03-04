@@ -123,6 +123,24 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
 }
 
 /*-----------------------------------------------------------------------------\
+| Function:    SetCookie
+|
+| Author:      Jo2003
+|
+| Begin:       03.03.2010 / 12:18:00
+|
+| Description: set a former stored cookie
+|
+| Parameters:  ref. cookie string
+|
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::SetCookie(const QString &cookie)
+{
+   bRenewCookie = false;
+   sCookie      = cookie;
+}
+
+/*-----------------------------------------------------------------------------\
 | Function:    PostRequest
 |
 | Author:      Jo2003
@@ -388,7 +406,7 @@ void CKartinaClnt::getResponseHeader (const QHttpResponseHeader &resp)
          mInfo(tr("Got cookie:\n  --> %1!").arg(sCookie));
 
          // we have catched the cookie ...
-         emit sigGotCookie();
+         emit sigGotCookie(sCookie);
       }
       else
       {

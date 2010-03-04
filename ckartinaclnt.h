@@ -78,6 +78,7 @@ public:
    void GetServer ();
    void SetHttpBuffer (int iTime);
    void GetEPG (int iChanID, int iOffset = 0);
+   void SetCookie (const QString &cookie);
    bool busy ();
 
 protected:
@@ -101,7 +102,7 @@ private slots:
    void getResponseHeader (const QHttpResponseHeader &resp);
 
 signals:
-   void sigGotCookie ();
+   void sigGotCookie (QString str);
    void sigTimeShiftSet ();
    void sigGotChannelList (QString str);
    void sigGotEPG (QString str);

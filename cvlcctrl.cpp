@@ -26,10 +26,12 @@ extern CLogFile VlcLog;
 \----------------------------------------------------------------- */
 CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
 {
-   bForcedTranslit = false;
-   sFrcMx          = "no";
-   bTranslit       = false;
-   pTranslit       = NULL;
+   bForcedTranslit   = false;
+   sFrcMx            = "no";
+   bTranslit         = false;
+   pTranslit         = NULL;
+   bUseLibVlc        = false;
+   libVlcPlayState   = IncPlay::PS_WTF;
 
    if (path != "")
    {
@@ -63,6 +65,21 @@ CVlcCtrl::~CVlcCtrl()
       // wait until vlc closes ...
       waitForFinished(3000);
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: SetLibVLCPlayer
+|  Begin: 03.03.2010 / 08:45:00
+|  Author: Jo2003
+|  Description: set libVlc player instance
+|
+|  Parameters: pointer to CPlayer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVlcCtrl::UseLibVlc(bool bUsage)
+{
+   bUseLibVlc = bUsage;
 }
 
 /* -----------------------------------------------------------------\
@@ -118,12 +135,12 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
       if (fModule.open(QIODevice::ReadOnly))
       {
          // reset strings ...
-         sHttpPlay       = "";
-         sRtspPlay       = "";
-         sHttpRec        = "";
-         sRtspRec        = "";
-         sHttpSilentRec  = "";
-         sRtspSilentRec  = "";
+         sLivePlay       = "";
+         sArchPlay       = "";
+         sLiveRec        = "";
+         sArchRec        = "";
+         sLiveSilentRec  = "";
+         sArchSilentRec  = "";
          bForcedTranslit = false;
          sFrcMx          = "no";
 
@@ -140,27 +157,27 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
             {
                if (rx.cap(1) == CMD_PLAY_LIVE)
                {
-                  sHttpPlay = rx.cap(2);
+                  sLivePlay = rx.cap(2);
                }
                else if (rx.cap(1) == CMD_PLAY_ARCH)
                {
-                  sRtspPlay = rx.cap(2);
+                  sArchPlay = rx.cap(2);
                }
                else if (rx.cap(1) == CMD_REC_LIVE)
                {
-                  sHttpRec = rx.cap(2);
+                  sLiveRec = rx.cap(2);
                }
                else if (rx.cap(1) == CMD_REC_ARCH)
                {
-                  sRtspRec = rx.cap(2);
+                  sArchRec = rx.cap(2);
                }
                else if (rx.cap(1) == CMD_SIL_REC_LIVE)
                {
-                  sHttpSilentRec = rx.cap(2);
+                  sLiveSilentRec = rx.cap(2);
                }
                else if (rx.cap(1) == CMD_SIL_REC_ARCH)
                {
-                  sRtspSilentRec = rx.cap(2);
+                  sArchSilentRec = rx.cap(2);
                }
                else if (rx.cap(1) == FLAG_TRANSLIT)
                {
@@ -176,7 +193,7 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
 
          // if the http play stuff is set
          // we assume that all is well ...
-         if (sHttpPlay != "")
+         if (sLivePlay != "")
          {
             iRV = 0;
             mInfo(tr("Player module '%1' successfully parsed ...").arg(sPath));
@@ -201,39 +218,92 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
 |  Author: Jo2003
 |  Description: start vlc
 |
-|  Parameters: command line, optional runtime in seconds
+|  Parameters: command line, optional runtime in seconds, detach flag
 |
 |  Returns: <= 0 --> error starting vlc
 |           else --> process id
 \----------------------------------------------------------------- */
-Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime)
+Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime, bool bDetach)
 {
-   Q_PID   vlcPid   = 0;
+   Q_PID vlcPid = 0;
 
-   if (IsRunning())
+   // -------------------------------------------------------
+   // use libVLC player ...
+   // -------------------------------------------------------
+   if (bUseLibVlc)
    {
-      QMessageBox::warning(NULL, tr("Warning!"), tr("Player is already running!"));
+      // detach isn't possible ...
+      bDetach = false;
+
+      // play media ...
+      emit sigLibVlcPlayMedia(sCmdLine);
+
+      // assume that all is well ...
+      vlcPid = (Q_PID)99; // anything but 0 ...
    }
    else
    {
-      mInfo(tr("Start player using folling command line:\n  --> %1").arg(sCmdLine));
-
-      QProcess::start(sCmdLine);
-
-      if (waitForStarted(3000))
+      // -------------------------------------------------------
+      // external player ...
+      // -------------------------------------------------------
+      if (bDetach)
       {
-         vlcPid = pid();
+         // detach player ...
+         mInfo(tr("Start player detached using folling command line:\n  --> %1").arg(sCmdLine));
+
+         if (QProcess::startDetached(sCmdLine))
+         {
+            vlcPid = (Q_PID)99; // anything but 0 ...
+         }
       }
       else
       {
-         kill();
-      }
+         // player is under control. check if it is running ...
+         QMessageBox::StandardButton btn = QMessageBox::Yes;
 
-      // set runtime ...
-      if (iRunTime > 0)
-      {
-         tRunTime.singleShot(iRunTime * 1000, this, SLOT(terminate()));
+         if (IsRunning())
+         {
+            btn = QMessageBox::question(NULL, tr("Warning!"),
+                                        tr("Player is already running! Do you want to proceed?"),
+                                        QMessageBox::No | QMessageBox::Yes, QMessageBox::No);
+
+            // we want to proceed -> stop former started player ...
+            if (btn == QMessageBox::Yes)
+            {
+               // stop process kindly ...
+               QProcess::terminate();
+
+               if (!waitForFinished(1000))
+               {
+                  // process not stopped -> kill it ...
+                  kill();
+               }
+            }
+         }
+
+         // now player shouldn't run ... however ...
+         if (btn == QMessageBox::Yes)
+         {
+            mInfo(tr("Start player using folling command line:\n  --> %1").arg(sCmdLine));
+
+            QProcess::start(sCmdLine);
+
+            if (waitForStarted(3000))
+            {
+               vlcPid = pid();
+            }
+            else
+            {
+               kill();
+            }
+         }
       }
+   }
+
+   // should we stop the player after a while ... ?
+   if ((iRunTime > 0) && (vlcPid != 0) && !bDetach)
+   {
+      tRunTime.singleShot(iRunTime * 1000, this, SLOT(terminate()));
    }
 
    return vlcPid;
@@ -301,18 +371,34 @@ void CVlcCtrl::SetTimer(uint uiTime)
 \----------------------------------------------------------------- */
 bool CVlcCtrl::IsRunning()
 {
-   bool bRV;
+   bool bRV = false;
 
-   switch (state())
+   if (bUseLibVlc)
    {
-   case QProcess::Running:
-   case QProcess::Starting:
-      bRV = true;
-      break;
+      switch (libVlcPlayState)
+      {
+      case IncPlay::PS_BUFFER:
+      case IncPlay::PS_OPEN:
+      case IncPlay::PS_PAUSE:
+      case IncPlay::PS_PLAY:
+         bRV = true;
+         break;
+      default:
+         break;
+      }
+   }
+   else
+   {
+      switch (state())
+      {
+      case QProcess::Running:
+      case QProcess::Starting:
+         bRV = true;
+         break;
 
-   default:
-      bRV = false;
-      break;
+      default:
+         break;
+      }
    }
 
    return bRV;
@@ -372,21 +458,21 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
    {
    // play stream using http protocol ...
    case vlcctrl::VLC_PLAY_LIVE:
-      sCmdLine = sHttpPlay;
+      sCmdLine = sLivePlay;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       break;
    // play stream using rtsp protocol ...
    case vlcctrl::VLC_PLAY_ARCH:
-      sCmdLine = sRtspPlay;
+      sCmdLine = sArchPlay;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
       break;
    // record stream using http protocol ...
    case vlcctrl::VLC_REC_LIVE:
-      sCmdLine = sHttpRec;
+      sCmdLine = sLiveRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
@@ -395,7 +481,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       break;
    // record stream using rtsp protocol ...
    case vlcctrl::VLC_REC_ARCH:
-      sCmdLine = sRtspRec;
+      sCmdLine = sArchRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
@@ -404,7 +490,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       break;
    // silently record stream using http protocol ...
    case vlcctrl::VLC_REC_LIVE_SILENT:
-      sCmdLine = sHttpSilentRec;
+      sCmdLine = sLiveSilentRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
@@ -413,7 +499,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       break;
    // silently record stream using rtsp protocol ...
    case vlcctrl::VLC_REC_ARCH_SILENT:
-      sCmdLine = sRtspSilentRec;
+      sCmdLine = sArchSilentRec;
       sCmdLine.replace(TMPL_PLAYER, sPlayer);
       sCmdLine.replace(TMPL_URL, url);
       sCmdLine.replace(TMPL_CACHE, QString::number(iCacheTime));
@@ -451,6 +537,80 @@ void CVlcCtrl::slotStateChanged(QProcess::ProcessState newState)
       break;
    default:
       break;
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: terminate [slot]
+|  Begin: 03.03.2010 / 10:05:00
+|  Author: Jo2003
+|  Description: override terminate slot with own one ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVlcCtrl::terminate()
+{
+   if (bUseLibVlc)
+   {
+      // This is no external process,
+      // simply stop the player ...
+      emit sigLibVlcStop();
+      emit finished(0, QProcess::NormalExit);
+   }
+   else
+   {
+      // terminate only if it is running ...
+      if (IsRunning())
+      {
+         QProcess::terminate();
+      }
+      else
+      {
+         emit finished(0, QProcess::NormalExit);
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotLibVlcStateChange [slot]
+|  Begin: 03.03.2010 / 12:05:00
+|  Author: Jo2003
+|  Description: state change from libVlc player ...
+|
+|  Parameters: new play state
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVlcCtrl::slotLibVlcStateChange (int ps)
+{
+   // something changed ... ?
+   if (libVlcPlayState != (IncPlay::ePlayStates)ps)
+   {
+      libVlcPlayState = (IncPlay::ePlayStates)ps;
+
+      mInfo(tr("libVLC reports new state %1").arg((int)ps));
+
+      switch(libVlcPlayState)
+      {
+      case IncPlay::PS_OPEN:
+         emit stateChanged(QProcess::Starting);
+         break;
+
+      case IncPlay::PS_PLAY:
+         emit stateChanged(QProcess::Running);
+         break;
+
+      case IncPlay::PS_STOP:
+      case IncPlay::PS_END:
+      case IncPlay::PS_ERROR:
+         emit stateChanged(QProcess::NotRunning);
+         break;
+
+      default:
+         break;
+      }
    }
 }
 

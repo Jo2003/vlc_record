@@ -76,8 +76,8 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    }
 
    // fill player module box with available modules ...
-   QDir appDir (QApplication::applicationDirPath());
-   m_ui->cbxPlayerMod->addItems(appDir.entryList(QStringList("*.mod"), QDir::Files, QDir::Name));
+   QDir modDir(QString("%1/modules").arg(QApplication::applicationDirPath()));
+   m_ui->cbxPlayerMod->addItems(modDir.entryList(QStringList("*.mod"), QDir::Files, QDir::Name));
 
    // combo boxes ...
    int iIdx;
@@ -383,7 +383,7 @@ QRect CSettingsDlg::GetWindowRect (bool *ok)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::SaveSplitterSizes (const QList<int> &sz)
+void CSettingsDlg::SaveSplitterSizes (const QString &name, const QList<int> &sz)
 {
    QString     sSz;
    QTextStream str(&sSz);
@@ -393,7 +393,7 @@ void CSettingsDlg::SaveSplitterSizes (const QList<int> &sz)
       str << sz[i] << ";";
    }
 
-   IniFile.AddData ("SplitterSz", sSz);
+   IniFile.AddData (name, sSz);
 }
 
 /* -----------------------------------------------------------------\
@@ -429,9 +429,9 @@ void CSettingsDlg::SaveFavourites(const QList<int> &favList)
 |
 |  Returns:  size of chan list group box
 \----------------------------------------------------------------- */
-QList<int> CSettingsDlg::GetSplitterSizes(bool *ok)
+QList<int> CSettingsDlg::GetSplitterSizes(const QString &name, bool *ok)
 {
-   QString    sSz = IniFile.GetStringData("SplitterSz");
+   QString    sSz = IniFile.GetStringData(name);
    QList<int> sz;
 
    if (ok)
@@ -560,6 +560,36 @@ int CSettingsDlg::GetCustFontSize()
 }
 
 /* -----------------------------------------------------------------\
+|  Method: GetCookie
+|  Begin: 03.03.2010 / 12:22:39
+|  Author: Jo2003
+|  Description: get last used cookie
+|
+|  Parameters: --
+|
+|  Returns:  cookie string
+\----------------------------------------------------------------- */
+QString CSettingsDlg::GetCookie()
+{
+   return IniFile.GetStringData("LastCookie");
+}
+
+/* -----------------------------------------------------------------\
+|  Method: SaveCookie
+|  Begin: 03.03.2010 / 12:22:39
+|  Author: Jo2003
+|  Description: save cookie into ini file
+|
+|  Parameters: ref. cookie string
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SaveCookie(const QString &str)
+{
+   IniFile.AddData ("LastCookie", str);
+}
+
+/* -----------------------------------------------------------------\
 |  Method: SaveOtherSettings
 |  Begin: 18.02.2010 / 11:22:39
 |  Author: Jo2003
@@ -630,7 +660,7 @@ QString CSettingsDlg::GetPlayerModule()
 
    if (m_ui->cbxPlayerMod->currentText() != "")
    {
-      sPlayModule = QString("%1/%2").arg(QApplication::applicationDirPath())
+      sPlayModule = QString("%1/modules/%2").arg(QApplication::applicationDirPath())
                     .arg(m_ui->cbxPlayerMod->currentText());
    }
 

@@ -129,6 +129,7 @@ protected:
     void HandleFavourites ();
     void FillChanMap (const QVector<cparser::SChan> &chanlist);
     void CleanContextMenu ();
+    int  CheckCookie (const QString &cookie);
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -158,7 +159,7 @@ private slots:
     void slotStreamURL (QString str);
     void slotArchivURL (QString str);
     void slotServerForm (QString str);
-    void slotCookie ();
+    void slotCookie (QString sCookie);
     void slotTimeShift ();
     void slotEpgAnchor (const QUrl & link);
     void slotLogosReady ();

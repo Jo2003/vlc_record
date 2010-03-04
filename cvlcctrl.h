@@ -25,6 +25,7 @@
 #include "defdef.h"
 #include "templates.h"
 #include "ctranslit.h"
+#include "playstates.h"
 
 namespace vlcctrl
 {
@@ -57,7 +58,7 @@ public:
    virtual ~CVlcCtrl();
 
    void    SetProgPath(const QString &str);
-   Q_PID   start (const QString& sCmdLine, int iRunTime = -1);
+   Q_PID   start (const QString& sCmdLine, int iRunTime = -1, bool bDetach = false);
    void    CancelTimer ();
    void    SetTimer (uint uiTime);
    void    stop ();
@@ -69,26 +70,35 @@ public:
                          const QString &mux = QString());
 
    int     LoadPlayerModule (const QString &sPath);
+   void    UseLibVlc (bool bUsage);
 
 private:
    QTimer     tRunTime;
-   QString    sHttpPlay;
-   QString    sRtspPlay;
-   QString    sHttpRec;
-   QString    sRtspRec;
-   QString    sHttpSilentRec;
-   QString    sRtspSilentRec;
+   QString    sLivePlay;
+   QString    sArchPlay;
+   QString    sLiveRec;
+   QString    sArchRec;
+   QString    sLiveSilentRec;
+   QString    sArchSilentRec;
    bool       bForcedTranslit;
    bool       bTranslit;
    CTranslit *pTranslit;
    QString    sFrcMx;
+   bool       bUseLibVlc;
+   IncPlay::ePlayStates libVlcPlayState;
 
 private slots:
    void slotStateChanged (QProcess::ProcessState newState);
 
+public slots:
+   virtual void terminate();
+   void slotLibVlcStateChange (int ps);
+
 signals:
    void sigVlcEnds ();
    void sigVlcStarts ();
+   void sigLibVlcPlayMedia (const QString &str);
+   void sigLibVlcStop ();
 
 public slots:
 };

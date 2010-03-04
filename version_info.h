@@ -18,18 +18,28 @@
    #define MY_BUILD_SYS "Windows"
 #elif defined Q_OS_LINUX
    #define MY_BUILD_SYS "Linux (x86)"
-#elif defined Q_OS_DARWIN
+#elif defined Q_OS_MAC
    #define MY_BUILD_SYS "Mac"
 #else
    #define MY_BUILD_SYS "unknown"
 #endif
 
+#ifdef INCLUDE_LIBVLC
+   #define VERSION_MAJOR "2"
+#else
+   #define VERSION_MAJOR "1"
+#endif
+
 #define __MY__VERSION__ \
-   "1.19" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".20" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - try to integrate vlc player into gui using libVlc
+| - log entries from libvlc
+| - decide in project file to build with / without libvlc
+| - new mod file to support libvlc
 |
 | 2010-02-26: Version 1.19
 | - add favourites

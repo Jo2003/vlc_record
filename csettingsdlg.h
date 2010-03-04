@@ -56,6 +56,7 @@ public:
     QString GetLanguage ();
     QString GetShutdownCmd ();
     QString GetPlayerModule ();
+    QString GetCookie ();
 
     bool UseProxy ();
     bool AllowEros ();
@@ -73,8 +74,8 @@ public:
 
     void  SaveWindowRect (const QRect &wnd);
     QRect GetWindowRect (bool *ok = NULL);
-    void  SaveSplitterSizes (const QList<int> &sz);
-    QList<int> GetSplitterSizes (bool *ok = NULL);
+    void  SaveSplitterSizes (const QString &name, const QList<int> &sz);
+    QList<int> GetSplitterSizes (const QString &name, bool *ok = NULL);
     bool  IsMaximized ();
     void  SetIsMaximized (bool bMax);
     int   GetCustFontSize ();
@@ -83,6 +84,7 @@ public:
     void  SaveFavourites (const QList<int> &favList);
     QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<int> &lSrvList, int iActSrv);
+    void  SaveCookie (const QString &str);
 
 protected:
     void changeEvent(QEvent *e);

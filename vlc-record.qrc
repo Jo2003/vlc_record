@@ -10,13 +10,13 @@
         <file alias="save">resources/save.png</file>
         <file alias="search">resources/search.png</file>
         <file alias="find">resources/find.png</file>
-        <file alias="timerrec">resources/timerrec.png</file>
         <file alias="add">resources/add.png</file>
         <file alias="del">resources/delete.png</file>
         <file alias="stop">resources/stop.png</file>
         <file alias="zoom-in">resources/enlarge.png</file>
         <file alias="zoom-out">resources/reduce.png</file>
         <file alias="tv">resources/television.png</file>
+        <file alias="timerrec">resources/timerrec_own.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
@@ -29,8 +29,15 @@
         <file alias="play">resources/play_sm.png</file>
         <file alias="record">resources/record_sm.png</file>
         <file alias="timer">resources/old_clock.png</file>
-        <file alias="h_split">resources/splitter.png</file>
-        <file alias="h_split_pressed">resources/splitter_pressed.png</file>
-        <file alias="h_split_hover">resources/splitter_hover.png</file>
+        <file alias="h_split">resources/h_splitter.png</file>
+        <file alias="h_split_pressed">resources/h_splitter_pressed.png</file>
+        <file alias="h_split_hover">resources/h_splitter_hover.png</file>
+        <file alias="v_split">resources/v_splitter.png</file>
+        <file alias="v_split_hover">resources/v_splitter_hover.png</file>
+        <file alias="v_split_pressed">resources/v_splitter_pressed.png</file>
+    </qresource>
+    <qresource prefix="/player">
+        <file alias="sound_on">resources/sound.png</file>
+        <file alias="sound_off">resources/sound_muted.png</file>
     </qresource>
 </RCC>

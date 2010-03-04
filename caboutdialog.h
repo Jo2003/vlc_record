@@ -13,6 +13,7 @@
    #define __011810__CABOUTDIALOG_H
 
 #include <QDialog>
+#include <QTextStream>
 #include <version_info.h>
 #include "customization.h"
 
