@@ -31,7 +31,7 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".20" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".20 BETA" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\

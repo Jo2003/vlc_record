@@ -92,10 +92,7 @@ private:
     CWaitTrigger                   Trigger;
     QTranslator                   *pTranslator;
     QTimer                         Refresh;
-    bool                           bRecord;
     bool                           bLogosReady;
-    bool                           bPendingRecord;
-    bool                           bVlcRuns;
     CChanLogo                      dwnLogos;
     QString                        sLogoPath;
     int                            iEpgOffset;
@@ -113,23 +110,25 @@ private:
     QMap<int, QString>             chanMap;
     QMenu                          favContext;
     CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
+    IncPlay::ePlayStates           ePlayState;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
     int StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv = false);
     int StartVlcPlay (const QString &sURL, bool bArchiv = false);
-    void EnableDisableDlg (bool bEnable = true);
+    void TouchPlayCtrlBtns (bool bEnable = true);
     void SetProgress (const uint &start, const uint &end);
     void changeEvent(QEvent *e);
     void TouchEpgNavi (bool bCreate);
     QString CleanShowName (const QString &str);
     void CreateSystray ();
+    bool WantToStopRec ();
     bool WantToClose ();
-    bool WantToQuitVlc ();
     void HandleFavourites ();
     void FillChanMap (const QVector<cparser::SChan> &chanlist);
     void CleanContextMenu ();
     int  CheckCookie (const QString &cookie);
+    int  AllowAction (IncPlay::ePlayStates newState);
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);

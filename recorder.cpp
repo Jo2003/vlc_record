@@ -35,10 +35,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
     ui(new Ui::Recorder)
 {
    ui->setupUi(this);
-   bRecord        = true;
+   ePlayState     = IncPlay::PS_WTF;
    bLogosReady    = false;
-   bPendingRecord = false;
-   bVlcRuns       = false;
    pTranslator    = trans;
    iEpgOffset     = 0;
    uiArchivGmt    = 0;
@@ -157,7 +155,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    lFavourites = Settings.GetFavourites();
 
    // enable button ...
-   EnableDisableDlg(false);
+   TouchPlayCtrlBtns(false);
 
    // request authorisation ...
    Trigger.TriggerRequest(Kartina::REQ_COOKIE);
@@ -586,9 +584,9 @@ void Recorder::closeEvent(QCloseEvent *event)
 {
    // if vlc is running, ask if we want
    // to close it ...
-   if (vlcCtrl.IsRunning())
+   if (ePlayState == IncPlay::PS_RECORD)
    {
-      if (WantToClose())
+      if (WantToStopRec())
       {
          event->accept();
       }
@@ -960,7 +958,7 @@ void Recorder::on_pushSettings_clicked()
       vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
       vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
 
-      EnableDisableDlg(false);
+      TouchPlayCtrlBtns(false);
 
       // authenticate ...
       Trigger.TriggerRequest(Kartina::REQ_COOKIE);
@@ -998,7 +996,7 @@ void Recorder::slotErr(QString str)
    QMessageBox::critical(this, tr("Error"),
                          tr("%1 Client API reports some errors: %2")
                          .arg(COMPANY_NAME).arg(str));
-   EnableDisableDlg();
+   TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -1045,7 +1043,7 @@ void Recorder::slotChanList (QString str)
    int iIdx = ui->cbxTimeShift->findText(QString::number(XMLParser.GetTimeShift()));
    ui->cbxTimeShift->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
-   EnableDisableDlg();
+   TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -1080,16 +1078,16 @@ void Recorder::slotStreamURL(QString str)
       }
    }
 
-   if (bRecord)
+   if (ePlayState == IncPlay::PS_RECORD)
    {
       StartVlcRec(sUrl, sChan);
    }
-   else
+   else if (ePlayState == IncPlay::PS_PLAY)
    {
       StartVlcPlay(sUrl);
    }
 
-   EnableDisableDlg();
+   TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -1156,7 +1154,7 @@ void Recorder::slotEPG(QString str)
 
    pEpgNavbar->setCurrentIndex(epgTime.date().dayOfWeek() - 1);
 
-   EnableDisableDlg();
+   TouchPlayCtrlBtns();
    ui->listWidget->setFocus(Qt::OtherFocusReason);
 }
 
@@ -1189,11 +1187,16 @@ void Recorder::on_pushRecord_clicked()
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
-   if (pItem && (pItem->GetId() != -1))
+   if (pItem)
    {
-      EnableDisableDlg(false);
-      bRecord = true;
-      Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+      if (pItem->GetId() != -1)
+      {
+         if (AllowAction(IncPlay::PS_RECORD))
+         {
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+         }
+      }
    }
 }
 
@@ -1211,11 +1214,16 @@ void Recorder::on_pushPlay_clicked()
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
-   if (pItem && (pItem->GetId() != -1))
+   if (pItem)
    {
-      EnableDisableDlg(false);
-      bRecord = false;
-      Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+      if (pItem->GetId() != -1)
+      {
+         if (AllowAction(IncPlay::PS_PLAY))
+         {
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+         }
+      }
    }
 }
 
@@ -1231,12 +1239,12 @@ void Recorder::on_pushPlay_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
 {
-   EnableDisableDlg(false);
+   TouchPlayCtrlBtns(false);
    Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, str.toInt());
 }
 
 /* -----------------------------------------------------------------\
-|  Method: EnableDisableDlg
+|  Method: TouchPlayCtrlBtns
 |  Begin: 19.01.2010 / 16:13:30
 |  Author: Jo2003
 |  Description: enable / disable buttons
@@ -1245,28 +1253,28 @@ void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::EnableDisableDlg (bool bEnable)
+void Recorder::TouchPlayCtrlBtns (bool bEnable)
 {
-   if (bEnable && bVlcRuns && !bPendingRecord)
+   switch (ePlayState)
    {
+   case IncPlay::PS_PLAY:
       ui->cbxTimeShift->setEnabled(bEnable);
       ui->pushPlay->setEnabled(bEnable);
       ui->pushRecord->setEnabled(bEnable);
       ui->pushStop->setEnabled(bEnable);
-   }
-   else if (bEnable && bPendingRecord)
-   {
-      ui->cbxTimeShift->setDisabled(bEnable);
-      ui->pushPlay->setDisabled(bEnable);
-      ui->pushRecord->setDisabled(bEnable);
+      break;
+   case IncPlay::PS_RECORD:
+      ui->cbxTimeShift->setEnabled(false);
+      ui->pushPlay->setEnabled(false);
+      ui->pushRecord->setEnabled(bEnable);
       ui->pushStop->setEnabled(bEnable);
-   }
-   else
-   {
+      break;
+   default:
       ui->cbxTimeShift->setEnabled(bEnable);
       ui->pushPlay->setEnabled(bEnable);
       ui->pushRecord->setEnabled(bEnable);
-      ui->pushStop->setDisabled(bEnable);
+      ui->pushStop->setEnabled(false);
+      break;
    }
 }
 
@@ -1283,23 +1291,26 @@ void Recorder::EnableDisableDlg (bool bEnable)
 void Recorder::on_listWidget_currentRowChanged(int currentRow)
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->item(currentRow);
-   if (pItem && (pItem->GetId() != -1))
+   if (pItem)
    {
-      ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR).arg("rgb(255, 254, 212)").arg(pItem->toolTip()));
-      SetProgress (pItem->GetStartTime(), pItem->GetEndTime());
+      if(pItem->GetId() != -1)
+      {
+         ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR).arg("rgb(255, 254, 212)").arg(pItem->toolTip()));
+         SetProgress (pItem->GetStartTime(), pItem->GetEndTime());
 
-      // was this a refresh or was channel changed ... ?
-      if (pItem->GetId() != ui->textEpg->GetCid())
-      {
-         // load epg ...
-         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
-      }
-      else // same channel ...
-      {
-         // refresh epg only, if we view current day in epg ...
-         if (iEpgOffset == 0) // 0 means today!
+         // was this a refresh or was channel changed ... ?
+         if (pItem->GetId() != ui->textEpg->GetCid())
          {
-            Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId());
+            // load epg ...
+            Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+         }
+         else // same channel ...
+         {
+            // refresh epg only, if we view current day in epg ...
+            if (iEpgOffset == 0) // 0 means today!
+            {
+               Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId());
+            }
          }
       }
    }
@@ -1391,13 +1402,17 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
    if (action == "archivrec")
    {
-      ok      = true;
-      bRecord = true;
+      if (AllowAction(IncPlay::PS_RECORD))
+      {
+         ok = true;
+      }
    }
    else if (action == "archivplay")
    {
-      ok      = true;
-      bRecord = false;
+      if (AllowAction(IncPlay::PS_PLAY))
+      {
+         ok = true;
+      }
    }
    else if(action == "timerrec")
    {
@@ -1411,21 +1426,16 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
    if (ok)
    {
-      if (!bPendingRecord)
-      {
-         QString cid    = link.encodedQueryItemValue(QByteArray("cid"));
-         QString gmt    = link.encodedQueryItemValue(QByteArray("gmt"));
-         QString req    = QString("m=channels&act=get_stream_url&cid=%1&gmt=%2")
-                          .arg(cid.toInt()).arg(gmt.toUInt());
+      TouchPlayCtrlBtns(false);
 
-         uiArchivGmt    = gmt.toUInt();
+      QString cid    = link.encodedQueryItemValue(QByteArray("cid"));
+      QString gmt    = link.encodedQueryItemValue(QByteArray("gmt"));
+      QString req    = QString("m=channels&act=get_stream_url&cid=%1&gmt=%2")
+                       .arg(cid.toInt()).arg(gmt.toUInt());
 
-         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req);
-      }
-      else
-      {
-         QMessageBox::warning(this, tr("Warning!"), tr("Timer Record active!"));
-      }
+      uiArchivGmt    = gmt.toUInt();
+
+      Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req);
    }
 }
 
@@ -1496,12 +1506,15 @@ void Recorder::slotReloadLogos()
 void Recorder::slotbtnBack_clicked()
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-   if (pItem && (pItem->GetId() != -1))
+   if (pItem)
    {
-      // set actual day in previous week to munday ...
-      int iActDay  = pEpgNavbar->currentIndex();
-      iEpgOffset  -= 7 + iActDay;
-      Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+      if  (pItem->GetId() != -1)
+      {
+         // set actual day in previous week to munday ...
+         int iActDay  = pEpgNavbar->currentIndex();
+         iEpgOffset  -= 7 + iActDay;
+         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+      }
    }
 }
 
@@ -1518,12 +1531,15 @@ void Recorder::slotbtnBack_clicked()
 void Recorder::slotbtnNext_clicked()
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-   if (pItem && (pItem->GetId() != -1))
+   if (pItem)
    {
-      // set actual day in next week to munday ...
-      int iActDay  = pEpgNavbar->currentIndex();
-      iEpgOffset  += 7 - iActDay;
-      Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+      if (pItem->GetId() != -1)
+      {
+         // set actual day in next week to munday ...
+         int iActDay  = pEpgNavbar->currentIndex();
+         iEpgOffset  += 7 - iActDay;
+         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+      }
    }
 }
 
@@ -1560,16 +1576,16 @@ void Recorder::slotArchivURL(QString str)
 
    sUrl = XMLParser.ParseArchivURL();
 
-   if (bRecord)
+   if (ePlayState == IncPlay::PS_RECORD)
    {
       StartVlcRec(sUrl, sChan, true);
    }
-   else
+   else if (ePlayState == IncPlay::PS_PLAY)
    {
       StartVlcPlay(sUrl, true);
    }
 
-   EnableDisableDlg();
+   TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -1585,27 +1601,30 @@ void Recorder::slotArchivURL(QString str)
 void Recorder::slotDayTabChanged(int iIdx)
 {
    CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-   if (pItem && (pItem->GetId() != -1))
+   if (pItem)
    {
-      QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
-      int       iDay    = epgTime.date().dayOfWeek() - 1;
+      if (pItem->GetId() != -1)
+      {
+         QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
+         int       iDay    = epgTime.date().dayOfWeek() - 1;
 
-      // earlier or later ... ?
-      if (iIdx < iDay)
-      {
-         // earlier ...
-         iEpgOffset -= iDay - iIdx;
-      }
-      else if (iIdx > iDay)
-      {
-         // later ...
-         iEpgOffset += iIdx - iDay;
-      }
+         // earlier or later ... ?
+         if (iIdx < iDay)
+         {
+            // earlier ...
+            iEpgOffset -= iDay - iIdx;
+         }
+         else if (iIdx > iDay)
+         {
+            // later ...
+            iEpgOffset += iIdx - iDay;
+         }
 
-      // get epg for requested day ...
-      if (iIdx != iDay)
-      {
-         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+         // get epg for requested day ...
+         if (iIdx != iDay)
+         {
+            Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->GetId(), iEpgOffset);
+         }
       }
    }
 }
@@ -1622,15 +1641,17 @@ void Recorder::slotDayTabChanged(int iIdx)
 \----------------------------------------------------------------- */
 void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
 {
-   if (!bPendingRecord)
-   {
-      CChanListWidgetItem *pItem = (CChanListWidgetItem *)item;
+   CChanListWidgetItem *pItem = (CChanListWidgetItem *)item;
 
-      if (pItem && (pItem->GetId() != -1))
+   if (pItem)
+   {
+      if (pItem->GetId() != -1)
       {
-         bRecord = false;
-         EnableDisableDlg(false);
-         Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+         if (AllowAction(IncPlay::PS_PLAY))
+         {
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+         }
       }
    }
 }
@@ -1717,11 +1738,11 @@ void Recorder::on_pushTimerRec_clicked()
 \----------------------------------------------------------------- */
 void Recorder::slotTimerRecordDone()
 {
-   if (bPendingRecord)
+   if (ePlayState == IncPlay::PS_RECORD)
    {
       mInfo(tr("timeRec reports: record done!"));
-      bPendingRecord = false;
-      EnableDisableDlg();
+      ePlayState = IncPlay::PS_STOP;
+      TouchPlayCtrlBtns();
    }
 }
 
@@ -1738,8 +1759,8 @@ void Recorder::slotTimerRecordDone()
 void Recorder::slotTimerRecActive()
 {
    mInfo(tr("timeRec reports: record active!"));
-   bPendingRecord = true;
-   EnableDisableDlg(false);
+   ePlayState = IncPlay::PS_RECORD;
+   TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -1754,11 +1775,11 @@ void Recorder::slotTimerRecActive()
 \----------------------------------------------------------------- */
 void Recorder::slotVlcEnds()
 {
-   if (bVlcRuns)
+   if (ePlayState != IncPlay::PS_STOP)
    {
       mInfo(tr("vlcCtrl reports: vlc player ended!"));
-      bVlcRuns = false;
-      EnableDisableDlg();
+      ePlayState = IncPlay::PS_STOP;
+      TouchPlayCtrlBtns();
    }
 }
 
@@ -1775,8 +1796,8 @@ void Recorder::slotVlcEnds()
 void Recorder::slotVlcStarts()
 {
    mInfo(tr("vlcCtrl reports: vlc player active!"));
-   bVlcRuns = true;
-   EnableDisableDlg(false);
+   // bVlcRuns = true;
+   // EnableDisableDlg(false);
 }
 
 /* -----------------------------------------------------------------\
@@ -1890,12 +1911,9 @@ void Recorder::hideEvent(QHideEvent *event)
 \----------------------------------------------------------------- */
 void Recorder::on_pushStop_clicked()
 {
-   if (vlcCtrl.IsRunning())
+   if (AllowAction(IncPlay::PS_STOP))
    {
-      if (WantToQuitVlc())
-      {
-         vlcCtrl.stop();
-      }
+      vlcCtrl.stop();
    }
 }
 
@@ -1927,22 +1945,22 @@ void Recorder::accept()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: WantToQuitVlc
+|  Method: WantToStopRec
 |  Begin: 02.02.2010 / 10:05:00
 |  Author: Jo2003
-|  Description: ask if we want to clse vlc
+|  Description: ask if we want to stop recording
 |
 |  Parameters: --
 |
-|  Returns: true --> close
-|          false --> don't close
+|  Returns: true --> stop it
+|          false --> don't stop me now ;-)
 \----------------------------------------------------------------- */
-bool Recorder::WantToQuitVlc()
+bool Recorder::WantToStopRec()
 {
    QString sText = HTML_SITE;
-   sText.replace(TMPL_CONT, tr("VLC is still running."
+   sText.replace(TMPL_CONT, tr("Pending Record!"
                                "<br /> <br />"
-                               "Do you really want to close the VLC Player now?"));
+                               "Do you really want to stop recording now?"));
 
    if (QMessageBox::question(this, tr("Question"), sText,
                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
@@ -2310,6 +2328,57 @@ void Recorder::slotServerForm(QString str)
    Settings.SetStreamServerCbx(lSrv, iActSrv);
    mInfo(tr("Active stream server is No. %1").arg(iActSrv));
    Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: AllowAction
+|  Begin: 05.03.2010 / 10:25:12
+|  Author: Jo2003
+|  Description: check if action is allowed, ask if needed!
+|
+|  Parameters: requested new state
+|
+|  Returns: 1 --> ok, do it
+|           0 --> no, don't do it
+\----------------------------------------------------------------- */
+int Recorder::AllowAction (IncPlay::ePlayStates newState)
+{
+   int iRV = 0;
+
+   if (ePlayState == IncPlay::PS_RECORD)
+   {
+      // pending record ...
+      switch (newState)
+      {
+      // requested action stop or new record ...
+      case IncPlay::PS_STOP:
+      case IncPlay::PS_RECORD:
+         // ask for permission ...
+         if (WantToStopRec ())
+         {
+            // permission granted ...
+            iRV        = 1;
+
+            // set new state ...
+            ePlayState = newState;
+         }
+         break;
+      default:
+         // all other actions permitted ...
+         break;
+      }
+   }
+   else
+   {
+      // don't ask for every fart.
+      // Let the user decide what he wants to do!
+      iRV        = 1;
+
+      // set new state ...
+      ePlayState = newState;
+   }
+
+   return iRV;
 }
 
 /************************* History ***************************\
