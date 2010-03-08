@@ -1303,6 +1303,12 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
       ui->pushRecord->setEnabled(bEnable);
       ui->pushStop->setEnabled(bEnable);
       break;
+   case IncPlay::PS_TIMER_RECORD:
+      ui->cbxTimeShift->setEnabled(false);
+      ui->pushPlay->setEnabled(false);
+      ui->pushRecord->setEnabled(false);
+      ui->pushStop->setEnabled(bEnable);
+      break;
    default:
       ui->cbxTimeShift->setEnabled(bEnable);
       ui->pushPlay->setEnabled(bEnable);
@@ -1772,7 +1778,7 @@ void Recorder::on_pushTimerRec_clicked()
 \----------------------------------------------------------------- */
 void Recorder::slotTimerRecordDone()
 {
-   if (ePlayState == IncPlay::PS_RECORD)
+   if (ePlayState == IncPlay::PS_TIMER_RECORD)
    {
       mInfo(tr("timeRec reports: record done!"));
       ePlayState = IncPlay::PS_STOP;
@@ -1793,7 +1799,7 @@ void Recorder::slotTimerRecordDone()
 void Recorder::slotTimerRecActive()
 {
    mInfo(tr("timeRec reports: record active!"));
-   ePlayState = IncPlay::PS_RECORD;
+   ePlayState = IncPlay::PS_TIMER_RECORD;
    TouchPlayCtrlBtns();
 }
 
@@ -2400,6 +2406,21 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
       default:
          // all other actions permitted ...
          break;
+      }
+   }
+   else if (ePlayState == IncPlay::PS_TIMER_RECORD)
+   {
+      if (newState == IncPlay::PS_STOP)
+      {
+         // ask for permission ...
+         if (WantToStopRec ())
+         {
+            // permission granted ...
+            iRV        = 1;
+
+            // set new state ...
+            ePlayState = newState;
+         }
       }
    }
    else

@@ -24,6 +24,7 @@ namespace IncPlay
       PS_END,
       PS_ERROR,
       PS_RECORD,
+      PS_TIMER_RECORD,
       PS_WTF    = 255 // ;-)
    };
 }

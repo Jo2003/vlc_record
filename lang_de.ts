@@ -955,7 +955,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="676"/>
-        <location filename="recorder.cpp" line="1999"/>
+        <location filename="recorder.cpp" line="2005"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
@@ -975,44 +975,44 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Ende:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1814"/>
+        <location filename="recorder.cpp" line="1820"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1832"/>
+        <location filename="recorder.cpp" line="1838"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1995"/>
+        <location filename="recorder.cpp" line="2001"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation type="unfinished">Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2109"/>
-        <location filename="recorder.cpp" line="2336"/>
+        <location filename="recorder.cpp" line="2115"/>
+        <location filename="recorder.cpp" line="2342"/>
         <source>Remove from favourites</source>
         <translation>Von Favoriten entfernen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2117"/>
+        <location filename="recorder.cpp" line="2123"/>
         <source>Add to favourites</source>
         <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2162"/>
+        <location filename="recorder.cpp" line="2168"/>
         <source>Note</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2163"/>
+        <location filename="recorder.cpp" line="2169"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Maximale Anzahl an Favoriten (%1) erreicht.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2363"/>
+        <location filename="recorder.cpp" line="2369"/>
         <source>Active stream server is No. %1</source>
         <translation></translation>
     </message>
@@ -1030,7 +1030,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1097"/>
-        <location filename="recorder.cpp" line="1594"/>
+        <location filename="recorder.cpp" line="1600"/>
         <source>%1 sends following url:
   --&gt; %2</source>
         <translation></translation>
@@ -1044,12 +1044,12 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Timer Record aktiv!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1777"/>
+        <location filename="recorder.cpp" line="1783"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1795"/>
+        <location filename="recorder.cpp" line="1801"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
