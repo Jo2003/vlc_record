@@ -10,9 +10,6 @@
     <height>656</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>VLC Recorder</string>
-  </property>
   <property name="windowIcon">
    <iconset resource="../vlc-record.qrc">
     <normaloff>:/app/tv</normaloff>:/app/tv</iconset>

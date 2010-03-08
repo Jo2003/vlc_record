@@ -605,6 +605,20 @@ int CSettingsDlg::SaveOtherSettings()
    return IniFile.SaveIni();
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotSplashStateChgd
+|  Begin: 08.03.2010 / 13:22:39
+|  Author: Jo2003
+|  Description: store new splash state
+|
+|  Parameters: new splash state
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotSplashStateChgd(bool bChecked)
+{
+   IniFile.AddData("NoSplash", bChecked ? 1 : 0);
+}
 
 //===================================================================
 // return internal stored values ==>
@@ -738,6 +752,11 @@ int CSettingsDlg::GetBufferTime()
 QString CSettingsDlg::GetShutdownCmd()
 {
    return m_ui->lineShutdown->text();
+}
+
+bool CSettingsDlg::DisableSplashScreen()
+{
+   return (IniFile.GetIntData("NoSplash")) ? true : false;
 }
 
 //===================================================================

@@ -87,6 +87,9 @@
       </spacer>
      </item>
      <item>
+      <widget class="QComboBox" name="cbxAspect"/>
+     </item>
+     <item>
       <widget class="QLabel" name="labSound">
        <property name="text">
         <string/>

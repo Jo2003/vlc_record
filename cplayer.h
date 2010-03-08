@@ -85,8 +85,10 @@ private:
    libvlc_log_t           *pLibVlcLog;
    uint                    uiVerboseLevel;
    QString                 sPlugInPath;
+   static const char      *pAspectRatio[];
 
 private slots:
+   void on_cbxAspect_currentIndexChanged(QString str);
    void slotChangeVolume(int newVolume);
    void slotLibVLCLog ();
 
@@ -95,6 +97,8 @@ public slots:
    int  play();
    int  stop();
    int  pause();
+   int  slotToggleFullScreen ();
+   int  slotToggleAspectRatio ();
 
 signals:
    void sigStateChg(const QString &str);

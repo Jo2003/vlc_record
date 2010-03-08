@@ -85,6 +85,7 @@ public:
     QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<int> &lSrvList, int iActSrv);
     void  SaveCookie (const QString &str);
+    bool  DisableSplashScreen ();
 
 protected:
     void changeEvent(QEvent *e);
@@ -104,6 +105,9 @@ private slots:
     void on_pushSave_clicked();
     void on_pushDir_clicked();
     void on_pushVLC_clicked();
+
+ public slots:
+    void slotSplashStateChgd (bool bChecked);
 };
 
 #endif /* __011910__CSETTINGSDLG_H */

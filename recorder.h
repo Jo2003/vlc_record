@@ -176,10 +176,13 @@ private slots:
     void slotChgFavourites (QAction *pAct);
     void slotHandleFavAction (QAction *pAct);
     void slotFavBtnContext (const QPoint &pt);
+    void slotSplashScreen ();
 
 signals:
     void sigShow ();
     void sigHide ();
+    void sigToggleFullscreen ();
+    void sigToggleAspectRatio ();
 };
 
 #endif /* __011910__RECORDER_H */

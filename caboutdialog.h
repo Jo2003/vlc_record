@@ -15,6 +15,7 @@
 #include <QDialog>
 #include <QTextStream>
 #include <version_info.h>
+#include "csettingsdlg.h"
 #include "customization.h"
 
 namespace Ui {
@@ -33,6 +34,7 @@ class CAboutDialog : public QDialog {
 public:
     CAboutDialog(QWidget *parent = 0);
     ~CAboutDialog();
+    void ConnectSettings (CSettingsDlg *pSet);
 
 protected:
     void changeEvent(QEvent *e);

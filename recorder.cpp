@@ -35,6 +35,10 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
     ui(new Ui::Recorder)
 {
    ui->setupUi(this);
+
+   // set (customized) windows title ...
+   setWindowTitle(QString("VLC-Recorder - %1").arg(COMPANY_NAME));
+
    ePlayState     = IncPlay::PS_WTF;
    bLogosReady    = false;
    pTranslator    = trans;
@@ -115,6 +119,15 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString)), ui->player, SLOT(playMedia(QString)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcStop()), ui->player, SLOT(stop()));
+
+   // aspect ratio and full screen ...
+   connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(slotToggleFullScreen()));
+   connect (this, SIGNAL(sigToggleAspectRatio()), ui->player, SLOT(slotToggleAspectRatio()));
+
+   // get vlc path from settings and try to create plugin path ...
+   QFileInfo info(Settings.GetVLCPath());
+   QString   sPlugs = QString("%1/plugins").arg(info.absolutePath());
+   ui->player->setPlugInPath(sPlugs);
 
 #endif /* INCLUDE_LIBVLC */
 
@@ -277,6 +290,12 @@ void Recorder::show()
       ui->hSplitterEpgPlayer ->setSizes(sSplit);
    }
 #endif /* INCLUDE_LIBVLC */
+
+   // display splash screen ...
+   if (!Settings.DisableSplashScreen())
+   {
+      QTimer::singleShot(200, this, SLOT(slotSplashScreen()));
+   }
 
    QWidget::show();
 }
@@ -613,10 +632,25 @@ void Recorder::closeEvent(QCloseEvent *event)
 \----------------------------------------------------------------- */
 void Recorder::keyPressEvent(QKeyEvent *event)
 {
-   if (event->key() == Qt::Key_Escape)
+   switch (event->key())
    {
+   case Qt::Key_Escape:
       // ignore escape key ...
       event->ignore();
+      break;
+/*
+   case Qt::Key_A:
+      emit sigToggleAspectRatio();
+      event->accept();
+      break;
+   case Qt::Key_F:
+      emit sigToggleFullscreen();
+      event->accept();
+      break;
+*/
+   default:
+      QDialog::keyPressEvent(event);
+      break;
    }
 }
 
@@ -1379,8 +1413,8 @@ void Recorder::SetProgress (const uint &start, const uint &end)
 \----------------------------------------------------------------- */
 void Recorder::on_pushAbout_clicked()
 {
-   CAboutDialog dlg;
-   dlg.setParent(this, Qt::Dialog);
+   CAboutDialog dlg(this);
+   dlg.ConnectSettings(&Settings);
    dlg.exec();
 }
 
@@ -1779,8 +1813,8 @@ void Recorder::slotVlcEnds()
    {
       mInfo(tr("vlcCtrl reports: vlc player ended!"));
       ePlayState = IncPlay::PS_STOP;
-      TouchPlayCtrlBtns();
    }
+   TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -1797,7 +1831,7 @@ void Recorder::slotVlcStarts()
 {
    mInfo(tr("vlcCtrl reports: vlc player active!"));
    // bVlcRuns = true;
-   // EnableDisableDlg(false);
+   TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -2379,6 +2413,23 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
    }
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSplashScreen
+|  Begin: 08.03.2010 / 14:25:12
+|  Author: Jo2003
+|  Description: pop up splash screen
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotSplashScreen()
+{
+   CAboutDialog dlg(this);
+   dlg.ConnectSettings(&Settings);
+   dlg.exec();
 }
 
 /************************* History ***************************\

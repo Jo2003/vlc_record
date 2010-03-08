@@ -17,6 +17,7 @@ else:CONFIG += static
 # values into customization.h
 # -------------------------------------
 # DEFINES += _CUST_RUSS_TELEK
+# DEFINES += _CUST_RUSS_SERVICES
 # -------------------------------------
 # Build with or without
 # included player or without?
@@ -66,7 +67,7 @@ TRANSLATIONS = lang_de.ts \
     lang_ru.ts
 
 # for static build ...
-static { 
+static {
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qico \
@@ -74,7 +75,7 @@ static {
         qjpeg
 }
 win32:TARGET = vlc-record
-else { 
+else {
     static:TARGET = release/vlc-record
     shared:TARGET = debug/vlc-record
 }
@@ -83,7 +84,7 @@ else {
 # add includes if we want to build
 # with included player!
 # -------------------------------------
-contains(DEFINES,INCLUDE_LIBVLC) { 
+contains(DEFINES,INCLUDE_LIBVLC) {
     INCLUDEPATH += include
     HEADERS += include/vlc/deprecated.h \
         include/vlc/libvlc.h \

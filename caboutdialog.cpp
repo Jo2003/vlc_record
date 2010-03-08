@@ -47,6 +47,22 @@ CAboutDialog::~CAboutDialog()
 }
 
 /* -----------------------------------------------------------------\
+|  Method: ConnectSettings
+|  Begin: 08.03.2010 / 14:14:44
+|  Author: Jo2003
+|  Description: connect settings with splash options ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CAboutDialog::ConnectSettings(CSettingsDlg *pSet)
+{
+   ui->checkDontShowOnStartup->setChecked(pSet->DisableSplashScreen());
+   connect (ui->checkDontShowOnStartup, SIGNAL(clicked(bool)), pSet, SLOT(slotSplashStateChgd(bool)));
+}
+
+/* -----------------------------------------------------------------\
 |  Method: changeEvent
 |  Begin: 18.01.2010 / 16:15:15
 |  Author: Jo2003

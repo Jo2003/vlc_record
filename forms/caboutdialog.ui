@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>332</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>About ...</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="vlc-record.qrc">
+   <iconset resource="../vlc-record.qrc">
     <normaloff>:/app/tv</normaloff>:/app/tv</iconset>
   </property>
   <property name="locale">
@@ -42,6 +42,13 @@ p, li { white-space: pre-wrap; }
      </property>
      <property name="openExternalLinks">
       <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkDontShowOnStartup">
+     <property name="text">
+      <string>Don't show on startup</string>
      </property>
     </widget>
    </item>
@@ -85,7 +92,7 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <resources>
-  <include location="vlc-record.qrc"/>
+  <include location="../vlc-record.qrc"/>
  </resources>
  <connections>
   <connection>

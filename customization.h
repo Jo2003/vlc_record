@@ -24,6 +24,11 @@
    #define COMPANY_LINK \
       "<a href='http://www.whatever.com'>" COMPANY_NAME "</a>"
 */
+#elif defined _CUST_RUSS_SERVICES
+   #define COMPANY_NAME "Russian Services"
+   #define VERSION_APPENDIX " rs"
+   #define COMPANY_LINK \
+            "<a href='http://www.russian-services.com/tvshop'>" COMPANY_NAME "</a>"
 #else
    #define COMPANY_NAME "Kartina.tv"
    #define VERSION_APPENDIX

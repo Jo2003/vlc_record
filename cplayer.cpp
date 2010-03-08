@@ -15,6 +15,10 @@
 // log file functions ...
 extern CLogFile VlcLog;
 
+const char *CPlayer::pAspectRatio[] = {
+   "4:3","16:9","16:10","1:1", "5:4", "2,21"
+};
+
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
 |  Begin: 24.02.2010 / 12:17:51
@@ -55,6 +59,12 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    // do periodical logging ...
    connect(&poller, SIGNAL(timeout()), this, SLOT(slotLibVLCLog()));
 
+   // fill aspect ratio box ...
+   for(uint i = 0; i < sizeof(pAspectRatio) / sizeof(const char *); i++)
+   {
+      ui->cbxAspect->addItem(pAspectRatio[i]);
+   }
+
    poller.start(1000);
 }
 
@@ -86,6 +96,7 @@ CPlayer::~CPlayer()
 \----------------------------------------------------------------- */
 void CPlayer::setPlugInPath(const QString &sPath)
 {
+   mInfo(tr("Set PlugIn path to '%1'").arg(sPath));
    sPlugInPath = sPath;
 }
 
@@ -216,6 +227,9 @@ int CPlayer::initPlayer(QStringList &slArgs)
    {
       slArgs << QString("--plugin-path=\"%1\"").arg(sPlugInPath);
    }
+
+   // add hotkeys ...
+   slArgs << "--vout-event=3";
 
    // fill vlcArgs struct ...
    createArgs(slArgs, args);
@@ -477,6 +491,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
 
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
+   // QString     sMrl  = "h:/Documents/Videos/BR-test.ts";
 
    // get player arguments ...
    QStringList lArgs = sCmdLine.mid(sCmdLine.indexOf(";;", 0))
@@ -722,6 +737,92 @@ void CPlayer::slotLibVLCLog()
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_cbxAspect_currentIndexChanged
+|  Begin: 08.03.2010 / 09:55:10
+|  Author: Jo2003
+|  Description: set new aspect ration ...
+|
+|  Parameters: new aspect ratio as string ...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
+{
+   if (pMediaPlayer)
+   {
+      // reset exception stuff ...
+      libvlc_exception_clear(&vlcExcpt);
+
+      // set new aspect ratio ...
+      libvlc_video_set_aspect_ratio(pMediaPlayer, str.toAscii().data(), &vlcExcpt);
+
+      raise(&vlcExcpt);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotToggleFullScreen
+|  Begin: 08.03.2010 / 09:55:10
+|  Author: Jo2003
+|  Description: toggle fullscreen mode ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+int CPlayer::slotToggleFullScreen()
+{
+   int iRV = -1;
+
+   if (pMediaPlayer)
+   {
+      // reset exception stuff ...
+      libvlc_exception_clear(&vlcExcpt);
+
+      // set new aspect ratio ...
+      libvlc_toggle_fullscreen (pMediaPlayer, &vlcExcpt);
+
+      iRV = raise(&vlcExcpt);
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotToggleAspectRatio
+|  Begin: 08.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: switch aspect ratio to next one ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+int CPlayer::slotToggleAspectRatio()
+{
+   int iRV = -1;
+   if (pMediaPlayer)
+   {
+      int idx = ui->cbxAspect->currentIndex();
+      idx ++;
+
+      // if end reached, start with index 0 ...
+      if (idx >= ui->cbxAspect->count())
+      {
+         idx = 0;
+      }
+
+      // set new aspect ratio ...
+      ui->cbxAspect->setCurrentIndex(idx);
+
+      iRV = 0;
+   }
+
+   return iRV;
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+
