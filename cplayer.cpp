@@ -16,7 +16,7 @@
 extern CLogFile VlcLog;
 
 const char *CPlayer::pAspectRatio[] = {
-   "4:3","16:9","16:10","1:1", "5:4", "2,21"
+   "4:3","16:9","16:10","1:1", "5:4","2.35"
 };
 
 /* -----------------------------------------------------------------\
@@ -229,7 +229,7 @@ int CPlayer::initPlayer(QStringList &slArgs)
    }
 
    // add hotkeys ...
-   slArgs << "--vout-event=3";
+   // slArgs << "--vout-event=3";
 
    // fill vlcArgs struct ...
    createArgs(slArgs, args);

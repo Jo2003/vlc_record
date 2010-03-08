@@ -124,10 +124,12 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(slotToggleFullScreen()));
    connect (this, SIGNAL(sigToggleAspectRatio()), ui->player, SLOT(slotToggleAspectRatio()));
 
+   /*
    // get vlc path from settings and try to create plugin path ...
    QFileInfo info(Settings.GetVLCPath());
    QString   sPlugs = QString("%1/plugins").arg(info.absolutePath());
    ui->player->setPlugInPath(sPlugs);
+   */
 
 #endif /* INCLUDE_LIBVLC */
 
@@ -638,7 +640,7 @@ void Recorder::keyPressEvent(QKeyEvent *event)
       // ignore escape key ...
       event->ignore();
       break;
-/*
+
    case Qt::Key_A:
       emit sigToggleAspectRatio();
       event->accept();
@@ -647,9 +649,8 @@ void Recorder::keyPressEvent(QKeyEvent *event)
       emit sigToggleFullscreen();
       event->accept();
       break;
-*/
    default:
-      QDialog::keyPressEvent(event);
+      event->accept();
       break;
    }
 }
