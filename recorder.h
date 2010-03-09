@@ -167,8 +167,8 @@ private slots:
     void slotSetSServer (int iSrv);
     void slotTimerRecActive ();
     void slotTimerRecordDone ();
-    void slotVlcStarts ();
-    void slotVlcEnds ();
+    void slotVlcStarts (int iState);
+    void slotVlcEnds (int iState);
     void slotShutdown ();
     void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
     void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);

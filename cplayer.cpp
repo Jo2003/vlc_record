@@ -228,8 +228,8 @@ int CPlayer::initPlayer(QStringList &slArgs)
       slArgs << QString("--plugin-path=\"%1\"").arg(sPlugInPath);
    }
 
-   // add hotkeys ...
-   // slArgs << "--vout-event=3";
+   // don't catch key press events ... (should work in patched libVLC)
+   slArgs << "--vout-event=3";
 
    // fill vlcArgs struct ...
    createArgs(slArgs, args);

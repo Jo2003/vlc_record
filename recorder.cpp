@@ -154,8 +154,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&trayIcon,   SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
    connect (this,        SIGNAL(sigHide()), &trayIcon, SLOT(show()));
    connect (this,        SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
-   connect (&vlcCtrl,    SIGNAL(sigVlcStarts()), this, SLOT(slotVlcStarts()));
-   connect (&vlcCtrl,    SIGNAL(sigVlcEnds()), this, SLOT(slotVlcEnds()));
+   connect (&vlcCtrl,    SIGNAL(sigVlcStarts(int)), this, SLOT(slotVlcStarts(int)));
+   connect (&vlcCtrl,    SIGNAL(sigVlcEnds(int)), this, SLOT(slotVlcEnds(int)));
    connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
    connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
@@ -870,7 +870,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       // start player if we have a command line ...
       if (sCmdLine != "")
       {
-         vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer());
+         vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
       }
 
       // successfully started ?
@@ -923,7 +923,7 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
    // start player if we have a command line ...
    if (sCmdLine != "")
    {
-      vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer());
+      vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
    }
 
    // successfully started ?
@@ -1814,7 +1814,7 @@ void Recorder::slotTimerRecActive()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotVlcEnds()
+void Recorder::slotVlcEnds(int iState)
 {
    if (ePlayState != IncPlay::PS_STOP)
    {
@@ -1834,10 +1834,15 @@ void Recorder::slotVlcEnds()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotVlcStarts()
+void Recorder::slotVlcStarts(int iState)
 {
    mInfo(tr("vlcCtrl reports: vlc player active!"));
-   // bVlcRuns = true;
+
+   if (ePlayState != (IncPlay::ePlayStates)iState)
+   {
+      ePlayState = (IncPlay::ePlayStates)iState;
+   }
+
    TouchPlayCtrlBtns();
 }
 

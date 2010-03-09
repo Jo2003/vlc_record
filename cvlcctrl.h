@@ -58,7 +58,10 @@ public:
    virtual ~CVlcCtrl();
 
    void    SetProgPath(const QString &str);
-   Q_PID   start (const QString& sCmdLine, int iRunTime = -1, bool bDetach = false);
+
+   Q_PID   start (const QString& sCmdLine, int iRunTime = -1, bool bDetach = false,
+                  IncPlay::ePlayStates req = IncPlay::PS_WTF);
+
    void    CancelTimer ();
    void    SetTimer (uint uiTime);
    void    stop ();
@@ -86,6 +89,7 @@ private:
    QString    sFrcMx;
    bool       bUseLibVlc;
    IncPlay::ePlayStates libVlcPlayState;
+   IncPlay::ePlayStates reqState;
 
 private slots:
    void slotStateChanged (QProcess::ProcessState newState);
@@ -95,8 +99,8 @@ public slots:
    void slotLibVlcStateChange (int ps);
 
 signals:
-   void sigVlcEnds ();
-   void sigVlcStarts ();
+   void sigVlcEnds (int iState);
+   void sigVlcStarts (int iState);
    void sigLibVlcPlayMedia (const QString &str);
    void sigLibVlcStop ();
 

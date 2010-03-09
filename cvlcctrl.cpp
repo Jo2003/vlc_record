@@ -32,6 +32,7 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
    pTranslit         = NULL;
    bUseLibVlc        = false;
    libVlcPlayState   = IncPlay::PS_WTF;
+   reqState          = IncPlay::PS_WTF;
 
    if (path != "")
    {
@@ -223,9 +224,15 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
 |  Returns: <= 0 --> error starting vlc
 |           else --> process id
 \----------------------------------------------------------------- */
-Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime, bool bDetach)
+Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime, bool bDetach, IncPlay::ePlayStates req)
 {
    Q_PID vlcPid = 0;
+
+   // store what we request ...
+   if (req != IncPlay::PS_WTF)
+   {
+      reqState = req;
+   }
 
    // -------------------------------------------------------
    // use libVLC player ...
@@ -529,11 +536,11 @@ void CVlcCtrl::slotStateChanged(QProcess::ProcessState newState)
    {
    case QProcess::NotRunning:
       mInfo(tr("Player has ended ..."));
-      emit sigVlcEnds();
+      emit sigVlcEnds((int)reqState);
       break;
    case QProcess::Running:
       mInfo(tr("Player was started ..."));
-      emit sigVlcStarts();
+      emit sigVlcStarts((int)reqState);
       break;
    default:
       break;

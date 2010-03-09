@@ -941,7 +941,7 @@ void CTimerRec::slotTimerStreamUrl(QString str)
                                         pSettings->GetBufferTime(), sDst, "ts");
    }
 
-   vlcpid = pVlcCtrl->start(sCmdLine);
+   vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
 
    // successfully started ?
    if (!vlcpid)

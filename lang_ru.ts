@@ -836,49 +836,49 @@ or start time is later than end time!</source>
 <context>
     <name>CVlcCtrl</name>
     <message>
-        <location filename="cvlcctrl.cpp" line="199"/>
+        <location filename="cvlcctrl.cpp" line="200"/>
         <source>Player module &apos;%1&apos; successfully parsed ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="208"/>
-        <location filename="cvlcctrl.cpp" line="266"/>
+        <location filename="cvlcctrl.cpp" line="209"/>
+        <location filename="cvlcctrl.cpp" line="273"/>
         <source>Warning!</source>
         <translation>Внимание!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="208"/>
+        <location filename="cvlcctrl.cpp" line="209"/>
         <source>Sorry! Can&apos;t parse player module!</source>
         <translation>Ой! Не могу разобрать модуль проигрывателя!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="209"/>
+        <location filename="cvlcctrl.cpp" line="210"/>
         <source>Can&apos;t parse player module!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="252"/>
+        <location filename="cvlcctrl.cpp" line="259"/>
         <source>Start player detached using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="267"/>
+        <location filename="cvlcctrl.cpp" line="274"/>
         <source>Player is already running! Do you want to proceed?</source>
         <translation>Плеер уже в работе! Вы хотите продолжиться?</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="531"/>
+        <location filename="cvlcctrl.cpp" line="538"/>
         <source>Player has ended ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="536"/>
+        <location filename="cvlcctrl.cpp" line="542"/>
         <source>Player was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="594"/>
+        <location filename="cvlcctrl.cpp" line="600"/>
         <source>libVLC reports new state %1</source>
         <translation></translation>
     </message>
@@ -887,18 +887,18 @@ or start time is later than end time!</source>
         <translation type="obsolete">Player уже в работе!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="287"/>
+        <location filename="cvlcctrl.cpp" line="294"/>
         <source>Start player using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="435"/>
+        <location filename="cvlcctrl.cpp" line="442"/>
         <source>Muxing forced to &apos;%1&apos;!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="453"/>
+        <location filename="cvlcctrl.cpp" line="460"/>
         <source>Remove double slash in target path ...</source>
         <translation></translation>
     </message>
@@ -954,7 +954,7 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="677"/>
-        <location filename="recorder.cpp" line="2006"/>
+        <location filename="recorder.cpp" line="2011"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
@@ -991,34 +991,34 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2002"/>
+        <location filename="recorder.cpp" line="2007"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation type="unfinished">VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2116"/>
-        <location filename="recorder.cpp" line="2343"/>
+        <location filename="recorder.cpp" line="2121"/>
+        <location filename="recorder.cpp" line="2348"/>
         <source>Remove from favourites</source>
         <translation>Удалить от фаворитов</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2124"/>
+        <location filename="recorder.cpp" line="2129"/>
         <source>Add to favourites</source>
         <translation>Добавить к фаворитам</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2169"/>
+        <location filename="recorder.cpp" line="2174"/>
         <source>Note</source>
         <translation>Кстати</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2170"/>
+        <location filename="recorder.cpp" line="2175"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Максимальное число фаворитов (%1) достигло.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2370"/>
+        <location filename="recorder.cpp" line="2375"/>
         <source>Active stream server is No. %1</source>
         <translation></translation>
     </message>
