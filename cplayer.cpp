@@ -15,10 +15,6 @@
 // log file functions ...
 extern CLogFile VlcLog;
 
-const char *CPlayer::pAspectRatio[] = {
-   "4:3","16:9","16:10","1:1", "5:4","2.35"
-};
-
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
 |  Begin: 24.02.2010 / 12:17:51
@@ -53,17 +49,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    // connect volume slider with volume change function ...
    connect(ui->volSlider, SIGNAL(sliderMoved(int)), this, SLOT(slotChangeVolume(int)));
 
-   // connect state change signal with state label in dialog ...
-   connect(this, SIGNAL(sigStateChg(QString)), ui->labState, SLOT(setText(QString)));
-
    // do periodical logging ...
    connect(&poller, SIGNAL(timeout()), this, SLOT(slotLibVLCLog()));
-
-   // fill aspect ratio box ...
-   for(uint i = 0; i < sizeof(pAspectRatio) / sizeof(const char *); i++)
-   {
-      ui->cbxAspect->addItem(pAspectRatio[i]);
-   }
 
    poller.start(1000);
 }
@@ -617,37 +604,30 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
          {
          case libvlc_Opening:
             emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
-            emit pPlayer->sigStateChg(tr("OPENING"));
             break;
 
          case libvlc_Buffering:
             emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
-            emit pPlayer->sigStateChg(tr("BUFFERING"));
             break;
 
          case libvlc_Playing:
             emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
-            emit pPlayer->sigStateChg(tr("PLAYING"));
             break;
 
          case libvlc_Paused:
             emit pPlayer->sigPlayState((int)IncPlay::PS_PAUSE);
-            emit pPlayer->sigStateChg(tr("PAUSED"));
             break;
 
          case libvlc_Stopped:
             emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
-            emit pPlayer->sigStateChg(tr("STOPPED"));
             break;
 
          case libvlc_Ended:
             emit pPlayer->sigPlayState((int)IncPlay::PS_END);
-            emit pPlayer->sigStateChg(tr("ENDED"));
             break;
 
          case libvlc_Error:
             emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
-            emit pPlayer->sigStateChg(tr("ERROR"));
             break;
 
          default:
@@ -659,7 +639,6 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
    // player error event ...
    case libvlc_MediaPlayerEncounteredError:
       emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
-      emit pPlayer->sigStateChg(tr("ERROR"));
       break;
 
    default:

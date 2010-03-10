@@ -15,6 +15,7 @@
 #ifdef _CUST_RUSS_TELEK
    #define COMPANY_NAME "RussianTelek.com"
    #define VERSION_APPENDIX " rt"
+   #define _IS_OEM
    #define COMPANY_LINK \
       "<a href='http://www.russiantelek.com'>" COMPANY_NAME "</a>"
 /*
@@ -27,6 +28,7 @@
 #elif defined _CUST_RUSS_SERVICES
    #define COMPANY_NAME "Russian Services"
    #define VERSION_APPENDIX " rs"
+   #define _IS_OEM
    #define COMPANY_LINK \
             "<a href='http://www.russian-services.com/tvshop'>" COMPANY_NAME "</a>"
 #else

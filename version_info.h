@@ -31,14 +31,17 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".21 BETA" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".22" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
-| - patched d3d dll so libVLC will not catch events
-| - better state machine to enable / disable buttons as needed
+| 2010-03-10: Version x.22
+| - patched d3d dll so libVLC will not catch keypress events
 | - hotkeys for aspect ratio and full screen (all for 2.xx)
+| - better state machine to enable / disable buttons as needed
+| - new state display
+| - remove ugli player state from player widget
 |
 | 2010-03-05: Version x.20 BETA
 | - try to integrate vlc player into gui using libVlc

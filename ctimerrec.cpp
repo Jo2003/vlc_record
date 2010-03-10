@@ -815,7 +815,6 @@ void CTimerRec::slotRecTimer()
    {
       if (JobList.isEmpty())
       {
-         emit sigSendStatusMsg(tr("Timer Ready"), QString("white"));
          emit sigRecDone();
       }
       else
@@ -859,7 +858,6 @@ void CTimerRec::slotRecTimer()
                   }
 
                   emit sigRecDone();
-                  emit sigSendStatusMsg(tr("Timer Ready"), QString("white"));
 
                   // shut we shut down the system ... ?
                   if (JobList.isEmpty()                     // all done ...
@@ -875,8 +873,7 @@ void CTimerRec::slotRecTimer()
                if (((start - TIMER_STBY_TIME) <= now) && ((*it).eState == rec::REC_READY))
                {
                   // set timer to stby ...
-                  emit sigRecActive();
-                  emit sigSendStatusMsg(tr("Timer StBY"), QString("#fc0"));
+                  emit sigRecActive((int)IncPlay::PS_TIMER_STBY);
                   (*it).eState = rec::REC_STBY;
 
                   // stop any running vlc ...
@@ -894,7 +891,7 @@ void CTimerRec::slotRecTimer()
                {
                   // start record ...
                   mInfo(tr("Start record #%1 (%2)!").arg((*it).id).arg((*it).sName));
-                  emit sigSendStatusMsg(tr("Record Active"), QString("red"));
+                  emit sigRecActive((int)IncPlay::PS_TIMER_RECORD);
                   (*it).eState = rec::REC_RUNNING;
                   itActJob     = it;
                   pTrigger->TriggerRequest(Kartina::REQ_TIMERREC, (*it).cid);

@@ -20,7 +20,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/caboutdialog.ui" line="51"/>
         <source>Don&apos;t show on startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Start nicht mehr anzeigen</translation>
     </message>
     <message>
         <location filename="forms/caboutdialog.ui" line="73"/>
@@ -38,53 +38,66 @@ p, li { white-space: pre-wrap; }
         <translation>Autor:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="109"/>
+        <location filename="caboutdialog.cpp" line="110"/>
+        <source>Distributed by:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="112"/>
         <source>Inspired by:</source>
         <translation>Für:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="113"/>
-        <source>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; sent from %1.</source>
-        <translation>&lt;b&gt;vlc-record&lt;/b&gt; - ein Tool, um Programm-Streams von %1 &lt;b&gt;anzusehen und mitzuschneiden&lt;/b&gt;.</translation>
+        <location filename="caboutdialog.cpp" line="116"/>
+        <source>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
+        <oldsource>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1.</oldsource>
+        <translation>&lt;b&gt;vlc-record&lt;/b&gt; - ein Tool zum &lt;b&gt;ansehen und mitschneiden&lt;/b&gt; von Programm-Streams von %1%2</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="114"/>
-        <source>To do this it will authenticate you with username and password at %1.</source>
+        <location filename="caboutdialog.cpp" line="118"/>
+        <source> (click to buy a subscription).</source>
+        <oldsource> (Click to buy a subscription).</oldsource>
+        <translation>.</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="122"/>
+        <source>To do this you will need to authorise using username and password provided by %1.</source>
+        <oldsource>To do this it will authenticate you with username and password at %1.</oldsource>
         <translation>Um das zu tun wird es Dich mit Benutzername und Passwort bei %1 authentifizieren.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="115"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>It then will start the %1 to display (and record) the selected stream.</source>
         <translation>Dann wird es den %1 starten, um den Programm-Stream zu zeigen (und mitzuschneiden).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="116"/>
+        <location filename="caboutdialog.cpp" line="124"/>
         <source>It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.</source>
         <translation>Es unterstützt &lt;b&gt;EPG und TimeShift&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="117"/>
+        <location filename="caboutdialog.cpp" line="125"/>
         <source>For News and Updates please visit my site at %1.</source>
         <oldsource>For News and Updates please visit my site at %1</oldsource>
         <translation>News und Updates findet Ihr auf meiner Homepage: %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="118"/>
+        <location filename="caboutdialog.cpp" line="126"/>
         <source>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</source>
         <translation>&lt;b&gt;vlc-record ist Freeware!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="119"/>
+        <location filename="caboutdialog.cpp" line="127"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Aber ... wenn Dir das Programm gefällt, unterstütze mich: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="121"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <translation>Spende ein paar $ und / oder &amp;euro; bei PayPal für meine Arbeit.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="122"/>
+        <location filename="caboutdialog.cpp" line="130"/>
         <source>Thank you,</source>
         <translation>Danke,</translation>
     </message>
@@ -238,12 +251,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="99"/>
+        <location filename="cplayer.cpp" line="86"/>
         <source>Set PlugIn path to &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="500"/>
+        <location filename="cplayer.cpp" line="487"/>
         <source>starting libVLC play of:
   --&gt; %2
   --&gt; with following arguments: %1</source>
@@ -253,55 +266,47 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="588"/>
+        <location filename="cplayer.cpp" line="575"/>
         <source>LibVLC Error!</source>
         <translation>libVLC Fehler!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="589"/>
+        <location filename="cplayer.cpp" line="576"/>
         <source>LibVLC reports following error:
 %1</source>
         <translation>LibVLC meldet folgenden Fehler:
 %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="620"/>
         <source>OPENING</source>
-        <translation>ÖFFNE</translation>
+        <translation type="obsolete">ÖFFNE</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="625"/>
         <source>BUFFERING</source>
-        <translation>PUFFERN</translation>
+        <translation type="obsolete">PUFFERN</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="630"/>
         <source>PLAYING</source>
-        <translation>PLAY</translation>
+        <translation type="obsolete">PLAY</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="635"/>
         <source>PAUSED</source>
-        <translation>PAUSE</translation>
+        <translation type="obsolete">PAUSE</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="640"/>
         <source>STOPPED</source>
-        <translation>STOP</translation>
+        <translation type="obsolete">STOP</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="645"/>
         <source>ENDED</source>
-        <translation>ENDE</translation>
+        <translation type="obsolete">ENDE</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="650"/>
-        <location filename="cplayer.cpp" line="662"/>
         <source>ERROR</source>
-        <translation>FEHLER</translation>
+        <translation type="obsolete">FEHLER</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="718"/>
+        <location filename="cplayer.cpp" line="697"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <oldsource>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
@@ -312,6 +317,46 @@ p, li { white-space: pre-wrap; }
         <location filename="forms/cplayer.ui" line="14"/>
         <source>Form</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="55"/>
+        <source>Aspect Ratio: </source>
+        <translation>Seitenverhältnis: </translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="63"/>
+        <source>4:3</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="68"/>
+        <source>16:9</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="73"/>
+        <source>16:10</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="78"/>
+        <source>1:1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="83"/>
+        <source>5:4</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="88"/>
+        <source>2.35</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/cplayer.ui" line="109"/>
+        <source>Volume: </source>
+        <translation>Lautstärke:</translation>
     </message>
     <message>
         <source>Volume:</source>
@@ -397,6 +442,11 @@ p, li { white-space: pre-wrap; }
         <translation>Benutzer: </translation>
     </message>
     <message>
+        <location filename="forms/csettingsdlg.ui" line="33"/>
+        <source> Subscription details provided by %1 </source>
+        <translation> %1 Zugangsdaten </translation>
+    </message>
+    <message>
         <location filename="forms/csettingsdlg.ui" line="49"/>
         <location filename="forms/csettingsdlg.ui" line="70"/>
         <location filename="forms/csettingsdlg.ui" line="256"/>
@@ -446,10 +496,9 @@ p, li { white-space: pre-wrap; }
         <translation>Zugang</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="33"/>
         <source> %1 Account </source>
         <oldsource> Kartina.tv Account </oldsource>
-        <translation>%1 Zugangsdaten</translation>
+        <translation type="obsolete">%1 Zugangsdaten</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="90"/>
@@ -632,53 +681,37 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="818"/>
-        <location filename="ctimerrec.cpp" line="862"/>
-        <source>Timer Ready</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctimerrec.cpp" line="844"/>
+        <location filename="ctimerrec.cpp" line="843"/>
         <source>Delete old entry #%1 (%2) from Joblist.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="851"/>
+        <location filename="ctimerrec.cpp" line="850"/>
         <source>Stopping timer record #%1 (%2). End time reached!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="879"/>
-        <source>Timer StBY</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctimerrec.cpp" line="888"/>
+        <location filename="ctimerrec.cpp" line="885"/>
         <source>Record #%1 (%2) starts soon. Set timer to standby!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="896"/>
+        <location filename="ctimerrec.cpp" line="893"/>
         <source>Start record #%1 (%2)!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="897"/>
-        <source>Record Active</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctimerrec.cpp" line="949"/>
+        <location filename="ctimerrec.cpp" line="946"/>
         <source>Can&apos;t start Player!</source>
         <translation>Kann den Player nicht starten!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="953"/>
+        <location filename="ctimerrec.cpp" line="950"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="949"/>
+        <location filename="ctimerrec.cpp" line="946"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
@@ -687,7 +720,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Kann den VLC Mediaplayer nicht starten!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="969"/>
+        <location filename="ctimerrec.cpp" line="966"/>
         <source>All records done. Shutdown system using command line:
   --&gt; %1</source>
         <translation></translation>
@@ -907,130 +940,130 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="495"/>
-        <location filename="recorder.cpp" line="515"/>
+        <location filename="recorder.cpp" line="500"/>
+        <location filename="recorder.cpp" line="520"/>
         <source>Mon</source>
         <translation>Mo.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="496"/>
-        <location filename="recorder.cpp" line="516"/>
+        <location filename="recorder.cpp" line="501"/>
+        <location filename="recorder.cpp" line="521"/>
         <source>Tue</source>
         <translation>Di.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="497"/>
-        <location filename="recorder.cpp" line="517"/>
+        <location filename="recorder.cpp" line="502"/>
+        <location filename="recorder.cpp" line="522"/>
         <source>Wed</source>
         <translation>Mi.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="498"/>
-        <location filename="recorder.cpp" line="518"/>
+        <location filename="recorder.cpp" line="503"/>
+        <location filename="recorder.cpp" line="523"/>
         <source>Thu</source>
         <translation>Do.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="499"/>
-        <location filename="recorder.cpp" line="519"/>
+        <location filename="recorder.cpp" line="504"/>
+        <location filename="recorder.cpp" line="524"/>
         <source>Fri</source>
         <translation>Fr.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="500"/>
-        <location filename="recorder.cpp" line="520"/>
+        <location filename="recorder.cpp" line="505"/>
+        <location filename="recorder.cpp" line="525"/>
         <source>Sat</source>
         <translation>Sa.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="509"/>
-        <location filename="recorder.cpp" line="521"/>
+        <location filename="recorder.cpp" line="514"/>
+        <location filename="recorder.cpp" line="526"/>
         <source>Sun</source>
         <translation>So.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="672"/>
+        <location filename="recorder.cpp" line="677"/>
         <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
         <translation>Der VLC Mediaplayer läuft noch.&lt;br /&gt;&lt;b&gt;Wenn Du vlc-record jetzt schließt, wird auch der VLC Player geschlossen.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du das willst?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="677"/>
-        <location filename="recorder.cpp" line="2011"/>
+        <location filename="recorder.cpp" line="682"/>
+        <location filename="recorder.cpp" line="2004"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="774"/>
+        <location filename="recorder.cpp" line="779"/>
         <source>Program:</source>
         <translation>Sendung:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="775"/>
+        <location filename="recorder.cpp" line="780"/>
         <source>Start:</source>
         <translation>Beginn:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="776"/>
+        <location filename="recorder.cpp" line="781"/>
         <source>End:</source>
         <translation>Ende:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1821"/>
+        <location filename="recorder.cpp" line="1833"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1839"/>
+        <location filename="recorder.cpp" line="1851"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2007"/>
+        <location filename="recorder.cpp" line="2000"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
-        <translation type="unfinished">Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
+        <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2121"/>
-        <location filename="recorder.cpp" line="2348"/>
+        <location filename="recorder.cpp" line="2114"/>
+        <location filename="recorder.cpp" line="2341"/>
         <source>Remove from favourites</source>
         <translation>Von Favoriten entfernen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2129"/>
+        <location filename="recorder.cpp" line="2122"/>
         <source>Add to favourites</source>
         <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2174"/>
+        <location filename="recorder.cpp" line="2167"/>
         <source>Note</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2175"/>
+        <location filename="recorder.cpp" line="2168"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Maximale Anzahl an Favoriten (%1) erreicht.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2375"/>
+        <location filename="recorder.cpp" line="2368"/>
         <source>Active stream server is No. %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="880"/>
-        <location filename="recorder.cpp" line="933"/>
+        <location filename="recorder.cpp" line="885"/>
+        <location filename="recorder.cpp" line="940"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="885"/>
-        <location filename="recorder.cpp" line="937"/>
+        <location filename="recorder.cpp" line="892"/>
+        <location filename="recorder.cpp" line="946"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1098"/>
-        <location filename="recorder.cpp" line="1601"/>
+        <location filename="recorder.cpp" line="1107"/>
+        <location filename="recorder.cpp" line="1613"/>
         <source>%1 sends following url:
   --&gt; %2</source>
         <translation></translation>
@@ -1044,50 +1077,50 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Timer Record aktiv!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1784"/>
+        <location filename="recorder.cpp" line="1796"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1802"/>
+        <location filename="recorder.cpp" line="1814"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="454"/>
-        <location filename="recorder.cpp" line="528"/>
+        <location filename="recorder.cpp" line="459"/>
+        <location filename="recorder.cpp" line="533"/>
         <source>1 week backward</source>
         <translation>1 Woche zurück</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="388"/>
+        <location filename="recorder.cpp" line="393"/>
         <source>vlc-record - Click to activate!</source>
         <translation>vlc-record - Klicken zum aktivieren!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="486"/>
-        <location filename="recorder.cpp" line="533"/>
+        <location filename="recorder.cpp" line="491"/>
+        <location filename="recorder.cpp" line="538"/>
         <source>1 week forward</source>
         <translation>1 Woche nach vorn</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="821"/>
+        <location filename="recorder.cpp" line="826"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="880"/>
-        <location filename="recorder.cpp" line="933"/>
+        <location filename="recorder.cpp" line="885"/>
+        <location filename="recorder.cpp" line="940"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1031"/>
+        <location filename="recorder.cpp" line="1040"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1032"/>
+        <location filename="recorder.cpp" line="1041"/>
         <source>%1 Client API reports some errors: %2</source>
         <oldsource>Kartina.tv Client API reports some errors: %1</oldsource>
         <translation>Die %1 Client API meldet folgenden Fehler: %2</translation>
@@ -1271,44 +1304,38 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="826"/>
-        <location filename="forms/recorder_inc.ui" line="874"/>
-        <source>Timer Ready</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/recorder.ui" line="868"/>
-        <location filename="forms/recorder_inc.ui" line="916"/>
+        <location filename="forms/recorder.ui" line="899"/>
+        <location filename="forms/recorder_inc.ui" line="947"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="884"/>
-        <location filename="forms/recorder_inc.ui" line="932"/>
+        <location filename="forms/recorder.ui" line="915"/>
+        <location filename="forms/recorder_inc.ui" line="963"/>
         <source>Alt+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="909"/>
-        <location filename="forms/recorder_inc.ui" line="957"/>
+        <location filename="forms/recorder.ui" line="940"/>
+        <location filename="forms/recorder_inc.ui" line="988"/>
         <source>About ...</source>
         <translation>Über ...</translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="925"/>
-        <location filename="forms/recorder_inc.ui" line="973"/>
+        <location filename="forms/recorder.ui" line="956"/>
+        <location filename="forms/recorder_inc.ui" line="1004"/>
         <source>Alt+I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="950"/>
-        <location filename="forms/recorder_inc.ui" line="998"/>
+        <location filename="forms/recorder.ui" line="981"/>
+        <location filename="forms/recorder_inc.ui" line="1029"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="966"/>
-        <location filename="forms/recorder_inc.ui" line="1014"/>
+        <location filename="forms/recorder.ui" line="997"/>
+        <location filename="forms/recorder_inc.ui" line="1045"/>
         <source>Alt+Q</source>
         <translation></translation>
     </message>

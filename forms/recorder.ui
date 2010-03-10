@@ -814,19 +814,6 @@ background-attachment: fixed;
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QLabel" name="labTimerInfo">
-           <property name="styleSheet">
-            <string notr="true">QLabel#labTimerInfo {
-font-weight: bold;
-color: white;
-}</string>
-           </property>
-           <property name="text">
-            <string>Timer Ready</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
@@ -838,6 +825,50 @@ color: white;
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QFrame" name="frameState">
+        <property name="frameShape">
+         <enum>QFrame::Panel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="lineWidth">
+         <number>2</number>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="labState">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../vlc-record.qrc">:/lcd/blank</pixmap>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>136</width>
           <height>20</height>
          </size>
         </property>

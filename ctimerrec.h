@@ -122,8 +122,7 @@ private:
 
 signals:
    void sigRecDone ();
-   void sigRecActive ();
-   void sigSendStatusMsg (const QString &sMsg, const QString &sColor);
+   void sigRecActive (int);
    void sigShutdown ();
 
 private slots:

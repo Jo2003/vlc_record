@@ -16,6 +16,7 @@ namespace IncPlay
 {
    enum ePlayStates
    {
+      PS_READY,
       PS_OPEN,
       PS_BUFFER,
       PS_PLAY,
@@ -25,6 +26,7 @@ namespace IncPlay
       PS_ERROR,
       PS_RECORD,
       PS_TIMER_RECORD,
+      PS_TIMER_STBY,
       PS_WTF    = 255 // ;-)
    };
 }

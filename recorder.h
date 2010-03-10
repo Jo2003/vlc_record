@@ -111,6 +111,7 @@ private:
     QMenu                          favContext;
     CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates           ePlayState;
+    QMap<IncPlay::ePlayStates, QPixmap> mStateMap;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -129,6 +130,8 @@ protected:
     void CleanContextMenu ();
     int  CheckCookie (const QString &cookie);
     int  AllowAction (IncPlay::ePlayStates newState);
+    void FillStateMap ();
+    QPixmap& GetStatePixmap (IncPlay::ePlayStates state);
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -165,24 +168,25 @@ private slots:
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);
     void slotSetSServer (int iSrv);
-    void slotTimerRecActive ();
+    void slotTimerRecActive (int iState);
     void slotTimerRecordDone ();
     void slotVlcStarts (int iState);
     void slotVlcEnds (int iState);
     void slotShutdown ();
-    void slotTimerStatusMsg (const QString &sMsg, const QString &sColor);
     void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
     void slotChanListContext (const QPoint &pt);
     void slotChgFavourites (QAction *pAct);
     void slotHandleFavAction (QAction *pAct);
     void slotFavBtnContext (const QPoint &pt);
     void slotSplashScreen ();
+    void slotIncPlayState (int);
 
 signals:
     void sigShow ();
     void sigHide ();
     void sigToggleFullscreen ();
     void sigToggleAspectRatio ();
+    void sigLCDStateChange (const QPixmap &pic);
 };
 
 #endif /* __011910__RECORDER_H */

@@ -85,7 +85,6 @@ private:
    libvlc_log_t           *pLibVlcLog;
    uint                    uiVerboseLevel;
    QString                 sPlugInPath;
-   static const char      *pAspectRatio[];
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);
@@ -101,7 +100,6 @@ public slots:
    int  slotToggleAspectRatio ();
 
 signals:
-   void sigStateChg(const QString &str);
    void sigPlayState (int ps);
 };
 

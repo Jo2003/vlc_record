@@ -30,7 +30,7 @@
        <item row="0" column="0" colspan="2">
         <widget class="QGroupBox" name="groupAccount">
          <property name="title">
-          <string> %1 Account </string>
+          <string> Subscription details provided by %1 </string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
@@ -112,7 +112,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="vlc-record.qrc">
+             <iconset resource="../vlc-record.qrc">
               <normaloff>:/app/save</normaloff>:/app/save</iconset>
             </property>
             <property name="iconSize">
@@ -377,7 +377,7 @@
               <string>en</string>
              </property>
              <property name="icon">
-              <iconset resource="vlc-record.qrc">
+              <iconset resource="../vlc-record.qrc">
                <normaloff>:/flags/en</normaloff>:/flags/en</iconset>
              </property>
             </item>
@@ -386,7 +386,7 @@
               <string>de</string>
              </property>
              <property name="icon">
-              <iconset resource="vlc-record.qrc">
+              <iconset resource="../vlc-record.qrc">
                <normaloff>:/flags/de</normaloff>:/flags/de</iconset>
              </property>
             </item>
@@ -395,7 +395,7 @@
               <string>ru</string>
              </property>
              <property name="icon">
-              <iconset resource="vlc-record.qrc">
+              <iconset resource="../vlc-record.qrc">
                <normaloff>:/flags/ru</normaloff>:/flags/ru</iconset>
              </property>
             </item>
@@ -451,7 +451,7 @@
              <string>&amp;reload Logos</string>
             </property>
             <property name="icon">
-             <iconset resource="vlc-record.qrc">
+             <iconset resource="../vlc-record.qrc">
               <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
             </property>
             <property name="iconSize">
@@ -627,7 +627,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="vlc-record.qrc"/>
+  <include location="../vlc-record.qrc"/>
  </resources>
  <connections>
   <connection>

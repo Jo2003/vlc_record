@@ -55,6 +55,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       pContextAct[i] = NULL;
    }
 
+   FillStateMap();
+
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), LOG_FILE_NAME);
 
    // set this dialog as parent for settings and timerRec ...
@@ -124,6 +126,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(slotToggleFullScreen()));
    connect (this, SIGNAL(sigToggleAspectRatio()), ui->player, SLOT(slotToggleAspectRatio()));
 
+   // get state if libVLC player to change player state display ...
+   connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
+
    /*
    // get vlc path from settings and try to create plugin path ...
    QFileInfo info(Settings.GetVLCPath());
@@ -149,8 +154,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&KartinaTv,  SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
    connect (&KartinaTv,  SIGNAL(sigSrvForm(QString)), this, SLOT(slotServerForm(QString)));
    connect (&timeRec,    SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
-   connect (&timeRec,    SIGNAL(sigRecActive()), this, SLOT(slotTimerRecActive()));
-   connect (&timeRec,    SIGNAL(sigSendStatusMsg(QString,QString)), this, SLOT(slotTimerStatusMsg(QString,QString)));
+   connect (&timeRec,    SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
    connect (&trayIcon,   SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
    connect (this,        SIGNAL(sigHide()), &trayIcon, SLOT(show()));
    connect (this,        SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
@@ -159,6 +163,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
    connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
+   connect (this, SIGNAL(sigLCDStateChange(QPixmap)), ui->labState, SLOT(setPixmap(QPixmap)));
 
    // set logo path for epg browser and timer record ...
    ui->textEpg->SetLogoDir(sLogoPath);
@@ -878,6 +883,8 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       {
          iRV = -1;
          QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+         ePlayState = IncPlay::PS_ERROR;
+         TouchPlayCtrlBtns();
       }
       else
       {
@@ -931,6 +938,8 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
    {
       iRV = -1;
       QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+      ePlayState = IncPlay::PS_ERROR;
+      TouchPlayCtrlBtns();
    }
    else
    {
@@ -1305,6 +1314,7 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
       ui->pushStop->setEnabled(bEnable);
       break;
    case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
       ui->cbxTimeShift->setEnabled(false);
       ui->pushPlay->setEnabled(false);
       ui->pushRecord->setEnabled(false);
@@ -1317,6 +1327,8 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
       ui->pushStop->setEnabled(false);
       break;
    }
+
+   emit sigLCDStateChange(GetStatePixmap(ePlayState));
 }
 
 /* -----------------------------------------------------------------\
@@ -1797,10 +1809,10 @@ void Recorder::slotTimerRecordDone()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotTimerRecActive()
+void Recorder::slotTimerRecActive (int iState)
 {
    mInfo(tr("timeRec reports: record active!"));
-   ePlayState = IncPlay::PS_TIMER_RECORD;
+   ePlayState = (IncPlay::ePlayStates)iState;
    TouchPlayCtrlBtns();
 }
 
@@ -1844,25 +1856,6 @@ void Recorder::slotVlcStarts(int iState)
    }
 
    TouchPlayCtrlBtns();
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotTimerStatusMsg
-|  Begin: 26.01.2010 / 13:58:25
-|  Author: Jo2003
-|  Description: change record timer status message
-|
-|  Parameters: message, color as string
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotTimerStatusMsg(const QString &sMsg, const QString &sColor)
-{
-   if (ui->labTimerInfo->text() != sMsg)
-   {
-      ui->labTimerInfo->setText(sMsg);
-      ui->labTimerInfo->setStyleSheet(QString(LABEL_STYLE).arg("labTimerInfo").arg(sColor));
-   }
 }
 
 /* -----------------------------------------------------------------\
@@ -2391,31 +2384,38 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
 {
    int iRV = 0;
 
-   if (ePlayState == IncPlay::PS_RECORD)
+   switch (ePlayState)
    {
-      // pending record ...
-      switch (newState)
+   case IncPlay::PS_RECORD:
+      // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       {
-      // requested action stop or new record ...
-      case IncPlay::PS_STOP:
-      case IncPlay::PS_RECORD:
-         // ask for permission ...
-         if (WantToStopRec ())
+         // pending record ...
+         switch (newState)
          {
-            // permission granted ...
-            iRV        = 1;
+            // requested action stop or new record ...
+         case IncPlay::PS_STOP:
+         case IncPlay::PS_RECORD:
+            // ask for permission ...
+            if (WantToStopRec ())
+            {
+               // permission granted ...
+               iRV        = 1;
 
-            // set new state ...
-            ePlayState = newState;
+               // set new state ...
+               ePlayState = newState;
+            }
+            break;
+         default:
+            // all other actions permitted ...
+            break;
          }
-         break;
-      default:
-         // all other actions permitted ...
-         break;
       }
-   }
-   else if (ePlayState == IncPlay::PS_TIMER_RECORD)
-   {
+      // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      break;
+
+   case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
+      // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       if (newState == IncPlay::PS_STOP)
       {
          // ask for permission ...
@@ -2428,15 +2428,19 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
             ePlayState = newState;
          }
       }
-   }
-   else
-   {
+      // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      break;
+
+   default:
+      // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       // don't ask for every fart.
       // Let the user decide what he wants to do!
       iRV        = 1;
 
       // set new state ...
       ePlayState = newState;
+      // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+      break;
    }
 
    return iRV;
@@ -2457,6 +2461,84 @@ void Recorder::slotSplashScreen()
    CAboutDialog dlg(this);
    dlg.ConnectSettings(&Settings);
    dlg.exec();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: FillStateMap
+|  Begin: 10.03.2010 / 14:25:12
+|  Author: Jo2003
+|  Description: fill state map with state images
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::FillStateMap()
+{
+   mStateMap[IncPlay::PS_BUFFER]       = QPixmap(":/lcd/buffer");
+   mStateMap[IncPlay::PS_END]          = QPixmap(":/lcd/end");
+   mStateMap[IncPlay::PS_ERROR]        = QPixmap(":/lcd/error");
+   mStateMap[IncPlay::PS_OPEN]         = QPixmap(":/lcd/open");
+   mStateMap[IncPlay::PS_PAUSE]        = QPixmap(":/lcd/pause");
+   mStateMap[IncPlay::PS_PLAY]         = QPixmap(":/lcd/play");
+   mStateMap[IncPlay::PS_READY]        = QPixmap(":/lcd/ready");
+   mStateMap[IncPlay::PS_RECORD]       = QPixmap(":/lcd/rec");
+   mStateMap[IncPlay::PS_STOP]         = QPixmap(":/lcd/stop");
+   mStateMap[IncPlay::PS_TIMER_RECORD] = QPixmap(":/lcd/timer_rec");
+   mStateMap[IncPlay::PS_TIMER_STBY]   = QPixmap(":/lcd/timer_stby");
+   mStateMap[IncPlay::PS_WTF]          = QPixmap(":/lcd/blank");
+}
+
+/* -----------------------------------------------------------------\
+|  Method: GetStatePixmap
+|  Begin: 10.03.2010 / 14:25:12
+|  Author: Jo2003
+|  Description: get pixmap matching the player state
+|
+|  Parameters: state the pixmap is requested for
+|
+|  Returns: ref. to pixmap
+\----------------------------------------------------------------- */
+QPixmap& Recorder::GetStatePixmap (IncPlay::ePlayStates state)
+{
+   if (!mStateMap.contains(state))
+   {
+      state = IncPlay::PS_WTF;
+   }
+
+   return mStateMap[state];
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotIncPlayState
+|  Begin: 10.03.2010 / 14:07:12
+|  Author: Jo2003
+|  Description: state change of internal player
+|                  --> change state dispaly
+|
+|  Parameters: play state
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotIncPlayState(int iState)
+{
+   switch((IncPlay::ePlayStates)iState)
+   {
+   case IncPlay::PS_PLAY:
+      // might be play, record, timer record -->
+      // therefore use internal state ...
+      emit sigLCDStateChange (GetStatePixmap(ePlayState));
+      break;
+
+   case IncPlay::PS_END:
+      // display "stop" in case of "end" ...
+      emit sigLCDStateChange (GetStatePixmap(ePlayState));
+      break;
+
+   default:
+      emit sigLCDStateChange (GetStatePixmap((IncPlay::ePlayStates)iState));
+      break;
+   }
 }
 
 /************************* History ***************************\
