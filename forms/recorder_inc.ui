@@ -1089,7 +1089,7 @@ background-attachment: fixed;
    <sender>pushQuit</sender>
    <signal>clicked()</signal>
    <receiver>Recorder</receiver>
-   <slot>accept()</slot>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>621</x>

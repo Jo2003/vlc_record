@@ -99,10 +99,12 @@ void CPlayer::setPlugInPath(const QString &sPath)
 \----------------------------------------------------------------- */
 void CPlayer::releasePlayer()
 {
+   // stop player if needed ...
+   stop();
+
    // release player ...
    if (pMediaPlayer)
    {
-      libvlc_media_player_stop (pMediaPlayer, &vlcExcpt);
       libvlc_media_player_release(pMediaPlayer);
       pMediaPlayer = NULL;
    }

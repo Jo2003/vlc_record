@@ -31,11 +31,16 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".22" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".23" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-03-11: Version x.23
+| - bugfix for segfault on program exit if player still is
+|   playing
+|
 | 2010-03-10: Version x.22
 | - patched d3d dll so libVLC will not catch keypress events
 | - hotkeys for aspect ratio and full screen (all for 2.xx)

@@ -256,7 +256,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="487"/>
+        <location filename="cplayer.cpp" line="489"/>
         <source>starting libVLC play of:
   --&gt; %2
   --&gt; with following arguments: %1</source>
@@ -266,12 +266,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="575"/>
+        <location filename="cplayer.cpp" line="577"/>
         <source>LibVLC Error!</source>
         <translation>Ошибка libVLC!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="576"/>
+        <location filename="cplayer.cpp" line="578"/>
         <source>LibVLC reports following error:
 %1</source>
         <translation>Ошибка LibVLC:
@@ -306,7 +306,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">ОШИБКА</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="697"/>
+        <location filename="cplayer.cpp" line="699"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <oldsource>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
@@ -951,131 +951,131 @@ or start time is later than end time!</source>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="500"/>
-        <location filename="recorder.cpp" line="520"/>
+        <location filename="recorder.cpp" line="498"/>
+        <location filename="recorder.cpp" line="518"/>
         <source>Mon</source>
         <translation>Пон.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="501"/>
-        <location filename="recorder.cpp" line="521"/>
+        <location filename="recorder.cpp" line="499"/>
+        <location filename="recorder.cpp" line="519"/>
         <source>Tue</source>
         <translation>Вт.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="502"/>
-        <location filename="recorder.cpp" line="522"/>
+        <location filename="recorder.cpp" line="500"/>
+        <location filename="recorder.cpp" line="520"/>
         <source>Wed</source>
         <translation>Ср.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="503"/>
-        <location filename="recorder.cpp" line="523"/>
+        <location filename="recorder.cpp" line="501"/>
+        <location filename="recorder.cpp" line="521"/>
         <source>Thu</source>
         <translation>Чт.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="504"/>
-        <location filename="recorder.cpp" line="524"/>
+        <location filename="recorder.cpp" line="502"/>
+        <location filename="recorder.cpp" line="522"/>
         <source>Fri</source>
         <translation>Пят.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="505"/>
-        <location filename="recorder.cpp" line="525"/>
+        <location filename="recorder.cpp" line="503"/>
+        <location filename="recorder.cpp" line="523"/>
         <source>Sat</source>
         <translation>Суб.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="514"/>
-        <location filename="recorder.cpp" line="526"/>
+        <location filename="recorder.cpp" line="512"/>
+        <location filename="recorder.cpp" line="524"/>
         <source>Sun</source>
         <translation>Воск.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="677"/>
+        <location filename="recorder.cpp" line="679"/>
         <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
         <translation>VLC Mediaplayer ещё в работае.&lt;br /&gt;&lt;b&gt;Если вы остановите работу VLC-Record, то и VLC-Player закроется.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Уверены ли Вы?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="682"/>
-        <location filename="recorder.cpp" line="2004"/>
+        <location filename="recorder.cpp" line="684"/>
+        <location filename="recorder.cpp" line="1979"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="779"/>
+        <location filename="recorder.cpp" line="781"/>
         <source>Program:</source>
         <translation>Передача:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="780"/>
+        <location filename="recorder.cpp" line="782"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="781"/>
+        <location filename="recorder.cpp" line="783"/>
         <source>End:</source>
         <translation>Окончание:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1107"/>
-        <location filename="recorder.cpp" line="1613"/>
+        <location filename="recorder.cpp" line="1109"/>
+        <location filename="recorder.cpp" line="1615"/>
         <source>%1 sends following url:
   --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1833"/>
+        <location filename="recorder.cpp" line="1835"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1851"/>
+        <location filename="recorder.cpp" line="1853"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2000"/>
+        <location filename="recorder.cpp" line="1975"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2114"/>
-        <location filename="recorder.cpp" line="2341"/>
+        <location filename="recorder.cpp" line="2089"/>
+        <location filename="recorder.cpp" line="2316"/>
         <source>Remove from favourites</source>
         <translation>Удалить от фаворитов</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2122"/>
+        <location filename="recorder.cpp" line="2097"/>
         <source>Add to favourites</source>
         <translation>Добавить к фаворитам</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2167"/>
+        <location filename="recorder.cpp" line="2142"/>
         <source>Note</source>
         <translation>Кстати</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2168"/>
+        <location filename="recorder.cpp" line="2143"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Максимальное число фаворитов (%1) достигло.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2368"/>
+        <location filename="recorder.cpp" line="2343"/>
         <source>Active stream server is No. %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="885"/>
-        <location filename="recorder.cpp" line="940"/>
+        <location filename="recorder.cpp" line="887"/>
+        <location filename="recorder.cpp" line="942"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Невозможно заупстить VLC-Media Player!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="892"/>
-        <location filename="recorder.cpp" line="946"/>
+        <location filename="recorder.cpp" line="894"/>
+        <location filename="recorder.cpp" line="948"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
@@ -1088,50 +1088,50 @@ or start time is later than end time!</source>
         <translation type="obsolete">Идёт запись!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1796"/>
+        <location filename="recorder.cpp" line="1798"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1814"/>
+        <location filename="recorder.cpp" line="1816"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="459"/>
-        <location filename="recorder.cpp" line="533"/>
+        <location filename="recorder.cpp" line="457"/>
+        <location filename="recorder.cpp" line="531"/>
         <source>1 week backward</source>
         <translation>1 неделя назад</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="393"/>
+        <location filename="recorder.cpp" line="391"/>
         <source>vlc-record - Click to activate!</source>
         <translation>vlc-record нажмите для запуска!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="491"/>
-        <location filename="recorder.cpp" line="538"/>
+        <location filename="recorder.cpp" line="489"/>
+        <location filename="recorder.cpp" line="536"/>
         <source>1 week forward</source>
         <translation>1 неделя вперед</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="826"/>
+        <location filename="recorder.cpp" line="828"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как...</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="885"/>
-        <location filename="recorder.cpp" line="940"/>
+        <location filename="recorder.cpp" line="887"/>
+        <location filename="recorder.cpp" line="942"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1040"/>
+        <location filename="recorder.cpp" line="1042"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1041"/>
+        <location filename="recorder.cpp" line="1043"/>
         <source>%1 Client API reports some errors: %2</source>
         <oldsource>Kartina.tv Client API reports some errors: %1</oldsource>
         <translation></translation>

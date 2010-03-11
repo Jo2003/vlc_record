@@ -81,7 +81,6 @@ public:
     ~Recorder();
 
 public slots:
-    virtual void accept();
     virtual void show();
 
 private:
@@ -111,7 +110,6 @@ private:
     QMenu                          favContext;
     CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates           ePlayState;
-    QMap<IncPlay::ePlayStates, QPixmap> mStateMap;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -131,7 +129,7 @@ protected:
     int  CheckCookie (const QString &cookie);
     int  AllowAction (IncPlay::ePlayStates newState);
     void FillStateMap ();
-    QPixmap& GetStatePixmap (IncPlay::ePlayStates state);
+    QString GetStatePixmap (IncPlay::ePlayStates state);
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);

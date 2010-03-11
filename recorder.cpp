@@ -55,8 +55,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       pContextAct[i] = NULL;
    }
 
-   FillStateMap();
-
    VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), LOG_FILE_NAME);
 
    // set this dialog as parent for settings and timerRec ...
@@ -610,8 +608,11 @@ void Recorder::closeEvent(QCloseEvent *event)
 {
    // if vlc is running, ask if we want
    // to close it ...
-   if (ePlayState == IncPlay::PS_RECORD)
+   switch (ePlayState)
    {
+   case IncPlay::PS_RECORD:
+   case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
       if (WantToStopRec())
       {
          event->accept();
@@ -620,10 +621,11 @@ void Recorder::closeEvent(QCloseEvent *event)
       {
          event->ignore();
       }
-   }
-   else
-   {
+      break;
+
+   default:
       event->accept();
+      break;
    }
 }
 
@@ -1328,7 +1330,7 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
       break;
    }
 
-   emit sigLCDStateChange(GetStatePixmap(ePlayState));
+   emit sigLCDStateChange(QPixmap(GetStatePixmap(ePlayState)));
 }
 
 /* -----------------------------------------------------------------\
@@ -1957,33 +1959,6 @@ void Recorder::on_pushStop_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: accept
-|  Begin: 30.01.2010 / 13:58:25
-|  Author: Jo2003
-|  Description: override accept slot to ask if we want to close
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::accept()
-{
-   // if vlc is running, ask if we want
-   // to close it ...
-   if (vlcCtrl.IsRunning())
-   {
-      if (WantToClose())
-      {
-         QDialog::accept();
-      }
-   }
-   else
-   {
-      QDialog::accept();
-   }
-}
-
-/* -----------------------------------------------------------------\
 |  Method: WantToStopRec
 |  Begin: 02.02.2010 / 10:05:00
 |  Author: Jo2003
@@ -2464,32 +2439,6 @@ void Recorder::slotSplashScreen()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: FillStateMap
-|  Begin: 10.03.2010 / 14:25:12
-|  Author: Jo2003
-|  Description: fill state map with state images
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::FillStateMap()
-{
-   mStateMap[IncPlay::PS_BUFFER]       = QPixmap(":/lcd/buffer");
-   mStateMap[IncPlay::PS_END]          = QPixmap(":/lcd/end");
-   mStateMap[IncPlay::PS_ERROR]        = QPixmap(":/lcd/error");
-   mStateMap[IncPlay::PS_OPEN]         = QPixmap(":/lcd/open");
-   mStateMap[IncPlay::PS_PAUSE]        = QPixmap(":/lcd/pause");
-   mStateMap[IncPlay::PS_PLAY]         = QPixmap(":/lcd/play");
-   mStateMap[IncPlay::PS_READY]        = QPixmap(":/lcd/ready");
-   mStateMap[IncPlay::PS_RECORD]       = QPixmap(":/lcd/rec");
-   mStateMap[IncPlay::PS_STOP]         = QPixmap(":/lcd/stop");
-   mStateMap[IncPlay::PS_TIMER_RECORD] = QPixmap(":/lcd/timer_rec");
-   mStateMap[IncPlay::PS_TIMER_STBY]   = QPixmap(":/lcd/timer_stby");
-   mStateMap[IncPlay::PS_WTF]          = QPixmap(":/lcd/blank");
-}
-
-/* -----------------------------------------------------------------\
 |  Method: GetStatePixmap
 |  Begin: 10.03.2010 / 14:25:12
 |  Author: Jo2003
@@ -2499,14 +2448,51 @@ void Recorder::FillStateMap()
 |
 |  Returns: ref. to pixmap
 \----------------------------------------------------------------- */
-QPixmap& Recorder::GetStatePixmap (IncPlay::ePlayStates state)
+QString Recorder::GetStatePixmap (IncPlay::ePlayStates state)
 {
-   if (!mStateMap.contains(state))
+   QString sPixMap;
+   switch (state)
    {
-      state = IncPlay::PS_WTF;
+   case IncPlay::PS_BUFFER:
+      sPixMap = ":/lcd/buffer";
+      break;
+   case IncPlay::PS_END:
+      sPixMap = ":/lcd/end";
+      break;
+   case IncPlay::PS_ERROR:
+      sPixMap = ":/lcd/error";
+      break;
+   case IncPlay::PS_OPEN:
+      sPixMap = ":/lcd/open";
+      break;
+   case IncPlay::PS_PAUSE:
+      sPixMap = ":/lcd/pause";
+      break;
+   case IncPlay::PS_PLAY:
+      sPixMap = ":/lcd/play";
+      break;
+   case IncPlay::PS_READY:
+      sPixMap = ":/lcd/ready";
+      break;
+   case IncPlay::PS_RECORD:
+      sPixMap = ":/lcd/rec";
+      break;
+   case IncPlay::PS_STOP:
+      sPixMap = ":/lcd/stop";
+      break;
+   case IncPlay::PS_TIMER_RECORD:
+      sPixMap = ":/lcd/timer_rec";
+      break;
+   case IncPlay::PS_TIMER_STBY:
+      sPixMap = ":/lcd/timer_stby";
+      break;
+   case IncPlay::PS_WTF:
+   default:
+      sPixMap = ":/lcd/blank";
+      break;
    }
 
-   return mStateMap[state];
+   return sPixMap;
 }
 
 /* -----------------------------------------------------------------\
@@ -2527,16 +2513,16 @@ void Recorder::slotIncPlayState(int iState)
    case IncPlay::PS_PLAY:
       // might be play, record, timer record -->
       // therefore use internal state ...
-      emit sigLCDStateChange (GetStatePixmap(ePlayState));
+      emit sigLCDStateChange (QPixmap(GetStatePixmap(ePlayState)));
       break;
 
    case IncPlay::PS_END:
       // display "stop" in case of "end" ...
-      emit sigLCDStateChange (GetStatePixmap(ePlayState));
+      emit sigLCDStateChange (QPixmap(GetStatePixmap(IncPlay::PS_STOP)));
       break;
 
    default:
-      emit sigLCDStateChange (GetStatePixmap((IncPlay::ePlayStates)iState));
+      emit sigLCDStateChange (QPixmap(GetStatePixmap((IncPlay::ePlayStates)iState)));
       break;
    }
 }
