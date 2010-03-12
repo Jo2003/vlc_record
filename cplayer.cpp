@@ -217,8 +217,10 @@ int CPlayer::initPlayer(QStringList &slArgs)
       slArgs << QString("--plugin-path=\"%1\"").arg(sPlugInPath);
    }
 
+#ifdef Q_OS_WIN32
    // don't catch key press events ... (should work in patched libVLC)
    slArgs << "--vout-event=3";
+#endif
 
    // fill vlcArgs struct ...
    createArgs(slArgs, args);
@@ -481,6 +483,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
    // QString     sMrl  = "h:/Documents/Videos/BR-test.ts";
+   // QString     sMrl  = "/home/joergn/Videos/bbb.avi";
 
    // get player arguments ...
    QStringList lArgs = sCmdLine.mid(sCmdLine.indexOf(";;", 0))

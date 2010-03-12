@@ -29,7 +29,7 @@ install_libvlc:
 	${INSTALL} -m 644 -t ${TARGET}/modules modules/5_libvlc.mod
 
 debnew:
-	${SUDO} ${CHKINST} ${PKGNAMENW} ${PKGVERNW} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETNW} -f install.mak instnew
+	${SUDO} ${CHKINST} ${PKGNAMENW} ${PKGVERNW} ${MAINT} ${REQUIRESNW} ${PKGSRC} ${MAKE} TARGET=${TARGETNW} -f install.mak instnew
 	
 debclc:
-	${SUDO} ${CHKINST} ${PKGNAMECL} ${PKGVERCL} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETCL} -f install.mak instclassic
+	${SUDO} ${CHKINST} ${PKGNAMECL} ${PKGVERCL} ${MAINT} ${REQUIRESCL} ${PKGSRC} ${MAKE} TARGET=${TARGETCL} -f install.mak instclassic
