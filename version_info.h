@@ -36,6 +36,7 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - "--vout-event=3" handling on win32 only
 |
 | 2010-03-11: Version x.23
 | - bugfix for segfault on program exit if player still is
