@@ -2,14 +2,17 @@
 # Project created by QtCreator 2009-12-27T18:33:08
 # -------------------------------------------------
 QT += network
+
+# build debug and release ...
 CONFIG += debug_and_release \
     windows
+
 TEMPLATE = app
 INCLUDEPATH += .
 
-# debug version will be built shared ...
-CONFIG(debug, debug|release):CONFIG += shared
-else:CONFIG += static
+# build shared or static ... ?
+CONFIG += static
+# CONFIG += shared
 
 # -------------------------------------
 # customization ...
@@ -18,6 +21,7 @@ else:CONFIG += static
 # -------------------------------------
 # DEFINES += _CUST_RUSS_TELEK
 # DEFINES += _CUST_RUSS_SERVICES
+
 # -------------------------------------
 # Build with or without
 # included player or without?
@@ -74,10 +78,12 @@ static {
         qgif \
         qjpeg
 }
+
+# where the target should be stored ...
 win32:TARGET = vlc-record
 else {
-    static:TARGET = release/vlc-record
-    shared:TARGET = debug/vlc-record
+    CONFIG(debug, debug|release):TARGET = debug/vlc-record
+    else:TARGET = release/vlc-record
 }
 
 # -------------------------------------
@@ -105,8 +111,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
     FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
     SOURCES += cplayer.cpp
-    LIBS += -Llib \
-        -lvlc
+    LIBS += -lvlc
+    win32:LIBS += -Llib
 }
 else:FORMS += forms/recorder.ui
 

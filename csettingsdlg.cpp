@@ -31,6 +31,10 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 {
    m_ui->setupUi(this);
 
+   // set company name for login data ...
+   QString s = m_ui->groupAccount->title();
+   m_ui->groupAccount->setTitle(s.arg(COMPANY_NAME));
+
    // set ini file name and open ini file ...
    IniFile.SetFileName(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), INI_FILE);
 
