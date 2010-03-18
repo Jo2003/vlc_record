@@ -11,8 +11,8 @@ TEMPLATE = app
 INCLUDEPATH += .
 
 # build shared or static ... ?
-CONFIG += static
-# CONFIG += shared
+# CONFIG += static
+CONFIG += shared
 
 # -------------------------------------
 # customization ...
