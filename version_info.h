@@ -37,6 +37,9 @@
 /************************* History ***************************\
 | --- new since last version ---
 | - "--vout-event=3" handling on win32 only
+| - jump 2 minutes forward on hotkey "->" and
+|   2 minutes backward on hotkey "<-"
+|   (will only work in archive view)
 |
 | 2010-03-11: Version x.23
 | - bugfix for segfault on program exit if player still is

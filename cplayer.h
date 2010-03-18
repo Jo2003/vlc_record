@@ -98,6 +98,7 @@ public slots:
    int  pause();
    int  slotToggleFullScreen ();
    int  slotToggleAspectRatio ();
+   int  slotTimeJump (int iSeconds);
 
 signals:
    void sigPlayState (int ps);

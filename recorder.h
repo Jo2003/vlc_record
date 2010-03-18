@@ -130,6 +130,7 @@ protected:
     int  AllowAction (IncPlay::ePlayStates newState);
     void FillStateMap ();
     QString GetStatePixmap (IncPlay::ePlayStates state);
+    bool TimeJumpAllowed ();
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -185,6 +186,7 @@ signals:
     void sigToggleFullscreen ();
     void sigToggleAspectRatio ();
     void sigLCDStateChange (const QPixmap &pic);
+    void sigTimeJmp (int);
 };
 
 #endif /* __011910__RECORDER_H */

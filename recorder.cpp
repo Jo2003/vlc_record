@@ -127,6 +127,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // get state if libVLC player to change player state display ...
    connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
 
+   // time jump (Michael J. Fox knows more about ...)
+   connect (this, SIGNAL(sigTimeJmp(int)), ui->player, SLOT(slotTimeJump(int)));
+
    /*
    // get vlc path from settings and try to create plugin path ...
    QFileInfo info(Settings.GetVLCPath());
@@ -299,7 +302,7 @@ void Recorder::show()
    // display splash screen ...
    if (!Settings.DisableSplashScreen())
    {
-      QTimer::singleShot(200, this, SLOT(slotSplashScreen()));
+      QTimer::singleShot(500, this, SLOT(slotSplashScreen()));
    }
 
    QWidget::show();
@@ -656,6 +659,25 @@ void Recorder::keyPressEvent(QKeyEvent *event)
       emit sigToggleFullscreen();
       event->accept();
       break;
+
+   // jump 2 minutes forward ...
+   case Qt::Key_Right:
+      if(TimeJumpAllowed())
+      {
+         emit sigTimeJmp(JUMP_TIME);
+      }
+      event->accept();
+      break;
+
+   // jump 2 minutes back ...
+   case Qt::Key_Left:
+      if(TimeJumpAllowed())
+      {
+         emit sigTimeJmp(-JUMP_TIME);
+      }
+      event->accept();
+      break;
+
    default:
       event->accept();
       break;
@@ -2525,6 +2547,36 @@ void Recorder::slotIncPlayState(int iState)
       emit sigLCDStateChange (QPixmap(GetStatePixmap((IncPlay::ePlayStates)iState)));
       break;
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: TimeJumpAllowed
+|  Begin: 18.03.2010 / 15:07:12
+|  Author: Jo2003
+|  Description: only allow time jump if we don't record
+|
+|  Parameters:
+|
+|  Returns: true --> allowed
+|          false --> not allowed
+\----------------------------------------------------------------- */
+bool Recorder::TimeJumpAllowed()
+{
+   bool bRV = true;
+
+   switch (ePlayState)
+   {
+   // make sure that any kind of record
+   // works without time jump ...
+   case IncPlay::PS_RECORD:
+   case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
+      bRV = false;
+   default:
+      break;
+   }
+
+   return bRV;
 }
 
 /************************* History ***************************\

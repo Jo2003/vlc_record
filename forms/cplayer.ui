@@ -60,6 +60,11 @@
       <widget class="QComboBox" name="cbxAspect">
        <item>
         <property name="text">
+         <string>standard</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>4:3</string>
         </property>
        </item>

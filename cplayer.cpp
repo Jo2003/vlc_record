@@ -753,7 +753,8 @@ void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
 |
 |  Parameters: --
 |
-|  Returns: --
+|  Returns: 0 --> ok
+|          -1 --> any error
 \----------------------------------------------------------------- */
 int CPlayer::slotToggleFullScreen()
 {
@@ -781,7 +782,8 @@ int CPlayer::slotToggleFullScreen()
 |
 |  Parameters: --
 |
-|  Returns: --
+|  Returns: 0 --> ok
+|          -1 --> any error
 \----------------------------------------------------------------- */
 int CPlayer::slotToggleAspectRatio()
 {
@@ -801,6 +803,50 @@ int CPlayer::slotToggleAspectRatio()
       ui->cbxAspect->setCurrentIndex(idx);
 
       iRV = 0;
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotTimeJump
+|  Begin: 18.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: time jump (back to the future ;-) )
+|
+|  Parameters: position value (jump + / - seconds)
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::slotTimeJump (int iSeconds)
+{
+   int iRV = -1;
+
+   if (pMediaPlayer)
+   {
+      // reset exception stuff ...
+      libvlc_exception_clear(&vlcExcpt);
+
+      // get actual position ...
+      int iPos = (int)libvlc_media_player_get_time(pMediaPlayer, &vlcExcpt);
+
+      // check for error ...
+      if (!raise(&vlcExcpt))
+      {
+         // set new position ...
+         iPos += iSeconds;
+
+         // make sure value is positive ...
+         if (iPos < 0)
+         {
+            iPos = 0;
+         }
+
+         libvlc_media_player_set_time(pMediaPlayer, (libvlc_time_t)iPos, &vlcExcpt);
+
+         iRV = raise(&vlcExcpt);
+      }
    }
 
    return iRV;
