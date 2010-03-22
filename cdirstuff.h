@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/cchanlogo.h $
+| $HeadURL$
 |
 | Author: Jo2003
 |
 | Begin: 22.03.2010 / 08:45:22
 |
-| Last edited by: $Author: Olenka.Joerg $
+| Last edited by: $Author$
 |
-| $Id: cchanlogo.h 66 2010-02-11 07:54:15Z Olenka.Joerg $
+| $Id$
 \*************************************************************/
 #ifndef __032210__CDIRSTUFF_H
    #define __032210__CDIRSTUFF_H
