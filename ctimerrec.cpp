@@ -15,6 +15,9 @@
 // logging stuff ...
 extern CLogFile VlcLog;
 
+// for folders ...
+extern CDirStuff *pFolders;
+
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor
 |  Begin: 26.01.2010 / 16:05:00
@@ -31,7 +34,7 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
    iTimeShift = 0;
    uiActId    = 0;
    uiEdtId    = INVALID_ID;
-   sListFile  = QString(INI_DIR).arg(getenv(APPDATA)) + QString("/reclist.xml");
+   sListFile  = QString("%1/%2").arg(pFolders->getDataDir()).arg(TIMER_LIST_FILE);
    pTrigger   = NULL;
    pXmlParser = NULL;
    pSettings  = NULL;
@@ -93,22 +96,6 @@ void CTimerRec::changeEvent(QEvent *e)
 void CTimerRec::SetTimeShift(int iTs)
 {
    iTimeShift = iTs;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: SetLogoPath
-|  Begin: 26.01.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: set logo path
-|
-|  Parameters: logo path
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTimerRec::SetLogoPath(const QString &str)
-{
-   sLogoPath = str;
-   ReadRecordList();
 }
 
 /* -----------------------------------------------------------------\
@@ -281,7 +268,7 @@ void CTimerRec::SetChanList(const QVector<cparser::SChan> &chanList)
          entry.Name = chanList[i].sName;
 
          r_ui->cbxChannel->insertItem(i,
-                                    QIcon(QString("%1/%2.gif").arg(sLogoPath).arg(entry.cid)),
+                                    QIcon(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(entry.cid)),
                                     QString("%1. %2").arg(iCount).arg(entry.Name),
                                     QVariant(entry.cid));
 
@@ -545,7 +532,7 @@ int CTimerRec::AddRow(const rec::SRecEntry &entry)
    r_ui->tableRecordEntries->setItem(iRows, 2, pItem);
 
    // col 4: channel ...
-   pItem = new QTableWidgetItem (QIcon(QString("%1/%2.gif").arg(sLogoPath).arg(entry.cid)), "");
+   pItem = new QTableWidgetItem (QIcon(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(entry.cid)), "");
    pItem->setFlags(flags);
    pItem->setData(Qt::UserRole, QVariant(entry.id));
    r_ui->tableRecordEntries->setItem(iRows, 3, pItem);

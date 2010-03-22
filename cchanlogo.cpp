@@ -11,6 +11,9 @@
 \*************************************************************/
 #include "cchanlogo.h"
 
+// for folders ...
+extern CDirStuff *pFolders;
+
 /* -----------------------------------------------------------------\
 |  Method: CChanLogo / constructor
 |  Begin: 18.01.2010 / 16:17:51
@@ -25,14 +28,13 @@ CChanLogo::CChanLogo()
 {
    bRun  = false;
    iReq  = -1;
-   sPath = QString(LOGO_DIR).arg(getenv(APPDATA));
 
    // check, if dir exists ...
-   QDir LogoDir(sPath);
+   QDir LogoDir(pFolders->getLogoDir());
 
    if (!LogoDir.exists())
    {
-      LogoDir.mkpath(sPath);
+      LogoDir.mkpath(pFolders->getLogoDir());
    }
 
    // set hostname ...
@@ -97,10 +99,10 @@ void CChanLogo::StartDownLoad()
 {
    if (((*cit).iId > 0) && ((*cit).iIdx != -1))
    {
-      if (!QFile::exists(QString("%1/%2.gif").arg(sPath).arg((*cit).iId)))
+      if (!QFile::exists(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg((*cit).iId)))
       {
          dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
-         iReq = get(QString("%1/%2.gif").arg(LOGO_PATH).arg((*cit).iId), &dataBuffer);
+         iReq = get(QString("%1/%2.gif").arg(LOGO_URL).arg((*cit).iId), &dataBuffer);
       }
       else
       {
@@ -150,7 +152,7 @@ void CChanLogo::slotCheckResp(int iReqID, bool err)
          if (ba.size() > 0)
          {
             // create gif file ...
-            QFile gif(QString("%1/%2.gif").arg(sPath).arg((*cit).iId));
+            QFile gif(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg((*cit).iId));
 
             if (gif.open(QIODevice::WriteOnly))
             {

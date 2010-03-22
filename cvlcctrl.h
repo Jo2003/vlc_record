@@ -26,6 +26,7 @@
 #include "templates.h"
 #include "ctranslit.h"
 #include "playstates.h"
+#include "cdirstuff.h"
 
 namespace vlcctrl
 {

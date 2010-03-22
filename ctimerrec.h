@@ -28,6 +28,7 @@
 #include "cwaittrigger.h"
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
+#include "cdirstuff.h"
 
 //===================================================================
 // namespace
@@ -84,7 +85,6 @@ public:
    void SetTimeShift (int iTs);
    void SetChanList  (const QVector<cparser::SChan> &chanList);
    void SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &name = QString());
-   void SetLogoPath (const QString &str);
    void SetXmlParser (CKartinaXMLParser *pParser);
    void SetKartinaTrigger (CWaitTrigger *pTrig);
    void SetSettings (CSettingsDlg *pSet);
@@ -107,7 +107,6 @@ protected:
 private:
    Ui::CTimerRec *r_ui;
    int     iTimeShift;
-   QString sLogoPath;
    QMap<uint, rec::SRecEntry> JobList;
    QMap<int, rec::SChanEntry> ChanList;
    QMap<uint, rec::SRecEntry>::iterator itActJob;

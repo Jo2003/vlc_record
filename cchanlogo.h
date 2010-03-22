@@ -20,12 +20,9 @@
 
 #include "ckartinaclnt.h"
 #include "ckartinaxmlparser.h"
-#include "clogfile.h"
+#include "cdirstuff.h"
 
 #include "defdef.h"
-
-// for logging ...
-extern CLogFile VlcLog;
 
 /********************************************************************\
 |  Class: CChanLogo
@@ -43,7 +40,6 @@ public:
    virtual ~CChanLogo();
    void SetChanList (const QVector<cparser::SChan> &list);
    bool IsRunning () { return bRun; }
-   QString GetLogoPath () { return sPath; }
 
 signals:
    void sigLogosReady ();
@@ -52,7 +48,6 @@ protected:
    void StartDownLoad ();
 
 private:
-   QString sPath;
    QBuffer dataBuffer;
    QVector<cparser::SChan> chanList;
    QVector<cparser::SChan>::const_iterator cit;
@@ -61,7 +56,6 @@ private:
    int  iReq;
 
 private slots:
-   // void slotResp (bool err);
    void slotCheckResp (int iReqID, bool err);
 };
 

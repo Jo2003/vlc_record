@@ -12,21 +12,6 @@
 #include "cinifile.h"
 
 /* -----------------------------------------------------------------\
-|  Method: CIniFile / constructor
-|  Begin: 18.01.2010 / 16:26:12
-|  Author: Jo2003
-|  Description: construct element
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-CIniFile::CIniFile()
-{
-   // nothing to do ...
-}
-
-/* -----------------------------------------------------------------\
 |  Method: ~CIniFile / destructor
 |  Begin: 18.01.2010 / 16:26:36
 |  Author: Jo2003
@@ -51,7 +36,7 @@ CIniFile::~CIniFile()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CIniFile::CIniFile (const char *sDir, const char *sFile)
+CIniFile::CIniFile (const QString &sDir, const QString &sFile)
 {
    sIniFile = sFile;
    sAppDir  = sDir;
@@ -67,7 +52,7 @@ CIniFile::CIniFile (const char *sDir, const char *sFile)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CIniFile::SetFileName(const char *sDir, const char *sFile)
+void CIniFile::SetFileName (const QString &sDir, const QString &sFile)
 {
    sIniFile = sFile;
    sAppDir  = sDir;

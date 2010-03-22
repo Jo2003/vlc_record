@@ -19,6 +19,13 @@
 
 #include "chanlistwidgetitem.h"
 
+
+// for logging ...
+extern CLogFile VlcLog;
+
+// for folders ...
+extern CDirStuff *pFolders;
+
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
 |  Begin: 19.01.2010 / 16:01:44
@@ -45,7 +52,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    iEpgOffset     = 0;
    uiArchivGmt    = 0;
    iFontSzChg     = 0;
-   sLogoPath      = dwnLogos.GetLogoPath();
 
    // init favourite buttons ...
    for (int i = 0; i < MAX_NO_FAVOURITES; i++)
@@ -55,7 +61,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       pContextAct[i] = NULL;
    }
 
-   VlcLog.SetLogFile(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), LOG_FILE_NAME);
+   VlcLog.SetLogFile(pFolders->getDataDir(), APP_LOG_FILE);
 
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
@@ -74,6 +80,13 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // set log level ...
    VlcLog.SetLogLevel(Settings.GetLogLevel());
+
+   // log folder locations ...
+   mInfo (tr("\ndataDir: %1\n").arg(pFolders->getDataDir())
+          + tr("logoDir: %1\n").arg(pFolders->getLogoDir())
+          + tr("langDir: %1\n").arg(pFolders->getLangDir())
+          + tr("modDir:  %1\n").arg(pFolders->getModDir())
+          + tr("appDir:  %1").arg(pFolders->getAppDir()));
 
    // set connection data ...
    KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(),
@@ -166,9 +179,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
    connect (this, SIGNAL(sigLCDStateChange(QPixmap)), ui->labState, SLOT(setPixmap(QPixmap)));
 
-   // set logo path for epg browser and timer record ...
-   ui->textEpg->SetLogoDir(sLogoPath);
-   timeRec.SetLogoPath(sLogoPath);
+   // trigger read of saved timer records ...
+   timeRec.ReadRecordList();
 
    // -------------------------------------------
    // get favourites ...
@@ -227,7 +239,7 @@ void Recorder::show()
 
    // set language as read ...
    pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()),
-                     QString("%1/language").arg(QApplication::applicationDirPath()));
+                     pFolders->getLangDir());
 
    // get player module ...
    vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
@@ -783,7 +795,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
       }
       else
       {
-         sLogoFile = QString("%1/%2.gif").arg(sLogoPath).arg(chanlist[i].iId);
+         sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(chanlist[i].iId);
          sLine     = QString("%1. %2").arg(chanlist[i].iIdx).arg(chanlist[i].sName);
 
          if (QFile::exists(sLogoFile))
@@ -1008,7 +1020,7 @@ void Recorder::on_pushSettings_clicked()
 
       // set language as read ...
       pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()),
-                        QString("%1/language").arg(QApplication::applicationDirPath()));
+                        pFolders->getLangDir());
 
 #ifdef INCLUDE_LIBVLC
       // do we use libVLC ?
@@ -1210,10 +1222,10 @@ void Recorder::slotEPG(QString str)
    ui->textEpg->DisplayEpg(epg, sDlgTitle, cid, epgTime.toTime_t(), bArchiv);
 
    // fill epg controll ...
-   if (QFile::exists(QString("%1/%2.gif").arg(sLogoPath).arg(cid)))
+   if (QFile::exists(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid)))
    {
       QPixmap pic;
-      pic.load(QString("%1/%2.gif").arg(sLogoPath).arg(cid));
+      pic.load(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid));
       ui->labChanIcon->setPixmap(pic);
    }
 
@@ -2101,7 +2113,7 @@ void Recorder::slotChanListContext(const QPoint &pt)
          // create context menu ...
          CleanContextMenu();
          pContextAct[0] = new CFavAction (&favContext);
-         QString    sLogoFile = QString("%1/%2.gif").arg(sLogoPath).arg(pItem->GetId());
+         QString    sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(pItem->GetId());
 
          // is channel already in favourites ... ?
          if (lFavourites.contains(pItem->GetId()))
@@ -2216,7 +2228,7 @@ void Recorder::HandleFavourites()
          // -------------------------
 
          // add logo ...
-         pFavAct[i]->setIcon(QIcon(QString("%1/%2.gif").arg(sLogoPath).arg(lFavourites[i])));
+         pFavAct[i]->setIcon(QIcon(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(lFavourites[i])));
 
          // store channel id in action ...
          pFavAct[i]->setFavData(lFavourites[i], kartinafav::FAV_WHAT);
@@ -2333,7 +2345,7 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
 
       if (pContextAct[i])
       {
-         sLogoFile = QString("%1/%2.gif").arg(sLogoPath).arg(lFavourites[i]);
+         sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(lFavourites[i]);
          pContextAct[i]->setIcon(QIcon(sLogoFile));
          pContextAct[i]->setText(tr("Remove from favourites"));
          pContextAct[i]->setFavData(lFavourites[i], kartinafav::FAV_DEL);

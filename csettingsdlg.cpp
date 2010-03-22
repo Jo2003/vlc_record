@@ -15,6 +15,9 @@
 // log file functions ...
 extern CLogFile VlcLog;
 
+// for folders ...
+extern CDirStuff *pFolders;
+
 /* -----------------------------------------------------------------\
 |  Method: CSettingsDlg / constructor
 |  Begin: 19.01.2010 / 15:43:38
@@ -36,7 +39,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->groupAccount->setTitle(s.arg(COMPANY_NAME));
 
    // set ini file name and open ini file ...
-   IniFile.SetFileName(QString(INI_DIR).arg(getenv(APPDATA)).toLocal8Bit().data(), INI_FILE);
+   IniFile.SetFileName(pFolders->getDataDir(), APP_INI_FILE);
 
    IniFile.ReadIni();
 
@@ -80,7 +83,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    }
 
    // fill player module box with available modules ...
-   QDir modDir(QString("%1/modules").arg(QApplication::applicationDirPath()));
+   QDir modDir(pFolders->getModDir());
    m_ui->cbxPlayerMod->addItems(modDir.entryList(QStringList("*.mod"), QDir::Files, QDir::Name));
 
    // combo boxes ...
@@ -251,11 +254,8 @@ void CSettingsDlg::on_pushSave_clicked()
 \----------------------------------------------------------------- */
 void CSettingsDlg::on_pushDelLogos_clicked()
 {
-   // create logo path ...
-   QString sPath = QString(LOGO_DIR).arg(getenv(APPDATA)).toLocal8Bit().data();
-
    // get directory, where logos are located ...
-   QDir logoDir(sPath);
+   QDir logoDir(pFolders->getLogoDir());
 
    // get all files inside this dir ...
    QStringList fileList = logoDir.entryList(QDir::Files);
@@ -263,7 +263,7 @@ void CSettingsDlg::on_pushDelLogos_clicked()
    // delete all files inside logo dir ...
    for (int i = 0; i < fileList.size(); i++)
    {
-      QFile::remove(QString("%1/%2").arg(sPath).arg(fileList[i]));
+      QFile::remove(QString("%1/%2").arg(pFolders->getLogoDir()).arg(fileList[i]));
    }
 
    emit sigReloadLogos();
@@ -678,7 +678,7 @@ QString CSettingsDlg::GetPlayerModule()
 
    if (m_ui->cbxPlayerMod->currentText() != "")
    {
-      sPlayModule = QString("%1/modules/%2").arg(QApplication::applicationDirPath())
+      sPlayModule = QString("%1/%2").arg(pFolders->getModDir())
                     .arg(m_ui->cbxPlayerMod->currentText());
    }
 

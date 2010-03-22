@@ -36,6 +36,7 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - bugfix for APPDATA unicode problem
 | - "--vout-event=3" handling on win32 only
 | - jump 2 minutes forward on hotkey "->" and
 |   2 minutes backward on hotkey "<-"

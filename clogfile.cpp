@@ -21,11 +21,11 @@
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CLogFile::CLogFile(const char *pDirName, const char *pFileName, vlclog::eLogLevel ll)
+CLogFile::CLogFile (const QString &sDir, const QString &sFile, vlclog::eLogLevel ll)
 {
    level     = ll;
-   sDirName  = pDirName;
-   sFileName = pFileName;
+   sDirName  = sDir;
+   sFileName = sFile;
 
    TouchLogFile();
 }
@@ -84,10 +84,10 @@ void CLogFile::TouchLogFile ()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CLogFile::SetLogFile(const char *pDirName, const char *pFileName)
+void CLogFile::SetLogFile (const QString &sDir, const QString &sFile)
 {
-   sDirName  = pDirName;
-   sFileName = pFileName;
+   sDirName  = sDir;
+   sFileName = sFile;
 
    TouchLogFile();
 }

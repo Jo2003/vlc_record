@@ -38,7 +38,6 @@ public:
                     uint uiGmt, bool bHasArchiv);
 
     void SetTimeShift (int iTs) { iTimeShift = iTs; }
-    void SetLogoDir (const QString &sDir) { sLogoDir = sDir; }
     int  GetCid () { return iCid; }
     QString ShowName (uint uiTimeT);
     void EnlargeFont ();
@@ -52,7 +51,6 @@ protected:
 private:
     int                 iTimeShift;
     int                 iCid;
-    QString             sLogoDir;
     QMap<uint, QString> mProgram;
 };
 

@@ -42,11 +42,10 @@ namespace Ini
 class CIniFile
 {
 public:
-   CIniFile();
-   CIniFile(const char *sDir, const char *sFile);
+   CIniFile(const QString& sDir = QString(), const QString& sFile = QString());
    ~CIniFile ();
 
-   void SetFileName (const char *sDir, const char *sFile);
+   void SetFileName (const QString& sDir, const QString& sFile);
 
    int ReadIni ();
    int SaveIni ();

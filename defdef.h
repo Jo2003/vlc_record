@@ -14,21 +14,27 @@
 
 #include <QtGlobal>
 
+#define APP_NAME          "vlc-record"
+
 #ifdef Q_OS_WIN32
-   #define INI_DIR         "%1/vlc-record"
-   #define APPDATA         "APPDATA"
+   #define DATA_DIR_ENV   "APPDATA"
+   #define DATA_DIR       APP_NAME
 #else
-   #define INI_DIR         "%1/.vlc-record"
-   #define APPDATA         "HOME"
+   #define DATA_DIR_ENV   "HOME"
+   #define DATA_DIR       "." APP_NAME
 #endif
 
-#define INI_FILE          "vlc-rcd.ini"
-#define PLAYER_LOG        INI_DIR "/player.log"
+#define APP_NAME          "vlc-record"
+#define APP_INI_FILE      "vlc-rcd.ini"
+#define APP_LOG_FILE      "vlc-record.log"
+#define PLAYER_LOG_FILE   "player.log"
+#define TIMER_LIST_FILE   "reclist.xml"
+#define MOD_DIR           "modules"
+#define LANG_DIR          "language"
+#define LOGO_DIR          "logos"
 #define KARTINA_HOST      "iptv.kartina.tv"
-#define LOGO_PATH         "/img/ico/24"
-#define LOGO_DIR          INI_DIR "/logos"
+#define LOGO_URL          "/img/ico/24"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"
-#define LOG_FILE_NAME     "vlc-record.log"
 #define DEF_TZ_STEP       1800        // time zone step is min. 30 minutes (1800 sec.) ...
 #define DEF_MAX_DIFF      600         // accept system clock inaccuracy up too 600 sec
 #define EPG_NAVBAR_HEIGHT 24          // default height for EPG navbar

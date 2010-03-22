@@ -22,6 +22,9 @@ Q_IMPORT_PLUGIN(qico)
 // make logging class available everywhere ...
 CLogFile VlcLog;
 
+// make directory names available globally ...
+CDirStuff *pFolders;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -35,15 +38,31 @@ CLogFile VlcLog;
 \----------------------------------------------------------------- */
 int main(int argc, char *argv[])
 {
-   QTranslator trans;
+   int          iRV = -1;
+   QTranslator  trans;
    QApplication a(argc, argv);
    a.installTranslator(&trans);
-   Recorder w(&trans);
-   w.show();
-   return a.exec();
+
+   // create directory stuff ...
+   pFolders = new CDirStuff;
+
+   if (pFolders)
+   {
+      // is folder stuff initialized successfully ...?
+      if (pFolders->isInitialized())
+      {
+         Recorder w(&trans);
+         w.show();
+         iRV = a.exec();
+      }
+
+      // free mem ...
+      delete pFolders;
+   }
+
+   return iRV;
 }
 
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-

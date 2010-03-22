@@ -50,10 +50,12 @@ namespace vlclog
 class CLogFile
 {
 public:
-   CLogFile(const char *pDirName = "", const char *pFileName = "", vlclog::eLogLevel ll = vlclog::LOG_NOTHING);
+   CLogFile(const QString& sDir = QString(), const QString& sFile = QString(),
+            vlclog::eLogLevel ll = vlclog::LOG_NOTHING);
+
    ~CLogFile ();
 
-   void    SetLogFile (const char *pDirName, const char *pFileName);
+   void    SetLogFile (const QString& sDir, const QString& sFile);
    void    SetLogLevel (vlclog::eLogLevel ll = vlclog::LOG_NOTHING);
    void    LogErr (const QString &str);
    void    LogWarn (const QString &str);

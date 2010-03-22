@@ -14,6 +14,9 @@
 // logging stuff ...
 extern CLogFile VlcLog;
 
+// for folders ...
+extern CDirStuff *pFolders;
+
 /* -----------------------------------------------------------------\
 |  Method: CVlcCtrl / constructor
 |  Begin: 01.02.2010 / 10:05:00
@@ -39,9 +42,13 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
       LoadPlayerModule(path);
    }
 
-   setStandardOutputFile(QString(PLAYER_LOG).arg(getenv(APPDATA)), QIODevice::Truncate);
+   setStandardOutputFile(QString("%1/%2").arg(pFolders->getDataDir()).arg(PLAYER_LOG_FILE),
+                         QIODevice::Truncate);
+
    setProcessChannelMode(QProcess::MergedChannels);
-   connect (this, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(slotStateChanged(QProcess::ProcessState)));
+
+   connect (this, SIGNAL(stateChanged(QProcess::ProcessState)), this,
+            SLOT(slotStateChanged(QProcess::ProcessState)));
 }
 
 /* -----------------------------------------------------------------\

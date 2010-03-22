@@ -47,9 +47,7 @@
 #include "cvlcctrl.h"
 #include "ctranslit.h"
 #include "cfavaction.h"
-
-// for logging ...
-extern CLogFile VlcLog;
+#include "cdirstuff.h"
 
 //===================================================================
 // namespace
@@ -93,7 +91,6 @@ private:
     QTimer                         Refresh;
     bool                           bLogosReady;
     CChanLogo                      dwnLogos;
-    QString                        sLogoPath;
     int                            iEpgOffset;
     QTabBar                       *pEpgNavbar;
     CTimerRec                      timeRec;

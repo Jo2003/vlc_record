@@ -29,7 +29,6 @@ CEpgBrowser::CEpgBrowser(QWidget *parent) :
 {
    iTimeShift = 0;
    iCid       = 0;
-   sLogoDir   = "";
    mProgram.clear();
 }
 
