@@ -246,12 +246,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="86"/>
+        <location filename="cplayer.cpp" line="87"/>
         <source>Set PlugIn path to &apos;%1&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="492"/>
+        <location filename="cplayer.cpp" line="493"/>
         <source>starting libVLC play of:
   --&gt; %2
   --&gt; with following arguments: %1</source>
@@ -261,27 +261,32 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="567"/>
-        <source>KeyEvent: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cplayer.cpp" line="753"/>
+        <location filename="cplayer.cpp" line="827"/>
         <source>Aspect ratio: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="780"/>
+        <location filename="cplayer.cpp" line="854"/>
         <source>Crop ratio: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="587"/>
+        <location filename="cplayer.cpp" line="661"/>
         <source>LibVLC Error!</source>
         <translation>libVLC Fehler!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="588"/>
+        <location filename="cplayer.cpp" line="585"/>
+        <source>Set Modifier key to: %1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cplayer.cpp" line="635"/>
+        <source>Clear Modifier key: %1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cplayer.cpp" line="662"/>
         <source>LibVLC reports following error:
 %1</source>
         <translation>LibVLC meldet folgenden Fehler:
@@ -316,7 +321,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">FEHLER</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="709"/>
+        <location filename="cplayer.cpp" line="783"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <oldsource>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
@@ -329,57 +334,57 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="55"/>
+        <location filename="forms/cplayer.ui" line="58"/>
         <source>Aspect Ratio: </source>
         <translation>Seitenverhältnis: </translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="63"/>
-        <location filename="forms/cplayer.ui" line="109"/>
+        <location filename="forms/cplayer.ui" line="66"/>
+        <location filename="forms/cplayer.ui" line="125"/>
         <source>std.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="68"/>
+        <location filename="forms/cplayer.ui" line="71"/>
+        <location filename="forms/cplayer.ui" line="130"/>
         <source>4:3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="73"/>
-        <location filename="forms/cplayer.ui" line="114"/>
+        <location filename="forms/cplayer.ui" line="76"/>
+        <location filename="forms/cplayer.ui" line="135"/>
         <source>16:9</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="78"/>
-        <location filename="forms/cplayer.ui" line="119"/>
+        <location filename="forms/cplayer.ui" line="81"/>
+        <location filename="forms/cplayer.ui" line="140"/>
         <source>16:10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="83"/>
+        <location filename="forms/cplayer.ui" line="86"/>
+        <location filename="forms/cplayer.ui" line="145"/>
         <source>1:1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="88"/>
+        <location filename="forms/cplayer.ui" line="91"/>
+        <location filename="forms/cplayer.ui" line="150"/>
         <source>5:4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="93"/>
-        <source>2.3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="124"/>
+        <location filename="forms/cplayer.ui" line="96"/>
+        <location filename="forms/cplayer.ui" line="155"/>
         <source>2.35</source>
-        <translation type="unfinished"></translation>
+        <oldsource>2.3</oldsource>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="101"/>
+        <location filename="forms/cplayer.ui" line="117"/>
         <source>Crop: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Volume: </source>
@@ -1126,19 +1131,19 @@ dataDir: %1
 </source>
         <oldsource>dataDir: %1
 </oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="86"/>
         <source>logoDir: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="87"/>
         <source>langDir: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="88"/>
@@ -1146,13 +1151,13 @@ dataDir: %1
 </source>
         <oldsource>modDir: %1
 </oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="89"/>
         <source>appDir:  %1</source>
         <oldsource>appDir: %1</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="406"/>

@@ -17,10 +17,10 @@
 #include <QWidget>
 #include <QFrame>
 #include <QTimer>
-/*
+
 #include <QEvent>
 #include <QKeyEvent>
-*/
+
 #include <vlc/vlc.h>
 
 #include "clogfile.h"
@@ -76,7 +76,9 @@ protected:
    void releasePlayer ();
    int  createArgs (const QStringList &lArgs, Ui::vlcArgs& args);
    void freeArgs (Ui::vlcArgs& args);
-   // virtual void keyPressEvent (QKeyEvent *event);
+
+   virtual void keyPressEvent (QKeyEvent *pEvent);
+   virtual void keyReleaseEvent(QKeyEvent *pEvent);
 
 private:
    Ui::CPlayer            *ui;
@@ -90,6 +92,7 @@ private:
    libvlc_log_t           *pLibVlcLog;
    uint                    uiVerboseLevel;
    QString                 sPlugInPath;
+   Qt::Key                 kModifier;
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);

@@ -36,6 +36,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pEMMedia     = NULL;
    pEMPlay      = NULL;
    pLibVlcLog   = NULL;
+   kModifier    = Qt::Key_Any;
 
 #ifndef QT_NO_DEBUG
    uiVerboseLevel = 3;
@@ -561,13 +562,85 @@ void CPlayer::changeEvent(QEvent *e)
       break;
    }
 }
-/*
-void CPlayer::keyPressEvent(QKeyEvent *event)
+
+/* -----------------------------------------------------------------\
+|  Method: keyPressEvent
+|  Begin: 23.03.2010 / 22:46:10
+|  Author: Jo2003
+|  Description: catch keypress events to emulate shortcuts
+|
+|  Parameters: pointer to event
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::keyPressEvent(QKeyEvent *pEvent)
 {
-   mInfo(tr("KeyEvent: %1").arg(event->key()));
-   event->accept();
+   switch (pEvent->key())
+   {
+   // store modifier key ...
+   case Qt::Key_Alt:
+   case Qt::Key_Shift:
+   case Qt::Key_Control:
+   case Qt::Key_Meta:
+      mInfo(tr("Set Modifier key to: %1").arg(pEvent->key()));
+      kModifier = (Qt::Key)pEvent->key();
+      break;
+
+   // Alt+A --> Aspect ratio ...
+   case Qt::Key_A:
+      if (kModifier == Qt::Key_Alt)
+      {
+         slotToggleAspectRatio();
+      }
+      break;
+
+   // Alt+C --> crop geometry ...
+   case Qt::Key_C:
+      if (kModifier == Qt::Key_Alt)
+      {
+         slotToggleCropGeometry();
+      }
+      break;
+
+   // Alt+F --> Fullscreen ...
+   case Qt::Key_F:
+      if (kModifier == Qt::Key_Alt)
+      {
+         slotToggleFullScreen();
+      }
+      break;
+
+   // delegate any other event to base function ...
+   default:
+      QWidget::keyReleaseEvent(pEvent);
+      break;
+   }
 }
-*/
+
+/* -----------------------------------------------------------------\
+|  Method: keyReleaseEvent
+|  Begin: 23.03.2010 / 22:46:10
+|  Author: Jo2003
+|  Description: catch keyrelease events to clear modifier key
+|
+|  Parameters: pointer to event
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::keyReleaseEvent(QKeyEvent *pEvent)
+{
+   // reset modifier ...
+   if (pEvent->key() == kModifier)
+   {
+      mInfo(tr("Clear Modifier key: %1").arg(pEvent->key()));
+      kModifier = Qt::Key_Any;
+   }
+   else
+   {
+      // delegate any other event to base function ...
+      QWidget::keyReleaseEvent(pEvent);
+   }
+}
 
 /* -----------------------------------------------------------------\
 |  Method: raise
