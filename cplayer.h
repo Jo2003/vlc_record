@@ -17,6 +17,10 @@
 #include <QWidget>
 #include <QFrame>
 #include <QTimer>
+/*
+#include <QEvent>
+#include <QKeyEvent>
+*/
 #include <vlc/vlc.h>
 
 #include "clogfile.h"
@@ -72,6 +76,7 @@ protected:
    void releasePlayer ();
    int  createArgs (const QStringList &lArgs, Ui::vlcArgs& args);
    void freeArgs (Ui::vlcArgs& args);
+   // virtual void keyPressEvent (QKeyEvent *event);
 
 private:
    Ui::CPlayer            *ui;
@@ -88,6 +93,7 @@ private:
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);
+   void on_cbxCrop_currentIndexChanged(QString str);
    void slotChangeVolume(int newVolume);
    void slotLibVLCLog ();
 
@@ -98,6 +104,7 @@ public slots:
    int  pause();
    int  slotToggleFullScreen ();
    int  slotToggleAspectRatio ();
+   int  slotToggleCropGeometry ();
    int  slotTimeJump (int iSeconds);
 
 signals:

@@ -482,7 +482,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
 
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
-   // QString     sMrl  = "h:/Documents/Videos/BR-test.ts";
+   // QString     sMrl  = "d:/bbb.avi";
    // QString     sMrl  = "/home/joergn/Videos/bbb.avi";
 
    // get player arguments ...
@@ -552,7 +552,8 @@ bool CPlayer::isPlaying()
 void CPlayer::changeEvent(QEvent *e)
 {
    QWidget::changeEvent(e);
-   switch (e->type()) {
+   switch (e->type())
+   {
    case QEvent::LanguageChange:
       ui->retranslateUi(this);
       break;
@@ -560,6 +561,13 @@ void CPlayer::changeEvent(QEvent *e)
       break;
    }
 }
+/*
+void CPlayer::keyPressEvent(QKeyEvent *event)
+{
+   mInfo(tr("KeyEvent: %1").arg(event->key()));
+   event->accept();
+}
+*/
 
 /* -----------------------------------------------------------------\
 |  Method: raise
@@ -742,6 +750,36 @@ void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
       libvlc_video_set_aspect_ratio(pMediaPlayer, str.toAscii().data(), &vlcExcpt);
 
       raise(&vlcExcpt);
+
+      mInfo(tr("Aspect ratio: %1")
+            .arg(libvlc_video_get_aspect_ratio(pMediaPlayer, &vlcExcpt)));
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_cbxCrop_currentIndexChanged
+|  Begin: 23.03.2010 / 09:55:10
+|  Author: Jo2003
+|  Description: set new crop geometry ...
+|
+|  Parameters: new crop geometry as string ...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
+{
+   if (pMediaPlayer)
+   {
+      // reset exception stuff ...
+      libvlc_exception_clear(&vlcExcpt);
+
+      // set new aspect ratio ...
+      libvlc_video_set_crop_geometry(pMediaPlayer, str.toAscii().data(), &vlcExcpt);
+
+      raise(&vlcExcpt);
+
+      mInfo(tr("Crop ratio: %1")
+            .arg(libvlc_video_get_crop_geometry(pMediaPlayer, &vlcExcpt)));
    }
 }
 
@@ -801,6 +839,40 @@ int CPlayer::slotToggleAspectRatio()
 
       // set new aspect ratio ...
       ui->cbxAspect->setCurrentIndex(idx);
+
+      iRV = 0;
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotToggleCropGeometry
+|  Begin: 08.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: switch aspect ratio to next one ...
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::slotToggleCropGeometry()
+{
+   int iRV = -1;
+   if (pMediaPlayer)
+   {
+      int idx = ui->cbxCrop->currentIndex();
+      idx ++;
+
+      // if end reached, start with index 0 ...
+      if (idx >= ui->cbxCrop->count())
+      {
+         idx = 0;
+      }
+
+      // set new aspect ratio ...
+      ui->cbxCrop->setCurrentIndex(idx);
 
       iRV = 0;
    }

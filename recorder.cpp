@@ -133,22 +133,16 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString)), ui->player, SLOT(playMedia(QString)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcStop()), ui->player, SLOT(stop()));
 
-   // aspect ratio and full screen ...
+   // aspect ratio, crop and full screen ...
    connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(slotToggleFullScreen()));
    connect (this, SIGNAL(sigToggleAspectRatio()), ui->player, SLOT(slotToggleAspectRatio()));
+   connect (this, SIGNAL(sigToggleCropGeometry()), ui->player, SLOT(slotToggleCropGeometry()));
 
    // get state if libVLC player to change player state display ...
    connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
 
    // time jump (Michael J. Fox knows more about ...)
    connect (this, SIGNAL(sigTimeJmp(int)), ui->player, SLOT(slotTimeJump(int)));
-
-   /*
-   // get vlc path from settings and try to create plugin path ...
-   QFileInfo info(Settings.GetVLCPath());
-   QString   sPlugs = QString("%1/plugins").arg(info.absolutePath());
-   ui->player->setPlugInPath(sPlugs);
-   */
 
 #endif /* INCLUDE_LIBVLC */
 
@@ -178,6 +172,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
    connect (this, SIGNAL(sigLCDStateChange(QPixmap)), ui->labState, SLOT(setPixmap(QPixmap)));
+
+   // init short cuts ...
+   InitShortCuts ();
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -356,6 +353,9 @@ Recorder::~Recorder()
    Settings.SaveFavourites(lFavourites);
 
    Settings.SaveOtherSettings();
+
+   // clear shortcuts ...
+   ClearShortCuts ();
 
    // clean favourites ...
    lFavourites.clear();
@@ -553,6 +553,77 @@ void Recorder::TouchEpgNavi (bool bCreate)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: InitShortCuts
+|  Begin: 23.03.2010 / 12:05:00
+|  Author: Jo2003
+|  Description: init short cuts ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::InitShortCuts()
+{
+   QShortcut *pShortCut;
+   pShortCut = NULL;
+
+#ifdef INCLUDE_LIBVLC
+   // aspect ratio ...
+   pShortCut = new QShortcut (QKeySequence("ALT+A"), this);
+   if (pShortCut)
+   {
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleAspectRatio()));
+
+      // save shortcut ...
+      vShortcutPool.push_back(pShortCut);
+   }
+
+   // crop geometry ...
+   pShortCut = new QShortcut (QKeySequence("ALT+C"), this);
+   if (pShortCut)
+   {
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleCropGeometry()));
+
+      // save shortcut ...
+      vShortcutPool.push_back(pShortCut);
+   }
+
+   // fullscreen ...
+   pShortCut = new QShortcut (QKeySequence("ALT+F"), this);
+   if (pShortCut)
+   {
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleFullScreen()));
+
+      // save shortcut ...
+      vShortcutPool.push_back(pShortCut);
+   }
+#endif // INCLUDE_LIBVLC
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ClearShortCuts
+|  Begin: 23.03.2010 / 12:05:00
+|  Author: Jo2003
+|  Description: clear (free) short cuts
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::ClearShortCuts()
+{
+   QVector<QShortcut *>::iterator it;
+
+   // free all shortcuts ...
+   for (it = vShortcutPool.begin(); it != vShortcutPool.end(); it++)
+   {
+      delete *it;
+   }
+
+   vShortcutPool.clear();
+}
+
+/* -----------------------------------------------------------------\
 |  Method: changeEvent
 |  Begin: 19.01.2010 / 16:05:00
 |  Author: Jo2003
@@ -662,15 +733,22 @@ void Recorder::keyPressEvent(QKeyEvent *event)
       // ignore escape key ...
       event->ignore();
       break;
-
+/*
    case Qt::Key_A:
       emit sigToggleAspectRatio();
       event->accept();
       break;
+
+   case Qt::Key_C:
+      emit sigToggleCropGeometry();
+      event->accept();
+      break;
+
    case Qt::Key_F:
       emit sigToggleFullscreen();
       event->accept();
       break;
+*/
 
    // jump 2 minutes forward ...
    case Qt::Key_Right:

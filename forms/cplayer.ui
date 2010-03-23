@@ -41,7 +41,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="spacing">
-      <number>2</number>
+      <number>4</number>
      </property>
      <property name="leftMargin">
       <number>6</number>
@@ -60,7 +60,7 @@
       <widget class="QComboBox" name="cbxAspect">
        <item>
         <property name="text">
-         <string>standard</string>
+         <string>std.</string>
         </property>
        </item>
        <item>
@@ -90,6 +90,37 @@
        </item>
        <item>
         <property name="text">
+         <string>2.3</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Crop: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="cbxCrop">
+       <item>
+        <property name="text">
+         <string>std.</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>16:9</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>16:10</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>2.35</string>
         </property>
        </item>
@@ -107,13 +138,6 @@
         </size>
        </property>
       </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Volume: </string>
-       </property>
-      </widget>
      </item>
      <item>
       <widget class="QLabel" name="labSound">

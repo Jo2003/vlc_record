@@ -35,6 +35,7 @@
 #include <QMenu>
 #include <QWindowStateChangeEvent>
 #include <QMap>
+#include <QShortcut>
 
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
@@ -107,6 +108,7 @@ private:
     QMenu                          favContext;
     CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates           ePlayState;
+    QVector<QShortcut *>           vShortcutPool;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -128,6 +130,8 @@ protected:
     void FillStateMap ();
     QString GetStatePixmap (IncPlay::ePlayStates state);
     bool TimeJumpAllowed ();
+    void InitShortCuts ();
+    void ClearShortCuts ();
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -182,8 +186,11 @@ signals:
     void sigHide ();
     void sigToggleFullscreen ();
     void sigToggleAspectRatio ();
+    void sigToggleCropGeometry ();
     void sigLCDStateChange (const QPixmap &pic);
     void sigTimeJmp (int);
+    void sigJmpFwd ();
+    void sigJmpBwd ();
 };
 
 #endif /* __011910__RECORDER_H */
