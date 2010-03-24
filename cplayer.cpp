@@ -36,7 +36,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pEMMedia     = NULL;
    pEMPlay      = NULL;
    pLibVlcLog   = NULL;
-   kModifier    = Qt::Key_Any;
+   pvShortcuts  = NULL;
 
 #ifndef QT_NO_DEBUG
    uiVerboseLevel = 3;
@@ -86,6 +86,61 @@ void CPlayer::setPlugInPath(const QString &sPath)
 {
    mInfo(tr("Set PlugIn path to '%1'").arg(sPath));
    sPlugInPath = sPath;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setShortCuts
+|  Begin: 24.03.2010 / 14:17:51
+|  Author: Jo2003
+|  Description: store a pointer to shortcuts vector
+|
+|  Parameters: pointer to shortcuts vector
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::setShortCuts(QVector<CShortcutEx *> *pvSc)
+{
+   pvShortcuts = pvSc;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: fakeShortCut
+|  Begin: 24.03.2010 / 14:30:51
+|  Author: Jo2003
+|  Description: fake shortcut press if needed
+|
+|  Parameters: key sequence
+|
+|  Returns: 0 --> shortcut sent
+|          -1 --> not handled
+\----------------------------------------------------------------- */
+int CPlayer::fakeShortCut (const QKeySequence &seq)
+{
+   int iRV = -1;
+   QVector<CShortcutEx *>::const_iterator cit;
+
+   if (pvShortcuts)
+   {
+      // test all shortcuts if one matches the now incoming ...
+      for (cit = pvShortcuts->constBegin(); (cit != pvShortcuts->constEnd()) && iRV; cit ++)
+      {
+         // is key sequence equal ... ?
+         if ((*cit)->key() == seq)
+         {
+            // this shortcut matches ...
+            mInfo (tr("Activate shortcut: %1").arg(seq.toString()));
+
+            // fake shortcut keypress ...
+            (*cit)->activate();
+
+            // only one shortcut should match this sequence ...
+            // so we're done!
+            iRV = 0;
+         }
+      }
+   }
+
+   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -575,70 +630,28 @@ void CPlayer::changeEvent(QEvent *e)
 \----------------------------------------------------------------- */
 void CPlayer::keyPressEvent(QKeyEvent *pEvent)
 {
-   switch (pEvent->key())
+   QString sShortCut;
+   int     iRV;
+
+   // can we create a shortcut string for this key ... ?
+   iRV = CShortcutEx::createShortcutString(pEvent->modifiers(),
+                                           pEvent->text(), sShortCut);
+
+   if (!iRV)
    {
-   // store modifier key ...
-   case Qt::Key_Alt:
-   case Qt::Key_Shift:
-   case Qt::Key_Control:
-   case Qt::Key_Meta:
-      mInfo(tr("Set Modifier key to: %1").arg(pEvent->key()));
-      kModifier = (Qt::Key)pEvent->key();
-      break;
+      // check if shortcut string matches one of our shortcuts ...
+      iRV = fakeShortCut(QKeySequence (sShortCut));
 
-   // Alt+A --> Aspect ratio ...
-   case Qt::Key_A:
-      if (kModifier == Qt::Key_Alt)
+      if (!iRV)
       {
-         slotToggleAspectRatio();
+         pEvent->accept();
       }
-      break;
-
-   // Alt+C --> crop geometry ...
-   case Qt::Key_C:
-      if (kModifier == Qt::Key_Alt)
-      {
-         slotToggleCropGeometry();
-      }
-      break;
-
-   // Alt+F --> Fullscreen ...
-   case Qt::Key_F:
-      if (kModifier == Qt::Key_Alt)
-      {
-         slotToggleFullScreen();
-      }
-      break;
-
-   // delegate any other event to base function ...
-   default:
-      QWidget::keyReleaseEvent(pEvent);
-      break;
    }
-}
 
-/* -----------------------------------------------------------------\
-|  Method: keyReleaseEvent
-|  Begin: 23.03.2010 / 22:46:10
-|  Author: Jo2003
-|  Description: catch keyrelease events to clear modifier key
-|
-|  Parameters: pointer to event
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::keyReleaseEvent(QKeyEvent *pEvent)
-{
-   // reset modifier ...
-   if (pEvent->key() == kModifier)
+   // event not yet handled ... give it to base class ...
+   if (iRV == -1)
    {
-      mInfo(tr("Clear Modifier key: %1").arg(pEvent->key()));
-      kModifier = Qt::Key_Any;
-   }
-   else
-   {
-      // delegate any other event to base function ...
-      QWidget::keyReleaseEvent(pEvent);
+      QWidget::keyPressEvent(pEvent);
    }
 }
 
@@ -954,7 +967,7 @@ int CPlayer::slotToggleCropGeometry()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotTimeJump
+|  Method: slotTimeJumpRelative
 |  Begin: 18.03.2010 / 15:10:10
 |  Author: Jo2003
 |  Description: time jump (back to the future ;-) )
@@ -964,7 +977,7 @@ int CPlayer::slotToggleCropGeometry()
 |  Returns: 0 --> ok
 |          -1 --> any error
 \----------------------------------------------------------------- */
-int CPlayer::slotTimeJump (int iSeconds)
+int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
    int iRV = -1;
 
@@ -980,7 +993,7 @@ int CPlayer::slotTimeJump (int iSeconds)
       if (!raise(&vlcExcpt))
       {
          // set new position ...
-         iPos += iSeconds;
+         iPos += (iSeconds * 1000); // ms!
 
          // make sure value is positive ...
          if (iPos < 0)
@@ -995,6 +1008,38 @@ int CPlayer::slotTimeJump (int iSeconds)
    }
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotTimeJumpFwd
+|  Begin: 24.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: jump 120s. forward
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::slotTimeJumpFwd()
+{
+   return slotTimeJumpRelative(JUMP_TIME);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotTimeJumpBwd
+|  Begin: 24.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: jump 120s. backward
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::slotTimeJumpBwd()
+{
+   return slotTimeJumpRelative(-JUMP_TIME);
 }
 
 /************************* History ***************************\

@@ -128,6 +128,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       vlcCtrl.UseLibVlc(false);
    }
 
+   // give player the list of shortcuts ...
+   ui->player->setShortCuts (&vShortcutPool);
+
    // connect vlc control with libvlc player ...
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString)), ui->player, SLOT(playMedia(QString)));
@@ -140,9 +143,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // get state if libVLC player to change player state display ...
    connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
-
-   // time jump (Michael J. Fox knows more about ...)
-   connect (this, SIGNAL(sigTimeJmp(int)), ui->player, SLOT(slotTimeJump(int)));
 
 #endif /* INCLUDE_LIBVLC */
 
@@ -564,12 +564,12 @@ void Recorder::TouchEpgNavi (bool bCreate)
 \----------------------------------------------------------------- */
 void Recorder::InitShortCuts()
 {
-   QShortcut *pShortCut;
+   CShortcutEx *pShortCut;
    pShortCut = NULL;
 
 #ifdef INCLUDE_LIBVLC
    // aspect ratio ...
-   pShortCut = new QShortcut (QKeySequence("ALT+A"), this);
+   pShortCut = new CShortcutEx (QKeySequence("ALT+A"), this);
    if (pShortCut)
    {
       connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleAspectRatio()));
@@ -579,7 +579,7 @@ void Recorder::InitShortCuts()
    }
 
    // crop geometry ...
-   pShortCut = new QShortcut (QKeySequence("ALT+C"), this);
+   pShortCut = new CShortcutEx (QKeySequence("ALT+C"), this);
    if (pShortCut)
    {
       connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleCropGeometry()));
@@ -589,10 +589,30 @@ void Recorder::InitShortCuts()
    }
 
    // fullscreen ...
-   pShortCut = new QShortcut (QKeySequence("ALT+F"), this);
+   pShortCut = new CShortcutEx (QKeySequence("ALT+F"), this);
    if (pShortCut)
    {
       connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleFullScreen()));
+
+      // save shortcut ...
+      vShortcutPool.push_back(pShortCut);
+   }
+
+   // timejump forward ...
+   pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+F"), this);
+   if (pShortCut)
+   {
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotTimeJumpFwd()));
+
+      // save shortcut ...
+      vShortcutPool.push_back(pShortCut);
+   }
+
+   // timejump backward ...
+   pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+B"), this);
+   if (pShortCut)
+   {
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotTimeJumpBwd()));
 
       // save shortcut ...
       vShortcutPool.push_back(pShortCut);
@@ -612,7 +632,7 @@ void Recorder::InitShortCuts()
 \----------------------------------------------------------------- */
 void Recorder::ClearShortCuts()
 {
-   QVector<QShortcut *>::iterator it;
+   QVector<CShortcutEx *>::iterator it;
 
    // free all shortcuts ...
    for (it = vShortcutPool.begin(); it != vShortcutPool.end(); it++)
@@ -732,40 +752,6 @@ void Recorder::keyPressEvent(QKeyEvent *event)
    case Qt::Key_Escape:
       // ignore escape key ...
       event->ignore();
-      break;
-/*
-   case Qt::Key_A:
-      emit sigToggleAspectRatio();
-      event->accept();
-      break;
-
-   case Qt::Key_C:
-      emit sigToggleCropGeometry();
-      event->accept();
-      break;
-
-   case Qt::Key_F:
-      emit sigToggleFullscreen();
-      event->accept();
-      break;
-*/
-
-   // jump 2 minutes forward ...
-   case Qt::Key_Right:
-      if(TimeJumpAllowed())
-      {
-         emit sigTimeJmp(JUMP_TIME);
-      }
-      event->accept();
-      break;
-
-   // jump 2 minutes back ...
-   case Qt::Key_Left:
-      if(TimeJumpAllowed())
-      {
-         emit sigTimeJmp(-JUMP_TIME);
-      }
-      event->accept();
       break;
 
    default:

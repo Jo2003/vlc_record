@@ -17,6 +17,7 @@
 #include <QWidget>
 #include <QFrame>
 #include <QTimer>
+#include <QVector>
 
 #include <QEvent>
 #include <QKeyEvent>
@@ -25,6 +26,8 @@
 
 #include "clogfile.h"
 #include "playstates.h"
+#include "cshortcutex.h"
+#include "defdef.h"
 
 //===================================================================
 // namespace
@@ -68,6 +71,7 @@ public:
    int  setMedia (const QString &sMrl);
    bool isPlaying ();
    void setPlugInPath(const QString &sPath);
+   void setShortCuts (QVector<CShortcutEx *> *pvSc);
    static void eventCallback (const libvlc_event_t *ev, void *player);
 
 protected:
@@ -76,9 +80,9 @@ protected:
    void releasePlayer ();
    int  createArgs (const QStringList &lArgs, Ui::vlcArgs& args);
    void freeArgs (Ui::vlcArgs& args);
+   int  fakeShortCut (const QKeySequence &seq);
 
    virtual void keyPressEvent (QKeyEvent *pEvent);
-   virtual void keyReleaseEvent(QKeyEvent *pEvent);
 
 private:
    Ui::CPlayer            *ui;
@@ -93,6 +97,7 @@ private:
    uint                    uiVerboseLevel;
    QString                 sPlugInPath;
    Qt::Key                 kModifier;
+   QVector<CShortcutEx *> *pvShortcuts;
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);
@@ -108,7 +113,9 @@ public slots:
    int  slotToggleFullScreen ();
    int  slotToggleAspectRatio ();
    int  slotToggleCropGeometry ();
-   int  slotTimeJump (int iSeconds);
+   int  slotTimeJumpFwd ();
+   int  slotTimeJumpBwd ();
+   int  slotTimeJumpRelative (int iSeconds);
 
 signals:
    void sigPlayState (int ps);

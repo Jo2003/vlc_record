@@ -35,7 +35,6 @@
 #include <QMenu>
 #include <QWindowStateChangeEvent>
 #include <QMap>
-#include <QShortcut>
 
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
@@ -49,6 +48,7 @@
 #include "ctranslit.h"
 #include "cfavaction.h"
 #include "cdirstuff.h"
+#include "cshortcutex.h"
 
 //===================================================================
 // namespace
@@ -108,7 +108,7 @@ private:
     QMenu                          favContext;
     CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates           ePlayState;
-    QVector<QShortcut *>           vShortcutPool;
+    QVector<CShortcutEx *>         vShortcutPool;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -188,7 +188,6 @@ signals:
     void sigToggleAspectRatio ();
     void sigToggleCropGeometry ();
     void sigLCDStateChange (const QPixmap &pic);
-    void sigTimeJmp (int);
     void sigJmpFwd ();
     void sigJmpBwd ();
 };

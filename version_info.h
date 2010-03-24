@@ -36,7 +36,8 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
-| - Hotkry Alt+{x} now also works on fullscreen
+| - fake shortcut keypress from player class
+| - Hotkey Alt+{x} now also works on fullscreen
 | - bugfix for APPDATA unicode problem
 | - "--vout-event=3" handling on win32 only
 | - jump 2 minutes forward on hotkey "->" and
