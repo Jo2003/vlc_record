@@ -117,9 +117,12 @@ public slots:
    int  slotToggleFullScreen ();
    int  slotToggleAspectRatio ();
    int  slotToggleCropGeometry ();
-   int  slotTimeJumpFwd ();
-   int  slotTimeJumpBwd ();
+   int  slotStreamJumpFwd ();
+   int  slotStreamJumpBwd ();
+   int  slotTimeJumpBwd();
+   int  slotTimeJumpFwd();
    int  slotTimeJumpRelative (int iSeconds);
+   int  slotStreamJumpRelative (int iSeconds);
 
 signals:
    void sigPlayState (int ps);

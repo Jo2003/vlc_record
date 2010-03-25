@@ -602,7 +602,7 @@ void Recorder::InitShortCuts()
    pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+F"), this);
    if (pShortCut)
    {
-      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotTimeJumpFwd()));
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotStreamJumpFwd()));
 
       // save shortcut ...
       vShortcutPool.push_back(pShortCut);
@@ -612,7 +612,7 @@ void Recorder::InitShortCuts()
    pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+B"), this);
    if (pShortCut)
    {
-      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotTimeJumpBwd()));
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotStreamJumpBwd()));
 
       // save shortcut ...
       vShortcutPool.push_back(pShortCut);

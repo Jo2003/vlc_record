@@ -1026,12 +1026,6 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpFwd()
 {
-   // we always can jump forward ...
-   // to have the right value when jumping backward, we have
-   // to add the jump value to the playtime ...
-   // To make this we set the start time to the past!
-   tPlayStartTime -= JUMP_TIME;
-
    return slotTimeJumpRelative(JUMP_TIME);
 }
 
@@ -1048,7 +1042,55 @@ int CPlayer::slotTimeJumpFwd()
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpBwd()
 {
-   // Backward jumping using set_time doesn't work.
+   return slotTimeJumpRelative(-JUMP_TIME);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStreamJumpBwd
+|  Begin: 24.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: jump ~120s. backward
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::slotStreamJumpBwd()
+{
+   return slotStreamJumpRelative (-JUMP_TIME);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStreamJumpFwd
+|  Begin: 24.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: jump ~120s. forward
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::slotStreamJumpFwd()
+{
+   return slotStreamJumpRelative (JUMP_TIME);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStreamJumpRelative
+|  Begin: 25.03.2010 / 15:10:10
+|  Author: Jo2003
+|  Description: try time jump in stream
+|
+|  Parameters: seconds to jump ...
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::slotStreamJumpRelative (int iSeconds)
+{
+   // time jumping in streams using set_time doesn't work.
    // Therefore we use a funky rule which includes
    // the playtime and the position we have now
    // in the stream. This doesn't work 100% exactly.
@@ -1065,7 +1107,7 @@ int CPlayer::slotTimeJumpBwd()
 
       if (!raise(&vlcExcpt))
       {
-         float newPos = factPos * (float)(iPlayTime - JUMP_TIME)
+         float newPos = factPos * (float)(iPlayTime + iSeconds)
                                 / (float)iPlayTime;
 
          // make sure we haven't a negative position ...
@@ -1090,7 +1132,7 @@ int CPlayer::slotTimeJumpBwd()
             else
             {
                // update play start time to reflect our changes ...
-               tPlayStartTime += JUMP_TIME;
+               tPlayStartTime += iSeconds;
             }
          }
       }
