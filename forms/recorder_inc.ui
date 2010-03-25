@@ -472,6 +472,9 @@ border-top: 0px;
                      <height>16</height>
                     </size>
                    </property>
+                   <property name="shortcut">
+                    <string>Alt+-</string>
+                   </property>
                    <property name="autoRaise">
                     <bool>true</bool>
                    </property>
@@ -504,6 +507,9 @@ color: white;
                      <width>16</width>
                      <height>16</height>
                     </size>
+                   </property>
+                   <property name="shortcut">
+                    <string>Alt++, Ctrl+S</string>
                    </property>
                    <property name="autoRaise">
                     <bool>true</bool>
@@ -812,6 +818,9 @@ background-attachment: fixed;
              <height>32</height>
             </size>
            </property>
+           <property name="shortcut">
+            <string>Alt+S</string>
+           </property>
            <property name="autoDefault">
             <bool>false</bool>
            </property>
@@ -960,7 +969,7 @@ background-attachment: fixed;
          </size>
         </property>
         <property name="shortcut">
-         <string>Alt+S</string>
+         <string>Alt+O</string>
         </property>
         <property name="autoDefault">
          <bool>false</bool>
