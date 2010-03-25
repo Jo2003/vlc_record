@@ -37,6 +37,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pEMPlay      = NULL;
    pLibVlcLog   = NULL;
    pvShortcuts  = NULL;
+   tPlayStartTime = 0;
 
 #ifndef QT_NO_DEBUG
    uiVerboseLevel = 3;
@@ -711,6 +712,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 
          case libvlc_Playing:
             emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
+            pPlayer->setPlayStartTime(QDateTime::currentDateTime().toTime_t());
             break;
 
          case libvlc_Paused:
@@ -719,6 +721,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 
          case libvlc_Stopped:
             emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
+            pPlayer->setPlayStartTime(0);
             break;
 
          case libvlc_Ended:
@@ -981,7 +984,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
    int iRV = -1;
 
-   if (pMediaPlayer)
+   if (isPlaying())
    {
       // reset exception stuff ...
       libvlc_exception_clear(&vlcExcpt);
@@ -1023,6 +1026,12 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpFwd()
 {
+   // we always can jump forward ...
+   // to have the right value when jumping backward, we have
+   // to add the jump value to the playtime ...
+   // To make this we set the start time to the past!
+   tPlayStartTime -= JUMP_TIME;
+
    return slotTimeJumpRelative(JUMP_TIME);
 }
 
@@ -1030,7 +1039,7 @@ int CPlayer::slotTimeJumpFwd()
 |  Method: slotTimeJumpBwd
 |  Begin: 24.03.2010 / 15:10:10
 |  Author: Jo2003
-|  Description: jump 120s. backward
+|  Description: jump ~120s. backward
 |
 |  Parameters: --
 |
@@ -1039,7 +1048,70 @@ int CPlayer::slotTimeJumpFwd()
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpBwd()
 {
-   return slotTimeJumpRelative(-JUMP_TIME);
+   // Backward jumping using set_time doesn't work.
+   // Therefore we use a funky rule which includes
+   // the playtime and the position we have now
+   // in the stream. This doesn't work 100% exactly.
+   int iRV       = -1;
+   int iPlayTime = QDateTime::currentDateTime().toTime_t() - tPlayStartTime;
+
+   if (isPlaying())
+   {
+      // reset exception stuff ...
+      libvlc_exception_clear(&vlcExcpt);
+
+      // get actual position ...
+      float factPos = libvlc_media_player_get_position(pMediaPlayer, &vlcExcpt);
+
+      if (!raise(&vlcExcpt))
+      {
+         float newPos = factPos * (float)(iPlayTime - JUMP_TIME)
+                                / (float)iPlayTime;
+
+         // make sure we haven't a negative position ...
+         if (newPos < 0)
+         {
+            newPos = 0;
+         }
+
+         // set new position ...
+         libvlc_media_player_set_position(pMediaPlayer, newPos, &vlcExcpt);
+
+         if (!raise(&vlcExcpt))
+         {
+            iRV = 0;
+
+            if (newPos == (float)0)
+            {
+               // we started again new (from 0) ...
+               // so set starttime to now ...
+               tPlayStartTime = QDateTime::currentDateTime().toTime_t();
+            }
+            else
+            {
+               // update play start time to reflect our changes ...
+               tPlayStartTime += JUMP_TIME;
+            }
+         }
+      }
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setPlayStartTime
+|  Begin: 25.03.2010 / 11:10:10
+|  Author: Jo2003
+|  Description: set player startup time
+|
+|  Parameters: timestamp
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::setPlayStartTime(ulong when)
+{
+   tPlayStartTime = when;
 }
 
 /************************* History ***************************\

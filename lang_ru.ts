@@ -250,12 +250,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="87"/>
+        <location filename="cplayer.cpp" line="88"/>
         <source>Set PlugIn path to &apos;%1&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="548"/>
+        <location filename="cplayer.cpp" line="549"/>
         <source>starting libVLC play of:
   --&gt; %2
   --&gt; with following arguments: %1</source>
@@ -265,27 +265,27 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="840"/>
+        <location filename="cplayer.cpp" line="843"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="867"/>
+        <location filename="cplayer.cpp" line="870"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="674"/>
+        <location filename="cplayer.cpp" line="675"/>
         <source>LibVLC Error!</source>
         <translation>Ошибка libVLC!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="131"/>
+        <location filename="cplayer.cpp" line="132"/>
         <source>Activate shortcut: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="675"/>
+        <location filename="cplayer.cpp" line="676"/>
         <source>LibVLC reports following error:
 %1</source>
         <translation>Ошибка LibVLC:
@@ -320,7 +320,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">ОШИБКА</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="796"/>
+        <location filename="cplayer.cpp" line="799"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <oldsource>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3

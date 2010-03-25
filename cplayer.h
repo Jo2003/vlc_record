@@ -22,6 +22,8 @@
 #include <QEvent>
 #include <QKeyEvent>
 
+#include <QDateTime>
+
 #include <vlc/vlc.h>
 
 #include "clogfile.h"
@@ -72,6 +74,7 @@ public:
    bool isPlaying ();
    void setPlugInPath(const QString &sPath);
    void setShortCuts (QVector<CShortcutEx *> *pvSc);
+   void setPlayStartTime (ulong when);
    static void eventCallback (const libvlc_event_t *ev, void *player);
 
 protected:
@@ -98,6 +101,7 @@ private:
    QString                 sPlugInPath;
    Qt::Key                 kModifier;
    QVector<CShortcutEx *> *pvShortcuts;
+   ulong                   tPlayStartTime;
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);

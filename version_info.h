@@ -31,11 +31,13 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".23" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".25" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-03-25: Version x.25
 | - fake shortcut keypress from player class
 | - Hotkey Alt+{x} now also works on fullscreen
 | - bugfix for APPDATA unicode problem
