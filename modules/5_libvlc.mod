@@ -34,7 +34,7 @@
 ; handle cyrillic file names?
 ; Options: yes, no
 ;-------------------------------------------------------------------------------
-TRANSLIT     = <<yes>>
+TRANSLIT     = <<no>>
 
 ;-------------------------------------------------------------------------------
 ; force output format no matter what is given as settings
@@ -53,7 +53,7 @@ FORCE_MUX    = <<no>>
 ;-------------------------------------------------------------------------------
 LIVE_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
 ARCH_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
-LIVE_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
-ARCH_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
-LIVE_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}>>
-ARCH_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}>>
+LIVE_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#duplicate{dst=display,dst=std{access=file,mux=ffmpeg,dst='{[%DST%]}.{[%MUX%]}'}}>>
+ARCH_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#duplicate{dst=display,dst=std{access=file,mux=ffmpeg,dst='{[%DST%]}.{[%MUX%]}'}}>>
+LIVE_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#std{access=file,mux=ffmpeg,dst='{[%DST%]}.{[%MUX%]}'}>>
+ARCH_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#std{access=file,mux=ffmpeg,dst='{[%DST%]}.{[%MUX%]}'}>>

@@ -133,7 +133,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // connect vlc control with libvlc player ...
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
-   connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString)), ui->player, SLOT(playMedia(QString)));
+   connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString, bool)), ui->player, SLOT(playMedia(QString, bool)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcStop()), ui->player, SLOT(stop()));
 
    // aspect ratio, crop and full screen ...
@@ -617,6 +617,17 @@ void Recorder::InitShortCuts()
       // save shortcut ...
       vShortcutPool.push_back(pShortCut);
    }
+
+   // pause ...
+   pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+P"), this);
+   if (pShortCut)
+   {
+      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(pause()));
+
+      // save shortcut ...
+      vShortcutPool.push_back(pShortCut);
+   }
+
 #endif // INCLUDE_LIBVLC
 }
 
@@ -975,7 +986,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       // start player if we have a command line ...
       if (sCmdLine != "")
       {
-         vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
+         vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState, bArchiv);
       }
 
       // successfully started ?
@@ -1030,7 +1041,7 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
    // start player if we have a command line ...
    if (sCmdLine != "")
    {
-      vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
+      vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState, bArchiv);
    }
 
    // successfully started ?
@@ -1247,7 +1258,7 @@ void Recorder::slotStreamURL(QString str)
 void Recorder::slotCookie (QString sCookie)
 {
    // save cookie ...
-   // Settings.SaveCookie(sCookie);
+   sCookie = ""; // suppress warnings ...
 
    Trigger.TriggerRequest(Kartina::REQ_GET_SERVER);
 }
@@ -1928,6 +1939,7 @@ void Recorder::slotTimerRecActive (int iState)
 \----------------------------------------------------------------- */
 void Recorder::slotVlcEnds(int iState)
 {
+   iState = 0; // suppress warnings ...
    if (ePlayState != IncPlay::PS_STOP)
    {
       mInfo(tr("vlcCtrl reports: vlc player ended!"));
@@ -2296,6 +2308,9 @@ void Recorder::HandleFavourites()
 
          // store channel id in action ...
          pFavAct[i]->setFavData(lFavourites[i], kartinafav::FAV_WHAT);
+
+         // set shortcut ...
+         pFavAct[i]->setShortcut(QKeySequence(QString("ALT+%1").arg(i)));
 
          // search for channel name ...
          cit = chanMap.constFind(lFavourites[i]);

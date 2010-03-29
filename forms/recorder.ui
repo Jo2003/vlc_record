@@ -813,7 +813,7 @@ background-attachment: fixed;
             </size>
            </property>
            <property name="shortcut">
-            <string>Ctrl+T</string>
+            <string>Alt+T</string>
            </property>
            <property name="autoDefault">
             <bool>false</bool>

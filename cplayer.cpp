@@ -38,6 +38,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pLibVlcLog   = NULL;
    pvShortcuts  = NULL;
    tPlayStartTime = 0;
+   bCtrlStream  = false;
 
 #ifndef QT_NO_DEBUG
    uiVerboseLevel = 3;
@@ -210,11 +211,13 @@ int CPlayer::createArgs (const QStringList &lArgs, Ui::vlcArgs &args)
 
       for (i = 0; i < args.argc; i++)
       {
-         args.argArray[i] = new char[lArgs[i].size() + 1];
+         // Be sure to use the size of the UTF-8 String !!!
+         args.argArray[i] = new char[lArgs[i].toUtf8().size() + 1];
 
          if (args.argArray[i])
          {
-            strcpy (args.argArray[i], lArgs[i].toAscii().constData());
+            // copy whole UTF-8 string ...
+            strcpy (args.argArray[i], lArgs[i].toUtf8().constData());
          }
       }
    }
@@ -380,7 +383,7 @@ int CPlayer::setMedia(const QString &sMrl)
 
    // create new media ...
    libvlc_exception_clear(&vlcExcpt);
-   pMedia = libvlc_media_new (pVlcInstance, sMrl.toAscii().constData(), &vlcExcpt);
+   pMedia = libvlc_media_new (pVlcInstance, sMrl.toUtf8().constData(), &vlcExcpt);
    iRV = raise(&vlcExcpt);
 
    if (!iRV)
@@ -507,7 +510,7 @@ int CPlayer::pause()
       // reset exception stuff ...
       libvlc_exception_clear(&vlcExcpt);
 
-      if (isPlaying() && libvlc_media_player_can_pause(pMediaPlayer, &vlcExcpt))
+      if (isPlaying() && libvlc_media_player_can_pause(pMediaPlayer, &vlcExcpt) && bCtrlStream)
       {
          iRV = raise(&vlcExcpt);
 
@@ -533,9 +536,12 @@ int CPlayer::pause()
 |  Returns: 0 --> ok
 |          -1 --> any error
 \----------------------------------------------------------------- */
-int CPlayer::playMedia(const QString &sCmdLine)
+int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
 {
    int iRV;
+
+   // store control flag ...
+   bCtrlStream = bAllowCtrl;
 
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
@@ -984,7 +990,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
    int iRV = -1;
 
-   if (isPlaying())
+   if (isPlaying() && bCtrlStream)
    {
       // reset exception stuff ...
       libvlc_exception_clear(&vlcExcpt);
@@ -1097,7 +1103,7 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
    int iRV       = -1;
    int iPlayTime = QDateTime::currentDateTime().toTime_t() - tPlayStartTime;
 
-   if (isPlaying())
+   if (isPlaying() && bCtrlStream)
    {
       // reset exception stuff ...
       libvlc_exception_clear(&vlcExcpt);

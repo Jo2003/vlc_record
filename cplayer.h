@@ -102,6 +102,7 @@ private:
    Qt::Key                 kModifier;
    QVector<CShortcutEx *> *pvShortcuts;
    ulong                   tPlayStartTime;
+   bool                    bCtrlStream;
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);
@@ -110,7 +111,7 @@ private slots:
    void slotLibVLCLog ();
 
 public slots:
-   int  playMedia (const QString &sCmdLine);
+   int  playMedia (const QString &sCmdLine, bool bAllowCtrl);
    int  play();
    int  stop();
    int  pause();
