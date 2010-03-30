@@ -509,7 +509,7 @@ color: white;
                     </size>
                    </property>
                    <property name="shortcut">
-                    <string>Alt++, Ctrl+S</string>
+                    <string>Alt++</string>
                    </property>
                    <property name="autoRaise">
                     <bool>true</bool>

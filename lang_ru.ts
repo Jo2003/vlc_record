@@ -9,7 +9,13 @@
         <translation>О программе...</translation>
     </message>
     <message>
-        <location filename="forms/caboutdialog.ui" line="37"/>
+        <location filename="forms/caboutdialog.ui" line="31"/>
+        <source>About</source>
+        <translation>О программе...</translation>
+    </message>
+    <message>
+        <location filename="forms/caboutdialog.ui" line="47"/>
+        <location filename="forms/caboutdialog.ui" line="85"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;About&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -18,22 +24,27 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/caboutdialog.ui" line="51"/>
+        <location filename="forms/caboutdialog.ui" line="61"/>
         <source>Don&apos;t show on startup</source>
         <translation>Не показывай на запуске</translation>
     </message>
     <message>
-        <location filename="forms/caboutdialog.ui" line="73"/>
+        <location filename="forms/caboutdialog.ui" line="69"/>
+        <source>Shortcuts</source>
+        <translation>Сокращение</translation>
+    </message>
+    <message>
+        <location filename="forms/caboutdialog.ui" line="118"/>
         <source>&amp;Thank you!</source>
         <translation>&amp;Спасибо!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="107"/>
+        <location filename="caboutdialog.cpp" line="108"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="108"/>
+        <location filename="caboutdialog.cpp" line="109"/>
         <source>Author:</source>
         <translation>Автор:</translation>
     </message>
@@ -42,63 +53,170 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Распределенный:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="109"/>
+        <location filename="caboutdialog.cpp" line="110"/>
         <source>Inspired by:</source>
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="113"/>
+        <location filename="caboutdialog.cpp" line="114"/>
         <source>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
         <oldsource>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1.</oldsource>
         <translation>&lt;b&gt;vlc-record&lt;/b&gt; - программа для &lt;b&gt;просмотра и записи видео потока&lt;/b&gt; с %1%2</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="115"/>
+        <location filename="caboutdialog.cpp" line="116"/>
         <source> (click to buy a subscription).</source>
         <oldsource> (Click to buy a subscription).</oldsource>
         <translation>(нажимай ссылку, чтобы купить подписку).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="119"/>
+        <location filename="caboutdialog.cpp" line="120"/>
         <source>To do this you will need to authorise using username and password provided by %1.</source>
         <oldsource>To do this it will authenticate you with username and password at %1.</oldsource>
         <translation>Программа подключается к %1 при помощи Вашей информации абонента (Логин/Пароль).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="120"/>
+        <location filename="caboutdialog.cpp" line="121"/>
         <source>It then will start the %1 to display (and record) the selected stream.</source>
         <translation>После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="121"/>
+        <location filename="caboutdialog.cpp" line="122"/>
         <source>It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.</source>
         <translation>В &lt;b&gt;vlc-record&lt;/b&gt; отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="122"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>For News and Updates please visit my site at %1.</source>
         <oldsource>For News and Updates please visit my site at %1</oldsource>
         <translation>Для чтения новостей и обновлений, посетите мою Интернет-страницу %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="123"/>
+        <location filename="caboutdialog.cpp" line="124"/>
         <source>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</source>
         <translation>&lt;b&gt;vlc-record бесплатно!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="124"/>
+        <location filename="caboutdialog.cpp" line="125"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если Вам понравилась моя программа, вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="126"/>
+        <location filename="caboutdialog.cpp" line="127"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="127"/>
+        <location filename="caboutdialog.cpp" line="128"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="139"/>
+        <source>Function</source>
+        <translation>Функция</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="139"/>
+        <source>Shortcut</source>
+        <translation>Сокращение</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="140"/>
+        <source>Play</source>
+        <translation>Выигрывать</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="141"/>
+        <source>Stop</source>
+        <translation>Стоп</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="142"/>
+        <source>Record</source>
+        <translation>Запись</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="143"/>
+        <source>Timer Record</source>
+        <translation>Планировщик записи</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="144"/>
+        <source>Favourites 0 ... 9</source>
+        <translation>Фавориты 0 ... 9</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="145"/>
+        <source>Enlarge Font Size</source>
+        <translation>Увелить Размер Шрифта</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="146"/>
+        <source>Reduce Font Size</source>
+        <translation>Уменьшить Размер Шрифта</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="147"/>
+        <source>Open Info Dialog</source>
+        <translation>Открыть Диалог Информации</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="148"/>
+        <source>Open Settings Dialog</source>
+        <translation>Открыть Диалог Опции</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="149"/>
+        <source>Quit VLC Record</source>
+        <translation>Закрыть программа</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="150"/>
+        <source>Toggle Fullscreen</source>
+        <translation>Полный экран</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="151"/>
+        <source>Switch Aspect Ratio</source>
+        <translation>Формат изображения</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="152"/>
+        <source>Switch Crop Geometry</source>
+        <translation>Подрезать Видеоформат</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="153"/>
+        <source>Jump ~2 minutes forward</source>
+        <translation>2 минуты вперед</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="154"/>
+        <source>Jump ~2 minutes backward</source>
+        <translation>2 минуты назад</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="155"/>
+        <source>Pause</source>
+        <translation>Пауза</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="157"/>
+        <source>Only works in version 2.xx with activated libVLC.</source>
+        <oldsource>Only works with activated libVLC.</oldsource>
+        <translation>Только работает в версии 2.xx с активизированным libVLC.</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="158"/>
+        <source>Only works on archive play.</source>
+        <translation>Только работает под архива.</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="159"/>
+        <source>Shortcuts don&apos;t work on Linux in fullscreen mode. Double click with mouse to change to windowed mode.</source>
+        <oldsource>Shortcuts don&apos;t work om Linux in fullscreen mode. Double click with mouse to change to windowed mode.</oldsource>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -250,12 +368,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="88"/>
+        <location filename="cplayer.cpp" line="89"/>
         <source>Set PlugIn path to &apos;%1&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="549"/>
+        <location filename="cplayer.cpp" line="556"/>
         <source>starting libVLC play of:
   --&gt; %2
   --&gt; with following arguments: %1</source>
@@ -265,27 +383,27 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="843"/>
+        <location filename="cplayer.cpp" line="850"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="870"/>
+        <location filename="cplayer.cpp" line="877"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="675"/>
+        <location filename="cplayer.cpp" line="682"/>
         <source>LibVLC Error!</source>
         <translation>Ошибка libVLC!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="132"/>
+        <location filename="cplayer.cpp" line="133"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="676"/>
+        <location filename="cplayer.cpp" line="683"/>
         <source>LibVLC reports following error:
 %1</source>
         <translation>Ошибка LibVLC:
@@ -320,7 +438,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">ОШИБКА</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="799"/>
+        <location filename="cplayer.cpp" line="806"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <oldsource>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
@@ -918,7 +1036,7 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="cvlcctrl.cpp" line="216"/>
-        <location filename="cvlcctrl.cpp" line="280"/>
+        <location filename="cvlcctrl.cpp" line="289"/>
         <source>Warning!</source>
         <translation>Внимание!</translation>
     </message>
@@ -933,28 +1051,28 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="266"/>
+        <location filename="cvlcctrl.cpp" line="275"/>
         <source>Start player detached using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="281"/>
+        <location filename="cvlcctrl.cpp" line="290"/>
         <source>Player is already running! Do you want to proceed?</source>
         <translation>Плеер уже в работе! Вы хотите продолжиться?</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="545"/>
+        <location filename="cvlcctrl.cpp" line="554"/>
         <source>Player has ended ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="549"/>
+        <location filename="cvlcctrl.cpp" line="558"/>
         <source>Player was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="607"/>
+        <location filename="cvlcctrl.cpp" line="616"/>
         <source>libVLC reports new state %1</source>
         <translation></translation>
     </message>
@@ -963,18 +1081,18 @@ or start time is later than end time!</source>
         <translation type="obsolete">Player уже в работе!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="301"/>
+        <location filename="cvlcctrl.cpp" line="310"/>
         <source>Start player using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="449"/>
+        <location filename="cvlcctrl.cpp" line="458"/>
         <source>Muxing forced to &apos;%1&apos;!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="467"/>
+        <location filename="cvlcctrl.cpp" line="476"/>
         <source>Remove double slash in target path ...</source>
         <translation></translation>
     </message>
@@ -1024,89 +1142,89 @@ or start time is later than end time!</source>
         <translation>Воск.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="777"/>
+        <location filename="recorder.cpp" line="788"/>
         <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
         <translation>VLC Mediaplayer ещё в работае.&lt;br /&gt;&lt;b&gt;Если вы остановите работу VLC-Record, то и VLC-Player закроется.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Уверены ли Вы?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="782"/>
-        <location filename="recorder.cpp" line="2078"/>
+        <location filename="recorder.cpp" line="793"/>
+        <location filename="recorder.cpp" line="2089"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="879"/>
+        <location filename="recorder.cpp" line="890"/>
         <source>Program:</source>
         <translation>Передача:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="880"/>
+        <location filename="recorder.cpp" line="891"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="881"/>
+        <location filename="recorder.cpp" line="892"/>
         <source>End:</source>
         <translation>Окончание:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1207"/>
-        <location filename="recorder.cpp" line="1713"/>
+        <location filename="recorder.cpp" line="1218"/>
+        <location filename="recorder.cpp" line="1724"/>
         <source>%1 sends following url:
   --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1934"/>
+        <location filename="recorder.cpp" line="1945"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1952"/>
+        <location filename="recorder.cpp" line="1963"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2074"/>
+        <location filename="recorder.cpp" line="2085"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2188"/>
-        <location filename="recorder.cpp" line="2418"/>
+        <location filename="recorder.cpp" line="2199"/>
+        <location filename="recorder.cpp" line="2429"/>
         <source>Remove from favourites</source>
         <translation>Удалить от фаворитов</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2196"/>
+        <location filename="recorder.cpp" line="2207"/>
         <source>Add to favourites</source>
         <translation>Добавить к фаворитам</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2241"/>
+        <location filename="recorder.cpp" line="2252"/>
         <source>Note</source>
         <translation>Кстати</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2242"/>
+        <location filename="recorder.cpp" line="2253"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Максимальное число фаворитов (%1) достигло.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2445"/>
+        <location filename="recorder.cpp" line="2456"/>
         <source>Active stream server is No. %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="985"/>
-        <location filename="recorder.cpp" line="1040"/>
+        <location filename="recorder.cpp" line="996"/>
+        <location filename="recorder.cpp" line="1051"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Невозможно заупстить VLC-Media Player!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="992"/>
-        <location filename="recorder.cpp" line="1046"/>
+        <location filename="recorder.cpp" line="1003"/>
+        <location filename="recorder.cpp" line="1057"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
@@ -1119,12 +1237,12 @@ or start time is later than end time!</source>
         <translation type="obsolete">Идёт запись!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1896"/>
+        <location filename="recorder.cpp" line="1907"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1914"/>
+        <location filename="recorder.cpp" line="1925"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
@@ -1181,23 +1299,23 @@ dataDir: %1
         <translation>1 неделя вперед</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="926"/>
+        <location filename="recorder.cpp" line="937"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как...</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="985"/>
-        <location filename="recorder.cpp" line="1040"/>
+        <location filename="recorder.cpp" line="996"/>
+        <location filename="recorder.cpp" line="1051"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1140"/>
+        <location filename="recorder.cpp" line="1151"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1141"/>
+        <location filename="recorder.cpp" line="1152"/>
         <source>%1 Client API reports some errors: %2</source>
         <oldsource>Kartina.tv Client API reports some errors: %1</oldsource>
         <translation></translation>
@@ -1264,7 +1382,7 @@ dataDir: %1
         <location filename="forms/recorder.ui" line="431"/>
         <location filename="forms/recorder_inc.ui" line="476"/>
         <source>Alt+-</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="447"/>
@@ -1274,8 +1392,9 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder.ui" line="467"/>
+        <location filename="forms/recorder_inc.ui" line="512"/>
         <source>Alt++</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="527"/>
@@ -1386,12 +1505,6 @@ dataDir: %1
         <translation>Планировщик записи</translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="816"/>
-        <location filename="forms/recorder_inc.ui" line="864"/>
-        <source>Ctrl+T</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Timer Ready</source>
         <translation type="obsolete">Планировщик записи</translation>
     </message>
@@ -1408,10 +1521,16 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
+        <location filename="forms/recorder.ui" line="816"/>
+        <location filename="forms/recorder_inc.ui" line="864"/>
+        <source>Alt+T</source>
+        <translation></translation>
+    </message>
+    <message>
         <location filename="forms/recorder.ui" line="924"/>
         <location filename="forms/recorder_inc.ui" line="972"/>
         <source>Alt+O</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="949"/>
@@ -1436,11 +1555,6 @@ dataDir: %1
         <location filename="forms/recorder_inc.ui" line="1054"/>
         <source>Alt+Q</source>
         <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/recorder_inc.ui" line="512"/>
-        <source>Alt++, Ctrl+S</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

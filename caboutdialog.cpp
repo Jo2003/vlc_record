@@ -29,6 +29,7 @@ CAboutDialog::CAboutDialog(QWidget *parent) :
    ui->setupUi(this);
    FillInfo();
    ui->textBrowser->setHtml(strAbout);
+   ui->textShortcuts->setHtml(sShortCuts);
 }
 
 /* -----------------------------------------------------------------\
@@ -125,6 +126,37 @@ void CAboutDialog::FillInfo()
          << "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
          << tr("Donate some $ and / or &euro; at Paypal for my work.") << "</a><br /> <br />" << endl
          << tr("Thank you,") << "<br />&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg" << endl;
+
+   sShortCuts = "";
+   str.setString(&sShortCuts);
+   str << "<style type='text/css'>" << endl
+         << ".tabhead {backgound-color: #036; color: white; font-weight: bold;}" << endl
+         << ".tabrow {background-color: white; color: #036;}" << endl
+         << ".small {font-size: 9px; color: #800;}"
+         << "</style>" << endl
+         << "<div align='center'><br />" << endl
+         << "<table width='95%' cellpadding='3' cellspacing='1' border='0' bgcolor='#036'>" << endl
+         << "<tr><th class='tabhead'>" << tr("Function") << "</th><th class='tabhead'>" << tr("Shortcut") << "</th></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Play") << "</td><td class='tabrow'>ALT+P</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Stop") << "</td><td class='tabrow'>ALT+S</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Record") << "</td><td class='tabrow'>ALT+R</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Timer Record") << "</td><td class='tabrow'>ALT+T</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Favourites 0 ... 9") << "</td><td class='tabrow'>ALT+0 ... 9</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Enlarge Font Size") << "</td><td class='tabrow'>ALT++</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Reduce Font Size") << "</td><td class='tabrow'>ALT+-</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Open Info Dialog") << "</td><td class='tabrow'>ALT+I</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Open Settings Dialog") << "</td><td class='tabrow'>ALT+S</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Quit VLC Record") << "</td><td class='tabrow'>ALT+Q</td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Toggle Fullscreen") << "</td><td class='tabrow'>ALT+F<span class='small'>*</span></td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Switch Aspect Ratio") << "</td><td class='tabrow'>ALT+A<span class='small'>*</span></td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Switch Crop Geometry") << "</td><td class='tabrow'>ALT+C<span class='small'>*</span></td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Jump ~2 minutes forward") << "</td><td class='tabrow'>CTRL+ALT+F<span class='small'>**</span></td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Jump ~2 minutes backward") << "</td><td class='tabrow'>CTRL+ALT+B<span class='small'>**</span></td></tr>" << endl
+         << "<tr><td class='tabrow'>" << tr("Pause") << "</td><td class='tabrow'>CTRL+ALT+P<span class='small'>**</span></td></tr>" << endl
+         << "</table></div><br />" << endl
+         << "<span class='small'>*" << tr("Only works in version 2.xx with activated libVLC.") << "</span><br />" << endl
+         << "<span class='small'>**" << tr("Only works on archive play.") << "</span><br />" << endl
+         << "<span class='small'>" << tr("Shortcuts don't work on Linux in fullscreen mode. Double click with mouse to change to windowed mode.") << "</span>" << endl;
 }
 
 /************************* History ***************************\

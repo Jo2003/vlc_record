@@ -11,7 +11,7 @@ all: debnew
 
 instclassic: install_base
 
-instnew: install_base install_libvlc
+instnew: install_libvlc
 
 install_base:
 	${INSTALL} -d ${TARGET}
@@ -28,8 +28,9 @@ install_base:
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/4_vlc-player-avi.mod
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record resources/television.png
 
-install_libvlc:
+install_libvlc: install_base
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/5_libvlc.mod
+	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/6_libvlc-mpeg2.mod
 
 debnew:
 	${SUDO} ${CHKINST} ${PKGNAMENW} ${PKGVERNW} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETNW} -f install.mak instnew

@@ -31,11 +31,18 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".25" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".26" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-03-30: Version x.26
+| - shortcuts for favourites added
+| - missing shortcuts for font size added
+| - feed libVLC with UTF-8 strings
+| - pause shortcut added
+| - pause, jump forward / backward only works on archive play
 |
 | 2010-03-25: Version x.25
 | - fake shortcut keypress from player class

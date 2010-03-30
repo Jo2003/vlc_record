@@ -25,9 +25,9 @@
 # {[%DST%]}    - the file the output stream should be saved to                 #
 ################################################################################
 
-###########################################
-# module for use with VideoLAN vlc player #
-###########################################
+################################################################################
+# module for use with VideoLANs libvlc integrated into vlc-record              #
+################################################################################
 
 ;-------------------------------------------------------------------------------
 ; Do we need to translit the target filename or does the player
@@ -37,17 +37,23 @@
 TRANSLIT     = <<no>>
 
 ;-------------------------------------------------------------------------------
-: force output format no matter what is given as settings
+; force output format no matter what is given as settings
 ; Options: no, mp4, avi, ts, ...
 ;-------------------------------------------------------------------------------
-FORCE_MUX    = <<mp4>>
+FORCE_MUX    = <<ps>>
 
 ;-------------------------------------------------------------------------------
-; complete command line vlc start with ...
+; Note the special cut separator ";;"!
+; This is needed only if we use libvlc because we have to splitt the
+; command line into tokens. Don't use a space as cut char cause it can be
+; a part of the destination path!
 ;-------------------------------------------------------------------------------
-LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
-LIVE_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
-ARCH_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
-LIVE_SIL_REC = <<"{[%PLAYER%]}" -I dummy {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}">>
-ARCH_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}">>
+; In a short: Separate command line arguments with ";;" if the mod file is
+; for use with libvlc!
+;-------------------------------------------------------------------------------
+LIVE_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
+LIVE_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
+ARCH_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
+LIVE_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>
+ARCH_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>
