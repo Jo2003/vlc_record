@@ -147,16 +147,21 @@ void CAboutDialog::FillInfo()
          << "<tr><td class='tabrow'>" << tr("Open Info Dialog") << "</td><td class='tabrow'>ALT+I</td></tr>" << endl
          << "<tr><td class='tabrow'>" << tr("Open Settings Dialog") << "</td><td class='tabrow'>ALT+S</td></tr>" << endl
          << "<tr><td class='tabrow'>" << tr("Quit VLC Record") << "</td><td class='tabrow'>ALT+Q</td></tr>" << endl
+#ifdef INCLUDE_LIBVLC
          << "<tr><td class='tabrow'>" << tr("Toggle Fullscreen") << "</td><td class='tabrow'>ALT+F<span class='small'>*</span></td></tr>" << endl
          << "<tr><td class='tabrow'>" << tr("Switch Aspect Ratio") << "</td><td class='tabrow'>ALT+A<span class='small'>*</span></td></tr>" << endl
          << "<tr><td class='tabrow'>" << tr("Switch Crop Geometry") << "</td><td class='tabrow'>ALT+C<span class='small'>*</span></td></tr>" << endl
          << "<tr><td class='tabrow'>" << tr("Jump ~2 minutes forward") << "</td><td class='tabrow'>CTRL+ALT+F<span class='small'>**</span></td></tr>" << endl
          << "<tr><td class='tabrow'>" << tr("Jump ~2 minutes backward") << "</td><td class='tabrow'>CTRL+ALT+B<span class='small'>**</span></td></tr>" << endl
          << "<tr><td class='tabrow'>" << tr("Pause") << "</td><td class='tabrow'>CTRL+ALT+P<span class='small'>**</span></td></tr>" << endl
+#endif // INCLUDE_LIBVLC
          << "</table></div><br />" << endl
+#ifdef INCLUDE_LIBVLC
          << "<span class='small'>*" << tr("Only works in version 2.xx with activated libVLC.") << "</span><br />" << endl
          << "<span class='small'>**" << tr("Only works on archive play.") << "</span><br />" << endl
-         << "<span class='small'>" << tr("Shortcuts don't work on Linux in fullscreen mode. Double click with mouse to change to windowed mode.") << "</span>" << endl;
+         << "<span class='small'>" << tr("Shortcuts don't work on Linux in fullscreen mode. Double click with mouse to change to windowed mode.") << "</span>"
+#endif // INCLUDE_LIBVLC
+         << endl;
 }
 
 /************************* History ***************************\

@@ -172,48 +172,48 @@ p, li { white-space: pre-wrap; }
         <translation>Закрыть программа</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="150"/>
+        <location filename="caboutdialog.cpp" line="151"/>
         <source>Toggle Fullscreen</source>
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="151"/>
+        <location filename="caboutdialog.cpp" line="152"/>
         <source>Switch Aspect Ratio</source>
         <translation>Формат изображения</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="152"/>
+        <location filename="caboutdialog.cpp" line="153"/>
         <source>Switch Crop Geometry</source>
         <translation>Подрезать Видеоформат</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="153"/>
+        <location filename="caboutdialog.cpp" line="154"/>
         <source>Jump ~2 minutes forward</source>
         <translation>2 минуты вперед</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="154"/>
+        <location filename="caboutdialog.cpp" line="155"/>
         <source>Jump ~2 minutes backward</source>
         <translation>2 минуты назад</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="155"/>
+        <location filename="caboutdialog.cpp" line="156"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="157"/>
+        <location filename="caboutdialog.cpp" line="160"/>
         <source>Only works in version 2.xx with activated libVLC.</source>
         <oldsource>Only works with activated libVLC.</oldsource>
         <translation>Только работает в версии 2.xx с активизированным libVLC.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="158"/>
+        <location filename="caboutdialog.cpp" line="161"/>
         <source>Only works on archive play.</source>
         <translation>Только работает под архива.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="159"/>
+        <location filename="caboutdialog.cpp" line="162"/>
         <source>Shortcuts don&apos;t work on Linux in fullscreen mode. Double click with mouse to change to windowed mode.</source>
         <oldsource>Shortcuts don&apos;t work om Linux in fullscreen mode. Double click with mouse to change to windowed mode.</oldsource>
         <translation></translation>
