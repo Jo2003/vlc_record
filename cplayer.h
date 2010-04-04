@@ -22,7 +22,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 
-#include <QDateTime>
+#include <QTime>
 
 #include <vlc/vlc.h>
 
@@ -74,7 +74,7 @@ public:
    bool isPlaying ();
    void setPlugInPath(const QString &sPath);
    void setShortCuts (QVector<CShortcutEx *> *pvSc);
-   void setPlayStartTime (ulong when);
+   void startPlayTimer ();
    static void eventCallback (const libvlc_event_t *ev, void *player);
 
 protected:
@@ -90,6 +90,7 @@ protected:
 private:
    Ui::CPlayer            *ui;
    QTimer                  poller;
+   QTime                   timer;
    libvlc_exception_t      vlcExcpt;
    libvlc_instance_t      *pVlcInstance;
    libvlc_media_player_t  *pMediaPlayer;
@@ -101,8 +102,8 @@ private:
    QString                 sPlugInPath;
    Qt::Key                 kModifier;
    QVector<CShortcutEx *> *pvShortcuts;
-   ulong                   tPlayStartTime;
    bool                    bCtrlStream;
+   int                     iJumpValue;
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);

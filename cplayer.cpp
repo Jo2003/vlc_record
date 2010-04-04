@@ -37,7 +37,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pEMPlay      = NULL;
    pLibVlcLog   = NULL;
    pvShortcuts  = NULL;
-   tPlayStartTime = 0;
+   iJumpValue   = 0;
    bCtrlStream  = false;
 
 #ifndef QT_NO_DEBUG
@@ -719,7 +719,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 
          case libvlc_Playing:
             emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
-            pPlayer->setPlayStartTime(QDateTime::currentDateTime().toTime_t());
+            pPlayer->startPlayTimer();
             break;
 
          case libvlc_Paused:
@@ -728,7 +728,6 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 
          case libvlc_Stopped:
             emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
-            pPlayer->setPlayStartTime(0);
             break;
 
          case libvlc_Ended:
@@ -1102,7 +1101,7 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
    // the playtime and the position we have now
    // in the stream. This doesn't work 100% exactly.
    int iRV       = -1;
-   int iPlayTime = QDateTime::currentDateTime().toTime_t() - tPlayStartTime;
+   int iPlayTime = timer.elapsed() + iJumpValue * 1000; // msec
 
    if (isPlaying() && bCtrlStream)
    {
@@ -1114,7 +1113,7 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
 
       if (!raise(&vlcExcpt))
       {
-         float newPos = factPos * (float)(iPlayTime + iSeconds)
+         float newPos = factPos * (float)(iPlayTime + iSeconds * 1000) // mseconds
                                 / (float)iPlayTime;
 
          // make sure we haven't a negative position ...
@@ -1134,12 +1133,13 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
             {
                // we started again new (from 0) ...
                // so set starttime to now ...
-               tPlayStartTime = QDateTime::currentDateTime().toTime_t();
+               timer.start();
+               iJumpValue = 0;
             }
             else
             {
                // update play start time to reflect our changes ...
-               tPlayStartTime += iSeconds;
+               iJumpValue += iSeconds;
             }
          }
       }
@@ -1149,18 +1149,18 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setPlayStartTime
+|  Method: startPlayTimer
 |  Begin: 25.03.2010 / 11:10:10
 |  Author: Jo2003
 |  Description: set player startup time
 |
-|  Parameters: timestamp
+|  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::setPlayStartTime(ulong when)
+void CPlayer::startPlayTimer()
 {
-   tPlayStartTime = when;
+   timer.start();
 }
 
 /************************* History ***************************\
