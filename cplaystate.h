@@ -16,6 +16,7 @@
 #include <QDateTime>
 #include <QtGui>
 #include <QMessageBox>
+#include <QProcess>
 
 #include "templates.h"
 
@@ -66,7 +67,10 @@ public:
                  bool bAr = false, bool bTimrec = false);
 
    bool permitAction (PlayState::ePlayState newState);
+   bool permitClose ();
+   bool permitStreamCtrl ();
 
+   void setState (PlayState::ePlayState newState);
 
    const QString& title();
    const QString& channel();
@@ -75,6 +79,7 @@ public:
    ulong runtime();
    bool  archive();
    bool  timerRecord();
+   PlayState::ePlayState state();
 
 protected:
    bool WantToStopRec ();
@@ -90,6 +95,12 @@ private:
    bool      bTimer;
    QWidget  *pParentWidget;
    PlayState::ePlayState eActState;
+
+public slots:
+   void slotProcStateChanged (QProcess::ProcessState newState);
+
+signals:
+   void sigStateChange (int iOldState, int iNewState);
 };
 
 #endif // __030410__CPLAYSTATE_H

@@ -88,6 +88,29 @@ void CPlayState::setInfo(const QString &title, const QString &chan,
 }
 
 /* -----------------------------------------------------------------\
+|  Method: setState
+|  Begin: 08.04.2010 / 15:05:00
+|  Author: Jo2003
+|  Description: set state without asking
+|
+|  Parameters: new state
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayState::setState(PlayState::ePlayState newState)
+{
+   PlayState::ePlayState stateBackup = eActState;
+   eActState = newState;
+
+   // was state changed ... ?
+   if (stateBackup != eActState)
+   {
+      // notify about state change ...
+      emit sigStateChange((int)stateBackup, (int)eActState);
+   }
+}
+
+/* -----------------------------------------------------------------\
 |  Method: WantToClose
 |  Begin: 01.02.2010 / 15:05:00
 |  Author: Jo2003
@@ -160,6 +183,7 @@ bool CPlayState::WantToStopRec()
 bool CPlayState::permitAction(PlayState::ePlayState newState)
 {
    bool bRV = false;
+   PlayState::ePlayState stateBackup = eActState;
 
    switch (eActState)
    {
@@ -220,7 +244,95 @@ bool CPlayState::permitAction(PlayState::ePlayState newState)
       break;
    }
 
+   // was state changed ... ?
+   if (stateBackup != eActState)
+   {
+      // notify about state change ...
+      emit sigStateChange((int)stateBackup, (int)eActState);
+   }
+
    return bRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: permitClose
+|  Begin: 08.04.2010 / 15:05:00
+|  Author: Jo2003
+|  Description: can we close program
+|
+|  Parameters: --
+|
+|  Returns: true --> yes
+|          false --> no
+\----------------------------------------------------------------- */
+bool CPlayState::permitClose()
+{
+   bool bRV = true;
+
+   switch (eActState)
+   {
+   case PlayState::PS_RECORD:
+   case PlayState::PS_TIMER_RECORD:
+   case PlayState::PS_TIMER_STBY:
+      if (!WantToStopRec())
+      {
+         bRV = false;
+      }
+      break;
+
+   default:
+      break;
+   }
+
+   return bRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: permitStreamCtrl
+|  Begin: 18.03.2010 / 15:07:12
+|  Author: Jo2003
+|  Description: only allow stream control on archive play
+|
+|  Parameters:
+|
+|  Returns: true --> allowed
+|          false --> not allowed
+\----------------------------------------------------------------- */
+bool CPlayState::permitStreamCtrl()
+{
+   if (bArchive && (eActState == PlayState::PS_PLAY))
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotProcStateChanged
+|  Begin: 08.04.2010 / 16:25:12
+|  Author: Jo2003
+|  Description: state change of external process
+|
+|  Parameters: new state
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayState::slotProcStateChanged(QProcess::ProcessState newState)
+{
+   // external player was stopped ...
+   if (newState == QProcess::NotRunning)
+   {
+      // means was running, has now stopped ...
+      if (eActState != PlayState::PS_STOP)
+      {
+         PlayState::ePlayState stateBackup = eActState;
+         eActState = PlayState::PS_STOP;
+         emit sigStateChange((int)stateBackup, (int)eActState);
+      }
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -326,6 +438,21 @@ bool CPlayState::archive()
 bool CPlayState::timerRecord()
 {
    return bTimer;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: state
+|  Begin: 08.04.2010 / 15:05:00
+|  Author: Jo2003
+|  Description: get actual play state
+|
+|  Parameters: --
+|
+|  Returns: play state
+\----------------------------------------------------------------- */
+PlayState::ePlayState CPlayState::state()
+{
+   return eActState;
 }
 
 /************************* History ***************************\
