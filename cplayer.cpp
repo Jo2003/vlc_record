@@ -710,32 +710,32 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
          switch (ev->u.media_state_changed.new_state)
          {
          case libvlc_Opening:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
+            emit pPlayer->sigPlayState((int)PlayState::PS_OPEN);
             break;
 
          case libvlc_Buffering:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
+            emit pPlayer->sigPlayState((int)PlayState::PS_BUFFER);
             break;
 
          case libvlc_Playing:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
+            emit pPlayer->sigPlayState((int)PlayState::PS_PLAY);
             pPlayer->startPlayTimer();
             break;
 
          case libvlc_Paused:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_PAUSE);
+            emit pPlayer->sigPlayState((int)PlayState::PS_PAUSE);
             break;
 
          case libvlc_Stopped:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
+            emit pPlayer->sigPlayState((int)PlayState::PS_STOP);
             break;
 
          case libvlc_Ended:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_END);
+            emit pPlayer->sigPlayState((int)PlayState::PS_END);
             break;
 
          case libvlc_Error:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
+            emit pPlayer->sigPlayState((int)PlayState::PS_ERROR);
             break;
 
          default:
@@ -746,7 +746,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 
    // player error event ...
    case libvlc_MediaPlayerEncounteredError:
-      emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
+      emit pPlayer->sigPlayState((int)PlayState::PS_ERROR);
       break;
 
    default:

@@ -40,7 +40,8 @@ SOURCES += main.cpp \
     cvlcctrl.cpp \
     ctranslit.cpp \
     cdirstuff.cpp \
-    clcddisplay.cpp
+    clcddisplay.cpp \
+    cplaystate.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     cinifile.h \
@@ -61,7 +62,7 @@ HEADERS += recorder.h \
     customization.h \
     ctranslit.h \
     cfavaction.h \
-    playstates.h \
+    cplaystate.h \
     cdirstuff.h \
     cshortcutex.h \
     clcddisplay.h
@@ -75,7 +76,7 @@ TRANSLATIONS = lang_de.ts \
     lang_ru.ts
 
 # for static build ...
-static { 
+static {
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qico \
@@ -85,7 +86,7 @@ static {
 
 # where the target should be stored ...
 win32:TARGET = vlc-record
-else { 
+else {
     CONFIG(debug, debug|release):TARGET = debug/vlc-record
     else:TARGET = release/vlc-record
 }
@@ -94,7 +95,7 @@ else {
 # add includes if we want to build
 # with included player!
 # -------------------------------------
-contains(DEFINES,INCLUDE_LIBVLC) { 
+contains(DEFINES,INCLUDE_LIBVLC) {
     INCLUDEPATH += include
     HEADERS += include/vlc/deprecated.h \
         include/vlc/libvlc.h \

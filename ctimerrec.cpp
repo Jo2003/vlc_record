@@ -860,7 +860,7 @@ void CTimerRec::slotRecTimer()
                if (((start - TIMER_STBY_TIME) <= now) && ((*it).eState == rec::REC_READY))
                {
                   // set timer to stby ...
-                  emit sigRecActive((int)IncPlay::PS_TIMER_STBY);
+                  emit sigRecActive((int)PlayState::PS_TIMER_STBY);
                   (*it).eState = rec::REC_STBY;
 
                   // stop any running vlc ...
@@ -878,7 +878,7 @@ void CTimerRec::slotRecTimer()
                {
                   // start record ...
                   mInfo(tr("Start record #%1 (%2)!").arg((*it).id).arg((*it).sName));
-                  emit sigRecActive((int)IncPlay::PS_TIMER_RECORD);
+                  emit sigRecActive((int)PlayState::PS_TIMER_RECORD);
                   (*it).eState = rec::REC_RUNNING;
                   itActJob     = it;
                   pTrigger->TriggerRequest(Kartina::REQ_TIMERREC, (*it).cid);
@@ -925,7 +925,7 @@ void CTimerRec::slotTimerStreamUrl(QString str)
                                         pSettings->GetBufferTime(), sDst, "ts");
    }
 
-   vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
+   vlcpid = pVlcCtrl->start(sCmdLine, -1, false, PlayState::PS_TIMER_RECORD);
 
    // successfully started ?
    if (!vlcpid)

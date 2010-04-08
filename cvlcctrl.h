@@ -25,7 +25,7 @@
 #include "defdef.h"
 #include "templates.h"
 #include "ctranslit.h"
-#include "playstates.h"
+#include "cplaystate.h"
 #include "cdirstuff.h"
 
 namespace vlcctrl
@@ -61,7 +61,7 @@ public:
    void    SetProgPath(const QString &str);
 
    Q_PID   start (const QString& sCmdLine, int iRunTime = -1, bool bDetach = false,
-                  IncPlay::ePlayStates req = IncPlay::PS_WTF, bool bArchiv = false);
+                  PlayState::ePlayState req = PlayState::PS_WTF, bool bArchiv = false);
 
    void    CancelTimer ();
    void    SetTimer (uint uiTime);
@@ -89,8 +89,8 @@ private:
    CTranslit *pTranslit;
    QString    sFrcMx;
    bool       bUseLibVlc;
-   IncPlay::ePlayStates libVlcPlayState;
-   IncPlay::ePlayStates reqState;
+   PlayState::ePlayState libVlcPlayState;
+   PlayState::ePlayState reqState;
 
 private slots:
    void slotStateChanged (QProcess::ProcessState newState);

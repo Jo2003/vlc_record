@@ -27,7 +27,7 @@
 #include <vlc/vlc.h>
 
 #include "clogfile.h"
-#include "playstates.h"
+#include "cplaystate.h"
 #include "cshortcutex.h"
 #include "defdef.h"
 
