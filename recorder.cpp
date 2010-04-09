@@ -171,7 +171,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
    connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
-   connect (this, SIGNAL(sigLCDStateChange(QPixmap)), ui->labState, SLOT(setPixmap(QPixmap)));
+   connect (this, SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
 
    // init short cuts ...
    InitShortCuts ();
@@ -1213,7 +1213,7 @@ void Recorder::slotChanList (QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotStreamURL(QString str)
 {
-   QString              sChan, sUrl;
+   QString sChan, sShow, sUrl, sTime;
 
    mInfo(tr("%1 sends following url:\n  --> %2").arg(COMPANY_NAME).arg(str));
 
@@ -1225,17 +1225,25 @@ void Recorder::slotStreamURL(QString str)
 
    if (pItem)
    {
-      sChan = CleanShowName(pItem->GetProgram());
+      sShow = CleanShowName(pItem->GetProgram());
+      sChan = pItem->GetName();
+      sTime = QString("%1 - %2")
+              .arg(QDateTime::fromTime_t(pItem->GetStartTime()).toString("hh:mm"))
+              .arg(QDateTime::fromTime_t(pItem->GetEndTime()).toString("hh:mm"));
 
-      if (sChan == "")
+      if (sShow == "")
       {
-         sChan = pItem->text();
+         sShow = sChan;
       }
    }
 
+   // add additional info to LCD ...
+   ui->labState->setHeader(sChan);
+   ui->labState->setFooter(sTime);
+
    if (ePlayState == IncPlay::PS_RECORD)
    {
-      StartVlcRec(sUrl, sChan);
+      StartVlcRec(sUrl, sShow);
    }
    else if (ePlayState == IncPlay::PS_PLAY)
    {
@@ -1439,7 +1447,7 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
       break;
    }
 
-   emit sigLCDStateChange(QPixmap(GetStatePixmap(ePlayState)));
+   emit sigLCDStateChange((int)ePlayState);
 }
 
 /* -----------------------------------------------------------------\
@@ -1719,30 +1727,33 @@ void Recorder::slotbtnNext_clicked()
 \----------------------------------------------------------------- */
 void Recorder::slotArchivURL(QString str)
 {
-   QString              sChan, sUrl;
+   QString sChan, sShow, sUrl, sTime;
+   cparser::SArchInfo aInfo;
 
    mInfo(tr("%1 sends following url:\n  --> %2").arg(COMPANY_NAME).arg(str));
 
-   sChan = CleanShowName(ui->textEpg->ShowName(uiArchivGmt));
+   // get channel name ...
+   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
 
-   if (sChan == "")
+   if (pItem)
    {
-      // if we can't get name from show, use channel name ...
-      CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-
-      if (pItem)
-      {
-         sChan = pItem->text();
-      }
+      sChan = pItem->GetName();
    }
 
    XMLParser.SetByteArray(str.toUtf8());
 
-   sUrl = XMLParser.ParseArchivURL();
+   sUrl  = XMLParser.ParseArchivURL(&aInfo);
+   sShow = CleanShowName(aInfo.sTitle);
+   sTime = tr("Length: %1 min.").arg((int)((aInfo.uiEnd - aInfo.uiStart) / 60));
+
+
+   // add additional info to LCD ...
+   ui->labState->setHeader(sChan + tr(" (Ar.)"));
+   ui->labState->setFooter(sTime);
 
    if (ePlayState == IncPlay::PS_RECORD)
    {
-      StartVlcRec(sUrl, sChan, true);
+      StartVlcRec(sUrl, sShow, true);
    }
    else if (ePlayState == IncPlay::PS_PLAY)
    {
@@ -1944,6 +1955,8 @@ void Recorder::slotVlcEnds(int iState)
    {
       mInfo(tr("vlcCtrl reports: vlc player ended!"));
       ePlayState = IncPlay::PS_STOP;
+      ui->labState->setHeader("");
+      ui->labState->setFooter("");
    }
    TouchPlayCtrlBtns();
 }
@@ -2552,63 +2565,6 @@ void Recorder::slotSplashScreen()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: GetStatePixmap
-|  Begin: 10.03.2010 / 14:25:12
-|  Author: Jo2003
-|  Description: get pixmap matching the player state
-|
-|  Parameters: state the pixmap is requested for
-|
-|  Returns: ref. to pixmap
-\----------------------------------------------------------------- */
-QString Recorder::GetStatePixmap (IncPlay::ePlayStates state)
-{
-   QString sPixMap;
-   switch (state)
-   {
-   case IncPlay::PS_BUFFER:
-      sPixMap = ":/lcd/buffer";
-      break;
-   case IncPlay::PS_END:
-      sPixMap = ":/lcd/end";
-      break;
-   case IncPlay::PS_ERROR:
-      sPixMap = ":/lcd/error";
-      break;
-   case IncPlay::PS_OPEN:
-      sPixMap = ":/lcd/open";
-      break;
-   case IncPlay::PS_PAUSE:
-      sPixMap = ":/lcd/pause";
-      break;
-   case IncPlay::PS_PLAY:
-      sPixMap = ":/lcd/play";
-      break;
-   case IncPlay::PS_READY:
-      sPixMap = ":/lcd/ready";
-      break;
-   case IncPlay::PS_RECORD:
-      sPixMap = ":/lcd/rec";
-      break;
-   case IncPlay::PS_STOP:
-      sPixMap = ":/lcd/stop";
-      break;
-   case IncPlay::PS_TIMER_RECORD:
-      sPixMap = ":/lcd/timer_rec";
-      break;
-   case IncPlay::PS_TIMER_STBY:
-      sPixMap = ":/lcd/timer_stby";
-      break;
-   case IncPlay::PS_WTF:
-   default:
-      sPixMap = ":/lcd/blank";
-      break;
-   }
-
-   return sPixMap;
-}
-
-/* -----------------------------------------------------------------\
 |  Method: slotIncPlayState
 |  Begin: 10.03.2010 / 14:07:12
 |  Author: Jo2003
@@ -2626,16 +2582,16 @@ void Recorder::slotIncPlayState(int iState)
    case IncPlay::PS_PLAY:
       // might be play, record, timer record -->
       // therefore use internal state ...
-      emit sigLCDStateChange (QPixmap(GetStatePixmap(ePlayState)));
+      emit sigLCDStateChange ((int)ePlayState);
       break;
 
    case IncPlay::PS_END:
       // display "stop" in case of "end" ...
-      emit sigLCDStateChange (QPixmap(GetStatePixmap(IncPlay::PS_STOP)));
+      emit sigLCDStateChange ((int)IncPlay::PS_STOP);
       break;
 
    default:
-      emit sigLCDStateChange (QPixmap(GetStatePixmap((IncPlay::ePlayStates)iState)));
+      emit sigLCDStateChange (iState);
       break;
    }
 }

@@ -127,7 +127,6 @@ protected:
     void CleanContextMenu ();
     int  CheckCookie (const QString &cookie);
     int  AllowAction (IncPlay::ePlayStates newState);
-    QString GetStatePixmap (IncPlay::ePlayStates state);
     bool TimeJumpAllowed ();
     void InitShortCuts ();
     void ClearShortCuts ();
@@ -186,7 +185,7 @@ signals:
     void sigToggleFullscreen ();
     void sigToggleAspectRatio ();
     void sigToggleCropGeometry ();
-    void sigLCDStateChange (const QPixmap &pic);
+    void sigLCDStateChange (int iState);
     void sigJmpFwd ();
     void sigJmpBwd ();
 };

@@ -31,11 +31,14 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".27" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".28" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-04-09: Version x.28
+| - add some more info to LCD display
 |
 | 2010-04-09: Version x.27
 | - for time jump take care of pause

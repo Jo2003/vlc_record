@@ -17,6 +17,8 @@
 #include <QPainter>
 #include <QPixmap>
 
+#include "playstates.h"
+
 #define COLOR_TEXT          "#333"
 #define COLOR_TEXT_SHADOW   "#084"
 
@@ -27,18 +29,18 @@ namespace lcd
 {
    enum eState
    {
+      BUFFER     = IncPlay::PS_BUFFER,
+      END        = IncPlay::PS_END,
+      ERROR      = IncPlay::PS_ERROR,
+      OPEN       = IncPlay::PS_OPEN,
+      PAUSE      = IncPlay::PS_PAUSE,
+      PLAY       = IncPlay::PS_PLAY,
+      READY      = IncPlay::PS_READY,
+      RECORD     = IncPlay::PS_RECORD,
+      STOP       = IncPlay::PS_STOP,
+      TIMER_REC  = IncPlay::PS_TIMER_RECORD,
+      TIMER_STBY = IncPlay::PS_TIMER_STBY,
       BLANK,
-      BUFFER,
-      END,
-      ERROR,
-      OPEN,
-      PAUSE,
-      PLAY,
-      READY,
-      RECORD,
-      STOP,
-      TIMER_REC,
-      TIMER_STBY,
       WTF = 255
    };
 }
