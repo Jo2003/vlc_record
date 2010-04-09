@@ -37,7 +37,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pEMPlay      = NULL;
    pLibVlcLog   = NULL;
    pvShortcuts  = NULL;
-   iJumpValue   = 0;
    bCtrlStream  = false;
 
 #ifndef QT_NO_DEBUG
@@ -543,6 +542,9 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
    // store control flag ...
    bCtrlStream = bAllowCtrl;
 
+   // reset play timer stuff ...
+   timer.reset();
+
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
    // QString     sMrl  = "d:/bbb.avi";
@@ -710,32 +712,33 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
          switch (ev->u.media_state_changed.new_state)
          {
          case libvlc_Opening:
-            emit pPlayer->sigPlayState((int)PlayState::PS_OPEN);
+            emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
             break;
 
          case libvlc_Buffering:
-            emit pPlayer->sigPlayState((int)PlayState::PS_BUFFER);
+            emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
             break;
 
          case libvlc_Playing:
-            emit pPlayer->sigPlayState((int)PlayState::PS_PLAY);
+            emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
             pPlayer->startPlayTimer();
             break;
 
          case libvlc_Paused:
-            emit pPlayer->sigPlayState((int)PlayState::PS_PAUSE);
+            emit pPlayer->sigPlayState((int)IncPlay::PS_PAUSE);
+            pPlayer->pausePlayTimer();
             break;
 
          case libvlc_Stopped:
-            emit pPlayer->sigPlayState((int)PlayState::PS_STOP);
+            emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
             break;
 
          case libvlc_Ended:
-            emit pPlayer->sigPlayState((int)PlayState::PS_END);
+            emit pPlayer->sigPlayState((int)IncPlay::PS_END);
             break;
 
          case libvlc_Error:
-            emit pPlayer->sigPlayState((int)PlayState::PS_ERROR);
+            emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
             break;
 
          default:
@@ -746,7 +749,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 
    // player error event ...
    case libvlc_MediaPlayerEncounteredError:
-      emit pPlayer->sigPlayState((int)PlayState::PS_ERROR);
+      emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
       break;
 
    default:
@@ -1101,7 +1104,7 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
    // the playtime and the position we have now
    // in the stream. This doesn't work 100% exactly.
    int iRV       = -1;
-   int iPlayTime = timer.elapsed() + iJumpValue * 1000; // msec
+   int iPlayTime = timer.elapsedEx();
 
    if (isPlaying() && bCtrlStream)
    {
@@ -1133,13 +1136,13 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
             {
                // we started again new (from 0) ...
                // so set starttime to now ...
+               timer.reset();
                timer.start();
-               iJumpValue = 0;
             }
             else
             {
                // update play start time to reflect our changes ...
-               iJumpValue += iSeconds;
+               timer.addSecsEx(iSeconds);
             }
          }
       }
@@ -1161,6 +1164,21 @@ int CPlayer::slotStreamJumpRelative (int iSeconds)
 void CPlayer::startPlayTimer()
 {
    timer.start();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: pausePlayTimer
+|  Begin: 09.04.2010 / 11:10:10
+|  Author: Jo2003
+|  Description: pause play timer
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::pausePlayTimer()
+{
+   timer.pause();
 }
 
 /************************* History ***************************\

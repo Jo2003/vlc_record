@@ -34,8 +34,8 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
    bTranslit         = false;
    pTranslit         = NULL;
    bUseLibVlc        = false;
-   libVlcPlayState   = PlayState::PS_WTF;
-   reqState          = PlayState::PS_WTF;
+   libVlcPlayState   = IncPlay::PS_WTF;
+   reqState          = IncPlay::PS_WTF;
 
    if (path != "")
    {
@@ -231,12 +231,12 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
 |  Returns: <= 0 --> error starting vlc
 |           else --> process id
 \----------------------------------------------------------------- */
-Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime, bool bDetach, PlayState::ePlayState req, bool bArchiv)
+Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime, bool bDetach, IncPlay::ePlayStates req, bool bArchiv)
 {
    Q_PID vlcPid = 0;
 
    // store what we request ...
-   if (req != PlayState::PS_WTF)
+   if (req != IncPlay::PS_WTF)
    {
       reqState = req;
    }
@@ -250,7 +250,7 @@ Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime, bool bDetach, PlayS
       bool bAllowCtrl = false;
 
       // allow control on archiv play only ...
-      if (bArchiv && (req == PlayState::PS_PLAY))
+      if (bArchiv && (req == IncPlay::PS_PLAY))
       {
          bAllowCtrl = true;
       }
@@ -400,10 +400,10 @@ bool CVlcCtrl::IsRunning()
    {
       switch (libVlcPlayState)
       {
-      case PlayState::PS_BUFFER:
-      case PlayState::PS_OPEN:
-      case PlayState::PS_PAUSE:
-      case PlayState::PS_PLAY:
+      case IncPlay::PS_BUFFER:
+      case IncPlay::PS_OPEN:
+      case IncPlay::PS_PAUSE:
+      case IncPlay::PS_PLAY:
          bRV = true;
          break;
       default:
@@ -609,25 +609,25 @@ void CVlcCtrl::terminate()
 void CVlcCtrl::slotLibVlcStateChange (int ps)
 {
    // something changed ... ?
-   if (libVlcPlayState != (PlayState::ePlayState)ps)
+   if (libVlcPlayState != (IncPlay::ePlayStates)ps)
    {
-      libVlcPlayState = (PlayState::ePlayState)ps;
+      libVlcPlayState = (IncPlay::ePlayStates)ps;
 
       mInfo(tr("libVLC reports new state %1").arg((int)ps));
 
       switch(libVlcPlayState)
       {
-      case PlayState::PS_OPEN:
+      case IncPlay::PS_OPEN:
          emit stateChanged(QProcess::Starting);
          break;
 
-      case PlayState::PS_PLAY:
+      case IncPlay::PS_PLAY:
          emit stateChanged(QProcess::Running);
          break;
 
-      case PlayState::PS_STOP:
-      case PlayState::PS_END:
-      case PlayState::PS_ERROR:
+      case IncPlay::PS_STOP:
+      case IncPlay::PS_END:
+      case IncPlay::PS_ERROR:
          emit stateChanged(QProcess::NotRunning);
          break;
 

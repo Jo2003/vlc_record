@@ -66,11 +66,18 @@ public:
                  const QDateTime& end = QDateTime(),
                  bool bAr = false, bool bTimrec = false);
 
+   void setTitle (const QString& title);
+   void setChannel (const QString& chan);
+   void setStartEnd (const QDateTime& start, const QDateTime& end);
+   void setArchive (bool bAr);
+   void setTimerRec (bool bTimrec);
+
    bool permitAction (PlayState::ePlayState newState);
    bool permitClose ();
    bool permitStreamCtrl ();
 
    void setState (PlayState::ePlayState newState);
+   void doStateBackup ();
 
    const QString& title();
    const QString& channel();
@@ -80,6 +87,8 @@ public:
    bool  archive();
    bool  timerRecord();
    PlayState::ePlayState state();
+   PlayState::ePlayState backupState();
+   QString stateText (PlayState::ePlayState state);
 
 protected:
    bool WantToStopRec ();
@@ -95,6 +104,7 @@ private:
    bool      bTimer;
    QWidget  *pParentWidget;
    PlayState::ePlayState eActState;
+   PlayState::ePlayState eBackupState;
 
 public slots:
    void slotProcStateChanged (QProcess::ProcessState newState);

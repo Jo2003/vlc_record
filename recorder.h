@@ -107,7 +107,7 @@ private:
     QMap<int, QString>             chanMap;
     QMenu                          favContext;
     CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
-    PlayState::ePlayState          ePlayState;
+    IncPlay::ePlayStates           ePlayState;
     QVector<CShortcutEx *>         vShortcutPool;
 
 protected:
@@ -126,9 +126,8 @@ protected:
     void FillChanMap (const QVector<cparser::SChan> &chanlist);
     void CleanContextMenu ();
     int  CheckCookie (const QString &cookie);
-    int  AllowAction (PlayState::ePlayState newState);
-    void FillStateMap ();
-    QString GetStatePixmap (PlayState::ePlayState state);
+    int  AllowAction (IncPlay::ePlayStates newState);
+    QString GetStatePixmap (IncPlay::ePlayStates state);
     bool TimeJumpAllowed ();
     void InitShortCuts ();
     void ClearShortCuts ();

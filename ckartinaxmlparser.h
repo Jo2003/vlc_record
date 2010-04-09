@@ -47,6 +47,13 @@ namespace cparser
       QString sDescr;
       uint    uiGmt;
    };
+
+   struct SArchInfo
+   {
+      QString sTitle;
+      uint    uiStart;
+      uint    uiEnd;
+   };
 }
 
 /********************************************************************\
@@ -66,7 +73,7 @@ public:
    QVector<cparser::SChan> ParseChannelList (bool bFixTime);
    QVector<cparser::SEpg> ParseEpg (int &iChanID, uint &uiGmt, bool &bArchiv);
    QString ParseURL();
-   QString ParseArchivURL();
+   QString ParseArchivURL(cparser::SArchInfo *pArchInf = NULL);
    int FixTime (uint &uiTime);
    int GetTimeShift () { return iTimeShift; }
    int GetFixTime () { return iOffset; }

@@ -27,9 +27,10 @@
 #include <vlc/vlc.h>
 
 #include "clogfile.h"
-#include "cplaystate.h"
+#include "playstates.h"
 #include "cshortcutex.h"
 #include "defdef.h"
+#include "ctimerex.h"
 
 //===================================================================
 // namespace
@@ -75,6 +76,7 @@ public:
    void setPlugInPath(const QString &sPath);
    void setShortCuts (QVector<CShortcutEx *> *pvSc);
    void startPlayTimer ();
+   void pausePlayTimer ();
    static void eventCallback (const libvlc_event_t *ev, void *player);
 
 protected:
@@ -90,7 +92,7 @@ protected:
 private:
    Ui::CPlayer            *ui;
    QTimer                  poller;
-   QTime                   timer;
+   CTimerEx                timer;
    libvlc_exception_t      vlcExcpt;
    libvlc_instance_t      *pVlcInstance;
    libvlc_media_player_t  *pMediaPlayer;
@@ -103,7 +105,6 @@ private:
    Qt::Key                 kModifier;
    QVector<CShortcutEx *> *pvShortcuts;
    bool                    bCtrlStream;
-   int                     iJumpValue;
 
 private slots:
    void on_cbxAspect_currentIndexChanged(QString str);

@@ -87,12 +87,12 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
          if (xml.name() == "channel")
          {
             attrs          = xml.attributes();
-            chan.sName     = attrs.value(QString("title").toUtf8()).toString();
-            chan.iId       = attrs.value(QString("id").toUtf8()).toString().toInt();
-            chan.iIdx      = attrs.value(QString("idx").toUtf8()).toString().toInt();
-            chan.sProgramm = attrs.value(QString("programm").toUtf8()).toString();
-            sStart         = attrs.value(QString("sprog").toUtf8()).toString();
-            sEnd           = attrs.value(QString("eprog").toUtf8()).toString();
+            chan.sName     = attrs.value("title").toString();
+            chan.iId       = attrs.value("id").toString().toInt();
+            chan.iIdx      = attrs.value("idx").toString().toInt();
+            chan.sProgramm = attrs.value("programm").toString();
+            sStart         = attrs.value("sprog").toString();
+            sEnd           = attrs.value("eprog").toString();
 
             chan.uiStart   = CHttpTime::fromEnString(sStart).toTime_t();
             chan.uiEnd     = CHttpTime::fromEnString(sEnd).toTime_t();
@@ -128,10 +128,10 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
          else if(xml.name() == "channelgroup")
          {
             attrs          = xml.attributes();
-            chan.sName     = attrs.value(QString("title").toUtf8()).toString();
+            chan.sName     = attrs.value("title").toString();
             chan.iId       = -1;
             chan.iIdx      = -1;
-            chan.sProgramm = attrs.value(QString("color").toUtf8()).toString();
+            chan.sProgramm = attrs.value("color").toString();
             chan.uiStart   = 0;
             chan.uiEnd     = 0;
 
@@ -140,7 +140,7 @@ QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
          else if (xml.name() == "channels")
          {
             attrs          = xml.attributes();
-            QString sTime  = attrs.value(QString("clienttime").toUtf8()).toString();
+            QString sTime  = attrs.value("clienttime").toString();
 
             if (sTime != "")
             {
@@ -202,16 +202,16 @@ QVector<cparser::SEpg> CKartinaXMLParser::ParseEpg(int &iChanID, uint &uiGmt, bo
          if (xml.name() == "programm")
          {
             attrs         =  xml.attributes();
-            bArchiv       = (attrs.value(QString("have_archive").toUtf8()).toString().toInt() == 1) ? true : false;
-            iChanID       =  attrs.value(QString("channelid").toUtf8()).toString().toInt();
-            uiGmt         =  attrs.value(QString("stime").toUtf8()).toString().toUInt();
+            bArchiv       = (attrs.value("have_archive").toString().toInt() == 1) ? true : false;
+            iChanID       =  attrs.value("channelid").toString().toInt();
+            uiGmt         =  attrs.value("stime").toString().toUInt();
          }
          else if (xml.name() == "item")
          {
             attrs         =  xml.attributes();
-            epg.sName     =  attrs.value(QString("progname").toUtf8()).toString();
-            epg.sDescr    =  attrs.value(QString("pdescr").toUtf8()).toString();
-            epg.uiGmt     =  attrs.value(QString("t_start").toUtf8()).toString().toUInt();
+            epg.sName     =  attrs.value("progname").toString();
+            epg.sDescr    =  attrs.value("pdescr").toString();
+            epg.uiGmt     =  attrs.value("t_start").toString().toUInt();
 
             if (epg.uiGmt && (epg.sName != ""))
             {
@@ -272,7 +272,7 @@ QString CKartinaXMLParser::ParseURL()
          if (xml.name() == "url")
          {
             attrs = xml.attributes();
-            url   = attrs.value(QString("url").toUtf8()).toString();
+            url   = attrs.value("url").toString();
          }
          break;
 
@@ -310,11 +310,11 @@ QString CKartinaXMLParser::ParseURL()
 |  Author: Jo2003
 |  Description: parse url for archiv (xml)
 |
-|  Parameters: --
+|  Parameters: optional pointer to archive info struct
 |
 |  Returns: url
 \----------------------------------------------------------------- */
-QString CKartinaXMLParser::ParseArchivURL()
+QString CKartinaXMLParser::ParseArchivURL(cparser::SArchInfo *pArchInf)
 {
    QString              url;
    QXmlStreamAttributes attrs;
@@ -337,7 +337,14 @@ QString CKartinaXMLParser::ParseArchivURL()
          if (xml.name() == "url")
          {
             attrs = xml.attributes();
-            url   = attrs.value(QString("url").toUtf8()).toString();
+            url   = attrs.value("url").toString();
+
+            if (pArchInf)
+            {
+               pArchInf->sTitle  = attrs.value("programm").toString();
+               pArchInf->uiStart = attrs.value("start").toString().toUInt();
+               pArchInf->uiEnd   = attrs.value("next").toString().toUInt();
+            }
          }
          break;
 

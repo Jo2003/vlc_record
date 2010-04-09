@@ -26,9 +26,6 @@ extern CLogFile VlcLog;
 // for folders ...
 extern CDirStuff *pFolders;
 
-// play state ...
-extern CPlayState playState;
-
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
 |  Begin: 19.01.2010 / 16:01:44
@@ -49,7 +46,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // set (customized) windows title ...
    setWindowTitle(QString("VLC-Recorder - %1").arg(COMPANY_NAME));
 
-   ePlayState     = PlayState::PS_WTF;
+   ePlayState     = IncPlay::PS_WTF;
    bLogosReady    = false;
    pTranslator    = trans;
    iEpgOffset     = 0;
@@ -65,10 +62,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    }
 
    VlcLog.SetLogFile(pFolders->getDataDir(), APP_LOG_FILE);
-
-   // set playstate parent ...
-   playState.setParent (this);
-   playState.setParentWidget (this);
 
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
@@ -734,9 +727,9 @@ void Recorder::closeEvent(QCloseEvent *event)
    // to close it ...
    switch (ePlayState)
    {
-   case PlayState::PS_RECORD:
-   case PlayState::PS_TIMER_RECORD:
-   case PlayState::PS_TIMER_STBY:
+   case IncPlay::PS_RECORD:
+   case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
       if (WantToStopRec())
       {
          event->accept();
@@ -1001,7 +994,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       {
          iRV = -1;
          QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
-         ePlayState = PlayState::PS_ERROR;
+         ePlayState = IncPlay::PS_ERROR;
          TouchPlayCtrlBtns();
       }
       else
@@ -1056,7 +1049,7 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
    {
       iRV = -1;
       QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
-      ePlayState = PlayState::PS_ERROR;
+      ePlayState = IncPlay::PS_ERROR;
       TouchPlayCtrlBtns();
    }
    else
@@ -1240,11 +1233,11 @@ void Recorder::slotStreamURL(QString str)
       }
    }
 
-   if (ePlayState == PlayState::PS_RECORD)
+   if (ePlayState == IncPlay::PS_RECORD)
    {
       StartVlcRec(sUrl, sChan);
    }
-   else if (ePlayState == PlayState::PS_PLAY)
+   else if (ePlayState == IncPlay::PS_PLAY)
    {
       StartVlcPlay(sUrl);
    }
@@ -1353,7 +1346,7 @@ void Recorder::on_pushRecord_clicked()
    {
       if (pItem->GetId() != -1)
       {
-         if (AllowAction(PlayState::PS_RECORD))
+         if (AllowAction(IncPlay::PS_RECORD))
          {
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
@@ -1380,7 +1373,7 @@ void Recorder::on_pushPlay_clicked()
    {
       if (pItem->GetId() != -1)
       {
-         if (AllowAction(PlayState::PS_PLAY))
+         if (AllowAction(IncPlay::PS_PLAY))
          {
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
@@ -1419,20 +1412,20 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
 {
    switch (ePlayState)
    {
-   case PlayState::PS_PLAY:
+   case IncPlay::PS_PLAY:
       ui->cbxTimeShift->setEnabled(bEnable);
       ui->pushPlay->setEnabled(bEnable);
       ui->pushRecord->setEnabled(bEnable);
       ui->pushStop->setEnabled(bEnable);
       break;
-   case PlayState::PS_RECORD:
+   case IncPlay::PS_RECORD:
       ui->cbxTimeShift->setEnabled(false);
       ui->pushPlay->setEnabled(false);
       ui->pushRecord->setEnabled(bEnable);
       ui->pushStop->setEnabled(bEnable);
       break;
-   case PlayState::PS_TIMER_RECORD:
-   case PlayState::PS_TIMER_STBY:
+   case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
       ui->cbxTimeShift->setEnabled(false);
       ui->pushPlay->setEnabled(false);
       ui->pushRecord->setEnabled(false);
@@ -1573,14 +1566,14 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
    if (action == "archivrec")
    {
-      if (AllowAction(PlayState::PS_RECORD))
+      if (AllowAction(IncPlay::PS_RECORD))
       {
          ok = true;
       }
    }
    else if (action == "archivplay")
    {
-      if (AllowAction(PlayState::PS_PLAY))
+      if (AllowAction(IncPlay::PS_PLAY))
       {
          ok = true;
       }
@@ -1747,11 +1740,11 @@ void Recorder::slotArchivURL(QString str)
 
    sUrl = XMLParser.ParseArchivURL();
 
-   if (ePlayState == PlayState::PS_RECORD)
+   if (ePlayState == IncPlay::PS_RECORD)
    {
       StartVlcRec(sUrl, sChan, true);
    }
-   else if (ePlayState == PlayState::PS_PLAY)
+   else if (ePlayState == IncPlay::PS_PLAY)
    {
       StartVlcPlay(sUrl, true);
    }
@@ -1818,7 +1811,7 @@ void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
    {
       if (pItem->GetId() != -1)
       {
-         if (AllowAction(PlayState::PS_PLAY))
+         if (AllowAction(IncPlay::PS_PLAY))
          {
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
@@ -1909,10 +1902,10 @@ void Recorder::on_pushTimerRec_clicked()
 \----------------------------------------------------------------- */
 void Recorder::slotTimerRecordDone()
 {
-   if (ePlayState == PlayState::PS_TIMER_RECORD)
+   if (ePlayState == IncPlay::PS_TIMER_RECORD)
    {
       mInfo(tr("timeRec reports: record done!"));
-      ePlayState = PlayState::PS_STOP;
+      ePlayState = IncPlay::PS_STOP;
       TouchPlayCtrlBtns();
    }
 }
@@ -1930,7 +1923,7 @@ void Recorder::slotTimerRecordDone()
 void Recorder::slotTimerRecActive (int iState)
 {
    mInfo(tr("timeRec reports: record active!"));
-   ePlayState = (PlayState::ePlayState)iState;
+   ePlayState = (IncPlay::ePlayStates)iState;
    TouchPlayCtrlBtns();
 }
 
@@ -1947,10 +1940,10 @@ void Recorder::slotTimerRecActive (int iState)
 void Recorder::slotVlcEnds(int iState)
 {
    iState = 0; // suppress warnings ...
-   if (ePlayState != PlayState::PS_STOP)
+   if (ePlayState != IncPlay::PS_STOP)
    {
       mInfo(tr("vlcCtrl reports: vlc player ended!"));
-      ePlayState = PlayState::PS_STOP;
+      ePlayState = IncPlay::PS_STOP;
    }
    TouchPlayCtrlBtns();
 }
@@ -1969,9 +1962,9 @@ void Recorder::slotVlcStarts(int iState)
 {
    mInfo(tr("vlcCtrl reports: vlc player active!"));
 
-   if (ePlayState != (PlayState::ePlayState)iState)
+   if (ePlayState != (IncPlay::ePlayStates)iState)
    {
-      ePlayState = (PlayState::ePlayState)iState;
+      ePlayState = (IncPlay::ePlayStates)iState;
    }
 
    TouchPlayCtrlBtns();
@@ -2069,7 +2062,7 @@ void Recorder::hideEvent(QHideEvent *event)
 \----------------------------------------------------------------- */
 void Recorder::on_pushStop_clicked()
 {
-   if (AllowAction(PlayState::PS_STOP))
+   if (AllowAction(IncPlay::PS_STOP))
    {
       vlcCtrl.stop();
    }
@@ -2475,21 +2468,21 @@ void Recorder::slotServerForm(QString str)
 |  Returns: 1 --> ok, do it
 |           0 --> no, don't do it
 \----------------------------------------------------------------- */
-int Recorder::AllowAction (PlayState::ePlayState newState)
+int Recorder::AllowAction (IncPlay::ePlayStates newState)
 {
    int iRV = 0;
 
    switch (ePlayState)
    {
-   case PlayState::PS_RECORD:
+   case IncPlay::PS_RECORD:
       // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       {
          // pending record ...
          switch (newState)
          {
             // requested action stop or new record ...
-         case PlayState::PS_STOP:
-         case PlayState::PS_RECORD:
+         case IncPlay::PS_STOP:
+         case IncPlay::PS_RECORD:
             // ask for permission ...
             if (WantToStopRec ())
             {
@@ -2508,10 +2501,10 @@ int Recorder::AllowAction (PlayState::ePlayState newState)
       // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       break;
 
-   case PlayState::PS_TIMER_RECORD:
-   case PlayState::PS_TIMER_STBY:
+   case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
       // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      if (newState == PlayState::PS_STOP)
+      if (newState == IncPlay::PS_STOP)
       {
          // ask for permission ...
          if (WantToStopRec ())
@@ -2568,45 +2561,45 @@ void Recorder::slotSplashScreen()
 |
 |  Returns: ref. to pixmap
 \----------------------------------------------------------------- */
-QString Recorder::GetStatePixmap (PlayState::ePlayState state)
+QString Recorder::GetStatePixmap (IncPlay::ePlayStates state)
 {
    QString sPixMap;
    switch (state)
    {
-   case PlayState::PS_BUFFER:
+   case IncPlay::PS_BUFFER:
       sPixMap = ":/lcd/buffer";
       break;
-   case PlayState::PS_END:
+   case IncPlay::PS_END:
       sPixMap = ":/lcd/end";
       break;
-   case PlayState::PS_ERROR:
+   case IncPlay::PS_ERROR:
       sPixMap = ":/lcd/error";
       break;
-   case PlayState::PS_OPEN:
+   case IncPlay::PS_OPEN:
       sPixMap = ":/lcd/open";
       break;
-   case PlayState::PS_PAUSE:
+   case IncPlay::PS_PAUSE:
       sPixMap = ":/lcd/pause";
       break;
-   case PlayState::PS_PLAY:
+   case IncPlay::PS_PLAY:
       sPixMap = ":/lcd/play";
       break;
-   case PlayState::PS_READY:
+   case IncPlay::PS_READY:
       sPixMap = ":/lcd/ready";
       break;
-   case PlayState::PS_RECORD:
+   case IncPlay::PS_RECORD:
       sPixMap = ":/lcd/rec";
       break;
-   case PlayState::PS_STOP:
+   case IncPlay::PS_STOP:
       sPixMap = ":/lcd/stop";
       break;
-   case PlayState::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_RECORD:
       sPixMap = ":/lcd/timer_rec";
       break;
-   case PlayState::PS_TIMER_STBY:
+   case IncPlay::PS_TIMER_STBY:
       sPixMap = ":/lcd/timer_stby";
       break;
-   case PlayState::PS_WTF:
+   case IncPlay::PS_WTF:
    default:
       sPixMap = ":/lcd/blank";
       break;
@@ -2628,21 +2621,21 @@ QString Recorder::GetStatePixmap (PlayState::ePlayState state)
 \----------------------------------------------------------------- */
 void Recorder::slotIncPlayState(int iState)
 {
-   switch((PlayState::ePlayState)iState)
+   switch((IncPlay::ePlayStates)iState)
    {
-   case PlayState::PS_PLAY:
+   case IncPlay::PS_PLAY:
       // might be play, record, timer record -->
       // therefore use internal state ...
       emit sigLCDStateChange (QPixmap(GetStatePixmap(ePlayState)));
       break;
 
-   case PlayState::PS_END:
+   case IncPlay::PS_END:
       // display "stop" in case of "end" ...
-      emit sigLCDStateChange (QPixmap(GetStatePixmap(PlayState::PS_STOP)));
+      emit sigLCDStateChange (QPixmap(GetStatePixmap(IncPlay::PS_STOP)));
       break;
 
    default:
-      emit sigLCDStateChange (QPixmap(GetStatePixmap((PlayState::ePlayState)iState)));
+      emit sigLCDStateChange (QPixmap(GetStatePixmap((IncPlay::ePlayStates)iState)));
       break;
    }
 }
@@ -2666,9 +2659,9 @@ bool Recorder::TimeJumpAllowed()
    {
    // make sure that any kind of record
    // works without time jump ...
-   case PlayState::PS_RECORD:
-   case PlayState::PS_TIMER_RECORD:
-   case PlayState::PS_TIMER_STBY:
+   case IncPlay::PS_RECORD:
+   case IncPlay::PS_TIMER_RECORD:
+   case IncPlay::PS_TIMER_STBY:
       bRV = false;
    default:
       break;

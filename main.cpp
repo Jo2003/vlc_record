@@ -1,12 +1,12 @@
 /*********************** Information *************************\
 | $HeadURL$
-|
+| 
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:57:06
-|
+| 
 | Last edited by: $Author$
-|
+| 
 | $Id$
 \*************************************************************/
 #include <QtGui/QApplication>
@@ -24,9 +24,6 @@ CLogFile VlcLog;
 
 // make directory names available globally ...
 CDirStuff *pFolders;
-
-// make playstate available globally ...
-CPlayState playState;
 
 /* -----------------------------------------------------------------\
 |  Method: main / program entry

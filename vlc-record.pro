@@ -20,6 +20,7 @@ CONFIG += shared
 # -------------------------------------
 # DEFINES += _CUST_RUSS_TELEK
 # DEFINES += _CUST_RUSS_SERVICES
+
 # -------------------------------------
 # Build with or without
 # included player or without?
@@ -40,8 +41,7 @@ SOURCES += main.cpp \
     cvlcctrl.cpp \
     ctranslit.cpp \
     cdirstuff.cpp \
-    clcddisplay.cpp \
-    cplaystate.cpp
+    clcddisplay.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     cinifile.h \
@@ -62,10 +62,11 @@ HEADERS += recorder.h \
     customization.h \
     ctranslit.h \
     cfavaction.h \
-    cplaystate.h \
     cdirstuff.h \
     cshortcutex.h \
-    clcddisplay.h
+    clcddisplay.h \
+    playstates.h \
+    ctimerex.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui

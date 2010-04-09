@@ -31,11 +31,16 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".26" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".27" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-04-09: Version x.27
+| - for time jump take care of pause
+| - encapsulate playtime / pause stuff into CTimerEx class
+| - fix for non working second+ time jump
 |
 | 2010-03-30: Version x.26
 | - shortcuts for favourites added
