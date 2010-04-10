@@ -1936,6 +1936,10 @@ void Recorder::slotTimerRecActive (int iState)
    mInfo(tr("timeRec reports: record active!"));
    ePlayState = (IncPlay::ePlayStates)iState;
    TouchPlayCtrlBtns();
+
+   // reset lcd header and footer ...
+   ui->labState->setHeader("");
+   ui->labState->setFooter("");
 }
 
 /* -----------------------------------------------------------------\
