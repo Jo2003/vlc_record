@@ -394,17 +394,17 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="852"/>
+        <location filename="cplayer.cpp" line="864"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="879"/>
+        <location filename="cplayer.cpp" line="891"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="684"/>
+        <location filename="cplayer.cpp" line="696"/>
         <source>LibVLC Error!</source>
         <translation>libVLC Fehler!</translation>
     </message>
@@ -414,7 +414,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="685"/>
+        <location filename="cplayer.cpp" line="697"/>
         <source>LibVLC reports following error:
 %1</source>
         <translation>LibVLC meldet folgenden Fehler:
@@ -449,7 +449,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">FEHLER</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="808"/>
+        <location filename="cplayer.cpp" line="820"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <oldsource>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
@@ -1184,7 +1184,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1976"/>
+        <location filename="recorder.cpp" line="1974"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
