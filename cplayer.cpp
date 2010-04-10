@@ -588,17 +588,29 @@ bool CPlayer::isPlaying()
 {
    bool bRV = false;
 
-   if (pMediaPlayer)
+   if (pMedia)
    {
-      int iRV;
-
       // reset exception stuff ...
       libvlc_exception_clear(&vlcExcpt);
-      iRV = libvlc_media_player_is_playing (pMediaPlayer, &vlcExcpt);
+
+      // get media state ...
+      libvlc_state_t mediaState = libvlc_media_get_state (pMedia, &vlcExcpt);
 
       if (!raise(&vlcExcpt))
       {
-         bRV = (iRV) ? true : false;
+         // opening, buffering, playing and paused we
+         // count as playing because player is active ...
+         switch (mediaState)
+         {
+         case libvlc_Opening:
+         case libvlc_Buffering:
+         case libvlc_Playing:
+         case libvlc_Paused:
+            bRV = true;
+            break;
+         default:
+            break;
+         }
       }
    }
 
