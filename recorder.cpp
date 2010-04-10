@@ -1955,8 +1955,6 @@ void Recorder::slotVlcEnds(int iState)
    {
       mInfo(tr("vlcCtrl reports: vlc player ended!"));
       ePlayState = IncPlay::PS_STOP;
-      ui->labState->setHeader("");
-      ui->labState->setFooter("");
    }
    TouchPlayCtrlBtns();
 }
@@ -2077,6 +2075,8 @@ void Recorder::on_pushStop_clicked()
 {
    if (AllowAction(IncPlay::PS_STOP))
    {
+      ui->labState->setHeader("");
+      ui->labState->setFooter("");
       vlcCtrl.stop();
    }
 }
