@@ -39,6 +39,7 @@
 |
 | 2010-04-09: Version x.28
 | - add some more info to LCD display
+| - fix unpause problem in archive
 |
 | 2010-04-09: Version x.27
 | - for time jump take care of pause
