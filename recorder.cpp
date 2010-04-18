@@ -2004,6 +2004,8 @@ QString Recorder::CleanShowName(const QString &str)
    sName.replace(QString("-"), QString(" "));
    sName.replace(QString("."), QString(" "));
    sName.replace(QString(","), QString(" "));
+   sName.replace(QString("/"), QString("-"));
+   sName.replace(QString("\\"), QString(""));
    sName = sName.simplified();
 
    // find space at good position ...

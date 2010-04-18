@@ -31,11 +31,16 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".28" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".29" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-04-18: Version x.29
+| - bug: if show title contains slashes or backslashes
+|   record will not work because vlc will not create the
+|   pseudo directory --> fixed
 |
 | 2010-04-09: Version x.28
 | - add some more info to LCD display

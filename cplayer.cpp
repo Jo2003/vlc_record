@@ -695,7 +695,7 @@ int CPlayer::raise(libvlc_exception_t * ex)
    {
       QMessageBox::critical(this, tr("LibVLC Error!"),
                             tr("LibVLC reports following error:\n%1")
-                            .arg(libvlc_exception_get_message(ex)));
+                            .arg(QString::fromUtf8(libvlc_exception_get_message(ex))));
    }
 
    return iRV;
@@ -818,8 +818,10 @@ void CPlayer::slotLibVLCLog()
             {
                // build log message ...
                mInfo(tr("Name: \"%1\", Type: \"%2\", Severity: %3\n  --> %4")
-                      .arg(pLogMsg->psz_name).arg(pLogMsg->psz_type)
-                      .arg(pLogMsg->i_severity).arg(pLogMsg->psz_message));
+                      .arg(QString::fromUtf8(pLogMsg->psz_name))
+                      .arg(QString::fromUtf8(pLogMsg->psz_type))
+                      .arg(pLogMsg->i_severity)
+                      .arg(QString::fromUtf8(pLogMsg->psz_message)));
 
                // is there a next entry ... ?
                if (!libvlc_log_iterator_has_next(it, &vlcExcpt))

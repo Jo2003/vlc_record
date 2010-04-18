@@ -398,12 +398,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="864"/>
+        <location filename="cplayer.cpp" line="866"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="891"/>
+        <location filename="cplayer.cpp" line="893"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
@@ -1163,7 +1163,7 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="793"/>
-        <location filename="recorder.cpp" line="2102"/>
+        <location filename="recorder.cpp" line="2108"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
@@ -1201,44 +1201,44 @@ or start time is later than end time!</source>
         <translation> (Ар.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1956"/>
+        <location filename="recorder.cpp" line="1960"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1974"/>
+        <location filename="recorder.cpp" line="1978"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2098"/>
+        <location filename="recorder.cpp" line="2104"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2212"/>
-        <location filename="recorder.cpp" line="2442"/>
+        <location filename="recorder.cpp" line="2218"/>
+        <location filename="recorder.cpp" line="2448"/>
         <source>Remove from favourites</source>
         <translation>Удалить от фаворитов</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2220"/>
+        <location filename="recorder.cpp" line="2226"/>
         <source>Add to favourites</source>
         <translation>Добавить к фаворитам</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2265"/>
+        <location filename="recorder.cpp" line="2271"/>
         <source>Note</source>
         <translation>Кстати</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2266"/>
+        <location filename="recorder.cpp" line="2272"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Максимальное число фаворитов (%1) достигло.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2469"/>
+        <location filename="recorder.cpp" line="2475"/>
         <source>Active stream server is No. %1</source>
         <translation></translation>
     </message>
