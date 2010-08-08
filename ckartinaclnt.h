@@ -23,9 +23,9 @@
 #include <QDate>
 
 #include "clogfile.h"
-#include "chttptime.h"
 #include "defdef.h"
 #include "customization.h"
+#include "version_info.h"
 
 
 namespace Kartina {
@@ -41,6 +41,8 @@ namespace Kartina {
       REQ_ARCHIV,
       REQ_TIMERREC,
       REQ_GET_SERVER,
+      REQ_LOGOUT,
+      REQ_GETTIMESHIFT,
       REQ_UNKNOWN = 255
    };
 }
@@ -70,11 +72,13 @@ public:
                 const QString &sEPw = QString(), bool bAllowErotic = false);
 
    void GetCookie ();
+   void Logout ();
    void GetChannelList ();
    void SetTimeShift (int iHours);
+   void GetTimeShift ();
    void GetStreamURL (int iChanID, bool bTimerRec = false);
    void GetArchivURL (const QString &prepared);
-   void SetServer (int iSrv);
+   void SetServer (const QString& sIp);
    void GetServer ();
    void SetHttpBuffer (int iTime);
    void GetEPG (int iChanID, int iOffset = 0);
@@ -83,6 +87,7 @@ public:
 
 protected:
    void PostRequest (Kartina::EReq req, const QString &path, const QString &content);
+   void GetRequest (Kartina::EReq req, const QString &sRequest);
 
 private:
    Kartina::EReq eReq;
@@ -94,25 +99,25 @@ private:
    QString       sCookie;
    QByteArray    baPageContent;
    QBuffer       bufReq;
-   bool          bRenewCookie;
    int           iReq;
 
 private slots:
    void handleEndRequest (int id, bool err);
-   void getResponseHeader (const QHttpResponseHeader &resp);
 
 signals:
    void sigGotCookie (QString str);
-   void sigTimeShiftSet ();
+   void sigGotTimeShift (QString str);
+   void sigTimeShiftSet (QString str);
    void sigGotChannelList (QString str);
    void sigGotEPG (QString str);
    void sigGotStreamURL (QString str);
    void sigGotTimerStreamURL (QString str);
    void sigGotArchivURL (QString str);
-   void sigServerChanged ();
-   void sigBufferSet ();
+   void sigServerChanged (QString str);
+   void sigBufferSet (QString str);
    void sigSrvForm (QString str);
    void sigError (QString str);
+   void sigLogout (QString str);
 };
 
 #endif /* __201004161114_CKARTINACLNT_H */

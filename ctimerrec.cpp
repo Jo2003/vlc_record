@@ -18,6 +18,12 @@ extern CLogFile VlcLog;
 // for folders ...
 extern CDirStuff *pFolders;
 
+// storage db ...
+extern CVlcRecDB *pDb;
+
+// global showinfo class ...
+extern CShowInfo showInfo;
+
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor
 |  Begin: 26.01.2010 / 16:05:00
@@ -41,6 +47,7 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
    itActJob   = NULL;
    InitTab();
    connect (&recTimer, SIGNAL(timeout()), this, SLOT(slotRecTimer()));
+   connect (this, SIGNAL(accepted()), this, SLOT(slotSaveRecordList()));
 }
 
 /* -----------------------------------------------------------------\
@@ -55,7 +62,6 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
 \----------------------------------------------------------------- */
 CTimerRec::~CTimerRec()
 {
-   SaveRecordList();
    delete r_ui;
 }
 
@@ -278,7 +284,7 @@ void CTimerRec::SetChanList(const QVector<cparser::SChan> &chanList)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SaveRecordList
+|  Method: slotSaveRecordList
 |  Begin: 26.01.2010 / 16:05:00
 |  Author: Jo2003
 |  Description: save record list to xml file
@@ -288,32 +294,33 @@ void CTimerRec::SetChanList(const QVector<cparser::SChan> &chanList)
 |  Returns: 0 ==> ok
 |          -1 ==> any error
 \----------------------------------------------------------------- */
-int CTimerRec::SaveRecordList()
+int CTimerRec::slotSaveRecordList()
 {
-   int iRV = -1;
-   QFile fListFile(sListFile);
+   int       iRV = 0;
+   QSqlQuery query;
+   QString   question;
 
-   if (fListFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
+   // delete all stored entries from database ...
+   pDb->ask("DELETE FROM timerrec", query);
+
+   QMap<uint, rec::SRecEntry>::const_iterator cit;
+
+   for (cit = JobList.constBegin(); (cit != JobList.constEnd()) && !iRV; cit++)
    {
-      iRV = 0;
-      QTextStream str(&fListFile);
-      str.setCodec ("UTF-8");
+      question = QString("INSERT INTO timerrec "
+                         "(cid, timeshift, recstart, recend, name)"
+                         " VALUES (%1, %2, %3, %4, '%5')")
+                         .arg((*cit).cid).arg((*cit).iTimeShift)
+                         .arg((*cit).uiStart).arg((*cit).uiEnd)
+                         .arg((*cit).sName);
 
-      str << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" << endl;
-      str << "<timerrec>" << endl;
+      iRV |= pDb->ask(question, query);
 
-      QMap<uint, rec::SRecEntry>::const_iterator cit;
-
-      for (cit = JobList.constBegin(); cit != JobList.constEnd(); cit++)
+      if (iRV)
       {
-         str << "<entry cid=\"" << (*cit).cid << "\" timeshift=\"" << (*cit).iTimeShift
-               << "\" start=\"" << (*cit).uiStart << "\" end=\"" << (*cit).uiEnd
-               << "\" name=\"" << (*cit).sName << "\" />" << endl;
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("SQL Error String: %1").arg(pDb->sqlError()));
       }
-
-      str << "</timerrec>" << endl;
-
-      fListFile.close();
    }
 
    return iRV;
@@ -412,67 +419,36 @@ void CTimerRec::on_btnSet_clicked()
 |
 |  Parameters: --
 |
-|  Returns: --
+|  Returns: -1 --> any error
+|            0 --> ok
 \----------------------------------------------------------------- */
 int CTimerRec::ReadRecordList()
 {
-   QXmlStreamReader     xml;
-   QXmlStreamAttributes attrs;
-   rec::SRecEntry       entry;
-   int                  iRV = -1;
+   QSqlQuery      query;
+   rec::SRecEntry entry;
+   int            iRV = 0;
    JobList.clear();
 
-   QFile fListFile(sListFile);
-
-   if (fListFile.open(QIODevice::ReadOnly | QIODevice::Text))
+   if (!pDb->ask("SELECT cid, timeshift, recstart, recend, name FROM timerrec", query))
    {
-      QTextStream str(&fListFile);
-      str.setCodec("UTF-8");
-      xml.addData(str.readAll());
-
-      while(!xml.atEnd() && !xml.hasError())
+      while (query.next())
       {
-         switch (xml.readNext())
-         {
-         // we aren't interested in ...
-         case QXmlStreamReader::StartDocument:
-         case QXmlStreamReader::EndElement:
-         case QXmlStreamReader::EndDocument:
-            break;
+         entry.cid        = query.value(0).toInt();
+         entry.iTimeShift = query.value(1).toInt();
+         entry.uiStart    = query.value(2).toUInt();
+         entry.uiEnd      = query.value(3).toUInt();
+         entry.sName      = query.value(4).toString();
+         entry.eState     = rec::REC_READY;
 
-         case QXmlStreamReader::StartElement:
-            if (xml.name() == "entry")
-            {
-               attrs            = xml.attributes();
-               entry.cid        = attrs.value("cid").toString().toInt();
-               entry.iTimeShift = attrs.value("timeshift").toString().toInt();
-               entry.uiStart    = attrs.value("start").toString().toUInt();
-               entry.uiEnd      = attrs.value("end").toString().toUInt();
-               entry.sName      = attrs.value("name").toString();
-               entry.eState     = rec::REC_READY;
-
-               // AddJob also adds the table row ...
-               AddJob (entry);
-
-               iRV = 0;
-            }
-            break;
-
-         default:
-            break;
-         }
+         // AddJob also adds the table row ...
+         AddJob(entry);
       }
-
-      xml.clear();
-
-      /* Error handling. */
-      if(xml.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xml.errorString()));
-      }
-
-      fListFile.close();
+   }
+   else
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("SQL Error String: %1").arg(pDb->sqlError()));
+      iRV = -1;
    }
 
    return iRV;
@@ -881,6 +857,15 @@ void CTimerRec::slotRecTimer()
                   emit sigRecActive((int)IncPlay::PS_TIMER_RECORD);
                   (*it).eState = rec::REC_RUNNING;
                   itActJob     = it;
+
+                  showInfo.setChanId((*it).cid);
+                  showInfo.setShowName((*it).sName);
+                  showInfo.setArchive(false);
+                  showInfo.setStartTime((*it).uiStart);
+                  showInfo.setEndTime((*it).uiEnd);
+                  showInfo.setPlayState(IncPlay::PS_TIMER_RECORD);
+                  showInfo.setChanName(ChanList[(*it).cid].Name);
+
                   pTrigger->TriggerRequest(Kartina::REQ_TIMERREC, (*it).cid);
                }
 
@@ -903,38 +888,40 @@ void CTimerRec::slotRecTimer()
 \----------------------------------------------------------------- */
 void CTimerRec::slotTimerStreamUrl(QString str)
 {
-   pXmlParser->SetByteArray(str.toUtf8());
-
    QString sCmdLine;
    Q_PID   vlcpid = 0;
-   QString sUrl   = pXmlParser->ParseURL();
-   QString sDst   = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
+   QString sUrl, sDst;
 
-   if (r_ui->checkRecMini->isChecked())
+   if (!pXmlParser->parseUrl(str, sUrl))
    {
-      // silent record ...
-      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
-                                        pSettings->GetVLCPath(), sUrl,
-                                        pSettings->GetBufferTime(), sDst, "ts");
-   }
-   else
-   {
-      // normal record ...
-      sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
-                                        pSettings->GetVLCPath(), sUrl,
-                                        pSettings->GetBufferTime(), sDst, "ts");
-   }
+      sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
 
-   vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
+      if (r_ui->checkRecMini->isChecked())
+      {
+         // silent record ...
+         sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
+                                           pSettings->GetVLCPath(), sUrl,
+                                           pSettings->GetBufferTime(), sDst, "ts");
+      }
+      else
+      {
+         // normal record ...
+         sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
+                                           pSettings->GetVLCPath(), sUrl,
+                                           pSettings->GetBufferTime(), sDst, "ts");
+      }
 
-   // successfully started ?
-   if (!vlcpid)
-   {
-      QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
-   }
-   else
-   {
-      mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
+      vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
+
+      // successfully started ?
+      if (!vlcpid)
+      {
+         QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
+      }
+      else
+      {
+         mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
+      }
    }
 }
 

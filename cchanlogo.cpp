@@ -75,9 +75,9 @@ void CChanLogo::SetChanList(const QVector<cparser::SChan> &list)
    {
       chanList = list;
 
-      cit      = chanList.begin();
+      cit      = chanList.constBegin();
 
-      if (cit != chanList.end())
+      if (cit != chanList.constEnd())
       {
          bRun     = true;
          StartDownLoad();
@@ -97,12 +97,12 @@ void CChanLogo::SetChanList(const QVector<cparser::SChan> &list)
 \----------------------------------------------------------------- */
 void CChanLogo::StartDownLoad()
 {
-   if (((*cit).iId > 0) && ((*cit).iIdx != -1))
+   if (!(*cit).bIsGroup)
    {
       if (!QFile::exists(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg((*cit).iId)))
       {
          dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
-         iReq = get(QString("%1/%2.gif").arg(LOGO_URL).arg((*cit).iId), &dataBuffer);
+         iReq = get((*cit).sIcon, &dataBuffer);
       }
       else
       {
@@ -164,7 +164,7 @@ void CChanLogo::slotCheckResp(int iReqID, bool err)
       }
 
       // check if we can get next item ...
-      if (++ cit != chanList.end())
+      if (++ cit != chanList.constEnd())
       {
          // download next ...
          StartDownLoad();

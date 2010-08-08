@@ -49,6 +49,7 @@
 #include "cfavaction.h"
 #include "cdirstuff.h"
 #include "cshortcutex.h"
+#include "cshowinfo.h"
 
 //===================================================================
 // namespace
@@ -95,7 +96,6 @@ private:
     int                            iEpgOffset;
     QTabBar                       *pEpgNavbar;
     CTimerRec                      timeRec;
-    uint                           uiArchivGmt;
     QSystemTrayIcon                trayIcon;
     QRect                          sizePos;
     CVlcCtrl                       vlcCtrl;
@@ -104,11 +104,12 @@ private:
     QList<int>                     lFavourites;
     QToolButton                   *pFavBtn[MAX_NO_FAVOURITES];
     CFavAction                    *pFavAct[MAX_NO_FAVOURITES];
-    QMap<int, QString>             chanMap;
+    QMap<int, cparser::SChan>      chanMap;
     QMenu                          favContext;
     CFavAction                    *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates           ePlayState;
     QVector<CShortcutEx *>         vShortcutPool;
+    bool                           bDoInitDlg;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
@@ -130,6 +131,8 @@ protected:
     bool TimeJumpAllowed ();
     void InitShortCuts ();
     void ClearShortCuts ();
+    void savePositions ();
+    void initDialog ();
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -137,6 +140,10 @@ protected:
     virtual void keyPressEvent (QKeyEvent *event);
 
 private slots:
+#ifdef INCLUDE_LIBVLC
+    void on_pushBwd_clicked();
+    void on_pushFwd_clicked();
+#endif /* INCLUDE_LIBVLC */
     void on_btnFontSmaller_clicked();
     void on_btnFontLarger_clicked();
     void on_pushStop_clicked();
@@ -159,13 +166,13 @@ private slots:
     void slotStreamURL (QString str);
     void slotArchivURL (QString str);
     void slotServerForm (QString str);
-    void slotCookie (QString sCookie);
-    void slotTimeShift ();
+    void slotCookie (QString str);
+    void slotTimeShift (QString str);
     void slotEpgAnchor (const QUrl & link);
     void slotLogosReady ();
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);
-    void slotSetSServer (int iSrv);
+    void slotSetSServer (QString sIp);
     void slotTimerRecActive (int iState);
     void slotTimerRecordDone ();
     void slotVlcStarts (int iState);
@@ -178,6 +185,8 @@ private slots:
     void slotFavBtnContext (const QPoint &pt);
     void slotSplashScreen ();
     void slotIncPlayState (int);
+    void slotGotTimeShift (QString str);
+    void slotLogout (QString str);
 
 signals:
     void sigShow ();

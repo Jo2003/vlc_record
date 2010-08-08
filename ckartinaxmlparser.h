@@ -19,12 +19,10 @@
 #include <QRegExp>
 #include <QDateTime>
 #include <QString>
-#include <QMutex>
 
 #include "clogfile.h"
 #include "defdef.h"
 #include "customization.h"
-#include "chttptime.h"
 
 //===================================================================
 // namespace
@@ -35,10 +33,14 @@ namespace cparser
    {
       QString sName;
       QString sProgramm;
+      QString sIcon;
       uint    uiStart;
       uint    uiEnd;
       int     iId;
-      int     iIdx;
+      bool    bIsVideo;
+      bool    bIsProtected;
+      bool    bHasArchive;
+      bool    bIsGroup;
    };
 
    struct SEpg
@@ -48,11 +50,10 @@ namespace cparser
       uint    uiGmt;
    };
 
-   struct SArchInfo
+   struct SSrv
    {
-      QString sTitle;
-      uint    uiStart;
-      uint    uiEnd;
+      QString sName;
+      QString sIp;
    };
 }
 
@@ -68,26 +69,28 @@ class CKartinaXMLParser : public QObject
    Q_OBJECT
 
 public:
-   CKartinaXMLParser(const QByteArray &ba = QByteArray (), QObject * parent = 0);
-   void SetByteArray (const QByteArray &ba);
-   QVector<cparser::SChan> ParseChannelList (bool bFixTime);
-   QVector<cparser::SEpg> ParseEpg (int &iChanID, uint &uiGmt, bool &bArchiv);
-   QString ParseURL();
-   QString ParseArchivURL(cparser::SArchInfo *pArchInf = NULL);
-   int FixTime (uint &uiTime);
+   CKartinaXMLParser(QObject * parent = 0);
+   int fixTime (uint &uiTime);
    int GetTimeShift () { return iTimeShift; }
    int GetFixTime () { return iOffset; }
-   int GetSelectOptions (const QString &src, QVector<int> &lOpts, int &iActOpt);
+
+   // new functions for use with API ...
+   int kartinaError (const QString &sResp, QString &sErr);
+   int parseCookie (const QString &sResp, QString &sCookie);
+   int parseTimeShift (const QString &sResp, QVector<int> &vValues, int &iShift);
+   int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
+   int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
+   int parseSettings(const QString& sResp, QVector<int>& vValues, int& iActVal, QString &sName);
+   int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
+   int parseUrl (const QString& sResp, QString& sUrl);
 
 protected:
-   void CheckTimeOffSet (const QString &str);
+   void checkTimeOffSet (const uint &uiSrvTime);
+
 
 private:
-   QByteArray stream;
-   QXmlStreamReader xml;
    int iOffset;
    int iTimeShift;
-   QMutex mutex;
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

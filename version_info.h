@@ -31,11 +31,63 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".29" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".38" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2010-08-08: Version x.38
+| - no changes from the last beta x.37B2
+|
+| 2010-08-02: Version x.37Beta2
+| - play button changes to pause butto when supported
+| - use different main functions for windows | others
+| - new install script creates plugin cache
+|
+| 2010-07-30: Version x.37Beta
+| - major code change to support kartinas Rest API
+| - logout when closing app
+|
+| 2010-07-27: Version x.36Beta5
+| - hide mouse pointer in fullscreen mode after 1 second
+| - major code cleaning in player so libvlc is allocated
+|   only once
+| - set options for playback / record per media
+| - therefore changes in modules
+| - allocate memory for app and dialog dynamically
+| - mark recorder dialog for delete later
+|
+| 2010-07-25: Version x.36Beta4
+| - disable spooling while another spool request is active
+|
+| 2010-07-23: Version x.36Beta3
+| - use official build of libVLC 1.1.1
+|
+| 2010-07-22: Version x.26Beta2
+| - uses libVLC 1.11
+| - fullscreen is located on screen where player widget is
+|   located
+|
+| 2010-07-13: Version x.33Beta3
+| - lock logging stuff with mutex
+| - trigger next log check only when leaving actual check
+| - use optimized window flags when reparenting
+| - when jumping forward / backward make sure we're
+|   not entering another show
+|
+| 2010-06-25: Version x.33Beta2
+| - fix a bug where aspect or crop wasn't updated
+|
+| 2010-06-23: Version x.33Beta
+| - more buffering values to support bad connections
+| - when opening timer record window, active channel
+|   is the default one
+| - time jump with variable time value
+| - new position slider for archive play (works exactly)
+| - stores aspect ratio + crop ratio for every channel
+| - uses SQLite to store data
+| - uses libVLC 1.10 (with patch for event handling)
+| - new layout optimized for widescreen!!!
 |
 | 2010-04-18: Version x.29
 | - bug: if show title contains slashes or backslashes

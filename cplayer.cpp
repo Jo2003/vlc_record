@@ -15,6 +15,12 @@
 // log file functions ...
 extern CLogFile VlcLog;
 
+// storage db ...
+extern CVlcRecDB *pDb;
+
+// global showinfo class ...
+extern CShowInfo showInfo;
+
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
 |  Begin: 24.02.2010 / 12:17:51
@@ -30,31 +36,48 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    ui->setupUi(this);
 
    // nothing playing so far ...
-   pMedia       = NULL;
-   pMediaPlayer = NULL;
-   pVlcInstance = NULL;
-   pEMMedia     = NULL;
-   pEMPlay      = NULL;
-   pLibVlcLog   = NULL;
-   pvShortcuts  = NULL;
-   bCtrlStream  = false;
+   pMediaPlayer  = NULL;
+   pVlcInstance  = NULL;
+   pEMPlay       = NULL;
+   pLibVlcLog    = NULL;
+   pSettings     = NULL;
+   pTrigger      = NULL;
+   bCtrlStream   = false;
+   bSpoolPending = true;
 
-#ifndef QT_NO_DEBUG
-   uiVerboseLevel = 3;
-#else
+   // set log poller to single shot ...
+   poller.setSingleShot(true);
+
+   // set aspect shot timer to single shot ...
+   tAspectShot.setSingleShot (true);
+   tAspectShot.setInterval (800);
+
+#ifdef QT_NO_DEBUG
    uiVerboseLevel = 1;
+#else
+   uiVerboseLevel = 3;
 #endif /* QT_NO_DEBUG */
-
-   // init exception structure ...
-   libvlc_exception_init(&vlcExcpt);
 
    // connect volume slider with volume change function ...
    connect(ui->volSlider, SIGNAL(sliderMoved(int)), this, SLOT(slotChangeVolume(int)));
 
+   // connect double click signal from videoframe with fullscreen toggle ...
+   connect(ui->fVideo, SIGNAL(sigToggleFullscreen()), this, SLOT(slotToggleFullScreen()));
+
+   // connect slider timer with slider position slot ...
+   connect(&sliderTimer, SIGNAL(timeout()), this, SLOT(slotUpdateSlider()));
+
    // do periodical logging ...
    connect(&poller, SIGNAL(timeout()), this, SLOT(slotLibVLCLog()));
 
+   // connect aspect shot timer with aspect change function ...
+   connect(&tAspectShot, SIGNAL(timeout()), this, SLOT(slotStoredAspectCrop()));
+
+   // connect aspect trigger signal with timer start ...
+   connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
+
    poller.start(1000);
+   sliderTimer.start(500);
 }
 
 /* -----------------------------------------------------------------\
@@ -69,24 +92,48 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 \----------------------------------------------------------------- */
 CPlayer::~CPlayer()
 {
-   releasePlayer();
+   // libvlc stuff already released in function "cleanExit"
+   // which is called from recorder.cpp / closeEvent
    delete ui;
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setPlugInPath
-|  Begin: 02.03.2010 / 14:17:51
+|  Method: cleanExit
+|  Begin: 23.06.2010 / 16:17:51
 |  Author: Jo2003
-|  Description: set the plugin path ...
+|  Description: pseudo destructor should be called from outside ...
 |
 |  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::setPlugInPath(const QString &sPath)
+void CPlayer::cleanExit()
 {
-   mInfo(tr("Set PlugIn path to '%1'").arg(sPath));
-   sPlugInPath = sPath;
+   // stop timer ...
+   poller.stop();
+   sliderTimer.stop();
+
+   /**
+    * Note: Closing the log here leads to
+    * segmentation faults. Also disabling
+    * and cleaning the log first doesn't help.
+    * Therefore I assume that this is a libVLC
+    * problem. But since this function only is called
+    * when program ends, not closing the log shouldn't
+    * be a big problem!
+    */
+
+   stop();
+
+   if (pMediaPlayer)
+   {
+      libvlc_media_player_release (pMediaPlayer);
+   }
+
+   if (pVlcInstance)
+   {
+      libvlc_release(pVlcInstance);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -101,149 +148,37 @@ void CPlayer::setPlugInPath(const QString &sPath)
 \----------------------------------------------------------------- */
 void CPlayer::setShortCuts(QVector<CShortcutEx *> *pvSc)
 {
-   pvShortcuts = pvSc;
+   ui->fVideo->setShortCuts(pvSc);
 }
 
 /* -----------------------------------------------------------------\
-|  Method: fakeShortCut
-|  Begin: 24.03.2010 / 14:30:51
+|  Method: setSettings
+|  Begin: 16.06.2010 / 14:17:51
 |  Author: Jo2003
-|  Description: fake shortcut press if needed
+|  Description: store a pointer to settings class
 |
-|  Parameters: key sequence
-|
-|  Returns: 0 --> shortcut sent
-|          -1 --> not handled
-\----------------------------------------------------------------- */
-int CPlayer::fakeShortCut (const QKeySequence &seq)
-{
-   int iRV = -1;
-   QVector<CShortcutEx *>::const_iterator cit;
-
-   if (pvShortcuts)
-   {
-      // test all shortcuts if one matches the now incoming ...
-      for (cit = pvShortcuts->constBegin(); (cit != pvShortcuts->constEnd()) && iRV; cit ++)
-      {
-         // is key sequence equal ... ?
-         if ((*cit)->key() == seq)
-         {
-            // this shortcut matches ...
-            mInfo (tr("Activate shortcut: %1").arg(seq.toString()));
-
-            // fake shortcut keypress ...
-            (*cit)->activate();
-
-            // only one shortcut should match this sequence ...
-            // so we're done!
-            iRV = 0;
-         }
-      }
-   }
-
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: releasePlayer
-|  Begin: 24.02.2010 / 12:25:51
-|  Author: Jo2003
-|  Description: release all the vlc player stuff
-|
-|  Parameters: --
+|  Parameters: pointer to settings class
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::releasePlayer()
+void CPlayer::setSettings(CSettingsDlg *pDlg)
 {
-   // stop player if needed ...
-   stop();
-
-   // release player ...
-   if (pMediaPlayer)
-   {
-      libvlc_media_player_release(pMediaPlayer);
-      pMediaPlayer = NULL;
-   }
-
-   // release media ...
-   if (pMedia)
-   {
-      libvlc_media_release(pMedia);
-      pMedia       = NULL;
-   }
-
-   // close log if opened ...
-   if (pLibVlcLog)
-   {
-      libvlc_log_close (pLibVlcLog, &vlcExcpt);
-      pLibVlcLog = NULL;
-   }
-
-   // release vlc instance ...
-   if (pVlcInstance)
-   {
-      libvlc_release (pVlcInstance);
-      pVlcInstance = NULL;
-   }
+   pSettings = pDlg;
 }
 
 /* -----------------------------------------------------------------\
-|  Method: createArgs
-|  Begin: 24.02.2010 / 14:25:51
+|  Method: setTrigger
+|  Begin: 16.06.2010 / 16:17:51
 |  Author: Jo2003
-|  Description: create argument array, free it with freeArgs
+|  Description: store a pointer to trigger class
 |
-|  Parameters: ref. to argument list, ref to vlcArgs struct
-|
-|  Returns: number of args
-|
-\----------------------------------------------------------------- */
-int CPlayer::createArgs (const QStringList &lArgs, Ui::vlcArgs &args)
-{
-   int i         = 0;
-   args.argArray = new char *[lArgs.count()];
-
-   if (args.argArray)
-   {
-      args.argc = lArgs.count();
-
-      for (i = 0; i < args.argc; i++)
-      {
-         // Be sure to use the size of the UTF-8 String !!!
-         args.argArray[i] = new char[lArgs[i].toUtf8().size() + 1];
-
-         if (args.argArray[i])
-         {
-            // copy whole UTF-8 string ...
-            strcpy (args.argArray[i], lArgs[i].toUtf8().constData());
-         }
-      }
-   }
-
-   return i;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: freeArgs
-|  Begin: 24.02.2010 / 15:25:51
-|  Author: Jo2003
-|  Description: free argument array
-|
-|  Parameters: ref. to vlcArgs struct
+|  Parameters: pointer to trigger class
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::freeArgs (Ui::vlcArgs &args)
+void CPlayer::setTrigger(CWaitTrigger *pTrig)
 {
-   for (int i = 0; i < args.argc; i++)
-   {
-      delete [] args.argArray[i];
-   }
-
-   delete [] args.argArray;
-   args.argArray = NULL;
-   args.argc     = 0;
+   pTrigger = pTrig;
 }
 
 /* -----------------------------------------------------------------\
@@ -252,158 +187,73 @@ void CPlayer::freeArgs (Ui::vlcArgs &args)
 |  Author: Jo2003
 |  Description: init player with arguments
 |
-|  Parameters: list of arguments
+|  Parameters: --
 |
 |  Returns: 0 --> ok
 |          -1 --> any error
 \----------------------------------------------------------------- */
-int CPlayer::initPlayer(QStringList &slArgs)
-{
-   int iRV = -1;
-   Ui::vlcArgs args;
-
-   releasePlayer();
-
-   if (slArgs.size() == 0)
-   {
-      // no arguments given --> create standard arguments ...
-      slArgs << "-I" << "dummy" << "--ignore-config";
-   }
-
-   // is plugin path set ...
-   if (sPlugInPath.length() > 0)
-   {
-      slArgs << QString("--plugin-path=\"%1\"").arg(sPlugInPath);
-   }
-
-#ifdef Q_OS_WIN32
-   // don't catch key press events ... (should work in patched libVLC)
-   slArgs << "--vout-event=3";
-#endif
-
-   // fill vlcArgs struct ...
-   createArgs(slArgs, args);
-
-   // arguments there ... ?
-   if (args.argArray)
-   {
-      //create a new libvlc instance
-      libvlc_exception_clear(&vlcExcpt);
-      pVlcInstance = libvlc_new(args.argc, args.argArray, &vlcExcpt);
-      iRV = raise (&vlcExcpt);
-
-      if (!iRV)
-      {
-         // set verbose mode ...
-         libvlc_set_log_verbosity (pVlcInstance, uiVerboseLevel, &vlcExcpt);
-         iRV = raise (&vlcExcpt);
-      }
-
-      if (!iRV)
-      {
-         // open logger ...
-         pLibVlcLog = libvlc_log_open(pVlcInstance, &vlcExcpt);
-         iRV = raise (&vlcExcpt);
-      }
-
-      if (!iRV)
-      {
-         // Create a media player playing environement
-         pMediaPlayer = libvlc_media_player_new (pVlcInstance, &vlcExcpt);
-         iRV = raise (&vlcExcpt);
-      }
-
-      if (!iRV)
-      {
-         // add player to window ...
-         connect_to_wnd(pMediaPlayer, ui->fVideo->winId(), &vlcExcpt);
-         iRV = raise(&vlcExcpt);
-      }
-
-      if (!iRV)
-      {
-         // get volume ...
-         ui->volSlider->setSliderPosition(libvlc_audio_get_volume (pVlcInstance, &vlcExcpt));
-         iRV = raise(&vlcExcpt);
-      }
-
-      if (!iRV)
-      {
-         // get event manager ...
-         pEMPlay = libvlc_media_player_event_manager(pMediaPlayer, &vlcExcpt);
-         iRV = raise(&vlcExcpt);
-      }
-
-      if (!iRV)
-      {
-         libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEncounteredError, CPlayer::eventCallback,
-                             (void *)this, &vlcExcpt);
-         iRV = raise(&vlcExcpt);
-      }
-
-      freeArgs(args);
-   }
-
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: setMedia
-|  Begin: 24.02.2010 / 16:00:51
-|  Author: Jo2003
-|  Description: set media
-|
-|  Parameters: media MRL
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CPlayer::setMedia(const QString &sMrl)
+int CPlayer::initPlayer()
 {
    int iRV = -1;
 
-   // is player playing ... ?
-   libvlc_exception_clear(&vlcExcpt);
-   libvlc_media_t *curMedia = libvlc_media_player_get_media (pMediaPlayer, &vlcExcpt);
+   // reset crop and aspect cbx ... because it should show the state
+   // as used ...
+   ui->cbxAspect->setCurrentIndex(0);
+   ui->cbxCrop->setCurrentIndex(0);
 
-   // if playing, stop and then release media ...
-   if (curMedia)
+   //create a new libvlc instance
+   pVlcInstance = libvlc_new(0, NULL);
+
+   if (pVlcInstance)
    {
-      if (isPlaying())
-      {
-         libvlc_exception_clear(&vlcExcpt);
-         libvlc_media_player_stop(pMediaPlayer, &vlcExcpt);
-      }
+      // set verbose mode ...
+      libvlc_set_log_verbosity (pVlcInstance, uiVerboseLevel);
 
-      // release media ...
-      libvlc_media_release (curMedia);
-      pMedia = NULL;
+      // get logger and mediaplayer ...
+      pLibVlcLog   = libvlc_log_open(pVlcInstance);
+      pMediaPlayer = libvlc_media_player_new (pVlcInstance);
    }
 
-   // create new media ...
-   libvlc_exception_clear(&vlcExcpt);
-   pMedia = libvlc_media_new (pVlcInstance, sMrl.toUtf8().constData(), &vlcExcpt);
-   iRV = raise(&vlcExcpt);
-
-   if (!iRV)
+   if (pLibVlcLog && pMediaPlayer)
    {
+      // add player to window ...
+      connect_to_wnd(pMediaPlayer, ui->fVideo->winId());
+
+      // get volume ...
+      ui->volSlider->setSliderPosition(libvlc_audio_get_volume (pMediaPlayer));
+
       // get event manager ...
-      pEMMedia = libvlc_media_event_manager(pMedia, &vlcExcpt);
-      iRV = raise(&vlcExcpt);
+      pEMPlay = libvlc_media_player_event_manager(pMediaPlayer);
+
+      // switch off handling of hotkeys ...
+      libvlc_video_set_key_input(pMediaPlayer, 0);
+
+      libvlc_video_set_mouse_input(pMediaPlayer, 0);
    }
 
-   if (!iRV)
+   // if we've got the event manager, register for some events ...
+   if (pEMPlay)
    {
-      // attach media state change event ...
-      libvlc_event_attach(pEMMedia, libvlc_MediaStateChanged, CPlayer::eventCallback, (void *)this, &vlcExcpt);
-      iRV = raise(&vlcExcpt);
-   }
+      iRV  = libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEncounteredError,
+                                CPlayer::eventCallback, (void *)this);
 
-   if (!iRV)
-   {
-      // add media ...
-      libvlc_media_player_set_media (pMediaPlayer, pMedia, &vlcExcpt);
-      iRV = raise(&vlcExcpt);
+      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerOpening,
+                                 CPlayer::eventCallback, (void *)this);
+
+      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerBuffering,
+                                 CPlayer::eventCallback, (void *)this);
+
+      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPlaying,
+                                 CPlayer::eventCallback, (void *)this);
+
+      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPaused,
+                                 CPlayer::eventCallback, (void *)this);
+
+      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerStopped,
+                                 CPlayer::eventCallback, (void *)this);
+
+      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEndReached,
+                                 CPlayer::eventCallback, (void *)this);
    }
 
    return iRV;
@@ -432,9 +282,7 @@ void CPlayer::slotChangeVolume(int newVolume)
 
    if (pVlcInstance)
    {
-      libvlc_exception_clear(&vlcExcpt);
-      libvlc_audio_set_volume (pVlcInstance, newVolume, &vlcExcpt);
-      raise(&vlcExcpt);
+      libvlc_audio_set_volume (pMediaPlayer, newVolume);
    }
 }
 
@@ -456,9 +304,7 @@ int CPlayer::play()
    if (pMediaPlayer)
    {
       // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
-      libvlc_media_player_play (pMediaPlayer, &vlcExcpt);
-      iRV = raise(&vlcExcpt);
+      libvlc_media_player_play (pMediaPlayer);
    }
 
    return iRV;
@@ -479,12 +325,12 @@ int CPlayer::stop()
 {
    int iRV = 0;
 
-   if (pMediaPlayer && isPlaying())
+   if (pMediaPlayer)
    {
-      libvlc_exception_clear(&vlcExcpt);
-      libvlc_media_player_stop (pMediaPlayer, &vlcExcpt);
-      iRV = raise(&vlcExcpt);
+      libvlc_media_player_stop (pMediaPlayer);
    }
+
+   stopPlayTimer();
 
    return iRV;
 }
@@ -504,21 +350,9 @@ int CPlayer::pause()
 {
    int iRV = 0;
 
-   if (pMediaPlayer)
+   if (pMediaPlayer && bCtrlStream)
    {
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
-
-      if (isPlaying() && libvlc_media_player_can_pause(pMediaPlayer, &vlcExcpt) && bCtrlStream)
-      {
-         iRV = raise(&vlcExcpt);
-
-         if (!iRV)
-         {
-            libvlc_media_player_pause(pMediaPlayer, &vlcExcpt);
-            iRV = raise(&vlcExcpt);
-         }
-      }
+      libvlc_media_player_pause(pMediaPlayer);
    }
 
    return iRV;
@@ -537,13 +371,25 @@ int CPlayer::pause()
 \----------------------------------------------------------------- */
 int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
 {
-   int iRV;
+   int             iRV  = 0;
+   libvlc_media_t *p_md = NULL;
+   QStringList::const_iterator cit;
 
    // store control flag ...
    bCtrlStream = bAllowCtrl;
 
    // reset play timer stuff ...
    timer.reset();
+
+   // while not showing video, disable spooling ...
+   bSpoolPending = true;
+   enableDisablePlayControl (false);
+
+   // enable / disable position slider ...
+   ui->posSlider->setValue(0);
+   // ui->posSlider->setEnabled(bCtrlStream);
+   ui->labPos->setEnabled(bCtrlStream);
+   ui->labPos->setText("00:00:00");
 
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
@@ -555,14 +401,36 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
    QStringList lArgs = sCmdLine.mid(sCmdLine.indexOf(";;", 0))
                           .split(";;", QString::SkipEmptyParts);
 
-   mInfo(tr("starting libVLC play of:\n  --> %2\n  --> with following arguments: %1")
-         .arg(lArgs.join(" ")).arg(sMrl));
-
-   iRV = initPlayer(lArgs);
+   if (!pVlcInstance)
+   {
+      iRV = initPlayer();
+   }
 
    if (!iRV)
    {
-      iRV = setMedia(sMrl);
+      mInfo(tr("Use following URL:\n  --> %1").arg(sMrl));
+      p_md = libvlc_media_new_location(pVlcInstance, sMrl.toUtf8().constData());
+
+      if (p_md)
+      {
+         // add mrl options ...
+         for (cit = lArgs.constBegin(); cit != lArgs.constEnd(); cit ++)
+         {
+            mInfo(tr("Add MRL Option: %1").arg(*cit));
+            libvlc_media_add_option(p_md, (*cit).toUtf8().constData());
+         }
+
+         // set media in player ...
+         libvlc_media_player_set_media (pMediaPlayer, p_md);
+
+         // now it's safe to release media ...
+         libvlc_media_release (p_md);
+      }
+      else
+      {
+         mInfo(tr("Can't create media description ..."));
+         iRV = -1;
+      }
    }
 
    if (!iRV)
@@ -570,7 +438,56 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
       iRV = play();
    }
 
+   if (!iRV && bCtrlStream)
+   {
+      // set slider to position ...
+      int iSliderPos;
+
+      // set slider range to seconds ...
+
+      // we add 5 minutes at start and 5 minutes at end because start
+      // and end time are not always accurate ...
+      ui->posSlider->setRange(0, showInfo.ends() - showInfo.starts());
+
+      iSliderPos = showInfo.lastJump();
+
+      ui->posSlider->setValue(iSliderPos);
+
+      ui->labPos->setText(QTime((int)iSliderPos / 3600,
+                                (int)(iSliderPos % 3600) / 60,
+                                iSliderPos % 60).toString("hh:mm:ss"));
+   }
+
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotUpdateSlider
+|  Begin: 22.06.2010 / 17:16:51
+|  Author: Jo2003
+|  Description: update slider
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotUpdateSlider()
+{
+   if (pMediaPlayer)
+   {
+      if (libvlc_media_player_is_playing(pMediaPlayer) && bCtrlStream)
+      {
+         int iSliderPos = timer.elapsedEx() / 1000 + showInfo.lastJump();
+
+         if (!ui->posSlider->isSliderDown())
+         {
+            ui->posSlider->setValue(iSliderPos);
+            ui->labPos->setText(QTime((int)iSliderPos / 3600,
+                                      (int)(iSliderPos % 3600) / 60,
+                                      iSliderPos % 60).toString("hh:mm:ss"));
+         }
+      }
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -588,29 +505,21 @@ bool CPlayer::isPlaying()
 {
    bool bRV = false;
 
-   if (pMedia)
+   if (pMediaPlayer)
    {
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
+      libvlc_state_t playState = libvlc_media_player_get_state (pMediaPlayer);
 
-      // get media state ...
-      libvlc_state_t mediaState = libvlc_media_get_state (pMedia, &vlcExcpt);
-
-      if (!raise(&vlcExcpt))
+      switch (playState)
       {
-         // opening, buffering, playing and paused we
-         // count as playing because player is active ...
-         switch (mediaState)
-         {
-         case libvlc_Opening:
-         case libvlc_Buffering:
-         case libvlc_Playing:
-         case libvlc_Paused:
-            bRV = true;
-            break;
-         default:
-            break;
-         }
+      case libvlc_Opening:
+      case libvlc_Buffering:
+      case libvlc_Playing:
+      case libvlc_Paused:
+         bRV = true;
+         break;
+
+      default:
+         break;
       }
    }
 
@@ -641,67 +550,6 @@ void CPlayer::changeEvent(QEvent *e)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: keyPressEvent
-|  Begin: 23.03.2010 / 22:46:10
-|  Author: Jo2003
-|  Description: catch keypress events to emulate shortcuts
-|
-|  Parameters: pointer to event
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::keyPressEvent(QKeyEvent *pEvent)
-{
-   QString sShortCut;
-   int     iRV;
-
-   // can we create a shortcut string for this key ... ?
-   iRV = CShortcutEx::createShortcutString(pEvent->modifiers(),
-                                           pEvent->text(), sShortCut);
-
-   if (!iRV)
-   {
-      // check if shortcut string matches one of our shortcuts ...
-      iRV = fakeShortCut(QKeySequence (sShortCut));
-
-      if (!iRV)
-      {
-         pEvent->accept();
-      }
-   }
-
-   // event not yet handled ... give it to base class ...
-   if (iRV == -1)
-   {
-      QWidget::keyPressEvent(pEvent);
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: raise
-|  Begin: 24.02.2010 / 11:46:10
-|  Author: Jo2003
-|  Description: check if there is any problem, if so display
-|               error message
-|  Parameters: pointer to exception
-|
-|  Returns: 0 ==> ok
-|        else ==> any error
-\----------------------------------------------------------------- */
-int CPlayer::raise(libvlc_exception_t * ex)
-{
-   int iRV = libvlc_exception_raised (ex);
-   if (iRV)
-   {
-      QMessageBox::critical(this, tr("LibVLC Error!"),
-                            tr("LibVLC reports following error:\n%1")
-                            .arg(QString::fromUtf8(libvlc_exception_get_message(ex))));
-   }
-
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
 |  Method: eventCallback
 |  Begin: 01.03.2010 / 11:00:10
 |  Author: Jo2003
@@ -717,54 +565,56 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 
    switch (ev->type)
    {
-   // media change events ...
-   case libvlc_MediaStateChanged:
-      {
-         // media state changed ... what is the new state ...
-         switch (ev->u.media_state_changed.new_state)
-         {
-         case libvlc_Opening:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
-            break;
-
-         case libvlc_Buffering:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
-            break;
-
-         case libvlc_Playing:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
-            pPlayer->startPlayTimer();
-            break;
-
-         case libvlc_Paused:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_PAUSE);
-            pPlayer->pausePlayTimer();
-            break;
-
-         case libvlc_Stopped:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
-            break;
-
-         case libvlc_Ended:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_END);
-            break;
-
-         case libvlc_Error:
-            emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
-            break;
-
-         default:
-            break;
-         }
-      }
-      break;
-
-   // player error event ...
+   // error ...
    case libvlc_MediaPlayerEncounteredError:
       emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
+      pPlayer->stopPlayTimer();
+      mInfo("libvlc_MediaPlayerEncounteredError ...");
+      break;
+
+   // opening media ...
+   case libvlc_MediaPlayerOpening:
+      emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
+      mInfo("libvlc_MediaPlayerOpening ...");
+      break;
+
+   // buffering media ...
+   case libvlc_MediaPlayerBuffering:
+      emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
+      mInfo("libvlc_MediaPlayerBuffering ...");
+      break;
+
+   // playing media ...
+   case libvlc_MediaPlayerPlaying:
+      emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
+      emit pPlayer->sigTriggerAspectChg ();
+      pPlayer->startPlayTimer();
+      mInfo("libvlc_MediaPlayerPlaying ...");
+      break;
+
+   // player paused ...
+   case libvlc_MediaPlayerPaused:
+      emit pPlayer->sigPlayState((int)IncPlay::PS_PAUSE);
+      pPlayer->pausePlayTimer();
+      mInfo("libvlc_MediaPlayerPaused ...");
+      break;
+
+   // player stopped ...
+   case libvlc_MediaPlayerStopped:
+      emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
+      pPlayer->stopPlayTimer();
+      mInfo("libvlc_MediaPlayerStopped ...");
+      break;
+
+   // end of media reached ...
+   case libvlc_MediaPlayerEndReached:
+      emit pPlayer->sigPlayState((int)IncPlay::PS_END);
+      pPlayer->stopPlayTimer();
+      mInfo("libvlc_MediaPlayerEndReached ...");
       break;
 
    default:
+      mInfo(tr("Unknown Event No. %1 received ...").arg(ev->type));
       break;
    }
 }
@@ -781,64 +631,53 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
 \----------------------------------------------------------------- */
 void CPlayer::slotLibVLCLog()
 {
-   int     iRV;
-
    // do we have a logger handle ... ?
    if (pLibVlcLog)
    {
       // how many entries in log ... ?
-      uint uiEntryCount = 0;
-
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
-
-      // are there entries available ... ?
-      uiEntryCount = libvlc_log_count (pLibVlcLog, &vlcExcpt);
-      iRV          = raise(&vlcExcpt);
+      uint uiEntryCount = libvlc_log_count (pLibVlcLog);
 
       // no error and entries there ...
-      if (!iRV && uiEntryCount)
+      if (uiEntryCount > 0)
       {
          // log message buffer ...
          libvlc_log_message_t   logMsg;
          libvlc_log_message_t  *pLogMsg;
 
          // get iterator to go through log entries ...
-         libvlc_log_iterator_t *it = libvlc_log_get_iterator(pLibVlcLog, &vlcExcpt);
-         iRV                       = raise (&vlcExcpt);
+         libvlc_log_iterator_t *it = libvlc_log_get_iterator(pLibVlcLog);
 
-         // while there are entries ...
-         while (!iRV)
+         // do we have an iterator ... ?
+         if (it)
          {
-            // get log message presented by log iterator ...
-            pLogMsg = libvlc_log_iterator_next (it, &logMsg, &vlcExcpt);
-            iRV     = raise(&vlcExcpt);
-
-            if (!iRV)
+            // while there are entries in log ...
+            while (libvlc_log_iterator_has_next(it))
             {
-               // build log message ...
-               mInfo(tr("Name: \"%1\", Type: \"%2\", Severity: %3\n  --> %4")
-                      .arg(QString::fromUtf8(pLogMsg->psz_name))
-                      .arg(QString::fromUtf8(pLogMsg->psz_type))
-                      .arg(pLogMsg->i_severity)
-                      .arg(QString::fromUtf8(pLogMsg->psz_message)));
+               // get log message presented by log iterator ...
+               pLogMsg = libvlc_log_iterator_next (it, &logMsg);
 
-               // is there a next entry ... ?
-               if (!libvlc_log_iterator_has_next(it, &vlcExcpt))
+               if (pLogMsg)
                {
-                  // no --> break while ...
-                  iRV = 1;
+                  // build log message ...
+                  mInfo(tr("Name: \"%1\", Type: \"%2\", Severity: %3\n  --> %4")
+                         .arg(QString::fromUtf8(pLogMsg->psz_name))
+                         .arg(QString::fromUtf8(pLogMsg->psz_type))
+                         .arg(pLogMsg->i_severity)
+                         .arg(QString::fromUtf8(pLogMsg->psz_message)));
                }
             }
+
+            // free log iterator ...
+            libvlc_log_iterator_free (it);
          }
 
          // delete all log entries ...
-         libvlc_log_clear(pLibVlcLog, &vlcExcpt);
-
-         // free log iterator ...
-         libvlc_log_iterator_free (it, &vlcExcpt);
+         libvlc_log_clear(pLibVlcLog);
       }
    }
+
+   // check log again in a second ...
+   poller.start(1000);
 }
 
 /* -----------------------------------------------------------------\
@@ -855,16 +694,22 @@ void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
 {
    if (pMediaPlayer)
    {
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
+      QString sAspect, sCrop;
 
       // set new aspect ratio ...
-      libvlc_video_set_aspect_ratio(pMediaPlayer, str.toAscii().data(), &vlcExcpt);
+      libvlc_video_set_aspect_ratio(pMediaPlayer, str.toAscii().data());
 
-      raise(&vlcExcpt);
+      // save aspect if changed ...
+      pDb->aspect(showInfo.channelId(), sAspect, sCrop);
+
+      if (sAspect != str)
+      {
+         // save to database ...
+         pDb->addAspect(showInfo.channelId(), str, ui->cbxCrop->currentText());
+      }
 
       mInfo(tr("Aspect ratio: %1")
-            .arg(libvlc_video_get_aspect_ratio(pMediaPlayer, &vlcExcpt)));
+            .arg(libvlc_video_get_aspect_ratio(pMediaPlayer)));
    }
 }
 
@@ -882,16 +727,22 @@ void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
 {
    if (pMediaPlayer)
    {
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
+      QString sAspect, sCrop;
 
       // set new aspect ratio ...
-      libvlc_video_set_crop_geometry(pMediaPlayer, str.toAscii().data(), &vlcExcpt);
+      libvlc_video_set_crop_geometry(pMediaPlayer, str.toAscii().data());
 
-      raise(&vlcExcpt);
+      // save crop if changed ...
+      pDb->aspect(showInfo.channelId(), sAspect, sCrop);
+
+      if (sCrop != str)
+      {
+         // save to database ...
+         pDb->addAspect(showInfo.channelId(), ui->cbxAspect->currentText(), str);
+      }
 
       mInfo(tr("Crop ratio: %1")
-            .arg(libvlc_video_get_crop_geometry(pMediaPlayer, &vlcExcpt)));
+            .arg(libvlc_video_get_crop_geometry(pMediaPlayer)));
    }
 }
 
@@ -908,20 +759,7 @@ void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
 \----------------------------------------------------------------- */
 int CPlayer::slotToggleFullScreen()
 {
-   int iRV = -1;
-
-   if (pMediaPlayer)
-   {
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
-
-      // set new aspect ratio ...
-      libvlc_toggle_fullscreen (pMediaPlayer, &vlcExcpt);
-
-      iRV = raise(&vlcExcpt);
-   }
-
-   return iRV;
+   return myToggleFullscreen();
 }
 
 /* -----------------------------------------------------------------\
@@ -1005,164 +843,42 @@ int CPlayer::slotToggleCropGeometry()
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
-   int iRV = -1;
-
-   if (isPlaying() && bCtrlStream)
+   if (isPlaying() && bCtrlStream &&!bSpoolPending)
    {
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
+      int  iNewPos = ui->posSlider->value() + iSeconds;
+      uint uiGmt   = 0;
 
-      // get actual position ...
-      int iPos = (int)libvlc_media_player_get_time(pMediaPlayer, &vlcExcpt);
-
-      // check for error ...
-      if (!raise(&vlcExcpt))
+      // check that we don't reach another show ...
+      if (iNewPos < 0)
       {
-         // set new position ...
-         iPos += (iSeconds * 1000); // ms!
-
-         // make sure value is positive ...
-         if (iPos < 0)
-         {
-            iPos = 0;
-         }
-
-         libvlc_media_player_set_time(pMediaPlayer, (libvlc_time_t)iPos, &vlcExcpt);
-
-         iRV = raise(&vlcExcpt);
+         iNewPos = 0;
       }
+      else if (iNewPos > (int)(showInfo.ends() - showInfo.starts()))
+      {
+         iNewPos = showInfo.ends() - showInfo.starts();
+      }
+
+      // save new position ...
+      showInfo.setLastJumpTime(iNewPos);
+
+      // add the jump value ...
+      uiGmt        = (uint)(iNewPos + showInfo.starts());
+
+      // we now have the new GMT value for the archive stream ...
+
+      // trigger request for the new stream position ...
+      QString req = QString("cid=%1&gmt=%2")
+                       .arg(showInfo.channelId()).arg(uiGmt);
+
+      // mark spooling as active ...
+      bSpoolPending = true;
+
+      enableDisablePlayControl (false);
+
+      pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
    }
 
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotTimeJumpFwd
-|  Begin: 24.03.2010 / 15:10:10
-|  Author: Jo2003
-|  Description: jump 120s. forward
-|
-|  Parameters: --
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CPlayer::slotTimeJumpFwd()
-{
-   return slotTimeJumpRelative(JUMP_TIME);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotTimeJumpBwd
-|  Begin: 24.03.2010 / 15:10:10
-|  Author: Jo2003
-|  Description: jump ~120s. backward
-|
-|  Parameters: --
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CPlayer::slotTimeJumpBwd()
-{
-   return slotTimeJumpRelative(-JUMP_TIME);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotStreamJumpBwd
-|  Begin: 24.03.2010 / 15:10:10
-|  Author: Jo2003
-|  Description: jump ~120s. backward
-|
-|  Parameters: --
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CPlayer::slotStreamJumpBwd()
-{
-   return slotStreamJumpRelative (-JUMP_TIME);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotStreamJumpFwd
-|  Begin: 24.03.2010 / 15:10:10
-|  Author: Jo2003
-|  Description: jump ~120s. forward
-|
-|  Parameters: --
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CPlayer::slotStreamJumpFwd()
-{
-   return slotStreamJumpRelative (JUMP_TIME);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotStreamJumpRelative
-|  Begin: 25.03.2010 / 15:10:10
-|  Author: Jo2003
-|  Description: try time jump in stream
-|
-|  Parameters: seconds to jump ...
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CPlayer::slotStreamJumpRelative (int iSeconds)
-{
-   // time jumping in streams using set_time doesn't work.
-   // Therefore we use a funky rule which includes
-   // the playtime and the position we have now
-   // in the stream. This doesn't work 100% exactly.
-   int iRV       = -1;
-   int iPlayTime = timer.elapsedEx();
-
-   if (isPlaying() && bCtrlStream)
-   {
-      // reset exception stuff ...
-      libvlc_exception_clear(&vlcExcpt);
-
-      // get actual position ...
-      float factPos = libvlc_media_player_get_position(pMediaPlayer, &vlcExcpt);
-
-      if (!raise(&vlcExcpt))
-      {
-         float newPos = factPos * (float)(iPlayTime + iSeconds * 1000) // mseconds
-                                / (float)iPlayTime;
-
-         // make sure we haven't a negative position ...
-         if (newPos < 0)
-         {
-            newPos = 0;
-         }
-
-         // set new position ...
-         libvlc_media_player_set_position(pMediaPlayer, newPos, &vlcExcpt);
-
-         if (!raise(&vlcExcpt))
-         {
-            iRV = 0;
-
-            if (newPos == (float)0)
-            {
-               // we started again new (from 0) ...
-               // so set starttime to now ...
-               timer.reset();
-               timer.start();
-            }
-            else
-            {
-               // update play start time to reflect our changes ...
-               timer.addSecsEx(iSeconds);
-            }
-         }
-      }
-   }
-
-   return iRV;
+   return 0;
 }
 
 /* -----------------------------------------------------------------\
@@ -1193,6 +909,272 @@ void CPlayer::startPlayTimer()
 void CPlayer::pausePlayTimer()
 {
    timer.pause();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: stopPlayTimer
+|  Begin: 22.06.2010 / 11:10:10
+|  Author: Jo2003
+|  Description: stop play timer
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::stopPlayTimer()
+{
+   timer.reset();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnFullScreen_clicked
+|  Begin: 27.05.2010 / 11:10:10
+|  Author: Jo2003
+|  Description: change to full screen
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::on_btnFullScreen_clicked()
+{
+   slotToggleFullScreen();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStoredAspectCrop [slot]
+|  Begin: 15.06.2010 / 16:10:10
+|  Author: Jo2003
+|  Description: use stored aspect / crop for channel
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotStoredAspectCrop ()
+{
+   QString sAspect, sCrop;
+
+   // enable spooling again ...
+   bSpoolPending = false;
+   enableDisablePlayControl (true);
+
+   if(!pDb->aspect(showInfo.channelId(), sAspect, sCrop))
+   {
+      int iIdxOld, iIdxNew;
+
+      // change combo box value for aspect ratio ...
+      iIdxOld = ui->cbxAspect->currentIndex();
+      iIdxNew = ui->cbxAspect->findText(sAspect);
+
+      if (iIdxOld != iIdxNew)
+      {
+         // updating combobox' actual value will also
+         // trigger the libVLC call ...
+         ui->cbxAspect->setCurrentIndex (iIdxNew);
+      }
+      else
+      {
+         // since values don't differ, updating combobox will not
+         // trigger format change. So set it directly to libVLC ...
+         libvlc_video_set_aspect_ratio(pMediaPlayer, sAspect.toAscii().data());
+      }
+
+      // change combo box value for crop ratio ...
+      iIdxOld = ui->cbxCrop->currentIndex();
+      iIdxNew = ui->cbxCrop->findText(sCrop);
+
+      if (iIdxOld != iIdxNew)
+      {
+         // updating combobox' actual value will also
+         // trigger the libVLC call ...
+         ui->cbxCrop->setCurrentIndex (iIdxNew);
+      }
+      else
+      {
+         // since values don't differ, updating combobox will not
+         // trigger format change. So set it directly to libVLC ...
+         libvlc_video_set_crop_geometry(pMediaPlayer, sCrop.toAscii().data());
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: myToggleFullscreen
+|  Begin: 20.06.2010 / 14:10:10
+|  Author: Jo2003
+|  Description: toggle fullscreen (only supported with libVLC1.10)
+|
+|  Parameters: --
+|
+|  Returns: 0 ==> ok
+|          -1 ==> any error
+\----------------------------------------------------------------- */
+int CPlayer::myToggleFullscreen()
+{
+   int iRV = 0;
+
+   if (pMediaPlayer)
+   {
+      // check if fullscreen is enabled ...
+      if (ui->fParent->isFullScreen ())
+      {
+         // hide screen ...
+         ui->fParent->hide ();
+
+         // end fullscreen ...
+         ui->fParent->showNormal();
+
+         // put parent frame back into the layout where it belongs to ...
+         // this also sets parent and resizes as needed ...
+         ui->vlMasterFrame->addWidget (ui->fParent);
+
+         // show normal ...
+         ui->fParent->show();
+
+         // video frame doesn't need any focus when in windowed mode ...
+         ui->fVideo->setFocusPolicy(Qt::NoFocus);
+      }
+      else
+      {
+         Qt::WindowFlags f;
+
+         // get active desktop widget ...
+         QDesktopWidget *pDesktop    = QApplication::desktop ();
+         int             iScreen     = pDesktop->screenNumber (this);
+         QWidget        *pActScreen  = pDesktop->screen (iScreen);
+         QRect           sizeDesktop = pDesktop->screenGeometry (this);
+
+         mInfo(tr("\n  --> Player Widget is located at %2 screen "
+                  "(Screen No. %1, Resolution %3px x %4px) ...")
+                  .arg(iScreen)
+                  .arg((iScreen == pDesktop->primaryScreen ()) ? "primary" : "secondary")
+                  .arg(sizeDesktop.width ())
+                  .arg(sizeDesktop.height ()));
+
+         if (!pActScreen)
+         {
+            mInfo(tr("Can't get active screen QWidget!"));
+         }
+
+         // frameless window which stays on top ...
+         f  = Qt::Window | Qt::FramelessWindowHint | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint;
+
+#ifdef Q_OS_LINUX
+         f |= Qt::X11BypassWindowManagerHint;
+#endif // Q_OS_LINUX
+
+         // hide screen ...
+         ui->fParent->hide ();
+
+         // reparent to active screen ...
+         ui->fParent->setParent(pActScreen, f);
+         ui->fParent->setGeometry (sizeDesktop);
+         ui->fParent->showFullScreen ();
+
+         // to grab keyboard input we need the focus ...
+         // set policy so we can get focus ...
+         ui->fVideo->setFocusPolicy(Qt::StrongFocus);
+
+         // get the focus ...
+         ui->fVideo->setFocus(Qt::OtherFocusReason);
+      }
+   }
+   else
+   {
+      iRV = -1;
+      mInfo(tr("Can't switch to fullscreen if there is no media to play!"));
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_posSlider_sliderReleased
+|  Begin: 23.06.2010 / 09:10:10
+|  Author: Jo2003
+|  Description: update position label to relect
+|               slider position change
+|  Parameters: actual slider position
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::on_posSlider_sliderReleased()
+{
+   if (isPlaying() && bCtrlStream && !bSpoolPending)
+   {
+      uint position = (uint)ui->posSlider->value();
+
+      // ignore slider position change of +/- 10 seconds ...
+      uint uiPlayTime = showInfo.lastJump();
+
+      // play position ...
+      uiPlayTime += (uint)(timer.elapsedEx() / 1000);
+
+      // check if slider position is in 10 sec. limit ...
+      if ((position >= (uiPlayTime - 10)) && (position <= (uiPlayTime + 10)))
+      {
+         mInfo(tr("Ignore slightly slider position change..."));
+      }
+      else
+      {
+         // request new stream ...
+         QString req = QString("cid=%1&gmt=%2")
+                      .arg(showInfo.channelId())
+                      .arg(showInfo.starts() + position);
+
+         // update last jump time ...
+         showInfo.setLastJumpTime(position);
+
+         // mark spooling as active ...
+         bSpoolPending = true;
+
+         enableDisablePlayControl (false);
+
+         // trigger stream request ...
+         pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_posSlider_valueChanged
+|  Begin: 23.06.2010 / 09:10:10
+|  Author: Jo2003
+|  Description: update position label to relect
+|               slider position change
+|  Parameters: actual slider position
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::on_posSlider_valueChanged(int value)
+{
+   if (isPlaying() && bCtrlStream)
+   {
+      if (ui->posSlider->isSliderDown())
+      {
+         ui->labPos->setText(QTime((int)value / 3600,
+                                   (int)(value % 3600) / 60,
+                                   value % 60).toString("hh:mm:ss"));
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: enableDisablePlayControl
+|  Begin: 25.07.2010 / 09:10:10
+|  Author: Jo2003
+|  Description: enable / disable play control items
+|
+|  Parameters: enable / or disable
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::enableDisablePlayControl (bool bEnable)
+{
+   ui->btnFwd->setEnabled (bEnable && bCtrlStream);
+   ui->btnBwd->setEnabled (bEnable && bCtrlStream);
+   ui->posSlider->setEnabled (bEnable && bCtrlStream);
 }
 
 /************************* History ***************************\

@@ -17,8 +17,6 @@
 #include <QTimer>
 #include <QVector>
 #include <QMap>
-#include <QXmlStreamReader>
-#include <QFile>
 #include <QString>
 #include <QTextStream>
 
@@ -29,6 +27,7 @@
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
 #include "cdirstuff.h"
+#include "cshowinfo.h"
 
 //===================================================================
 // namespace
@@ -89,7 +88,6 @@ public:
    void SetKartinaTrigger (CWaitTrigger *pTrig);
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
-   int  SaveRecordList ();
    int  ReadRecordList ();
    int  AddRow (const rec::SRecEntry &entry);
    void AddJob (rec::SRecEntry &entry);
@@ -130,6 +128,7 @@ private slots:
    void on_btnSet_clicked();
    void slotRecTimer ();
    void slotTimerStreamUrl (QString str);
+   int  slotSaveRecordList ();
 };
 
 #endif /* __012410__CTIMERREC_H */

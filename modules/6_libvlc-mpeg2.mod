@@ -51,9 +51,9 @@ FORCE_MUX    = <<ps>>
 ; In a short: Separate command line arguments with ";;" if the mod file is
 ; for use with libvlc!
 ;-------------------------------------------------------------------------------
-LIVE_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
-LIVE_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
-ARCH_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
-LIVE_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>
-ARCH_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>
+LIVE_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
+LIVE_REC     = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
+ARCH_REC     = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
+LIVE_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>
+ARCH_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>

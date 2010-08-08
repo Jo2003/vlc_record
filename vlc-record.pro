@@ -1,7 +1,8 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-12-27T18:33:08
 # -------------------------------------------------
-QT += network
+QT += network \
+    sql
 
 # build debug and release ...
 CONFIG += debug_and_release \
@@ -20,7 +21,6 @@ CONFIG += shared
 # -------------------------------------
 # DEFINES += _CUST_RUSS_TELEK
 # DEFINES += _CUST_RUSS_SERVICES
-
 # -------------------------------------
 # Build with or without
 # included player or without?
@@ -28,7 +28,6 @@ CONFIG += shared
 DEFINES += INCLUDE_LIBVLC
 SOURCES += main.cpp \
     recorder.cpp \
-    cinifile.cpp \
     csettingsdlg.cpp \
     ckartinaclnt.cpp \
     ckartinaxmlparser.cpp \
@@ -41,10 +40,11 @@ SOURCES += main.cpp \
     cvlcctrl.cpp \
     ctranslit.cpp \
     cdirstuff.cpp \
-    clcddisplay.cpp
+    clcddisplay.cpp \
+    cshowinfo.cpp \
+    cvlcrecdb.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
-    cinifile.h \
     csettingsdlg.h \
     ckartinaclnt.h \
     ckartinaxmlparser.h \
@@ -54,7 +54,6 @@ HEADERS += recorder.h \
     caboutdialog.h \
     version_info.h \
     clogfile.h \
-    chttptime.h \
     cchanlogo.h \
     defdef.h \
     ctimerrec.h \
@@ -66,7 +65,10 @@ HEADERS += recorder.h \
     cshortcutex.h \
     clcddisplay.h \
     playstates.h \
-    ctimerex.h
+    ctimerex.h \
+    cshowinfo.h \
+    cvlcrecdb.h \
+    tables.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui
@@ -88,7 +90,7 @@ static {
 # where the target should be stored ...
 win32:TARGET = vlc-record
 else {
-    CONFIG(debug, debug|release):TARGET = debug/vlc-record
+    CONFIG(debug, debug|release):TARGET = debug/bin/vlc-record
     else:TARGET = release/vlc-record
 }
 
@@ -106,19 +108,21 @@ contains(DEFINES,INCLUDE_LIBVLC) {
         include/vlc/libvlc_media_library.h \
         include/vlc/libvlc_media_list.h \
         include/vlc/libvlc_media_list_player.h \
-        include/vlc/libvlc_media_list_view.h \
         include/vlc/libvlc_media_player.h \
         include/vlc/libvlc_structures.h \
         include/vlc/libvlc_vlm.h \
-        include/vlc/mediacontrol.h \
-        include/vlc/mediacontrol_structures.h \
         include/vlc/vlc.h \
-        cplayer.h
+        cplayer.h \
+        cvideoframe.h
     FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
-    SOURCES += cplayer.cpp
+    SOURCES += cplayer.cpp \
+        cvideoframe.cpp
     LIBS += -lvlc
     win32:LIBS += -Llib
+#    unix:LIBS += -L/opt/vlc-1.1.1/lib \
+#        -Wl,-rpath \
+#        /opt/vlc-1.1.1/lib
 }
 else:FORMS += forms/recorder.ui
 

@@ -17,6 +17,9 @@
         <file alias="zoom-out">resources/reduce.png</file>
         <file alias="tv">resources/television.png</file>
         <file alias="timerrec">resources/timerrec_own.png</file>
+        <file alias="bwd">resources/skip_backward.png</file>
+        <file alias="fwd">resources/skip_forward.png</file>
+        <file alias="pause">resources/pause.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
@@ -39,5 +42,6 @@
     <qresource prefix="/player">
         <file alias="sound_on">resources/sound.png</file>
         <file alias="sound_off">resources/sound_muted.png</file>
+        <file alias="fullscreen">resources/view-fullscreen.png</file>
     </qresource>
 </RCC>

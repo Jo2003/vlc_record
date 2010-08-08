@@ -59,6 +59,8 @@ Section "VLC-Record" SecInst
   SectionIn RO
   SetOutPath "$INSTDIR"
   File "${SRCDIR}\release\vlc-record.exe"
+  File "${QTLIBS}\libgcc_s_dw2-1.dll"
+  File "${QTLIBS}\mingwm10.dll"
 
   SetOutPath "$INSTDIR\language"
   File "${SRCDIR}\lang_de.qm"
@@ -71,6 +73,22 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\modules\4_vlc-player-avi.mod"
   File "${SRCDIR}\modules\7_vlc-mpeg2.mod"
 
+SectionEnd
+
+;-------------------------------------------------------
+; Installer Sections for qt libraries
+Section "qt Framework" SecQt
+   SetOutPath "$INSTDIR"
+   File "${QTLIBS}\QtCore4.dll"
+   File "${QTLIBS}\QtSql4.dll"
+   FILE "${QTLIBS}\QtGui4.dll"
+   FILE "${QTLIBS}\QtNetwork4.dll"
+
+   SetOutPath "$INSTDIR\imageformats"
+   File /r "${QTLIBS}\imageformats\*.dll"
+
+   SetOutPath "$INSTDIR\sqldrivers"
+   File /r "${QTLIBS}\sqldrivers\*.dll"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -106,9 +124,24 @@ SectionEnd
 ; Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecInst} "The vlc-record executable, the language files and player modules."
+	!insertmacro MUI_DESCRIPTION_TEXT ${SecQt} "The Qt framework. Only disable this section if you have already installed the Qt framework and have set the QTDIR environment variable."
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecStart} "Creates a start menu entry for ${APPNAME}"
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "Creates a desktop shortcut for ${APPNAME}"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
+
+;-------------------------------------------------------
+; Uninstaller Section Qt ...
+Section "un.Qt"
+  ; delete Qt framework ...
+  Delete "$INSTDIR\imageformats\*.*"
+  Delete "$INSTDIR\sqldrivers\*.*"
+  Delete "$INSTDIR\QtCore4.dll"
+  Delete "$INSTDIR\QtSql4.dll"
+  Delete "$INSTDIR\QtGui4.dll"
+  Delete "$INSTDIR\QtNetwork4.dll"
+  RMDir  "$INSTDIR\imageformats"
+  RMDir  "$INSTDIR\sqldrivers"
+SectionEnd
 
 ;-------------------------------------------------------
 ; Uninstaller Section vlc-record ...
@@ -130,6 +163,8 @@ Section "un.Program"
 
   ; delete vlc-record itself ...
   Delete "$INSTDIR\vlc-record.exe"
+  Delete "$INSTDIR\libgcc_s_dw2-1.dll"
+  Delete "$INSTDIR\mingwm10.dll"
 
 SectionEnd
 

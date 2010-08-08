@@ -19,6 +19,7 @@
 #include <QApplication>
 #include <QRegExp>
 #include <QMap>
+#include <QDir>
 
 #include "defdef.h"
 

@@ -25,369 +25,24 @@ extern CLogFile VlcLog;
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CKartinaXMLParser::CKartinaXMLParser(const QByteArray &ba, QObject * parent) : QObject(parent)
+CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : QObject(parent)
 {
    iOffset    = 0;
    iTimeShift = 0;
-   stream     = ba;
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SetByteArray
-|  Begin: 19.01.2010 / 15:27:54
-|  Author: Jo2003
-|  Description: set data we have to parse
-|
-|  Parameters: data
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CKartinaXMLParser::SetByteArray(const QByteArray &ba)
-{
-   mutex.lock();
-   stream  = ba;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: ParseChannelList
-|  Begin: 19.01.2010 / 15:28:20
-|  Author: Jo2003
-|  Description: parse channel list
-|
-|  Parameters: flag for time fixing
-|
-|  Returns: vector with channel elements
-\----------------------------------------------------------------- */
-QVector<cparser::SChan> CKartinaXMLParser::ParseChannelList(bool bFixTime)
-{
-   cparser::SChan          chan;
-   QVector<cparser::SChan> chanlist;
-   QXmlStreamAttributes    attrs;
-   QRegExp                 rx("^.*-([0-9]+)$");
-   bool                    bGotTimeShift = false;
-   QString                 sStart, sEnd;
-
-   // reset timeshift ...
-   iTimeShift = 0;
-
-   xml.clear();
-   xml.addData(stream);
-
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      switch (xml.readNext())
-      {
-      // we aren't interested in ...
-      case QXmlStreamReader::StartDocument:
-      case QXmlStreamReader::EndElement:
-      case QXmlStreamReader::EndDocument:
-         break;
-
-      case QXmlStreamReader::StartElement:
-         if (xml.name() == "channel")
-         {
-            attrs          = xml.attributes();
-            chan.sName     = attrs.value("title").toString();
-            chan.iId       = attrs.value("id").toString().toInt();
-            chan.iIdx      = attrs.value("idx").toString().toInt();
-            chan.sProgramm = attrs.value("programm").toString();
-            sStart         = attrs.value("sprog").toString();
-            sEnd           = attrs.value("eprog").toString();
-
-            chan.uiStart   = CHttpTime::fromEnString(sStart).toTime_t();
-            chan.uiEnd     = CHttpTime::fromEnString(sEnd).toTime_t();
-
-            // try to get time shift from 1-j channel ...
-            if (!bGotTimeShift)
-            {
-               if (chan.iId > 0) // any channel name ...
-               {
-                  // try to get timeshift value ...
-                  if (rx.indexIn(chan.sName) > -1)
-                  {
-                     iTimeShift    = rx.cap(1).toInt();
-                     bGotTimeShift = true;
-
-                     mInfo(tr("TimeShift is set to %1 hours.").arg(iTimeShift));
-                  }
-               }
-            }
-
-            // fix time offset ...
-            if (bFixTime)
-            {
-               FixTime(chan.uiStart);
-               FixTime(chan.uiEnd);
-            }
-
-            if ((chan.iId) && (chan.iIdx) && (chan.sName != ""))
-            {
-               chanlist.push_back(chan);
-            }
-         }
-         else if(xml.name() == "channelgroup")
-         {
-            attrs          = xml.attributes();
-            chan.sName     = attrs.value("title").toString();
-            chan.iId       = -1;
-            chan.iIdx      = -1;
-            chan.sProgramm = attrs.value("color").toString();
-            chan.uiStart   = 0;
-            chan.uiEnd     = 0;
-
-            chanlist.push_back(chan);
-         }
-         else if (xml.name() == "channels")
-         {
-            attrs          = xml.attributes();
-            QString sTime  = attrs.value("clienttime").toString();
-
-            if (sTime != "")
-            {
-               CheckTimeOffSet(sTime);
-            }
-         }
-         break;
-
-      default:
-         break;
-      }
-   }
-
-   xml.clear();
-
-   /* Error handling. */
-   if(xml.hasError())
-   {
-      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                            tr("XML Error String: %1").arg(xml.errorString()));
-   }
-
-   mutex.unlock();
-
-   return chanlist;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: ParseEpg
-|  Begin: 19.01.2010 / 15:29:07
-|  Author: Jo2003
-|  Description: parse epg content
-|
-|  Parameters: ref. to channel id (out), ref. to timestamp (out),
-|              ref. to archiv flag (out)
-|
-|  Returns: vector with epg elements
-\----------------------------------------------------------------- */
-QVector<cparser::SEpg> CKartinaXMLParser::ParseEpg(int &iChanID, uint &uiGmt, bool &bArchiv)
-{
-   cparser::SEpg           epg;
-   QVector<cparser::SEpg>  epglist;
-   QXmlStreamAttributes    attrs;
-
-   xml.clear();
-   xml.addData(stream);
-
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      switch (xml.readNext())
-      {
-      // we aren't interested in ...
-      case QXmlStreamReader::StartDocument:
-      case QXmlStreamReader::EndElement:
-      case QXmlStreamReader::EndDocument:
-         break;
-
-      case QXmlStreamReader::StartElement:
-         if (xml.name() == "programm")
-         {
-            attrs         =  xml.attributes();
-            bArchiv       = (attrs.value("have_archive").toString().toInt() == 1) ? true : false;
-            iChanID       =  attrs.value("channelid").toString().toInt();
-            uiGmt         =  attrs.value("stime").toString().toUInt();
-         }
-         else if (xml.name() == "item")
-         {
-            attrs         =  xml.attributes();
-            epg.sName     =  attrs.value("progname").toString();
-            epg.sDescr    =  attrs.value("pdescr").toString();
-            epg.uiGmt     =  attrs.value("t_start").toString().toUInt();
-
-            if (epg.uiGmt && (epg.sName != ""))
-            {
-               epglist.push_back(epg);
-            }
-         }
-         break;
-
-      default:
-         break;
-      }
-   }
-
-   xml.clear();
-
-   /* Error handling. */
-   if(xml.hasError())
-   {
-      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                            tr("XML Error String: %1").arg(xml.errorString()));
-   }
-
-   mutex.unlock();
-
-   return epglist;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: ParseURL
-|  Begin: 19.01.2010 / 15:30:51
-|  Author: Jo2003
-|  Description: parse stream url (xml)
-|
-|  Parameters: --
-|
-|  Returns: stream url
-\----------------------------------------------------------------- */
-QString CKartinaXMLParser::ParseURL()
-{
-   QString              url;
-   QXmlStreamAttributes attrs;
-   QRegExp              rx("^.*//([^ ]*).*$");
-
-   xml.clear();
-   xml.addData(stream);
-
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      switch (xml.readNext())
-      {
-      // we aren't interested in ...
-      case QXmlStreamReader::StartDocument:
-      case QXmlStreamReader::EndElement:
-      case QXmlStreamReader::EndDocument:
-         break;
-
-      case QXmlStreamReader::StartElement:
-         if (xml.name() == "url")
-         {
-            attrs = xml.attributes();
-            url   = attrs.value("url").toString();
-         }
-         break;
-
-      default:
-         break;
-      }
-   }
-
-   xml.clear();
-
-   /* Error handling. */
-   if(xml.hasError())
-   {
-      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                            tr("XML Error String: %1").arg(xml.errorString()));
-   }
-
-   if (rx.indexIn(url) > -1)
-   {
-      url        = QString("http://%1").arg(rx.cap(1));
-   }
-   else
-   {
-      url        = "";
-   }
-
-   mutex.unlock();
-
-   return url;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: ParseArchivURL
-|  Begin: 19.01.2010 / 15:31:18
-|  Author: Jo2003
-|  Description: parse url for archiv (xml)
-|
-|  Parameters: optional pointer to archive info struct
-|
-|  Returns: url
-\----------------------------------------------------------------- */
-QString CKartinaXMLParser::ParseArchivURL(cparser::SArchInfo *pArchInf)
-{
-   QString              url;
-   QXmlStreamAttributes attrs;
-   QRegExp              rx("^([^ ]*).*$");
-
-   xml.clear();
-   xml.addData(stream);
-
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      switch (xml.readNext())
-      {
-      // we aren't interested in ...
-      case QXmlStreamReader::StartDocument:
-      case QXmlStreamReader::EndElement:
-      case QXmlStreamReader::EndDocument:
-         break;
-
-      case QXmlStreamReader::StartElement:
-         if (xml.name() == "url")
-         {
-            attrs = xml.attributes();
-            url   = attrs.value("url").toString();
-
-            if (pArchInf)
-            {
-               pArchInf->sTitle  = attrs.value("programm").toString();
-               pArchInf->uiStart = attrs.value("start").toString().toUInt();
-               pArchInf->uiEnd   = attrs.value("next").toString().toUInt();
-            }
-         }
-         break;
-
-      default:
-         break;
-      }
-   }
-
-   xml.clear();
-
-   /* Error handling. */
-   if(xml.hasError())
-   {
-      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                            tr("XML Error String: %1").arg(xml.errorString()));
-   }
-
-   if (rx.indexIn(url) > -1)
-   {
-      url = rx.cap(1);
-   }
-   else
-   {
-      url = "";
-   }
-
-   mutex.unlock();
-
-   return url;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: CheckTimeOffSet
+|  Method: checkTimeOffSet
 |  Begin: 19.01.2010 / 15:32:03
 |  Author: Jo2003
 |  Description: try to get offset between client and
 |               kartina.tv server
 |
-|  Parameters: date time in string format
+|  Parameters: servertime as unix timestamp
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
+void CKartinaXMLParser::checkTimeOffSet (const uint &uiSrvTime)
 {
    /*
      This function is a little tricky ...
@@ -397,11 +52,8 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
      Round offset to full 30 minutes (min. timezone step)
      */
 
-   mInfo(tr("%1 reports client time as %2").arg(COMPANY_NAME).arg(str));
-
    // get difference between kartina.tv and our time ...
-   int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t()
-                          - CHttpTime::fromEnString(str).toTime_t());
+   int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t() - uiSrvTime);
 
    // round offset to full timezone step ...
    int iHalfHours = qRound ((double)iOffSec / (double)DEF_TZ_STEP);
@@ -415,11 +67,14 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
       iOffset = 0;
    }
 
-   mInfo(tr("Set time offset to %1 seconds!").arg(iOffset));
+   if (iOffset)
+   {
+      mInfo(tr("Set time offset to %1 seconds!").arg(iOffset));
+   }
 }
 
 /* -----------------------------------------------------------------\
-|  Method: FixTime
+|  Method: fixTime
 |  Begin: 19.01.2010 / 15:32:54
 |  Author: Jo2003
 |  Description: fix time sent from kartina.tv as part from
@@ -430,7 +85,7 @@ void CKartinaXMLParser::CheckTimeOffSet (const QString &str)
 |  Returns: 0 ==> not touched
 |           1 ==> fixed
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::FixTime (uint &uiTime)
+int CKartinaXMLParser::fixTime (uint &uiTime)
 {
    if (iOffset)
    {
@@ -445,39 +100,632 @@ int CKartinaXMLParser::FixTime (uint &uiTime)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: GetSelectOptions
-|  Begin: 27.02.2010 / 18:42:54
+|  Method: parseChannelList
+|  Begin: 29.07.2010 / 11:28:20
 |  Author: Jo2003
-|  Description: parse srv form and get server list and active server
+|  Description: parse channel list
 |
-|  Parameters: html src, srv vector, act server
+|  Parameters: ref. to response, ref. to chanList, fixTime flag
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseChannelList (const QString &sResp,
+                                         QVector<cparser::SChan> &chanList,
+                                         bool bFixTime)
+{
+   cparser::SChan chan;
+   QString        sErr;
+   bool           bInChannels = false;
+   int            iRV;
+
+   // clear chanList ...
+   chanList.clear();
+
+   // check for errors ...
+   iRV = kartinaError(sResp, sErr);
+
+   if (!iRV)
+   {
+      QXmlStreamReader sr (sResp);
+
+      while(!sr.atEnd() && !sr.hasError())
+      {
+         switch (sr.readNext())
+         {
+         // we aren't interested in ...
+         case QXmlStreamReader::StartDocument:
+         case QXmlStreamReader::EndDocument:
+            break;
+
+         // any xml element ends ...
+         case QXmlStreamReader::EndElement:
+            if (sr.name() == "channels")
+            {
+               bInChannels = false;
+            }
+            else if (sr.name() == "item")
+            {
+               if (bInChannels)
+               {
+                  // channel item ends ...
+                  chanList.push_back(chan);
+               }
+            }
+            break;
+
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (sr.name() == "channels")
+            {
+               // we're in channels part now ...
+               bInChannels  = true;
+
+               // this also means group stuff is completed ...
+               chan.bIsGroup = true;
+               chanList.push_back(chan);
+            }
+            else if (sr.name() == "item")
+            {
+               // new item starts --> init chan struct ...
+               chan.bHasArchive  = false;
+               chan.bIsGroup     = false;
+               chan.bIsProtected = false;
+               chan.bIsVideo     = false;
+               chan.iId          = -1;
+               chan.sIcon        = "";
+               chan.sName        = "";
+               chan.sProgramm    = "";
+               chan.uiEnd        = 0;
+               chan.uiStart      = 0;
+            }
+            else if (sr.name() == "id")
+            {
+               // read id ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.iId = sr.text().toString().toInt();
+               }
+            }
+            else if (sr.name() == "name")
+            {
+               // read name ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.sName = sr.text().toString();
+               }
+            }
+            else if (sr.name() == "color")
+            {
+               // read color ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.sProgramm = sr.text().toString();
+               }
+            }
+            else if (sr.name() == "is_video")
+            {
+               // is video ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.bIsVideo = (sr.text().toString().toInt()) ? true : false;
+               }
+            }
+            else if (sr.name() == "protected")
+            {
+               // is protected ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.bIsProtected = (sr.text().toString().toInt()) ? true : false;
+               }
+            }
+            else if (sr.name() == "have_archive")
+            {
+               // has archive ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.bHasArchive = (sr.text().toString().toInt()) ? true : false;
+               }
+            }
+            else if (sr.name() == "icon")
+            {
+               // read icon path ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.sIcon = sr.text().toString();
+               }
+            }
+            else if (sr.name() == "epg_progname")
+            {
+               // read show name ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.sProgramm = sr.text().toString();
+               }
+            }
+            else if (sr.name() == "epg_start")
+            {
+               // read show start ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.uiStart = sr.text().toString().toUInt();
+
+                  if (bFixTime)
+                  {
+                     fixTime(chan.uiStart);
+                  }
+               }
+            }
+            else if (sr.name() == "epg_end")
+            {
+               // read show end ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  chan.uiEnd = sr.text().toString().toUInt();
+
+                  if (bFixTime)
+                  {
+                     fixTime(chan.uiEnd);
+                  }
+               }
+            }
+            break;
+
+         default:
+            break;
+
+         } // end switch ...
+
+      } // end while ...
+
+      // check for xml errors ...
+      if(sr.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(sr.errorString()));
+
+         iRV = -1;
+      }
+   }
+   else
+   {
+      QMessageBox::critical(NULL, tr("Error"), sErr);
+      mErr(sErr);
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseSServers
+|  Begin: 29.07.2010 / 15:52:54
+|  Author: Jo2003
+|  Description: parse stream server resp.
+|
+|  Parameters: XML in, ref. to srv vector, ref. to act value
 |
 |  Returns: 0 ==> ok
-|          -1 ==> any error
+|        else ==> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::GetSelectOptions(const QString &src,
-                                        QVector<int> &lOpts,
-                                        int &iActOpt)
+int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv> &vSrv,
+                                     QString &sActIp)
 {
-   QRegExp rx("<option value=\"([0-9]+)\"(.*)>");
-   int     iIdx = 0;
-   int     iRV  = -1;
+   cparser::SSrv srv;
+   QString       sErr;
+   int           iRV;
 
-   while (iIdx > -1)
+   // clear epg list ...
+   vSrv.clear();
+
+   // check for errors ...
+   iRV = kartinaError(sResp, sErr);
+
+   if (!iRV)
    {
-      iIdx = src.indexOf(rx, iIdx);
+      QXmlStreamReader sr (sResp);
 
-      if (iIdx > -1)
+      while(!sr.atEnd() && !sr.hasError())
       {
-         lOpts.push_back(rx.cap(1).toInt());
-
-         if (rx.cap(2).contains("selected"))
+         switch (sr.readNext())
          {
-            iActOpt = rx.cap(1).toInt();
-            iRV     = 0;
+         // we aren't interested in ...
+         case QXmlStreamReader::StartDocument:
+         case QXmlStreamReader::EndDocument:
+            break;
+
+         // any xml element ends ...
+         case QXmlStreamReader::EndElement:
+            if (sr.name() == "item")
+            {
+               vSrv.push_back(srv);
+            }
+            break;
+
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (sr.name() == "item")
+            {
+               srv.sName = "";
+               srv.sIp   = "";
+            }
+            else if (sr.name() == "ip")
+            {
+               // read srv ip address ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  srv.sIp = sr.text().toString();
+               }
+            }
+            else if (sr.name() == "descr")
+            {
+               // read srv name ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  srv.sName = sr.text().toString();
+               }
+            }
+            else if (sr.name() == "value")
+            {
+               // read actual srv ip ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  sActIp = sr.text().toString();
+               }
+            }
+            break;
+
+         default:
+            break;
+
+         } // end switch ...
+
+      } // end while ...
+
+      // check for xml errors ...
+      if(sr.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(sr.errorString()));
+
+         iRV = -1;
+      }
+   }
+   else
+   {
+      QMessageBox::critical(NULL, tr("Error"), sErr);
+      mErr(sErr);
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseCookie
+|  Begin: 28.07.2010 / 18:42:54
+|  Author: Jo2003
+|  Description: parse cookie
+|
+|  Parameters: XML in, buffer for cookie
+|
+|  Returns: 0 ==> ok
+|        else ==> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
+{
+   QRegExp rx("<sid>(.*)</sid>.*"
+              "<sid_name>(.*)</sid_name>.*"
+              "<servertime>(.*)</servertime>");
+
+   int     iRV = 0;
+   QString sErr;
+
+   sCookie = "";
+
+   // error check ...
+   iRV = kartinaError(sResp, sErr);
+
+   if (!iRV)
+   {
+      // use reg. expressions instead of xml stream parser ...
+      if (rx.indexIn(sResp) > -1)
+      {
+         sCookie = QString("%1=%2").arg(rx.cap(2)).arg(rx.cap(1));
+
+         // check offset ...
+         checkTimeOffSet (rx.cap(3).toUInt());
+      }
+      else
+      {
+         mInfo("RegEx doesn't match ...");
+      }
+   }
+   else
+   {
+      // display error ...
+      QMessageBox::critical(NULL, tr("Error"), sErr);
+      mErr(sErr);
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseEpg
+|  Begin: 29.07.2010 / 11:28:20
+|  Author: Jo2003
+|  Description: parse epg xml
+|
+|  Parameters: ref. to response, ref. to epgList
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
+{
+   QRegExp       rx("([^\n]*)[\n]*(.*)");
+   cparser::SEpg epg;
+   QString       sErr;
+   int           iRV;
+
+   // clear epg list ...
+   epgList.clear();
+
+   // check for errors ...
+   iRV = kartinaError(sResp, sErr);
+
+   if (!iRV)
+   {
+      QXmlStreamReader sr (sResp);
+
+      while(!sr.atEnd() && !sr.hasError())
+      {
+         switch (sr.readNext())
+         {
+         // we aren't interested in ...
+         case QXmlStreamReader::StartDocument:
+         case QXmlStreamReader::EndDocument:
+            break;
+
+         // any xml element ends ...
+         case QXmlStreamReader::EndElement:
+            if (sr.name() == "item")
+            {
+               epgList.push_back(epg);
+            }
+            break;
+
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (sr.name() == "item")
+            {
+               epg.sDescr = "";
+               epg.sName  = "";
+               epg.uiGmt  = 0;
+            }
+            else if (sr.name() == "ut_start")
+            {
+               // read start time ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  epg.uiGmt = sr.text().toString().toUInt();
+               }
+            }
+            else if (sr.name() == "progname")
+            {
+               // read program name ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  // program description will be after '\n' ...
+                  if (rx.indexIn(sr.text().toString()) > -1)
+                  {
+                     // yes, program description there ...
+                     epg.sName  = rx.cap(1);
+                     epg.sDescr = rx.cap(2);
+                  }
+                  else
+                  {
+                     // program name only ...
+                     epg.sName = sr.text().toString();
+                  }
+               }
+            }
+            else if (sr.name() == "pdescr")
+            {
+               // read program description (not used at the moment) ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  epg.sDescr = sr.text().toString();
+               }
+            }
+            break;
+
+         default:
+            break;
+
+         } // end switch ...
+
+      } // end while ...
+
+      // check for xml errors ...
+      if(sr.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(sr.errorString()));
+
+         iRV = -1;
+      }
+   }
+   else
+   {
+      QMessageBox::critical(NULL, tr("Error"), sErr);
+      mErr(sErr);
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseSettings
+|  Begin: 29.07.2010 / 11:28:20
+|  Author: Jo2003
+|  Description: parse settings xml response
+|
+|  Parameters: ref. to response, ref. to value vector,
+|              ref. to act. val
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValues,
+                                      int &iActVal, QString &sName)
+{
+   QString sErr;
+   int     iRV;
+
+   // clear epg list ...
+   vValues.clear();
+
+   // check for errors ...
+   iRV = kartinaError(sResp, sErr);
+
+   if (!iRV)
+   {
+      QXmlStreamReader sr (sResp);
+
+      while(!sr.atEnd() && !sr.hasError())
+      {
+         switch (sr.readNext())
+         {
+         // we aren't interested in ...
+         case QXmlStreamReader::StartDocument:
+         case QXmlStreamReader::EndDocument:
+         case QXmlStreamReader::EndElement:
+            break;
+
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (sr.name() == "item")
+            {
+               // read item ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vValues.push_back(sr.text().toString().toInt());
+               }
+            }
+            else if (sr.name() == "value")
+            {
+               // read actual value ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  iActVal = sr.text().toString().toInt();
+               }
+            }
+            else if (sr.name() == "name")
+            {
+               // read actual value ...
+               if (sr.readNext() == QXmlStreamReader::Characters)
+               {
+                  sName = sr.text().toString();
+               }
+            }
+            break;
+
+         default:
+            break;
+
+         } // end switch ...
+
+         // store timeshift value if needed ...
+         if (sName == "timeshift")
+         {
+            iTimeShift = iActVal;
          }
 
-         iIdx ++;
+      } // end while ...
+
+      // check for xml errors ...
+      if(sr.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(sr.errorString()));
+
+         iRV = -1;
+      }
+   }
+   else
+   {
+      QMessageBox::critical(NULL, tr("Error"), sErr);
+      mErr(sErr);
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseUrl
+|  Begin: 30.07.2010 / 11:28:20
+|  Author: Jo2003
+|  Description: parse url response
+|
+|  Parameters: ref. to response, ref. to url
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
+{
+   QRegExp rx("<url>([^ ]*).*");
+
+   int     iRV = 0;
+   QString sErr;
+
+   sUrl = "";
+
+   // error check ...
+   iRV = kartinaError(sResp, sErr);
+
+   if (!iRV)
+   {
+      // use reg. expressions instead of xml stream parser ...
+      if (rx.indexIn(sResp) > -1)
+      {
+         sUrl = rx.cap(1);
+      }
+   }
+   else
+   {
+      QMessageBox::critical(NULL, tr("Error"), sErr);
+      mErr(sErr);
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: kartinaError
+|  Begin: 28.07.2010 / 18:42:54
+|  Author: Jo2003
+|  Description: format kartina error string
+|
+|  Parameters: --
+|
+|  Returns: error string
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::kartinaError(const QString& sResp, QString &sErr)
+{
+   int iRV = 0;
+   QRegExp rx("<message>(.*)</message>[ \t\n\r]*"
+              "<code>(.*)</code>");
+
+   sErr = "";
+
+   // quick'n'dirty error check ...
+   if (sResp.contains("<error>"))
+   {
+      if (rx.indexIn(sResp) > -1)
+      {
+         sErr = rx.cap(1);
+         iRV  = rx.cap(2).toInt();
       }
    }
 

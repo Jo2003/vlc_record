@@ -47,9 +47,10 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
                              const QString &sName, int iChanID, uint uiGmt,
                              bool bHasArchiv)
 {
-   QString   sRows   = "", sRow, sProgCell, sHtmlDoc, sStartTime, sHeadLine;
-   QDateTime dtStartThis, dtStartNext;
-   bool      bMark;
+   QString    sRows   = "", sRow, sProgCell, sHtmlDoc, sStartTime, sHeadLine;
+   QDateTime  dtStartThis, dtStartNext;
+   bool       bMark;
+   epg::SShow actShow;
 
    // clear program ...
    mProgram.clear();
@@ -68,17 +69,22 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
 
    for (int i = 0; i < epglist.size(); i ++)
    {
-      // store start time and show name ...
-      mProgram[epglist[i].uiGmt] = epglist[i].sName;
+      actShow.sShowName  = epglist[i].sName;
+      actShow.sShowDescr = epglist[i].sDescr;
+      actShow.uiStart    = epglist[i].uiGmt;
+      actShow.uiEnd      = ((i + 1) < epglist.size()) ? epglist[i + 1].uiGmt : 0;
+
+      // store start time and show info ...
+      mProgram.insert(epglist[i].uiGmt, actShow);
 
       bMark       = false;
       sProgCell   = "";
-      dtStartThis = QDateTime::fromTime_t(epglist[i].uiGmt + iTimeShift * 3600);
+      dtStartThis = QDateTime::fromTime_t(actShow.uiStart + iTimeShift * 3600);
 
       // find out if we should mark the time ...
-      if ((i + 1) < epglist.size())
+      if (actShow.uiEnd)
       {
-         dtStartNext = QDateTime::fromTime_t(epglist[i + 1].uiGmt + iTimeShift * 3600);
+         dtStartNext = QDateTime::fromTime_t(actShow.uiEnd + iTimeShift * 3600);
          bMark       = NowRunning(dtStartThis, dtStartNext);
       }
       else
@@ -96,11 +102,11 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
          sRow = (i % 2) ? TR_TMPL_B : TR_TMPL_A;
       }
 
-      sProgCell += epglist[i].sName;
+      sProgCell += actShow.sShowName;
 
-      if (epglist[i].sDescr != "")
+      if (actShow.sShowDescr != "")
       {
-         sProgCell += QString("<br /><span style='color: #666'>%1</span>").arg(epglist[i].sDescr);
+         sProgCell += QString("<br /><span style='color: #666'>%1</span>").arg(actShow.sShowDescr);
       }
 
       sStartTime = dtStartThis.toString("hh:mm");
@@ -109,7 +115,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
       if (bHasArchiv)
       {
          // only show archiv links if this show already has ended ...
-         if (ArchivAvailable(epglist[i].uiGmt))
+         if (ArchivAvailable(actShow.uiStart))
          {
             QString sArchivLinks = QString("<hr /><b>%1:</b> &nbsp;")
                                    .arg(tr("Ar."));
@@ -118,14 +124,14 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
             sArchivLinks += QString("<a href='vlc-record?action=archivplay&cid=%1&gmt=%2'>"
                                     "<img src=':png/play' width='16' height='16' alt='play' "
                                     "title='%3' /></a>&nbsp;")
-                                    .arg(iChanID).arg(epglist[i].uiGmt)
+                                    .arg(iChanID).arg(actShow.uiStart)
                                     .arg(tr("play from archive ..."));
 
             // record ...
             sArchivLinks += QString("<a href='vlc-record?action=archivrec&cid=%1&gmt=%2'>"
                                     "<img src=':png/record' width='16' height='16' alt='record' "
                                     "title='%3' /></a>")
-                                    .arg(iChanID).arg(epglist[i].uiGmt)
+                                    .arg(iChanID).arg(actShow.uiStart)
                                     .arg(tr("record from archive ..."));
 
             sStartTime += sArchivLinks;
@@ -137,15 +143,12 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
       {
          // has not started so far ... add timer record link ...
 
-         // try to get end time ...
-         uint uiEnd = ((i + 1) < epglist.size()) ? epglist[i + 1].uiGmt : 0;
-
 
          // add timer rec link ...
          sStartTime += QString("&nbsp;<a href='vlc-record?action=timerrec&cid=%1&start=%2&end=%3'>"
                                "<img src=':png/timer' width='16' height='16' alt='timer' "
                                "title='%4' /></a>&nbsp;")
-                               .arg(iChanID).arg(epglist[i].uiGmt).arg(uiEnd)
+                               .arg(iChanID).arg(actShow.uiStart).arg(actShow.uiEnd)
                                .arg(tr("add timer record ..."));
       }
 
@@ -232,18 +235,18 @@ bool CEpgBrowser::ArchivAvailable(uint uiThisShow)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: ShowName
+|  Method: epgShow
 |  Begin: 16.01.2010 / 10:52:12
 |  Author: Jo2003
-|  Description: get the program name
+|  Description: get the program info
 |
 |  Parameters: timestamp for this show
 |
-|  Returns: show name
+|  Returns: show info
 \----------------------------------------------------------------- */
-QString CEpgBrowser::ShowName(uint uiTimeT)
+const epg::SShow CEpgBrowser::epgShow(uint uiTimeT)
 {
-   return mProgram[uiTimeT];
+   return mProgram.value(uiTimeT);
 }
 
 /* -----------------------------------------------------------------\

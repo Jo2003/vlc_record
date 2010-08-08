@@ -118,7 +118,7 @@ void CWaitTrigger::run()
                pClient->GetEPG(iOptArg1, iOptArg2);
                break;
             case Kartina::REQ_SERVER:
-               pClient->SetServer(iOptArg1);
+               pClient->SetServer(sOptArg);
                break;
             case Kartina::REQ_HTTPBUFF:
                pClient->SetHttpBuffer(iOptArg1);
@@ -135,8 +135,14 @@ void CWaitTrigger::run()
             case Kartina::REQ_TIMESHIFT:
                pClient->SetTimeShift(iOptArg1);
                break;
+            case Kartina::REQ_GETTIMESHIFT:
+               pClient->GetTimeShift();
+               break;
             case Kartina::REQ_GET_SERVER:
                pClient->GetServer();
+               break;
+            case Kartina::REQ_LOGOUT:
+               pClient->Logout();
                break;
             default:
                break;

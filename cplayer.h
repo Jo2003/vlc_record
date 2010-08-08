@@ -17,20 +17,21 @@
 #include <QWidget>
 #include <QFrame>
 #include <QTimer>
-#include <QVector>
-
 #include <QEvent>
-#include <QKeyEvent>
-
 #include <QTime>
+#include <QDesktopWidget>
 
 #include <vlc/vlc.h>
 
+#include "cvlcrecdb.h"
 #include "clogfile.h"
 #include "playstates.h"
-#include "cshortcutex.h"
 #include "defdef.h"
 #include "ctimerex.h"
+#include "cshowinfo.h"
+#include "csettingsdlg.h"
+#include "cwaittrigger.h"
+#include "cvideoframe.h"
 
 //===================================================================
 // namespace
@@ -49,11 +50,11 @@ namespace Ui
 // macro to connect player to hardware ...
 //===================================================================
 #ifdef Q_OS_WIN        // on windows ...
-   #define connect_to_wnd(a, b, c) libvlc_media_player_set_hwnd (a, b, c)
+   #define connect_to_wnd(a, b) libvlc_media_player_set_hwnd (a, b)
 #elif defined Q_OS_MAC // on MAC OS
-   #define connect_to_wnd(a, b, c) libvlc_media_player_set_agl (a, b, c)
+   #define connect_to_wnd(a, b) libvlc_media_player_set_agl (a, b)
 #else                  // on Linux
-   #define connect_to_wnd(a, b, c) libvlc_media_player_set_xwindow (a, b, c)
+   #define connect_to_wnd(a, b) libvlc_media_player_set_xwindow (a, b)
 #endif
 
 /********************************************************************\
@@ -70,47 +71,47 @@ class CPlayer : public QWidget
 public:
    CPlayer(QWidget *parent = 0);
    ~CPlayer();
-   int  initPlayer (QStringList &slArgs);
-   int  setMedia (const QString &sMrl);
+   void cleanExit ();
+   int  initPlayer ();
    bool isPlaying ();
-   void setPlugInPath(const QString &sPath);
    void setShortCuts (QVector<CShortcutEx *> *pvSc);
    void startPlayTimer ();
    void pausePlayTimer ();
+   void stopPlayTimer ();
+   void setSettings (CSettingsDlg *pDlg);
+   void setTrigger (CWaitTrigger *pTrig);
    static void eventCallback (const libvlc_event_t *ev, void *player);
 
 protected:
    void changeEvent(QEvent *e);
-   int  raise(libvlc_exception_t * ex);
-   void releasePlayer ();
-   int  createArgs (const QStringList &lArgs, Ui::vlcArgs& args);
-   void freeArgs (Ui::vlcArgs& args);
-   int  fakeShortCut (const QKeySequence &seq);
-
-   virtual void keyPressEvent (QKeyEvent *pEvent);
+   int  myToggleFullscreen ();
+   void enableDisablePlayControl (bool bEnable);
 
 private:
    Ui::CPlayer            *ui;
    QTimer                  poller;
+   QTimer                  sliderTimer;
+   QTimer                  tAspectShot;
    CTimerEx                timer;
-   libvlc_exception_t      vlcExcpt;
    libvlc_instance_t      *pVlcInstance;
    libvlc_media_player_t  *pMediaPlayer;
-   libvlc_media_t         *pMedia;
    libvlc_event_manager_t *pEMPlay;
-   libvlc_event_manager_t *pEMMedia;
    libvlc_log_t           *pLibVlcLog;
    uint                    uiVerboseLevel;
-   QString                 sPlugInPath;
-   Qt::Key                 kModifier;
-   QVector<CShortcutEx *> *pvShortcuts;
    bool                    bCtrlStream;
+   CSettingsDlg           *pSettings;
+   CWaitTrigger           *pTrigger;
+   bool                    bSpoolPending;
 
 private slots:
+   void on_posSlider_valueChanged(int value);
+   void on_posSlider_sliderReleased();
+   void on_btnFullScreen_clicked();
    void on_cbxAspect_currentIndexChanged(QString str);
    void on_cbxCrop_currentIndexChanged(QString str);
    void slotChangeVolume(int newVolume);
    void slotLibVLCLog ();
+   void slotUpdateSlider ();
 
 public slots:
    int  playMedia (const QString &sCmdLine, bool bAllowCtrl);
@@ -120,15 +121,12 @@ public slots:
    int  slotToggleFullScreen ();
    int  slotToggleAspectRatio ();
    int  slotToggleCropGeometry ();
-   int  slotStreamJumpFwd ();
-   int  slotStreamJumpBwd ();
-   int  slotTimeJumpBwd();
-   int  slotTimeJumpFwd();
    int  slotTimeJumpRelative (int iSeconds);
-   int  slotStreamJumpRelative (int iSeconds);
+   void slotStoredAspectCrop ();
 
 signals:
    void sigPlayState (int ps);
+   void sigTriggerAspectChg ();
 };
 
 #endif /* __022410__CPLAYER_H */

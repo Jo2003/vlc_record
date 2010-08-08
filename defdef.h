@@ -33,6 +33,7 @@
 #define LANG_DIR          "language"
 #define LOGO_DIR          "logos"
 #define KARTINA_HOST      "iptv.kartina.tv"
+#define KARTINA_API_PATH  "/api/xml/"
 #define LOGO_URL          "/img/ico/24"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"
 #define DEF_TZ_STEP       1800        // time zone step is min. 30 minutes (1800 sec.) ...

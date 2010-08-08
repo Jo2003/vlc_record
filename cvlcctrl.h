@@ -75,6 +75,7 @@ public:
 
    int     LoadPlayerModule (const QString &sPath);
    void    UseLibVlc (bool bUsage);
+   bool    withLibVLC();
 
 private:
    QTimer     tRunTime;

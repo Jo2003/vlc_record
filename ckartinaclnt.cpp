@@ -39,12 +39,10 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr,
    sCookie        = "";
    sHost          = host;
    eReq           = Kartina::REQ_UNKNOWN;
-   bRenewCookie   = true;
 
    bufReq.open(QIODevice::WriteOnly);
 
    connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
-   connect(this, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(getResponseHeader(QHttpResponseHeader)));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -69,12 +67,10 @@ CKartinaClnt::CKartinaClnt() :QHttp()
    sCookie        = "";
    sHost          = "";
    eReq           = Kartina::REQ_UNKNOWN;
-   bRenewCookie   = true;
 
    bufReq.open(QIODevice::WriteOnly);
 
    connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
-   connect(this, SIGNAL(responseHeaderReceived(QHttpResponseHeader)), this, SLOT(getResponseHeader(QHttpResponseHeader)));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -117,7 +113,6 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
    sHost          = host;
    sCookie        = "";
    eReq           = Kartina::REQ_UNKNOWN;
-   bRenewCookie   = true;
 
    setHost(host);
 }
@@ -136,8 +131,27 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetCookie(const QString &cookie)
 {
-   bRenewCookie = false;
+   mInfo(tr("We've got following Cookie: %1").arg(cookie));
    sCookie      = cookie;
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    Logout
+|
+| Author:      Jo2003
+|
+| Begin:       28.07.2010 / 12:18:00
+|
+| Description: logout from kartina
+|
+| Parameters:  --
+|
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::Logout ()
+{
+   mInfo(tr("Logout ..."));
+
+   GetRequest(Kartina::REQ_LOGOUT, KARTINA_API_PATH "logout");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -159,7 +173,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
    QHttpRequestHeader header("POST", path.toAscii());
    header.addValue("Host", sHost);
    header.setContentType("application/x-www-form-urlencoded");
-   header.addValue("User-Agent", "Mozilla/5.0");
+   header.addValue("User-Agent", "VLC-Record " __MY__VERSION__);
    header.addValue("Connection", "close");
    if (sCookie != "")
    {
@@ -173,7 +187,43 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
    // post request ...
    iReq = request(header, content.toAscii(), &bufReq);
 
-   mInfo(tr("Request #%1 postet.").arg(iReq));
+   mInfo(tr("Request #%1 sent ...").arg(iReq));
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    GetRequest
+|
+| Author:      Jo2003
+|
+| Begin:       28.07.2010 / 16:14:52
+|
+| Description: send a get request to kartina.tv
+|
+| Parameters:  request type, request
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetRequest (Kartina::EReq req, const QString &sRequest)
+{
+   eReq = req;
+   QHttpRequestHeader header("GET", sRequest.toAscii());
+   header.addValue("Host", sHost);
+   header.setContentType("application/x-www-form-urlencoded");
+   header.addValue("User-Agent", "VLC-Record " __MY__VERSION__);
+   header.addValue("Connection", "close");
+   if (sCookie != "")
+   {
+      header.addValue("Cookie", sCookie);
+   }
+   header.setContentLength(0);
+
+   // open and clean data buffer ...
+   bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
+
+   // post request ...
+   iReq = request(header, QByteArray(), &bufReq);
+
+   mInfo(tr("Request #%1 sent ...").arg(iReq));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -193,10 +243,8 @@ void CKartinaClnt::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   bRenewCookie = true;
-
-   PostRequest(Kartina::REQ_COOKIE, "/",
-               QString("act=login&code_login=%1&code_pass=%2").arg(sUsr).arg(sPw));
+   PostRequest(Kartina::REQ_COOKIE, KARTINA_API_PATH "login",
+               QString("login=%1&pass=%2").arg(sUsr).arg(sPw));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -216,7 +264,7 @@ void CKartinaClnt::GetChannelList ()
 {
    mInfo(tr("Request Channel List ..."));
 
-   PostRequest(Kartina::REQ_CHANNELLIST, "/", "m=channels&act=get_list_xml");
+   GetRequest(Kartina::REQ_CHANNELLIST, KARTINA_API_PATH "channel_list");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -236,7 +284,27 @@ void CKartinaClnt::GetServer()
 {
    mInfo(tr("Request Stream Server List ..."));
 
-   PostRequest(Kartina::REQ_GET_SERVER, "/", "m=clients&act=form_sserv");
+   GetRequest(Kartina::REQ_GET_SERVER, KARTINA_API_PATH "settings?var=stream_server");
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    GetTimeShift
+|
+| Author:      Jo2003
+|
+| Begin:       29.07.2010, 13:50:52
+|
+| Description: request timeshift from kartina server
+|
+| Parameters:  --
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetTimeShift()
+{
+   mInfo(tr("Request Time Shift ..."));
+
+   GetRequest(Kartina::REQ_GETTIMESHIFT, KARTINA_API_PATH "settings?var=timeshift");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -256,8 +324,8 @@ void CKartinaClnt::SetTimeShift (int iHours)
 {
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
-   PostRequest(Kartina::REQ_TIMESHIFT, "/",
-               QString("m=clients&act=x_set_timeshift&ts=%1").arg(iHours));
+   PostRequest(Kartina::REQ_TIMESHIFT, KARTINA_API_PATH "settings_set",
+               QString("var=timeshift&val=%1").arg(iHours));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -277,14 +345,15 @@ void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 {
    mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
-   QString req = QString("m=channels&act=get_stream_url&cid=%1").arg(iChanID);
+   QString req = QString("cid=%1").arg(iChanID);
 
    if (bEros)
    {
       req += QString("&protect_code=%1").arg(sErosPw);
    }
 
-   PostRequest((bTimerRec) ? Kartina::REQ_TIMERREC : Kartina::REQ_STREAM, "/", req);
+   PostRequest((bTimerRec) ? Kartina::REQ_TIMERREC : Kartina::REQ_STREAM,
+               KARTINA_API_PATH "get_url", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -300,12 +369,12 @@ void CKartinaClnt::GetStreamURL(int iChanID, bool bTimerRec)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetServer(int iSrv)
+void CKartinaClnt::SetServer (const QString &sIp)
 {
-   mInfo(tr("Set Streaming Server to No %1 ...").arg(iSrv));
+   mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
-   PostRequest(Kartina::REQ_SERVER, "/",
-               QString("m=clients&act=x_set_sserv&ssrv=%1").arg(iSrv));
+   PostRequest(Kartina::REQ_SERVER, KARTINA_API_PATH "settings_set",
+               QString("var=stream_server&val=%1").arg(sIp));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -325,8 +394,8 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 {
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
-   PostRequest(Kartina::REQ_SERVER, "/",
-               QString("m=clients&act=x_set_http_cache&htc=%1").arg(iTime));
+   PostRequest(Kartina::REQ_SERVER, KARTINA_API_PATH "settings_set",
+               QString("var=http_caching&val=%1").arg(iTime));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -348,9 +417,9 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 
    QDate now = QDate::currentDate().addDays(iOffset);
 
-   PostRequest(Kartina::REQ_EPG, "/",
-               QString("m=epg&act=show_day_xml&day=%1&cid=%2")
-               .arg(now.toString("ddMMyy")).arg(iChanID));
+   GetRequest(Kartina::REQ_EPG,
+              QString("%1epg?cid=%2&day=%3").arg(KARTINA_API_PATH)
+              .arg(iChanID).arg(now.toString("ddMMyy")));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -368,7 +437,7 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetArchivURL (const QString &prepared)
 {
-   mInfo(tr("Request Archiv URL:\n  --> %1").arg(prepared));
+   mInfo(tr("Request Archiv URL ..."));
 
    QString req = prepared;
 
@@ -377,47 +446,7 @@ void CKartinaClnt::GetArchivURL (const QString &prepared)
       req += QString("&protect_code=%1").arg(sErosPw);
    }
 
-   PostRequest(Kartina::REQ_ARCHIV, "/", req);
-}
-
-/*-----------------------------------------------------------------------------\
-| Function:    getResponseHeader (slot)
-|
-| Author:      Jo2003
-|
-| Begin:       Monday, January 04, 2010 16:14:52
-|
-| Description: catch authentication cookie from response header
-|
-| Parameters:  ref to header
-|
-| Returns:     --
-\-----------------------------------------------------------------------------*/
-void CKartinaClnt::getResponseHeader (const QHttpResponseHeader &resp)
-{
-   if (bRenewCookie)
-   {
-      mInfo(tr("We've got Response for Authentification!"));
-
-      sCookie      = resp.value("Set-Cookie");
-
-      if (sCookie != "")
-      {
-         mInfo(tr("Got cookie:\n  --> %1!").arg(sCookie));
-
-         // we have catched the cookie ...
-         emit sigGotCookie(sCookie);
-      }
-      else
-      {
-         mErr(tr("Error: Can't authenticate!"));
-
-         emit sigError(tr("Can't authenticate you at %1! Please check username and password!")
-                       .arg(COMPANY_NAME));
-      }
-
-      bRenewCookie = false;
-   }
+   PostRequest(Kartina::REQ_ARCHIV, KARTINA_API_PATH "get_url", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -456,22 +485,22 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
          switch (eReq)
          {
          case Kartina::REQ_COOKIE:
-            // signal already emitted when cookie was catched from response header ...
+            emit sigGotCookie(QString::fromUtf8(baPageContent.constData()));
             break;
          case Kartina::REQ_CHANNELLIST:
             emit sigGotChannelList(QString::fromUtf8(baPageContent.constData()));
             break;
          case Kartina::REQ_TIMESHIFT:
-            emit sigTimeShiftSet();
+            emit sigTimeShiftSet(QString::fromUtf8(baPageContent.constData()));
             break;
          case Kartina::REQ_EPG:
             emit sigGotEPG(QString::fromUtf8(baPageContent.constData()));
             break;
          case Kartina::REQ_SERVER:
-            emit sigServerChanged();
+            emit sigServerChanged(QString::fromUtf8(baPageContent.constData()));
             break;
          case Kartina::REQ_HTTPBUFF:
-            emit sigBufferSet();
+            emit sigBufferSet(QString::fromUtf8(baPageContent.constData()));
             break;
          case Kartina::REQ_STREAM:
             emit sigGotStreamURL(QString::fromUtf8(baPageContent.constData()));
@@ -484,6 +513,14 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
             break;
          case Kartina::REQ_GET_SERVER:
             emit sigSrvForm (QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_LOGOUT:
+            sCookie = "";
+            emit sigLogout (QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_GETTIMESHIFT:
+            emit sigGotTimeShift(QString::fromUtf8(baPageContent.constData()));
+            break;
          default:
             break;
          }
@@ -514,7 +551,7 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 \----------------------------------------------------------------- */
 bool CKartinaClnt::busy ()
 {
-   return ((eReq != Kartina::REQ_UNKNOWN) || bRenewCookie) ? true : false;
+   return ((eReq != Kartina::REQ_UNKNOWN) || (sCookie == "")) ? true : false;
 }
 
 /*=============================================================================\

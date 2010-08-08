@@ -637,6 +637,22 @@ void CVlcCtrl::slotLibVlcStateChange (int ps)
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: withLibVLC [slot]
+|  Begin: 24.06.2010 / 18:05:00
+|  Author: Jo2003
+|  Description: tell if libVLC is used
+|
+|  Parameters: --
+|
+|  Returns: true --> used
+|          false --> not used
+\----------------------------------------------------------------- */
+bool CVlcCtrl::withLibVLC()
+{
+   return bUseLibVlc;
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

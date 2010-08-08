@@ -102,6 +102,7 @@ int CDirStuff::initDirectories()
 {
    int iRV = 0;
    QMap<QString, QString>::const_iterator cit;
+   QDir helpDir;
 
    cit = mSysEnv.constFind(DATA_DIR_ENV);
 
@@ -109,6 +110,19 @@ int CDirStuff::initDirectories()
    {
       sDataDir = QString("%1/%2").arg(*cit).arg(DATA_DIR);
       sLogoDir = QString("%1/%2").arg(sDataDir).arg(LOGO_DIR);
+
+      // check, if dir exists ...
+      helpDir.setPath(sDataDir);
+      if (!helpDir.exists())
+      {
+         helpDir.mkpath(sDataDir);
+      }
+
+      helpDir.setPath(sLogoDir);
+      if (!helpDir.exists())
+      {
+         helpDir.mkpath(sLogoDir);
+      }
    }
    else
    {

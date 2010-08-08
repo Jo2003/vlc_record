@@ -59,6 +59,8 @@ Section "VLC-Record" SecInst
   SectionIn RO
   SetOutPath "$INSTDIR"
   File "${SRCDIR}\release\vlc-record.exe"
+  File "${QTLIBS}\libgcc_s_dw2-1.dll"
+  File "${QTLIBS}\mingwm10.dll"
 
   SetOutPath "$INSTDIR\language"
   File "${SRCDIR}\lang_de.qm"
@@ -78,15 +80,47 @@ SectionEnd
 ;-------------------------------------------------------
 ; Installer Sections for libVLC
 Section "libVLC Framework" SecFw
+   SectionIn RO
    SetOutPath "$INSTDIR"
    File "${LIBVLCFW}\libvlc.dll"
    File "${LIBVLCFW}\libvlccore.dll"
    FILE "${LIBVLCFW}\libvlc.dll.manifest"
-;   File "${LIBVLCFW}\axvlc.dll"
-;   File "${LIBVLCFW}\npvlc.dll"
 
    SetOutPath "$INSTDIR\plugins"
    File /r "${LIBVLCFW}\plugins\*.dll"
+SectionEnd
+
+;-------------------------------------------------------
+; create batch file to create / update plugin cache
+Section "PlugIn Cache Tools" SecCache
+   SectionIn RO
+   SetOutPath "$INSTDIR"
+   FILE "${LIBVLCFW}\cache-gen.exe"
+
+   FileOpen  $0 "$INSTDIR\clearcache.bat" w
+   FileWrite $0 "@echo off$\r$\n"
+   FileWrite $0 "echo Creating PlugIn Cache, please wait ... $\r$\n"
+   FileWrite $0 '"$INSTDIR\cache-gen.exe" -f "$INSTDIR\plugins"$\r$\n'
+   FileClose $0
+
+   ExecWait '"$INSTDIR\clearcache.bat"'
+SectionEnd
+
+
+;-------------------------------------------------------
+; Installer Sections for qt libraries
+Section "qt Framework" SecQt
+   SetOutPath "$INSTDIR"
+   File "${QTLIBS}\QtCore4.dll"
+   File "${QTLIBS}\QtSql4.dll"
+   FILE "${QTLIBS}\QtGui4.dll"
+   FILE "${QTLIBS}\QtNetwork4.dll"
+
+   SetOutPath "$INSTDIR\imageformats"
+   File /r "${QTLIBS}\imageformats\*.dll"
+
+   SetOutPath "$INSTDIR\sqldrivers"
+   File /r "${QTLIBS}\sqldrivers\*.dll"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -94,6 +128,7 @@ SectionEnd
 Section "Start Menu Entries" SecStart
 	CreateDirectory "$SMPROGRAMS\${APPNAME}"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\vlc-record.exe"
+   CreateShortCut "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk" "$INSTDIR\clearcache.bat"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
 SectionEnd
 
@@ -123,21 +158,38 @@ SectionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecInst} "The vlc-record executable, the language files and player modules."
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecFw} "The libVLC framework. Only disable this section if you have already installed this framework or you want install it manually."
+	!insertmacro MUI_DESCRIPTION_TEXT ${SecQt} "The Qt framework. Only disable this section if you have already installed the Qt framework and have set the QTDIR environment variable."
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecStart} "Creates a start menu entry for ${APPNAME}"
 	!insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "Creates a desktop shortcut for ${APPNAME}"
+   !insertmacro MUI_DESCRIPTION_TEXT ${SecCache} "Install Plugin Cache Tools for ${APPNAME}"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;-------------------------------------------------------
 ; Uninstaller Section framework ...
 Section "un.Framework"
   ; delete vlc framework ...
-  Delete "$INSTDIR\plugins\*.dll"
+  Delete "$INSTDIR\plugins\*.*"
   Delete "$INSTDIR\libvlc.dll"
   Delete "$INSTDIR\libvlccore.dll"
   Delete "$INSTDIR\libvlc.dll.manifest"
-;  Delete "$INSTDIR\axvlc.dll"
-;  Delete "$INSTDIR\npvlc.dll"
+  Delete "$INSTDIR\cache-gen.exe"
+  Delete "$INSTDIR\clearcache.bat"
+
   RMDir  "$INSTDIR\plugins"
+SectionEnd
+
+;-------------------------------------------------------
+; Uninstaller Section Qt ...
+Section "un.Qt"
+  ; delete Qt framework ...
+  Delete "$INSTDIR\imageformats\*.*"
+  Delete "$INSTDIR\sqldrivers\*.*"
+  Delete "$INSTDIR\QtCore4.dll"
+  Delete "$INSTDIR\QtSql4.dll"
+  Delete "$INSTDIR\QtGui4.dll"
+  Delete "$INSTDIR\QtNetwork4.dll"
+  RMDir  "$INSTDIR\imageformats"
+  RMDir  "$INSTDIR\sqldrivers"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -162,6 +214,8 @@ Section "un.Program"
 
   ; delete vlc-record itself ...
   Delete "$INSTDIR\vlc-record.exe"
+  Delete "$INSTDIR\libgcc_s_dw2-1.dll"
+  Delete "$INSTDIR\mingwm10.dll"
 
 SectionEnd
 
@@ -177,6 +231,7 @@ SectionEnd
 Section "un.Shortcuts"
 	Delete "$DESKTOP\${APPNAME}.lnk"
 	Delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
+   Delete "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk"
 	Delete "$SMPROGRAMS\${APPNAME}\Uninstall.lnk"
 	RMDir  "$SMPROGRAMS\${APPNAME}"
 SectionEnd

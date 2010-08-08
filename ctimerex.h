@@ -155,7 +155,8 @@ public:
    \----------------------------------------------------------------- */
    int elapsedEx ()
    {
-      return elapsed() + iMsOffset - iMsPaused;
+      return elapsed() + iMsOffset - iMsPaused
+            - ((bPaused) ? pauseTimer.elapsed() : 0);
    }
 
 private:

@@ -20,6 +20,17 @@
 #include "clogfile.h"
 #include "defdef.h"
 
+namespace epg
+{
+   struct SShow
+   {
+      uint uiStart;
+      uint uiEnd;
+      QString sShowName;
+      QString sShowDescr;
+   };
+}
+
 /********************************************************************\
 |  Class: CEpgBrowser
 |  Date:  18.01.2010 / 16:06:32
@@ -39,7 +50,7 @@ public:
 
     void SetTimeShift (int iTs) { iTimeShift = iTs; }
     int  GetCid () { return iCid; }
-    QString ShowName (uint uiTimeT);
+    const epg::SShow epgShow (uint uiTimeT);
     void EnlargeFont ();
     void ReduceFont ();
     void ChangeFontSize (int iSz);
@@ -49,9 +60,9 @@ protected:
     bool ArchivAvailable (uint uiThisShow);
 
 private:
-    int                 iTimeShift;
-    int                 iCid;
-    QMap<uint, QString> mProgram;
+    int                    iTimeShift;
+    int                    iCid;
+    QMap<uint, epg::SShow> mProgram;
 };
 
 #endif /* __011810__CEPGBROWSER_H */
