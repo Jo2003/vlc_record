@@ -46,8 +46,8 @@ FORCE_MUX    = <<mp4>>
 ; complete command line vlc start with ...
 ;-------------------------------------------------------------------------------
 LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=10800 --http-caching={[%CACHE%]}>>
 LIVE_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
-ARCH_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
+ARCH_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=10800 --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
 LIVE_SIL_REC = <<"{[%PLAYER%]}" -I dummy {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}">>
-ARCH_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}">>
+ARCH_SIL_REC = <<"{[%PLAYER%]}" -I dummy {[%URL%]} --no-http-reconnect --run-time=10800 --http-caching={[%CACHE%]} --sout="#transcode{aenc=ffmpeg,acodec=mp4a,ab=128,audio-sync,channels=2,samplerate=48000}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}">>

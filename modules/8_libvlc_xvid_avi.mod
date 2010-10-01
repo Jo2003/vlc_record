@@ -51,11 +51,9 @@ FORCE_MUX    = <<avi>>
 ; In a short: Separate command line arguments with ";;" if the mod file is
 ; for use with libvlc!
 ;-------------------------------------------------------------------------------
-LIVE_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]}>>
-LIVE_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=DIV3,vb=5000,acodec=mp3,ab=128,channels=2,samplerate=44100,audio-sync,venc=ffmpeg{keyint=25,hurry-up,vt=2500},aenc=ffmpeg}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}>>
-ARCH_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
-LIVE_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>
-ARCH_SIL_REC = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>
-
-# LIVE_REC     = <<{[%URL%]};;-I;;dummy;;--ignore-config;;--no-http-reconnect;;--http-caching={[%CACHE%]};;--sout=#transcode{vcodec=DIV3,acodec=mp3,ab=128,channels=2,samplerate=44100,vb=1400,venc=ffmpeg{keyint=75,hurry-up,vt=5000},aenc=twolame{mode=2}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
+LIVE_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]}>>
+LIVE_REC     = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}>>
+ARCH_REC     = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}>>
+LIVE_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}>>
+ARCH_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}>>

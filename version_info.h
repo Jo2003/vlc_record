@@ -31,11 +31,17 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".38" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".39" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2010-10-01: Version x.39
+| - use libvlc 1.14
+| - fix 20 minutes archive bug
+| - add test module for avi / xvid re-encode
+|
 | 2010-08-08: Version x.38
 | - no changes from the last beta x.37B2
 |

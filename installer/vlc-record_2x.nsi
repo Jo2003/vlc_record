@@ -74,6 +74,7 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\modules\5_libvlc.mod"
   File "${SRCDIR}\modules\6_libvlc-mpeg2.mod"
   File "${SRCDIR}\modules\7_vlc-mpeg2.mod"
+  File "${SRCDIR}\modules\8_libvlc_xvid_avi.mod"
 
 SectionEnd
 
@@ -84,7 +85,6 @@ Section "libVLC Framework" SecFw
    SetOutPath "$INSTDIR"
    File "${LIBVLCFW}\libvlc.dll"
    File "${LIBVLCFW}\libvlccore.dll"
-   FILE "${LIBVLCFW}\libvlc.dll.manifest"
 
    SetOutPath "$INSTDIR\plugins"
    File /r "${LIBVLCFW}\plugins\*.dll"
@@ -207,6 +207,7 @@ Section "un.Program"
   Delete "$INSTDIR\modules\5_libvlc.mod"
   Delete "$INSTDIR\modules\6_libvlc-mpeg2.mod"
   Delete "$INSTDIR\modules\7_vlc-mpeg2.mod"
+  Delete "$INSTDIR\modules\8_libvlc_xvid_avi.mod"
 
   ; delete directories ...
   RMDir  "$INSTDIR\modules"

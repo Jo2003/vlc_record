@@ -52,8 +52,8 @@ FORCE_MUX    = <<no>>
 ; for use with libvlc!
 ;-------------------------------------------------------------------------------
 LIVE_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]}>>
 LIVE_REC     = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
-ARCH_REC     = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
+ARCH_REC     = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]};;:sout=#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
 LIVE_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}>>
-ARCH_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]};;:sout=#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}>>
+ARCH_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]};;:sout=#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}>>
