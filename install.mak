@@ -1,8 +1,8 @@
-INSTALL=/usr/bin/install
-TARGETNW=/opt/vlc-record
-TARGETCL=/opt/vlc-rcd-classic
-SUDO=/usr/bin/sudo
-CHKINST=/usr/bin/checkinstall
+INSTALL=install
+TARGETNW=/usr/local
+TARGETCL=/usr/local
+# SUDO=sudo
+CHKINST=checkinstall
 
 include version.mak
 include checkinstall.mak
@@ -26,14 +26,16 @@ install_base:
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/2_MPlayer.mod
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/3_vlc-mp4.mod
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/4_vlc-player-avi.mod
+	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/7_vlc-mpeg2.mod
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record resources/television.png
 
 install_libvlc: install_base
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/5_libvlc.mod
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/6_libvlc-mpeg2.mod
+	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/8_libvlc_xvid_avi.mod
 
 debnew:
-	${SUDO} ${CHKINST} ${PKGNAMENW} ${PKGVERNW} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETNW} -f install.mak instnew
+	${CHKINST} ${PKGNAMENW} ${PKGVERNW} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETNW} -f install.mak instnew
 
 debclc:
-	${SUDO} ${CHKINST} ${PKGNAMECL} ${PKGVERCL} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETCL} -f install.mak instclassic
+	${CHKINST} ${PKGNAMECL} ${PKGVERCL} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETCL} -f install.mak instclassic
