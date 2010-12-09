@@ -172,6 +172,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
          <widget class="QTabWidget" name="tabEpgVod">
+          <property name="styleSheet">
+           <string notr="true">QTabWidget#tabEpgVod::pane {
+backgrund: #f00;
+}
+</string>
+          </property>
           <property name="tabPosition">
            <enum>QTabWidget::South</enum>
           </property>

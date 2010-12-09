@@ -112,6 +112,25 @@ TMPL_ROWS \
 "  border-bottom-color: #eee;\n"\
 "}\n"
 
+#define NAVBAR_STYLE_BOTTOM \
+"QTabBar::tab {\n"\
+"  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
+"  border: 1px solid gray;\n"\
+"  border-bottom-left-radius: 5px;\n"\
+"  border-bottom-right-radius: 5px;\n"\
+"  min-width: 33px;\n"\
+"  padding: 4px;\n"\
+"  font: bold;\n"\
+"}\n"\
+"QTabBar::tab:selected {\n"\
+"  background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
+"  border-top-color: #eee;\n"\
+"  border-bottom-color: #fa0;\n"\
+"}\n"\
+"QTabBar::tab:hover {\n"\
+"  border-top-color: #eee;\n"\
+"}\n"
+
 #define FAVBTN_STYLE \
 "QToolButton {\n"\
 "  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\

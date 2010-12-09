@@ -2123,7 +2123,7 @@ void Recorder::TouchEpgNavi (bool bCreate)
       pEpgNavbar->setTabTextColor(6, QColor("#800"));
 
       // add style to new botton tabs ...
-      ui->tabEpgVod->setStyleSheet((QString)NAVBAR_STYLE);
+      ui->tabEpgVod->setStyleSheet((QString)NAVBAR_STYLE_BOTTOM);
    }
    else
    {
