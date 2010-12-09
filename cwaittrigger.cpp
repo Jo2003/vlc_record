@@ -144,6 +144,9 @@ void CWaitTrigger::run()
             case Kartina::REQ_LOGOUT:
                pClient->Logout();
                break;
+            case Kartina::REQ_GETVODGENRES:
+               pClient->GetVodGenres();
+               break;
             default:
                break;
             }

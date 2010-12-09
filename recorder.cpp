@@ -2121,6 +2121,9 @@ void Recorder::TouchEpgNavi (bool bCreate)
       pEpgNavbar->setTabTextColor(5, QColor("#00a"));
       pEpgNavbar->addTab(tr("Sun"));
       pEpgNavbar->setTabTextColor(6, QColor("#800"));
+
+      // add style to new botton tabs ...
+      ui->tabEpgVod->setStyleSheet((QString)NAVBAR_STYLE);
    }
    else
    {

@@ -450,6 +450,26 @@ void CKartinaClnt::GetArchivURL (const QString &prepared)
 }
 
 /*-----------------------------------------------------------------------------\
+| Function:    GetVodGenres
+|
+| Author:      Jo2003
+|
+| Begin:       09.12.2010 / 13:18
+|
+| Description: request VOD genres (for now answer will be html code)
+|
+| Parameters:  --
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetVodGenres()
+{
+   mInfo(tr("Request VOD Genres ..."));
+
+   GetRequest(Kartina::REQ_GETVODGENRES, "/?m=vod&act=home");
+}
+
+/*-----------------------------------------------------------------------------\
 | Function:    handleEndRequest (slot)
 |
 | Author:      Jo2003
@@ -520,6 +540,9 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
             break;
          case Kartina::REQ_GETTIMESHIFT:
             emit sigGotTimeShift(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_GETVODGENRES:
+            emit sigGotVodGenres(QString::fromUtf8(baPageContent.constData()));
             break;
          default:
             break;

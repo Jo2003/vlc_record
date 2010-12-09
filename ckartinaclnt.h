@@ -43,6 +43,7 @@ namespace Kartina {
       REQ_GET_SERVER,
       REQ_LOGOUT,
       REQ_GETTIMESHIFT,
+      REQ_GETVODGENRES,
       REQ_UNKNOWN = 255
    };
 }
@@ -78,6 +79,7 @@ public:
    void GetTimeShift ();
    void GetStreamURL (int iChanID, bool bTimerRec = false);
    void GetArchivURL (const QString &prepared);
+   void GetVodGenres ();
    void SetServer (const QString& sIp);
    void GetServer ();
    void SetHttpBuffer (int iTime);
@@ -110,6 +112,7 @@ signals:
    void sigTimeShiftSet (QString str);
    void sigGotChannelList (QString str);
    void sigGotEPG (QString str);
+   void sigGotVodGenres (QString str);
    void sigGotStreamURL (QString str);
    void sigGotTimerStreamURL (QString str);
    void sigGotArchivURL (QString str);

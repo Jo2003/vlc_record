@@ -55,6 +55,12 @@ namespace cparser
       QString sName;
       QString sIp;
    };
+
+   struct SGenre
+   {
+      uint    uiGid;
+      QString sGName;
+   };
 }
 
 /********************************************************************\
@@ -83,6 +89,9 @@ public:
    int parseSettings(const QString& sResp, QVector<int>& vValues, int& iActVal, QString &sName);
    int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
    int parseUrl (const QString& sResp, QString& sUrl);
+
+   // will be replaced if API is ready ...
+   int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
 
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);

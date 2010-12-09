@@ -450,6 +450,43 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: parseGenres
+|  Begin: 09.12.2010 / 13:27
+|  Author: Jo2003
+|  Description: parse genre html (when api supports xml, we must
+|               chnage this function
+|
+|  Parameters: ref. to response, ref. to ganres vector
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
+{
+   int     iRV = 0, iPos = 0;
+   QRegExp rx("<div class=\"filter\" rel=\"(.+)\">(.+)</div>");
+   cparser::SGenre sGenre;
+
+   // use reg. expressions instead of xml stream parser ...
+   while ((iPos = rx.indexIn(sResp, iPos)) > -1)
+   {
+      sGenre.uiGid  = rx.cap(1).toUInt();
+      sGenre.sGName = rx.cap(2);
+
+      // add genre to vector ...
+      vGenres.push_back(sGenre);
+   }
+
+   if (vGenres.count() == 0)
+   {
+      iRV = -1;
+      mInfo("No Genres found ...");
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: parseEpg
 |  Begin: 29.07.2010 / 11:28:20
 |  Author: Jo2003
