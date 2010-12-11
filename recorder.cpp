@@ -2420,7 +2420,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
                           .arg(sChannel).arg(now.toString("yyyy-MM-dd__hh-mm"));
 
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
-                 sTarget, QString("Transport Stream (*.ts);;AVI File (*.avi)"),
+                 sTarget, QString("MPEG 4 Container (*.mp4);;Transport Stream (*.ts);;AVI File (*.avi)"),
                  &sFilter);
 
       if (fileName != "")
@@ -2433,6 +2433,10 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
          else if (sFilter ==  "AVI File (*.avi)")
          {
             sExt = "avi";
+         }
+         else if (sFilter ==  "MPEG 4 Container (*.mp4)")
+         {
+            sExt = "mp4";
          }
 
          QFileInfo info(fileName);

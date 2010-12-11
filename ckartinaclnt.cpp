@@ -577,6 +577,38 @@ bool CKartinaClnt::busy ()
    return ((eReq != Kartina::REQ_UNKNOWN) || (sCookie == "")) ? true : false;
 }
 
+void CKartinaClnt::DownloadStream (const QString &prepared, const QString &sFileName)
+{
+   QString sRequest = prepared;
+
+   if (bEros)
+   {
+      sRequest += QString("&protect_code=%1").arg(sErosPw);
+   }
+
+   // set file name for download file ...
+   fStream.setFileName (sFileName);
+
+   if (fStream.open (QIODevice::WriteOnly | QIODevice::Truncate))
+   {
+      QHttpRequestHeader header("GET", sRequest.toAscii());
+      header.addValue("Host", sHost);
+      header.setContentType("application/x-www-form-urlencoded");
+      header.addValue("User-Agent", "VLC-Record " __MY__VERSION__);
+      header.addValue("Connection", "close");
+      if (sCookie != "")
+      {
+         header.addValue("Cookie", sCookie);
+      }
+      header.setContentLength(0);
+
+      // post request ...
+      iReq = request(header, QByteArray(), &bufReq);
+
+      mInfo(tr("Request #%1 sent ...").arg(iReq));
+   }
+}
+
 /*=============================================================================\
 |                                    History:
 | ---------------------------------------------------------------------------

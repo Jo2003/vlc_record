@@ -21,6 +21,7 @@
 #include <QMessageBox>
 #include <QtNetwork>
 #include <QDate>
+#include <QFile>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -44,6 +45,8 @@ namespace Kartina {
       REQ_LOGOUT,
       REQ_GETTIMESHIFT,
       REQ_GETVODGENRES,
+      REQ_ABORT,
+      REQ_DOWNLOAD_STREAM,
       REQ_UNKNOWN = 255
    };
 }
@@ -80,6 +83,7 @@ public:
    void GetStreamURL (int iChanID, bool bTimerRec = false);
    void GetArchivURL (const QString &prepared);
    void GetVodGenres ();
+   void DownloadStream (const QString &prepared, const QString &sFileName);
    void SetServer (const QString& sIp);
    void GetServer ();
    void SetHttpBuffer (int iTime);
@@ -101,6 +105,7 @@ private:
    QString       sCookie;
    QByteArray    baPageContent;
    QBuffer       bufReq;
+   QFile         fStream;
    int           iReq;
 
 private slots:
