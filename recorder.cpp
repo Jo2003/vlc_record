@@ -1868,14 +1868,12 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
    // successfully started ?
    if (!vlcpid)
    {
-      iRV = -1;
       QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
       ePlayState = IncPlay::PS_ERROR;
       TouchPlayCtrlBtns();
    }
    else
    {
-      iRV = 0;
       mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
    }
 }
@@ -2607,7 +2605,8 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
 \----------------------------------------------------------------- */
 void Recorder::StartStreamDownload (const QString &sURL, const QString &sName)
 {
-   QString     sExt     = "ts", fileName;
+   QString   sExt = "ts", fileName;
+   QDateTime now  = QDateTime::currentDateTime();
 
    // should we ask for file name ... ?
    if (Settings.AskForRecFile())
