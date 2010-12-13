@@ -469,6 +469,76 @@ void CKartinaClnt::GetVodGenres()
    GetRequest(Kartina::REQ_GETVODGENRES, "/?m=vod&act=home");
 }
 
+/* -----------------------------------------------------------------\
+|  Method: DownloadStream
+|  Begin: 13.12.2010 / 16:32:33
+|  Author: Jo2003
+|  Description: download stream to disk
+|
+|  Parameters: prepared request string, file name
+|
+|  Returns: request id
+\----------------------------------------------------------------- */
+void CKartinaClnt::DownloadStream (const QString &prepared, const QString &sFileName)
+{
+   QString sRequest = prepared;
+
+   if (bEros)
+   {
+      sRequest += QString("&protect_code=%1").arg(sErosPw);
+   }
+
+   // set file name for download file ...
+   fStream.setFileName (sFileName);
+
+   if (fStream.open (QIODevice::WriteOnly | QIODevice::Truncate))
+   {
+      QHttpRequestHeader header("GET", sRequest.toAscii());
+      header.addValue("Host", sHost);
+      header.setContentType("application/x-www-form-urlencoded");
+      header.addValue("User-Agent", "VLC-Record " __MY__VERSION__);
+      header.addValue("Connection", "close");
+      if (sCookie != "")
+      {
+         header.addValue("Cookie", sCookie);
+      }
+      header.setContentLength(0);
+
+      // post request ...
+      iReq = request(header, QByteArray(), &fStream);
+
+      mInfo(tr("Request #%1 sent ...").arg(iReq));
+
+      emit sigStreamDownload(iReq, sFileName);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: StopDowndLoad
+|  Begin: 13.12.2010 / 16:32:33
+|  Author: Jo2003
+|  Description: stop stream download
+|
+|  Parameters: request id
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaClnt::StopDowndLoad(int id)
+{
+   // we should abort only the download ...
+   if (id == iReq)
+   {
+      // quit download ...
+      abort();
+
+      // mark api as free ...
+      eReq = Kartina::REQ_UNKNOWN;
+
+      // close stream file ...
+      fStream.close();
+   }
+}
+
 /*-----------------------------------------------------------------------------\
 | Function:    handleEndRequest (slot)
 |
@@ -487,15 +557,20 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
    // is this our request ... ?
    if (id == iReq)
    {
-      // close buffer device and open for read only...
-      bufReq.close();
-      bufReq.open(QIODevice::ReadOnly);
+      // download request works with a file but not with
+      // the buffer ...
+      if (eReq != Kartina::REQ_DOWNLOAD_STREAM)
+      {
+         // close buffer device and open for read only...
+         bufReq.close();
+         bufReq.open(QIODevice::ReadOnly);
 
-      // read all content ...
-      baPageContent = bufReq.readAll();
+         // read all content ...
+         baPageContent = bufReq.readAll();
 
-      // close buffer device ...
-      bufReq.close();
+         // close buffer device ...
+         bufReq.close();
+      }
 
       if (!err)
       {
@@ -544,6 +619,12 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
          case Kartina::REQ_GETVODGENRES:
             emit sigGotVodGenres(QString::fromUtf8(baPageContent.constData()));
             break;
+         case Kartina::REQ_DOWNLOAD_STREAM:
+            // This shouldn't happen. The download should end only
+            // on request. In case it ends, we will close the
+            // file to which data were downloaded ...
+            fStream.close();
+            break;
          default:
             break;
          }
@@ -575,38 +656,6 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 bool CKartinaClnt::busy ()
 {
    return ((eReq != Kartina::REQ_UNKNOWN) || (sCookie == "")) ? true : false;
-}
-
-void CKartinaClnt::DownloadStream (const QString &prepared, const QString &sFileName)
-{
-   QString sRequest = prepared;
-
-   if (bEros)
-   {
-      sRequest += QString("&protect_code=%1").arg(sErosPw);
-   }
-
-   // set file name for download file ...
-   fStream.setFileName (sFileName);
-
-   if (fStream.open (QIODevice::WriteOnly | QIODevice::Truncate))
-   {
-      QHttpRequestHeader header("GET", sRequest.toAscii());
-      header.addValue("Host", sHost);
-      header.setContentType("application/x-www-form-urlencoded");
-      header.addValue("User-Agent", "VLC-Record " __MY__VERSION__);
-      header.addValue("Connection", "close");
-      if (sCookie != "")
-      {
-         header.addValue("Cookie", sCookie);
-      }
-      header.setContentLength(0);
-
-      // post request ...
-      iReq = request(header, QByteArray(), &bufReq);
-
-      mInfo(tr("Request #%1 sent ...").arg(iReq));
-   }
 }
 
 /*=============================================================================\

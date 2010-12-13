@@ -47,6 +47,7 @@ namespace Kartina {
       REQ_GETVODGENRES,
       REQ_ABORT,
       REQ_DOWNLOAD_STREAM,
+      REQ_STOP_DOWNLOAD,
       REQ_UNKNOWN = 255
    };
 }
@@ -84,6 +85,7 @@ public:
    void GetArchivURL (const QString &prepared);
    void GetVodGenres ();
    void DownloadStream (const QString &prepared, const QString &sFileName);
+   void StopDowndLoad (int id);
    void SetServer (const QString& sIp);
    void GetServer ();
    void SetHttpBuffer (int iTime);
@@ -126,6 +128,7 @@ signals:
    void sigSrvForm (QString str);
    void sigError (QString str);
    void sigLogout (QString str);
+   void sigStreamDownload (int iReqId, QString sFileName);
 };
 
 #endif /* __201004161114_CKARTINACLNT_H */

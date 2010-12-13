@@ -29,6 +29,7 @@
 #define CMD_SIL_REC_ARCH "ARCH_SIL_REC"
 #define FLAG_TRANSLIT    "TRANSLIT"
 #define FORCE_MUX        "FORCE_MUX"
+#define DOWN_FIRST       "DOWN_FIRST"
 
 /*
 #define TMPL_PLAY_HTTP  "\"" TMPL_URL "\" --no-http-reconnect --http-caching=" TMPL_CACHE

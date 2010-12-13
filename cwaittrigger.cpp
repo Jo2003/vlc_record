@@ -29,7 +29,8 @@ CWaitTrigger::CWaitTrigger(QObject * parent) : QThread(parent)
    pClient  = NULL;
    iGo      = 1;
    eCurrReq = Kartina::REQ_UNKNOWN;
-   sOptArg  = "";
+   sOptArg1 = "";
+   sOptArg2 = "";
 }
 
 /* -----------------------------------------------------------------\
@@ -94,8 +95,9 @@ void CWaitTrigger::run()
    {
       if (eCurrReq != Kartina::REQ_UNKNOWN)
       {
-         // cookie request is send without busy check ...
-         if (eCurrReq != Kartina::REQ_COOKIE)
+         // cookie request ans record stop are send without busy check ...
+         if ((eCurrReq != Kartina::REQ_COOKIE)
+            && (eCurrReq != Kartina::REQ_STOP_DOWNLOAD))
          {
             // wait until api is available ...
             while (pClient->busy() && iGo)
@@ -118,7 +120,7 @@ void CWaitTrigger::run()
                pClient->GetEPG(iOptArg1, iOptArg2);
                break;
             case Kartina::REQ_SERVER:
-               pClient->SetServer(sOptArg);
+               pClient->SetServer(sOptArg1);
                break;
             case Kartina::REQ_HTTPBUFF:
                pClient->SetHttpBuffer(iOptArg1);
@@ -130,7 +132,7 @@ void CWaitTrigger::run()
                pClient->GetStreamURL(iOptArg1, true);
                break;
             case Kartina::REQ_ARCHIV:
-               pClient->GetArchivURL(sOptArg);
+               pClient->GetArchivURL(sOptArg1);
                break;
             case Kartina::REQ_TIMESHIFT:
                pClient->SetTimeShift(iOptArg1);
@@ -146,6 +148,12 @@ void CWaitTrigger::run()
                break;
             case Kartina::REQ_GETVODGENRES:
                pClient->GetVodGenres();
+               break;
+            case Kartina::REQ_DOWNLOAD_STREAM:
+               pClient->DownloadStream(sOptArg1, sOptArg2);
+               break;
+            case Kartina::REQ_STOP_DOWNLOAD:
+               pClient->StopDowndLoad (iOptArg1);
                break;
             default:
                break;
@@ -173,7 +181,8 @@ void CWaitTrigger::TriggerRequest(Kartina::EReq req, int iArg1, int iArg2)
 {
    iOptArg1 = iArg1;
    iOptArg2 = iArg2;
-   sOptArg  = "";
+   sOptArg1 = "";
+   sOptArg2 = "";
    eCurrReq = req;
 }
 
@@ -187,11 +196,12 @@ void CWaitTrigger::TriggerRequest(Kartina::EReq req, int iArg1, int iArg2)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CWaitTrigger::TriggerRequest(Kartina::EReq req, const QString &sReq)
+void CWaitTrigger::TriggerRequest (Kartina::EReq req, const QString &sReq1, const QString &sReq2)
 {
    iOptArg1 = -1;
    iOptArg2 = -1;
-   sOptArg  = sReq;
+   sOptArg1 = sReq1;
+   sOptArg2 = sReq2;
    eCurrReq = req;
 }
 
@@ -209,7 +219,8 @@ void CWaitTrigger::slotReqChanList()
 {
    iOptArg1 = -1;
    iOptArg2 = -1;
-   sOptArg  = "";
+   sOptArg1 = "";
+   sOptArg2 = "";
    eCurrReq = Kartina::REQ_CHANNELLIST;
 }
 

@@ -110,11 +110,13 @@ private:
     IncPlay::ePlayStates           ePlayState;
     QVector<CShortcutEx *>         vShortcutPool;
     bool                           bDoInitDlg;
+    int                            iDwnReqId;
 
 protected:
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
     int StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv = false);
     int StartVlcPlay (const QString &sURL, bool bArchiv = false);
+    void StartStreamDownload (const QString &sURL, const QString &sName);
     void TouchPlayCtrlBtns (bool bEnable = true);
     void SetProgress (const uint &start, const uint &end);
     void changeEvent(QEvent *e);
@@ -187,6 +189,7 @@ private slots:
     void slotIncPlayState (int);
     void slotGotTimeShift (QString str);
     void slotLogout (QString str);
+    void slotDownloadStarted (int id, QString sFileName);
 
 signals:
     void sigShow ();

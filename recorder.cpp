@@ -53,6 +53,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    pTranslator    = trans;
    iEpgOffset     = 0;
    iFontSzChg     = 0;
+   iDwnReqId      = -1;
    bDoInitDlg     = true;
 
    // init favourite buttons ...
@@ -1833,6 +1834,52 @@ void Recorder::slotIncPlayState(int iState)
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotDownloadStarted [slot]
+|  Begin: 13.12.2010 / 17:02:12
+|  Author: Jo2003
+|  Description: download of stream has stated
+|
+|  Parameters: request id, file name...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotDownloadStarted(int id, QString sFileName)
+{
+
+   Q_PID     vlcpid   = 0;
+   QString   sCmdLine, fileName, sExt;
+   QFileInfo info(sFileName);
+
+   iDwnReqId = id;
+   fileName  = info.completeBaseName();
+   sExt      = info.completeSuffix();
+
+   sCmdLine  = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE, "", "",
+                                    Settings.GetBufferTime(), fileName, sExt);
+
+
+   // start player if we have a command line ...
+   if (sCmdLine != "")
+   {
+      vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
+   }
+
+   // successfully started ?
+   if (!vlcpid)
+   {
+      iRV = -1;
+      QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+      ePlayState = IncPlay::PS_ERROR;
+      TouchPlayCtrlBtns();
+   }
+   else
+   {
+      iRV = 0;
+      mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
+   }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
 ////////////////////////////////////////////////////////////////////////////////
@@ -2546,6 +2593,69 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
       mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
    }
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: StartStreamDownload
+|  Begin: 13.12.2010 / 17:05
+|  Author: Jo2003
+|  Description: start stream download
+|
+|  Parameters: stream url, show name
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::StartStreamDownload (const QString &sURL, const QString &sName)
+{
+   QString     sExt     = "ts", fileName;
+
+   // should we ask for file name ... ?
+   if (Settings.AskForRecFile())
+   {
+      // yes! Create file save dialog ...
+      QString   sFilter;
+      QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
+                          .arg(sName).arg(now.toString("yyyy-MM-dd__hh-mm"));
+
+      fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
+                 sTarget, QString("MPEG 4 Container (*.mp4);;Transport Stream (*.ts);;AVI File (*.avi)"),
+                 &sFilter);
+
+      if (fileName != "")
+      {
+         // which filter was used ... ?
+         if (sFilter == "Transport Stream (*.ts)")
+         {
+            sExt = "ts";
+         }
+         else if (sFilter ==  "AVI File (*.avi)")
+         {
+            sExt = "avi";
+         }
+         else if (sFilter ==  "MPEG 4 Container (*.mp4)")
+         {
+            sExt = "mp4";
+         }
+
+         QFileInfo info(fileName);
+
+         // re-create complete file name ...
+         fileName = QString ("%1/%2").arg(info.path())
+                    .arg(info.completeBaseName());
+      }
+   }
+   else
+   {
+      // create filename as we think it's good ...
+      fileName = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
+                 .arg(sName).arg(now.toString("yyyy-MM-dd__hh-mm"));
+   }
+
+   if (fileName != "")
+   {
+      Trigger.TriggerRequest(Kartina::REQ_DOWNLOAD_STREAM, sURL,
+                             QString("%1.%2").arg(fileName).arg(sExt));
+   }
 }
 
 /* -----------------------------------------------------------------\

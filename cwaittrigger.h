@@ -33,7 +33,7 @@ public:
    ~CWaitTrigger ();
    void SetKartinaClient (CKartinaClnt *pKartinaClient);
    void TriggerRequest (Kartina::EReq req, int iArg1 = 0, int iArg2 = 0);
-   void TriggerRequest (Kartina::EReq req, const QString &sReq);
+   void TriggerRequest (Kartina::EReq req, const QString &sReq1, const QString &sReq2 = QString());
    void run ();
    void stop ();
 
@@ -44,7 +44,7 @@ private:
    CKartinaClnt  *pClient;
    Kartina::EReq  eCurrReq;
    int iOptArg1, iOptArg2;
-   QString sOptArg;
+   QString sOptArg1, sOptArg2;
    int iGo;
 };
 

@@ -36,6 +36,7 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
    bUseLibVlc        = false;
    libVlcPlayState   = IncPlay::PS_WTF;
    reqState          = IncPlay::PS_WTF;
+   bOwnDownloader    = false;
 
    if (path != "")
    {
@@ -195,6 +196,10 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
                {
                   sFrcMx = rx.cap(2);
                   sFrcMx = sFrcMx.toLower();
+               }
+               else if (rx.cap(1) == DOWN_FIRST) // don't use VLC downloader
+               {                                 // but our own ...
+                  bOwnDownloader = (rx.cap(2).toLower() == "yes") ? true : false;
                }
             }
          } while (!str.atEnd());
@@ -638,7 +643,7 @@ void CVlcCtrl::slotLibVlcStateChange (int ps)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: withLibVLC [slot]
+|  Method: withLibVLC
 |  Begin: 24.06.2010 / 18:05:00
 |  Author: Jo2003
 |  Description: tell if libVLC is used
@@ -651,6 +656,22 @@ void CVlcCtrl::slotLibVlcStateChange (int ps)
 bool CVlcCtrl::withLibVLC()
 {
    return bUseLibVlc;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ownDwnld
+|  Begin: 13.12.2010 / 15:40
+|  Author: Jo2003
+|  Description: tell if own downloader should be used
+|
+|  Parameters: --
+|
+|  Returns: true --> used
+|          false --> not used
+\----------------------------------------------------------------- */
+bool CVlcCtrl::ownDwnld()
+{
+   return bOwnDownloader;
 }
 
 /************************* History ***************************\

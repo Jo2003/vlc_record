@@ -76,6 +76,7 @@ public:
    int     LoadPlayerModule (const QString &sPath);
    void    UseLibVlc (bool bUsage);
    bool    withLibVLC();
+   bool    ownDwnld();
 
 private:
    QTimer     tRunTime;
@@ -92,6 +93,7 @@ private:
    bool       bUseLibVlc;
    IncPlay::ePlayStates libVlcPlayState;
    IncPlay::ePlayStates reqState;
+   bool       bOwnDownloader;
 
 private slots:
    void slotStateChanged (QProcess::ProcessState newState);
