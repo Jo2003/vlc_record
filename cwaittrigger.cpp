@@ -96,8 +96,7 @@ void CWaitTrigger::run()
       if (eCurrReq != Kartina::REQ_UNKNOWN)
       {
          // cookie request ans record stop are send without busy check ...
-         if ((eCurrReq != Kartina::REQ_COOKIE)
-            && (eCurrReq != Kartina::REQ_STOP_DOWNLOAD))
+         if (eCurrReq != Kartina::REQ_COOKIE)
          {
             // wait until api is available ...
             while (pClient->busy() && iGo)
@@ -148,12 +147,6 @@ void CWaitTrigger::run()
                break;
             case Kartina::REQ_GETVODGENRES:
                pClient->GetVodGenres();
-               break;
-            case Kartina::REQ_DOWNLOAD_STREAM:
-               pClient->DownloadStream(sOptArg1, sOptArg2);
-               break;
-            case Kartina::REQ_STOP_DOWNLOAD:
-               pClient->StopDowndLoad (iOptArg1);
                break;
             default:
                break;

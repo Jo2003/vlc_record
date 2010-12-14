@@ -245,91 +245,90 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaClnt</name>
     <message>
-        <location filename="ckartinaclnt.cpp" line="160"/>
+        <location filename="ckartinaclnt.cpp" line="152"/>
         <source>Logout ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="142"/>
+        <location filename="ckartinaclnt.cpp" line="134"/>
         <source>We&apos;ve got following Cookie: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="198"/>
-        <location filename="ckartinaclnt.cpp" line="234"/>
-        <location filename="ckartinaclnt.cpp" line="519"/>
+        <location filename="ckartinaclnt.cpp" line="190"/>
+        <location filename="ckartinaclnt.cpp" line="226"/>
         <source>Request #%1 sent ...</source>
         <oldsource>Post-Request #%1 sent:
   --&gt; %2</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="252"/>
+        <location filename="ckartinaclnt.cpp" line="244"/>
         <source>Request Authentication ...</source>
         <oldsource>%1 / %2():%3 Request Authentication</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="273"/>
+        <location filename="ckartinaclnt.cpp" line="265"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="293"/>
+        <location filename="ckartinaclnt.cpp" line="285"/>
         <source>Request Stream Server List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="313"/>
+        <location filename="ckartinaclnt.cpp" line="305"/>
         <source>Request Time Shift ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="333"/>
+        <location filename="ckartinaclnt.cpp" line="325"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="354"/>
+        <location filename="ckartinaclnt.cpp" line="346"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="382"/>
+        <location filename="ckartinaclnt.cpp" line="374"/>
         <source>Set Streaming Server to %1 ...</source>
         <oldsource>Set Streaming Server to No %1 ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="403"/>
+        <location filename="ckartinaclnt.cpp" line="395"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="424"/>
+        <location filename="ckartinaclnt.cpp" line="416"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="448"/>
+        <location filename="ckartinaclnt.cpp" line="440"/>
         <source>Request Archiv URL ...</source>
         <oldsource>Request Archiv URL:
   --&gt; %1</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="475"/>
+        <location filename="ckartinaclnt.cpp" line="467"/>
         <source>Request VOD Genres ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="587"/>
+        <location filename="ckartinaclnt.cpp" line="504"/>
         <source>Request #%1 done!</source>
         <oldsource>Request done!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="644"/>
+        <location filename="ckartinaclnt.cpp" line="555"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
@@ -905,6 +904,24 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CStreamLoader</name>
+    <message>
+        <location filename="cstreamloader.cpp" line="90"/>
+        <source>Request #%1 (%2) sent ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cstreamloader.cpp" line="161"/>
+        <source>Request #%1 done!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cstreamloader.cpp" line="170"/>
+        <source>Error in Request: %1!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CTimerRec</name>
     <message>
         <location filename="ctimerrec.cpp" line="402"/>
@@ -1292,7 +1309,7 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="2343"/>
-        <location filename="recorder.cpp" line="2850"/>
+        <location filename="recorder.cpp" line="2849"/>
         <source>Question</source>
         <translation type="unfinished">Вопрос</translation>
     </message>
@@ -1323,7 +1340,7 @@ or start time is later than end time!</source>
         <translation> (Ар.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2846"/>
+        <location filename="recorder.cpp" line="2845"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation type="unfinished">VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>

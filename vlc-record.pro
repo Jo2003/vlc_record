@@ -42,7 +42,8 @@ SOURCES += main.cpp \
     cdirstuff.cpp \
     clcddisplay.cpp \
     cshowinfo.cpp \
-    cvlcrecdb.cpp
+    cvlcrecdb.cpp \
+    cstreamloader.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     csettingsdlg.h \
@@ -68,7 +69,8 @@ HEADERS += recorder.h \
     ctimerex.h \
     cshowinfo.h \
     cvlcrecdb.h \
-    tables.h
+    tables.h \
+    cstreamloader.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui

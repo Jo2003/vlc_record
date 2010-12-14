@@ -154,34 +154,34 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 #endif /* INCLUDE_LIBVLC */
 
    // connect signals and slots ...
-   connect (&KartinaTv,  SIGNAL(sigLogout(QString)), this, SLOT(slotLogout(QString)));
-   connect (&KartinaTv,  SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
-   connect (&KartinaTv,  SIGNAL(sigGotTimeShift(QString)), this, SLOT(slotGotTimeShift(QString)));
-   connect (&KartinaTv,  SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
-   connect (&KartinaTv,  SIGNAL(sigGotStreamURL(QString)), this, SLOT(slotStreamURL(QString)));
-   connect (&KartinaTv,  SIGNAL(sigGotCookie(QString)), this, SLOT(slotCookie(QString)));
-   connect (&KartinaTv,  SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
-   connect (&KartinaTv,  SIGNAL(sigTimeShiftSet(QString)), this, SLOT(slotTimeShift(QString)));
-   connect (&KartinaTv,  SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
-   connect (&Refresh,    SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
-   connect (ui->textEpg, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
-   connect (&dwnLogos,   SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
-   connect (&Settings,   SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
-   connect (&KartinaTv,  SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
-   connect (&Settings,   SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
-   connect (&KartinaTv,  SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
-   connect (&KartinaTv,  SIGNAL(sigSrvForm(QString)), this, SLOT(slotServerForm(QString)));
-   connect (&timeRec,    SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
-   connect (&timeRec,    SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
-   connect (&trayIcon,   SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
-   connect (this,        SIGNAL(sigHide()), &trayIcon, SLOT(show()));
-   connect (this,        SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
-   connect (&vlcCtrl,    SIGNAL(sigVlcStarts(int)), this, SLOT(slotVlcStarts(int)));
-   connect (&vlcCtrl,    SIGNAL(sigVlcEnds(int)), this, SLOT(slotVlcEnds(int)));
-   connect (&timeRec,    SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
+   connect (&KartinaTv,    SIGNAL(sigLogout(QString)), this, SLOT(slotLogout(QString)));
+   connect (&KartinaTv,    SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotTimeShift(QString)), this, SLOT(slotGotTimeShift(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotStreamURL(QString)), this, SLOT(slotStreamURL(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotCookie(QString)), this, SLOT(slotCookie(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
+   connect (&KartinaTv,    SIGNAL(sigTimeShiftSet(QString)), this, SLOT(slotTimeShift(QString)));
+   connect (&streamLoader, SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
+   connect (&Refresh,      SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
+   connect (ui->textEpg,   SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
+   connect (&dwnLogos,     SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
+   connect (&Settings,     SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
+   connect (&KartinaTv,    SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
+   connect (&Settings,     SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
+   connect (&KartinaTv,    SIGNAL(sigSrvForm(QString)), this, SLOT(slotServerForm(QString)));
+   connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
+   connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
+   connect (&trayIcon,     SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
+   connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
+   connect (this,          SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
+   connect (&vlcCtrl,      SIGNAL(sigVlcStarts(int)), this, SLOT(slotVlcStarts(int)));
+   connect (&vlcCtrl,      SIGNAL(sigVlcEnds(int)), this, SLOT(slotVlcEnds(int)));
+   connect (&timeRec,      SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
    connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
-   connect (this, SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
+   connect (this,          SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
 
    // init short cuts ...
    InitShortCuts ();
@@ -807,7 +807,7 @@ void Recorder::on_pushStop_clicked()
       // new own downloader ...
       if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
       {
-         Trigger.TriggerRequest(Kartina::REQ_STOP_DOWNLOAD, iDwnReqId);
+         streamLoader.stopDownload (iDwnReqId);
          iDwnReqId = -1;
       }
 
@@ -2661,8 +2661,7 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName)
 
    if (fileName != "")
    {
-      Trigger.TriggerRequest(Kartina::REQ_DOWNLOAD_STREAM, sURL,
-                             QString("%1.%2").arg(fileName).arg(sExt));
+      streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sExt));
    }
 }
 

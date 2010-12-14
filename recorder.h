@@ -50,6 +50,7 @@
 #include "cdirstuff.h"
 #include "cshortcutex.h"
 #include "cshowinfo.h"
+#include "cstreamloader.h"
 
 //===================================================================
 // namespace
@@ -89,6 +90,7 @@ private:
     CKartinaClnt                   KartinaTv;
     CKartinaXMLParser              XMLParser;
     CWaitTrigger                   Trigger;
+    CStreamLoader                  streamLoader;
     QTranslator                   *pTranslator;
     QTimer                         Refresh;
     bool                           bLogosReady;
