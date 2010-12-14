@@ -22,6 +22,7 @@
 #include <QtNetwork>
 #include <QDate>
 #include <QFile>
+#include <QTimer>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -109,9 +110,11 @@ private:
    QBuffer       bufReq;
    QFile         fStream;
    int           iReq;
+   QTimer        tFileCheck;
 
 private slots:
    void handleEndRequest (int id, bool err);
+   void slotStreamDataAvailable();
 
 signals:
    void sigGotCookie (QString str);

@@ -162,6 +162,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&KartinaTv,  SIGNAL(sigGotCookie(QString)), this, SLOT(slotCookie(QString)));
    connect (&KartinaTv,  SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
    connect (&KartinaTv,  SIGNAL(sigTimeShiftSet(QString)), this, SLOT(slotTimeShift(QString)));
+   connect (&KartinaTv,  SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
    connect (&Refresh,    SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
    connect (ui->textEpg, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
    connect (&dwnLogos,   SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
@@ -802,6 +803,14 @@ void Recorder::on_pushStop_clicked()
    {
       ui->labState->setHeader("");
       ui->labState->setFooter("");
+
+      // new own downloader ...
+      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+      {
+         Trigger.TriggerRequest(Kartina::REQ_STOP_DOWNLOAD, iDwnReqId);
+         iDwnReqId = -1;
+      }
+
       vlcCtrl.stop();
 
       showInfo.setPlayState(IncPlay::PS_STOP);
@@ -1034,7 +1043,14 @@ void Recorder::slotStreamURL(QString str)
 
       if (ePlayState == IncPlay::PS_RECORD)
       {
-         StartVlcRec(sUrl, sShow);
+         if (!vlcCtrl.ownDwnld())
+         {
+            StartVlcRec(sUrl, sShow);
+         }
+         else
+         {
+            StartStreamDownload(sUrl, sShow);
+         }
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
@@ -1430,7 +1446,14 @@ void Recorder::slotArchivURL(QString str)
    {
       if (ePlayState == IncPlay::PS_RECORD)
       {
-         StartVlcRec(sUrl, CleanShowName(showInfo.showName()), true);
+         if (!vlcCtrl.ownDwnld())
+         {
+            StartVlcRec(sUrl, CleanShowName(showInfo.showName()), true);
+         }
+         else
+         {
+            StartStreamDownload(sUrl, CleanShowName(showInfo.showName()));
+         }
 
          showInfo.setPlayState(IncPlay::PS_RECORD);
       }
@@ -1852,8 +1875,8 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
    QFileInfo info(sFileName);
 
    iDwnReqId = id;
-   fileName  = info.completeBaseName();
-   sExt      = info.completeSuffix();
+   fileName  = QString ("%1/%2").arg(info.path()).arg(info.completeBaseName());
+   sExt      = info.suffix();
 
    sCmdLine  = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE, "", "",
                                     Settings.GetBufferTime(), fileName, sExt);
@@ -2617,25 +2640,11 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName)
                           .arg(sName).arg(now.toString("yyyy-MM-dd__hh-mm"));
 
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
-                 sTarget, QString("MPEG 4 Container (*.mp4);;Transport Stream (*.ts);;AVI File (*.avi)"),
+                 sTarget, QString("Transport Stream (*.ts)"),
                  &sFilter);
 
       if (fileName != "")
       {
-         // which filter was used ... ?
-         if (sFilter == "Transport Stream (*.ts)")
-         {
-            sExt = "ts";
-         }
-         else if (sFilter ==  "AVI File (*.avi)")
-         {
-            sExt = "avi";
-         }
-         else if (sFilter ==  "MPEG 4 Container (*.mp4)")
-         {
-            sExt = "mp4";
-         }
-
          QFileInfo info(fileName);
 
          // re-create complete file name ...

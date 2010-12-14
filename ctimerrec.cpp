@@ -603,11 +603,11 @@ int CTimerRec::SanityCheck(const QDateTime &start, const QDateTime &end, uint ui
             GmtToTimeShift(uiStart, JobList[i].iTimeShift);
             GmtToTimeShift(uiEnd, JobList[i].iTimeShift);
 
-               /* start this between start/end other ...                         */
+               // start this between start/end other ...
             if (((start.toTime_t() >= uiStart) && (start.toTime_t() <= uiEnd))
-               /* end this between start/end other ...                           */
+               // end this between start/end other ...
                || ((end.toTime_t() >= uiStart) && (end.toTime_t() <= uiEnd))
-               /* start this before start other and end this after end other ... */
+               // start this before start other and end this after end other ...
                || ((start.toTime_t() < uiStart) && (end.toTime_t() > uiEnd)))
             {
                iRV = -1;

@@ -42,7 +42,11 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr,
 
    bufReq.open(QIODevice::WriteOnly);
 
+   // set timer interval for file check ...
+   tFileCheck.setInterval(1000); // 1 sec ...
+
    connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
+   connect(&tFileCheck, SIGNAL(timeout()), this, SLOT(slotStreamDataAvailable()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -70,7 +74,11 @@ CKartinaClnt::CKartinaClnt() :QHttp()
 
    bufReq.open(QIODevice::WriteOnly);
 
+   // set timer interval for file check ...
+   tFileCheck.setInterval(1000); // 1 sec ...
+
    connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
+   connect(&tFileCheck, SIGNAL(timeout()), this, SLOT(slotStreamDataAvailable()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -491,7 +499,8 @@ void CKartinaClnt::DownloadStream (const QString &prepared, const QString &sFile
    // set file name for download file ...
    fStream.setFileName (sFileName);
 
-   if (fStream.open (QIODevice::WriteOnly | QIODevice::Truncate))
+   // unbuffered to make sure that data will be saved to file as soon as possible ...
+   if (fStream.open (QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Unbuffered))
    {
       QHttpRequestHeader header("GET", sRequest.toAscii());
       header.addValue("Host", sHost);
@@ -509,7 +518,8 @@ void CKartinaClnt::DownloadStream (const QString &prepared, const QString &sFile
 
       mInfo(tr("Request #%1 sent ...").arg(iReq));
 
-      emit sigStreamDownload(iReq, sFileName);
+      // start file check timer ...
+      tFileCheck.start();
    }
 }
 
@@ -639,6 +649,27 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 
       // mark request as ended so the API is "free for use" again ...
       eReq = Kartina::REQ_UNKNOWN;
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStreamDataAvailable
+|  Begin: 14.12.2010 / 11:35
+|  Author: Jo2003
+|  Description: check if we have already downloaded a part of
+|               the stream
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaClnt::slotStreamDataAvailable()
+{
+   // wait until file is filled with min. 100k ...
+   if (fStream.size() >= 102400)
+   {
+      emit sigStreamDownload(iReq, fStream.fileName());
+      tFileCheck.stop();
    }
 }
 
