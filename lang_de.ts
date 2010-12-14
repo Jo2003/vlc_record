@@ -903,17 +903,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CStreamLoader</name>
     <message>
-        <location filename="cstreamloader.cpp" line="90"/>
+        <location filename="cstreamloader.cpp" line="96"/>
         <source>Request #%1 (%2) sent ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="161"/>
+        <location filename="cstreamloader.cpp" line="167"/>
         <source>Request #%1 done!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="170"/>
+        <location filename="cstreamloader.cpp" line="176"/>
         <source>Error in Request: %1!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1163,49 +1163,49 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>CVlcCtrl</name>
     <message>
-        <location filename="cvlcctrl.cpp" line="212"/>
+        <location filename="cvlcctrl.cpp" line="213"/>
         <source>Player module &apos;%1&apos; successfully parsed ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="221"/>
-        <location filename="cvlcctrl.cpp" line="294"/>
+        <location filename="cvlcctrl.cpp" line="222"/>
+        <location filename="cvlcctrl.cpp" line="295"/>
         <source>Warning!</source>
         <translation>Warnung!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="221"/>
+        <location filename="cvlcctrl.cpp" line="222"/>
         <source>Sorry! Can&apos;t parse player module!</source>
         <translation>Kann das Player Modul nicht lesen!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="222"/>
+        <location filename="cvlcctrl.cpp" line="223"/>
         <source>Can&apos;t parse player module!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="280"/>
+        <location filename="cvlcctrl.cpp" line="281"/>
         <source>Start player detached using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="295"/>
+        <location filename="cvlcctrl.cpp" line="296"/>
         <source>Player is already running! Do you want to proceed?</source>
         <translation>Der Player läuft schon! Wollen Sie fortfahren?</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="559"/>
+        <location filename="cvlcctrl.cpp" line="560"/>
         <source>Player has ended ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="563"/>
+        <location filename="cvlcctrl.cpp" line="564"/>
         <source>Player was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="621"/>
+        <location filename="cvlcctrl.cpp" line="622"/>
         <source>libVLC reports new state %1</source>
         <translation></translation>
     </message>
@@ -1214,18 +1214,18 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Der Mediaplayer läuft bereits!</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="315"/>
+        <location filename="cvlcctrl.cpp" line="316"/>
         <source>Start player using folling command line:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="463"/>
+        <location filename="cvlcctrl.cpp" line="464"/>
         <source>Muxing forced to &apos;%1&apos;!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="481"/>
+        <location filename="cvlcctrl.cpp" line="482"/>
         <source>Remove double slash in target path ...</source>
         <translation></translation>
     </message>
@@ -1294,7 +1294,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2343"/>
-        <location filename="recorder.cpp" line="2849"/>
+        <location filename="recorder.cpp" line="2850"/>
         <source>Question</source>
         <translation type="unfinished">Frage</translation>
     </message>
@@ -1325,7 +1325,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2845"/>
+        <location filename="recorder.cpp" line="2846"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation type="unfinished">Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>

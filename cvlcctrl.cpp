@@ -152,6 +152,7 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
          sArchSilentRec  = "";
          bForcedTranslit = false;
          sFrcMx          = "no";
+         bOwnDownloader  = false;
 
          QTextStream str(&fModule);
          QString     sLine;

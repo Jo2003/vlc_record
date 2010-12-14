@@ -2661,7 +2661,8 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName)
 
    if (fileName != "")
    {
-      streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sExt));
+      streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sExt),
+                                   Settings.GetBufferTime ());
    }
 }
 

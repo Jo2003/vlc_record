@@ -47,9 +47,10 @@ private:
    QFile         fStream;
    int           iReq;
    QTimer        tFileCheck;
+   int           iCache;
 
 public slots:
-   void downloadStream (const QString &sUrl, const QString &sFileName);
+   void downloadStream (const QString &sUrl, const QString &sFileName, int iCacheTime);
    void stopDownload (int id);
 
 private slots:
