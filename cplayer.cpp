@@ -371,8 +371,9 @@ int CPlayer::pause()
 \----------------------------------------------------------------- */
 int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
 {
-   int             iRV  = 0;
-   libvlc_media_t *p_md = NULL;
+   int                         iRV  = 0;
+   libvlc_media_t             *p_md = NULL;
+   QStringList                 lArgs;
    QStringList::const_iterator cit;
 
    // store control flag ...
@@ -397,9 +398,13 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
    // QString     sMrl  = "/home/joergn/Videos/bbb.avi";
    // QString     sMrl  = "d:/BR-test.ts";
 
-   // get player arguments ...
-   QStringList lArgs = sCmdLine.mid(sCmdLine.indexOf(";;", 0))
+   // are there mrl options ... ?
+   if (sCmdLine.contains(";;"))
+   {
+      // get player arguments ...
+      lArgs = sCmdLine.mid(sCmdLine.indexOf(";;", 0))
                           .split(";;", QString::SkipEmptyParts);
+   }
 
    if (!pVlcInstance)
    {

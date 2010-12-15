@@ -93,7 +93,7 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
 
       iReq = get (sUrl, &fStream);
 
-      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg(sUrl));
+      mInfo(tr("Request #%1 sent ...").arg(iReq));
 
       // start file check timer ...
       tFileCheck.start();

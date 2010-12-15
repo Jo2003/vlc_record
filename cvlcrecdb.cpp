@@ -53,6 +53,10 @@ CVlcRecDB::~CVlcRecDB()
 {
    if (db.isOpen())
    {
+      QSqlQuery query("FLUSH TABLES");
+
+      query.exec();
+
       db.close();
    }
 }

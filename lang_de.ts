@@ -386,7 +386,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="411"/>
+        <location filename="cplayer.cpp" line="416"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -394,32 +394,32 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="419"/>
+        <location filename="cplayer.cpp" line="424"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="431"/>
+        <location filename="cplayer.cpp" line="436"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="617"/>
+        <location filename="cplayer.cpp" line="622"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="711"/>
+        <location filename="cplayer.cpp" line="716"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="744"/>
+        <location filename="cplayer.cpp" line="749"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1048"/>
+        <location filename="cplayer.cpp" line="1053"/>
         <source>
   --&gt; Player Widget is located at %2 screen (Screen No. %1, Resolution %3px x %4px) ...</source>
         <oldsource>
@@ -427,17 +427,17 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1057"/>
+        <location filename="cplayer.cpp" line="1062"/>
         <source>Can&apos;t get active screen QWidget!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1086"/>
+        <location filename="cplayer.cpp" line="1091"/>
         <source>Can&apos;t switch to fullscreen if there is no media to play!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1117"/>
+        <location filename="cplayer.cpp" line="1122"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
@@ -480,7 +480,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">FEHLER</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="662"/>
+        <location filename="cplayer.cpp" line="667"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <oldsource>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
@@ -904,7 +904,8 @@ p, li { white-space: pre-wrap; }
     <name>CStreamLoader</name>
     <message>
         <location filename="cstreamloader.cpp" line="96"/>
-        <source>Request #%1 (%2) sent ...</source>
+        <source>Request #%1 sent ...</source>
+        <oldsource>Request #%1 (%2) sent ...</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
