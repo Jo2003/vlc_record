@@ -137,7 +137,7 @@ void CStreamLoader::stopDownload(int id)
 void CStreamLoader::slotStreamDataAvailable()
 {
    // wait until file is filled with cache size ...
-   if (fStream.size() >= ((iCache / 1000) * 250000))
+   if (fStream.size() >= ((iCache / 1000) * 275000))
    {
       emit sigStreamDownload(iReq, fStream.fileName());
       tFileCheck.stop();
