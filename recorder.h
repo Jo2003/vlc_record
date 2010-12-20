@@ -145,6 +145,7 @@ protected:
 
 private slots:
 #ifdef INCLUDE_LIBVLC
+    void on_cbxGenre_currentIndexChanged(int index);
     void on_pushBwd_clicked();
     void on_pushFwd_clicked();
 #endif /* INCLUDE_LIBVLC */
@@ -192,6 +193,8 @@ private slots:
     void slotGotTimeShift (QString str);
     void slotLogout (QString str);
     void slotDownloadStarted (int id, QString sFileName);
+    void slotGotVodGenres (QString str);
+    void slotGotVideos (QString str);
 
 signals:
     void sigShow ();

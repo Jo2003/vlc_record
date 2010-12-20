@@ -167,13 +167,16 @@ void CKartinaClnt::Logout ()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QString &content)
+void CKartinaClnt::PostRequest (Kartina::EReq req,
+                                const QString &path,
+                                const QString &content,
+                                const QString &sBrowser)
 {
    eReq = req;
    QHttpRequestHeader header("POST", path.toAscii());
    header.addValue("Host", sHost);
    header.setContentType("application/x-www-form-urlencoded");
-   header.addValue("User-Agent", "VLC-Record " __MY__VERSION__);
+   header.addValue("User-Agent", sBrowser);
    header.addValue("Connection", "close");
    if (sCookie != "")
    {
@@ -203,13 +206,15 @@ void CKartinaClnt::PostRequest (Kartina::EReq req, const QString &path, const QS
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetRequest (Kartina::EReq req, const QString &sRequest)
+void CKartinaClnt::GetRequest (Kartina::EReq req,
+                               const QString &sRequest,
+                               const QString &sBrowser)
 {
    eReq = req;
    QHttpRequestHeader header("GET", sRequest.toAscii());
    header.addValue("Host", sHost);
    header.setContentType("application/x-www-form-urlencoded");
-   header.addValue("User-Agent", "VLC-Record " __MY__VERSION__);
+   header.addValue("User-Agent", sBrowser);
    header.addValue("Connection", "close");
    if (sCookie != "")
    {
@@ -466,10 +471,35 @@ void CKartinaClnt::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   GetRequest(Kartina::REQ_GETVODGENRES, "/?m=vod&act=home");
+   GetRequest(Kartina::REQ_GETVODGENRES, "/?m=vod&act=home", "User-Agent: Mozilla/5.0");
 }
 
+/*-----------------------------------------------------------------------------\
+| Function:    GetVideos
+|
+| Author:      Jo2003
+|
+| Begin:       09.12.2010 / 13:18
+|
+| Description: get vidoes matching genre id (VOD)
+|
+| Parameters:  genre id
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetVideos(int iGenreID)
+{
+   mInfo(tr("Request Vidoes for Genres %1...").arg(iGenreID));
 
+   QString sReq = QString("%1vod_list?type=last").arg(KARTINA_API_PATH);
+
+   if (iGenreID != -1)
+   {
+      sReq += QString("&genre=%1").arg(iGenreID);
+   }
+
+   GetRequest(Kartina::REQ_GETVIDEOS, sReq);
+}
 
 /*-----------------------------------------------------------------------------\
 | Function:    handleEndRequest (slot)
@@ -545,6 +575,9 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
             break;
          case Kartina::REQ_GETVODGENRES:
             emit sigGotVodGenres(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_GETVIDEOS:
+            emit sigGotVideos(QString::fromUtf8(baPageContent.constData()));
             break;
          default:
             break;

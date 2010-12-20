@@ -37,14 +37,16 @@ extern CShowInfo showInfo;
 CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
 {
    r_ui->setupUi(this);
-   iTimeShift = 0;
-   uiActId    = 0;
-   uiEdtId    = INVALID_ID;
-   sListFile  = QString("%1/%2").arg(pFolders->getDataDir()).arg(TIMER_LIST_FILE);
-   pTrigger   = NULL;
-   pXmlParser = NULL;
-   pSettings  = NULL;
-   itActJob   = NULL;
+   iTimeShift    = 0;
+   iReqId        = -1;
+   uiActId       = 0;
+   uiEdtId       = INVALID_ID;
+   sListFile     = QString("%1/%2").arg(pFolders->getDataDir()).arg(TIMER_LIST_FILE);
+   pTrigger      = NULL;
+   pXmlParser    = NULL;
+   pSettings     = NULL;
+   itActJob      = NULL;
+   pStreamLoader = NULL;
    InitTab();
    connect (&recTimer, SIGNAL(timeout()), this, SLOT(slotRecTimer()));
    connect (this, SIGNAL(accepted()), this, SLOT(slotSaveRecordList()));
@@ -102,6 +104,24 @@ void CTimerRec::changeEvent(QEvent *e)
 void CTimerRec::SetTimeShift(int iTs)
 {
    iTimeShift = iTs;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: SetStreamLoader
+|  Begin: 20.12.2010 / 10:10
+|  Author: Jo2003
+|  Description: set stream loader
+|
+|  Parameters: pointer to stream loader class
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CTimerRec::SetStreamLoader(CStreamLoader *pLoader)
+{
+   pStreamLoader = pLoader;
+
+   connect (pStreamLoader, SIGNAL(sigStreamDwnTimer(int,QString)), this,
+            SLOT(slotStreamReady(int,QString)));
 }
 
 /* -----------------------------------------------------------------\
@@ -820,6 +840,13 @@ void CTimerRec::slotRecTimer()
                      pVlcCtrl->stop();
                   }
 
+                  // if own downloader was used ...
+                  if (pVlcCtrl->ownDwnld())
+                  {
+                     pStreamLoader->stopDownload(iReqId);
+                     iReqId = -1;
+                  }
+
                   emit sigRecDone();
 
                   // shut we shut down the system ... ?
@@ -896,31 +923,40 @@ void CTimerRec::slotTimerStreamUrl(QString str)
    {
       sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
 
-      if (r_ui->checkRecMini->isChecked())
+      if (pVlcCtrl->ownDwnld())
       {
-         // silent record ...
-         sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
-                                           pSettings->GetVLCPath(), sUrl,
-                                           pSettings->GetBufferTime(), sDst, "ts");
+         // own downloader ...
+         pStreamLoader->downloadStream(sUrl, QString("%1.%2").arg(sDst).arg("ts"),
+                                       pSettings->GetBufferTime(), true);
       }
       else
       {
-         // normal record ...
-         sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
-                                           pSettings->GetVLCPath(), sUrl,
-                                           pSettings->GetBufferTime(), sDst, "ts");
-      }
+         if (r_ui->checkRecMini->isChecked())
+         {
+            // silent record ...
+            sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
+                                              pSettings->GetVLCPath(), sUrl,
+                                              pSettings->GetBufferTime(), sDst, "ts");
+         }
+         else
+         {
+            // normal record ...
+            sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
+                                              pSettings->GetVLCPath(), sUrl,
+                                              pSettings->GetBufferTime(), sDst, "ts");
+         }
 
-      vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
+         vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
 
-      // successfully started ?
-      if (!vlcpid)
-      {
-         QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
-      }
-      else
-      {
-         mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
+         // successfully started ?
+         if (!vlcpid)
+         {
+            QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
+         }
+         else
+         {
+            mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
+         }
       }
    }
 }
@@ -940,6 +976,57 @@ void CTimerRec::ShutDown()
    mInfo(tr("All records done. Shutdown system using command line:\n  --> %1").arg(pSettings->GetShutdownCmd()));
    QProcess::startDetached(pSettings->GetShutdownCmd());
    emit sigShutdown();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStreamReady [slot]
+|  Begin: 20.12.2010 / 10:12
+|  Author: Jo2003
+|  Description: stream download started, stream can be used
+|
+|  Parameters: request id, filename of stream stored in HD
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CTimerRec::slotStreamReady (int Id, QString sName)
+{
+   iReqId            = Id;
+
+   // on silent record there is no need to show the video ...
+   // so only store the request id here ...
+
+
+   // if no silent record, create command line and show
+   // recorded stream ...
+   if (!r_ui->checkRecMini->isChecked())
+   {
+      Q_PID     vlcpid   = 0;
+      QString   sCmdLine, fileName, sExt;
+      QFileInfo info(sName);
+
+      fileName  = QString ("%1/%2").arg(info.path()).arg(info.completeBaseName());
+      sExt      = info.suffix();
+
+      sCmdLine  = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE, "", "",
+                                         pSettings->GetBufferTime(),
+                                         fileName, sExt);
+
+      // start player if we have a command line ...
+      if (sCmdLine != "")
+      {
+         vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
+      }
+
+      // successfully started ?
+      if (!vlcpid)
+      {
+         QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
+      }
+      else
+      {
+         mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
+      }
+   }
 }
 
 /************************* History ***************************\

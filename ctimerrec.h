@@ -28,6 +28,7 @@
 #include "cvlcctrl.h"
 #include "cdirstuff.h"
 #include "cshowinfo.h"
+#include "cstreamloader.h"
 
 //===================================================================
 // namespace
@@ -88,6 +89,7 @@ public:
    void SetKartinaTrigger (CWaitTrigger *pTrig);
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
+   void SetStreamLoader (CStreamLoader *pLoader);
    int  ReadRecordList ();
    int  AddRow (const rec::SRecEntry &entry);
    void AddJob (rec::SRecEntry &entry);
@@ -116,6 +118,8 @@ private:
    CWaitTrigger      *pTrigger;
    CSettingsDlg      *pSettings;
    CVlcCtrl          *pVlcCtrl;
+   CStreamLoader     *pStreamLoader;
+   int                iReqId;
 
 signals:
    void sigRecDone ();
@@ -129,6 +133,7 @@ private slots:
    void slotRecTimer ();
    void slotTimerStreamUrl (QString str);
    int  slotSaveRecordList ();
+   void slotStreamReady (int Id, QString sName);
 };
 
 #endif /* __012410__CTIMERREC_H */

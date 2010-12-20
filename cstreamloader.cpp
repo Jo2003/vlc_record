@@ -29,9 +29,10 @@ extern CLogFile VlcLog;
 \-----------------------------------------------------------------------------*/
 CStreamLoader::CStreamLoader() :QHttp()
 {
-   iReq   = -1;
-   iCache = -1;
-   sHost  = "";
+   iReq         = -1;
+   iCache       = -1;
+   sHost        = "";
+   bUseTimerRec = false;
 
    // set timer interval for file check ...
    tFileCheck.setInterval(1000); // 1 sec ...
@@ -72,9 +73,10 @@ CStreamLoader::~CStreamLoader()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileName, int iCacheTime)
+void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileName, int iCacheTime, bool bTimerRec)
 {
    QString tmpUrl = sUrl;
+   bUseTimerRec   = bTimerRec;
 
    // patch stream prefix to allow the usage of QUrl ...
    tmpUrl.replace ("http/ts", "http");
@@ -139,7 +141,14 @@ void CStreamLoader::slotStreamDataAvailable()
    // wait until file is filled with cache size ...
    if (fStream.size() >= ((iCache / 1000) * 275000))
    {
-      emit sigStreamDownload(iReq, fStream.fileName());
+      if (!bUseTimerRec)
+      {
+         emit sigStreamDownload(iReq, fStream.fileName());
+      }
+      else
+      {
+         emit sigStreamDwnTimer(iReq, fStream.fileName());
+      }
       tFileCheck.stop();
    }
 }

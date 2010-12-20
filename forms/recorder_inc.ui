@@ -545,6 +545,25 @@ color: white;
            <attribute name="title">
             <string>VOD</string>
            </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <item>
+             <layout class="QHBoxLayout" name="hLayoutGenre" stretch="1,9">
+              <item>
+               <widget class="QLabel" name="labGenre">
+                <property name="text">
+                 <string>Genre: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="cbxGenre"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTextBrowser" name="vodBrowser"/>
+            </item>
+           </layout>
           </widget>
          </widget>
         </item>

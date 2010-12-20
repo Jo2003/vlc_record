@@ -46,6 +46,7 @@ namespace Kartina {
       REQ_LOGOUT,
       REQ_GETTIMESHIFT,
       REQ_GETVODGENRES,
+      REQ_GETVIDEOS,
       REQ_ABORT,
       REQ_UNKNOWN = 255
    };
@@ -87,12 +88,15 @@ public:
    void GetServer ();
    void SetHttpBuffer (int iTime);
    void GetEPG (int iChanID, int iOffset = 0);
+   void GetVideos (int iGenreID);
    void SetCookie (const QString &cookie);
    bool busy ();
 
 protected:
-   void PostRequest (Kartina::EReq req, const QString &path, const QString &content);
-   void GetRequest (Kartina::EReq req, const QString &sRequest);
+   void PostRequest (Kartina::EReq req, const QString &path, const QString &content,
+                     const QString &sBrowser = "VLC-Record " __MY__VERSION__);
+   void GetRequest (Kartina::EReq req, const QString &sRequest,
+                    const QString &sBrowser = "VLC-Record " __MY__VERSION__);
 
 private:
    Kartina::EReq eReq;
@@ -124,6 +128,7 @@ signals:
    void sigSrvForm (QString str);
    void sigError (QString str);
    void sigLogout (QString str);
+   void sigGotVideos (QString str);
 };
 
 #endif /* __201004161114_CKARTINACLNT_H */

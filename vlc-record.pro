@@ -2,7 +2,8 @@
 # Project created by QtCreator 2009-12-27T18:33:08
 # -------------------------------------------------
 QT += network \
-    sql
+    sql \
+    xml
 
 # build debug and release ...
 CONFIG += debug_and_release \

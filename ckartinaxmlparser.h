@@ -19,6 +19,8 @@
 #include <QRegExp>
 #include <QDateTime>
 #include <QString>
+#include <QDomNodeList>
+#include <QDomDocument>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -61,6 +63,20 @@ namespace cparser
       uint    uiGid;
       QString sGName;
    };
+
+   struct SVodVideo
+   {
+      uint uiVidId;
+      QString sName;
+      QString sYear;
+      QString sActors;
+      QString sCountry;
+      QString sDescr;
+      QString sImg;
+      QString sDirector;
+      uint    uiLength;
+      QVector<uint> vVodFiles;
+   };
 }
 
 /********************************************************************\
@@ -88,6 +104,7 @@ public:
    int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    int parseSettings(const QString& sResp, QVector<int>& vValues, int& iActVal, QString &sName);
    int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
+   int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList);
    int parseUrl (const QString& sResp, QString& sUrl);
 
    // will be replaced if API is ready ...

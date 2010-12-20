@@ -48,9 +48,10 @@ private:
    int           iReq;
    QTimer        tFileCheck;
    int           iCache;
+   bool          bUseTimerRec;
 
 public slots:
-   void downloadStream (const QString &sUrl, const QString &sFileName, int iCacheTime);
+   void downloadStream (const QString &sUrl, const QString &sFileName, int iCacheTime, bool bTimerRec = false);
    void stopDownload (int id);
 
 private slots:
@@ -59,6 +60,7 @@ private slots:
 
 signals:
    void sigStreamDownload (int iReqId, QString sFileName);
+   void sigStreamDwnTimer (int iReqId, QString sFileName);
    void sigError (QString str);
 };
 

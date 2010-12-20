@@ -119,6 +119,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.SetKartinaTrigger(&Trigger);
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
+   timeRec.SetStreamLoader(&streamLoader);
 
 #ifdef INCLUDE_LIBVLC
    // do we use libVLC ?
@@ -182,6 +183,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
    connect (this,          SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
+   connect (&KartinaTv,    SIGNAL(sigGotVodGenres(QString)), this, SLOT(slotGotVodGenres(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotVideos(QString)), this, SLOT(slotGotVideos(QString)));
 
    // init short cuts ...
    InitShortCuts ();
@@ -912,6 +915,23 @@ void Recorder::on_pushFwd_clicked()
 }
 #endif /* INCLUDE_LIBVLC */
 
+/* -----------------------------------------------------------------\
+|  Method: on_cbxGenre_currentIndexChanged [slot]
+|  Begin: 20.12.2010 / 14:18
+|  Author: Jo2003
+|  Description: vod genre changed
+|
+|  Parameters: new index ...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_cbxGenre_currentIndexChanged(int index)
+{
+   int iGid = ui->cbxGenre->itemData(index).toInt();
+
+   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, iGid);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
@@ -1258,6 +1278,8 @@ void Recorder::slotEPG(QString str)
       TouchPlayCtrlBtns();
       ui->listWidget->setFocus(Qt::OtherFocusReason);
    }
+
+   Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
 }
 
 /* -----------------------------------------------------------------\
@@ -1898,6 +1920,71 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
    else
    {
       mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotGotVodGenres [slot]
+|  Begin: 20.12.2010 / 13:30
+|  Author: Jo2003
+|  Description: vod genres there
+|
+|  Parameters: answer from kartina.tv
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotGotVodGenres(QString str)
+{
+   QVector<cparser::SGenre> vGenres;
+   QVector<cparser::SGenre>::const_iterator cit;
+
+   // delete content ...
+   ui->cbxGenre->clear();
+
+   if (!XMLParser.parseGenres(str, vGenres))
+   {
+      // fill genres combo box ...
+      ui->cbxGenre->addItem(tr("All"), QVariant((int)-1));
+
+      for (cit = vGenres.constBegin(); cit != vGenres.constEnd(); cit ++)
+      {
+         ui->cbxGenre->addItem((*cit).sGName, QVariant((int)(*cit).uiGid));
+      }
+   }
+
+   // changing combo box will trigger all vod request ...
+   ui->cbxGenre->setCurrentIndex(0);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotGotVideos [slot]
+|  Begin: 20.12.2010 / 15:45
+|  Author: Jo2003
+|  Description: got videos
+|
+|  Parameters: answer from kartina.tv
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotGotVideos(QString str)
+{
+   QVector<cparser::SVodVideo> vVodList;
+   QVector<cparser::SVodVideo>::const_iterator cit;
+
+   QString pups;
+
+   if (!XMLParser.parseVodList(str, vVodList))
+   {
+      // got vector of vod entries ...
+
+      for (cit = vVodList.constBegin(); cit != vVodList.constEnd(); cit ++)
+      {
+         pups += QString("%1 (%2 %3)\n").arg((*cit).sName).arg((*cit).sCountry)
+                 .arg((*cit).sYear);
+      }
+
+      ui->vodBrowser->setText(pups);
+
    }
 }
 

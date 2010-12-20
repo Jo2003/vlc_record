@@ -454,7 +454,7 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
 |  Begin: 09.12.2010 / 13:27
 |  Author: Jo2003
 |  Description: parse genre html (when api supports xml, we must
-|               chnage this function
+|               change this function
 |
 |  Parameters: ref. to response, ref. to ganres vector
 |
@@ -464,8 +464,11 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
 int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
 {
    int     iRV = 0, iPos = 0;
-   QRegExp rx("<div class=\"filter\" rel=\"(.+)\">(.+)</div>");
+   QRegExp rx("<div[ \t]+class=\"filter\"[ \t]+rel=\"([0-9]+)\">([^<]+)</div>");
    cparser::SGenre sGenre;
+
+   // clear vector ...
+   vGenres.clear();
 
    // use reg. expressions instead of xml stream parser ...
    while ((iPos = rx.indexIn(sResp, iPos)) > -1)
@@ -475,6 +478,9 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
 
       // add genre to vector ...
       vGenres.push_back(sGenre);
+
+      // update position ...
+      iPos += rx.matchedLength();
    }
 
    if (vGenres.count() == 0)
@@ -484,6 +490,51 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
    }
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseVodList
+|  Begin: 09.12.2010 / 13:27
+|  Author: Jo2003
+|  Description: parse vod list
+|
+|  Parameters: ref. to response, ref. to vod list vector
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList)
+{
+   cparser::SVodVideo vod;
+   QDomDocument  doc;
+
+   // clear vod list ...
+   vVodList.clear();
+
+   doc.setContent(sResp);
+
+   QDomNodeList dlIds     = doc.elementsByTagName("id");
+   QDomNodeList dlNames   = doc.elementsByTagName("name");
+   QDomNodeList dlDescs   = doc.elementsByTagName("description");
+   QDomNodeList dlYear    = doc.elementsByTagName("year");
+   QDomNodeList dlCountry = doc.elementsByTagName("country");
+   QDomNodeList dlImg     = doc.elementsByTagName("poster");
+
+   int iNumb = dlIds.count();
+
+   for (int i = 0; i < iNumb; i++)
+   {
+      vod.uiVidId  = dlIds.item(i).nodeValue().toUInt();
+      vod.sName    = dlNames.item(i).nodeValue();
+      vod.sDescr   = dlDescs.item(i).nodeValue();
+      vod.sYear    = dlYear.item(i).nodeValue();
+      vod.sCountry = dlCountry.item(i).nodeValue();
+      vod.sImg     = dlImg.item(i).nodeValue();
+
+      vVodList.push_back(vod);
+   }
+
+   return vVodList.count() ? 0 : -1;
 }
 
 /* -----------------------------------------------------------------\
