@@ -66,6 +66,10 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    VlcLog.SetLogFile(pFolders->getDataDir(), APP_LOG_FILE);
 
+   // set logo dir and host for chan logo downloader ...
+   dwnLogos.setHostAndFolder(KARTINA_HOST, pFolders->getLogoDir());
+   dwnVodPics.setHostAndFolder(KARTINA_HOST, pFolders->getVodPixDir());
+
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
    timeRec.setParent(this, Qt::Dialog);
@@ -104,6 +108,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
       dwnLogos.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
                         Settings.GetProxyUser(), Settings.GetProxyPasswd());
+
+      dwnVodPics.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                          Settings.GetProxyUser(), Settings.GetProxyPasswd());
    }
 
    // configure trigger and start it ...
@@ -166,7 +173,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&streamLoader, SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
    connect (&Refresh,      SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
    connect (ui->textEpg,   SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
-   connect (&dwnLogos,     SIGNAL(sigLogosReady()), this, SLOT(slotLogosReady()));
+   connect (&dwnLogos,     SIGNAL(sigPixReady()), this, SLOT(slotLogosReady()));
    connect (&Settings,     SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv,    SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
    connect (&Settings,     SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
@@ -185,6 +192,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (this,          SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
    connect (&KartinaTv,    SIGNAL(sigGotVodGenres(QString)), this, SLOT(slotGotVodGenres(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotVideos(QString)), this, SLOT(slotGotVideos(QString)));
+   connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
+   connect (&KartinaTv,    SIGNAL(sigGotVideoInfo(QString)), this, SLOT(slotGotVideoInfo(QString)));
 
    // init short cuts ...
    InitShortCuts ();
@@ -447,6 +456,9 @@ void Recorder::on_pushSettings_clicked()
 
          dwnLogos.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
                            Settings.GetProxyUser(), Settings.GetProxyPasswd());
+
+         dwnVodPics.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                             Settings.GetProxyUser(), Settings.GetProxyPasswd());
       }
 
       // set language as read ...
@@ -1206,6 +1218,7 @@ void Recorder::slotTimeShift (QString str)
 void Recorder::slotChanList (QString str)
 {
    QVector<cparser::SChan> chanList;
+   QVector<cparser::SChan>::const_iterator cit;
 
    if (!XMLParser.parseChannelList(str, chanList, Settings.FixTime()))
    {
@@ -1220,7 +1233,17 @@ void Recorder::slotChanList (QString str)
    // only download channel logos, if they aren't there ...
    if (!dwnLogos.IsRunning() && !bLogosReady)
    {
-      dwnLogos.SetChanList(chanList);
+      QStringList lLogos;
+
+      for (cit = chanList.constBegin(); cit != chanList.constEnd(); cit ++)
+      {
+         if(!(*cit).bIsGroup)
+         {
+            lLogos.push_back((*cit).sIcon);
+         }
+      }
+
+      dwnLogos.setPictureList(lLogos);
    }
 
    // create favourite buttons if needed ...
@@ -1383,8 +1406,7 @@ void Recorder::slotReloadLogos()
 
    if (!dwnLogos.IsRunning())
    {
-      QVector<cparser::SChan> tmpChanList;
-      cparser::SChan          listEntry;
+      QStringList lLogos;
       QMap<int, cparser::SChan>::const_iterator cit;
 
       // create tmp channel list with channels from listWidget ...
@@ -1392,11 +1414,11 @@ void Recorder::slotReloadLogos()
       {
          if (!(*cit).bIsGroup)
          {
-            tmpChanList.push_back(*cit);
+            lLogos.push_back((*cit).sIcon);
          }
       }
 
-      dwnLogos.SetChanList(tmpChanList);
+      dwnLogos.setPictureList(lLogos);
    }
 }
 
@@ -1971,21 +1993,63 @@ void Recorder::slotGotVideos(QString str)
    QVector<cparser::SVodVideo> vVodList;
    QVector<cparser::SVodVideo>::const_iterator cit;
 
-   QString pups;
-
    if (!XMLParser.parseVodList(str, vVodList))
    {
-      // got vector of vod entries ...
-
-      for (cit = vVodList.constBegin(); cit != vVodList.constEnd(); cit ++)
+      if (!dwnVodPics.IsRunning())
       {
-         pups += QString("%1 (%2 %3)\n").arg((*cit).sName).arg((*cit).sCountry)
-                 .arg((*cit).sYear);
+         // download pictures ...
+         QStringList lPix;
+
+         for (cit = vVodList.constBegin(); cit != vVodList.constEnd(); cit ++)
+         {
+            lPix.push_back((*cit).sImg);
+         }
+
+         dwnVodPics.setPictureList(lPix);
       }
 
-      ui->vodBrowser->setText(pups);
-
+      ui->vodBrowser->displayVodList (vVodList, ui->cbxGenre->currentText(),
+                                      ui->cbxGenre->currentIndex());
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotVodAnchor [slot]
+|  Begin: 20.12.2010 / 15:45
+|  Author: Jo2003
+|  Description: link in vod browser clicked
+|
+|  Parameters: clicked url
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotVodAnchor(const QUrl &link)
+{
+   QString action = link.encodedQueryItemValue(QByteArray("action"));
+
+   if (action == "vod_info")
+   {
+      int iId = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, iId);
+   }
+
+   mInfo((QString)link.encodedQuery());
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotGotVideoInfo [slot]
+|  Begin: 20.12.2010 / 15:45
+|  Author: Jo2003
+|  Description: got video info from kartina.tv
+|
+|  Parameters: video info in xml form ...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotGotVideoInfo(QString str)
+{
+   cparser::SVodVideo vodInfo;
+   XMLParser.parseVideoInfo(str, vodInfo);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

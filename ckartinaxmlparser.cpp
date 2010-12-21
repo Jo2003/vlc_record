@@ -524,17 +524,91 @@ int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodV
 
    for (int i = 0; i < iNumb; i++)
    {
-      vod.uiVidId  = dlIds.item(i).nodeValue().toUInt();
-      vod.sName    = dlNames.item(i).nodeValue();
-      vod.sDescr   = dlDescs.item(i).nodeValue();
-      vod.sYear    = dlYear.item(i).nodeValue();
-      vod.sCountry = dlCountry.item(i).nodeValue();
-      vod.sImg     = dlImg.item(i).nodeValue();
+      vod.uiVidId  = dlIds.item(i).firstChild().nodeValue().toUInt();
+      vod.sName    = dlNames.item(i).firstChild().nodeValue();
+      vod.sDescr   = dlDescs.item(i).firstChild().nodeValue();
+      vod.sYear    = dlYear.item(i).firstChild().nodeValue();
+      vod.sCountry = dlCountry.item(i).firstChild().nodeValue();
+      vod.sImg     = dlImg.item(i).firstChild().nodeValue();
 
       vVodList.push_back(vod);
    }
 
    return vVodList.count() ? 0 : -1;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseVideoInfo
+|  Begin: 09.12.2010 / 16:27
+|  Author: Jo2003
+|  Description: parse video info
+|
+|  Parameters: ref. to response, ref. to video info struct
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
+{
+   QDomDocument  doc;
+   QDomNodeList  val;
+
+   // init struct ...
+   vidInfo.sActors   = "";
+   vidInfo.sCountry  = "";
+   vidInfo.sDescr    = "";
+   vidInfo.sDirector = "";
+   vidInfo.sImg      = "";
+   vidInfo.sName     = "";
+   vidInfo.sYear     = "";
+   vidInfo.uiLength  = 0;
+   vidInfo.uiVidId   = 0;
+   vidInfo.vVodFiles.clear();
+
+   // set content ...
+   doc.setContent(sResp);
+
+   // get simple things ...
+
+   // length ...
+   val = doc.elementsByTagName("lenght"); // nice typo ...
+   vidInfo.uiLength = val.item(0).firstChild().nodeValue().toUInt();
+
+   // description ...
+   val = doc.elementsByTagName("description");
+   vidInfo.sDescr = val.item(0).firstChild().nodeValue();
+
+   // actors ...
+   val = doc.elementsByTagName("actors");
+   vidInfo.sActors = val.item(0).firstChild().nodeValue();
+
+   // country ...
+   val = doc.elementsByTagName("country");
+   vidInfo.sCountry = val.item(0).firstChild().nodeValue();
+
+   // director ...
+   val = doc.elementsByTagName("director");
+   vidInfo.sDirector = val.item(0).firstChild().nodeValue();
+
+   // image ...
+   val = doc.elementsByTagName("poster");
+   vidInfo.sImg = val.item(0).firstChild().nodeValue();
+
+   // year ...
+   val = doc.elementsByTagName("year");
+   vidInfo.sYear = val.item(0).firstChild().nodeValue();
+
+   // now a little more complicated ...
+   QString   result;
+   QXmlQuery query(QXmlQuery::XSLT20);
+   query.setFocus(sResp);
+   query.setQuery("/response/film/name");
+
+   query.evaluateTo(&result);
+
+   mInfo(result);
+
+   return 0;
 }
 
 /* -----------------------------------------------------------------\

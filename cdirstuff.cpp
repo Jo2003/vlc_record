@@ -108,8 +108,9 @@ int CDirStuff::initDirectories()
 
    if (cit != mSysEnv.constEnd())
    {
-      sDataDir = QString("%1/%2").arg(*cit).arg(DATA_DIR);
-      sLogoDir = QString("%1/%2").arg(sDataDir).arg(LOGO_DIR);
+      sDataDir   = QString("%1/%2").arg(*cit).arg(DATA_DIR);
+      sLogoDir   = QString("%1/%2").arg(sDataDir).arg(LOGO_DIR);
+      sVodPixDir = QString("%1/%2").arg(sDataDir).arg(VOD_DIR);
 
       // check, if dir exists ...
       helpDir.setPath(sDataDir);
@@ -270,6 +271,21 @@ const QString& CDirStuff::getLangDir()
 const QString& CDirStuff::getLogoDir()
 {
    return sLogoDir;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getVodPixDir
+|  Begin: 21.12.2010 / 11:55
+|  Author: Jo2003
+|  Description: get vod directory
+|
+|  Parameters: --
+|
+|  Returns: ref. to vod dir string
+\----------------------------------------------------------------- */
+const QString& CDirStuff::getVodPixDir()
+{
+   return sVodPixDir;
 }
 
 /* -----------------------------------------------------------------\

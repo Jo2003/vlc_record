@@ -583,7 +583,11 @@ color: white;
             </layout>
            </item>
            <item>
-            <widget class="QTextBrowser" name="vodBrowser"/>
+            <widget class="CVodBrowser" name="vodBrowser">
+             <property name="openLinks">
+              <bool>false</bool>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -1037,6 +1041,11 @@ background-attachment: fixed;
    <class>CLCDDisplay</class>
    <extends>QLabel</extends>
    <header>clcddisplay.h</header>
+  </customwidget>
+  <customwidget>
+   <class>CVodBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>cvodbrowser.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

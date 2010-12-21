@@ -3,7 +3,8 @@
 # -------------------------------------------------
 QT += network \
     sql \
-    xml
+    xml \
+    xmlpatterns
 
 # build debug and release ...
 CONFIG += debug_and_release \
@@ -36,7 +37,6 @@ SOURCES += main.cpp \
     cepgbrowser.cpp \
     caboutdialog.cpp \
     clogfile.cpp \
-    cchanlogo.cpp \
     ctimerrec.cpp \
     cvlcctrl.cpp \
     ctranslit.cpp \
@@ -44,7 +44,9 @@ SOURCES += main.cpp \
     clcddisplay.cpp \
     cshowinfo.cpp \
     cvlcrecdb.cpp \
-    cstreamloader.cpp
+    cstreamloader.cpp \
+    cvodbrowser.cpp \
+    cpixloader.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     csettingsdlg.h \
@@ -56,7 +58,6 @@ HEADERS += recorder.h \
     caboutdialog.h \
     version_info.h \
     clogfile.h \
-    cchanlogo.h \
     defdef.h \
     ctimerrec.h \
     cvlcctrl.h \
@@ -71,7 +72,9 @@ HEADERS += recorder.h \
     cshowinfo.h \
     cvlcrecdb.h \
     tables.h \
-    cstreamloader.h
+    cstreamloader.h \
+    cvodbrowser.h \
+    cpixloader.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui

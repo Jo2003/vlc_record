@@ -151,6 +151,9 @@ void CWaitTrigger::run()
             case Kartina::REQ_GETVIDEOS:
                pClient->GetVideos(iOptArg1);
                break;
+            case Kartina::REQ_GETVIDEOINFO:
+               pClient->GetVideoInfo(iOptArg1);
+               break;
             default:
                break;
             }

@@ -42,7 +42,7 @@
 #include "cwaittrigger.h"
 #include "templates.h"
 #include "caboutdialog.h"
-#include "cchanlogo.h"
+#include "cpixloader.h"
 #include "ctimerrec.h"
 #include "cvlcctrl.h"
 #include "ctranslit.h"
@@ -94,7 +94,8 @@ private:
     QTranslator                   *pTranslator;
     QTimer                         Refresh;
     bool                           bLogosReady;
-    CChanLogo                      dwnLogos;
+    CPixLoader                     dwnLogos;
+    CPixLoader                     dwnVodPics;
     int                            iEpgOffset;
     QTabBar                       *pEpgNavbar;
     CTimerRec                      timeRec;
@@ -195,6 +196,8 @@ private slots:
     void slotDownloadStarted (int id, QString sFileName);
     void slotGotVodGenres (QString str);
     void slotGotVideos (QString str);
+    void slotVodAnchor (const QUrl &link);
+    void slotGotVideoInfo (QString str);
 
 signals:
     void sigShow ();

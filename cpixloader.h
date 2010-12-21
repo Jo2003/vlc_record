@@ -1,56 +1,56 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/cchanlogo.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:16:25
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cchanlogo.h 171 2010-03-22 15:06:21Z Olenka.Joerg $
 \*************************************************************/
-#ifndef __011810__CCHANLOGO_H
-   #define __011810__CCHANLOGO_H
+#ifndef __011810__PIXLOADER_H
+   #define __011810__PIXLOADER_H
 
 #include <QHttp>
 #include <QHttpRequestHeader>
 #include <QHttpResponseHeader>
 #include <QBuffer>
 #include <QDir>
+#include <QStringList>
+#include <QFileInfo>
 
-#include "ckartinaclnt.h"
-#include "ckartinaxmlparser.h"
-#include "cdirstuff.h"
-
-#include "defdef.h"
 
 /********************************************************************\
-|  Class: CChanLogo
-|  Date:  18.01.2010 / 16:16:59
+|  Class: CPixLoader
+|  Date:  21.12.2010 / 12:00
 |  Author: Jo2003
-|  Description: helper class to download channel logos
+|  Description: helper class to download pictures
 |
 \********************************************************************/
-class CChanLogo : public QHttp
+class CPixLoader : public QHttp
 {
    Q_OBJECT
 
 public:
-   CChanLogo();
-   virtual ~CChanLogo();
-   void SetChanList (const QVector<cparser::SChan> &list);
+   CPixLoader();
+   virtual ~CPixLoader();
+   void setPictureList (const QStringList &list);
+   void setHostAndFolder (const QString &host, const QString &folder);
    bool IsRunning () { return bRun; }
 
 signals:
-   void sigLogosReady ();
+   void sigPixReady ();
 
 protected:
-   void StartDownLoad ();
+   void startDownLoad ();
 
 private:
-   QBuffer dataBuffer;
-   QVector<cparser::SChan> chanList;
-   QVector<cparser::SChan>::const_iterator cit;
+   QBuffer     dataBuffer;
+   QStringList lPicList;
+   QStringList::const_iterator cit;
+   QString     sLocalFolder;
+   QString     sHost;
    bool bRun;
    bool bIsAnswer;
    int  iReq;
@@ -59,7 +59,7 @@ private slots:
    void slotCheckResp (int iReqID, bool err);
 };
 
-#endif /* __011810__CCHANLOGO_H */
+#endif // __011810__PIXLOADER_H
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

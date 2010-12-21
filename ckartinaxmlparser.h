@@ -21,6 +21,7 @@
 #include <QString>
 #include <QDomNodeList>
 #include <QDomDocument>
+#include <QXmlQuery>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -106,6 +107,7 @@ public:
    int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
    int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList);
    int parseUrl (const QString& sResp, QString& sUrl);
+   int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
 
    // will be replaced if API is ready ...
    int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);

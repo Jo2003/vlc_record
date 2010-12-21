@@ -37,6 +37,7 @@ public:
    ~CDirStuff ();
    const QString& getDataDir ();
    const QString& getLogoDir ();
+   const QString& getVodPixDir ();
    const QString& getLangDir ();
    const QString& getModDir ();
    const QString& getAppDir ();
@@ -49,6 +50,7 @@ protected:
 private:
    QString                sDataDir;
    QString                sLogoDir;
+   QString                sVodPixDir;
    QString                sLangDir;
    QString                sModDir;
    QString                sAppDir;

@@ -47,6 +47,7 @@ namespace Kartina {
       REQ_GETTIMESHIFT,
       REQ_GETVODGENRES,
       REQ_GETVIDEOS,
+      REQ_GETVIDEOINFO,
       REQ_ABORT,
       REQ_UNKNOWN = 255
    };
@@ -89,6 +90,7 @@ public:
    void SetHttpBuffer (int iTime);
    void GetEPG (int iChanID, int iOffset = 0);
    void GetVideos (int iGenreID);
+   void GetVideoInfo (int iVodID);
    void SetCookie (const QString &cookie);
    bool busy ();
 
@@ -129,6 +131,7 @@ signals:
    void sigError (QString str);
    void sigLogout (QString str);
    void sigGotVideos (QString str);
+   void sigGotVideoInfo (QString str);
 };
 
 #endif /* __201004161114_CKARTINACLNT_H */

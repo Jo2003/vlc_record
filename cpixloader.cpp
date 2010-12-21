@@ -1,21 +1,18 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/cchanlogo.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:17:24
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cchanlogo.cpp 269 2010-08-08 13:35:24Z Olenka.Joerg $
 \*************************************************************/
-#include "cchanlogo.h"
-
-// for folders ...
-extern CDirStuff *pFolders;
+#include "cpixloader.h"
 
 /* -----------------------------------------------------------------\
-|  Method: CChanLogo / constructor
+|  Method: CPixLoader / constructor
 |  Begin: 18.01.2010 / 16:17:51
 |  Author: Jo2003
 |  Description: init values
@@ -24,26 +21,16 @@ extern CDirStuff *pFolders;
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CChanLogo::CChanLogo()
+CPixLoader::CPixLoader()
 {
    bRun  = false;
    iReq  = -1;
 
-   // check, if dir exists ...
-   QDir LogoDir(pFolders->getLogoDir());
-
-   if (!LogoDir.exists())
-   {
-      LogoDir.mkpath(pFolders->getLogoDir());
-   }
-
-   // set hostname ...
-   setHost(KARTINA_HOST);
    connect(this, SIGNAL(requestFinished(int,bool)), this, SLOT(slotCheckResp(int,bool)));
 }
 
 /* -----------------------------------------------------------------\
-|  Method: ~CChanLogo / destructor
+|  Method: ~CPixLoader / destructor
 |  Begin: 18.01.2010 / 16:18:13
 |  Author: Jo2003
 |  Description: clean on destruction
@@ -52,69 +39,89 @@ CChanLogo::CChanLogo()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CChanLogo::~CChanLogo()
+CPixLoader::~CPixLoader()
 {
    abort();
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SetChanList
-|  Begin: 18.01.2010 / 16:18:33
+|  Method: setHostAndFolder
+|  Begin:  21.12.2010 / 12:22
 |  Author: Jo2003
-|  Description: set channel list, start download
+|  Description: set hostname and local folder
 |
-|  Parameters: channel list
+|  Parameters: host name and local folder
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CChanLogo::SetChanList(const QVector<cparser::SChan> &list)
+void CPixLoader::setHostAndFolder(const QString &host, const QString &folder)
 {
-   // set channel list only if download process
+   sLocalFolder = folder;
+   sHost        = host;
+
+   // check, if dir exists ...
+   QDir PicDir(sLocalFolder);
+
+   if (!PicDir.exists())
+   {
+      PicDir.mkpath(sLocalFolder);
+   }
+
+   // set hostname ...
+   setHost(sHost);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setPictureList
+|  Begin: 18.01.2010 / 16:18:33
+|  Author: Jo2003
+|  Description: set picture list, start download
+|
+|  Parameters: picture list
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPixLoader::setPictureList(const QStringList &list)
+{
+   // set picture list only if download process
    // isn't already running ...
    if (!bRun)
    {
-      chanList = list;
+      lPicList = list;
 
-      cit      = chanList.constBegin();
+      cit      = lPicList.constBegin();
 
-      if (cit != chanList.constEnd())
+      if (cit != lPicList.constEnd())
       {
          bRun     = true;
-         StartDownLoad();
+         startDownLoad();
       }
    }
 }
 
 /* -----------------------------------------------------------------\
-|  Method: StartDownLoad
+|  Method: startDownLoad
 |  Begin: 18.01.2010 / 16:19:04
 |  Author: Jo2003
-|  Description: download logo if not exists
+|  Description: download picture if not exists
 |
 |  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CChanLogo::StartDownLoad()
+void CPixLoader::startDownLoad()
 {
-   if (!(*cit).bIsGroup)
+   QFileInfo info(*cit);
+
+   if (!QFile::exists(QString("%1/%2").arg(sLocalFolder).arg(info.fileName())))
    {
-      if (!QFile::exists(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg((*cit).iId)))
-      {
-         dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
-         iReq = get((*cit).sIcon, &dataBuffer);
-      }
-      else
-      {
-         // file exists -> trigger next request ...
-         iReq = -1;
-         emit requestFinished (iReq, true);
-      }
+      dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
+      iReq = get(*cit, &dataBuffer);
    }
    else
    {
-      // no needed item -> trigger next request ...
-      iReq = -2;
+      // file exists -> trigger next request ...
+      iReq = -1;
       emit requestFinished (iReq, true);
    }
 }
@@ -129,7 +136,7 @@ void CChanLogo::StartDownLoad()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CChanLogo::slotCheckResp(int iReqID, bool err)
+void CPixLoader::slotCheckResp(int iReqID, bool err)
 {
    // is this requested response ... ?
    if (iReqID == iReq)
@@ -151,23 +158,23 @@ void CChanLogo::slotCheckResp(int iReqID, bool err)
          // is this a gif file ... ?
          if (ba.size() > 0)
          {
-            // create gif file ...
-            QFile gif(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg((*cit).iId));
+            QFileInfo info(*cit);
+            QFile     pic(QString("%1/%2").arg(sLocalFolder).arg(info.fileName()));
 
-            if (gif.open(QIODevice::WriteOnly))
+            if (pic.open(QIODevice::WriteOnly))
             {
                // write content ...
-               gif.write(ba);
-               gif.close();
+               pic.write(ba);
+               pic.close();
             }
          }
       }
 
       // check if we can get next item ...
-      if (++ cit != chanList.constEnd())
+      if (++ cit != lPicList.constEnd())
       {
          // download next ...
-         StartDownLoad();
+         startDownLoad();
       }
       else
       {
@@ -175,7 +182,7 @@ void CChanLogo::slotCheckResp(int iReqID, bool err)
          bRun = false;
 
          // send signal that we're done ...
-         emit sigLogosReady();
+         emit sigPixReady();
       }
    }
 }

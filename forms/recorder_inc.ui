@@ -561,7 +561,11 @@ color: white;
              </layout>
             </item>
             <item>
-             <widget class="QTextBrowser" name="vodBrowser"/>
+             <widget class="CVodBrowser" name="vodBrowser">
+              <property name="openLinks">
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -1254,6 +1258,11 @@ border-top: 0px;
    <extends>QWidget</extends>
    <header>cplayer.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CVodBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>cvodbrowser.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

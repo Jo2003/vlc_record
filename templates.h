@@ -49,6 +49,11 @@
 #define TMPL_END       "<!--{[%END%]}-->"
 #define TMPL_TITLE     "<!--{[%TITLE%]}-->"
 #define TMPL_CONT      "<!--{[%CONTENT%]}-->"
+#define TMPL_VOD_L     "<!--{[%LEFTCOL%]}-->"
+#define TMPL_VOD_R     "<!--{[%RIGHTCOL%]}-->"
+#define TMPL_LINK      "<!--{[%LINK%]}-->"
+#define TMPL_IMG       "<!--{[%IMG%]}-->"
+#define TMPL_TITLE     "<!--{[%TITLE%]}-->"
 
 #define EPG_TMPL  \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
@@ -59,6 +64,15 @@ TMPL_ROWS \
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"\
 "<html><head><title>" TMPL_TITLE "</title></head>\n"\
 "<body>" TMPL_CONT "</body></html>\n"
+
+#define TR_VOD_LIST \
+"  <tr>\n"\
+"    <td style='color: black; background-color: rgb(255, 254, 212); padding: 3px;'><div align='center'>" TMPL_VOD_L "</div></td>\n"\
+"    <td style='color: black; background-color: rgb(255, 254, 212); padding: 3px;'><div align='center'>" TMPL_VOD_R "</div></td>\n"\
+"  </tr>\n"
+
+#define TMPL_IMG_LINK \
+"<a href='" TMPL_LINK "'><img style='border: 0px;' src='" TMPL_IMG "' title='" TMPL_TITLE "' /></a>"
 
 
 #define TR_TMPL_A \

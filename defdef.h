@@ -32,6 +32,7 @@
 #define MOD_DIR           "modules"
 #define LANG_DIR          "language"
 #define LOGO_DIR          "logos"
+#define VOD_DIR           "vod"
 #define KARTINA_HOST      "iptv.kartina.tv"
 #define KARTINA_API_PATH  "/api/xml/"
 #define LOGO_URL          "/img/ico/24"

@@ -489,9 +489,9 @@ void CKartinaClnt::GetVodGenres()
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::GetVideos(int iGenreID)
 {
-   mInfo(tr("Request Vidoes for Genres %1...").arg(iGenreID));
+   mInfo(tr("Request Videos for Genres %1...").arg(iGenreID));
 
-   QString sReq = QString("%1vod_list?type=last").arg(KARTINA_API_PATH);
+   QString sReq = QString("%1vod_list?type=first&nums=10000").arg(KARTINA_API_PATH);
 
    if (iGenreID != -1)
    {
@@ -499,6 +499,28 @@ void CKartinaClnt::GetVideos(int iGenreID)
    }
 
    GetRequest(Kartina::REQ_GETVIDEOS, sReq);
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    GetVideoInfo
+|
+| Author:      Jo2003
+|
+| Begin:       21.12.2010 / 16:18
+|
+| Description: get video info for video id (VOD)
+|
+| Parameters:  video id
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetVideoInfo(int iVodID)
+{
+   mInfo(tr("Request Video info for video %1...").arg(iVodID));
+
+   GetRequest(Kartina::REQ_GETVIDEOINFO, QString("%1vod_info?id=%2")
+                                            .arg(KARTINA_API_PATH)
+                                            .arg(iVodID));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -578,6 +600,9 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
             break;
          case Kartina::REQ_GETVIDEOS:
             emit sigGotVideos(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_GETVIDEOINFO:
+            emit sigGotVideoInfo(QString::fromUtf8(baPageContent.constData()));
             break;
          default:
             break;
