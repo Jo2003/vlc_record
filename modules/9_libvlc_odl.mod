@@ -40,7 +40,7 @@ TRANSLIT     = <<no>>
 ; force output format no matter what is given as settings
 ; Options: no, mp4, avi, ts, ...
 ;-------------------------------------------------------------------------------
-FORCE_MUX    = <<ts>>
+FORCE_MUX    = <<no>>
 
 ;-------------------------------------------------------------------------------
 ; don't use vlc to download the stream, but let VLC-Record download it!

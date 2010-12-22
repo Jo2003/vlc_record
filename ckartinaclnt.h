@@ -48,6 +48,7 @@ namespace Kartina {
       REQ_GETVODGENRES,
       REQ_GETVIDEOS,
       REQ_GETVIDEOINFO,
+      REQ_GETVODURL,
       REQ_ABORT,
       REQ_UNKNOWN = 255
    };
@@ -84,6 +85,7 @@ public:
    void GetTimeShift ();
    void GetStreamURL (int iChanID, bool bTimerRec = false);
    void GetArchivURL (const QString &prepared);
+   void GetVodUrl (int iVidId);
    void GetVodGenres ();
    void SetServer (const QString& sIp);
    void GetServer ();
@@ -132,6 +134,7 @@ signals:
    void sigLogout (QString str);
    void sigGotVideos (QString str);
    void sigGotVideoInfo (QString str);
+   void sigGotVodUrl (QString str);
 };
 
 #endif /* __201004161114_CKARTINACLNT_H */

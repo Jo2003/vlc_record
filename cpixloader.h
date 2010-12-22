@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/cchanlogo.h $
+| $HeadURL$
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:16:25
 |
-| Last edited by: $Author: Olenka.Joerg $
+| Last edited by: $Author$
 |
-| $Id: cchanlogo.h 171 2010-03-22 15:06:21Z Olenka.Joerg $
+| $Id$
 \*************************************************************/
 #ifndef __011810__PIXLOADER_H
    #define __011810__PIXLOADER_H

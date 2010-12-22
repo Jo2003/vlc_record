@@ -124,6 +124,90 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
 \----------------------------------------------------------------- */
 void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 {
+   QString   sDoc = HTML_SITE;
+   QString   sCss = TMPL_CSS_WRAPPER;
+   QString   sLinks;
+   QFileInfo info(sInfo.sImg);
 
+   // add css stuff ...
+   sCss.replace(TMPL_CSS, TMPL_CSS_IMG_FLOAT);
+   sDoc.replace(TMPL_CSS, sCss);
+
+   // document title ...
+   sDoc.replace(TMPL_TITLE, tr("Video Details"));
+
+   // insert video details template ...
+   sDoc.replace(TMPL_CONT, TMPL_VIDEO_DETAILS);
+
+   // insert poster ...
+   sDoc.replace(TMPL_IMG, QString("%1/%2")
+                .arg(pFolders->getVodPixDir())
+                .arg(info.fileName()));
+
+   // insert name ...
+   sDoc.replace(TMPL_TITLE, sInfo.sName);
+   sName = sInfo.sName;
+
+   // insert country, year and time ...
+   sDoc.replace(TMPL_TIME, QString("%1 %2, %3 min.")
+                .arg(sInfo.sCountry)
+                .arg(sInfo.sYear)
+                .arg(sInfo.uiLength));
+
+   // insert director ...
+   sDoc.replace(TMPL_DIREC, tr("Director: %1")
+                .arg(sInfo.sDirector));
+
+   // insert actors ...
+   sDoc.replace(TMPL_ACTORS, tr("With: %1")
+                .arg(sInfo.sActors));
+
+   // insert description ...
+   sDoc.replace(TMPL_PROG, sInfo.sDescr);
+
+   // back link ...
+   sDoc.replace(TMPL_END, tr("Back"));
+
+   // links ...
+   for (int i = 0; i < sInfo.vVodFiles.count(); i ++)
+   {
+      sLinks += QString("<br>\n<b>%1 %2:</b>&nbsp;&nbsp;").arg(tr("Part")).arg(i + 1);
+
+      // play link ...
+      sLinks += TMPL_IMG_LINK;
+      sLinks.replace(TMPL_IMG, ":png/play");
+      sLinks.replace(TMPL_LINK, QString("videothek?action=play&vid=%1")
+                     .arg(sInfo.vVodFiles[i]));
+
+      sLinks.replace(TMPL_TITLE, tr("Play Movie ..."));
+
+      sLinks += "&nbsp;&nbsp;";
+
+      // record link ...
+      sLinks += TMPL_IMG_LINK;
+      sLinks.replace(TMPL_IMG, ":png/record");
+      sLinks.replace(TMPL_LINK, QString("videothek?action=record&vid=%1")
+                     .arg(sInfo.vVodFiles[i]));
+      sLinks.replace(TMPL_TITLE, tr("Record Movie ..."));
+   }
+
+   sDoc.replace(TMPL_LINK, sLinks);
+
+   setHtml(sDoc);
+   mInfo(sDoc);
 }
 
+/* -----------------------------------------------------------------\
+|  Method: getName
+|  Begin: 22.12.2010 / 10:11
+|  Author: Jo2003
+|  Description: get last used movie name
+|
+|  Parameters: --
+|
+|  Returns:  movie name
+\----------------------------------------------------------------- */
+const QString& CVodBrowser::getName()
+{
+   return sName;
+}

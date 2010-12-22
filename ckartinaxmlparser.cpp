@@ -550,8 +550,11 @@ int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodV
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
 {
-   QDomDocument  doc;
-   QDomNodeList  val;
+   int         iRV = 0;
+   QStringList result;
+   QStringList::const_iterator cit;
+   QXmlQuery   query;
+   query.setFocus(sResp);
 
    // init struct ...
    vidInfo.sActors   = "";
@@ -565,50 +568,72 @@ int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &
    vidInfo.uiVidId   = 0;
    vidInfo.vVodFiles.clear();
 
-   // set content ...
-   doc.setContent(sResp);
-
-   // get simple things ...
+   // name ...
+   result.clear();
+   query.setQuery("/response/film/name/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.sName = result[0];
 
    // length ...
-   val = doc.elementsByTagName("lenght"); // nice typo ...
-   vidInfo.uiLength = val.item(0).firstChild().nodeValue().toUInt();
+   result.clear();
+   query.setQuery("/response/film/lenght/string()"); // nice typo ...
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.uiLength = result[0].toUInt();
 
    // description ...
-   val = doc.elementsByTagName("description");
-   vidInfo.sDescr = val.item(0).firstChild().nodeValue();
+   result.clear();
+   query.setQuery("/response/film/description/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.sDescr = result[0];
+   vidInfo.sDescr.replace("", "");
 
    // actors ...
-   val = doc.elementsByTagName("actors");
-   vidInfo.sActors = val.item(0).firstChild().nodeValue();
+   result.clear();
+   query.setQuery("/response/film/actors/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.sActors = result[0];
 
    // country ...
-   val = doc.elementsByTagName("country");
-   vidInfo.sCountry = val.item(0).firstChild().nodeValue();
+   result.clear();
+   query.setQuery("/response/film/country/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.sCountry = result[0];
 
    // director ...
-   val = doc.elementsByTagName("director");
-   vidInfo.sDirector = val.item(0).firstChild().nodeValue();
+   result.clear();
+   query.setQuery("/response/film/director/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.sDirector = result[0];
 
    // image ...
-   val = doc.elementsByTagName("poster");
-   vidInfo.sImg = val.item(0).firstChild().nodeValue();
+   result.clear();
+   query.setQuery("/response/film/poster/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.sImg = result[0];
 
    // year ...
-   val = doc.elementsByTagName("year");
-   vidInfo.sYear = val.item(0).firstChild().nodeValue();
+   result.clear();
+   query.setQuery("/response/film/year/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.sYear = result[0];
 
-   // now a little more complicated ...
-   QString   result;
-   QXmlQuery query(QXmlQuery::XSLT20);
-   query.setFocus(sResp);
-   query.setQuery("/response/film/name");
+   // id ...
+   result.clear();
+   query.setQuery("/response/film/id/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+   vidInfo.uiVidId = result[0].toUInt();
 
-   query.evaluateTo(&result);
+   // video id's
+   result.clear();
+   query.setQuery("/response/film/videos/item/id/string()");
+   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
 
-   mInfo(result);
+   for (cit = result.constBegin(); cit != result.constEnd(); cit ++)
+   {
+      vidInfo.vVodFiles.push_back((*cit).toUInt());
+   }
 
-   return 0;
+   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -892,6 +917,31 @@ int CKartinaXMLParser::kartinaError(const QString& sResp, QString &sErr)
    }
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: xmlElementToValue
+|  Begin: 22.12.2010 / 11:45
+|  Author: Jo2003
+|  Description: a (very) simple but handy xml element parser
+|
+|  Parameters: ref. to string result, ref to name
+|
+|  Returns: value string
+\----------------------------------------------------------------- */
+QString CKartinaXMLParser::xmlElementToValue(const QString &sElement, const QString &sName)
+{
+   QString sValue;
+   QString sRegEx = QString("<%1>([^<]+)</%1>").arg(sName);
+
+   QRegExp rx(sRegEx);
+
+   if (rx.indexIn(sElement) > -1)
+   {
+      sValue = rx.cap(1);
+   }
+
+   return sValue;
 }
 
 /*=============================================================================\

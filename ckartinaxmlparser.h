@@ -19,9 +19,9 @@
 #include <QRegExp>
 #include <QDateTime>
 #include <QString>
+#include <QXmlQuery>
 #include <QDomNodeList>
 #include <QDomDocument>
-#include <QXmlQuery>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -114,6 +114,7 @@ public:
 
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);
+   QString xmlElementToValue (const QString &sElement, const QString &sName);
 
 
 private:

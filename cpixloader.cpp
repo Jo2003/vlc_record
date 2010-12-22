@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/cchanlogo.cpp $
+| $HeadURL$
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:17:24
 |
-| Last edited by: $Author: Olenka.Joerg $
+| Last edited by: $Author$
 |
-| $Id: cchanlogo.cpp 269 2010-08-08 13:35:24Z Olenka.Joerg $
+| $Id$
 \*************************************************************/
 #include "cpixloader.h"
 

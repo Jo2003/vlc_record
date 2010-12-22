@@ -524,6 +524,28 @@ void CKartinaClnt::GetVideoInfo(int iVodID)
 }
 
 /*-----------------------------------------------------------------------------\
+| Function:    GetVodUrl
+|
+| Author:      Jo2003
+|
+| Begin:       22.12.2010 / 16:18
+|
+| Description: get video url for video id (VOD)
+|
+| Parameters:  video id
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetVodUrl(int iVidId)
+{
+   mInfo(tr("Request Video Url for video %1...").arg(iVidId));
+
+   GetRequest(Kartina::REQ_GETVODURL, QString("%1vod_geturl?fileid=%2")
+                                            .arg(KARTINA_API_PATH)
+                                            .arg(iVidId));
+}
+
+/*-----------------------------------------------------------------------------\
 | Function:    handleEndRequest (slot)
 |
 | Author:      Jo2003
@@ -603,6 +625,9 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
             break;
          case Kartina::REQ_GETVIDEOINFO:
             emit sigGotVideoInfo(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_GETVODURL:
+            emit sigGotVodUrl(QString::fromUtf8(baPageContent.constData()));
             break;
          default:
             break;

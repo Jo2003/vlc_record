@@ -173,10 +173,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
         <item>
          <widget class="QTabWidget" name="tabEpgVod">
           <property name="styleSheet">
-           <string notr="true">QTabWidget#tabEpgVod::pane {
-backgrund: #f00;
-}
-</string>
+           <string notr="true"/>
           </property>
           <property name="tabPosition">
            <enum>QTabWidget::South</enum>
@@ -185,6 +182,9 @@ backgrund: #f00;
            <number>0</number>
           </property>
           <widget class="QWidget" name="epgTab">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
            <attribute name="title">
             <string>EPG</string>
            </attribute>
@@ -542,6 +542,9 @@ color: white;
            </layout>
           </widget>
           <widget class="QWidget" name="vodTab">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
            <attribute name="title">
             <string>VOD</string>
            </attribute>

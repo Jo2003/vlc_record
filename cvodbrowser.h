@@ -41,9 +41,11 @@ public:
 
     void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, int iIdx);
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
+    const QString& getName ();
 
 private:
     QVector<cparser::SVodVideo> vVideos;
+    QString sName;
 };
 
 #endif // __21122010_CVODBROWSER_H

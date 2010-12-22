@@ -111,6 +111,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
       dwnVodPics.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
+
+      streamLoader.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                            Settings.GetProxyUser(), Settings.GetProxyPasswd());
    }
 
    // configure trigger and start it ...
@@ -194,6 +197,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&KartinaTv,    SIGNAL(sigGotVideos(QString)), this, SLOT(slotGotVideos(QString)));
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
    connect (&KartinaTv,    SIGNAL(sigGotVideoInfo(QString)), this, SLOT(slotGotVideoInfo(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotVodUrl(QString)), this, SLOT(slotVodURL(QString)));
 
    // init short cuts ...
    InitShortCuts ();
@@ -459,6 +463,9 @@ void Recorder::on_pushSettings_clicked()
 
          dwnVodPics.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
                              Settings.GetProxyUser(), Settings.GetProxyPasswd());
+
+         streamLoader.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+                               Settings.GetProxyUser(), Settings.GetProxyPasswd());
       }
 
       // set language as read ...
@@ -2026,14 +2033,55 @@ void Recorder::slotGotVideos(QString str)
 void Recorder::slotVodAnchor(const QUrl &link)
 {
    QString action = link.encodedQueryItemValue(QByteArray("action"));
+   bool ok        = false;
+   int  id        = 0;
 
    if (action == "vod_info")
    {
-      int iId = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, iId);
+      id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id);
+   }
+   else if (action == "backtolist")
+   {
+      id = ui->cbxGenre->currentIndex();
+
+      id = ui->cbxGenre->itemData(id).toInt();
+
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, id);
+   }
+   else if (action == "play")
+   {
+      if (AllowAction(IncPlay::PS_PLAY))
+      {
+         ok = true;
+      }
+   }
+   else if (action == "record")
+   {
+      if (AllowAction(IncPlay::PS_RECORD))
+      {
+         ok = true;
+      }
    }
 
-   mInfo((QString)link.encodedQuery());
+   if (ok)
+   {
+      id = link.encodedQueryItemValue(QByteArray("vid")).toInt();
+
+      showInfo.setChanId(0);
+      showInfo.setChanName("");
+      showInfo.setShowName(ui->vodBrowser->getName());
+      showInfo.setStartTime(0);
+      showInfo.setEndTime(0);
+      showInfo.setArchive(false);
+      showInfo.setPlayState(ePlayState);
+      showInfo.setLastJumpTime(0);
+
+      ui->labState->setHeader(tr("VOD"));
+      ui->labState->setFooter(showInfo.showName());
+
+      Trigger.TriggerRequest(Kartina::REQ_GETVODURL, id);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -2049,8 +2097,52 @@ void Recorder::slotVodAnchor(const QUrl &link)
 void Recorder::slotGotVideoInfo(QString str)
 {
    cparser::SVodVideo vodInfo;
-   XMLParser.parseVideoInfo(str, vodInfo);
+   if (!XMLParser.parseVideoInfo(str, vodInfo))
+   {
+      ui->vodBrowser->displayVideoDetails(vodInfo);
+   }
 }
+
+/* -----------------------------------------------------------------\
+|  Method: slotVodURL
+|  Begin: 22.12.2010 / 15:30
+|  Author: Jo2003
+|  Description: got requested vod url, start play / record
+|
+|  Parameters: vod url (xml)
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotVodURL(QString str)
+{
+   QString sUrl;
+
+   if (!XMLParser.parseUrl(str, sUrl))
+   {
+      if (ePlayState == IncPlay::PS_RECORD)
+      {
+         if (!vlcCtrl.ownDwnld())
+         {
+            StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
+         }
+         else
+         {
+            StartStreamDownload(sUrl, CleanShowName(showInfo.showName()), "mp4");
+         }
+
+         showInfo.setPlayState(IncPlay::PS_RECORD);
+      }
+      else if (ePlayState == IncPlay::PS_PLAY)
+      {
+         StartVlcPlay(sUrl);
+
+         showInfo.setPlayState(IncPlay::PS_PLAY);
+      }
+   }
+
+   TouchPlayCtrlBtns(true);
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
@@ -2777,9 +2869,9 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::StartStreamDownload (const QString &sURL, const QString &sName)
+void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, const QString &sFileExt)
 {
-   QString   sExt = "ts", fileName;
+   QString   sExt = sFileExt, fileName;
    QDateTime now  = QDateTime::currentDateTime();
 
    // should we ask for file name ... ?

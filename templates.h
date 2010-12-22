@@ -54,15 +54,33 @@
 #define TMPL_LINK      "<!--{[%LINK%]}-->"
 #define TMPL_IMG       "<!--{[%IMG%]}-->"
 #define TMPL_TITLE     "<!--{[%TITLE%]}-->"
+#define TMPL_ACTORS    "<!--{[%ACTORS%]}-->"
+#define TMPL_DIREC     "<!--{[%DIREC%]}-->"
+#define TMPL_CSS       "<!--{[%CSS%]}-->"
 
 #define EPG_TMPL  \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
 TMPL_ROWS \
 "</table>\n"
 
+#define TMPL_VIDEO_DETAILS \
+"<img class='floatright' src='" TMPL_IMG "'>\n" \
+"<h3>" TMPL_TITLE  "</h3>\n" \
+"<p style='color: #888888'>"  TMPL_TIME   "</p>\n" \
+"<p style='color: #880000'>"  TMPL_DIREC  "</p>\n" \
+"<p style='color: #000088'>"  TMPL_ACTORS "</p>\n" \
+"<p>"  TMPL_PROG   "</p>\n" \
+"<p>"  TMPL_LINK   "</p>\n" \
+"<div align='center'>[ <a href='videothek?action=backtolist'>" TMPL_END "</a> ]</div>\n"
+
+
 #define HTML_SITE \
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"\
-"<html><head><title>" TMPL_TITLE "</title></head>\n"\
+"<html>\n" \
+"<head>\n" \
+"<title>" TMPL_TITLE "</title>\n" \
+TMPL_CSS \
+"</head>\n"\
 "<body>" TMPL_CONT "</body></html>\n"
 
 #define TR_VOD_LIST \
@@ -73,6 +91,9 @@ TMPL_ROWS \
 
 #define TMPL_IMG_LINK \
 "<a href='" TMPL_LINK "'><img style='border: 0px;' src='" TMPL_IMG "' title='" TMPL_TITLE "' /></a>"
+
+#define TMPL_SIMPLE_LINK \
+"<a href='" TMPL_LINK "'>" TMPL_TITLE "</a>\n"
 
 
 #define TR_TMPL_A \
@@ -97,6 +118,15 @@ TMPL_ROWS \
 "  <tr>\n"\
 "    <th colspan='2' style='color: white; background-color: #820; padding: 3px; font: bold; text-align: center; vertical-align: middle;'>" TMPL_HEAD "</th>\n"\
 "  </tr>\n"
+
+#define TMPL_CSS_WRAPPER \
+"<style type='text/css'>\n" \
+TMPL_CSS \
+"</style>\n"
+
+#define TMPL_CSS_IMG_FLOAT \
+".floatright{float: right; margin: 0 0 10px 10px; border: 1px solid #666; padding: 2px;}\n" \
+"body {background-color: rgb(255, 254, 212);}\n"
 
 #define TMPL_BACKCOLOR \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
@@ -128,12 +158,19 @@ TMPL_ROWS \
 "}\n"
 
 #define NAVBAR_STYLE_BOTTOM \
+"QWidget#tabEpgVod {\n"\
+"  background-color: transparent;\n"\
+"}\n"\
+"QTabWidget::pane {\n"\
+"  border: 1px solid white;\n"\
+"  border-radius: 6px;\n"\
+"}\n"\
 "QTabBar::tab {\n"\
 "  background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
 "  border: 1px solid gray;\n"\
 "  border-bottom-left-radius: 5px;\n"\
 "  border-bottom-right-radius: 5px;\n"\
-"  min-width: 66px;\n"\
+"  min-width: 100px;\n"\
 "  padding: 4px;\n"\
 "  font: bold;\n"\
 "}\n"\
