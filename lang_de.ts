@@ -1276,32 +1276,37 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="158"/>
+        <location filename="cvodbrowser.cpp" line="156"/>
+        <source>min.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cvodbrowser.cpp" line="159"/>
         <source>Director: %1</source>
         <translation>Regisseur: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="162"/>
+        <location filename="cvodbrowser.cpp" line="163"/>
         <source>With: %1</source>
         <translation>Mit: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="169"/>
+        <location filename="cvodbrowser.cpp" line="170"/>
         <source>Back</source>
         <translation>Zurück</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="174"/>
+        <location filename="cvodbrowser.cpp" line="175"/>
         <source>Part</source>
         <translation>Teil</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="182"/>
+        <location filename="cvodbrowser.cpp" line="183"/>
         <source>Play Movie ...</source>
         <translation>Film abspielen ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="191"/>
+        <location filename="cvodbrowser.cpp" line="192"/>
         <source>Record Movie ...</source>
         <translation>Film aufzeichnen ...</translation>
     </message>

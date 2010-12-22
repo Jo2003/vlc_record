@@ -149,10 +149,11 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    sName = sInfo.sName;
 
    // insert country, year and time ...
-   sDoc.replace(TMPL_TIME, QString("%1 %2, %3 min.")
+   sDoc.replace(TMPL_TIME, QString("%1 %2, %3 %4")
                 .arg(sInfo.sCountry)
                 .arg(sInfo.sYear)
-                .arg(sInfo.uiLength));
+                .arg(sInfo.uiLength)
+                .arg(tr("min.")));
 
    // insert director ...
    sDoc.replace(TMPL_DIREC, tr("Director: %1")
