@@ -83,6 +83,8 @@ Section "qt Framework" SecQt
    File "${QTLIBS}\QtSql4.dll"
    FILE "${QTLIBS}\QtGui4.dll"
    FILE "${QTLIBS}\QtNetwork4.dll"
+   FILE "${QTLIBS}\QtXml4.dll"
+   FILE "${QTLIBS}\QtXmlPatterns4.dll"
 
    SetOutPath "$INSTDIR\imageformats"
    File /r "${QTLIBS}\imageformats\*.dll"
@@ -139,6 +141,8 @@ Section "un.Qt"
   Delete "$INSTDIR\QtSql4.dll"
   Delete "$INSTDIR\QtGui4.dll"
   Delete "$INSTDIR\QtNetwork4.dll"
+  Delete "$INSTDIR\QtXml4.dll"
+  Delete "$INSTDIR\QtXmlPatterns4.dll"
   RMDir  "$INSTDIR\imageformats"
   RMDir  "$INSTDIR\sqldrivers"
 SectionEnd

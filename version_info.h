@@ -31,11 +31,13 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".39" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B1" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - vod support
+| - own downloader added
 |
 | 2010-10-01: Version x.39
 | - use libvlc 1.14

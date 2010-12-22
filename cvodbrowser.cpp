@@ -194,7 +194,6 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    sDoc.replace(TMPL_LINK, sLinks);
 
    setHtml(sDoc);
-   mInfo(sDoc);
 }
 
 /* -----------------------------------------------------------------\

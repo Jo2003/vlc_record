@@ -1318,7 +1318,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="cvodbrowser.cpp" line="191"/>
         <source>Record Movie ...</source>
-        <translation>Записать фильма ...</translation>
+        <translation>Запись фильма ...</translation>
     </message>
 </context>
 <context>

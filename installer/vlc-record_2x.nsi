@@ -75,6 +75,7 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\modules\6_libvlc-mpeg2.mod"
   File "${SRCDIR}\modules\7_vlc-mpeg2.mod"
   File "${SRCDIR}\modules\8_libvlc_xvid_avi.mod"
+  File "${SRCDIR}\modules\9_libvlc_odl.mod"
 
 SectionEnd
 
@@ -115,6 +116,8 @@ Section "qt Framework" SecQt
    File "${QTLIBS}\QtSql4.dll"
    FILE "${QTLIBS}\QtGui4.dll"
    FILE "${QTLIBS}\QtNetwork4.dll"
+   FILE "${QTLIBS}\QtXml4.dll"
+   FILE "${QTLIBS}\QtXmlPatterns4.dll"
 
    SetOutPath "$INSTDIR\imageformats"
    File /r "${QTLIBS}\imageformats\*.dll"
@@ -188,6 +191,8 @@ Section "un.Qt"
   Delete "$INSTDIR\QtSql4.dll"
   Delete "$INSTDIR\QtGui4.dll"
   Delete "$INSTDIR\QtNetwork4.dll"
+  Delete "$INSTDIR\QtXml4.dll"
+  Delete "$INSTDIR\QtXmlPatterns4.dll"
   RMDir  "$INSTDIR\imageformats"
   RMDir  "$INSTDIR\sqldrivers"
 SectionEnd
@@ -208,6 +213,7 @@ Section "un.Program"
   Delete "$INSTDIR\modules\6_libvlc-mpeg2.mod"
   Delete "$INSTDIR\modules\7_vlc-mpeg2.mod"
   Delete "$INSTDIR\modules\8_libvlc_xvid_avi.mod"
+  Delete "$INSTDIR\modules\9_libvlc_odl.mod"
 
   ; delete directories ...
   RMDir  "$INSTDIR\modules"
