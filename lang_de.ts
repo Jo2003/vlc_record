@@ -919,18 +919,23 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CStreamLoader</name>
     <message>
-        <location filename="cstreamloader.cpp" line="98"/>
+        <location filename="cstreamloader.cpp" line="86"/>
+        <source>%1:%2</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cstreamloader.cpp" line="101"/>
         <source>Request #%1 sent ...</source>
         <oldsource>Request #%1 (%2) sent ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="176"/>
+        <location filename="cstreamloader.cpp" line="179"/>
         <source>Request #%1 done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="185"/>
+        <location filename="cstreamloader.cpp" line="188"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
@@ -1314,70 +1319,70 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="2419"/>
-        <location filename="recorder.cpp" line="2442"/>
+        <location filename="recorder.cpp" line="2426"/>
+        <location filename="recorder.cpp" line="2449"/>
         <source>Mon</source>
         <translation>Mo.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2420"/>
-        <location filename="recorder.cpp" line="2443"/>
+        <location filename="recorder.cpp" line="2427"/>
+        <location filename="recorder.cpp" line="2450"/>
         <source>Tue</source>
         <translation>Di.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2421"/>
-        <location filename="recorder.cpp" line="2444"/>
+        <location filename="recorder.cpp" line="2428"/>
+        <location filename="recorder.cpp" line="2451"/>
         <source>Wed</source>
         <translation>Mi.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2422"/>
-        <location filename="recorder.cpp" line="2445"/>
+        <location filename="recorder.cpp" line="2429"/>
+        <location filename="recorder.cpp" line="2452"/>
         <source>Thu</source>
         <translation>Do.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2423"/>
-        <location filename="recorder.cpp" line="2446"/>
+        <location filename="recorder.cpp" line="2430"/>
+        <location filename="recorder.cpp" line="2453"/>
         <source>Fri</source>
         <translation>Fr.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2424"/>
-        <location filename="recorder.cpp" line="2447"/>
+        <location filename="recorder.cpp" line="2431"/>
+        <location filename="recorder.cpp" line="2454"/>
         <source>Sat</source>
         <translation>Sa.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2433"/>
-        <location filename="recorder.cpp" line="2448"/>
+        <location filename="recorder.cpp" line="2440"/>
+        <location filename="recorder.cpp" line="2455"/>
         <source>Sun</source>
         <translation>So.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2581"/>
+        <location filename="recorder.cpp" line="2588"/>
         <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
         <translation>Der VLC Mediaplayer läuft noch.&lt;br /&gt;&lt;b&gt;Wenn Du vlc-record jetzt schließt, wird auch der VLC Player geschlossen.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du das willst?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2586"/>
-        <location filename="recorder.cpp" line="3093"/>
+        <location filename="recorder.cpp" line="2593"/>
+        <location filename="recorder.cpp" line="3100"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2686"/>
+        <location filename="recorder.cpp" line="2693"/>
         <source>Program:</source>
         <translation>Sendung:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2687"/>
+        <location filename="recorder.cpp" line="2694"/>
         <source>Start:</source>
         <translation>Beginn:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2688"/>
+        <location filename="recorder.cpp" line="2695"/>
         <source>End:</source>
         <translation>Ende:</translation>
     </message>
@@ -1393,7 +1398,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3089"/>
+        <location filename="recorder.cpp" line="3096"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
@@ -1434,8 +1439,8 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Timer Record aktiv!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2378"/>
-        <location filename="recorder.cpp" line="2455"/>
+        <location filename="recorder.cpp" line="2385"/>
+        <location filename="recorder.cpp" line="2462"/>
         <source>1 week backward</source>
         <translation>1 Woche zurück</translation>
     </message>
@@ -1501,15 +1506,15 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="1945"/>
-        <location filename="recorder.cpp" line="2796"/>
-        <location filename="recorder.cpp" line="2851"/>
+        <location filename="recorder.cpp" line="2803"/>
+        <location filename="recorder.cpp" line="2858"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Kann den VLC Mediaplayer nicht starten!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1951"/>
-        <location filename="recorder.cpp" line="2803"/>
-        <location filename="recorder.cpp" line="2857"/>
+        <location filename="recorder.cpp" line="2810"/>
+        <location filename="recorder.cpp" line="2864"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
@@ -1519,26 +1524,26 @@ dataDir: %1
         <translation>Alles</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2341"/>
+        <location filename="recorder.cpp" line="2348"/>
         <source>vlc-record - Click to activate!</source>
         <translation>vlc-record - Klicken zum aktivieren!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2410"/>
-        <location filename="recorder.cpp" line="2460"/>
+        <location filename="recorder.cpp" line="2417"/>
+        <location filename="recorder.cpp" line="2467"/>
         <source>1 week forward</source>
         <translation>1 Woche nach vorn</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2733"/>
-        <location filename="recorder.cpp" line="2885"/>
+        <location filename="recorder.cpp" line="2740"/>
+        <location filename="recorder.cpp" line="2892"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1945"/>
-        <location filename="recorder.cpp" line="2796"/>
-        <location filename="recorder.cpp" line="2851"/>
+        <location filename="recorder.cpp" line="2803"/>
+        <location filename="recorder.cpp" line="2858"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
@@ -1663,7 +1668,7 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="567"/>
         <location filename="forms/recorder_inc.ui" line="549"/>
-        <location filename="recorder.cpp" line="2080"/>
+        <location filename="recorder.cpp" line="2087"/>
         <source>VOD</source>
         <translation></translation>
     </message>

@@ -2066,6 +2066,13 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
    if (ok)
    {
+      // new own downloader ...
+      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+      {
+         streamLoader.stopDownload (iDwnReqId);
+         iDwnReqId = -1;
+      }
+
       id = link.encodedQueryItemValue(QByteArray("vid")).toInt();
 
       showInfo.setChanId(0);

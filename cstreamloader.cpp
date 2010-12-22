@@ -82,6 +82,9 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    tmpUrl.replace ("http/ts", "http");
    QUrl    url(tmpUrl);
 
+   // print out host ...
+   mInfo(tr("%1:%2").arg(url.host()).arg(url.port()));
+
    // save cache time ...
    iCache = iCacheTime;
 
@@ -91,7 +94,7 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    // unbuffered to make sure that data will be written down to file as soon as possible ...
    if (fStream.open (QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Unbuffered))
    {
-      setHost (url.host(), QHttp::ConnectionModeHttp, url.port());
+      setHost (url.host(), QHttp::ConnectionModeHttp, (url.port() == -1) ? 80 : url.port());
 
       iReq = get (sUrl, &fStream);
 
