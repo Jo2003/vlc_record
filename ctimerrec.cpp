@@ -1007,9 +1007,8 @@ void CTimerRec::slotStreamReady (int Id, QString sName)
       fileName  = QString ("%1/%2").arg(info.path()).arg(info.completeBaseName());
       sExt      = info.suffix();
 
-      sCmdLine  = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE, "", "",
-                                         pSettings->GetBufferTime(),
-                                         fileName, sExt);
+      sCmdLine  = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE, pSettings->GetVLCPath(),
+                                         "", pSettings->GetBufferTime(), fileName, sExt);
 
       // start player if we have a command line ...
       if (sCmdLine != "")

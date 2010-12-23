@@ -1,4 +1,4 @@
-################################################################################
+﻿################################################################################
 # Player module for vlc-record.                                                #
 # Goal of this modules is to support multiple player in vlc-record without     #
 # the need to change the binary code of this program.                          #
@@ -49,7 +49,7 @@ DOWN_FIRST   = <<yes>>
 
 LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
 ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=10800 --http-caching={[%CACHE%]}>>
-LIVE_REC     = <<"{[%PLAYER%]}" "{[%DST%]}.{[%MUX%]}" --no-file-caching>>
+LIVE_REC     = <<"{[%PLAYER%]}" "{[%DST%]}.{[%MUX%]}" --no-file-cache>>
 ARCH_REC     = <<>>
 LIVE_SIL_REC = <<>>
 ARCH_SIL_REC = <<>>

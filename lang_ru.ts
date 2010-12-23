@@ -1049,19 +1049,19 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="954"/>
-        <location filename="ctimerrec.cpp" line="1023"/>
+        <location filename="ctimerrec.cpp" line="1022"/>
         <source>Can&apos;t start Player!</source>
         <translation>Невозможно заупстить плеер!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="958"/>
-        <location filename="ctimerrec.cpp" line="1027"/>
+        <location filename="ctimerrec.cpp" line="1026"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="954"/>
-        <location filename="ctimerrec.cpp" line="1023"/>
+        <location filename="ctimerrec.cpp" line="1022"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>

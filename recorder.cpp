@@ -1971,8 +1971,8 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
    fileName  = QString ("%1/%2").arg(info.path()).arg(info.completeBaseName());
    sExt      = info.suffix();
 
-   sCmdLine  = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE, "", "",
-                                    Settings.GetBufferTime(), fileName, sExt);
+   sCmdLine  = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE, Settings.GetVLCPath(),
+                                    "", Settings.GetBufferTime(), fileName, sExt);
 
 
    // start player if we have a command line ...
