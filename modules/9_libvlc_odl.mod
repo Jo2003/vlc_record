@@ -58,7 +58,7 @@ DOWN_FIRST   = <<yes>>
 ;-------------------------------------------------------------------------------
 LIVE_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
 ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]}>>
-LIVE_REC     = <<{[%DST%]}.{[%MUX%]};;:no-file-caching>>
+LIVE_REC     = <<{[%DST%]}.{[%MUX%]};;:file-caching=0>>
 ARCH_REC     = <<>>
 LIVE_SIL_REC = <<>>
 ARCH_SIL_REC = <<>>
