@@ -50,6 +50,8 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->linePass->setText (pDb->stringValue("Passwd"));
    m_ui->lineErosPass->setText(pDb->stringValue("ErosPasswd"));
    m_ui->lineShutdown->setText(pDb->stringValue("ShutdwnCmd"));
+   m_ui->lineUser->setText(pDb->stringValue ("RegUser"));
+   m_ui->lineRegData->setText(pDb->stringValue ("RegData"));
 
 #ifdef Q_OS_WIN32
    if (m_ui->lineShutdown->text() == "")
@@ -760,13 +762,97 @@ bool CSettingsDlg::DisableSplashScreen()
    return (pDb->intValue("NoSplash")) ? true : false;
 }
 
+bool CSettingsDlg::regOk()
+{
+   return (hsah(m_ui->lineUser->text()) == m_ui->lineRegData->text()) ? true : false;
+}
+
 //===================================================================
 // <== return internal stored values
 //===================================================================
 
+/* -----------------------------------------------------------------\
+|  Method: hsah (hash reversed ;-) )
+|  Begin: 23.12.2010 / 11:45
+|  Author: Jo2003
+|  Description: make a hash code
+|
+|  Parameters: string to hash
+|
+|  Returns:  hash
+\----------------------------------------------------------------- */
+QString CSettingsDlg::hsah (const QString &str)
+{
+   int i = 0;
+   QByteArray arr = QCryptographicHash::hash(str.toUtf8(), QCryptographicHash::Md5);
+   QStringList list;
+   QString sTmp(arr.toHex());
+
+   while (i < sTmp.length())
+   {
+      list.push_back(sTmp.mid(i, 8));
+      i += 8;
+   }
+
+   sTmp.clear();
+
+   for (i = 0; i <  list.count(); i++)
+   {
+      sTmp += (i ? QString("-") : QString("")) + reverse(list[i]);
+   }
+
+   return QString(QCryptographicHash::hash(sTmp.toUtf8(), QCryptographicHash::Sha1).toHex());
+}
+
+/* -----------------------------------------------------------------\
+|  Method: reverse
+|  Begin: 23.12.2010 / 11:45
+|  Author: Jo2003
+|  Description: reverse a string
+|
+|  Parameters: ref. to string
+|
+|  Returns:  ref. to string
+\----------------------------------------------------------------- */
+QString& CSettingsDlg::reverse(QString &str)
+{
+   int i, j = 0;
+   QString sTmp = str;
+
+   str.clear();
+
+   for (i = sTmp.count() - 1; i >= 0; i--)
+   {
+      str[j++] = sTmp[i];
+   }
+
+   return str;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: reverse
+|  Begin: 23.12.2010 / 11:45
+|  Author: Jo2003
+|  Description: reverse a string
+|
+|  Parameters: ref. to string
+|
+|  Returns:  ref. to string
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_pushDoRegister_clicked()
+{
+   if (hsah(m_ui->lineUser->text()) != m_ui->lineRegData->text())
+   {
+      if (hsah(m_ui->lineRegData->text()) == MASTER_HASH)
+      {
+         QMessageBox::information(this, tr("Reg Info"), hsah(m_ui->lineUser->text()));
+      }
+   }
+
+   pDb->setValue ("RegUser", m_ui->lineUser->text());
+   pDb->setValue ("RegData", m_ui->lineRegData->text());
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-
-
-

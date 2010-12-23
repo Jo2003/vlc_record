@@ -116,6 +116,7 @@ private:
     int                            iDwnReqId;
 
 protected:
+    void touchSearchAreaCbx ();
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
     int StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv = false);
     int StartVlcPlay (const QString &sURL, bool bArchiv = false);
@@ -146,11 +147,11 @@ protected:
 
 private slots:
 #ifdef INCLUDE_LIBVLC
-    void on_btnVodSearch_clicked();
-    void on_cbxGenre_currentIndexChanged(int index);
     void on_pushBwd_clicked();
     void on_pushFwd_clicked();
 #endif /* INCLUDE_LIBVLC */
+    void on_btnVodSearch_clicked();
+    void on_cbxGenre_currentIndexChanged(int index);
     void on_btnFontSmaller_clicked();
     void on_btnFontLarger_clicked();
     void on_pushStop_clicked();

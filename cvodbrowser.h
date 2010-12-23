@@ -24,6 +24,7 @@
 #include "templates.h"
 #include "defdef.h"
 #include "cdirstuff.h"
+#include "csettingsdlg.h"
 
 namespace vodbrowser {
    enum eSearchArea
@@ -57,10 +58,12 @@ public:
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();
     void findVideos (const QString &str, vodbrowser::eSearchArea eArea = vodbrowser::IN_TITLE);
+    void setSettings (CSettingsDlg *pDlg);
 
 private:
     QVector<cparser::SVodVideo> vVideos;
     QString sName;
+    CSettingsDlg *pSettings;
 };
 
 #endif // __21122010_CVODBROWSER_H

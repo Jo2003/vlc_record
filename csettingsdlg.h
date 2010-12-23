@@ -16,6 +16,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
+#include <QCryptographicHash>
 
 #include "cvlcrecdb.h"
 #include "clogfile.h"
@@ -68,6 +69,7 @@ public:
     bool AskForRecFile ();
     bool TranslitRecFile ();
     bool DetachPlayer ();
+    bool regOk();
 
     int GetRefrInt ();
     int GetProxyPort ();
@@ -88,6 +90,8 @@ public:
     void  SetStreamServerCbx (const QVector<cparser::SSrv>& vSrvList, const QString& sActSrv);
     void  SaveCookie (const QString &str);
     bool  DisableSplashScreen ();
+    QString hsah (const QString &str);
+    QString& reverse (QString &str);
 
 protected:
     void changeEvent(QEvent *e);
@@ -101,6 +105,7 @@ signals:
     void sigSetBuffer (int iBuffer);
 
 private slots:
+    void on_pushDoRegister_clicked();
     void on_btnSaveStreamServer_clicked();
     void on_pushDelLogos_clicked();
     void on_pushSave_clicked();

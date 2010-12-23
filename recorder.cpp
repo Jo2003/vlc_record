@@ -85,6 +85,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       Settings.exec();
    }
 
+   // set settings for vod browser ...
+   ui->vodBrowser->setSettings(&Settings);
+
    // set log level ...
    VlcLog.SetLogLevel(Settings.GetLogLevel());
 
@@ -214,11 +217,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    TouchPlayCtrlBtns(false);
 
    // fill search area combo box ...
-   ui->cbxSearchArea->addItem(tr("Title"), QVariant((int)vodbrowser::IN_TITLE));
-   ui->cbxSearchArea->addItem(tr("Description"), QVariant((int)vodbrowser::IN_DESCRIPTION));
-   ui->cbxSearchArea->addItem(tr("Year"), QVariant((int)vodbrowser::IN_YEAR));
-   ui->cbxSearchArea->addItem(tr("Everywhere"), QVariant((int)vodbrowser::IN_EVERYWHERE));
-   ui->cbxSearchArea->setCurrentIndex(0);
+   touchSearchAreaCbx();
 
    // request authorisation ...
    Trigger.TriggerRequest(Kartina::REQ_COOKIE);
@@ -299,6 +298,9 @@ void Recorder::changeEvent(QEvent *e)
 
       // translate systray tooltip ...
       CreateSystray();
+
+      // translate search are cbx ...
+      touchSearchAreaCbx();
       break;
 
    default:
@@ -2386,6 +2388,27 @@ void Recorder::CreateSystray()
 {
    trayIcon.setIcon(QIcon(":/app/tv"));
    trayIcon.setToolTip(tr("vlc-record - Click to activate!"));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: touchSearchAreaCbx
+|  Begin: 23.12.2010 / 10:30
+|  Author: Jo2003
+|  Description: create search area combo box
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::touchSearchAreaCbx ()
+{
+   // fill search area combo box ...
+   ui->cbxSearchArea->clear();
+   ui->cbxSearchArea->addItem(tr("Title"), QVariant((int)vodbrowser::IN_TITLE));
+   ui->cbxSearchArea->addItem(tr("Description"), QVariant((int)vodbrowser::IN_DESCRIPTION));
+   ui->cbxSearchArea->addItem(tr("Year"), QVariant((int)vodbrowser::IN_YEAR));
+   ui->cbxSearchArea->addItem(tr("Everywhere"), QVariant((int)vodbrowser::IN_EVERYWHERE));
+   ui->cbxSearchArea->setCurrentIndex(0);
 }
 
 /* -----------------------------------------------------------------\

@@ -29,6 +29,7 @@ extern CDirStuff *pFolders;
 \----------------------------------------------------------------- */
 CVodBrowser::CVodBrowser(QWidget *parent) : QTextBrowser(parent)
 {
+   pSettings = NULL;
 }
 
 /* -----------------------------------------------------------------\
@@ -43,6 +44,21 @@ CVodBrowser::CVodBrowser(QWidget *parent) : QTextBrowser(parent)
 \----------------------------------------------------------------- */
 CVodBrowser::~CVodBrowser()
 {
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setSettings
+|  Begin: 23.12.2010 / 13:11
+|  Author: Jo2003
+|  Description: set settings dialog to use in this class
+|
+|  Parameters: pointer to settings dialog
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CVodBrowser::setSettings(CSettingsDlg *pDlg)
+{
+   pSettings = pDlg;
 }
 
 /* -----------------------------------------------------------------\
@@ -185,14 +201,20 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 
       sLinks.replace(TMPL_TITLE, tr("Play Movie ..."));
 
-      sLinks += "&nbsp;&nbsp;";
+      if (pSettings)
+      {
+         if (pSettings->regOk())
+         {
+            sLinks += "&nbsp;&nbsp;";
 
-      // record link ...
-      sLinks += TMPL_IMG_LINK;
-      sLinks.replace(TMPL_IMG, ":png/record");
-      sLinks.replace(TMPL_LINK, QString("videothek?action=record&vid=%1")
-                     .arg(sInfo.vVodFiles[i]));
-      sLinks.replace(TMPL_TITLE, tr("Record Movie ..."));
+            // record link ...
+            sLinks += TMPL_IMG_LINK;
+            sLinks.replace(TMPL_IMG, ":png/record");
+            sLinks.replace(TMPL_LINK, QString("videothek?action=record&vid=%1")
+                           .arg(sInfo.vVodFiles[i]));
+            sLinks.replace(TMPL_TITLE, tr("Record Movie ..."));
+         }
+      }
    }
 
    sDoc.replace(TMPL_LINK, sLinks);

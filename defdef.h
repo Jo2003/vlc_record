@@ -49,6 +49,7 @@
 #define MAX_NO_FAVOURITES 10          // max. number of favourites ...
 #define JUMP_TIME         120         // forward / backward jump in archive play
 #define MIN_CACHE_SIZE    2048000     // 2 MB ...
+#define MASTER_HASH       "a4196527a30ed189dbbc668c3805ebfa1a67c636"
 
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\
