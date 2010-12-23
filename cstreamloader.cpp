@@ -83,7 +83,8 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    QUrl    url(tmpUrl);
 
    // print out host ...
-   mInfo(tr("%1:%2").arg(url.host()).arg(url.port()));
+   mInfo(tr("Download Stream from http://%1:%2")
+         .arg(url.host()).arg((url.port() == -1) ? 80 : url.port()));
 
    // save cache time ...
    iCache = iCacheTime;
@@ -142,7 +143,12 @@ void CStreamLoader::stopDownload(int id)
 void CStreamLoader::slotStreamDataAvailable()
 {
    // wait until file is filled with cache size ...
-   if (fStream.size() >= ((iCache / 1000) * 275000))
+   int iSize = (iCache / 1000) * 275000;
+
+   iSize = (iSize < MIN_CACHE_SIZE) ? MIN_CACHE_SIZE : iSize;
+
+
+   if (fStream.size() >= iSize)
    {
       if (!bUseTimerRec)
       {

@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/ckartinaclnt.h $
+| $HeadURL$
 |
 | Author: Jo2003
 |
-| last changed by: $Author: Olenka.Joerg $
+| last changed by: $Author$
 |
 | Begin: Monday, January 04, 2010 16:11:14
 |
-| $Id: ckartinaclnt.h 357 2010-12-20 16:17:33Z Olenka.Joerg $
+| $Id$
 |
 \=============================================================================*/
 #ifndef __21122010_CVODBROWSER_H
@@ -17,12 +17,26 @@
 #include <QVector>
 #include <QString>
 #include <QFileInfo>
+#include <QRegExp>
 
 #include "clogfile.h"
 #include "ckartinaxmlparser.h"
 #include "templates.h"
 #include "defdef.h"
 #include "cdirstuff.h"
+
+namespace vodbrowser {
+   enum eSearchArea
+   {
+      IN_TITLE,
+      IN_DESCRIPTION,
+      IN_YEAR,
+      IN_DIRECTOR,
+      IN_ACTORS,
+      IN_EVERYWHERE,
+      IN_UNKNOWN
+   };
+}
 
 /********************************************************************\
 |  Class: CVodBrowser
@@ -39,9 +53,10 @@ public:
     CVodBrowser(QWidget *parent = 0);
     ~CVodBrowser();
 
-    void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, int iIdx);
+    void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, bool bSaveList = true);
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();
+    void findVideos (const QString &str, vodbrowser::eSearchArea eArea = vodbrowser::IN_TITLE);
 
 private:
     QVector<cparser::SVodVideo> vVideos;

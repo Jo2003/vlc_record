@@ -173,7 +173,36 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
         <item>
          <widget class="QTabWidget" name="tabEpgVod">
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QWidget#tabEpgVod {
+  background-color: transparent;
+}
+
+QTabWidget::pane {
+  border: 1px solid white;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+QTabBar::tab {
+  background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);
+  border: 1px solid gray;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  min-width: 100px;
+  padding: 4px;
+  font: bold;
+}
+
+QTabBar::tab:selected {
+  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);
+  border-top-color: #eee;
+  border-bottom-color: #fa0;
+}
+
+QTabBar::tab:hover {
+  border-top-color: #eee;
+}
+</string>
           </property>
           <property name="tabPosition">
            <enum>QTabWidget::South</enum>
@@ -186,7 +215,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string notr="true"/>
            </property>
            <attribute name="title">
-            <string>EPG</string>
+            <string>Program Guide</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_6">
             <property name="spacing">
@@ -546,11 +575,11 @@ color: white;
             <string notr="true"/>
            </property>
            <attribute name="title">
-            <string>VOD</string>
+            <string>Video On Demand</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <item>
-             <layout class="QHBoxLayout" name="hLayoutGenre" stretch="1,9">
+             <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="2,8">
               <item>
                <widget class="QLabel" name="labGenre">
                 <property name="text">
@@ -560,6 +589,70 @@ color: white;
               </item>
               <item>
                <widget class="QComboBox" name="cbxGenre"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="20,45,25,10">
+              <item>
+               <widget class="QLabel" name="labVodSearch">
+                <property name="styleSheet">
+                 <string notr="true">QLabel#labSearch {
+font-weight: bold;
+color: white;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Search: </string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineVodSearch">
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit#lineVodSearch {
+  color: #800;   
+  font: bold;
+   background-image: url(:/app/search);
+   background-repeat: no-repeat;
+   background-position: LEFT;
+   border: 1px inset;
+   border-color: #555;
+ }</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="cbxSearchArea"/>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnVodSearch">
+                <property name="text">
+                 <string>...</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../vlc-record.qrc">
+                  <normaloff>:/app/find</normaloff>:/app/find</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="shortcut">
+                 <string>Ctrl+F</string>
+                </property>
+                <property name="autoRaise">
+                 <bool>true</bool>
+                </property>
+               </widget>
               </item>
              </layout>
             </item>

@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/ckartinaclnt.h $
+| $HeadURL$
 |
 | Author: Jo2003
 |
-| last changed by: $Author: Olenka.Joerg $
+| last changed by: $Author$
 |
 | Begin: Monday, January 04, 2010 16:11:14
 |
-| $Id: ckartinaclnt.h 357 2010-12-20 16:17:33Z Olenka.Joerg $
+| $Id$
 |
 \=============================================================================*/
 #include "cvodbrowser.h"
@@ -56,10 +56,14 @@ CVodBrowser::~CVodBrowser()
 |  Returns:  --
 \----------------------------------------------------------------- */
 void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
-                                 const QString &sGenre, int iIdx)
+                                 const QString &sGenre, bool bSaveList)
 {
-   vVideos = vList;
    int i, j, iCount = vList.count();
+
+   if (bSaveList)
+   {
+      vVideos = vList;
+   }
 
    QString sTab, sRows, sCol;
    QString sContent = HTML_SITE;
@@ -80,9 +84,8 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
          sCol = TMPL_IMG_LINK;
 
          // add link ...
-         sCol.replace(TMPL_LINK,  QString("videothek?action=vod_info&vodid=%1&gidx=%2")
-                                         .arg(vList[j].uiVidId)
-                                         .arg(iIdx));
+         sCol.replace(TMPL_LINK,  QString("videothek?action=vod_info&vodid=%1")
+                                         .arg(vList[j].uiVidId));
 
          // add image ...
          info.setFile(vList[j].sImg);
@@ -211,3 +214,56 @@ const QString& CVodBrowser::getName()
 {
    return sName;
 }
+
+/* -----------------------------------------------------------------\
+|  Method: findVideos
+|  Begin: 23.12.2010 / 8:30
+|  Author: Jo2003
+|  Description: find videos matching search criteria
+|
+|  Parameters: search string, search area
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CVodBrowser::findVideos(const QString &str, vodbrowser::eSearchArea eArea)
+{
+   QVector<cparser::SVodVideo>::const_iterator cit;
+   QVector<cparser::SVodVideo> tmpList;
+   QRegExp rx (str.toUpper());
+
+   for (cit = vVideos.constBegin(); cit != vVideos.constEnd(); cit ++)
+   {
+      // search in title ...
+      if ((eArea == vodbrowser::IN_TITLE) || (eArea == vodbrowser::IN_EVERYWHERE))
+      {
+         if (rx.indexIn((*cit).sName.toUpper()) > -1)
+         {
+            tmpList.push_back(*cit);
+            continue;
+         }
+      }
+
+      // search in description ...
+      if ((eArea == vodbrowser::IN_DESCRIPTION) || (eArea == vodbrowser::IN_EVERYWHERE))
+      {
+         if (rx.indexIn((*cit).sDescr.toUpper()) > -1)
+         {
+            tmpList.push_back(*cit);
+            continue;
+         }
+      }
+
+      // search in year ...
+      if ((eArea == vodbrowser::IN_YEAR) || (eArea == vodbrowser::IN_EVERYWHERE))
+      {
+         if ((*cit).sYear.toUInt() == str.toUInt())
+         {
+            tmpList.push_back(*cit);
+            continue;
+         }
+      }
+   }
+
+   displayVodList(tmpList, tr("Search Results"), false);
+}
+

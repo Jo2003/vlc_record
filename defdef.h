@@ -48,6 +48,7 @@
 #define MAX_ARCHIV_AGE    1209000     // < 2 weeks in seconds
 #define MAX_NO_FAVOURITES 10          // max. number of favourites ...
 #define JUMP_TIME         120         // forward / backward jump in archive play
+#define MIN_CACHE_SIZE    2048000     // 2 MB ...
 
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\

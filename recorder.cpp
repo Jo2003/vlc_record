@@ -213,6 +213,13 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // enable button ...
    TouchPlayCtrlBtns(false);
 
+   // fill search area combo box ...
+   ui->cbxSearchArea->addItem(tr("Title"), QVariant((int)vodbrowser::IN_TITLE));
+   ui->cbxSearchArea->addItem(tr("Description"), QVariant((int)vodbrowser::IN_DESCRIPTION));
+   ui->cbxSearchArea->addItem(tr("Year"), QVariant((int)vodbrowser::IN_YEAR));
+   ui->cbxSearchArea->addItem(tr("Everywhere"), QVariant((int)vodbrowser::IN_EVERYWHERE));
+   ui->cbxSearchArea->setCurrentIndex(0);
+
    // request authorisation ...
    Trigger.TriggerRequest(Kartina::REQ_COOKIE);
 
@@ -531,6 +538,13 @@ void Recorder::on_pushRecord_clicked()
       {
          if (AllowAction(IncPlay::PS_RECORD))
          {
+            // new own downloader ...
+            if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+            {
+               streamLoader.stopDownload (iDwnReqId);
+               iDwnReqId = -1;
+            }
+
             showInfo.setChanId(pItem->GetId());
             showInfo.setChanName(pItem->GetName());
             showInfo.setArchive(false);
@@ -951,6 +965,23 @@ void Recorder::on_cbxGenre_currentIndexChanged(int index)
    Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, iGid);
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_btnVodSearch_clicked [slot]
+|  Begin: 23.12.2010 / 9:10
+|  Author: Jo2003
+|  Description: search in vod
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_btnVodSearch_clicked()
+{
+   int iIdx = ui->cbxSearchArea->currentIndex();
+   vodbrowser::eSearchArea eArea = (vodbrowser::eSearchArea)ui->cbxSearchArea->itemData(iIdx).toUInt();
+   ui->vodBrowser->findVideos(ui->lineVodSearch->text(), eArea);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
@@ -1355,6 +1386,13 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    if (ok)
    {
       TouchPlayCtrlBtns(false);
+
+      // new own downloader ...
+      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+      {
+         streamLoader.stopDownload (iDwnReqId);
+         iDwnReqId = -1;
+      }
 
       QString    cid  = link.encodedQueryItemValue(QByteArray("cid"));
       QString    gmt  = link.encodedQueryItemValue(QByteArray("gmt"));
@@ -2015,8 +2053,7 @@ void Recorder::slotGotVideos(QString str)
          dwnVodPics.setPictureList(lPix);
       }
 
-      ui->vodBrowser->displayVodList (vVodList, ui->cbxGenre->currentText(),
-                                      ui->cbxGenre->currentIndex());
+      ui->vodBrowser->displayVodList (vVodList, ui->cbxGenre->currentText());
    }
 }
 
@@ -2066,6 +2103,8 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
    if (ok)
    {
+      TouchPlayCtrlBtns(false);
+
       // new own downloader ...
       if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
       {
@@ -2084,7 +2123,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
       showInfo.setPlayState(ePlayState);
       showInfo.setLastJumpTime(0);
 
-      ui->labState->setHeader(tr("VOD"));
+      ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
 
       Trigger.TriggerRequest(Kartina::REQ_GETVODURL, id);
@@ -2128,13 +2167,14 @@ void Recorder::slotVodURL(QString str)
    {
       if (ePlayState == IncPlay::PS_RECORD)
       {
+         // use own downloader ... ?
          if (!vlcCtrl.ownDwnld())
          {
             StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
          }
          else
          {
-            StartStreamDownload(sUrl, CleanShowName(showInfo.showName()), "mp4");
+            StartStreamDownload(sUrl, CleanShowName(showInfo.showName()), "m4v");
          }
 
          showInfo.setPlayState(IncPlay::PS_RECORD);
@@ -2440,8 +2480,6 @@ void Recorder::TouchEpgNavi (bool bCreate)
       pEpgNavbar->addTab(tr("Sun"));
       pEpgNavbar->setTabTextColor(6, QColor("#800"));
 
-      // add style to new botton tabs ...
-      ui->tabEpgVod->setStyleSheet((QString)NAVBAR_STYLE_BOTTOM);
    }
    else
    {

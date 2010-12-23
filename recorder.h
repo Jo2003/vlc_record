@@ -146,6 +146,7 @@ protected:
 
 private slots:
 #ifdef INCLUDE_LIBVLC
+    void on_btnVodSearch_clicked();
     void on_cbxGenre_currentIndexChanged(int index);
     void on_pushBwd_clicked();
     void on_pushFwd_clicked();
