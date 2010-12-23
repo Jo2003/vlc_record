@@ -289,6 +289,57 @@ void CVodBrowser::findVideos(const QString &str, vodbrowser::eSearchArea eArea)
    displayVodList(tmpList, tr("Search Results"), false);
 }
 
+/* -----------------------------------------------------------------\
+|  Method: EnlargeFont
+|  Begin: 02.02.2010 / 16:52:12
+|  Author: Jo2003
+|  Description: enlarge font size by one
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVodBrowser::EnlargeFont()
+{
+   QFont vodFont = font();
+   vodFont.setPointSize(vodFont.pointSize() + 1);
+   setFont(vodFont);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ReduceFont
+|  Begin: 02.02.2010 / 16:52:12
+|  Author: Jo2003
+|  Description: reduce font size by one
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVodBrowser::ReduceFont()
+{
+   QFont vodFont = font();
+   vodFont.setPointSize(vodFont.pointSize() - 1);
+   setFont(vodFont);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ChangeFontSize
+|  Begin: 18.02.2010 / 12:52:12
+|  Author: Jo2003
+|  Description: change font size with value given as option
+|
+|  Parameters: change value
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CVodBrowser::ChangeFontSize(int iSz)
+{
+   QFont vodFont = font();
+   vodFont.setPointSize(vodFont.pointSize() + iSz);
+   setFont(vodFont);
+}
+
 /************************* History ***************************\
 | 23.12.2010 - show record link only when registration is ok
 \*************************************************************/

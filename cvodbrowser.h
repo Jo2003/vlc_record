@@ -54,6 +54,10 @@ public:
     CVodBrowser(QWidget *parent = 0);
     ~CVodBrowser();
 
+    void EnlargeFont ();
+    void ReduceFont ();
+    void ChangeFontSize (int iSz);
+
     void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, bool bSaveList = true);
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();

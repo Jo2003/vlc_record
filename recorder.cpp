@@ -871,6 +871,7 @@ void Recorder::on_btnFontSmaller_clicked()
    QFont font;
    ui->textEpg->ReduceFont();
    ui->textEpgShort->ReduceFont();
+   ui->vodBrowser->ReduceFont();
 
    font = ui->listWidget->font();
    font.setPointSize(font.pointSize() - 1);
@@ -898,6 +899,7 @@ void Recorder::on_btnFontLarger_clicked()
    QFont font;
    ui->textEpg->EnlargeFont();
    ui->textEpgShort->EnlargeFont();
+   ui->vodBrowser->EnlargeFont();
 
    font = ui->listWidget->font();
    font.setPointSize(font.pointSize() + 1);
@@ -2260,6 +2262,7 @@ void Recorder::initDialog ()
       QFont font;
       ui->textEpg->ChangeFontSize(iFontSzChg);
       ui->textEpgShort->ChangeFontSize(iFontSzChg);
+      ui->vodBrowser->ChangeFontSize(iFontSzChg);
 
       font = ui->listWidget->font();
       font.setPointSize(font.pointSize() + iFontSzChg);
