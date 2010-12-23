@@ -289,3 +289,6 @@ void CVodBrowser::findVideos(const QString &str, vodbrowser::eSearchArea eArea)
    displayVodList(tmpList, tr("Search Results"), false);
 }
 
+/************************* History ***************************\
+| 23.12.2010 - show record link only when registration is ok
+\*************************************************************/
