@@ -579,22 +579,18 @@ color: white;
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="2,8">
-              <item>
+             <layout class="QGridLayout" name="gridLayout" columnstretch="0,10,10,0">
+              <item row="0" column="0">
                <widget class="QLabel" name="labGenre">
                 <property name="text">
                  <string>Genre: </string>
                 </property>
                </widget>
               </item>
-              <item>
+              <item row="0" column="1" colspan="2">
                <widget class="QComboBox" name="cbxGenre"/>
               </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="20,45,25,10">
-              <item>
+              <item row="1" column="0">
                <widget class="QLabel" name="labVodSearch">
                 <property name="styleSheet">
                  <string notr="true">QLabel#labSearch {
@@ -607,7 +603,7 @@ color: white;
                 </property>
                </widget>
               </item>
-              <item>
+              <item row="1" column="1">
                <widget class="QLineEdit" name="lineVodSearch">
                 <property name="minimumSize">
                  <size>
@@ -628,10 +624,10 @@ color: white;
                 </property>
                </widget>
               </item>
-              <item>
+              <item row="1" column="2">
                <widget class="QComboBox" name="cbxSearchArea"/>
               </item>
-              <item>
+              <item row="1" column="3">
                <widget class="QToolButton" name="btnVodSearch">
                 <property name="text">
                  <string>...</string>
@@ -1378,8 +1374,8 @@ border-top: 0px;
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>621</x>
-     <y>398</y>
+     <x>912</x>
+     <y>626</y>
     </hint>
     <hint type="destinationlabel">
      <x>603</x>

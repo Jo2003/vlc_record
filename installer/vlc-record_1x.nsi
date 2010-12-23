@@ -72,6 +72,7 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\modules\3_vlc-mp4.mod"
   File "${SRCDIR}\modules\4_vlc-player-avi.mod"
   File "${SRCDIR}\modules\7_vlc-mpeg2.mod"
+  File "${SRCDIR}\modules\10_vlc-player_odl.mod"
 
 SectionEnd
 
@@ -160,6 +161,7 @@ Section "un.Program"
   Delete "$INSTDIR\modules\3_vlc-mp4.mod"
   Delete "$INSTDIR\modules\4_vlc-player-avi.mod"
   Delete "$INSTDIR\modules\7_vlc-mpeg2.mod"
+  Delete "$INSTDIR\modules\10_vlc-player_odl.mod"
 
   ; delete directories ...
   RMDir  "$INSTDIR\modules"
