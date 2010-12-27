@@ -81,6 +81,8 @@ public:
    void setSettings (CSettingsDlg *pDlg);
    void setTrigger (CWaitTrigger *pTrig);
    static void eventCallback (const libvlc_event_t *ev, void *player);
+   bool isPositionable();
+   void initSlider ();
 
 protected:
    void changeEvent(QEvent *e);
@@ -102,6 +104,7 @@ private:
    CSettingsDlg           *pSettings;
    CWaitTrigger           *pTrigger;
    bool                    bSpoolPending;
+   uint                    uiDuration;
 
 private slots:
    void on_posSlider_valueChanged(int value);

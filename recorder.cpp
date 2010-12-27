@@ -2118,12 +2118,12 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
       id = link.encodedQueryItemValue(QByteArray("vid")).toInt();
 
-      showInfo.setChanId(0);
+      showInfo.setChanId(-1);
       showInfo.setChanName("");
       showInfo.setShowName(ui->vodBrowser->getName());
       showInfo.setStartTime(0);
       showInfo.setEndTime(0);
-      showInfo.setArchive(false);
+      showInfo.setArchive(true); // enable spooling ...
       showInfo.setPlayState(ePlayState);
       showInfo.setLastJumpTime(0);
 
@@ -2185,7 +2185,7 @@ void Recorder::slotVodURL(QString str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         StartVlcPlay(sUrl);
+         StartVlcPlay(sUrl, true);
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }

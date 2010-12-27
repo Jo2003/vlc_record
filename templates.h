@@ -78,6 +78,7 @@ TMPL_ROWS \
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"\
 "<html>\n" \
 "<head>\n" \
+"<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n" \
 "<title>" TMPL_TITLE "</title>\n" \
 TMPL_CSS \
 "</head>\n"\

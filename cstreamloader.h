@@ -40,7 +40,7 @@ class CStreamLoader : public QHttp
 
 public:
    CStreamLoader();
-   ~CStreamLoader();
+   virtual ~CStreamLoader();
 
 private:
    QString       sHost;

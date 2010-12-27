@@ -21,6 +21,10 @@ extern CVlcRecDB *pDb;
 // global showinfo class ...
 extern CShowInfo showInfo;
 
+// help macros to let QSlider support GMT values ...
+#define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
+#define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
+
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
 |  Begin: 24.02.2010 / 12:17:51
@@ -44,6 +48,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pTrigger      = NULL;
    bCtrlStream   = false;
    bSpoolPending = true;
+   uiDuration    = (uint)-1;
 
    // set log poller to single shot ...
    poller.setSingleShot(true);
@@ -77,7 +82,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
 
    poller.start(1000);
-   sliderTimer.start(500);
+   sliderTimer.start(1000);
 }
 
 /* -----------------------------------------------------------------\
@@ -134,6 +139,22 @@ void CPlayer::cleanExit()
    {
       libvlc_release(pVlcInstance);
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: isPositionable
+|  Begin: 27.12.2010 / 11:15
+|  Author: Jo2003
+|  Description: is stream positionable?
+|
+|  Parameters: --
+|
+|  Returns: true --> yes
+|          false --> no
+\----------------------------------------------------------------- */
+bool CPlayer::isPositionable()
+{
+   return ((uiDuration > 0) && (uiDuration != (uint)-1)) ? true : false;
 }
 
 /* -----------------------------------------------------------------\
@@ -381,6 +402,8 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
 
    // reset play timer stuff ...
    timer.reset();
+   timer.setStartGmt(showInfo.lastJump() ? showInfo.lastJump() : showInfo.starts());
+   uiDuration = (uint)-1;
 
    // while not showing video, disable spooling ...
    bSpoolPending = true;
@@ -443,26 +466,6 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
       iRV = play();
    }
 
-   if (!iRV && bCtrlStream)
-   {
-      // set slider to position ...
-      int iSliderPos;
-
-      // set slider range to seconds ...
-
-      // we add 5 minutes at start and 5 minutes at end because start
-      // and end time are not always accurate ...
-      ui->posSlider->setRange(0, showInfo.ends() - showInfo.starts());
-
-      iSliderPos = showInfo.lastJump();
-
-      ui->posSlider->setValue(iSliderPos);
-
-      ui->labPos->setText(QTime((int)iSliderPos / 3600,
-                                (int)(iSliderPos % 3600) / 60,
-                                iSliderPos % 60).toString("hh:mm:ss"));
-   }
-
    return iRV;
 }
 
@@ -482,14 +485,40 @@ void CPlayer::slotUpdateSlider()
    {
       if (libvlc_media_player_is_playing(pMediaPlayer) && bCtrlStream)
       {
-         int iSliderPos = timer.elapsedEx() / 1000 + showInfo.lastJump();
-
-         if (!ui->posSlider->isSliderDown())
+         uint pos;
+         if (isPositionable())
          {
-            ui->posSlider->setValue(iSliderPos);
-            ui->labPos->setText(QTime((int)iSliderPos / 3600,
-                                      (int)(iSliderPos % 3600) / 60,
-                                      iSliderPos % 60).toString("hh:mm:ss"));
+            pos = libvlc_media_player_get_time (pMediaPlayer);
+
+            if (!ui->posSlider->isSliderDown())
+            {
+               ui->posSlider->setValue(pos);
+               pos = pos / 1000; // ms ...
+               ui->labPos->setText(QTime((int)pos / 3600,
+                                         (int)(pos % 3600) / 60,
+                                         pos % 60).toString("hh:mm:ss"));
+            }
+
+         }
+         else
+         {
+            if (!ui->posSlider->isSliderDown())
+            {
+               pos = timer.gmtPosition();
+
+               if (pos > mToGmt(ui->posSlider->maximum()))
+               {
+                  ui->posSlider->setMaximum(mFromGmt(pos + 300));
+               }
+
+               ui->posSlider->setValue(mFromGmt(pos));
+
+               pos -= showInfo.starts();
+
+               ui->labPos->setText(QTime((int)pos / 3600,
+                                         (int)(pos % 3600) / 60,
+                                         pos % 60).toString("hh:mm:ss"));
+            }
          }
       }
    }
@@ -572,50 +601,51 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
    {
    // error ...
    case libvlc_MediaPlayerEncounteredError:
+      mInfo("libvlc_MediaPlayerEncounteredError ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
       pPlayer->stopPlayTimer();
-      mInfo("libvlc_MediaPlayerEncounteredError ...");
       break;
 
    // opening media ...
    case libvlc_MediaPlayerOpening:
-      emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
       mInfo("libvlc_MediaPlayerOpening ...");
+      emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
       break;
 
    // buffering media ...
    case libvlc_MediaPlayerBuffering:
-      emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
       mInfo("libvlc_MediaPlayerBuffering ...");
+      emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
       break;
 
    // playing media ...
    case libvlc_MediaPlayerPlaying:
+      mInfo("libvlc_MediaPlayerPlaying ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
       emit pPlayer->sigTriggerAspectChg ();
       pPlayer->startPlayTimer();
-      mInfo("libvlc_MediaPlayerPlaying ...");
+      pPlayer->initSlider();
       break;
 
    // player paused ...
    case libvlc_MediaPlayerPaused:
+      mInfo("libvlc_MediaPlayerPaused ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_PAUSE);
       pPlayer->pausePlayTimer();
-      mInfo("libvlc_MediaPlayerPaused ...");
       break;
 
    // player stopped ...
    case libvlc_MediaPlayerStopped:
+      mInfo("libvlc_MediaPlayerStopped ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
       pPlayer->stopPlayTimer();
-      mInfo("libvlc_MediaPlayerStopped ...");
       break;
 
    // end of media reached ...
    case libvlc_MediaPlayerEndReached:
+      mInfo("libvlc_MediaPlayerEndReached ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_END);
       pPlayer->stopPlayTimer();
-      mInfo("libvlc_MediaPlayerEndReached ...");
       break;
 
    default:
@@ -850,37 +880,47 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
    if (isPlaying() && bCtrlStream &&!bSpoolPending)
    {
-      int  iNewPos = ui->posSlider->value() + iSeconds;
-      uint uiGmt   = 0;
+      uint pos;
 
-      // check that we don't reach another show ...
-      if (iNewPos < 0)
+      if (isPositionable())
       {
-         iNewPos = 0;
+         pos  = libvlc_media_player_get_time(pMediaPlayer);
+         pos += iSeconds * 1000; // ms ...
+
+         libvlc_media_player_set_time(pMediaPlayer, pos);
+
+         ui->posSlider->setValue(pos);
       }
-      else if (iNewPos > (int)(showInfo.ends() - showInfo.starts()))
+      else
       {
-         iNewPos = showInfo.ends() - showInfo.starts();
+         // get new gmt value ...
+         pos = timer.gmtPosition() + iSeconds;
+
+         // update min / max slider values if needed ...
+         if (pos < mToGmt(ui->posSlider->minimum()))
+         {
+            ui->posSlider->setMinimum(mFromGmt(pos - 300));
+         }
+
+         if (pos > mToGmt(ui->posSlider->maximum()))
+         {
+            ui->posSlider->setMaximum(mFromGmt(pos + 300));
+         }
+
+         // trigger request for the new stream position ...
+         QString req = QString("cid=%1&gmt=%2")
+                          .arg(showInfo.channelId()).arg(pos);
+
+         // mark spooling as active ...
+         bSpoolPending = true;
+
+         enableDisablePlayControl (false);
+
+         // save jump time ...
+         showInfo.setLastJumpTime(pos);
+
+         pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
       }
-
-      // save new position ...
-      showInfo.setLastJumpTime(iNewPos);
-
-      // add the jump value ...
-      uiGmt        = (uint)(iNewPos + showInfo.starts());
-
-      // we now have the new GMT value for the archive stream ...
-
-      // trigger request for the new stream position ...
-      QString req = QString("cid=%1&gmt=%2")
-                       .arg(showInfo.channelId()).arg(uiGmt);
-
-      // mark spooling as active ...
-      bSpoolPending = true;
-
-      enableDisablePlayControl (false);
-
-      pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
    }
 
    return 0;
@@ -1110,34 +1150,35 @@ void CPlayer::on_posSlider_sliderReleased()
    {
       uint position = (uint)ui->posSlider->value();
 
-      // ignore slider position change of +/- 10 seconds ...
-      uint uiPlayTime = showInfo.lastJump();
-
-      // play position ...
-      uiPlayTime += (uint)(timer.elapsedEx() / 1000);
-
-      // check if slider position is in 10 sec. limit ...
-      if ((position >= (uiPlayTime - 10)) && (position <= (uiPlayTime + 10)))
+      if (isPositionable())
       {
-         mInfo(tr("Ignore slightly slider position change..."));
+         libvlc_media_player_set_time(pMediaPlayer, position);
       }
       else
       {
-         // request new stream ...
-         QString req = QString("cid=%1&gmt=%2")
-                      .arg(showInfo.channelId())
-                      .arg(showInfo.starts() + position);
+         // check if slider position is in 10 sec. limit ...
+         if (abs(mToGmt(position) - timer.gmtPosition()) <= 10)
+         {
+            mInfo(tr("Ignore slightly slider position change..."));
+         }
+         else
+         {
+            // request new stream ...
+            QString req = QString("cid=%1&gmt=%2")
+                         .arg(showInfo.channelId())
+                         .arg(position);
 
-         // update last jump time ...
-         showInfo.setLastJumpTime(position);
+            // mark spooling as active ...
+            bSpoolPending = true;
 
-         // mark spooling as active ...
-         bSpoolPending = true;
+            enableDisablePlayControl (false);
 
-         enableDisablePlayControl (false);
+            // save new start value ...
+            showInfo.setLastJumpTime(position);
 
-         // trigger stream request ...
-         pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
+            // trigger stream request ...
+            pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
+         }
       }
    }
 }
@@ -1158,6 +1199,16 @@ void CPlayer::on_posSlider_valueChanged(int value)
    {
       if (ui->posSlider->isSliderDown())
       {
+         if (isPositionable())
+         {
+            value = value / 1000; // ms ...
+         }
+         else
+         {
+            value  = mToGmt(value);
+            value -= showInfo.starts();
+         }
+
          ui->labPos->setText(QTime((int)value / 3600,
                                    (int)(value % 3600) / 60,
                                    value % 60).toString("hh:mm:ss"));
@@ -1180,6 +1231,44 @@ void CPlayer::enableDisablePlayControl (bool bEnable)
    ui->btnFwd->setEnabled (bEnable && bCtrlStream);
    ui->btnBwd->setEnabled (bEnable && bCtrlStream);
    ui->posSlider->setEnabled (bEnable && bCtrlStream);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: initSlider
+|  Begin: 27.12.2010 / 11:50
+|  Author: Jo2003
+|  Description: init slider...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::initSlider()
+{
+   // check if we need the pseudo archive spool
+   // or the real spool in vod ...
+   uiDuration = libvlc_media_player_get_length(pMediaPlayer);
+   mInfo(tr("Film length: %1ms.").arg(uiDuration));
+
+   if (bCtrlStream)
+   {
+      if (isPositionable())
+      {
+         // VOD stuff ...
+         ui->posSlider->setRange(0, uiDuration);
+
+         ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
+      }
+      else
+      {
+         // set slider range to seconds ...
+         ui->posSlider->setRange(mFromGmt(showInfo.starts() - 300), mFromGmt(showInfo.ends() + 300));
+
+         ui->posSlider->setValue(mFromGmt(showInfo.starts()));
+
+         ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
+      }
+   }
 }
 
 /************************* History ***************************\

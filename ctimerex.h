@@ -36,9 +36,8 @@ public:
    \----------------------------------------------------------------- */
    void reset ()
    {
-      iMsOffset = 0;
-      iMsPaused = 0;
-      bPaused   = false;
+      uiMsPlayed = 0;
+      bPaused    = false;
    }
 
    /* -----------------------------------------------------------------\
@@ -72,6 +71,21 @@ public:
    }
 
    /* -----------------------------------------------------------------\
+   |  Method: setStartGmt
+   |  Begin: 27.12.2010 / 12:35
+   |  Author: Jo2003
+   |  Description: set start time from unix timestamp
+   |
+   |  Parameters: unix timestamp
+   |
+   |  Returns: --
+   \----------------------------------------------------------------- */
+   void setStartGmt (uint uiTime)
+   {
+      uiGmtStart = uiTime;
+   }
+
+   /* -----------------------------------------------------------------\
    |  Method: start
    |  Begin: 09.04.2010 / 10:25:00
    |  Author: Jo2003
@@ -85,8 +99,8 @@ public:
    {
       if (bPaused)
       {
-         iMsPaused += pauseTimer.elapsed();
          bPaused = false;
+         QTime::restart();
       }
       else
       {
@@ -106,22 +120,10 @@ public:
    \----------------------------------------------------------------- */
    void addSecsEx (int secs)
    {
-      iMsOffset += secs * 1000;
-   }
-
-   /* -----------------------------------------------------------------\
-   |  Method: addMsecsEx
-   |  Begin: 09.04.2010 / 10:05:00
-   |  Author: Jo2003
-   |  Description: add offset to timer
-   |
-   |  Parameters: offset in milliseconds (note: can be < 0)
-   |
-   |  Returns: --
-   \----------------------------------------------------------------- */
-   void addMsecsEx (int msecs)
-   {
-      iMsOffset += msecs;
+      if (secs)
+      {
+         uiMsPlayed += secs * 1000;
+      }
    }
 
    /* -----------------------------------------------------------------\
@@ -138,8 +140,8 @@ public:
    {
       if (!bPaused)
       {
-         pauseTimer.start();
-         bPaused = true;
+         uiMsPlayed += elapsed();
+         bPaused     = true;
       }
    }
 
@@ -155,14 +157,34 @@ public:
    \----------------------------------------------------------------- */
    int elapsedEx ()
    {
-      return elapsed() + iMsOffset - iMsPaused
-            - ((bPaused) ? pauseTimer.elapsed() : 0);
+      if (bPaused)
+      {
+         return uiMsPlayed;
+      }
+      else
+      {
+         return elapsed() + uiMsPlayed;
+      }
+   }
+
+   /* -----------------------------------------------------------------\
+   |  Method: gmtPosition
+   |  Begin: 27.12.2010 / 13:00
+   |  Author: Jo2003
+   |  Description: get actual position outgoing from
+   |               start gmt timestamp
+   |  Parameters: --
+   |
+   |  Returns: gmt timestamp
+   \----------------------------------------------------------------- */
+   uint gmtPosition ()
+   {
+      return uiGmtStart + elapsedEx() / 1000;
    }
 
 private:
-   QTime pauseTimer;
-   uint  iMsPaused;
-   int   iMsOffset;
+   uint  uiMsPlayed;
+   uint  uiGmtStart;
    bool  bPaused;
 };
 

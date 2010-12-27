@@ -29,7 +29,7 @@ CShowInfo::CShowInfo()
    ePlayState = IncPlay::PS_WTF;
    uiStart    = 0;
    uiEnd      = 0;
-   iJumpTime  = 0;
+   uiJumpTime = 0;
 }
 
 /* -----------------------------------------------------------------\
@@ -117,9 +117,9 @@ void CShowInfo::setStartTime (uint start)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CShowInfo::setLastJumpTime(int start)
+void CShowInfo::setLastJumpTime(uint start)
 {
-   iJumpTime = start;
+   uiJumpTime = start;
 }
 
 /* -----------------------------------------------------------------\
@@ -222,9 +222,9 @@ const uint &CShowInfo::starts()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const int &CShowInfo::lastJump()
+const uint &CShowInfo::lastJump()
 {
-   return iJumpTime;
+   return uiJumpTime;
 }
 
 /* -----------------------------------------------------------------\
