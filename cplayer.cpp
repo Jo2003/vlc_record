@@ -1156,8 +1156,10 @@ void CPlayer::on_posSlider_sliderReleased()
       }
       else
       {
+         position = mToGmt(position);
+
          // check if slider position is in 10 sec. limit ...
-         if (abs(mToGmt(position) - timer.gmtPosition()) <= 10)
+         if (abs(position - timer.gmtPosition()) <= 10)
          {
             mInfo(tr("Ignore slightly slider position change..."));
          }

@@ -483,6 +483,15 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sDstFile = QString("%1:/%2").arg(rx.cap(1)).arg(rx.cap(2));
    }
 
+#if defined Q_OS_WIN32
+   if (bOwnDownloader // use own downloader ...
+       && !bUseLibVlc // don't use libvlc ...
+       && (eAct == vlcctrl::VLC_REC_LIVE))
+   {
+      sDstFile.replace ("/", "\\");
+   }
+#endif
+
    switch (eAct)
    {
    // play stream using http protocol ...

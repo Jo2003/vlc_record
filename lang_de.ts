@@ -415,7 +415,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1251"/>
+        <location filename="cplayer.cpp" line="1253"/>
         <source>Film length: %1ms.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -458,7 +458,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1162"/>
+        <location filename="cplayer.cpp" line="1164"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
@@ -1250,17 +1250,17 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Der Player läuft schon! Wollen Sie fortfahren?</translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="560"/>
+        <location filename="cvlcctrl.cpp" line="569"/>
         <source>Player has ended ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="564"/>
+        <location filename="cvlcctrl.cpp" line="573"/>
         <source>Player was started ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvlcctrl.cpp" line="622"/>
+        <location filename="cvlcctrl.cpp" line="631"/>
         <source>libVLC reports new state %1</source>
         <translation></translation>
     </message>
@@ -1306,47 +1306,47 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Videothek</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="158"/>
+        <location filename="cvodbrowser.cpp" line="156"/>
         <source>Video Details</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="177"/>
+        <location filename="cvodbrowser.cpp" line="175"/>
         <source>min.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="180"/>
+        <location filename="cvodbrowser.cpp" line="178"/>
         <source>Director: %1</source>
         <translation>Regisseur: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="184"/>
+        <location filename="cvodbrowser.cpp" line="182"/>
         <source>With: %1</source>
         <translation>Mit: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="191"/>
+        <location filename="cvodbrowser.cpp" line="189"/>
         <source>Back</source>
         <translation>Zurück</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="196"/>
+        <location filename="cvodbrowser.cpp" line="194"/>
         <source>Part</source>
         <translation>Teil</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="204"/>
+        <location filename="cvodbrowser.cpp" line="202"/>
         <source>Play Movie ...</source>
         <translation>Film abspielen ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="217"/>
+        <location filename="cvodbrowser.cpp" line="215"/>
         <source>Record Movie ...</source>
         <translation>Film aufzeichnen ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="291"/>
+        <location filename="cvodbrowser.cpp" line="289"/>
         <source>Search Results</source>
         <translation>Suchergebnisse</translation>
     </message>
