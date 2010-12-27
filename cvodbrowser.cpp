@@ -105,9 +105,9 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
 
          // add image ...
          info.setFile(vList[j].sImg);
-         sCol.replace(TMPL_IMG,   QString("%1/%2")
+         sCol.replace(TMPL_IMG,   QUrl::toPercentEncoding(QString("%1/%2")
                                          .arg(pFolders->getVodPixDir())
-                                         .arg(info.fileName()));
+                                         .arg(info.fileName())));
 
          // add title ...
          sCol.replace(TMPL_TITLE, QString("%1 (%2 %3)")

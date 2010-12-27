@@ -1321,47 +1321,47 @@ or start time is later than end time!</source>
         <translation>Видеотека</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="156"/>
+        <location filename="cvodbrowser.cpp" line="158"/>
         <source>Video Details</source>
         <translation>Информации о видео</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="175"/>
+        <location filename="cvodbrowser.cpp" line="177"/>
         <source>min.</source>
         <translation>мин.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="178"/>
+        <location filename="cvodbrowser.cpp" line="180"/>
         <source>Director: %1</source>
         <translation>Режиссер: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="182"/>
+        <location filename="cvodbrowser.cpp" line="184"/>
         <source>With: %1</source>
         <translation>В ролях: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="189"/>
+        <location filename="cvodbrowser.cpp" line="191"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="194"/>
+        <location filename="cvodbrowser.cpp" line="196"/>
         <source>Part</source>
         <translation>Часть</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="202"/>
+        <location filename="cvodbrowser.cpp" line="204"/>
         <source>Play Movie ...</source>
         <translation>Просмотр фильма ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="215"/>
+        <location filename="cvodbrowser.cpp" line="217"/>
         <source>Record Movie ...</source>
         <translation>Запись фильма ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="289"/>
+        <location filename="cvodbrowser.cpp" line="291"/>
         <source>Search Results</source>
         <translation>Результат Поиска</translation>
     </message>
