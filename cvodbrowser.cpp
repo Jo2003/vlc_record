@@ -159,9 +159,9 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    sDoc.replace(TMPL_CONT, TMPL_VIDEO_DETAILS);
 
    // insert poster ...
-   sDoc.replace(TMPL_IMG, QString("%1/%2")
+   sDoc.replace(TMPL_IMG, QUrl::toPercentEncoding(QString("%1/%2")
                 .arg(pFolders->getVodPixDir())
-                .arg(info.fileName()));
+                .arg(info.fileName())));
 
    // insert name ...
    sDoc.replace(TMPL_TITLE, sInfo.sName);
