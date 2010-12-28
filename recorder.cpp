@@ -1974,7 +1974,6 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
    sCmdLine  = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE, Settings.GetVLCPath(),
                                     "", Settings.GetBufferTime(), fileName, sExt);
 
-
    // start player if we have a command line ...
    if (sCmdLine != "")
    {
@@ -2954,7 +2953,7 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
                           .arg(sName).arg(now.toString("yyyy-MM-dd__hh-mm"));
 
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
-                 sTarget, QString("Transport Stream (*.ts)"),
+                 sTarget, QString("Transport Stream (*.ts);;MPEG 4 Video (*.m4v)"),
                  &sFilter);
 
       if (fileName != "")
