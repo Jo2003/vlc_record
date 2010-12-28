@@ -887,6 +887,12 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          pos  = libvlc_media_player_get_time(pMediaPlayer);
          pos += iSeconds * 1000; // ms ...
 
+         // make sure we don't go negative ...
+         if ((int)pos < 0)
+         {
+            pos = 0;
+         }
+
          libvlc_media_player_set_time(pMediaPlayer, pos);
 
          ui->posSlider->setValue(pos);
