@@ -143,7 +143,7 @@ void CStreamLoader::stopDownload(int id)
 void CStreamLoader::slotStreamDataAvailable()
 {
    // wait until file is filled with cache size ...
-   int iSize = (iCache / 1000) * 275000;
+   int iSize = (iCache / 1000) * 400000;
 
    iSize = (iSize < MIN_CACHE_SIZE) ? MIN_CACHE_SIZE : iSize;
 
