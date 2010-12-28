@@ -31,11 +31,15 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B2" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B3" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
-| --- new since last version ---
+| 2010-12-28: Version x.40B3
+| - fast forward / backward in VOD possible
+| - change archive slider stuff
+|
+| 2010-12-23: Version x.40B2
 | - vod support
 | - own downloader added
 | - simple registration added
