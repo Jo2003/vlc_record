@@ -78,6 +78,8 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    QString tmpUrl = sUrl;
    bUseTimerRec   = bTimerRec;
 
+   mInfo(tr("Archive URL:\n --> %1").arg(sUrl));
+
    // patch stream prefix to allow the usage of QUrl ...
    tmpUrl.replace ("http/ts", "http");
    QUrl    url(tmpUrl);
@@ -97,7 +99,7 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    {
       setHost (url.host(), QHttp::ConnectionModeHttp, (url.port() == -1) ? 80 : url.port());
 
-      iReq = get (sUrl, &fStream);
+      iReq = get (tmpUrl, &fStream);
 
       mInfo(tr("Request #%1 sent ...").arg(iReq));
 

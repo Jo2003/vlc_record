@@ -949,23 +949,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CStreamLoader</name>
     <message>
-        <location filename="cstreamloader.cpp" line="86"/>
+        <location filename="cstreamloader.cpp" line="81"/>
+        <source>Archive URL:
+ --&gt; %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cstreamloader.cpp" line="88"/>
         <source>Download Stream from http://%1:%2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="102"/>
+        <location filename="cstreamloader.cpp" line="104"/>
         <source>Request #%1 sent ...</source>
-        <oldsource>Request #%1 (%2) sent ...</oldsource>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="185"/>
+        <location filename="cstreamloader.cpp" line="187"/>
         <source>Request #%1 done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="194"/>
+        <location filename="cstreamloader.cpp" line="196"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
