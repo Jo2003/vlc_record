@@ -31,10 +31,13 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B3" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B4" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2011-01-05: Version x.40B4
+| - replace stream protocol info from url with http
+|
 | 2010-12-28: Version x.40B3
 | - fast forward / backward in VOD possible
 | - change archive slider stuff
