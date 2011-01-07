@@ -31,10 +31,14 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B4" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B5" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 201101-07: Version x.40B5
+| - in archive play, pushing record will start record at
+|   play position
+|
 | 2011-01-05: Version x.40B4
 | - replace stream protocol info from url with http
 |

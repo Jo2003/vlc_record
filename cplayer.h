@@ -83,6 +83,7 @@ public:
    static void eventCallback (const libvlc_event_t *ev, void *player);
    bool isPositionable();
    void initSlider ();
+   uint getSilderPos();
 
 protected:
    void changeEvent(QEvent *e);

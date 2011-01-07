@@ -48,7 +48,7 @@ FORCE_MUX    = <<no>>
 DOWN_FIRST   = <<yes>>
 
 LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=10800 --http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
 LIVE_REC     = <<"{[%PLAYER%]}" "{[%DST%]}.{[%MUX%]}" --file-caching=0>>
 ARCH_REC     = <<>>
 LIVE_SIL_REC = <<>>

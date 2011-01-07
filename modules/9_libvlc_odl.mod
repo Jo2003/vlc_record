@@ -57,7 +57,7 @@ DOWN_FIRST   = <<yes>>
 ; for use with libvlc!
 ;-------------------------------------------------------------------------------
 LIVE_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:run-time=10800;;:http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:run-time=36000;;:http-caching={[%CACHE%]}>>
 LIVE_REC     = <<{[%DST%]}.{[%MUX%]};;:file-caching=0>>
 ARCH_REC     = <<>>
 LIVE_SIL_REC = <<>>

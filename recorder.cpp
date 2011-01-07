@@ -532,34 +532,58 @@ void Recorder::on_pushSettings_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_pushRecord_clicked()
 {
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
+#ifdef INCLUDE_LIBVLC
 
-   if (pItem)
+   // is archive play active ...
+   if (showInfo.archive () && (showInfo.playState () == IncPlay::PS_PLAY))
    {
-      if (pItem->GetId() != -1)
+      if (AllowAction(IncPlay::PS_RECORD))
       {
-         if (AllowAction(IncPlay::PS_RECORD))
-         {
-            // new own downloader ...
-            if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
-            {
-               streamLoader.stopDownload (iDwnReqId);
-               iDwnReqId = -1;
-            }
+         // archive play active ...
+         uint    gmt = ui->player->getSilderPos ();
+         QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
 
-            showInfo.setChanId(pItem->GetId());
-            showInfo.setChanName(pItem->GetName());
-            showInfo.setArchive(false);
-            showInfo.setShowName(pItem->GetProgram());
-            showInfo.setStartTime(pItem->GetStartTime());
-            showInfo.setEndTime(pItem->GetEndTime());
-            showInfo.setPlayState(IncPlay::PS_RECORD);
+         showInfo.setPlayState(IncPlay::PS_RECORD);
 
-            TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
-         }
+         TouchPlayCtrlBtns(false);
+         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req);
       }
    }
+   else
+   {
+
+#endif // INCLUDE_LIBVLC
+      CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
+
+      if (pItem)
+      {
+         if (pItem->GetId() != -1)
+         {
+            if (AllowAction(IncPlay::PS_RECORD))
+            {
+               // new own downloader ...
+               if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+               {
+                  streamLoader.stopDownload (iDwnReqId);
+                  iDwnReqId = -1;
+               }
+
+               showInfo.setChanId(pItem->GetId());
+               showInfo.setChanName(pItem->GetName());
+               showInfo.setArchive(false);
+               showInfo.setShowName(pItem->GetProgram());
+               showInfo.setStartTime(pItem->GetStartTime());
+               showInfo.setEndTime(pItem->GetEndTime());
+               showInfo.setPlayState(IncPlay::PS_RECORD);
+
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->GetId());
+            }
+         }
+      }
+#ifdef INCLUDE_LIBVLC
+   }
+#endif // INCLUDE_LIBVLC
 }
 
 /* -----------------------------------------------------------------\

@@ -1279,6 +1279,21 @@ void CPlayer::initSlider()
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: getSilderPos
+|  Begin: 07.01.2011 / 10:20
+|  Author: Jo2003
+|  Description: get slider position
+|
+|  Parameters: --
+|
+|  Returns: gmt of slider position
+\----------------------------------------------------------------- */
+uint CPlayer::getSilderPos ()
+{
+   return mToGmt(ui->posSlider->value());
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
