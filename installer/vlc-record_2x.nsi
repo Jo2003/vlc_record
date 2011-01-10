@@ -87,6 +87,8 @@ Section "libVLC Framework" SecFw
    SetOutPath "$INSTDIR"
    File "${LIBVLCFW}\libvlc.dll"
    File "${LIBVLCFW}\libvlccore.dll"
+   File "${LIBVLCFW}\axvlc.dll"
+   File "${LIBVLCFW}\npvlc.dll"
 
    SetOutPath "$INSTDIR\plugins"
    File /r "${LIBVLCFW}\plugins\*.dll"
@@ -175,7 +177,8 @@ Section "un.Framework"
   Delete "$INSTDIR\plugins\*.*"
   Delete "$INSTDIR\libvlc.dll"
   Delete "$INSTDIR\libvlccore.dll"
-  Delete "$INSTDIR\libvlc.dll.manifest"
+  Delete "$INSTDIR\axvlc.dll"
+  Delete "$INSTDIR\npvlc.dll"
   Delete "$INSTDIR\cache-gen.exe"
   Delete "$INSTDIR\clearcache.bat"
 
