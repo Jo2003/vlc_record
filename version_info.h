@@ -31,11 +31,15 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B5" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B6" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
-| 201101-07: Version x.40B5
+| 2011-01-10: Version x.40B6
+| - use libvlc 1.15
+| - don't check for vlc player path when using libvlc
+|
+| 2011-01-07: Version x.40B5
 | - in archive play, pushing record will start record at
 |   play position
 |
