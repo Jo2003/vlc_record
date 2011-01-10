@@ -79,7 +79,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // if main settings aren't done, start settings dialog ...
    if ((Settings.GetPasswd()      == "")
+#ifndef INCLUDE_LIBVLC
         || (Settings.GetVLCPath() == "")
+#endif // INCLUDE_LIBVLC
         || (Settings.GetUser()    == ""))
    {
       Settings.exec();
