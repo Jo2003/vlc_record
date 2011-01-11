@@ -357,18 +357,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaXMLParser</name>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="284"/>
-        <location filename="ckartinaxmlparser.cpp" line="387"/>
-        <location filename="ckartinaxmlparser.cpp" line="739"/>
-        <location filename="ckartinaxmlparser.cpp" line="836"/>
+        <location filename="ckartinaxmlparser.cpp" line="303"/>
+        <location filename="ckartinaxmlparser.cpp" line="406"/>
+        <location filename="ckartinaxmlparser.cpp" line="758"/>
+        <location filename="ckartinaxmlparser.cpp" line="855"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="285"/>
-        <location filename="ckartinaxmlparser.cpp" line="388"/>
-        <location filename="ckartinaxmlparser.cpp" line="740"/>
-        <location filename="ckartinaxmlparser.cpp" line="837"/>
+        <location filename="ckartinaxmlparser.cpp" line="304"/>
+        <location filename="ckartinaxmlparser.cpp" line="407"/>
+        <location filename="ckartinaxmlparser.cpp" line="759"/>
+        <location filename="ckartinaxmlparser.cpp" line="856"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
@@ -378,12 +378,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="292"/>
-        <location filename="ckartinaxmlparser.cpp" line="395"/>
-        <location filename="ckartinaxmlparser.cpp" line="445"/>
-        <location filename="ckartinaxmlparser.cpp" line="747"/>
-        <location filename="ckartinaxmlparser.cpp" line="844"/>
-        <location filename="ckartinaxmlparser.cpp" line="884"/>
+        <location filename="ckartinaxmlparser.cpp" line="311"/>
+        <location filename="ckartinaxmlparser.cpp" line="414"/>
+        <location filename="ckartinaxmlparser.cpp" line="464"/>
+        <location filename="ckartinaxmlparser.cpp" line="766"/>
+        <location filename="ckartinaxmlparser.cpp" line="863"/>
+        <location filename="ckartinaxmlparser.cpp" line="903"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>

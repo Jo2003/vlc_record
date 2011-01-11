@@ -117,6 +117,7 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
    cparser::SChan chan;
    QString        sErr;
    bool           bInChannels = false;
+   bool           bSkipStreamParams;
    int            iRV;
 
    // clear chanList ...
@@ -269,6 +270,24 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
                   }
                }
             }
+// fix me! read channel list not only depending on item names but also take care of structure ...
+            else if (sr.name() == "stream_params") // qnd fix for stream params ...
+            {
+               // read until the end of stream_params ...
+               bSkipStreamParams = true;
+
+               while (bSkipStreamParams)
+               {
+                  if (sr.readNext() == QXmlStreamReader::EndElement)
+                  {
+                     if (sr.name() == "stream_params")
+                     {
+                        bSkipStreamParams = false;
+                     }
+                  }
+               }
+            }
+// fix me! read channel list not only depending on item names but also take care of structure ...
             break;
 
          default:
