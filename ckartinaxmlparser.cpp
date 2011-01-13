@@ -100,8 +100,34 @@ int CKartinaXMLParser::fixTime (uint &uiTime)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: initChanEntry
+|  Begin: 13.01.2011 / 16:28:20
+|  Author: Jo2003
+|  Description: init chanEntry struct
+|
+|  Parameters: ref. to entry to init, isChan flag
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaXMLParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
+{
+   // new item starts --> init chan struct ...
+   entry.bHasArchive  = false;
+   entry.bIsGroup     = (bIsChan) ? false : true;
+   entry.bIsProtected = false;
+   entry.bIsVideo     = true;
+   entry.iId          = -1;
+   entry.sIcon        = "";
+   entry.sName        = "";
+   entry.sProgramm    = "";
+   entry.uiEnd        = 0;
+   entry.uiStart      = 0;
+   entry.vTs.clear();
+}
+
+/* -----------------------------------------------------------------\
 |  Method: parseChannelList
-|  Begin: 29.07.2010 / 11:28:20
+|  Begin: 29.07.2010 / 11:28:20 (rewrite 13.01.2011)
 |  Author: Jo2003
 |  Description: parse channel list
 |
@@ -114,205 +140,172 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
                                          bool bFixTime)
 {
-   cparser::SChan chan;
-   QString        sErr;
-   bool           bInChannels = false;
-   bool           bSkipStreamParams;
-   int            iRV;
+   int         i;
+   QXmlQuery   xQuery;
+   QStringList slGroups;
+   QStringList slChannels;
+   QStringList slResults, slRates;
+   QStringList::const_iterator citGrp, citChn;
+   cparser::SChan      chanEntry;
+   cparser::STimeShift sTs;
 
    // clear chanList ...
    chanList.clear();
 
-   // check for errors ...
-   iRV = kartinaError(sResp, sErr);
+   // set XML source ...
+   xQuery.setFocus(sResp);
 
-   if (!iRV)
+   // get groups ...
+   xQuery.setQuery(XP_GROUP_IDS);
+   xQuery.evaluateTo(&slGroups);
+
+   // add group by group ...
+   for (citGrp = slGroups.constBegin(); citGrp != slGroups.constEnd(); citGrp ++)
    {
-      QXmlStreamReader sr (sResp);
+      // init chan struct ...
+      initChanEntry(chanEntry, false);
 
-      while(!sr.atEnd() && !sr.hasError())
+      // fill group values ...
+
+      // set id ...
+      chanEntry.iId = (*citGrp).toInt();
+
+      // get group name ...
+      slResults.clear();
+      xQuery.setQuery(QString(XP_GROUP_NAME).arg(*citGrp));
+      if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
       {
-         switch (sr.readNext())
+         chanEntry.sName = slResults[0];
+      }
+
+      // get group color ...
+      slResults.clear();
+      xQuery.setQuery(QString(XP_GROUP_COLOR).arg(*citGrp));
+      if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+      {
+         chanEntry.sProgramm = slResults[0];
+      }
+
+      // group stuff completed -> add to vector ...
+      chanList.push_back(chanEntry);
+
+      // get all channels belonging to this group ...
+      slChannels.clear();
+      xQuery.setQuery(QString(XP_CHAN_IDS).arg(*citGrp));
+      xQuery.evaluateTo(&slChannels);
+
+      for (citChn = slChannels.constBegin(); citChn != slChannels.constEnd(); citChn ++)
+      {
+         // init chan struct ...
+         initChanEntry(chanEntry);
+
+         // fill channel values ...
+
+         // set id ...
+         chanEntry.iId = (*citChn).toInt();
+
+         // set channel name ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_NAME).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
          {
-         // we aren't interested in ...
-         case QXmlStreamReader::StartDocument:
-         case QXmlStreamReader::EndDocument:
-            break;
+            chanEntry.sName = slResults[0];
+         }
 
-         // any xml element ends ...
-         case QXmlStreamReader::EndElement:
-            if (sr.name() == "channels")
-            {
-               bInChannels = false;
-            }
-            else if (sr.name() == "item")
-            {
-               if (bInChannels)
-               {
-                  // channel item ends ...
-                  chanList.push_back(chan);
-               }
-            }
-            break;
+         // is video ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_VIDFLAG).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         {
+            chanEntry.bIsVideo = slResults[0].toInt() ? true : false;
+         }
 
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (sr.name() == "channels")
-            {
-               // we're in channels part now ...
-               bInChannels  = true;
+         // protected flag ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_PROTFLAG).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         {
+            chanEntry.bIsProtected = slResults[0].toInt() ? true : false;
+         }
 
-               // this also means group stuff is completed ...
-               chan.bIsGroup = true;
-               chanList.push_back(chan);
-            }
-            else if (sr.name() == "item")
-            {
-               // new item starts --> init chan struct ...
-               chan.bHasArchive  = false;
-               chan.bIsGroup     = false;
-               chan.bIsProtected = false;
-               chan.bIsVideo     = false;
-               chan.iId          = -1;
-               chan.sIcon        = "";
-               chan.sName        = "";
-               chan.sProgramm    = "";
-               chan.uiEnd        = 0;
-               chan.uiStart      = 0;
-            }
-            else if (sr.name() == "id")
-            {
-               // read id ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.iId = sr.text().toString().toInt();
-               }
-            }
-            else if (sr.name() == "name")
-            {
-               // read name ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.sName = sr.text().toString();
-               }
-            }
-            else if (sr.name() == "color")
-            {
-               // read color ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.sProgramm = sr.text().toString();
-               }
-            }
-            else if (sr.name() == "is_video")
-            {
-               // is video ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.bIsVideo = (sr.text().toString().toInt()) ? true : false;
-               }
-            }
-            else if (sr.name() == "protected")
-            {
-               // is protected ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.bIsProtected = (sr.text().toString().toInt()) ? true : false;
-               }
-            }
-            else if (sr.name() == "have_archive")
-            {
-               // has archive ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.bHasArchive = (sr.text().toString().toInt()) ? true : false;
-               }
-            }
-            else if (sr.name() == "icon")
-            {
-               // read icon path ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.sIcon = sr.text().toString();
-               }
-            }
-            else if (sr.name() == "epg_progname")
-            {
-               // read show name ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.sProgramm = sr.text().toString();
-               }
-            }
-            else if (sr.name() == "epg_start")
-            {
-               // read show start ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.uiStart = sr.text().toString().toUInt();
+         // has archive ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_ARCHFLAG).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         {
+            chanEntry.bHasArchive = slResults[0].toInt() ? true : false;
+         }
 
-                  if (bFixTime)
-                  {
-                     fixTime(chan.uiStart);
-                  }
-               }
-            }
-            else if (sr.name() == "epg_end")
+         // icon ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_ICON).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         {
+            chanEntry.sIcon = slResults[0];
+         }
+
+         // program name ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_SHOW).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         {
+            chanEntry.sProgramm = slResults[0];
+         }
+
+         // gmt start ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_START).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         {
+            chanEntry.uiStart = slResults[0].toUInt();
+
+            if (bFixTime)
             {
-               // read show end ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
-               {
-                  chan.uiEnd = sr.text().toString().toUInt();
-
-                  if (bFixTime)
-                  {
-                     fixTime(chan.uiEnd);
-                  }
-               }
+               fixTime(chanEntry.uiStart);
             }
-// fix me! read channel list not only depending on item names but also take care of structure ...
-            else if (sr.name() == "stream_params") // qnd fix for stream params ...
+         }
+
+         // gmt end ...
+         slResults.clear();
+         xQuery.setQuery(QString(XP_CHAN_END).arg(*citGrp).arg(*citChn));
+         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         {
+            chanEntry.uiEnd = slResults[0].toUInt();
+
+            if (bFixTime)
             {
-               // read until the end of stream_params ...
-               bSkipStreamParams = true;
-
-               while (bSkipStreamParams)
-               {
-                  if (sr.readNext() == QXmlStreamReader::EndElement)
-                  {
-                     if (sr.name() == "stream_params")
-                     {
-                        bSkipStreamParams = false;
-                     }
-                  }
-               }
+               fixTime(chanEntry.uiEnd);
             }
-// fix me! read channel list not only depending on item names but also take care of structure ...
-            break;
+         }
 
-         default:
-            break;
+         // stream params ...
+         slResults.clear();
+         slRates.clear();
+         xQuery.setQuery(QString(XP_STREAM_RATE).arg(*citGrp).arg(*citChn));
+         xQuery.evaluateTo(&slRates);
+         xQuery.setQuery(QString(XP_STREAM_TS).arg(*citGrp).arg(*citChn));
+         xQuery.evaluateTo(&slResults);
 
-         } // end switch ...
+         if (slRates.count() && slResults.count() && (slRates.count() == slResults.count()))
+         {
+            for (i = 0; i < slResults.count(); i++)
+            {
+               sTs.iBitRate   = slRates[i].toInt();
+               sTs.iTimeShift = slResults[i].toInt();
 
-      } // end while ...
+               // add bitrate ...
+               chanEntry.vTs.push_back(sTs);
+            }
+         }
 
-      // check for xml errors ...
-      if(sr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(sr.errorString()));
-
-         iRV = -1;
+         // add channel entry to vector ...
+         chanList.push_back(chanEntry);
       }
    }
-   else
-   {
-      QMessageBox::critical(NULL, tr("Error"), sErr);
-      mErr(sErr);
-   }
 
-   return iRV;
+   // no entry means error ...
+   return chanList.count() ? 0 : -1;
+
 }
 
 /* -----------------------------------------------------------------\

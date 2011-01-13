@@ -28,10 +28,34 @@
 #include "customization.h"
 
 //===================================================================
+// XPATH defines ...
+//===================================================================
+#define XP_GROUP_IDS      "/response/groups/item/id/string()"
+#define XP_GROUP_NAME     "/response/groups/item[id=%1]/name/string()"
+#define XP_GROUP_COLOR    "/response/groups/item[id=%1]/color/string()"
+#define XP_CHAN_IDS       "/response/groups/item[id=%1]/channels/item/id/string()"
+#define XP_CHAN_NAME      "/response/groups/item[id=%1]/channels/item[id=%2]/name/string()"
+#define XP_CHAN_VIDFLAG   "/response/groups/item[id=%1]/channels/item[id=%2]/is_video/string()"
+#define XP_CHAN_PROTFLAG  "/response/groups/item[id=%1]/channels/item[id=%2]/protected/string()"
+#define XP_CHAN_ARCHFLAG  "/response/groups/item[id=%1]/channels/item[id=%2]/have_archive/string()"
+#define XP_CHAN_ICON      "/response/groups/item[id=%1]/channels/item[id=%2]/icon/string()"
+#define XP_CHAN_SHOW      "/response/groups/item[id=%1]/channels/item[id=%2]/epg_progname/string()"
+#define XP_CHAN_START     "/response/groups/item[id=%1]/channels/item[id=%2]/epg_start/string()"
+#define XP_CHAN_END       "/response/groups/item[id=%1]/channels/item[id=%2]/epg_end/string()"
+#define XP_STREAM_TS      "/response/groups/item[id=%1]/channels/item[id=%2]/stream_params/item/ts/string()"
+#define XP_STREAM_RATE    "/response/groups/item[id=%1]/channels/item[id=%2]/stream_params/item/rate/string()"
+
+//===================================================================
 // namespace
 //===================================================================
 namespace cparser
 {
+   struct STimeShift
+   {
+      int iTimeShift;
+      int iBitRate;
+   };
+
    struct SChan
    {
       QString sName;
@@ -44,6 +68,7 @@ namespace cparser
       bool    bIsProtected;
       bool    bHasArchive;
       bool    bIsGroup;
+      QVector<cparser::STimeShift> vTs;
    };
 
    struct SEpg
@@ -115,6 +140,7 @@ public:
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);
    QString xmlElementToValue (const QString &sElement, const QString &sName);
+   void initChanEntry (cparser::SChan &entry, bool bIsChan = true);
 
 
 private:
