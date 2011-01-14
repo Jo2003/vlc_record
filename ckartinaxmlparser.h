@@ -141,6 +141,9 @@ protected:
    void checkTimeOffSet (const uint &uiSrvTime);
    QString xmlElementToValue (const QString &sElement, const QString &sName);
    void initChanEntry (cparser::SChan &entry, bool bIsChan = true);
+   int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
 
 
 private:

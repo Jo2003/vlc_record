@@ -308,6 +308,42 @@ void CSettingsDlg::SetStreamServerCbx (const QVector<cparser::SSrv> &vSrvList, c
 }
 
 /* -----------------------------------------------------------------\
+|  Method: SetBitrateCbx
+|  Begin: 14.01.2011 / 14:15
+|  Author: Jo2003
+|  Description: fill / mark combobox for bitrate
+|
+|  Parameters: ref. to bitrate vector, act bitrate
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
+{
+   int iActIdx = 0;
+   int iCount  = 0;
+   QVector<int>::const_iterator cit;
+
+
+   m_ui->cbxBitRate->clear();
+
+   // add all available bitrates ...
+   for (cit = vValues.constBegin(); cit != vValues.constEnd(); cit++)
+   {
+      m_ui->cbxBitRate->addItem(QString::number(*cit), QVariant(*cit));
+
+      if (*cit == iActrate)
+      {
+         iActIdx = iCount;
+      }
+
+      iCount ++;
+   }
+
+   // mark active rate ...
+   m_ui->cbxBitRate->setCurrentIndex(iActIdx);
+}
+
+/* -----------------------------------------------------------------\
 |  Method: on_btnSaveStreamServer_clicked
 |  Begin: 21.01.2010 / 11:22:39
 |  Author: Jo2003
@@ -320,9 +356,27 @@ void CSettingsDlg::SetStreamServerCbx (const QVector<cparser::SSrv> &vSrvList, c
 void CSettingsDlg::on_btnSaveStreamServer_clicked()
 {
    // which server was choosed ... ?
-   int iSrv = m_ui->cbxStreamServer->currentIndex();
+   int iSrv  = m_ui->cbxStreamServer->currentIndex();
 
    emit sigSetServer(m_ui->cbxStreamServer->itemData(iSrv).toString());
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnSaveBitrate_clicked
+|  Begin: 14.01.2011 / 14:45
+|  Author: Jo2003
+|  Description: button set bitrate pressed
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_btnSaveBitrate_clicked()
+{
+   // which bitrate was used ... ?
+   int iRate = m_ui->cbxBitRate->currentIndex();
+
+   emit sigSetBitRate(m_ui->cbxBitRate->itemData(iRate).toInt());
 }
 
 /* -----------------------------------------------------------------\

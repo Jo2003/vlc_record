@@ -50,6 +50,8 @@ namespace Kartina {
       REQ_GETVIDEOINFO,
       REQ_GETVODURL,
       REQ_ABORT,
+      REQ_GETBITRATE,
+      REQ_SETBITRATE,
       REQ_UNKNOWN = 255
    };
 }
@@ -89,6 +91,8 @@ public:
    void GetVodGenres ();
    void SetServer (const QString& sIp);
    void GetServer ();
+   void SetBitRate (int iRate);
+   void GetBitRate ();
    void SetHttpBuffer (int iTime);
    void GetEPG (int iChanID, int iOffset = 0);
    void GetVideos (int iGenreID);
@@ -120,6 +124,7 @@ private slots:
 signals:
    void sigGotCookie (QString str);
    void sigGotTimeShift (QString str);
+   void sigGotBitRate (QString str);
    void sigTimeShiftSet (QString str);
    void sigGotChannelList (QString str);
    void sigGotEPG (QString str);
@@ -128,6 +133,7 @@ signals:
    void sigGotTimerStreamURL (QString str);
    void sigGotArchivURL (QString str);
    void sigServerChanged (QString str);
+   void sigBitrateChanged (QString str);
    void sigBufferSet (QString str);
    void sigSrvForm (QString str);
    void sigError (QString str);

@@ -140,172 +140,326 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
                                          bool bFixTime)
 {
-   int         i;
-   QXmlQuery   xQuery;
-   QStringList slGroups;
-   QStringList slChannels;
-   QStringList slResults, slRates;
-   QStringList::const_iterator citGrp, citChn;
-   cparser::SChan      chanEntry;
-   cparser::STimeShift sTs;
+   QString       sErr;
+   int           iRV;
 
-   // clear chanList ...
+   // clear channel list ...
    chanList.clear();
 
-   // set XML source ...
-   xQuery.setFocus(sResp);
+   // check for errors ...
+   iRV = kartinaError(sResp, sErr);
 
-   // get groups ...
-   xQuery.setQuery(XP_GROUP_IDS);
-   xQuery.evaluateTo(&slGroups);
-
-   // add group by group ...
-   for (citGrp = slGroups.constBegin(); citGrp != slGroups.constEnd(); citGrp ++)
+   if (!iRV)
    {
-      // init chan struct ...
-      initChanEntry(chanEntry, false);
+      QXmlStreamReader xml (sResp);
 
-      // fill group values ...
-
-      // set id ...
-      chanEntry.iId = (*citGrp).toInt();
-
-      // get group name ...
-      slResults.clear();
-      xQuery.setQuery(QString(XP_GROUP_NAME).arg(*citGrp));
-      if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+      while(!xml.atEnd() && !xml.hasError())
       {
-         chanEntry.sName = slResults[0];
+         switch (xml.readNext())
+         {
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (xml.name() == "groups")
+            {
+               // go into next level and parse groups ...
+               parseGroups(xml, chanList, bFixTime);
+            }
+            break;
+
+         default:
+            break;
+
+         } // end switch ...
+
+      } // end while ...
+
+      // check for xml errors ...
+      if(xml.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(xml.errorString()));
+
+         iRV = -1;
       }
+   }
+   else
+   {
+      QMessageBox::critical(NULL, tr("Error"), sErr);
+      mErr(sErr);
+   }
 
-      // get group color ...
-      slResults.clear();
-      xQuery.setQuery(QString(XP_GROUP_COLOR).arg(*citGrp));
-      if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseGroups
+|  Begin: 14.01.2011 / 16:50
+|  Author: Jo2003
+|  Description: parse group part of channel list
+|
+|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|
+|  Returns: 0
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+                                    bool bFixTime)
+{
+   QString        sUnknown;
+   cparser::SChan groupEntry;
+
+   // while not end groups ...
+   while (!((xml.readNext() == QXmlStreamReader::EndElement)
+      && (xml.name() == "groups")))
+   {
+      if (xml.tokenType() == QXmlStreamReader::StartElement)
       {
-         chanEntry.sProgramm = slResults[0];
-      }
-
-      // group stuff completed -> add to vector ...
-      chanList.push_back(chanEntry);
-
-      // get all channels belonging to this group ...
-      slChannels.clear();
-      xQuery.setQuery(QString(XP_CHAN_IDS).arg(*citGrp));
-      xQuery.evaluateTo(&slChannels);
-
-      for (citChn = slChannels.constBegin(); citChn != slChannels.constEnd(); citChn ++)
-      {
-         // init chan struct ...
-         initChanEntry(chanEntry);
-
-         // fill channel values ...
-
-         // set id ...
-         chanEntry.iId = (*citChn).toInt();
-
-         // set channel name ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_NAME).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         // item start --> initialize struct ...
+         if (xml.name() == "item")
          {
-            chanEntry.sName = slResults[0];
+            initChanEntry(groupEntry, false);
          }
-
-         // is video ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_VIDFLAG).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         else if (xml.name() == "name")
          {
-            chanEntry.bIsVideo = slResults[0].toInt() ? true : false;
-         }
-
-         // protected flag ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_PROTFLAG).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
-         {
-            chanEntry.bIsProtected = slResults[0].toInt() ? true : false;
-         }
-
-         // has archive ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_ARCHFLAG).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
-         {
-            chanEntry.bHasArchive = slResults[0].toInt() ? true : false;
-         }
-
-         // icon ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_ICON).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
-         {
-            chanEntry.sIcon = slResults[0];
-         }
-
-         // program name ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_SHOW).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
-         {
-            chanEntry.sProgramm = slResults[0];
-         }
-
-         // gmt start ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_START).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
-         {
-            chanEntry.uiStart = slResults[0].toUInt();
-
-            if (bFixTime)
+            if (xml.readNext() == QXmlStreamReader::Characters)
             {
-               fixTime(chanEntry.uiStart);
+               groupEntry.sName = xml.text().toString();
             }
          }
-
-         // gmt end ...
-         slResults.clear();
-         xQuery.setQuery(QString(XP_CHAN_END).arg(*citGrp).arg(*citChn));
-         if (xQuery.evaluateTo(&slResults) && (slResults.count() > 0))
+         else if (xml.name() == "id")
          {
-            chanEntry.uiEnd = slResults[0].toUInt();
-
-            if (bFixTime)
+            if (xml.readNext() == QXmlStreamReader::Characters)
             {
-               fixTime(chanEntry.uiEnd);
+               groupEntry.iId = xml.text().toString().toInt();
             }
          }
-
-         // stream params ...
-         slResults.clear();
-         slRates.clear();
-         xQuery.setQuery(QString(XP_STREAM_RATE).arg(*citGrp).arg(*citChn));
-         xQuery.evaluateTo(&slRates);
-         xQuery.setQuery(QString(XP_STREAM_TS).arg(*citGrp).arg(*citChn));
-         xQuery.evaluateTo(&slResults);
-
-         if (slRates.count() && slResults.count() && (slRates.count() == slResults.count()))
+         else if (xml.name() == "color")
          {
-            for (i = 0; i < slResults.count(); i++)
+            if (xml.readNext() == QXmlStreamReader::Characters)
             {
-               sTs.iBitRate   = slRates[i].toInt();
-               sTs.iTimeShift = slResults[i].toInt();
-
-               // add bitrate ...
-               chanEntry.vTs.push_back(sTs);
+               groupEntry.sProgramm = xml.text().toString();
             }
          }
+         else if (xml.name() == "channels")
+         {
+            // store group entry ...
+            chanList.push_back(groupEntry);
 
-         // add channel entry to vector ...
-         chanList.push_back(chanEntry);
+            // go into next level (channels)
+            parseChannels(xml, chanList, bFixTime);
+         }
+         else
+         {
+            // any unknown element shouldn't break our parser ...
+            sUnknown = xml.name().toString();
+
+            while (!((xml.readNext() == QXmlStreamReader::EndElement)
+               && (xml.name().toString() == sUnknown)))
+            {
+               mInfo(tr("Found not supported element %1 ...").arg(xml.name().toString()));
+            }
+         }
       }
    }
 
-   // no entry means error ...
-   return chanList.count() ? 0 : -1;
+   return 0;
+}
 
+/* -----------------------------------------------------------------\
+|  Method: parseChannels
+|  Begin: 14.01.2011 / 16:50
+|  Author: Jo2003
+|  Description: parse channels part of channel list
+|
+|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|
+|  Returns: 0
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+                                     bool bFixTime)
+{
+   QString        sUnknown;
+   cparser::SChan chanEntry;
+
+   // while no end of channels ...
+   while (!((xml.readNext() == QXmlStreamReader::EndElement)
+      && (xml.name() == "channels")))
+   {
+      if (xml.tokenType() == QXmlStreamReader::StartElement)
+      {
+         // item start -> init struct ...
+         if (xml.name() == "item")
+         {
+            initChanEntry(chanEntry);
+         }
+         else if (xml.name() == "name")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.sName = xml.text().toString();
+            }
+         }
+         else if (xml.name() == "id")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.iId = xml.text().toString().toInt();
+            }
+         }
+         else if (xml.name() == "is_video")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.bIsVideo = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+         }
+         else if (xml.name() == "have_archive")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.bHasArchive = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+         }
+         else if (xml.name() == "protected")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.bIsProtected = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+         }
+         else if (xml.name() == "icon")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.sIcon = xml.text().toString();
+            }
+         }
+         else if (xml.name() == "epg_progname")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.sProgramm = xml.text().toString();
+            }
+         }
+         else if (xml.name() == "epg_start")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.uiStart = xml.text().toString().toUInt();
+
+               if (bFixTime)
+               {
+                  fixTime(chanEntry.uiStart);
+               }
+            }
+         }
+         else if (xml.name() == "epg_end")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.uiEnd = xml.text().toString().toUInt();
+
+               if (bFixTime)
+               {
+                  fixTime(chanEntry.uiEnd);
+               }
+            }
+         }
+         else if (xml.name() == "stream_params")
+         {
+            // go into next level ... parse stream params ...
+            parseStreamParams(xml, chanEntry.vTs);
+         }
+         else
+         {
+            // any unknown element shouldn't break our parser ...
+            sUnknown = xml.name().toString();
+
+            while (!((xml.readNext() == QXmlStreamReader::EndElement)
+               && (xml.name().toString() == sUnknown)))
+            {
+               mInfo(tr("Found unknown element %1 ...").arg(xml.name().toString()));
+            }
+         }
+      }
+      else if (xml.tokenType() == QXmlStreamReader::EndElement)
+      {
+         // item end -> save entry ...
+         if (xml.name() == "item")
+         {
+            chanList.push_back(chanEntry);
+         }
+      }
+   }
+
+   return 0;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseStreamParams
+|  Begin: 14.01.2011 / 16:50
+|  Author: Jo2003
+|  Description: parse stream params part of channel list
+|
+|  Parameters: ref. to xml parser, ref. to stream params vector
+|
+|  Returns: 0
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs)
+{
+   QString             sUnknown;
+   cparser::STimeShift sTs;
+
+   sTs.iBitRate   = 0;
+   sTs.iTimeShift = 0;
+
+   while (!((xml.readNext() == QXmlStreamReader::EndElement)
+      && (xml.name() == "stream_params")))
+   {
+      if (xml.tokenType() == QXmlStreamReader::StartElement)
+      {
+         // item start -> init struct ...
+         if (xml.name() == "item")
+         {
+            sTs.iBitRate   = 0;
+            sTs.iTimeShift = 0;
+         }
+         else if (xml.name() == "rate")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               sTs.iBitRate = xml.text().toString().toInt();
+            }
+         }
+         else if (xml.name() == "ts")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               sTs.iTimeShift = xml.text().toString().toInt();
+            }
+         }
+         else
+         {
+            // any unknown element shouldn't break our parser ...
+            sUnknown = xml.name().toString();
+
+            while (!((xml.readNext() == QXmlStreamReader::EndElement)
+               && (xml.name().toString() == sUnknown)))
+            {
+               mInfo(tr("Found unknown element %1 ...").arg(xml.name().toString()));
+            }
+         }
+      }
+      else if (xml.tokenType() == QXmlStreamReader::EndElement)
+      {
+         // item end -> save entry ...
+         if (xml.name() == "item")
+         {
+            vTs.push_back(sTs);
+         }
+      }
+   }
+
+   return 0;
 }
 
 /* -----------------------------------------------------------------\
@@ -475,24 +629,29 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
 {
-   int     iRV = 0, iPos = 0;
-   QRegExp rx("<div[ \t]+class=\"filter\"[ \t]+rel=\"([0-9]+)\">([^<]+)</div>");
+   int             iRV = 0;
+   QXmlQuery       query;
+   QStringList     slGenre;
+   QStringList     slGenId;
    cparser::SGenre sGenre;
 
-   // clear vector ...
-   vGenres.clear();
+   query.setFocus(sResp);
+   query.setQuery("/response/genres/item/id/string()");
+   query.evaluateTo(&slGenId);
 
-   // use reg. expressions instead of xml stream parser ...
-   while ((iPos = rx.indexIn(sResp, iPos)) > -1)
+   query.setQuery("/response/genres/item/name/string()");
+   query.evaluateTo(&slGenre);
+
+   if (slGenId.count() && slGenre.count() && (slGenId.count() == slGenre.count()))
    {
-      sGenre.uiGid  = rx.cap(1).toUInt();
-      sGenre.sGName = rx.cap(2);
+      for (int i = 0; i < slGenId.count(); i++)
+      {
+         sGenre.sGName = slGenre[i];
+         sGenre.uiGid  = slGenId[i].toUInt();
 
-      // add genre to vector ...
-      vGenres.push_back(sGenre);
-
-      // update position ...
-      iPos += rx.matchedLength();
+         // add genre to vector ...
+         vGenres.push_back(sGenre);
+      }
    }
 
    if (vGenres.count() == 0)

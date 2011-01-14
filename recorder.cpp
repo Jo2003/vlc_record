@@ -178,6 +178,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&KartinaTv,    SIGNAL(sigGotCookie(QString)), this, SLOT(slotCookie(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
    connect (&KartinaTv,    SIGNAL(sigTimeShiftSet(QString)), this, SLOT(slotTimeShift(QString)));
+   connect (&KartinaTv,    SIGNAL(sigGotBitRate(QString)), this, SLOT(slotGotBitrate(QString)));
    connect (&streamLoader, SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
    connect (&Refresh,      SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
    connect (ui->textEpg,   SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
@@ -185,6 +186,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&Settings,     SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&KartinaTv,    SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
    connect (&Settings,     SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
+   connect (&Settings,     SIGNAL(sigSetBitRate(int)), this, SLOT(slotSetBitrate(int)));
    connect (&KartinaTv,    SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
    connect (&KartinaTv,    SIGNAL(sigSrvForm(QString)), this, SLOT(slotServerForm(QString)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
@@ -1206,7 +1208,7 @@ void Recorder::slotServerForm(QString str)
       mInfo(tr("Active stream server is %1").arg(sActSrv));
    }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETTIMESHIFT);
+   Trigger.TriggerRequest(Kartina::REQ_GETBITRATE);
 }
 
 /* -----------------------------------------------------------------\
@@ -1248,6 +1250,31 @@ void Recorder::slotGotTimeShift(QString str)
    }
 
    // changing timeshift box will trigger chan list request ...
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotGotBitrate
+|  Begin: 14.01.2011 / 14:20
+|  Author: Jo2003
+|  Description: parse bitrate response
+|
+|  Parameters: response string
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotGotBitrate(QString str)
+{
+   QVector<int> vValues;
+   int          iActVal = 0;
+   QString      sName;
+
+   if (!XMLParser.parseSettings(str, vValues, iActVal, sName))
+   {
+      Settings.SetBitrateCbx(vValues, iActVal);
+      mInfo (tr("Using Bitrate %1 kbit/s ...").arg(iActVal));
+   }
+
+   Trigger.TriggerRequest(Kartina::REQ_GETTIMESHIFT);
 }
 
 /* -----------------------------------------------------------------\
@@ -1641,6 +1668,21 @@ void Recorder::slotDayTabChanged(int iIdx)
 void Recorder::slotSetSServer(QString sIp)
 {
    Trigger.TriggerRequest(Kartina::REQ_SERVER, sIp);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSetBitrate
+|  Begin: 14.01.2011 / 14:55
+|  Author: Jo2003
+|  Description: set bitrate
+|
+|  Parameters: new bitrate
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotSetBitrate(int iRate)
+{
+   Trigger.TriggerRequest(Kartina::REQ_SETBITRATE, iRate);
 }
 
 /* -----------------------------------------------------------------\

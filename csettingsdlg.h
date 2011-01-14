@@ -88,6 +88,7 @@ public:
     void  SaveFavourites (const QList<int> &favList);
     QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<cparser::SSrv>& vSrvList, const QString& sActSrv);
+    void  SetBitrateCbx (const QVector<int>& vValues, int iActrate);
     void  SaveCookie (const QString &str);
     bool  DisableSplashScreen ();
     QString hsah (const QString &str);
@@ -102,11 +103,13 @@ private:
 signals:
     void sigReloadLogos ();
     void sigSetServer (QString sIp);
+    void sigSetBitRate (int iRate);
     void sigSetBuffer (int iBuffer);
 
 private slots:
     void on_pushDoRegister_clicked();
     void on_btnSaveStreamServer_clicked();
+    void on_btnSaveBitrate_clicked();
     void on_pushDelLogos_clicked();
     void on_pushSave_clicked();
     void on_pushDir_clicked();

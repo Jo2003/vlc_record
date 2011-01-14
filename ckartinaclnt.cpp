@@ -334,6 +334,47 @@ void CKartinaClnt::SetTimeShift (int iHours)
 }
 
 /*-----------------------------------------------------------------------------\
+| Function:    GetBitRate
+|
+| Author:      Jo2003
+|
+| Begin:       14.01.2011, 13:50:52
+|
+| Description: request bitrate from kartina server
+|
+| Parameters:  --
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetBitRate()
+{
+   mInfo(tr("Request Bit Rate ..."));
+
+   GetRequest(Kartina::REQ_GETBITRATE, KARTINA_API_PATH "settings?var=bitrate");
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    SetBitRate
+|
+| Author:      Jo2003
+|
+| Begin:       14.01.2011 / 14:05
+|
+| Description: set bit rate
+|
+| Parameters:  int value kbit/sec. (allowed: 900, 1500)
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::SetBitRate(int iRate)
+{
+   mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
+
+   PostRequest(Kartina::REQ_SETBITRATE, KARTINA_API_PATH "settings_set",
+               QString("var=bitrate&val=%1").arg(iRate));
+}
+
+/*-----------------------------------------------------------------------------\
 | Function:    GetStreamURL
 |
 | Author:      Jo2003
@@ -471,7 +512,7 @@ void CKartinaClnt::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   GetRequest(Kartina::REQ_GETVODGENRES, "/?m=vod&act=home", "User-Agent: Mozilla/5.0");
+   GetRequest(Kartina::REQ_GETVODGENRES, KARTINA_API_PATH "vod_genres");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -628,6 +669,12 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
             break;
          case Kartina::REQ_GETVODURL:
             emit sigGotVodUrl(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_GETBITRATE:
+            emit sigGotBitRate(QString::fromUtf8(baPageContent.constData()));
+            break;
+         case Kartina::REQ_SETBITRATE:
+            emit sigBitrateChanged(QString::fromUtf8(baPageContent.constData()));
             break;
          default:
             break;

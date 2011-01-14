@@ -157,6 +157,12 @@ void CWaitTrigger::run()
             case Kartina::REQ_GETVODURL:
                pClient->GetVodUrl(iOptArg1);
                break;
+            case Kartina::REQ_GETBITRATE:
+               pClient->GetBitRate();
+               break;
+            case Kartina::REQ_SETBITRATE:
+               pClient->SetBitRate(iOptArg1);
+               break;
             default:
                break;
             }

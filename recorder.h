@@ -201,6 +201,8 @@ private slots:
     void slotVodAnchor (const QUrl &link);
     void slotGotVideoInfo (QString str);
     void slotVodURL(QString str);
+    void slotGotBitrate (QString str);
+    void slotSetBitrate (int iRate);
 
 signals:
     void sigShow ();
