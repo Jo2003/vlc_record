@@ -32,6 +32,7 @@ install_libvlc: install_base
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/6_libvlc-mpeg2.mod
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/8_libvlc_xvid_avi.mod
 	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/9_libvlc_odl.mod
+	${INSTALL} -m 644 -t ${TARGET}/share/vlc-record/modules modules/11_libvlc_mp4.mod
 
 debnew:
 	${CHKINST} ${PKGNAMENW} ${PKGGRP} ${PKGVERNW} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETNW} -f install.mak instnew

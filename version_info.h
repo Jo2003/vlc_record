@@ -31,10 +31,14 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B7" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B8" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2011-01-14: Version x.40B8
+| - update channel list parser
+| - set bitrate
+|
 | 2011-01-11: Version x.40B7
 | - quick'n'dirty fix for new stream params in channel list
 |
