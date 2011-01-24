@@ -93,6 +93,7 @@ public:
     bool  DisableSplashScreen ();
     QString hsah (const QString &str);
     QString& reverse (QString &str);
+    int   GetBitRate ();
 
 protected:
     void changeEvent(QEvent *e);

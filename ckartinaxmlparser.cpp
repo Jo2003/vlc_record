@@ -28,7 +28,6 @@ extern CLogFile VlcLog;
 CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : QObject(parent)
 {
    iOffset    = 0;
-   iTimeShift = 0;
 }
 
 /* -----------------------------------------------------------------\
@@ -140,29 +139,29 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
                                          bool bFixTime)
 {
-   QString       sErr;
    int           iRV;
 
    // clear channel list ...
    chanList.clear();
 
    // check for errors ...
-   iRV = kartinaError(sResp, sErr);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
-      QXmlStreamReader xml (sResp);
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
 
-      while(!xml.atEnd() && !xml.hasError())
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
       {
-         switch (xml.readNext())
+         switch (xmlSr.readNext())
          {
          // any xml element starts ...
          case QXmlStreamReader::StartElement:
-            if (xml.name() == "groups")
+            if (xmlSr.name() == "groups")
             {
                // go into next level and parse groups ...
-               parseGroups(xml, chanList, bFixTime);
+               parseGroups(xmlSr, chanList, bFixTime);
             }
             break;
 
@@ -174,18 +173,13 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
       } // end while ...
 
       // check for xml errors ...
-      if(xml.hasError())
+      if(xmlSr.hasError())
       {
          QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xml.errorString()));
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
 
          iRV = -1;
       }
-   }
-   else
-   {
-      QMessageBox::critical(NULL, tr("Error"), sErr);
-      mErr(sErr);
    }
 
    return iRV;
@@ -477,22 +471,22 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
                                      QString &sActIp)
 {
    cparser::SSrv srv;
-   QString       sErr;
    int           iRV;
 
    // clear epg list ...
    vSrv.clear();
 
    // check for errors ...
-   iRV = kartinaError(sResp, sErr);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
-      QXmlStreamReader sr (sResp);
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
 
-      while(!sr.atEnd() && !sr.hasError())
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
       {
-         switch (sr.readNext())
+         switch (xmlSr.readNext())
          {
          // we aren't interested in ...
          case QXmlStreamReader::StartDocument:
@@ -501,7 +495,7 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
 
          // any xml element ends ...
          case QXmlStreamReader::EndElement:
-            if (sr.name() == "item")
+            if (xmlSr.name() == "item")
             {
                vSrv.push_back(srv);
             }
@@ -509,33 +503,33 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
 
          // any xml element starts ...
          case QXmlStreamReader::StartElement:
-            if (sr.name() == "item")
+            if (xmlSr.name() == "item")
             {
                srv.sName = "";
                srv.sIp   = "";
             }
-            else if (sr.name() == "ip")
+            else if (xmlSr.name() == "ip")
             {
                // read srv ip address ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  srv.sIp = sr.text().toString();
+                  srv.sIp = xmlSr.text().toString();
                }
             }
-            else if (sr.name() == "descr")
+            else if (xmlSr.name() == "descr")
             {
                // read srv name ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  srv.sName = sr.text().toString();
+                  srv.sName = xmlSr.text().toString();
                }
             }
-            else if (sr.name() == "value")
+            else if (xmlSr.name() == "value")
             {
                // read actual srv ip ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  sActIp = sr.text().toString();
+                  sActIp = xmlSr.text().toString();
                }
             }
             break;
@@ -548,18 +542,13 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
       } // end while ...
 
       // check for xml errors ...
-      if(sr.hasError())
+      if(xmlSr.hasError())
       {
          QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(sr.errorString()));
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
 
          iRV = -1;
       }
-   }
-   else
-   {
-      QMessageBox::critical(NULL, tr("Error"), sErr);
-      mErr(sErr);
    }
 
    return iRV;
@@ -583,17 +572,16 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
               "<servertime>(.*)</servertime>");
 
    int     iRV = 0;
-   QString sErr;
 
    sCookie = "";
 
    // error check ...
-   iRV = kartinaError(sResp, sErr);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
       // use reg. expressions instead of xml stream parser ...
-      if (rx.indexIn(sResp) > -1)
+      if (rx.indexIn(sCleanResp) > -1)
       {
          sCookie = QString("%1=%2").arg(rx.cap(2)).arg(rx.cap(1));
 
@@ -604,12 +592,6 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
       {
          mInfo("RegEx doesn't match ...");
       }
-   }
-   else
-   {
-      // display error ...
-      QMessageBox::critical(NULL, tr("Error"), sErr);
-      mErr(sErr);
    }
 
    return iRV;
@@ -635,29 +617,34 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
    QStringList     slGenId;
    cparser::SGenre sGenre;
 
-   query.setFocus(sResp);
-   query.setQuery("/response/genres/item/id/string()");
-   query.evaluateTo(&slGenId);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
-   query.setQuery("/response/genres/item/name/string()");
-   query.evaluateTo(&slGenre);
-
-   if (slGenId.count() && slGenre.count() && (slGenId.count() == slGenre.count()))
+   if (!iRV)
    {
-      for (int i = 0; i < slGenId.count(); i++)
+      query.setFocus(sCleanResp);
+      query.setQuery("/response/genres/item/id/string()");
+      query.evaluateTo(&slGenId);
+
+      query.setQuery("/response/genres/item/name/string()");
+      query.evaluateTo(&slGenre);
+
+      if (slGenId.count() && slGenre.count() && (slGenId.count() == slGenre.count()))
       {
-         sGenre.sGName = slGenre[i];
-         sGenre.uiGid  = slGenId[i].toUInt();
+         for (int i = 0; i < slGenId.count(); i++)
+         {
+            sGenre.sGName = slGenre[i];
+            sGenre.uiGid  = slGenId[i].toUInt();
 
-         // add genre to vector ...
-         vGenres.push_back(sGenre);
+            // add genre to vector ...
+            vGenres.push_back(sGenre);
+         }
       }
-   }
 
-   if (vGenres.count() == 0)
-   {
-      iRV = -1;
-      mInfo("No Genres found ...");
+      if (vGenres.count() == 0)
+      {
+         iRV = -1;
+         mInfo("No Genres found ...");
+      }
    }
 
    return iRV;
@@ -676,36 +663,44 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList)
 {
+   int                iRV;
    cparser::SVodVideo vod;
-   QDomDocument  doc;
+   QDomDocument       doc;
 
    // clear vod list ...
    vVodList.clear();
 
-   doc.setContent(sResp);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
-   QDomNodeList dlIds     = doc.elementsByTagName("id");
-   QDomNodeList dlNames   = doc.elementsByTagName("name");
-   QDomNodeList dlDescs   = doc.elementsByTagName("description");
-   QDomNodeList dlYear    = doc.elementsByTagName("year");
-   QDomNodeList dlCountry = doc.elementsByTagName("country");
-   QDomNodeList dlImg     = doc.elementsByTagName("poster");
-
-   int iNumb = dlIds.count();
-
-   for (int i = 0; i < iNumb; i++)
+   if (!iRV)
    {
-      vod.uiVidId  = dlIds.item(i).firstChild().nodeValue().toUInt();
-      vod.sName    = dlNames.item(i).firstChild().nodeValue();
-      vod.sDescr   = dlDescs.item(i).firstChild().nodeValue();
-      vod.sYear    = dlYear.item(i).firstChild().nodeValue();
-      vod.sCountry = dlCountry.item(i).firstChild().nodeValue();
-      vod.sImg     = dlImg.item(i).firstChild().nodeValue();
+      doc.setContent(sCleanResp);
 
-      vVodList.push_back(vod);
+      QDomNodeList dlIds     = doc.elementsByTagName("id");
+      QDomNodeList dlNames   = doc.elementsByTagName("name");
+      QDomNodeList dlDescs   = doc.elementsByTagName("description");
+      QDomNodeList dlYear    = doc.elementsByTagName("year");
+      QDomNodeList dlCountry = doc.elementsByTagName("country");
+      QDomNodeList dlImg     = doc.elementsByTagName("poster");
+
+      int iNumb = dlIds.count();
+
+      for (int i = 0; i < iNumb; i++)
+      {
+         vod.uiVidId  = dlIds.item(i).firstChild().nodeValue().toUInt();
+         vod.sName    = dlNames.item(i).firstChild().nodeValue();
+         vod.sDescr   = dlDescs.item(i).firstChild().nodeValue();
+         vod.sYear    = dlYear.item(i).firstChild().nodeValue();
+         vod.sCountry = dlCountry.item(i).firstChild().nodeValue();
+         vod.sImg     = dlImg.item(i).firstChild().nodeValue();
+
+         vVodList.push_back(vod);
+      }
+
+      iRV = vVodList.count() ? 0 : -1;
    }
 
-   return vVodList.count() ? 0 : -1;
+   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -725,83 +720,89 @@ int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &
    QStringList result;
    QStringList::const_iterator cit;
    QXmlQuery   query;
-   query.setFocus(sResp);
 
-   // init struct ...
-   vidInfo.sActors   = "";
-   vidInfo.sCountry  = "";
-   vidInfo.sDescr    = "";
-   vidInfo.sDirector = "";
-   vidInfo.sImg      = "";
-   vidInfo.sName     = "";
-   vidInfo.sYear     = "";
-   vidInfo.uiLength  = 0;
-   vidInfo.uiVidId   = 0;
-   vidInfo.vVodFiles.clear();
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
-   // name ...
-   result.clear();
-   query.setQuery("/response/film/name/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.sName = result[0];
-
-   // length ...
-   result.clear();
-   query.setQuery("/response/film/lenght/string()"); // nice typo ...
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.uiLength = result[0].toUInt();
-
-   // description ...
-   result.clear();
-   query.setQuery("/response/film/description/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.sDescr = result[0];
-   vidInfo.sDescr.replace("", "");
-
-   // actors ...
-   result.clear();
-   query.setQuery("/response/film/actors/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.sActors = result[0];
-
-   // country ...
-   result.clear();
-   query.setQuery("/response/film/country/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.sCountry = result[0];
-
-   // director ...
-   result.clear();
-   query.setQuery("/response/film/director/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.sDirector = result[0];
-
-   // image ...
-   result.clear();
-   query.setQuery("/response/film/poster/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.sImg = result[0];
-
-   // year ...
-   result.clear();
-   query.setQuery("/response/film/year/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.sYear = result[0];
-
-   // id ...
-   result.clear();
-   query.setQuery("/response/film/id/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-   vidInfo.uiVidId = result[0].toUInt();
-
-   // video id's
-   result.clear();
-   query.setQuery("/response/film/videos/item/id/string()");
-   iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-
-   for (cit = result.constBegin(); cit != result.constEnd(); cit ++)
+   if (!iRV)
    {
-      vidInfo.vVodFiles.push_back((*cit).toUInt());
+      query.setFocus(sCleanResp);
+
+      // init struct ...
+      vidInfo.sActors   = "";
+      vidInfo.sCountry  = "";
+      vidInfo.sDescr    = "";
+      vidInfo.sDirector = "";
+      vidInfo.sImg      = "";
+      vidInfo.sName     = "";
+      vidInfo.sYear     = "";
+      vidInfo.uiLength  = 0;
+      vidInfo.uiVidId   = 0;
+      vidInfo.vVodFiles.clear();
+
+      // name ...
+      result.clear();
+      query.setQuery("/response/film/name/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.sName = result[0];
+
+      // length ...
+      result.clear();
+      query.setQuery("/response/film/lenght/string()"); // nice typo ...
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.uiLength = result[0].toUInt();
+
+      // description ...
+      result.clear();
+      query.setQuery("/response/film/description/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.sDescr = result[0];
+      vidInfo.sDescr.replace("", "");
+
+      // actors ...
+      result.clear();
+      query.setQuery("/response/film/actors/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.sActors = result[0];
+
+      // country ...
+      result.clear();
+      query.setQuery("/response/film/country/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.sCountry = result[0];
+
+      // director ...
+      result.clear();
+      query.setQuery("/response/film/director/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.sDirector = result[0];
+
+      // image ...
+      result.clear();
+      query.setQuery("/response/film/poster/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.sImg = result[0];
+
+      // year ...
+      result.clear();
+      query.setQuery("/response/film/year/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.sYear = result[0];
+
+      // id ...
+      result.clear();
+      query.setQuery("/response/film/id/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+      vidInfo.uiVidId = result[0].toUInt();
+
+      // video id's
+      result.clear();
+      query.setQuery("/response/film/videos/item/id/string()");
+      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
+
+      for (cit = result.constBegin(); cit != result.constEnd(); cit ++)
+      {
+         vidInfo.vVodFiles.push_back((*cit).toUInt());
+      }
    }
 
    return iRV;
@@ -822,22 +823,22 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
 {
    QRegExp       rx("([^\n]*)[\n]*(.*)");
    cparser::SEpg epg;
-   QString       sErr;
    int           iRV;
 
    // clear epg list ...
    epgList.clear();
 
    // check for errors ...
-   iRV = kartinaError(sResp, sErr);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
-      QXmlStreamReader sr (sResp);
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
 
-      while(!sr.atEnd() && !sr.hasError())
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
       {
-         switch (sr.readNext())
+         switch (xmlSr.readNext())
          {
          // we aren't interested in ...
          case QXmlStreamReader::StartDocument:
@@ -846,7 +847,7 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
 
          // any xml element ends ...
          case QXmlStreamReader::EndElement:
-            if (sr.name() == "item")
+            if (xmlSr.name() == "item")
             {
                epgList.push_back(epg);
             }
@@ -854,27 +855,27 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
 
          // any xml element starts ...
          case QXmlStreamReader::StartElement:
-            if (sr.name() == "item")
+            if (xmlSr.name() == "item")
             {
                epg.sDescr = "";
                epg.sName  = "";
                epg.uiGmt  = 0;
             }
-            else if (sr.name() == "ut_start")
+            else if (xmlSr.name() == "ut_start")
             {
                // read start time ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  epg.uiGmt = sr.text().toString().toUInt();
+                  epg.uiGmt = xmlSr.text().toString().toUInt();
                }
             }
-            else if (sr.name() == "progname")
+            else if (xmlSr.name() == "progname")
             {
                // read program name ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
                   // program description will be after '\n' ...
-                  if (rx.indexIn(sr.text().toString()) > -1)
+                  if (rx.indexIn(xmlSr.text().toString()) > -1)
                   {
                      // yes, program description there ...
                      epg.sName  = rx.cap(1);
@@ -883,16 +884,16 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
                   else
                   {
                      // program name only ...
-                     epg.sName = sr.text().toString();
+                     epg.sName = xmlSr.text().toString();
                   }
                }
             }
-            else if (sr.name() == "pdescr")
+            else if (xmlSr.name() == "pdescr")
             {
                // read program description (not used at the moment) ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  epg.sDescr = sr.text().toString();
+                  epg.sDescr = xmlSr.text().toString();
                }
             }
             break;
@@ -905,18 +906,13 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
       } // end while ...
 
       // check for xml errors ...
-      if(sr.hasError())
+      if(xmlSr.hasError())
       {
          QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(sr.errorString()));
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
 
          iRV = -1;
       }
-   }
-   else
-   {
-      QMessageBox::critical(NULL, tr("Error"), sErr);
-      mErr(sErr);
    }
 
    return iRV;
@@ -937,22 +933,22 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
 int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValues,
                                       int &iActVal, QString &sName)
 {
-   QString sErr;
    int     iRV;
 
    // clear epg list ...
    vValues.clear();
 
    // check for errors ...
-   iRV = kartinaError(sResp, sErr);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
-      QXmlStreamReader sr (sResp);
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
 
-      while(!sr.atEnd() && !sr.hasError())
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
       {
-         switch (sr.readNext())
+         switch (xmlSr.readNext())
          {
          // we aren't interested in ...
          case QXmlStreamReader::StartDocument:
@@ -962,28 +958,28 @@ int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValue
 
          // any xml element starts ...
          case QXmlStreamReader::StartElement:
-            if (sr.name() == "item")
+            if (xmlSr.name() == "item")
             {
                // read item ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  vValues.push_back(sr.text().toString().toInt());
+                  vValues.push_back(xmlSr.text().toString().toInt());
                }
             }
-            else if (sr.name() == "value")
+            else if (xmlSr.name() == "value")
             {
                // read actual value ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  iActVal = sr.text().toString().toInt();
+                  iActVal = xmlSr.text().toString().toInt();
                }
             }
-            else if (sr.name() == "name")
+            else if (xmlSr.name() == "name")
             {
                // read actual value ...
-               if (sr.readNext() == QXmlStreamReader::Characters)
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  sName = sr.text().toString();
+                  sName = xmlSr.text().toString();
                }
             }
             break;
@@ -993,27 +989,16 @@ int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValue
 
          } // end switch ...
 
-         // store timeshift value if needed ...
-         if (sName == "timeshift")
-         {
-            iTimeShift = iActVal;
-         }
-
       } // end while ...
 
       // check for xml errors ...
-      if(sr.hasError())
+      if(xmlSr.hasError())
       {
          QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(sr.errorString()));
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
 
          iRV = -1;
       }
-   }
-   else
-   {
-      QMessageBox::critical(NULL, tr("Error"), sErr);
-      mErr(sErr);
    }
 
    return iRV;
@@ -1035,32 +1020,26 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
    QRegExp rx("<url>([^ ]*).*");
 
    int     iRV = 0;
-   QString sErr;
 
    sUrl = "";
 
    // error check ...
-   iRV = kartinaError(sResp, sErr);
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
       // use reg. expressions instead of xml stream parser ...
-      if (rx.indexIn(sResp) > -1)
+      if (rx.indexIn(sCleanResp) > -1)
       {
          sUrl = rx.cap(1);
       }
-   }
-   else
-   {
-      QMessageBox::critical(NULL, tr("Error"), sErr);
-      mErr(sErr);
    }
 
    return iRV;
 }
 
 /* -----------------------------------------------------------------\
-|  Method: kartinaError
+|  Method: checkResponse
 |  Begin: 28.07.2010 / 18:42:54
 |  Author: Jo2003
 |  Description: format kartina error string
@@ -1069,21 +1048,38 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
 |
 |  Returns: error string
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::kartinaError(const QString& sResp, QString &sErr)
+int CKartinaXMLParser::checkResponse (const QString &sResp, const QString &sFunction, int iLine)
 {
    int iRV = 0;
+
+   // clean response ... (delete content which may come
+   // after / before the xml code ...
+   QString sEndTag = "</response>";
+   int iStartPos   = sResp.indexOf("<?xml");
+   int iEndPos     = sResp.indexOf(sEndTag) + sEndTag.length();
+
+   // store clean string in private variable ...
+   sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);
+
    QRegExp rx("<message>(.*)</message>[ \t\n\r]*"
               "<code>(.*)</code>");
 
    sErr = "";
 
    // quick'n'dirty error check ...
-   if (sResp.contains("<error>"))
+   if (sCleanResp.contains("<error>"))
    {
-      if (rx.indexIn(sResp) > -1)
+      if (rx.indexIn(sCleanResp) > -1)
       {
-         sErr = rx.cap(1);
          iRV  = rx.cap(2).toInt();
+         sErr = tr("Error #%1 in %2():%3: %4")
+                .arg(iRV)
+                .arg(sFunction)
+                .arg(iLine)
+                .arg(rx.cap(1));
+
+         QMessageBox::critical(NULL, tr("Error"), sErr);
+         mErr(QString("\n --> %1").arg(sErr));
       }
    }
 

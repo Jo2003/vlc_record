@@ -35,9 +35,12 @@
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
-| 2011-01-14: Version x.40B8
-| - update channel list parser
-| - set bitrate
+| 2011-01-24: Version x.40B8
+| - clean xml response to be more robust when kartina sends
+| - fix channel list parser to support new entries
+| - set timeshift in epgbrowser to 0 if no timeshift is
+|   supported by channel
+| - add bitrate switch stuff
 |
 | 2011-01-11: Version x.40B7
 | - quick'n'dirty fix for new stream params in channel list

@@ -821,6 +821,11 @@ bool CSettingsDlg::regOk()
    return (hsah(m_ui->lineUser->text()) == m_ui->lineRegData->text()) ? true : false;
 }
 
+int  CSettingsDlg::GetBitRate()
+{
+   return m_ui->cbxBitRate->currentText().toInt();
+}
+
 //===================================================================
 // <== return internal stored values
 //===================================================================

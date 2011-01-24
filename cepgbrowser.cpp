@@ -47,25 +47,16 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
                              const QString &sName, int iChanID, uint uiGmt,
                              bool bHasArchiv)
 {
-   QString    sRows   = "", sRow, sProgCell, sHtmlDoc, sStartTime, sHeadLine;
-   QDateTime  dtStartThis, dtStartNext;
-   bool       bMark;
    epg::SShow actShow;
 
-   // clear program ...
+   // store values ...
+   sChanName = sName;
+   iCid      = iChanID;
+   uiTime    = uiGmt;
+   bArchive  = bHasArchiv;
+
+   // clear program map ...
    mProgram.clear();
-
-   // store channel id ...
-   iCid = iChanID;
-
-   // create headline (table head) ...
-   sHeadLine = QString("%1 - %2")
-               .arg(sName)
-               .arg(QDateTime::fromTime_t(uiGmt).toString("dd. MMM. yyyy"));
-
-   sRow = TR_HEAD;
-   sRow.replace(TMPL_HEAD, sHeadLine);
-   sRows += sRow;
 
    for (int i = 0; i < epglist.size(); i ++)
    {
@@ -76,6 +67,63 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
 
       // store start time and show info ...
       mProgram.insert(epglist[i].uiGmt, actShow);
+   }
+
+   clear();
+   setHtml(createHtmlCode());
+   scrollToAnchor("nowPlaying");
+}
+
+/* -----------------------------------------------------------------\
+|  Method: recreateEpg
+|  Begin: 24.01.2011 / 14:55
+|  Author: Jo2003
+|  Description: re-create epg with values stored in class
+|               (needed when changing timeshift)
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CEpgBrowser::recreateEpg()
+{
+   clear();
+   setHtml(createHtmlCode());
+   scrollToAnchor("nowPlaying");
+}
+
+/* -----------------------------------------------------------------\
+|  Method: createHtmlCode
+|  Begin: 24.01.2011 / 14:55
+|  Author: Jo2003
+|  Description: create epg html code
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+QString CEpgBrowser::createHtmlCode()
+{
+   QString    sRows   = "", sRow, sProgCell, sHtmlDoc, sStartTime, sHeadLine;
+   QDateTime  dtStartThis, dtStartNext;
+   bool       bMark;
+   epg::SShow actShow;
+   int        i;
+   QMap<uint, epg::SShow>::const_iterator cit;
+
+
+   // create headline (table head) ...
+   sHeadLine = QString("%1 - %2")
+               .arg(sChanName)
+               .arg(QDateTime::fromTime_t(uiTime).toString("dd. MMM. yyyy"));
+
+   sRow = TR_HEAD;
+   sRow.replace(TMPL_HEAD, sHeadLine);
+   sRows += sRow;
+
+   for (cit = mProgram.constBegin(), i = 0; cit != mProgram.constEnd(); cit++, i++)
+   {
+      actShow = *cit;
 
       bMark       = false;
       sProgCell   = "";
@@ -112,7 +160,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
       sStartTime = dtStartThis.toString("hh:mm");
 
       // archiv available ...
-      if (bHasArchiv)
+      if (bArchive)
       {
          // only show archiv links if this show already has ended ...
          if (ArchivAvailable(actShow.uiStart))
@@ -124,14 +172,14 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
             sArchivLinks += QString("<a href='vlc-record?action=archivplay&cid=%1&gmt=%2'>"
                                     "<img src=':png/play' width='16' height='16' alt='play' "
                                     "title='%3' /></a>&nbsp;")
-                                    .arg(iChanID).arg(actShow.uiStart)
+                                    .arg(iCid).arg(actShow.uiStart)
                                     .arg(tr("play from archive ..."));
 
             // record ...
             sArchivLinks += QString("<a href='vlc-record?action=archivrec&cid=%1&gmt=%2'>"
                                     "<img src=':png/record' width='16' height='16' alt='record' "
                                     "title='%3' /></a>")
-                                    .arg(iChanID).arg(actShow.uiStart)
+                                    .arg(iCid).arg(actShow.uiStart)
                                     .arg(tr("record from archive ..."));
 
             sStartTime += sArchivLinks;
@@ -148,7 +196,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
          sStartTime += QString("&nbsp;<a href='vlc-record?action=timerrec&cid=%1&start=%2&end=%3'>"
                                "<img src=':png/timer' width='16' height='16' alt='timer' "
                                "title='%4' /></a>&nbsp;")
-                               .arg(iChanID).arg(actShow.uiStart).arg(actShow.uiEnd)
+                               .arg(iCid).arg(actShow.uiStart).arg(actShow.uiEnd)
                                .arg(tr("add timer record ..."));
       }
 
@@ -162,9 +210,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
    sHtmlDoc = EPG_TMPL;
    sHtmlDoc.replace(TMPL_ROWS, sRows);
 
-   clear();
-   setHtml(sHtmlDoc);
-   scrollToAnchor("nowPlaying");
+   return sHtmlDoc;
 }
 
 /* -----------------------------------------------------------------\

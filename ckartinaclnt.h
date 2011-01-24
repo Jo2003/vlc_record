@@ -99,6 +99,7 @@ public:
    void GetVideoInfo (int iVodID);
    void SetCookie (const QString &cookie);
    bool busy ();
+   bool cookieSet();
 
 protected:
    void PostRequest (Kartina::EReq req, const QString &path, const QString &content,

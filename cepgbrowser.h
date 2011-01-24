@@ -48,8 +48,11 @@ public:
                     const QString &sName, int iChanID,
                     uint uiGmt, bool bHasArchiv);
 
+    void recreateEpg ();
+
     void SetTimeShift (int iTs) { iTimeShift = iTs; }
     int  GetCid () { return iCid; }
+    int  GetTimeShift () { return iTimeShift; }
     const epg::SShow epgShow (uint uiTimeT);
     void EnlargeFont ();
     void ReduceFont ();
@@ -58,10 +61,14 @@ public:
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());
     bool ArchivAvailable (uint uiThisShow);
+    QString createHtmlCode();
 
 private:
     int                    iTimeShift;
     int                    iCid;
+    bool                   bArchive;
+    uint                   uiTime;
+    QString                sChanName;
     QMap<uint, epg::SShow> mProgram;
 };
 

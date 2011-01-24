@@ -55,6 +55,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    iFontSzChg     = 0;
    iDwnReqId      = -1;
    bDoInitDlg     = true;
+   bFirstConnect  = true;
 
    // init favourite buttons ...
    for (int i = 0; i < MAX_NO_FAVOURITES; i++)
@@ -223,9 +224,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // fill search area combo box ...
    touchSearchAreaCbx();
 
-   // request authorisation ...
-   Trigger.TriggerRequest(Kartina::REQ_COOKIE);
-
    // start refresh timer, if needed ...
    if (Settings.DoRefresh())
    {
@@ -367,12 +365,25 @@ void Recorder::closeEvent(QCloseEvent *event)
       // delete context menu stuff ...
       CleanContextMenu();
 
-      // logout from kartina ...
-      Trigger.TriggerRequest (Kartina::REQ_LOGOUT);
+      // cancel any running kartina request ...
+      KartinaTv.abort();
 
-      // ignore event here ...
-      // we'll close app in logout slot ...
-      event->ignore ();
+      // are we authenticated ... ?
+      if (KartinaTv.cookieSet())
+      {
+         // logout from kartina ...
+         Trigger.TriggerRequest (Kartina::REQ_LOGOUT);
+
+         // ignore event here ...
+         // we'll close app in logout slot ...
+         event->ignore ();
+      }
+      else
+      {
+         // no logout needed ...
+         // close programm right now ...
+         event->accept();
+      }
    }
    else
    {
@@ -418,6 +429,15 @@ void Recorder::keyPressEvent(QKeyEvent *event)
 void Recorder::showEvent(QShowEvent *event)
 {
    emit sigShow();
+
+   if (bFirstConnect)
+   {
+      bFirstConnect = false;
+
+      // start authenitcate chain ...
+      Trigger.TriggerRequest(Kartina::REQ_COOKIE);
+   }
+
    QWidget::showEvent(event);
 }
 
@@ -658,27 +678,6 @@ void Recorder::on_pushPlay_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxTimeShift_currentIndexChanged
-|  Begin: 19.01.2010 / 16:13:03
-|  Author: Jo2003
-|  Description: set new timeshift
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::on_cbxTimeShift_currentIndexChanged(QString str)
-{
-   TouchPlayCtrlBtns(false);
-
-   // set timeshift ...
-   ui->textEpg->SetTimeShift(str.toInt());
-   timeRec.SetTimeShift(str.toInt());
-
-   Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, str.toInt());
-}
-
-/* -----------------------------------------------------------------\
 |  Method: on_listWidget_currentRowChanged
 |  Begin: 19.01.2010 / 16:13:56
 |  Author: Jo2003
@@ -695,8 +694,27 @@ void Recorder::on_listWidget_currentRowChanged(int currentRow)
    {
       if(pItem->GetId() != -1)
       {
+         // get whole channel entry ...
+         cparser::SChan entry = chanMap.value(pItem->GetId());
+         int iTs;
+
          ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR).arg("rgb(255, 254, 212)").arg(pItem->toolTip()));
          SetProgress (pItem->GetStartTime(), pItem->GetEndTime());
+
+         // quick'n'dirty timeshift hack ...
+         if (entry.vTs.count() <= 2) // no timeshift available ...
+         {
+            ui->textEpg->SetTimeShift(0);
+         }
+         else
+         {
+            iTs = ui->cbxTimeShift->currentText().toInt();
+
+            if (ui->textEpg->GetTimeShift() != iTs)
+            {
+               ui->textEpg->SetTimeShift(iTs);
+            }
+         }
 
          // was this a refresh or was channel changed ... ?
          if (pItem->GetId() != ui->textEpg->GetCid())
@@ -1040,6 +1058,27 @@ void Recorder::show()
 }
 
 /* -----------------------------------------------------------------\
+|  Method: slotTimeShiftChanged
+|  Begin: 19.01.2010 / 16:13:03
+|  Author: Jo2003
+|  Description: set new timeshift
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotTimeShiftChanged(const QString& str)
+{
+   TouchPlayCtrlBtns(false);
+
+   // set timeshift ...
+   ui->textEpg->SetTimeShift(str.toInt());
+   timeRec.SetTimeShift(str.toInt());
+
+   Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, str.toInt());
+}
+
+/* -----------------------------------------------------------------\
 |  Method: slotSystrayActivated
 |  Begin: 26.01.2010 / 16:05:00
 |  Author: Jo2003
@@ -1098,13 +1137,8 @@ void Recorder::slotErr(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotLogout(QString str)
 {
-   QString sErr;
 
-   if (XMLParser.kartinaError (str, sErr))
-   {
-      QMessageBox::critical(this, tr("Error"), sErr);
-      mErr (sErr);
-   }
+   XMLParser.checkResponse(str, __FUNCTION__, __LINE__);
 
    mInfo(tr("logout done ..."));
 
@@ -1181,10 +1215,10 @@ void Recorder::slotCookie (QString str)
    if (!XMLParser.parseCookie(str, sCookie))
    {
       KartinaTv.SetCookie(sCookie);
-   }
 
-   // request streamserver ...
-   Trigger.TriggerRequest(Kartina::REQ_GET_SERVER);
+      // request streamserver ...
+      Trigger.TriggerRequest(Kartina::REQ_GET_SERVER);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -1205,10 +1239,11 @@ void Recorder::slotServerForm(QString str)
    if (!XMLParser.parseSServers(str, vSrv, sActSrv))
    {
       Settings.SetStreamServerCbx(vSrv, sActSrv);
-      mInfo(tr("Active stream server is %1").arg(sActSrv));
-   }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETBITRATE);
+      mInfo(tr("Active stream server is %1").arg(sActSrv));
+
+      Trigger.TriggerRequest(Kartina::REQ_GETBITRATE);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -1247,9 +1282,16 @@ void Recorder::slotGotTimeShift(QString str)
 
       // mark active timeshift ...
       ui->cbxTimeShift->setCurrentIndex(ui->cbxTimeShift->findText(QString::number(iShift)));
+
+      // request channel list ...
+      Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+
    }
 
-   // changing timeshift box will trigger chan list request ...
+   // Former there was a "on_cbxTimeShift_currentIndexChanged" slot. But because
+   // we have to change the timeshift cbx now also when changing the
+   // channel, we need the possibility to disconnect the signal from the slot!
+   connect (ui->cbxTimeShift, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotTimeShiftChanged(QString)));
 }
 
 /* -----------------------------------------------------------------\
@@ -1272,9 +1314,9 @@ void Recorder::slotGotBitrate(QString str)
    {
       Settings.SetBitrateCbx(vValues, iActVal);
       mInfo (tr("Using Bitrate %1 kbit/s ...").arg(iActVal));
-   }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETTIMESHIFT);
+      Trigger.TriggerRequest(Kartina::REQ_GETTIMESHIFT);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -1289,15 +1331,10 @@ void Recorder::slotGotBitrate(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotTimeShift (QString str)
 {
-   QString sErr;
-
-   if (XMLParser.kartinaError(str, sErr))
+   if(!XMLParser.checkResponse(str, __FUNCTION__, __LINE__))
    {
-      QMessageBox::critical(this, tr("Error"), sErr);
-      mErr(sErr);
+      Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
    }
-
-   Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
 }
 
 /* -----------------------------------------------------------------\
@@ -1395,9 +1432,9 @@ void Recorder::slotEPG(QString str)
 
       TouchPlayCtrlBtns();
       ui->listWidget->setFocus(Qt::OtherFocusReason);
-   }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
+      Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
+   }
 }
 
 /* -----------------------------------------------------------------\

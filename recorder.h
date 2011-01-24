@@ -114,6 +114,7 @@ private:
     QVector<CShortcutEx *>         vShortcutPool;
     bool                           bDoInitDlg;
     int                            iDwnReqId;
+    bool                           bFirstConnect;
 
 protected:
     void touchSearchAreaCbx ();
@@ -164,10 +165,10 @@ private slots:
     void on_pushAbout_clicked();
     void on_cbxChannelGroup_activated(int index);
     void on_listWidget_currentRowChanged(int currentRow);
-    void on_cbxTimeShift_currentIndexChanged(QString str);
     void on_pushPlay_clicked();
     void on_pushRecord_clicked();
     void on_pushSettings_clicked();
+    void slotTimeShiftChanged(const QString& str);
     void slotErr (QString str);
     void slotChanList (QString str);
     void slotEPG(QString str);

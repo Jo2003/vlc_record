@@ -28,24 +28,6 @@
 #include "customization.h"
 
 //===================================================================
-// XPATH defines ...
-//===================================================================
-#define XP_GROUP_IDS      "/response/groups/item/id/string()"
-#define XP_GROUP_NAME     "/response/groups/item[id=%1]/name/string()"
-#define XP_GROUP_COLOR    "/response/groups/item[id=%1]/color/string()"
-#define XP_CHAN_IDS       "/response/groups/item[id=%1]/channels/item/id/string()"
-#define XP_CHAN_NAME      "/response/groups/item[id=%1]/channels/item[id=%2]/name/string()"
-#define XP_CHAN_VIDFLAG   "/response/groups/item[id=%1]/channels/item[id=%2]/is_video/string()"
-#define XP_CHAN_PROTFLAG  "/response/groups/item[id=%1]/channels/item[id=%2]/protected/string()"
-#define XP_CHAN_ARCHFLAG  "/response/groups/item[id=%1]/channels/item[id=%2]/have_archive/string()"
-#define XP_CHAN_ICON      "/response/groups/item[id=%1]/channels/item[id=%2]/icon/string()"
-#define XP_CHAN_SHOW      "/response/groups/item[id=%1]/channels/item[id=%2]/epg_progname/string()"
-#define XP_CHAN_START     "/response/groups/item[id=%1]/channels/item[id=%2]/epg_start/string()"
-#define XP_CHAN_END       "/response/groups/item[id=%1]/channels/item[id=%2]/epg_end/string()"
-#define XP_STREAM_TS      "/response/groups/item[id=%1]/channels/item[id=%2]/stream_params/item/ts/string()"
-#define XP_STREAM_RATE    "/response/groups/item[id=%1]/channels/item[id=%2]/stream_params/item/rate/string()"
-
-//===================================================================
 // namespace
 //===================================================================
 namespace cparser
@@ -119,11 +101,10 @@ class CKartinaXMLParser : public QObject
 public:
    CKartinaXMLParser(QObject * parent = 0);
    int fixTime (uint &uiTime);
-   int GetTimeShift () { return iTimeShift; }
    int GetFixTime () { return iOffset; }
 
    // new functions for use with API ...
-   int kartinaError (const QString &sResp, QString &sErr);
+   int checkResponse (const QString &sResp, const QString& sFunction, int iLine);
    int parseCookie (const QString &sResp, QString &sCookie);
    int parseTimeShift (const QString &sResp, QVector<int> &vValues, int &iShift);
    int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
@@ -148,7 +129,8 @@ protected:
 
 private:
    int iOffset;
-   int iTimeShift;
+   QString sErr, sCleanResp;
+   QXmlStreamReader xmlSr;
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

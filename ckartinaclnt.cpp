@@ -709,6 +709,22 @@ bool CKartinaClnt::busy ()
    return ((eReq != Kartina::REQ_UNKNOWN) || (sCookie == "")) ? true : false;
 }
 
+/* -----------------------------------------------------------------\
+|  Method: cookieSet
+|  Begin: 24.01.2011 / 10:40
+|  Author: Jo2003
+|  Description: is cookie set?
+|
+|  Parameters: --
+|
+|  Returns: true ==> set
+|          false ==> not set
+\----------------------------------------------------------------- */
+bool CKartinaClnt::cookieSet()
+{
+   return (sCookie != "") ? true : false;
+}
+
 /*=============================================================================\
 |                                    History:
 | ---------------------------------------------------------------------------
