@@ -3,8 +3,7 @@
 # -------------------------------------------------
 QT += network \
     sql \
-    xml \
-    xmlpatterns
+    xml
 
 # build debug and release ...
 CONFIG += debug_and_release \

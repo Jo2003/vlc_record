@@ -368,33 +368,28 @@ p, li { white-space: pre-wrap; }
     <name>CKartinaXMLParser</name>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="178"/>
-        <location filename="ckartinaxmlparser.cpp" line="547"/>
-        <location filename="ckartinaxmlparser.cpp" line="911"/>
-        <location filename="ckartinaxmlparser.cpp" line="997"/>
+        <location filename="ckartinaxmlparser.cpp" line="556"/>
+        <location filename="ckartinaxmlparser.cpp" line="671"/>
+        <location filename="ckartinaxmlparser.cpp" line="795"/>
+        <location filename="ckartinaxmlparser.cpp" line="953"/>
+        <location filename="ckartinaxmlparser.cpp" line="1117"/>
+        <location filename="ckartinaxmlparser.cpp" line="1203"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="179"/>
-        <location filename="ckartinaxmlparser.cpp" line="548"/>
-        <location filename="ckartinaxmlparser.cpp" line="912"/>
-        <location filename="ckartinaxmlparser.cpp" line="998"/>
+        <location filename="ckartinaxmlparser.cpp" line="557"/>
+        <location filename="ckartinaxmlparser.cpp" line="672"/>
+        <location filename="ckartinaxmlparser.cpp" line="796"/>
+        <location filename="ckartinaxmlparser.cpp" line="954"/>
+        <location filename="ckartinaxmlparser.cpp" line="1118"/>
+        <location filename="ckartinaxmlparser.cpp" line="1204"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="252"/>
-        <source>Found not supported element %1 ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="374"/>
-        <location filename="ckartinaxmlparser.cpp" line="442"/>
-        <source>Found unknown element %1 ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="1075"/>
+        <location filename="ckartinaxmlparser.cpp" line="1281"/>
         <source>Error #%1 in %2():%3: %4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -404,7 +399,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1081"/>
+        <location filename="ckartinaxmlparser.cpp" line="1287"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>

@@ -246,10 +246,13 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
             // any unknown element shouldn't break our parser ...
             sUnknown = xml.name().toString();
 
+            // mInfo(tr("Found unused element %1 ...").arg(sUnknown));
+
             while (!((xml.readNext() == QXmlStreamReader::EndElement)
                && (xml.name().toString() == sUnknown)))
             {
-               mInfo(tr("Found not supported element %1 ...").arg(xml.name().toString()));
+               // mInfo(tr("Found unused child %1: %2 ...")
+               //      .arg(xml.name().toString()).arg(xml.text().toString()));
             }
          }
       }
@@ -368,10 +371,13 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
             // any unknown element shouldn't break our parser ...
             sUnknown = xml.name().toString();
 
+            // mInfo(tr("Found unused element %1 ...").arg(sUnknown));
+
             while (!((xml.readNext() == QXmlStreamReader::EndElement)
                && (xml.name().toString() == sUnknown)))
             {
-               mInfo(tr("Found unknown element %1 ...").arg(xml.name().toString()));
+               // mInfo(tr("Found unused child %1: %2 ...")
+               //      .arg(xml.name().toString()).arg(xml.text().toString()));
             }
          }
       }
@@ -436,10 +442,13 @@ int CKartinaXMLParser::parseStreamParams (QXmlStreamReader &xml, QVector<cparser
             // any unknown element shouldn't break our parser ...
             sUnknown = xml.name().toString();
 
+            // mInfo(tr("Found unused element %1 ...").arg(sUnknown));
+
             while (!((xml.readNext() == QXmlStreamReader::EndElement)
                && (xml.name().toString() == sUnknown)))
             {
-               mInfo(tr("Found unknown element %1 ...").arg(xml.name().toString()));
+               // mInfo(tr("Found unused child %1: %2 ...")
+               //      .arg(xml.name().toString()).arg(xml.text().toString()));
             }
          }
       }
@@ -611,39 +620,58 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie)
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
 {
-   int             iRV = 0;
-   QXmlQuery       query;
-   QStringList     slGenre;
-   QStringList     slGenId;
    cparser::SGenre sGenre;
+   vGenres.clear ();
 
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   // check for errors ...
+   int iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
-      query.setFocus(sCleanResp);
-      query.setQuery("/response/genres/item/id/string()");
-      query.evaluateTo(&slGenId);
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
 
-      query.setQuery("/response/genres/item/name/string()");
-      query.evaluateTo(&slGenre);
-
-      if (slGenId.count() && slGenre.count() && (slGenId.count() == slGenre.count()))
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
       {
-         for (int i = 0; i < slGenId.count(); i++)
+         switch (xmlSr.readNext())
          {
-            sGenre.sGName = slGenre[i];
-            sGenre.uiGid  = slGenId[i].toUInt();
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (xmlSr.name() == "id")
+            {
+               // read id ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  sGenre.uiGid = xmlSr.text().toString().toUInt();
+               }
+            }
+            else if (xmlSr.name() == "name")
+            {
+               // read name ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  sGenre.sGName = xmlSr.text().toString();
 
-            // add genre to vector ...
-            vGenres.push_back(sGenre);
-         }
-      }
+                  // add genre to vector ...
+                  vGenres.push_back(sGenre);
+               }
+            }
+            break;
 
-      if (vGenres.count() == 0)
+         default:
+            break;
+
+         } // end switch ...
+
+      } // end while ...
+
+      // check for xml errors ...
+      if(xmlSr.hasError())
       {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+
          iRV = -1;
-         mInfo("No Genres found ...");
       }
    }
 
@@ -663,41 +691,112 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList)
 {
-   int                iRV;
    cparser::SVodVideo vod;
-   QDomDocument       doc;
 
    // clear vod list ...
    vVodList.clear();
 
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   // check for errors ...
+   int iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
-      doc.setContent(sCleanResp);
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
 
-      QDomNodeList dlIds     = doc.elementsByTagName("id");
-      QDomNodeList dlNames   = doc.elementsByTagName("name");
-      QDomNodeList dlDescs   = doc.elementsByTagName("description");
-      QDomNodeList dlYear    = doc.elementsByTagName("year");
-      QDomNodeList dlCountry = doc.elementsByTagName("country");
-      QDomNodeList dlImg     = doc.elementsByTagName("poster");
-
-      int iNumb = dlIds.count();
-
-      for (int i = 0; i < iNumb; i++)
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
       {
-         vod.uiVidId  = dlIds.item(i).firstChild().nodeValue().toUInt();
-         vod.sName    = dlNames.item(i).firstChild().nodeValue();
-         vod.sDescr   = dlDescs.item(i).firstChild().nodeValue();
-         vod.sYear    = dlYear.item(i).firstChild().nodeValue();
-         vod.sCountry = dlCountry.item(i).firstChild().nodeValue();
-         vod.sImg     = dlImg.item(i).firstChild().nodeValue();
+         switch (xmlSr.readNext())
+         {
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (xmlSr.name() == "item")
+            {
+               // clear vod item ...
+               vod.sActors   = "";
+               vod.sCountry  = "";
+               vod.sDescr    = "";
+               vod.sDirector = "";
+               vod.sImg      = "";
+               vod.sName     = "";
+               vod.sYear     = "";
+               vod.uiLength  = 0;
+               vod.uiVidId   = 0;
+               vod.vVodFiles.clear();
+            }
+            else if (xmlSr.name() == "id")
+            {
+               // read video id ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vod.uiVidId = xmlSr.text().toString().toUInt();
+               }
+            }
+            else if (xmlSr.name() == "name")
+            {
+               // video name ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vod.sName = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "description")
+            {
+               // video description ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vod.sDescr = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "year")
+            {
+               // year ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vod.sYear = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "country")
+            {
+               // country ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vod.sCountry = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "poster")
+            {
+               // image ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vod.sImg = xmlSr.text().toString();
+               }
+            }
+            break;
 
-         vVodList.push_back(vod);
+         case QXmlStreamReader::EndElement:
+            if (xmlSr.name() == "item")
+            {
+               // store element ...
+               vVodList.push_back(vod);
+            }
+            break;
+
+         default:
+            break;
+
+         } // end switch ...
+
+      } // end while ...
+
+      // check for xml errors ...
+      if(xmlSr.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+         iRV = -1;
       }
-
-      iRV = vVodList.count() ? 0 : -1;
    }
 
    return iRV;
@@ -716,97 +815,204 @@ int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodV
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
 {
-   int         iRV = 0;
-   QStringList result;
-   QStringList::const_iterator cit;
-   QXmlQuery   query;
+   QString sUnknown;
 
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   // check for errors ...
+   int iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
 
    if (!iRV)
    {
-      query.setFocus(sCleanResp);
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
 
-      // init struct ...
-      vidInfo.sActors   = "";
-      vidInfo.sCountry  = "";
-      vidInfo.sDescr    = "";
-      vidInfo.sDirector = "";
-      vidInfo.sImg      = "";
-      vidInfo.sName     = "";
-      vidInfo.sYear     = "";
-      vidInfo.uiLength  = 0;
-      vidInfo.uiVidId   = 0;
-      vidInfo.vVodFiles.clear();
-
-      // name ...
-      result.clear();
-      query.setQuery("/response/film/name/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.sName = result[0];
-
-      // length ...
-      result.clear();
-      query.setQuery("/response/film/lenght/string()"); // nice typo ...
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.uiLength = result[0].toUInt();
-
-      // description ...
-      result.clear();
-      query.setQuery("/response/film/description/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.sDescr = result[0];
-      vidInfo.sDescr.replace("", "");
-
-      // actors ...
-      result.clear();
-      query.setQuery("/response/film/actors/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.sActors = result[0];
-
-      // country ...
-      result.clear();
-      query.setQuery("/response/film/country/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.sCountry = result[0];
-
-      // director ...
-      result.clear();
-      query.setQuery("/response/film/director/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.sDirector = result[0];
-
-      // image ...
-      result.clear();
-      query.setQuery("/response/film/poster/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.sImg = result[0];
-
-      // year ...
-      result.clear();
-      query.setQuery("/response/film/year/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.sYear = result[0];
-
-      // id ...
-      result.clear();
-      query.setQuery("/response/film/id/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-      vidInfo.uiVidId = result[0].toUInt();
-
-      // video id's
-      result.clear();
-      query.setQuery("/response/film/videos/item/id/string()");
-      iRV |= (query.evaluateTo(&result)) ? 0 : -1;
-
-      for (cit = result.constBegin(); cit != result.constEnd(); cit ++)
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
       {
-         vidInfo.vVodFiles.push_back((*cit).toUInt());
+         switch (xmlSr.readNext())
+         {
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (xmlSr.name() == "film")
+            {
+               // init struct ...
+               vidInfo.sActors   = "";
+               vidInfo.sCountry  = "";
+               vidInfo.sDescr    = "";
+               vidInfo.sDirector = "";
+               vidInfo.sImg      = "";
+               vidInfo.sName     = "";
+               vidInfo.sYear     = "";
+               vidInfo.uiLength  = 0;
+               vidInfo.uiVidId   = 0;
+               vidInfo.vVodFiles.clear();
+            }
+            else if (xmlSr.name() == "name")
+            {
+               // video name ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.sName = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "lenght")
+            {
+               // video length ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.uiLength = xmlSr.text().toString().toUInt();
+               }
+            }
+            else if (xmlSr.name() == "description")
+            {
+               // video description ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.sDescr = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "actors")
+            {
+               // video actors ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.sActors = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "country")
+            {
+               // country ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.sCountry = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "director")
+            {
+               // director ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.sDirector = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "poster")
+            {
+               // image ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.sImg = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "year")
+            {
+               // year ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.sYear = xmlSr.text().toString();
+               }
+            }
+            else if (xmlSr.name() == "id")
+            {
+               // year ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  vidInfo.uiVidId = xmlSr.text().toString().toUInt();
+               }
+            }
+            else if (xmlSr.name() == "videos")
+            {
+               // parse vod parts ...
+               parseVodParts (xmlSr, vidInfo.vVodFiles);
+            }
+            else if (xmlSr.name() == "response")
+            {
+               // not needed ...
+            }
+            else
+            {
+               // any unknown element shouldn't break our parser ...
+               sUnknown = xmlSr.name().toString();
+
+               // mInfo(tr("Found unused element %1 ...").arg(sUnknown));
+
+               while (!((xmlSr.readNext() == QXmlStreamReader::EndElement)
+                  && (xmlSr.name().toString() == sUnknown)))
+               {
+                  // mInfo(tr("Found unused child %1: %2 ...")
+                  //      .arg(xmlSr.name().toString()).arg(xmlSr.text().toString()));
+               }
+            }
+            break;
+
+         default:
+            break;
+         }
+      }
+
+      // check for xml errors ...
+      if(xmlSr.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+         iRV = -1;
       }
    }
 
    return iRV;
 }
+
+/* -----------------------------------------------------------------\
+|  Method: parseVodParts
+|  Begin: 24.01.2011 / 20:50
+|  Author: Jo2003
+|  Description: parse vod video parts
+|
+|  Parameters: ref. to xml parser, ref. to vod parts vector
+|
+|  Returns: 0
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseVodParts (QXmlStreamReader &xml, QVector<uint>& vVodParts)
+{
+   QString             sUnknown;
+
+   vVodParts.clear();
+
+   while (!((xml.readNext() == QXmlStreamReader::EndElement)
+      && (xml.name() == "videos")))
+   {
+      if (xml.tokenType() == QXmlStreamReader::StartElement)
+      {
+         if (xml.name() == "item")
+         {
+            // not needed ...
+         }
+         else if (xml.name() == "id")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               vVodParts.push_back(xml.text().toString().toUInt());
+            }
+         }
+         else
+         {
+            // any unknown element shouldn't break our parser ...
+            sUnknown = xml.name().toString();
+
+            // mInfo(tr("Found unused element %1 ...").arg(sUnknown));
+
+            while (!((xml.readNext() == QXmlStreamReader::EndElement)
+               && (xml.name().toString() == sUnknown)))
+            {
+               // mInfo(tr("Found unused child %1: %2 ...")
+               //      .arg(xml.name().toString()).arg(xml.text().toString()));
+            }
+         }
+      }
+   }
+
+   return 0;
+}
+
+
 
 /* -----------------------------------------------------------------\
 |  Method: parseEpg

@@ -19,9 +19,6 @@
 #include <QRegExp>
 #include <QDateTime>
 #include <QString>
-#include <QXmlQuery>
-#include <QDomNodeList>
-#include <QDomDocument>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -125,6 +122,7 @@ protected:
    int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
+   int parseVodParts (QXmlStreamReader &xml, QVector<uint>& vVodParts);
 
 
 private:
