@@ -1433,7 +1433,11 @@ void Recorder::slotEPG(QString str)
       TouchPlayCtrlBtns();
       ui->listWidget->setFocus(Qt::OtherFocusReason);
 
-      Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
+      // update vod stuff only at startup ...
+      if (ui->cbxGenre->count() == 0)
+      {
+         Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
+      }
    }
 }
 
