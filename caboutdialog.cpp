@@ -22,12 +22,12 @@
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CAboutDialog::CAboutDialog(QWidget *parent) :
+CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires) :
     QDialog(parent),
     ui(new Ui::CAboutDialog)
 {
    ui->setupUi(this);
-   FillInfo();
+   FillInfo(sExpires);
    ui->textBrowser->setHtml(strAbout);
    ui->textShortcuts->setHtml(sShortCuts);
 }
@@ -91,11 +91,11 @@ void CAboutDialog::changeEvent(QEvent *e)
 |  Author: Jo2003
 |  Description: fill about info into string
 |
-|  Parameters: --
+|  Parameters: sExpires - string with date and time
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CAboutDialog::FillInfo()
+void CAboutDialog::FillInfo(QString sExpires)
 {
    strAbout = "";
    QTextStream str(&strAbout);
@@ -109,6 +109,7 @@ void CAboutDialog::FillInfo()
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>").arg(tr("Author:")) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>").arg(tr("Inspired by:")) << endl
          << QString("<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>").arg(qVersion()) << endl
+         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Account expires:")).arg(sExpires) << endl
          << "<tr><td><b>Most icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>" << endl
          << "</table><br /> <br />" << endl
          << tr("<b>vlc-record</b> - a tool to <b>view / record program streams</b> from %1%2").arg(COMPANY_LINK)

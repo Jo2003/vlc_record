@@ -31,10 +31,15 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B8" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B9" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2011-01-25: Version x.40B9
+| - display expire data in about dialog
+| - new function "oneLevelParser" to make xml parsing
+|   more common
+|
 | 2011-01-24: Version x.40B8
 | - clean xml response to be more robust when kartina sends
 | - fix channel list parser to support new entries

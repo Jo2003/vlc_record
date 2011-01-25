@@ -19,9 +19,14 @@
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;About&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;About&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="forms/caboutdialog.ui" line="61"/>
@@ -58,162 +63,167 @@ p, li { white-space: pre-wrap; }
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="114"/>
+        <location filename="caboutdialog.cpp" line="112"/>
+        <source>Account expires:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="115"/>
         <source>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
         <oldsource>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1.</oldsource>
         <translation>&lt;b&gt;vlc-record&lt;/b&gt; - программа для &lt;b&gt;просмотра и записи видео потока&lt;/b&gt; с %1%2</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="116"/>
+        <location filename="caboutdialog.cpp" line="117"/>
         <source> (click to buy a subscription).</source>
         <oldsource> (Click to buy a subscription).</oldsource>
         <translation>(нажимай ссылку, чтобы купить подписку).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="120"/>
+        <location filename="caboutdialog.cpp" line="121"/>
         <source>To do this you will need to authorise using username and password provided by %1.</source>
         <oldsource>To do this it will authenticate you with username and password at %1.</oldsource>
         <translation>Программа подключается к %1 при помощи Вашей информации абонента (Логин/Пароль).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="121"/>
+        <location filename="caboutdialog.cpp" line="122"/>
         <source>It then will start the %1 to display (and record) the selected stream.</source>
         <translation>После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="122"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.</source>
         <translation>В &lt;b&gt;vlc-record&lt;/b&gt; отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="123"/>
+        <location filename="caboutdialog.cpp" line="124"/>
         <source>For News and Updates please visit my site at %1.</source>
         <oldsource>For News and Updates please visit my site at %1</oldsource>
         <translation>Для чтения новостей и обновлений, посетите мою Интернет-страницу %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="124"/>
+        <location filename="caboutdialog.cpp" line="125"/>
         <source>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</source>
         <translation>&lt;b&gt;vlc-record бесплатно!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="125"/>
+        <location filename="caboutdialog.cpp" line="126"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если Вам понравилась моя программа, вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="127"/>
+        <location filename="caboutdialog.cpp" line="128"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="128"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="139"/>
+        <location filename="caboutdialog.cpp" line="140"/>
         <source>Function</source>
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="139"/>
+        <location filename="caboutdialog.cpp" line="140"/>
         <source>Shortcut</source>
         <translation>Сокращение</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="140"/>
+        <location filename="caboutdialog.cpp" line="141"/>
         <source>Play</source>
         <translation>Воспроизвести</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="141"/>
+        <location filename="caboutdialog.cpp" line="142"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="142"/>
+        <location filename="caboutdialog.cpp" line="143"/>
         <source>Record</source>
         <translation>Запись</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="143"/>
+        <location filename="caboutdialog.cpp" line="144"/>
         <source>Timer Record</source>
         <translation>Планировщик записи</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="144"/>
+        <location filename="caboutdialog.cpp" line="145"/>
         <source>Favourites 0 ... 9</source>
         <translation>Фавориты 0 ... 9</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="145"/>
+        <location filename="caboutdialog.cpp" line="146"/>
         <source>Enlarge Font Size</source>
         <translation>Увеличить Размер Шрифта</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="146"/>
+        <location filename="caboutdialog.cpp" line="147"/>
         <source>Reduce Font Size</source>
         <translation>Уменьшить Размер Шрифта</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="147"/>
+        <location filename="caboutdialog.cpp" line="148"/>
         <source>Open Info Dialog</source>
         <translation>Открыть Диалог Информации</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="148"/>
+        <location filename="caboutdialog.cpp" line="149"/>
         <source>Open Settings Dialog</source>
         <translation>Открыть Диалог Опции</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="149"/>
+        <location filename="caboutdialog.cpp" line="150"/>
         <source>Quit VLC Record</source>
         <translation>Закрыть программу</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="151"/>
+        <location filename="caboutdialog.cpp" line="152"/>
         <source>Toggle Fullscreen</source>
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="152"/>
+        <location filename="caboutdialog.cpp" line="153"/>
         <source>Switch Aspect Ratio</source>
         <translation>Формат изображения</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="153"/>
+        <location filename="caboutdialog.cpp" line="154"/>
         <source>Switch Crop Geometry</source>
         <translation>Подрезать Видеоформат</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="154"/>
+        <location filename="caboutdialog.cpp" line="155"/>
         <source>Jump ~2 minutes forward</source>
         <translation>2 минуты вперед</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="155"/>
+        <location filename="caboutdialog.cpp" line="156"/>
         <source>Jump ~2 minutes backward</source>
         <translation>2 минуты назад</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="156"/>
+        <location filename="caboutdialog.cpp" line="157"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="160"/>
+        <location filename="caboutdialog.cpp" line="161"/>
         <source>Only works in version 2.xx with activated libVLC.</source>
         <oldsource>Only works with activated libVLC.</oldsource>
         <translation>Только работает в версии 2.xx с активизированным libVLC.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="161"/>
+        <location filename="caboutdialog.cpp" line="162"/>
         <source>Only works on archive play.</source>
         <translation>Только работает с архивом.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="162"/>
+        <location filename="caboutdialog.cpp" line="163"/>
         <source>Shortcuts don&apos;t work on Linux in fullscreen mode. Double click with mouse to change to windowed mode.</source>
         <oldsource>Shortcuts don&apos;t work om Linux in fullscreen mode. Double click with mouse to change to windowed mode.</oldsource>
         <translation></translation>
@@ -368,28 +378,50 @@ p, li { white-space: pre-wrap; }
     <name>CKartinaXMLParser</name>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="178"/>
-        <location filename="ckartinaxmlparser.cpp" line="556"/>
-        <location filename="ckartinaxmlparser.cpp" line="671"/>
-        <location filename="ckartinaxmlparser.cpp" line="795"/>
-        <location filename="ckartinaxmlparser.cpp" line="953"/>
-        <location filename="ckartinaxmlparser.cpp" line="1117"/>
-        <location filename="ckartinaxmlparser.cpp" line="1203"/>
+        <location filename="ckartinaxmlparser.cpp" line="565"/>
+        <location filename="ckartinaxmlparser.cpp" line="664"/>
+        <location filename="ckartinaxmlparser.cpp" line="736"/>
+        <location filename="ckartinaxmlparser.cpp" line="811"/>
+        <location filename="ckartinaxmlparser.cpp" line="972"/>
+        <location filename="ckartinaxmlparser.cpp" line="1179"/>
+        <location filename="ckartinaxmlparser.cpp" line="1265"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="179"/>
-        <location filename="ckartinaxmlparser.cpp" line="557"/>
-        <location filename="ckartinaxmlparser.cpp" line="672"/>
-        <location filename="ckartinaxmlparser.cpp" line="796"/>
-        <location filename="ckartinaxmlparser.cpp" line="954"/>
-        <location filename="ckartinaxmlparser.cpp" line="1118"/>
-        <location filename="ckartinaxmlparser.cpp" line="1204"/>
+        <location filename="ckartinaxmlparser.cpp" line="566"/>
+        <location filename="ckartinaxmlparser.cpp" line="665"/>
+        <location filename="ckartinaxmlparser.cpp" line="737"/>
+        <location filename="ckartinaxmlparser.cpp" line="812"/>
+        <location filename="ckartinaxmlparser.cpp" line="973"/>
+        <location filename="ckartinaxmlparser.cpp" line="1180"/>
+        <location filename="ckartinaxmlparser.cpp" line="1266"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1281"/>
+        <location filename="ckartinaxmlparser.cpp" line="250"/>
+        <location filename="ckartinaxmlparser.cpp" line="378"/>
+        <location filename="ckartinaxmlparser.cpp" line="452"/>
+        <location filename="ckartinaxmlparser.cpp" line="951"/>
+        <location filename="ckartinaxmlparser.cpp" line="1020"/>
+        <location filename="ckartinaxmlparser.cpp" line="1418"/>
+        <source>Found unused element %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ckartinaxmlparser.cpp" line="256"/>
+        <location filename="ckartinaxmlparser.cpp" line="384"/>
+        <location filename="ckartinaxmlparser.cpp" line="458"/>
+        <location filename="ckartinaxmlparser.cpp" line="957"/>
+        <location filename="ckartinaxmlparser.cpp" line="1026"/>
+        <location filename="ckartinaxmlparser.cpp" line="1424"/>
+        <source>Found unused child %1: %2 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ckartinaxmlparser.cpp" line="1343"/>
         <source>Error #%1 in %2():%3: %4</source>
         <translation type="unfinished"></translation>
     </message>
@@ -399,7 +431,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1287"/>
+        <location filename="ckartinaxmlparser.cpp" line="1349"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>

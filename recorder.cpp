@@ -767,7 +767,7 @@ void Recorder::on_cbxChannelGroup_activated(int index)
 \----------------------------------------------------------------- */
 void Recorder::on_pushAbout_clicked()
 {
-   CAboutDialog dlg(this);
+   CAboutDialog dlg(this, sExpires);
    dlg.ConnectSettings(&Settings);
    dlg.exec();
 }
@@ -1212,7 +1212,7 @@ void Recorder::slotCookie (QString str)
    QString sCookie;
 
    // parse cookie ...
-   if (!XMLParser.parseCookie(str, sCookie))
+   if (!XMLParser.parseCookie(str, sCookie, sExpires))
    {
       KartinaTv.SetCookie(sCookie);
 
@@ -2013,7 +2013,7 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
 \----------------------------------------------------------------- */
 void Recorder::slotSplashScreen()
 {
-   CAboutDialog dlg(this);
+   CAboutDialog dlg(this, sExpires);
    dlg.ConnectSettings(&Settings);
    dlg.exec();
 }

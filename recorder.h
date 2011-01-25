@@ -115,6 +115,7 @@ private:
     bool                           bDoInitDlg;
     int                            iDwnReqId;
     bool                           bFirstConnect;
+    QString                        sExpires;
 
 protected:
     void touchSearchAreaCbx ();
