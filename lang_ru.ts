@@ -26,7 +26,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/caboutdialog.ui" line="61"/>
@@ -65,7 +65,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="caboutdialog.cpp" line="112"/>
         <source>Account expires:</source>
-        <translation type="unfinished"></translation>
+        <translation>Пакет кончается:</translation>
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="115"/>
@@ -301,12 +301,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="351"/>
         <source>Request Bit Rate ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="371"/>
         <source>Set BitRate to %1 kbit/s ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="392"/>
@@ -383,8 +383,8 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="736"/>
         <location filename="ckartinaxmlparser.cpp" line="811"/>
         <location filename="ckartinaxmlparser.cpp" line="972"/>
-        <location filename="ckartinaxmlparser.cpp" line="1179"/>
-        <location filename="ckartinaxmlparser.cpp" line="1265"/>
+        <location filename="ckartinaxmlparser.cpp" line="1119"/>
+        <location filename="ckartinaxmlparser.cpp" line="1205"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
@@ -395,8 +395,8 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="737"/>
         <location filename="ckartinaxmlparser.cpp" line="812"/>
         <location filename="ckartinaxmlparser.cpp" line="973"/>
-        <location filename="ckartinaxmlparser.cpp" line="1180"/>
-        <location filename="ckartinaxmlparser.cpp" line="1266"/>
+        <location filename="ckartinaxmlparser.cpp" line="1120"/>
+        <location filename="ckartinaxmlparser.cpp" line="1206"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
@@ -406,9 +406,9 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="452"/>
         <location filename="ckartinaxmlparser.cpp" line="951"/>
         <location filename="ckartinaxmlparser.cpp" line="1020"/>
-        <location filename="ckartinaxmlparser.cpp" line="1418"/>
+        <location filename="ckartinaxmlparser.cpp" line="1358"/>
         <source>Found unused element %1 ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="256"/>
@@ -416,14 +416,14 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="458"/>
         <location filename="ckartinaxmlparser.cpp" line="957"/>
         <location filename="ckartinaxmlparser.cpp" line="1026"/>
-        <location filename="ckartinaxmlparser.cpp" line="1424"/>
+        <location filename="ckartinaxmlparser.cpp" line="1364"/>
         <source>Found unused child %1: %2 ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1343"/>
+        <location filename="ckartinaxmlparser.cpp" line="1283"/>
         <source>Error #%1 in %2():%3: %4</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="71"/>
@@ -431,7 +431,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1349"/>
+        <location filename="ckartinaxmlparser.cpp" line="1289"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -469,7 +469,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="1259"/>
         <source>Film length: %1ms.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="459"/>
@@ -812,7 +812,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/csettingsdlg.ui" line="144"/>
         <source>Bitrate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Битрэйт:</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="189"/>
@@ -1008,7 +1008,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cstreamloader.cpp" line="81"/>
         <source>Archive URL:
  --&gt; %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cstreamloader.cpp" line="88"/>
@@ -1018,7 +1018,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cstreamloader.cpp" line="104"/>
         <source>Request #%1 sent ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cstreamloader.cpp" line="187"/>
@@ -1622,7 +1622,7 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="1316"/>
         <source>Using Bitrate %1 kbit/s ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1743"/>
