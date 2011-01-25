@@ -71,7 +71,6 @@ class CPlayer : public QWidget
 public:
    CPlayer(QWidget *parent = 0);
    ~CPlayer();
-   void cleanExit ();
    int  initPlayer ();
    bool isPlaying ();
    void setShortCuts (QVector<CShortcutEx *> *pvSc);

@@ -350,11 +350,6 @@ void Recorder::closeEvent(QCloseEvent *event)
       // Note: putting this function in destructor doesn't work!
       savePositions();
 
-#ifdef INCLUDE_LIBVLC
-      // end player ...
-      ui->player->cleanExit();
-#endif /* INCLUDE_LIBVLC */
-
       // clear shortcuts ...
       ClearShortCuts ();
 

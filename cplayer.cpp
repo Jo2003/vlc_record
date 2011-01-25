@@ -97,36 +97,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 \----------------------------------------------------------------- */
 CPlayer::~CPlayer()
 {
-   // libvlc stuff already released in function "cleanExit"
-   // which is called from recorder.cpp / closeEvent
-   delete ui;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: cleanExit
-|  Begin: 23.06.2010 / 16:17:51
-|  Author: Jo2003
-|  Description: pseudo destructor should be called from outside ...
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::cleanExit()
-{
    // stop timer ...
    poller.stop();
    sliderTimer.stop();
-
-   /**
-    * Note: Closing the log here leads to
-    * segmentation faults. Also disabling
-    * and cleaning the log first doesn't help.
-    * Therefore I assume that this is a libVLC
-    * problem. But since this function only is called
-    * when program ends, not closing the log shouldn't
-    * be a big problem!
-    */
 
    stop();
 
@@ -139,6 +112,15 @@ void CPlayer::cleanExit()
    {
       libvlc_release(pVlcInstance);
    }
+
+   // close log if opened ...
+   if (pLibVlcLog)
+   {
+      libvlc_log_close (pLibVlcLog);
+      pLibVlcLog = NULL;
+   }
+
+   delete ui;
 }
 
 /* -----------------------------------------------------------------\
