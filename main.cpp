@@ -21,6 +21,10 @@ Q_IMPORT_PLUGIN(qgif)
 Q_IMPORT_PLUGIN(qico)
 #endif // DINCLUDEPLUGS
 
+#ifdef Q_WS_X11
+   #include <X11/Xlib.h>
+#endif
+
 // make logging class available everywhere ...
 CLogFile VlcLog;
 
@@ -33,7 +37,6 @@ CVlcRecDB *pDb;
 // make show info global available ...
 CShowInfo showInfo;
 
-#ifdef Q_OS_WIN32
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -47,6 +50,11 @@ CShowInfo showInfo;
 \----------------------------------------------------------------- */
 int main(int argc, char *argv[])
 {
+   // bugfix for crash on exit on *nix ...
+#ifdef Q_WS_X11
+    XInitThreads();
+#endif
+
    int          iRV = -1;
    QTranslator  trans;
    QApplication app(argc, argv);
@@ -77,80 +85,6 @@ int main(int argc, char *argv[])
 
    return iRV;
 }
-
-#else
-
-/* -----------------------------------------------------------------\
-|  Method: main / program entry
-|  Begin: 19.01.2010 / 15:57:36
-|  Author: Jo2003
-|  Description: program entry point
-|
-|  Parameters: command line parameters
-|
-|  Returns: 0 ==> ok
-|        else ==> any error
-\----------------------------------------------------------------- */
-int main(int argc, char *argv[])
-{
-   int           iRV = -1;
-   QTranslator  *pTrans = NULL;
-   QApplication *pApp   = NULL;
-   Recorder     *pRec   = NULL;
-
-   pApp   = new QApplication(argc, argv);
-   pTrans = new QTranslator();
-
-   if (pApp && pTrans)
-   {
-      // install translator ...
-      pApp->installTranslator(pTrans);
-
-      // create directory stuff ...
-      pFolders = new CDirStuff;
-
-      if (pFolders)
-      {
-         // is folder stuff initialized successfully ...?
-         if (pFolders->isInitialized())
-         {
-            pDb = new CVlcRecDB();
-
-            if (pDb)
-            {
-               pRec = new Recorder(pTrans);
-
-               if (pRec)
-               {
-                  pRec->show();
-
-                  iRV = pApp->exec();
-
-                  pRec->deleteLater();
-               }
-
-               delete pDb;
-            }
-         }
-
-         delete pFolders;
-      }
-   }
-
-   if (pApp)
-   {
-      // delete pApp;
-      pApp->deleteLater();
-   }
-
-   if (pTrans)
-   {
-      delete pTrans;
-   }
-
-   return iRV;
-}
-#endif
 
 /************************* History ***************************\
 | $Log$

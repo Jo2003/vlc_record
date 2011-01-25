@@ -383,8 +383,8 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="736"/>
         <location filename="ckartinaxmlparser.cpp" line="811"/>
         <location filename="ckartinaxmlparser.cpp" line="972"/>
-        <location filename="ckartinaxmlparser.cpp" line="1119"/>
-        <location filename="ckartinaxmlparser.cpp" line="1205"/>
+        <location filename="ckartinaxmlparser.cpp" line="1117"/>
+        <location filename="ckartinaxmlparser.cpp" line="1203"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
@@ -395,8 +395,8 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="737"/>
         <location filename="ckartinaxmlparser.cpp" line="812"/>
         <location filename="ckartinaxmlparser.cpp" line="973"/>
-        <location filename="ckartinaxmlparser.cpp" line="1120"/>
-        <location filename="ckartinaxmlparser.cpp" line="1206"/>
+        <location filename="ckartinaxmlparser.cpp" line="1118"/>
+        <location filename="ckartinaxmlparser.cpp" line="1204"/>
         <source>XML Error String: %1</source>
         <translation>Информация о XML ошибке %1</translation>
     </message>
@@ -406,7 +406,7 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="452"/>
         <location filename="ckartinaxmlparser.cpp" line="951"/>
         <location filename="ckartinaxmlparser.cpp" line="1020"/>
-        <location filename="ckartinaxmlparser.cpp" line="1358"/>
+        <location filename="ckartinaxmlparser.cpp" line="1356"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
@@ -416,12 +416,12 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="458"/>
         <location filename="ckartinaxmlparser.cpp" line="957"/>
         <location filename="ckartinaxmlparser.cpp" line="1026"/>
-        <location filename="ckartinaxmlparser.cpp" line="1364"/>
+        <location filename="ckartinaxmlparser.cpp" line="1362"/>
         <source>Found unused child %1: %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1283"/>
+        <location filename="ckartinaxmlparser.cpp" line="1281"/>
         <source>Error #%1 in %2():%3: %4</source>
         <translation></translation>
     </message>
@@ -431,7 +431,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1289"/>
+        <location filename="ckartinaxmlparser.cpp" line="1287"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>

@@ -1034,8 +1034,6 @@ int CKartinaXMLParser::parseVodParts (QXmlStreamReader &xml, QVector<uint>& vVod
    return 0;
 }
 
-
-
 /* -----------------------------------------------------------------\
 |  Method: parseEpg
 |  Begin: 29.07.2010 / 11:28:20
