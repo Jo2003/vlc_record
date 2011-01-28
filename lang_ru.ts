@@ -817,7 +817,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/csettingsdlg.ui" line="189"/>
         <source> Buffering </source>
-        <translation>Буфферизация</translation>
+        <translation>Буферизация</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="195"/>
