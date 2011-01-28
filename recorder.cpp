@@ -67,10 +67,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    VlcLog.SetLogFile(pFolders->getDataDir(), APP_LOG_FILE);
 
-   // set logo dir and host for chan logo downloader ...
-   dwnLogos.setHostAndFolder(KARTINA_HOST, pFolders->getLogoDir());
-   dwnVodPics.setHostAndFolder(KARTINA_HOST, pFolders->getVodPixDir());
-
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
    timeRec.setParent(this, Qt::Dialog);
@@ -88,6 +84,10 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       Settings.exec();
    }
 
+   // set logo dir and host for chan logo downloader ...
+   dwnLogos.setHostAndFolder(Settings.GetAPIServer(), pFolders->getLogoDir());
+   dwnVodPics.setHostAndFolder(Settings.GetAPIServer(), pFolders->getVodPixDir());
+
    // set settings for vod browser ...
    ui->vodBrowser->setSettings(&Settings);
 
@@ -102,7 +102,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
           + tr("appDir:  %1").arg(pFolders->getAppDir()));
 
    // set connection data ...
-   KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(),
+   KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(),
                      Settings.GetErosPasswd(), Settings.AllowEros());
 
 
@@ -477,7 +477,7 @@ void Recorder::on_pushSettings_clicked()
       KartinaTv.abort();
 
       // update connection data ...
-      KartinaTv.SetData(KARTINA_HOST, Settings.GetUser(), Settings.GetPasswd(),
+      KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(),
                         Settings.GetErosPasswd(), Settings.AllowEros());
 
       // set proxy ...

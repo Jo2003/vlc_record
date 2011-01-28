@@ -52,6 +52,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->lineShutdown->setText(pDb->stringValue("ShutdwnCmd"));
    m_ui->lineUser->setText(pDb->stringValue ("RegUser"));
    m_ui->lineRegData->setText(pDb->stringValue ("RegData"));
+   m_ui->lineApiServer->setText(pDb->stringValue ("APIServer"));
 
 #ifdef Q_OS_WIN32
    if (m_ui->lineShutdown->text() == "")
@@ -59,6 +60,11 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->lineShutdown->setText ("shutdown.exe -s -f -t 5");
    }
 #endif
+
+   if (m_ui->lineApiServer->text() == "")
+   {
+      m_ui->lineApiServer->setText (KARTINA_HOST);
+   }
 
    m_ui->lineProxyHost->setText(pDb->stringValue("ProxyHost"));
    m_ui->lineProxyPort->setText(pDb->stringValue("ProxyPort"));
@@ -225,6 +231,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("ProxyUser", m_ui->lineProxyUser->text());
    pDb->setValue("ProxyPasswd", m_ui->lineProxyPassword->text());
    pDb->setValue("ShutdwnCmd", m_ui->lineShutdown->text());
+   pDb->setValue("APIServer", m_ui->lineApiServer->text());
 
    // check boxes ...
    pDb->setValue("UseProxy", (int)m_ui->useProxy->checkState());
@@ -824,6 +831,11 @@ bool CSettingsDlg::regOk()
 int  CSettingsDlg::GetBitRate()
 {
    return m_ui->cbxBitRate->currentText().toInt();
+}
+
+QString CSettingsDlg::GetAPIServer()
+{
+   return m_ui->lineApiServer->text();
 }
 
 //===================================================================

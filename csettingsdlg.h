@@ -60,6 +60,7 @@ public:
     QString GetShutdownCmd ();
     QString GetPlayerModule ();
     QString GetCookie ();
+    QString GetAPIServer ();
 
     bool UseProxy ();
     bool AllowEros ();
