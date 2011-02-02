@@ -104,27 +104,15 @@ else {
 # with included player!
 # -------------------------------------
 contains(DEFINES,INCLUDE_LIBVLC) {
-    INCLUDEPATH += include
-    HEADERS += include/vlc/deprecated.h \
-        include/vlc/libvlc.h \
-        include/vlc/libvlc_events.h \
-        include/vlc/libvlc_media.h \
-        include/vlc/libvlc_media_discoverer.h \
-        include/vlc/libvlc_media_library.h \
-        include/vlc/libvlc_media_list.h \
-        include/vlc/libvlc_media_list_player.h \
-        include/vlc/libvlc_media_player.h \
-        include/vlc/libvlc_structures.h \
-        include/vlc/libvlc_vlm.h \
-        include/vlc/vlc.h \
-        cplayer.h \
+   win32:INCLUDEPATH += include
+   HEADERS += cplayer.h \
         cvideoframe.h
-    FORMS += forms/cplayer.ui \
+   FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
-    SOURCES += cplayer.cpp \
+   SOURCES += cplayer.cpp \
         cvideoframe.cpp
-    LIBS += -lvlc
-    win32:LIBS += -Llib
+   LIBS += -lvlc
+   win32:LIBS += -Llib
 #    unix:LIBS += -L/opt/vlc-1.1.1/lib \
 #        -Wl,-rpath \
 #        /opt/vlc-1.1.1/lib
