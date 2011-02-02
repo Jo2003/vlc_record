@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>461</width>
-    <height>476</height>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,7 +41,11 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="lineApiServer"/>
+           <widget class="QLineEdit" name="lineApiServer">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

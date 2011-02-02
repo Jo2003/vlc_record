@@ -37,6 +37,13 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 {
    m_ui->setupUi(this);
 
+   pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
+
+   if (pShortApiServer)
+   {
+      connect(pShortApiServer, SIGNAL(activated()), this, SLOT(slotEnableApiServer()));
+   }
+
    // set company name for login data ...
    QString s = m_ui->groupAccount->title();
    m_ui->groupAccount->setTitle(s.arg(COMPANY_NAME));
@@ -120,7 +127,13 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 \----------------------------------------------------------------- */
 CSettingsDlg::~CSettingsDlg()
 {
-    delete m_ui;
+   if (pShortApiServer)
+   {
+      delete pShortApiServer;
+      pShortApiServer = NULL;
+   }
+
+   delete m_ui;
 }
 
 /* -----------------------------------------------------------------\
@@ -163,6 +176,28 @@ void CSettingsDlg::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotEnableApiServer [slot]
+|  Begin: 02.02.2011 / 12:00
+|  Author: Jo2003
+|  Description: enable / disable API server line
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotEnableApiServer()
+{
+   if (m_ui->lineApiServer->isEnabled())
+   {
+      m_ui->lineApiServer->setEnabled(false);
+   }
+   else
+   {
+      m_ui->lineApiServer->setEnabled(true);
+   }
 }
 
 /* -----------------------------------------------------------------\

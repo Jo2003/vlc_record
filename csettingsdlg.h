@@ -24,6 +24,7 @@
 #include "customization.h"
 #include "cdirstuff.h"
 #include "ckartinaxmlparser.h"
+#include "cshortcutex.h"
 
 //===================================================================
 // namespace
@@ -101,6 +102,7 @@ protected:
 
 private:
     Ui::CSettingsDlg *m_ui;
+    CShortcutEx *pShortApiServer;
 
 signals:
     void sigReloadLogos ();
@@ -116,6 +118,7 @@ private slots:
     void on_pushSave_clicked();
     void on_pushDir_clicked();
     void on_pushVLC_clicked();
+    void slotEnableApiServer ();
 
  public slots:
     void slotSplashStateChgd (bool bChecked);
