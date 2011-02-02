@@ -31,10 +31,14 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B9" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".40B10" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| 2011-02-02: Version x.40B10
+| - you now can change the API path in settings dialog using
+|   shortcut "CTRL+ALT+A"
+|
 | 2011-01-25: Version x.40B9
 | - display expire data in about dialog
 | - new function "oneLevelParser" to make xml parsing
