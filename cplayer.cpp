@@ -1093,9 +1093,9 @@ int CPlayer::myToggleFullscreen()
          // frameless window which stays on top ...
          f  = Qt::Window | Qt::FramelessWindowHint | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint;
 
-#ifdef Q_OS_LINUX
+#ifdef Q_WS_X11
          f |= Qt::X11BypassWindowManagerHint;
-#endif // Q_OS_LINUX
+#endif // Q_WS_X11
 
          // hide screen ...
          ui->fParent->hide ();
