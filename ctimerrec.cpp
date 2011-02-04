@@ -287,7 +287,7 @@ void CTimerRec::SetChanList(const QVector<cparser::SChan> &chanList)
 
    for (int i = 0; i < chanList.size(); i++)
    {
-      if (chanList[i].iId > -1)
+      if (!chanList[i].bIsGroup)
       {
          iCount ++;
          entry.cid  = chanList[i].iId;
