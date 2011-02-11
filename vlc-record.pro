@@ -45,7 +45,8 @@ SOURCES += main.cpp \
     cvlcrecdb.cpp \
     cstreamloader.cpp \
     cvodbrowser.cpp \
-    cpixloader.cpp
+    cpixloader.cpp \
+    cshortcutgrabber.cpp
 HEADERS += recorder.h \
     chanlistwidgetitem.h \
     csettingsdlg.h \
@@ -73,7 +74,8 @@ HEADERS += recorder.h \
     tables.h \
     cstreamloader.h \
     cvodbrowser.h \
-    cpixloader.h
+    cpixloader.h \
+    cshortcutgrabber.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui

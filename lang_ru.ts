@@ -1013,6 +1013,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CShortCutGrabber</name>
+    <message>
+        <location filename="cshortcutgrabber.cpp" line="77"/>
+        <source>Clear Shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CStreamLoader</name>
     <message>
         <location filename="cstreamloader.cpp" line="81"/>
