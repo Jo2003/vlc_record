@@ -93,6 +93,11 @@ int CVlcRecDB::checkDb()
       iRV |= query.exec(TAB_TIMERREC) ? 0 : -1;
    }
 
+   if (!lAllTabs.contains("shortcuts"))
+   {
+      iRV |= query.exec(TAB_SHORTCUTS) ? 0 : -1;
+   }
+
    return iRV;
 }
 
@@ -286,6 +291,57 @@ float CVlcRecDB::floatValue(const QString &key)
    if (query.first())
    {
       rv = query.value(0).toFloat();
+   }
+
+   return rv;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setShortCut
+|  Begin: 11.02.2011 / 15:45
+|  Author: Jo2003
+|  Description: set shortcut
+|
+|  Parameters: target, slot and shortcut
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CVlcRecDB::setShortCut(const QString &sTarget, const QString &sSlot, const QString &sShortCut)
+{
+   QSqlQuery query;
+   query.prepare("INSERT OR REPLACE INTO shortcuts (target, slot, key_sequence) VALUES (?, ?, ?)");
+   query.addBindValue(sTarget);
+   query.addBindValue(sSlot);
+   query.addBindValue(sShortCut);
+
+   return query.exec() ? 0 : -1;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getShortCut
+|  Begin: 11.02.2011 / 15:45
+|  Author: Jo2003
+|  Description: get a shortcut
+|
+|  Parameters: target and slot
+|
+|  Returns: "" --> no shortcut stored
+|         else --> shortcut as string
+\----------------------------------------------------------------- */
+QString CVlcRecDB::getShortCut(const QString &sTarget, const QString &sSlot)
+{
+   QString   rv;
+   QSqlQuery query;
+
+   query.prepare("SELECT key_sequence FROM shortcuts WHERE target=? AND slot=?");
+   query.addBindValue(sTarget);
+   query.addBindValue(sSlot);
+   query.exec();
+
+   if (query.first())
+   {
+      rv = query.value(0).toString();
    }
 
    return rv;

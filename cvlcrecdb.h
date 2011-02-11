@@ -68,6 +68,8 @@ public:
    int     intValue(const QString &sKey);
    float   floatValue(const QString &sKey);
    int     ask(const QString &question, QSqlQuery &query);
+   QString getShortCut (const QString &sTarget, const QString &sSlot);
+   int     setShortCut (const QString &sTarget, const QString &sSlot, const QString &sShortCut);
 
 protected:
    int checkDb();

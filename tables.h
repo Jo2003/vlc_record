@@ -32,6 +32,13 @@
       "recend unsigned int(10) NOT NULL,"\
       "name tiny text NOT NULL)"
 
+#define TAB_SHORTCUTS \
+"CREATE TABLE shortcuts ("\
+      "target VARCHAR(50) NOT NULL,"\
+      "slot VARCHAR(100) NOT NULL,"\
+      "key_sequence VARCHAR(25) NULL DEFAULT NULL,"\
+      "PRIMARY KEY (target, slot))"
+
 #endif // __130610_TABLES_H
 /************************* History ***************************\
 | $Log$
