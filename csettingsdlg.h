@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QCryptographicHash>
+#include <QTableWidget>
 
 #include "cvlcrecdb.h"
 #include "clogfile.h"
@@ -25,6 +26,7 @@
 #include "cdirstuff.h"
 #include "ckartinaxmlparser.h"
 #include "cshortcutex.h"
+#include "cshortcutgrabber.h"
 
 //===================================================================
 // namespace
@@ -96,6 +98,8 @@ public:
     QString hsah (const QString &str);
     QString& reverse (QString &str);
     int   GetBitRate ();
+    void  addShortCut (const QString& descr, const QString& target, const QString& slot, const QString& keys);
+    QString shortCut (const QString& target, const QString& slot) const;
 
 protected:
     void changeEvent(QEvent *e);

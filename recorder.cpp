@@ -170,7 +170,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
 #endif /* INCLUDE_LIBVLC */
 
-   // connect signals and slots ...
+   // connect signals and slots ...Поиск в телегиде
    connect (&KartinaTv,    SIGNAL(sigLogout(QString)), this, SLOT(slotLogout(QString)));
    connect (&KartinaTv,    SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotTimeShift(QString)), this, SLOT(slotGotTimeShift(QString)));
@@ -206,9 +206,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
    connect (&KartinaTv,    SIGNAL(sigGotVideoInfo(QString)), this, SLOT(slotGotVideoInfo(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotVodUrl(QString)), this, SLOT(slotVodURL(QString)));
-
-   // init short cuts ...
-   InitShortCuts ();
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -2417,6 +2414,9 @@ void Recorder::initDialog ()
    {
       QTimer::singleShot(1500, this, SLOT(slotSplashScreen()));
    }
+
+   // init short cuts ...
+   InitShortCuts ();
 }
 
 /* -----------------------------------------------------------------\
@@ -2647,72 +2647,64 @@ void Recorder::TouchEpgNavi (bool bCreate)
 \----------------------------------------------------------------- */
 void Recorder::InitShortCuts()
 {
-   CShortcutEx *pShortCut;
-   pShortCut = NULL;
+   CShortcutEx    *pShortCut;
+   Ui::SShortCuts *pShort;
+
+   Ui::SShortCuts shortCuts[] = {
+      // ShortCut Source Table:
+      // All shortcuts used in this program will be generated from this
+      // table. If you need further shortcuts, add them here.
+      // ---------------------------------------------------------------
+      //  Description
+      //  |                        Object Pointer (which owns slot function)
+      //  |                        |           Class name (which owns slot function)
+      //  |                        |           |           Slot function
+      //  |                        |           |           |                                  default Shortcut
+      //  |                        |           |           |                                  |
+      //  V                        V           V           V                                  V
+      {tr("Play / Pause"),         this,       "Recorder", SLOT(on_pushPlay_clicked()),       "ALT+P"},
+      {tr("Stop"),                 this,       "Recorder", SLOT(on_pushStop_clicked()),       "ALT+S"},
+      {tr("Record"),               this,       "Recorder", SLOT(on_pushRecord_clicked()),     "ALT+R"},
+      {tr("Timer Record"),         this,       "Recorder", SLOT(on_pushTimerRec_clicked()),   "ALT+T"},
+      {tr("Settings"),             this,       "Recorder", SLOT(on_pushSettings_clicked()),   "ALT+O"},
+      {tr("About"),                this,       "Recorder", SLOT(on_pushAbout_clicked()),      "ALT+I"},
+      {tr("Search EPG"),           this,       "Recorder", SLOT(on_btnSearch_clicked()),      "CTRL+F"},
+      {tr("Text Size +"),          this,       "Recorder", SLOT(on_btnFontLarger_clicked()),  "ALT++"},
+      {tr("Text Size -"),          this,       "Recorder", SLOT(on_btnFontSmaller_clicked()), "ALT+-"},
+      {tr("Quit"),                 this,       "Recorder", SLOT(close()),                     "ALT+Q"},
 
 #ifdef INCLUDE_LIBVLC
-   // aspect ratio ...
-   pShortCut = new CShortcutEx (QKeySequence("ALT+A"), this);
-   if (pShortCut)
-   {
-      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleAspectRatio()));
-
-      // save shortcut ...
-      vShortcutPool.push_back(pShortCut);
-   }
-
-   // crop geometry ...
-   pShortCut = new CShortcutEx (QKeySequence("ALT+C"), this);
-   if (pShortCut)
-   {
-      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleCropGeometry()));
-
-      // save shortcut ...
-      vShortcutPool.push_back(pShortCut);
-   }
-
-   // fullscreen ...
-   pShortCut = new CShortcutEx (QKeySequence("ALT+F"), this);
-   if (pShortCut)
-   {
-      connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(slotToggleFullScreen()));
-
-      // save shortcut ...
-      vShortcutPool.push_back(pShortCut);
-   }
-
-   // timejump forward ...
-   pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+F"), this);
-   if (pShortCut)
-   {
-      connect (pShortCut, SIGNAL(activated()), this, SLOT(on_pushFwd_clicked()));
-
-      // save shortcut ...
-      vShortcutPool.push_back(pShortCut);
-   }
-
-   // timejump backward ...
-   pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+B"), this);
-   if (pShortCut)
-   {
-      connect (pShortCut, SIGNAL(activated()), this, SLOT(on_pushBwd_clicked()));
-
-      // save shortcut ...
-      vShortcutPool.push_back(pShortCut);
-   }
-
-   // pause ...
-   pShortCut = new CShortcutEx (QKeySequence("CTRL+ALT+P"), this);
-   if (pShortCut)
-   {
-      // connect (pShortCut, SIGNAL(activated()), ui->player, SLOT(pause()));
-      connect (pShortCut, SIGNAL(activated()), this, SLOT(on_pushPlay_clicked()));
-
-      // save shortcut ...
-      vShortcutPool.push_back(pShortCut);
-   }
-
+      {tr("Toggle Aspect Ratio"),  ui->player, "CPlayer",  SLOT(slotToggleAspectRatio()),     "ALT+A"},
+      {tr("Toggle Crop Geometry"), ui->player, "CPlayer",  SLOT(slotToggleCropGeometry()),    "ALT+C"},
+      {tr("Toggle Fullscreen"),    ui->player, "CPlayer",  SLOT(slotToggleFullScreen()),      "ALT+F"},
+      {tr("Jump Forward"),         this,       "Recorder", SLOT(on_pushFwd_clicked()),        "CTRL+ALT+F"},
+      {tr("Jump Backward"),        this,       "Recorder", SLOT(on_pushBwd_clicked()),        "CTRL+ALT+B"},
 #endif // INCLUDE_LIBVLC
+
+      // add further entries below ...
+
+      // last entry, don't touch ...
+      {"",                         NULL,       "",         NULL,                              ""}
+   };
+
+   pShort = shortCuts;
+
+   while (pShort->pObj != NULL)
+   {
+      Settings.addShortCut(pShort->sDescr, pShort->sObj, pShort->pSlot, pShort->sShortCut);
+
+      pShortCut = new CShortcutEx (QKeySequence(Settings.shortCut(pShort->sObj, pShort->pSlot)), this);
+
+      if (pShortCut)
+      {
+         connect (pShortCut, SIGNAL(activated()), pShort->pObj, pShort->pSlot);
+
+         // save shortcut ...
+         vShortcutPool.push_back(pShortCut);
+      }
+
+      pShort ++;
+   }
 }
 
 /* -----------------------------------------------------------------\

@@ -284,6 +284,14 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("LogLevel", m_ui->cbxLogLevel->currentIndex());
    pDb->setValue("PlayerModule", m_ui->cbxPlayerMod->currentText());
    pDb->setValue("RefIntv", m_ui->cbxInterval->currentText());
+
+   // short cuts ...
+   CShortCutGrabber *pGrab;
+   for (int i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
+   {
+      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
+      pDb->setShortCut(pGrab->target(), pGrab->slot(), pGrab->shortCutString());
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -957,6 +965,71 @@ void CSettingsDlg::on_pushDoRegister_clicked()
 
    pDb->setValue ("RegUser", m_ui->lineUser->text());
    pDb->setValue ("RegData", m_ui->lineRegData->text());
+}
+
+/* -----------------------------------------------------------------\
+|  Method: addShortCut
+|  Begin: 15.03.2011 / 15:45
+|  Author: Jo2003
+|  Description: add a shortcut to shortcut table
+|
+|  Parameters: description, target, slot, shortcut
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::addShortCut(const QString &descr, const QString &target,
+                              const QString &slot, const QString &keys)
+{
+   QString shortCut;
+   QTableWidgetItem *pItem = new QTableWidgetItem (descr);
+   CShortCutGrabber *pGrab = new CShortCutGrabber (this);
+
+   if((shortCut = pDb->getShortCut(target, slot)) == "")
+   {
+      shortCut = keys;
+   }
+
+   pGrab->setTarget(target);
+   pGrab->setSlot(slot);
+   pGrab->setKeySequence(QKeySequence(shortCut));
+
+   int iRow = m_ui->tableShortCuts->rowCount();
+
+   m_ui->tableShortCuts->setRowCount(iRow + 1);
+   m_ui->tableShortCuts->setItem(iRow, 0, pItem);
+   m_ui->tableShortCuts->setCellWidget(iRow, 1, pGrab);
+
+   m_ui->tableShortCuts->resizeColumnsToContents();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: shortCut
+|  Begin: 15.03.2011 / 15:45
+|  Author: Jo2003
+|  Description: get matching shortcut
+|
+|  Parameters: target and slot string
+|
+|  Returns:  shortcut string
+\----------------------------------------------------------------- */
+QString CSettingsDlg::shortCut(const QString &target, const QString &slot) const
+{
+   CShortCutGrabber *pGrab;
+   int     i;
+   QString key;
+
+   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
+   {
+      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
+
+      if ((pGrab->target() == target) && (pGrab->slot() == slot))
+      {
+         key = pGrab->shortCutString();
+         break;
+      }
+   }
+
+   return key;
 }
 
 /************************* History ***************************\

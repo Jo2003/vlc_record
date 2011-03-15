@@ -35,6 +35,12 @@
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
+| --- new since last beta ---
+| - add shortcut grabber class
+| - add shortcut table in settings
+| - use customizable shortcuts
+| - remove static shortcuts from layouts
+|
 | 2011-02-02: Version x.40B10
 | - you now can change the API path in settings dialog using
 |   shortcut "CTRL+ALT+A"

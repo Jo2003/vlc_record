@@ -35,6 +35,10 @@ public:
    QKeySequence keySequence() const;
    QString shortCutString() const;
    bool eventFilter(QObject *o, QEvent *e);
+   void setTarget(const QString &str);
+   void setSlot(const QString &str);
+   QString slot() const;
+   QString target() const;
 
 public slots:
    void setKeySequence(const QKeySequence &sequence);
@@ -59,6 +63,8 @@ private:
    int          m_num;
    QKeySequence m_keySequence;
    QLineEdit   *m_lineEdit;
+   QString      sTarget;
+   QString      sSlot;
 };
 
 #endif // __11022001_CSHORTCUTGRABBER_H

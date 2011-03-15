@@ -351,3 +351,63 @@ bool CShortCutGrabber::event(QEvent *e)
 
    return QWidget::event(e);
 }
+
+/* -----------------------------------------------------------------\
+|  Method: setTarget
+|  Begin: 15.03.2011 / 15:10
+|  Author: Jo2003
+|  Description: set target this shortcut belongs to
+|
+|  Parameters: target string
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShortCutGrabber::setTarget(const QString &str)
+{
+   sTarget = str;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setSlot
+|  Begin: 15.03.2011 / 15:10
+|  Author: Jo2003
+|  Description: set slot this shortcut belongs to
+|
+|  Parameters: slot string
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShortCutGrabber::setSlot(const QString &str)
+{
+   sSlot = str;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: target
+|  Begin: 15.03.2011 / 15:10
+|  Author: Jo2003
+|  Description: get target string belonging to this shortcut
+|
+|  Parameters: --
+|
+|  Returns: target string
+\----------------------------------------------------------------- */
+QString CShortCutGrabber::target() const
+{
+   return sTarget;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slot
+|  Begin: 15.03.2011 / 15:10
+|  Author: Jo2003
+|  Description: get slot string belonging to this shortcut
+|
+|  Parameters: --
+|
+|  Returns: slot string
+\----------------------------------------------------------------- */
+QString CShortCutGrabber::slot() const
+{
+   return sSlot;
+}

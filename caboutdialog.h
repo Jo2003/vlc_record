@@ -43,7 +43,7 @@ protected:
 
 private:
     Ui::CAboutDialog *ui;
-    QString strAbout, sShortCuts;
+    QString strAbout;
 };
 
 #endif /* __011810__CABOUTDIALOG_H */

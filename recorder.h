@@ -64,6 +64,15 @@ namespace Ui
        QString sChannel;
        QString sURL;
     };
+
+    struct SShortCuts
+    {
+       QString     sDescr;
+       QObject    *pObj;
+       QString     sObj;
+       const char *pSlot;
+       QString     sShortCut;
+    };
 }
 
 /********************************************************************\
