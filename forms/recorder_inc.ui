@@ -456,9 +456,6 @@ border-top: 0px;
                         <height>16</height>
                        </size>
                       </property>
-                      <property name="shortcut">
-                       <string>Alt+-</string>
-                      </property>
                       <property name="autoRaise">
                        <bool>true</bool>
                       </property>
@@ -494,9 +491,6 @@ color: white;
                         <width>16</width>
                         <height>16</height>
                        </size>
-                      </property>
-                      <property name="shortcut">
-                       <string>Alt++</string>
                       </property>
                       <property name="autoRaise">
                        <bool>true</bool>
@@ -554,9 +548,6 @@ color: white;
                      <width>24</width>
                      <height>24</height>
                     </size>
-                   </property>
-                   <property name="shortcut">
-                    <string>Ctrl+F</string>
                    </property>
                    <property name="autoRaise">
                     <bool>true</bool>
@@ -641,9 +632,6 @@ color: white;
                   <width>24</width>
                   <height>24</height>
                  </size>
-                </property>
-                <property name="shortcut">
-                 <string>Ctrl+F</string>
                 </property>
                 <property name="autoRaise">
                  <bool>true</bool>
@@ -815,9 +803,6 @@ border-top: 0px;
                   <height>32</height>
                  </size>
                 </property>
-                <property name="shortcut">
-                 <string>Alt+P</string>
-                </property>
                 <property name="autoDefault">
                  <bool>false</bool>
                 </property>
@@ -849,9 +834,6 @@ border-top: 0px;
                   <width>32</width>
                   <height>32</height>
                  </size>
-                </property>
-                <property name="shortcut">
-                 <string>Alt+R</string>
                 </property>
                 <property name="autoDefault">
                  <bool>false</bool>
@@ -893,9 +875,6 @@ border-top: 0px;
                   <width>32</width>
                   <height>32</height>
                  </size>
-                </property>
-                <property name="shortcut">
-                 <string>Alt+S</string>
                 </property>
                 <property name="autoDefault">
                  <bool>false</bool>
@@ -1049,9 +1028,6 @@ border-top: 0px;
                   <width>32</width>
                   <height>32</height>
                  </size>
-                </property>
-                <property name="shortcut">
-                 <string>Alt+T</string>
                 </property>
                 <property name="autoDefault">
                  <bool>false</bool>
@@ -1231,9 +1207,6 @@ border-top: 0px;
               <height>24</height>
              </size>
             </property>
-            <property name="shortcut">
-             <string>Alt+O</string>
-            </property>
             <property name="autoDefault">
              <bool>false</bool>
             </property>
@@ -1272,9 +1245,6 @@ border-top: 0px;
               <height>24</height>
              </size>
             </property>
-            <property name="shortcut">
-             <string>Alt+I</string>
-            </property>
             <property name="autoDefault">
              <bool>false</bool>
             </property>
@@ -1312,9 +1282,6 @@ border-top: 0px;
               <width>24</width>
               <height>24</height>
              </size>
-            </property>
-            <property name="shortcut">
-             <string>Alt+Q</string>
             </property>
             <property name="autoDefault">
              <bool>false</bool>

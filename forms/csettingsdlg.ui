@@ -675,6 +675,39 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tabShortCuts">
+      <attribute name="title">
+       <string>Shortcuts</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_11">
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="tableShortCuts">
+         <property name="rowCount">
+          <number>0</number>
+         </property>
+         <property name="columnCount">
+          <number>2</number>
+         </property>
+         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Function</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>ShortCut</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="tabRegister">
       <attribute name="title">
        <string>Registration</string>
