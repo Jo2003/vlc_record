@@ -74,6 +74,7 @@ public:
     bool TranslitRecFile ();
     bool DetachPlayer ();
     bool regOk();
+    bool extChanList();
 
     int GetRefrInt ();
     int GetProxyPort ();

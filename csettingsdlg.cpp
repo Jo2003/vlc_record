@@ -87,6 +87,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->checkAskForName->setCheckState((Qt::CheckState)pDb->intValue("AskRecFile"));
    m_ui->checkTranslit->setCheckState((Qt::CheckState)pDb->intValue("TranslitRecFile"));
    m_ui->checkDetach->setCheckState((Qt::CheckState)pDb->intValue("DetachPlayer"));
+   m_ui->checkExtChanInfo->setCheckState((Qt::CheckState)pDb->intValue("ExtChanList"));
 
    // on update the password for adult channels may not be given ...
    if (m_ui->checkAdult->isChecked() && (m_ui->lineErosPass->text() == ""))
@@ -277,6 +278,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("AskRecFile", (int)m_ui->checkAskForName->checkState());
    pDb->setValue("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
    pDb->setValue("DetachPlayer", (int)m_ui->checkDetach->checkState());
+   pDb->setValue("ExtChanList", (int)m_ui->checkExtChanInfo->checkState());
 
    // combo boxes ...
    pDb->setValue("Language", m_ui->cbxLanguage->currentText());
@@ -879,6 +881,11 @@ int  CSettingsDlg::GetBitRate()
 QString CSettingsDlg::GetAPIServer()
 {
    return m_ui->lineApiServer->text();
+}
+
+bool CSettingsDlg::extChanList()
+{
+   return m_ui->checkExtChanInfo->isChecked();
 }
 
 //===================================================================

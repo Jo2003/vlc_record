@@ -46,9 +46,10 @@ SOURCES += main.cpp \
     cstreamloader.cpp \
     cvodbrowser.cpp \
     cpixloader.cpp \
-    cshortcutgrabber.cpp
+    cshortcutgrabber.cpp \
+    qchandetails.cpp \
+    cchanlistwidgetitem.cpp
 HEADERS += recorder.h \
-    chanlistwidgetitem.h \
     csettingsdlg.h \
     ckartinaclnt.h \
     ckartinaxmlparser.h \
@@ -75,10 +76,13 @@ HEADERS += recorder.h \
     cstreamloader.h \
     cvodbrowser.h \
     cpixloader.h \
-    cshortcutgrabber.h
+    cshortcutgrabber.h \
+    qchandetails.h \
+    cchanlistwidgetitem.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
-    forms/ctimerrec.ui
+    forms/ctimerrec.ui \
+    forms/qchandetails.ui
 RESOURCES += vlc-record.qrc \
     lcd.qrc
 RC_FILE = vlc-record.rc

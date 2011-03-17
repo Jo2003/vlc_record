@@ -51,6 +51,7 @@
 #include "cshortcutex.h"
 #include "cshowinfo.h"
 #include "cstreamloader.h"
+#include "cchanlistwidgetitem.h"
 
 //===================================================================
 // namespace
