@@ -15,7 +15,9 @@
 #include <QWidget>
 #include <QDateTime>
 #include <QIcon>
+#include <QFont>
 
+#include "clogfile.h"
 #include "defdef.h"
 
 namespace Ui {
@@ -35,11 +37,12 @@ class QChanDetails : public QWidget
 
 public:
     QChanDetails(QWidget *parent = 0);
-    ~QChanDetails();
+    virtual ~QChanDetails();
     void setIcon(const QIcon &icon);
     void setChannelName(const QString &name);
     void setProgram(const QString &prog);
     void setTimes(uint start, uint end);
+    void changeFontSize(int delta);
 
 private:
     Ui::QChanDetails *ui;

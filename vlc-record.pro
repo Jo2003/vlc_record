@@ -78,7 +78,8 @@ HEADERS += recorder.h \
     cpixloader.h \
     cshortcutgrabber.h \
     qchandetails.h \
-    cchanlistwidgetitem.h
+    cchanlistwidgetitem.h \
+    qchanlistwidget.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

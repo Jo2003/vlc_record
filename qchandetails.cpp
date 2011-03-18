@@ -12,6 +12,9 @@
 #include "qchandetails.h"
 #include "ui_qchandetails.h"
 
+// log file functions ...
+extern CLogFile VlcLog;
+
 /* -----------------------------------------------------------------\
 |  Method: QChanDetails / constructor
 |  Begin:  17.03.2011 / 9:50
@@ -120,4 +123,29 @@ void QChanDetails::setTimes(uint start, uint end)
 void QChanDetails::setIcon (const QIcon &icon)
 {
    ui->lIcon->setPixmap(icon.pixmap(24, 24));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: changeFontSize
+|  Begin:  17.03.2011 / 10:00
+|  Author: Jo2003
+|  Description: change font size
+|
+|  Parameters: delta value
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void QChanDetails::changeFontSize(int delta)
+{
+   QFont font = ui->lChan->font();
+   font.setPointSize(font.pointSize() + delta);
+   ui->lChan->setFont(font);
+
+   font = ui->lFromTo->font();
+   font.setPointSize(font.pointSize() + delta);
+   ui->lFromTo->setFont(font);
+
+   font = ui->lProgram->font();
+   font.setPointSize(font.pointSize() + delta);
+   ui->lProgram->setFont(font);
 }

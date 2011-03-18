@@ -291,7 +291,8 @@ QString CChanListWidgetItem::toolTip () const
 |
 |  Parameters: ext. info flag
 |
-|  Returns: --
+|  Returns: 1 --> QWidget nested
+|           0 --> using QListWidgetItem
 \----------------------------------------------------------------- */
 int CChanListWidgetItem::nest(bool bExtInfo)
 {
@@ -314,5 +315,30 @@ int CChanListWidgetItem::nest(bool bExtInfo)
       setToolTip(sToolTip);
    }
 
-   return 0;
+   return (bNested) ? 1 : 0;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: changeFontSize
+|  Begin: 18.03.2011 / 9;30
+|  Author: Jo2003
+|  Description: change font size
+|
+|  Parameters: change value (delta)
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CChanListWidgetItem::changeFontSize(int delta)
+{
+   if (bNested)
+   {
+      pNestedWidget->changeFontSize(delta);
+      setSizeHint(pNestedWidget->size());
+   }
+   else
+   {
+      QFont f = font();
+      f.setPointSize(f.pointSize() + delta);
+      setFont(f);
+   }
 }

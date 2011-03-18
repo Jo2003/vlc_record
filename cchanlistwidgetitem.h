@@ -14,6 +14,7 @@
 
 #include <QListWidgetItem>
 #include <QString>
+#include <QFont>
 #include "qchandetails.h"
 
 /********************************************************************\
@@ -46,6 +47,7 @@ public:
    void    prepareToolTip(const QString &str);
    void    init (QListWidget *parent);
    int     nest(bool bExtInfo = true);
+   void    changeFontSize (int delta);
 
 private:
    QString sChan, sProgram, sToolTip;

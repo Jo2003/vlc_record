@@ -31,15 +31,19 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".40B10" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".42B1" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last beta ---
+|
+| 2011-03-18: Version x.42B1
+| - advanced channel list (enable in settings)
 | - add shortcut grabber class
 | - add shortcut table in settings
 | - use customizable shortcuts
 | - remove static shortcuts from layouts
+| - use libVLC 1.17 (Windows only)
 |
 | 2011-02-02: Version x.40B10
 | - you now can change the API path in settings dialog using

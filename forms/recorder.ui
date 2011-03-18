@@ -145,7 +145,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget">
+         <widget class="QChanListWidget" name="listWidget">
           <property name="contextMenuPolicy">
            <enum>Qt::CustomContextMenu</enum>
           </property>
@@ -1107,6 +1107,11 @@ background-attachment: fixed;
    <class>CVodBrowser</class>
    <extends>QTextBrowser</extends>
    <header>cvodbrowser.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QChanListWidget</class>
+   <extends>QListWidget</extends>
+   <header>qchanlistwidget.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

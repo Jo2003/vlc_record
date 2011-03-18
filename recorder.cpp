@@ -909,10 +909,14 @@ void Recorder::on_btnFontSmaller_clicked()
    ui->textEpgShort->ReduceFont();
    ui->vodBrowser->ReduceFont();
 
+   ui->listWidget->changeFontSize(-1);
+   ui->listWidget->adjustSize();
+
+/*
    font = ui->listWidget->font();
    font.setPointSize(font.pointSize() - 1);
    ui->listWidget->setFont(font);
-
+*/
    font = ui->cbxChannelGroup->font();
    font.setPointSize(font.pointSize() - 1);
    ui->cbxChannelGroup->setFont(font);
@@ -937,10 +941,13 @@ void Recorder::on_btnFontLarger_clicked()
    ui->textEpgShort->EnlargeFont();
    ui->vodBrowser->EnlargeFont();
 
+   ui->listWidget->changeFontSize(1);
+   ui->listWidget->adjustSize();
+/*
    font = ui->listWidget->font();
    font.setPointSize(font.pointSize() + 1);
    ui->listWidget->setFont(font);
-
+*/
    font = ui->cbxChannelGroup->font();
    font.setPointSize(font.pointSize() + 1);
    ui->cbxChannelGroup->setFont(font);
@@ -2357,18 +2364,19 @@ void Recorder::initDialog ()
 
    if (iFontSzChg)
    {
-      QFont font;
+      QFont f;
       ui->textEpg->ChangeFontSize(iFontSzChg);
       ui->textEpgShort->ChangeFontSize(iFontSzChg);
       ui->vodBrowser->ChangeFontSize(iFontSzChg);
-
-      font = ui->listWidget->font();
+      ui->listWidget->changeFontSize(iFontSzChg);
+/*
       font.setPointSize(font.pointSize() + iFontSzChg);
       ui->listWidget->setFont(font);
+*/
 
-      font = ui->cbxChannelGroup->font();
-      font.setPointSize(font.pointSize() + iFontSzChg);
-      ui->cbxChannelGroup->setFont(font);
+      f = ui->cbxChannelGroup->font();
+      f.setPointSize(f.pointSize() + iFontSzChg);
+      ui->cbxChannelGroup->setFont(f);
    }
 
    // -------------------------------------------
@@ -2867,6 +2875,9 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
       }
 
       pItem->nest(Settings.extChanList());
+
+      // make sure to use global font size ...
+      pItem->changeFontSize(ui->listWidget->fontSizeDiff());
    }
 
    ui->listWidget->adjustSize();
