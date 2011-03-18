@@ -713,6 +713,23 @@
          </column>
         </widget>
        </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="labShortCutNote">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel#labShortCutNote {
+color: red;
+}</string>
+         </property>
+         <property name="text">
+          <string>Changes in shortcuts take effect only after restarting the program.</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabRegister">

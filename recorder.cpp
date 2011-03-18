@@ -2259,7 +2259,7 @@ void Recorder::slotGotVideoInfo(QString str)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotVodURL
+|  Method: slotVodURL [slot]
 |  Begin: 22.12.2010 / 15:30
 |  Author: Jo2003
 |  Description: got requested vod url, start play / record
@@ -2299,6 +2299,69 @@ void Recorder::slotVodURL(QString str)
    TouchPlayCtrlBtns(true);
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotChannelUp [slot]
+|  Begin: 18.03.2011 / 11:45
+|  Author: Jo2003
+|  Description: mark previous channel in channel list
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotChannelUp()
+{
+   int iRow = ui->listWidget->currentRow();
+
+   if (iRow > 0)
+   {
+      ui->listWidget->setCurrentRow(iRow - 1);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotChannelDown [slot]
+|  Begin: 18.03.2011 / 11:45
+|  Author: Jo2003
+|  Description: mark next channel in channel list
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotChannelDown()
+{
+   int iRow = ui->listWidget->currentRow();
+
+   if (iRow < ui->listWidget->count())
+   {
+      ui->listWidget->setCurrentRow(iRow + 1);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotToggleEpgVod [slot]
+|  Begin: 18.03.2011 / 12:00
+|  Author: Jo2003
+|  Description: switch between EPG and VOD
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotToggleEpgVod()
+{
+   int iIdx = ui->tabEpgVod->currentIndex();
+
+   iIdx ++;
+
+   if (iIdx > (ui->tabEpgVod->count() - 1))
+   {
+      iIdx = 0;
+   }
+
+   ui->tabEpgVod->setCurrentIndex(iIdx);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
@@ -2687,6 +2750,9 @@ void Recorder::InitShortCuts()
       {tr("Jump Backward"),        this,       "Recorder", SLOT(on_pushBwd_clicked()),        "CTRL+ALT+B"},
 #endif // INCLUDE_LIBVLC
 
+      {tr("Next Channel"),         this,       "Recorder", SLOT(slotChannelDown()),           "CTRL+N"},
+      {tr("Previous Channel"),     this,       "Recorder", SLOT(slotChannelUp()),             "CTRL+P"},
+      {tr("Show EPG / VOD"),       this,       "Recorder", SLOT(slotToggleEpgVod()),          "CTRL+E"},
       // add further entries below ...
 
       // last entry, don't touch ...
@@ -3299,12 +3365,17 @@ void Recorder::HandleFavourites()
 {
    int i;
    QPixmap pic;
+   QString sObj;
 
    // remove all favourite buttons ...
    for (i = 0; i < MAX_NO_FAVOURITES; i++)
    {
       if (pFavBtn[i] != NULL)
       {
+         // delete shortcut entry from shortcut table ...
+         sObj = QString("pFavAct[%1]").arg(i);
+         Settings.delShortCut(sObj, SLOT(slotHandleFavAction(QAction*)));
+
          ui->gLayoutFav->removeWidget(pFavBtn[i]);
          delete pFavAct[i];
          delete pFavBtn[i];
@@ -3332,8 +3403,14 @@ void Recorder::HandleFavourites()
          // store channel id in action ...
          pFavAct[i]->setFavData(lFavourites[i], kartinafav::FAV_WHAT);
 
+         // add shortcut to shortcut table ...
+         sObj = QString("pFavAct[%1]").arg(i);
+         Settings.addShortCut(tr("Favourite %1").arg(i + 1), sObj,
+                              SLOT(slotHandleFavAction(QAction*)),
+                              QString("ALT+%1").arg(i));
+
          // set shortcut ...
-         pFavAct[i]->setShortcut(QKeySequence(QString("ALT+%1").arg(i)));
+         pFavAct[i]->setShortcut(QKeySequence(Settings.shortCut(sObj, SLOT(slotHandleFavAction(QAction*)))));
 
          // add channel name as tooltip ...
          pFavAct[i]->setToolTip(chanMap.value(lFavourites[i]).sName);

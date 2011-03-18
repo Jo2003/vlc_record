@@ -215,6 +215,9 @@ private slots:
     void slotVodURL(QString str);
     void slotGotBitrate (QString str);
     void slotSetBitrate (int iRate);
+    void slotChannelDown();
+    void slotChannelUp();
+    void slotToggleEpgVod();
 
 signals:
     void sigShow ();

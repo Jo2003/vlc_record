@@ -100,6 +100,7 @@ public:
     QString& reverse (QString &str);
     int   GetBitRate ();
     void  addShortCut (const QString& descr, const QString& target, const QString& slot, const QString& keys);
+    void  delShortCut (const QString& target, const QString& slot);
     QString shortCut (const QString& target, const QString& slot) const;
 
 protected:

@@ -1039,6 +1039,33 @@ QString CSettingsDlg::shortCut(const QString &target, const QString &slot) const
    return key;
 }
 
+/* -----------------------------------------------------------------\
+|  Method: delShortCut
+|  Begin: 18.03.2011 / 11:20
+|  Author: Jo2003
+|  Description: delete matching shortcut from shortcut table only
+|
+|  Parameters: target and slot string
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::delShortCut(const QString &target, const QString &slot)
+{
+   CShortCutGrabber *pGrab;
+   int     i;
+
+   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
+   {
+      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
+
+      if ((pGrab->target() == target) && (pGrab->slot() == slot))
+      {
+         m_ui->tableShortCuts->removeRow(i);
+         break;
+      }
+   }
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
