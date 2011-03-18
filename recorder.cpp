@@ -912,11 +912,6 @@ void Recorder::on_btnFontSmaller_clicked()
    ui->listWidget->changeFontSize(-1);
    ui->listWidget->adjustSize();
 
-/*
-   font = ui->listWidget->font();
-   font.setPointSize(font.pointSize() - 1);
-   ui->listWidget->setFont(font);
-*/
    font = ui->cbxChannelGroup->font();
    font.setPointSize(font.pointSize() - 1);
    ui->cbxChannelGroup->setFont(font);
@@ -943,11 +938,7 @@ void Recorder::on_btnFontLarger_clicked()
 
    ui->listWidget->changeFontSize(1);
    ui->listWidget->adjustSize();
-/*
-   font = ui->listWidget->font();
-   font.setPointSize(font.pointSize() + 1);
-   ui->listWidget->setFont(font);
-*/
+
    font = ui->cbxChannelGroup->font();
    font.setPointSize(font.pointSize() + 1);
    ui->cbxChannelGroup->setFont(font);
@@ -2432,10 +2423,6 @@ void Recorder::initDialog ()
       ui->textEpgShort->ChangeFontSize(iFontSzChg);
       ui->vodBrowser->ChangeFontSize(iFontSzChg);
       ui->listWidget->changeFontSize(iFontSzChg);
-/*
-      font.setPointSize(font.pointSize() + iFontSzChg);
-      ui->listWidget->setFont(font);
-*/
 
       f = ui->cbxChannelGroup->font();
       f.setPointSize(f.pointSize() + iFontSzChg);
@@ -2946,7 +2933,6 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
       pItem->changeFontSize(ui->listWidget->fontSizeDiff());
    }
 
-   // ui->listWidget->adjustSize();
    ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
    ui->listWidget->setCurrentRow (iRow);
    ui->listWidget->setFocus(Qt::OtherFocusReason);
