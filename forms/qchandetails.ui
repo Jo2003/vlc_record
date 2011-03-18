@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>155</width>
-    <height>57</height>
+    <height>59</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,11 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="font">
+   <font>
+    <family>Sans Serif</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -49,6 +54,11 @@
      </property>
      <item>
       <widget class="QLabel" name="lChan">
+       <property name="font">
+        <font>
+         <family>Sans Serif</family>
+        </font>
+       </property>
        <property name="text">
         <string>Channel</string>
        </property>
@@ -58,6 +68,7 @@
       <widget class="QLabel" name="lProgram">
        <property name="font">
         <font>
+         <family>Sans Serif</family>
          <pointsize>8</pointsize>
         </font>
        </property>
@@ -70,6 +81,7 @@
       <widget class="QLabel" name="lFromTo">
        <property name="font">
         <font>
+         <family>Sans Serif</family>
          <pointsize>8</pointsize>
         </font>
        </property>

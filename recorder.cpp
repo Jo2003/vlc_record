@@ -2946,7 +2946,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
       pItem->changeFontSize(ui->listWidget->fontSizeDiff());
    }
 
-   ui->listWidget->adjustSize();
+   // ui->listWidget->adjustSize();
    ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
    ui->listWidget->setCurrentRow (iRow);
    ui->listWidget->setFocus(Qt::OtherFocusReason);

@@ -1418,27 +1418,27 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>QChanDetails</name>
     <message>
-        <location filename="forms/qchandetails.ui" line="20"/>
+        <location filename="forms/qchandetails.ui" line="25"/>
         <source>Form</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qchandetails.ui" line="41"/>
+        <location filename="forms/qchandetails.ui" line="46"/>
         <source>Icon</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qchandetails.ui" line="53"/>
+        <location filename="forms/qchandetails.ui" line="63"/>
         <source>Channel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qchandetails.ui" line="65"/>
+        <location filename="forms/qchandetails.ui" line="76"/>
         <source>Program</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qchandetails.ui" line="77"/>
+        <location filename="forms/qchandetails.ui" line="89"/>
         <source>from ... to</source>
         <translation></translation>
     </message>
