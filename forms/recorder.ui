@@ -156,9 +156,20 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
            <string>Channel List</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">QListWidget#listWidget {
-alternate-background-color: rgb(247, 239, 205);
-}</string>
+           <string notr="true">QListView#listWidget {
+show-decoration-selected: 1;
+background-color: rgb(247, 239, 205);
+}
+
+QListView#listWidget::item:selected {
+background-color: rgb(255, 167, 26);
+alternate-background-color: rgb(255, 167, 26);
+}
+
+QListView#listWidget::item:hover {
+background-color: rgb(255, 110, 14);
+}
+</string>
           </property>
           <property name="alternatingRowColors">
            <bool>true</bool>
