@@ -48,7 +48,8 @@ SOURCES += main.cpp \
     cpixloader.cpp \
     cshortcutgrabber.cpp \
     qchandetails.cpp \
-    cchanlistwidgetitem.cpp
+    cchanlistwidgetitem.cpp \
+    qchanlistdelegate.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
@@ -79,7 +80,8 @@ HEADERS += recorder.h \
     cshortcutgrabber.h \
     qchandetails.h \
     cchanlistwidgetitem.h \
-    qchanlistwidget.h
+    qchanlistwidget.h \
+    qchanlistdelegate.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
