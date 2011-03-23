@@ -47,7 +47,6 @@ SOURCES += main.cpp \
     cvodbrowser.cpp \
     cpixloader.cpp \
     cshortcutgrabber.cpp \
-    qchandetails.cpp \
     qchanlistdelegate.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
@@ -77,7 +76,6 @@ HEADERS += recorder.h \
     cvodbrowser.h \
     cpixloader.h \
     cshortcutgrabber.h \
-    qchandetails.h \
     qchanlistdelegate.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
