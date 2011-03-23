@@ -20,6 +20,7 @@
         <file alias="bwd">resources/skip_backward.png</file>
         <file alias="fwd">resources/skip_forward.png</file>
         <file alias="pause">resources/pause.png</file>
+        <file alias="group">resources/channel_group.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

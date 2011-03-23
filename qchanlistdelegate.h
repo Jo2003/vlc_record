@@ -49,6 +49,9 @@ public:
    virtual ~QChanListDelegate();
    virtual void	paint (QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index) const;
    virtual QSize	sizeHint (const QStyleOptionViewItem & option, const QModelIndex & index) const;
+
+protected:
+   void cutProgString (QString & str, const QFontMetrics & fm, int width) const;
 };
 
 #endif // __032211_QCHANLISTDELEGATE_H

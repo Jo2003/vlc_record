@@ -35,6 +35,7 @@
 #include <QMenu>
 #include <QWindowStateChangeEvent>
 #include <QMap>
+#include <QStandardItemModel>
 
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
@@ -51,7 +52,7 @@
 #include "cshortcutex.h"
 #include "cshowinfo.h"
 #include "cstreamloader.h"
-#include "cchanlistwidgetitem.h"
+#include "qchanlistdelegate.h"
 
 //===================================================================
 // namespace
@@ -126,6 +127,8 @@ private:
     int                            iDwnReqId;
     bool                           bFirstConnect;
     QString                        sExpires;
+    QStandardItemModel            *pModel;
+    QChanListDelegate             *pDelegate;
 
 protected:
     void touchSearchAreaCbx ();
@@ -151,6 +154,8 @@ protected:
     void ClearShortCuts ();
     void savePositions ();
     void initDialog ();
+    QString createTooltip (const QString & name, const QString & prog, uint start, uint end);
+    int     getCurrentCid();
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
@@ -170,12 +175,11 @@ private slots:
     void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
     void on_btnSearch_clicked();
-    void on_listWidget_itemDoubleClicked(QListWidgetItem* item);
+    void on_channelList_doubleClicked(const QModelIndex & index);
     void slotbtnNext_clicked();
     void slotbtnBack_clicked();
     void on_pushAbout_clicked();
     void on_cbxChannelGroup_activated(int index);
-    void on_listWidget_currentRowChanged(int currentRow);
     void on_pushPlay_clicked();
     void on_pushRecord_clicked();
     void on_pushSettings_clicked();
@@ -218,6 +222,7 @@ private slots:
     void slotChannelDown();
     void slotChannelUp();
     void slotToggleEpgVod();
+    void slotCurrentChannelChanged(const QModelIndex & current);
 
 signals:
     void sigShow ();

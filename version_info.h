@@ -31,11 +31,18 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".42B1" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".42B2" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last beta ---
+|
+| 2011-03-23: Version x.42B2
+| - remove channel list widget
+| - add new channel list view
+| - remove channel list item class
+| - use item delegate to draw custom channel list
+| - better style channel item
 |
 | 2011-03-18: Version x.42B1
 | - advanced channel list (enable in settings)

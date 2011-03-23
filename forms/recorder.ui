@@ -80,7 +80,7 @@ QSplitter#hSplitterChannels::handle:pressed {
        <property name="title">
         <string> Channels </string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,60">
+       <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
         <item>
          <widget class="QFrame" name="hFrameFav">
           <property name="contextMenuPolicy">
@@ -145,7 +145,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
          </widget>
         </item>
         <item>
-         <widget class="QChanListWidget" name="listWidget">
+         <widget class="QListView" name="channelList">
           <property name="contextMenuPolicy">
            <enum>Qt::CustomContextMenu</enum>
           </property>
@@ -156,17 +156,17 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
            <string>Channel List</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">QListView#listWidget {
+           <string notr="true">QListView#channelList {
 show-decoration-selected: 1;
 background-color: rgb(247, 239, 205);
 }
 
-QListView#listWidget::item:selected {
+QListView#channelList::item:selected {
 background-color: rgb(255, 167, 26);
 alternate-background-color: rgb(255, 167, 26);
 }
 
-QListView#listWidget::item:hover {
+QListView#channelList::item:hover {
 background-color: rgb(255, 110, 14);
 }
 </string>
@@ -1119,15 +1119,10 @@ background-attachment: fixed;
    <extends>QTextBrowser</extends>
    <header>cvodbrowser.h</header>
   </customwidget>
-  <customwidget>
-   <class>QChanListWidget</class>
-   <extends>QListWidget</extends>
-   <header>qchanlistwidget.h</header>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>cbxChannelGroup</tabstop>
-  <tabstop>listWidget</tabstop>
+  <tabstop>channelList</tabstop>
   <tabstop>textEpgShort</tabstop>
   <tabstop>cbxTimeShift</tabstop>
   <tabstop>textEpg</tabstop>

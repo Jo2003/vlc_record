@@ -65,6 +65,13 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    VlcLog.SetLogFile(pFolders->getDataDir(), APP_LOG_FILE);
 
+   // set channel list model and delegate ...
+   pModel    = new QStandardItemModel;
+   pDelegate = new QChanListDelegate;
+
+   ui->channelList->setItemDelegate(pDelegate);
+   ui->channelList->setModel(pModel);
+
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
    timeRec.setParent(this, Qt::Dialog);
@@ -196,7 +203,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&vlcCtrl,      SIGNAL(sigVlcStarts(int)), this, SLOT(slotVlcStarts(int)));
    connect (&vlcCtrl,      SIGNAL(sigVlcEnds(int)), this, SLOT(slotVlcEnds(int)));
    connect (&timeRec,      SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
-   connect (ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
+   connect (ui->channelList, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
    connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
    connect (this,          SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
    connect (&KartinaTv,    SIGNAL(sigGotVodGenres(QString)), this, SLOT(slotGotVodGenres(QString)));
@@ -204,6 +211,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
    connect (&KartinaTv,    SIGNAL(sigGotVideoInfo(QString)), this, SLOT(slotGotVideoInfo(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotVodUrl(QString)), this, SLOT(slotVodURL(QString)));
+   connect(ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -239,6 +247,16 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 Recorder::~Recorder()
 {
    delete ui;
+
+   if (pModel)
+   {
+      delete pModel;
+   }
+
+   if (pDelegate)
+   {
+      delete pDelegate;
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -468,7 +486,7 @@ void Recorder::on_pushSettings_clicked()
       // if changes where saved, accept it here ...
       VlcLog.SetLogLevel(Settings.GetLogLevel());
 
-      ui->listWidget->clear();
+      pModel->clear();
       KartinaTv.abort();
 
       // update connection data ...
@@ -567,34 +585,34 @@ void Recorder::on_pushRecord_clicked()
    {
 
 #endif // INCLUDE_LIBVLC
-      CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
+      int cid = getCurrentCid();
 
-      if (pItem)
+      if (chanMap.contains(cid))
       {
-         if (pItem->cid() != -1)
+         if (AllowAction(IncPlay::PS_RECORD))
          {
-            if (AllowAction(IncPlay::PS_RECORD))
+            cparser::SChan chan = chanMap[cid];
+
+            // new own downloader ...
+            if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
             {
-               // new own downloader ...
-               if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
-               {
-                  streamLoader.stopDownload (iDwnReqId);
-                  iDwnReqId = -1;
-               }
-
-               showInfo.setChanId(pItem->cid());
-               showInfo.setChanName(pItem->name());
-               showInfo.setArchive(false);
-               showInfo.setShowName(pItem->program());
-               showInfo.setStartTime(pItem->startTime());
-               showInfo.setEndTime(pItem->endTime());
-               showInfo.setPlayState(IncPlay::PS_RECORD);
-
-               TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->cid());
+               streamLoader.stopDownload (iDwnReqId);
+               iDwnReqId = -1;
             }
+
+            showInfo.setChanId(cid);
+            showInfo.setChanName(chan.sName);
+            showInfo.setArchive(false);
+            showInfo.setShowName(chan.sProgramm);
+            showInfo.setStartTime(chan.uiStart);
+            showInfo.setEndTime(chan.uiEnd);
+            showInfo.setPlayState(IncPlay::PS_RECORD);
+
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
          }
       }
+
 #ifdef INCLUDE_LIBVLC
    }
 #endif // INCLUDE_LIBVLC
@@ -641,87 +659,30 @@ void Recorder::on_pushPlay_clicked()
    else
    {
 #endif // INCLUDE_LIBVLC
-      CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
+      int cid  = getCurrentCid();
 
-      if (pItem)
+      if (chanMap.contains(cid))
       {
-         if (pItem->cid() != -1)
+         if (AllowAction(IncPlay::PS_PLAY))
          {
-            if (AllowAction(IncPlay::PS_PLAY))
-            {
-               showInfo.setChanId(pItem->cid());
-               showInfo.setChanName(pItem->name());
-               showInfo.setArchive(false);
-               showInfo.setShowName(pItem->program());
-               showInfo.setStartTime(pItem->startTime());
-               showInfo.setEndTime(pItem->endTime());
-               showInfo.setPlayState(IncPlay::PS_PLAY);
+            cparser::SChan chan = chanMap[cid];
 
-               TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->cid());
-            }
+            showInfo.setChanId(cid);
+            showInfo.setChanName(chan.sName);
+            showInfo.setArchive(false);
+            showInfo.setShowName(chan.sProgramm);
+            showInfo.setStartTime(chan.uiStart);
+            showInfo.setEndTime(chan.uiEnd);
+            showInfo.setPlayState(IncPlay::PS_PLAY);
+
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
          }
       }
+
 #ifdef INCLUDE_LIBVLC
    }
 #endif // INCLUDE_LIBVLC
-}
-
-/* -----------------------------------------------------------------\
-|  Method: on_listWidget_currentRowChanged
-|  Begin: 19.01.2010 / 16:13:56
-|  Author: Jo2003
-|  Description: channel changed, request epg if needed
-|
-|  Parameters: slected row index
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::on_listWidget_currentRowChanged(int currentRow)
-{
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->item(currentRow);
-   if (pItem)
-   {
-      if(pItem->cid() != -1)
-      {
-         // get whole channel entry ...
-         cparser::SChan entry = chanMap.value(pItem->cid());
-         int iTs;
-
-         ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR).arg("rgb(255, 254, 212)").arg(pItem->toolTip()));
-         SetProgress (pItem->startTime(), pItem->endTime());
-
-         // quick'n'dirty timeshift hack ...
-         if (entry.vTs.count() <= 2) // no timeshift available ...
-         {
-            ui->textEpg->SetTimeShift(0);
-         }
-         else
-         {
-            iTs = ui->cbxTimeShift->currentText().toInt();
-
-            if (ui->textEpg->GetTimeShift() != iTs)
-            {
-               ui->textEpg->SetTimeShift(iTs);
-            }
-         }
-
-         // was this a refresh or was channel changed ... ?
-         if (pItem->cid() != ui->textEpg->GetCid())
-         {
-            // load epg ...
-            Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->cid(), iEpgOffset);
-         }
-         else // same channel ...
-         {
-            // refresh epg only, if we view current day in epg ...
-            if (iEpgOffset == 0) // 0 means today!
-            {
-               Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->cid());
-            }
-         }
-      }
-   }
 }
 
 /* -----------------------------------------------------------------\
@@ -736,13 +697,11 @@ void Recorder::on_listWidget_currentRowChanged(int currentRow)
 \----------------------------------------------------------------- */
 void Recorder::on_cbxChannelGroup_activated(int index)
 {
-   int iListIdx = ui->cbxChannelGroup->itemData(index).toInt();
+   int         row = ui->cbxChannelGroup->itemData(index).toInt();
+   QModelIndex idx = pModel->index(row + 1, 0);
 
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->item(iListIdx);
-
-   ui->listWidget->scrollToItem(pItem, QAbstractItemView::PositionAtTop);
-   ui->listWidget->setCurrentRow(iListIdx + 1);
-   ui->listWidget->setFocus(Qt::OtherFocusReason);
+   ui->channelList->setCurrentIndex(idx);
+   ui->channelList->scrollTo(idx);
 }
 
 /* -----------------------------------------------------------------\
@@ -763,36 +722,35 @@ void Recorder::on_pushAbout_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_listWidget_itemDoubleClicked
+|  Method: on_channelList_itemDoubleClicked
 |  Begin: 19.01.2010 / 16:19:25
 |  Author: Jo2003
 |  Description: double click on channel list -> start play channel
 |
-|  Parameters: pointer to listwidgetitem ...
+|  Parameters: pointer to channelListitem ...
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
 {
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)item;
+   int cid = qvariant_cast<int>(index.data(channellist::cidRole));
 
-   if (pItem)
+   if (chanMap.contains(cid))
    {
-      if (pItem->cid() != -1)
+      if (AllowAction(IncPlay::PS_PLAY))
       {
-         if (AllowAction(IncPlay::PS_PLAY))
-         {
-            showInfo.setChanId(pItem->cid());
-            showInfo.setChanName(pItem->name());
-            showInfo.setArchive(false);
-            showInfo.setShowName(pItem->program());
-            showInfo.setStartTime(pItem->startTime());
-            showInfo.setEndTime(pItem->endTime());
-            showInfo.setPlayState(IncPlay::PS_PLAY);
+         cparser::SChan chan = chanMap[cid];
 
-            TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_STREAM, pItem->cid());
-         }
+         showInfo.setChanId(cid);
+         showInfo.setChanName(chan.sName);
+         showInfo.setArchive(false);
+         showInfo.setShowName(chan.sProgramm);
+         showInfo.setStartTime(chan.uiStart);
+         showInfo.setEndTime(chan.uiEnd);
+         showInfo.setPlayState(IncPlay::PS_PLAY);
+
+         TouchPlayCtrlBtns(false);
+         Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
       }
    }
 }
@@ -847,17 +805,11 @@ void Recorder::on_lineSearch_returnPressed()
 \----------------------------------------------------------------- */
 void Recorder::on_pushTimerRec_clicked()
 {
-   int                  iCid  = 0;
-   uint                 now   = QDateTime::currentDateTime().toTime_t();
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-
-   if (pItem)
-   {
-      iCid = pItem->cid();
-   }
+   uint now = QDateTime::currentDateTime().toTime_t();
+   int  cid = getCurrentCid();
 
    // timeRec.SetRecInfo(now, now, -1);
-   timeRec.SetRecInfo(now, now, iCid);
+   timeRec.SetRecInfo(now, now, cid);
    timeRec.exec();
 }
 
@@ -904,17 +856,18 @@ void Recorder::on_pushStop_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_btnFontSmaller_clicked()
 {
-   QFont font;
+   QFont f;
    ui->textEpg->ReduceFont();
    ui->textEpgShort->ReduceFont();
    ui->vodBrowser->ReduceFont();
 
-   ui->listWidget->changeFontSize(-1);
-   ui->listWidget->adjustSize();
+   f = ui->channelList->font();
+   f.setPointSize(f.pointSize() - 1);
+   ui->channelList->setFont(f);
 
-   font = ui->cbxChannelGroup->font();
-   font.setPointSize(font.pointSize() - 1);
-   ui->cbxChannelGroup->setFont(font);
+   f = ui->cbxChannelGroup->font();
+   f.setPointSize(f.pointSize() - 1);
+   ui->cbxChannelGroup->setFont(f);
 
    iFontSzChg --;
 }
@@ -931,17 +884,18 @@ void Recorder::on_btnFontSmaller_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_btnFontLarger_clicked()
 {
-   QFont font;
+   QFont f;
    ui->textEpg->EnlargeFont();
    ui->textEpgShort->EnlargeFont();
    ui->vodBrowser->EnlargeFont();
 
-   ui->listWidget->changeFontSize(1);
-   ui->listWidget->adjustSize();
+   f = ui->channelList->font();
+   f.setPointSize(f.pointSize() + 1);
+   ui->channelList->setFont(f);
 
-   font = ui->cbxChannelGroup->font();
-   font.setPointSize(font.pointSize() + 1);
-   ui->cbxChannelGroup->setFont(font);
+   f = ui->cbxChannelGroup->font();
+   f.setPointSize(f.pointSize() + 1);
+   ui->cbxChannelGroup->setFont(f);
 
    iFontSzChg ++;
 }
@@ -1388,15 +1342,9 @@ void Recorder::slotChanList (QString str)
 void Recorder::slotEPG(QString str)
 {
    QVector<cparser::SEpg> epg;
-   int                    cid     = 0;
-   QDateTime              epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
 
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-
-   if (pItem)
-   {
-      cid = pItem->cid();
-   }
+   QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
+   int       cid     = getCurrentCid();
 
    if (!XMLParser.parseEpg(str, epg))
    {
@@ -1419,7 +1367,7 @@ void Recorder::slotEPG(QString str)
       pEpgNavbar->setCurrentIndex(epgTime.date().dayOfWeek() - 1);
 
       TouchPlayCtrlBtns();
-      ui->listWidget->setFocus(Qt::OtherFocusReason);
+      ui->channelList->setFocus(Qt::OtherFocusReason);
 
       // update vod stuff only at startup ...
       if (ui->cbxGenre->count() == 0)
@@ -1540,7 +1488,7 @@ void Recorder::slotReloadLogos()
       QStringList lLogos;
       QMap<int, cparser::SChan>::const_iterator cit;
 
-      // create tmp channel list with channels from listWidget ...
+      // create tmp channel list with channels from channelList ...
       for (cit = chanMap.constBegin(); cit != chanMap.constEnd(); cit++)
       {
          if (!(*cit).bIsGroup)
@@ -1565,16 +1513,13 @@ void Recorder::slotReloadLogos()
 \----------------------------------------------------------------- */
 void Recorder::slotbtnBack_clicked()
 {
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-   if (pItem)
+   int cid = getCurrentCid();
+   if  (chanMap.contains(cid))
    {
-      if  (pItem->cid() != -1)
-      {
-         // set actual day in previous week to munday ...
-         int iActDay  = pEpgNavbar->currentIndex();
-         iEpgOffset  -= 7 + iActDay;
-         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->cid(), iEpgOffset);
-      }
+      // set actual day in previous week to munday ...
+      int iActDay  = pEpgNavbar->currentIndex();
+      iEpgOffset  -= 7 + iActDay;
+      Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
    }
 }
 
@@ -1590,16 +1535,14 @@ void Recorder::slotbtnBack_clicked()
 \----------------------------------------------------------------- */
 void Recorder::slotbtnNext_clicked()
 {
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-   if (pItem)
+   int cid = getCurrentCid();
+
+   if (chanMap.contains(cid))
    {
-      if (pItem->cid() != -1)
-      {
-         // set actual day in next week to munday ...
-         int iActDay  = pEpgNavbar->currentIndex();
-         iEpgOffset  += 7 - iActDay;
-         Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->cid(), iEpgOffset);
-      }
+      // set actual day in next week to munday ...
+      int iActDay  = pEpgNavbar->currentIndex();
+      iEpgOffset  += 7 - iActDay;
+      Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
    }
 }
 
@@ -1655,31 +1598,29 @@ void Recorder::slotArchivURL(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotDayTabChanged(int iIdx)
 {
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->currentItem();
-   if (pItem)
+   int cid = getCurrentCid();
+
+   if (chanMap.contains(cid))
    {
-      if (pItem->cid() != -1)
+      QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
+      int       iDay    = epgTime.date().dayOfWeek() - 1;
+
+      // earlier or later ... ?
+      if (iIdx < iDay)
       {
-         QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
-         int       iDay    = epgTime.date().dayOfWeek() - 1;
+         // earlier ...
+         iEpgOffset -= iDay - iIdx;
+      }
+      else if (iIdx > iDay)
+      {
+         // later ...
+         iEpgOffset += iIdx - iDay;
+      }
 
-         // earlier or later ... ?
-         if (iIdx < iDay)
-         {
-            // earlier ...
-            iEpgOffset -= iDay - iIdx;
-         }
-         else if (iIdx > iDay)
-         {
-            // later ...
-            iEpgOffset += iIdx - iDay;
-         }
-
-         // get epg for requested day ...
-         if (iIdx != iDay)
-         {
-            Trigger.TriggerRequest(Kartina::REQ_EPG, pItem->cid(), iEpgOffset);
-         }
+      // get epg for requested day ...
+      if (iIdx != iDay)
+      {
+         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
       }
    }
 }
@@ -1825,43 +1766,37 @@ void Recorder::slotShutdown()
 \----------------------------------------------------------------- */
 void Recorder::slotChanListContext(const QPoint &pt)
 {
-   // get channel item under mouse pointer ...
-   CChanListWidgetItem *pItem = (CChanListWidgetItem *)ui->listWidget->itemAt(pt);
+   int cid = getCurrentCid();
 
-   // do we have an item ... ?
-   if (pItem)
+   if (chanMap.contains(cid)) // real channel ...
    {
-      if (pItem->cid() != -1) // real channel ...
+      // create context menu ...
+      CleanContextMenu();
+      pContextAct[0] = new CFavAction (&favContext);
+      QString    sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid);
+
+      // is channel already in favourites ... ?
+      if (lFavourites.contains(cid))
       {
-         // create context menu ...
-         CleanContextMenu();
-         pContextAct[0] = new CFavAction (&favContext);
-         QString    sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(pItem->cid());
-
-         // is channel already in favourites ... ?
-         if (lFavourites.contains(pItem->cid()))
-         {
-            // create remove menu ...
-            // action.setText(tr("Remove \"%1\" from favourites").arg(pItem->GetName()));
-            pContextAct[0]->setText(tr("Remove from favourites"));
-            pContextAct[0]->setIcon(QIcon(sLogoFile));
-            pContextAct[0]->setFavData(pItem->cid(), kartinafav::FAV_DEL);
-         }
-         else
-         {
-            // create add menu ...
-            // action.setText(tr("Add \"%1\" to favourites").arg(pItem->GetName()));
-            pContextAct[0]->setText(tr("Add to favourites"));
-            pContextAct[0]->setIcon(QIcon(sLogoFile));
-            pContextAct[0]->setFavData(pItem->cid(), kartinafav::FAV_ADD);
-         }
-
-         // add action to menu ...
-         favContext.addAction(pContextAct[0]);
-
-         // display menu ...
-         favContext.exec(ui->listWidget->mapToGlobal(pt));
+         // create remove menu ...
+         // action.setText(tr("Remove \"%1\" from favourites").arg(pItem->GetName()));
+         pContextAct[0]->setText(tr("Remove from favourites"));
+         pContextAct[0]->setIcon(QIcon(sLogoFile));
+         pContextAct[0]->setFavData(cid, kartinafav::FAV_DEL);
       }
+      else
+      {
+         // create add menu ...
+         pContextAct[0]->setText(tr("Add to favourites"));
+         pContextAct[0]->setIcon(QIcon(sLogoFile));
+         pContextAct[0]->setFavData(cid, kartinafav::FAV_ADD);
+      }
+
+      // add action to menu ...
+      favContext.addAction(pContextAct[0]);
+
+      // display menu ...
+      favContext.exec(ui->channelList->mapToGlobal(pt));
    }
 }
 
@@ -1931,24 +1866,20 @@ void Recorder::slotHandleFavAction(QAction *pAct)
       pAction->favData(iCid, act);
 
       // search in channel list for cannel id ...
-      CChanListWidgetItem *pItem;
+      QModelIndex idx;
 
       // go through channel list ...
-      for (int i = 0; i < ui->listWidget->count(); i++)
+      for (int i = 0; i < pModel->rowCount(); i++)
       {
-         pItem = (CChanListWidgetItem *)ui->listWidget->item(i);
+         idx = pModel->index(i, 0);
 
-         if (pItem)
+         // check if this is favourite channel ...
+         if (qvariant_cast<int>(idx.data(channellist::cidRole)) == iCid)
          {
-            // check if this is favourite channel ...
-            if (pItem->cid() == iCid)
-            {
-               // found --> mark row ...
-               ui->listWidget->setCurrentRow (i);
-               ui->listWidget->scrollToItem(pItem);
-               ui->listWidget->setFocus(Qt::OtherFocusReason);
-               break;
-            }
+            // found --> mark row ...
+            ui->channelList->setCurrentIndex(idx);
+            ui->channelList->scrollTo(idx);
+            break;
          }
       }
    }
@@ -2302,12 +2233,24 @@ void Recorder::slotVodURL(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotChannelUp()
 {
-   int iRow = ui->listWidget->currentRow();
+   QModelIndex idx;
+   int         iRow;
+   idx  = ui->channelList->currentIndex();
+   iRow = idx.row();
 
-   if (iRow > 0)
+   if (!iRow)
    {
-      ui->listWidget->setCurrentRow(iRow - 1);
+      iRow = pModel->rowCount() - 1;
    }
+   else
+   {
+      iRow --;
+   }
+
+   idx = pModel->index(iRow, 0);
+
+   ui->channelList->setCurrentIndex(idx);
+   ui->channelList->scrollTo(idx);
 }
 
 /* -----------------------------------------------------------------\
@@ -2322,12 +2265,24 @@ void Recorder::slotChannelUp()
 \----------------------------------------------------------------- */
 void Recorder::slotChannelDown()
 {
-   int iRow = ui->listWidget->currentRow();
+   QModelIndex idx;
+   int         iRow;
+   idx  = ui->channelList->currentIndex();
+   iRow = idx.row();
 
-   if (iRow < ui->listWidget->count())
+   if (iRow == (pModel->rowCount() - 1))
    {
-      ui->listWidget->setCurrentRow(iRow + 1);
+      iRow = 0;
    }
+   else
+   {
+      iRow ++;
+   }
+
+   idx = pModel->index(iRow, 0);
+
+   ui->channelList->setCurrentIndex(idx);
+   ui->channelList->scrollTo(idx);
 }
 
 /* -----------------------------------------------------------------\
@@ -2352,6 +2307,64 @@ void Recorder::slotToggleEpgVod()
    }
 
    ui->tabEpgVod->setCurrentIndex(iIdx);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotCurrentChannelChanged [slot]
+|  Begin: 19.01.2010 / 16:13:56
+|  Author: Jo2003
+|  Description: channel changed, request epg if needed
+|
+|  Parameters: slected row index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
+{
+   int cid = qvariant_cast<int>(current.data(channellist::cidRole));
+
+   if (chanMap.contains(cid))
+   {
+      // get whole channel entry ...
+      cparser::SChan entry = chanMap.value(cid);
+      int iTs;
+
+      ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR)
+                                .arg("rgb(255, 254, 212)")
+                                .arg(createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd)));
+
+      SetProgress (entry.uiStart, entry.uiEnd);
+
+      // quick'n'dirty timeshift hack ...
+      if (entry.vTs.count() <= 2) // no timeshift available ...
+      {
+         ui->textEpg->SetTimeShift(0);
+      }
+      else
+      {
+         iTs = ui->cbxTimeShift->currentText().toInt();
+
+         if (ui->textEpg->GetTimeShift() != iTs)
+         {
+            ui->textEpg->SetTimeShift(iTs);
+         }
+      }
+
+      // was this a refresh or was channel changed ... ?
+      if (cid != ui->textEpg->GetCid())
+      {
+         // load epg ...
+         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+      }
+      else // same channel ...
+      {
+         // refresh epg only, if we view current day in epg ...
+         if (iEpgOffset == 0) // 0 means today!
+         {
+            Trigger.TriggerRequest(Kartina::REQ_EPG, cid);
+         }
+      }
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2422,7 +2435,10 @@ void Recorder::initDialog ()
       ui->textEpg->ChangeFontSize(iFontSzChg);
       ui->textEpgShort->ChangeFontSize(iFontSzChg);
       ui->vodBrowser->ChangeFontSize(iFontSzChg);
-      ui->listWidget->changeFontSize(iFontSzChg);
+
+      f = ui->channelList->font();
+      f.setPointSize(f.pointSize() + iFontSzChg);
+      ui->channelList->setFont(f);
 
       f = ui->cbxChannelGroup->font();
       f.setPointSize(f.pointSize() + iFontSzChg);
@@ -2858,37 +2874,32 @@ void Recorder::FillChanMap(const QVector<cparser::SChan> &chanlist)
 int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 {
    QString  sLine;
-   QString  sToolTip;
    QString  sLogoFile;
-   CChanListWidgetItem *pItem;
-   QIcon    chanIcon;
+   QStandardItem *pItem;
    int      iRow, iRowGroup;
    QPixmap  Pix(16, 16);
    int      iChanCount = 0;
 
-   // get current item ...
-   iRow      = ui->listWidget->currentRow();
-   iRow      = (iRow <= 0) ? 1 : iRow;
    iRowGroup = ui->cbxChannelGroup->currentIndex();
+   iRow      = ui->channelList->currentIndex().row();
+   iRow      = (iRow <= 0) ? 1 : iRow;
    iRowGroup = (iRowGroup < 0) ? 0 : iRowGroup;
 
-   // clear channel list ...
-   ui->listWidget->clear();
-
-   // clear channel group list ...
    ui->cbxChannelGroup->clear();
+   pModel->clear();
 
    for (int i = 0; i < chanlist.size(); i++)
    {
       // create new item ...
-      pItem = new CChanListWidgetItem (ui->listWidget);
+      pItem = new QStandardItem;
 
       // is this a channel group ... ?
       if (chanlist[i].bIsGroup)
       {
-         pItem->setCid(-1);
-         pItem->setName(chanlist[i].sName);
-         pItem->setBackgroundColor(QColor(chanlist[i].sProgramm));
+         pItem->setData(-1, channellist::cidRole);
+         pItem->setData(chanlist[i].sName, channellist::nameRole);
+         pItem->setData(chanlist[i].sProgramm, channellist::bgcolorRole);
+         pItem->setData(QIcon(":app/group"), channellist::iconRole);
 
          // add channel group entry ...
          Pix.fill(QColor(chanlist[i].sProgramm));
@@ -2899,43 +2910,29 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(chanlist[i].iId);
          sLine     = QString("%1. %2").arg(++ iChanCount).arg(chanlist[i].sName);
 
-         if (QFile::exists(sLogoFile))
+         pItem->setData(chanlist[i].iId, channellist::cidRole);
+         pItem->setData(sLine, channellist::nameRole);
+         pItem->setData(QIcon(sLogoFile), channellist::iconRole);
+
+         if(Settings.extChanList())
          {
-            chanIcon = QIcon(sLogoFile);
+            pItem->setData(chanlist[i].sProgramm, channellist::progRole);
+            pItem->setData(chanlist[i].uiStart, channellist::startRole);
+            pItem->setData(chanlist[i].uiEnd, channellist::endRole);
          }
          else
          {
-            chanIcon = QIcon();
+            pItem->setToolTip(createTooltip(chanlist[i].sName, chanlist[i].sProgramm,
+                                            chanlist[i].uiStart, chanlist[i].uiEnd));
          }
-
-         pItem->setCid(chanlist[i].iId);
-         pItem->prepareIcon(chanIcon);
-         pItem->setName(sLine);
-         pItem->setProgram(chanlist[i].sProgramm);
-         pItem->setTimes(chanlist[i].uiStart, chanlist[i].uiEnd);
-
-         // create tool tip with programm info ...
-         sToolTip = PROG_INFO_TOOL_TIP;
-         sToolTip.replace(TMPL_PROG, tr("Program:"));
-         sToolTip.replace(TMPL_START, tr("Start:"));
-         sToolTip.replace(TMPL_END, tr("End:"));
-
-         sToolTip = sToolTip.arg(chanlist[i].sName).arg(chanlist[i].sProgramm)
-                     .arg(QDateTime::fromTime_t(chanlist[i].uiStart).toString(DEF_TIME_FORMAT))
-                     .arg(QDateTime::fromTime_t(chanlist[i].uiEnd).toString(DEF_TIME_FORMAT));
-
-         pItem->prepareToolTip(sToolTip);
       }
 
-      pItem->nest(Settings.extChanList());
-
-      // make sure to use global font size ...
-      pItem->changeFontSize(ui->listWidget->fontSizeDiff());
+      pModel->appendRow(pItem);
    }
 
+   ui->channelList->setCurrentIndex(pModel->index(iRow, 0));
+   ui->channelList->scrollTo(pModel->index(iRow, 0));
    ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
-   ui->listWidget->setCurrentRow (iRow);
-   ui->listWidget->setFocus(Qt::OtherFocusReason);
 
    return 0;
 }
@@ -3546,7 +3543,50 @@ bool Recorder::TimeJumpAllowed()
    return bRV;
 }
 
+/* -----------------------------------------------------------------\
+|  Method: createTooltip
+|  Begin: 22.03.2010 / 18:15
+|  Author: Jo2003
+|  Description: create a tooltip for given data
+|
+|  Parameters: channel name, program description,
+|              start time, end time
+|
+|  Returns: tool tip string
+\----------------------------------------------------------------- */
+QString Recorder::createTooltip (const QString & name, const QString & prog, uint start, uint end)
+{
+   // create tool tip with programm info ...
+   QString sToolTip = PROG_INFO_TOOL_TIP;
+   sToolTip.replace(TMPL_PROG, tr("Program:"));
+   sToolTip.replace(TMPL_START, tr("Start:"));
+   sToolTip.replace(TMPL_END, tr("End:"));
+
+   sToolTip = sToolTip.arg(name).arg(prog)
+               .arg(QDateTime::fromTime_t(start).toString(DEF_TIME_FORMAT))
+               .arg(QDateTime::fromTime_t(end).toString(DEF_TIME_FORMAT));
+
+   return sToolTip;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getCurrentCid
+|  Begin: 22.03.2010 / 19:15
+|  Author: Jo2003
+|  Description: get cid of current channel
+|
+|  Parameters: --
+|
+|  Returns: channel id
+\----------------------------------------------------------------- */
+int Recorder::getCurrentCid()
+{
+   QModelIndex idx = ui->channelList->currentIndex();
+   int         cid = qvariant_cast<int>(idx.data(channellist::cidRole));
+
+   return cid;
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-

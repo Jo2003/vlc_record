@@ -77,8 +77,9 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
    iHeight = iconsize.height() + 4; // space on top and bottom ...
 
    QFont chanFont = option.font;
-   chanFont.setPointSize(chanFont.pointSize() + 2);
-   chanFont.setWeight(75);
+   chanFont.setPointSize(chanFont.pointSize() + 1);
+   // chanFont.setWeight(75);
+   chanFont.setBold(true);
 
    QFontMetrics fmChan(chanFont);
 
@@ -116,8 +117,9 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
       }
 
       // width ...
+      cutProgString(sProg, fmProg, option.rect.width() - (2 + iconsize.width() + 4 + 2));
       iTextWidth[0] = fmChan.size(Qt::TextSingleLine, sChan).width();
-      iTextWidth[1] = fmProg.size(Qt::TextSingleLine, sProg.section('\n', 0, 0)).width();
+      iTextWidth[1] = fmProg.size(Qt::TextSingleLine, sProg).width();
       iTextWidth[2] = fmProg.size(Qt::TextSingleLine, fromTo).width();
 
       for (int i = 0; i < 3; i++)
@@ -156,12 +158,14 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    painter->save();
 
    /////////////////////////////////////////////////////////////////////////////
+   int     iCid     = qvariant_cast<int>(index.data(channellist::cidRole));
    uint    uiStart  = qvariant_cast<uint>(index.data(channellist::startRole));
    uint    uiEnd    = qvariant_cast<uint>(index.data(channellist::endRole));
    QIcon   icon     = qvariant_cast<QIcon>(index.data(channellist::iconRole));
    QSize   iconsize = icon.actualSize(option.decorationSize);
    QString sChan    = qvariant_cast<QString>(index.data(channellist::nameRole));
    QString sProg    = qvariant_cast<QString>(index.data(channellist::progRole));
+   QString sColor   = qvariant_cast<QString>(index.data(channellist::bgcolorRole));
    QString fromTo   = QString("%1 - %2")
                       .arg(QDateTime::fromTime_t(uiStart).toString("hh:mm"))
                       .arg(QDateTime::fromTime_t(uiEnd).toString("hh:mm"));
@@ -178,14 +182,21 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 
    // font stuff for channel line ...
    QFont chanFont = option.font;
-   chanFont.setPointSize(chanFont.pointSize() + 2);
-   chanFont.setWeight(75);
+   chanFont.setPointSize(chanFont.pointSize() + 1);
+   // chanFont.setWeight(75);
+   chanFont.setBold(true);
    QFontMetrics fmChan(chanFont);
 
    // check if additional info is available ...
    if ((sProg == "") || !uiStart || !uiEnd)
    {
       // draw simple item only ...
+
+      if ((iCid == -1) && (sColor != ""))
+      {
+         // channel group ...
+         painter->fillRect(option.rect, QColor(sColor));
+      }
 
       // channel line ...
       y = option.rect.y() + ((option.rect.height() - fmChan.height()) / 2);
@@ -214,6 +225,7 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
       y = bounting.bottom();
       QRect progRect(x, y, rightWidth, fmProg.height());
 
+      cutProgString(sProg, fmProg, rightWidth);
       painter->setFont(progFont);
       painter->drawText(progRect, Qt::TextSingleLine, sProg.section('\n', 0, 0), &bounting);
 
@@ -238,4 +250,31 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    }
 
    painter->restore();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: cutProgString
+|  Begin:  23.03.2011 / 08:55
+|  Author: Jo2003
+|  Description: cut program string so it fits to our list item
+|
+|  Parameters: program string, font metric of used font,
+|              width to check
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void QChanListDelegate::cutProgString (QString &str, const QFontMetrics &fm, int width) const
+{
+   str = str.section('\n', 0, 0);
+   int iLength = str.length();
+
+   while (fm.size(Qt::TextSingleLine, str).width() > width)
+   {
+      str = str.left(str.length() - 1);
+   }
+
+   if (str.length() != iLength)
+   {
+      str = str.left(str.length() - 3) + QString("...");
+   }
 }
