@@ -1343,8 +1343,10 @@ void Recorder::slotEPG(QString str)
 {
    QVector<cparser::SEpg> epg;
 
-   QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
-   int       cid     = getCurrentCid();
+   QDateTime   epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
+   QModelIndex idx     = ui->channelList->currentIndex();
+   int         cid     = qvariant_cast<int>(idx.data(channellist::cidRole));
+   QIcon       icon;
 
    if (!XMLParser.parseEpg(str, epg))
    {
@@ -1353,14 +1355,8 @@ void Recorder::slotEPG(QString str)
                               chanMap.value(cid).bHasArchive);
 
       // fill epg control ...
-      if (QFile::exists(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid)))
-      {
-         QPixmap pic;
-         pic.load(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid));
-         ui->labChanIcon->setPixmap(pic.scaled(24, 24, Qt::KeepAspectRatio,
-                                               Qt::SmoothTransformation));
-      }
-
+      icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
+      ui->labChanIcon->setPixmap(icon.pixmap(24, 24));
       ui->labChanName->setText(chanMap.value(cid).sName);
       ui->labCurrDay->setText(epgTime.toString("dd. MMM. yyyy"));
 
@@ -2235,19 +2231,32 @@ void Recorder::slotChannelUp()
 {
    QModelIndex idx;
    int         iRow;
+   bool        bSuccess = false;
    idx  = ui->channelList->currentIndex();
-   iRow = idx.row();
 
-   if (!iRow)
+   do
    {
-      iRow = pModel->rowCount() - 1;
-   }
-   else
-   {
-      iRow --;
-   }
+      iRow = idx.row();
 
-   idx = pModel->index(iRow, 0);
+      if (!iRow)
+      {
+         iRow = pModel->rowCount() - 1;
+      }
+      else
+      {
+         iRow --;
+      }
+
+      idx = pModel->index(iRow, 0);
+
+      // make sure to not mark a channel group ...
+      if (qvariant_cast<int>(idx.data(channellist::cidRole)) != -1)
+      {
+         bSuccess = true;
+      }
+
+   } while (!bSuccess);
+
 
    ui->channelList->setCurrentIndex(idx);
    ui->channelList->scrollTo(idx);
@@ -2267,19 +2276,31 @@ void Recorder::slotChannelDown()
 {
    QModelIndex idx;
    int         iRow;
+   bool        bSuccess = false;
    idx  = ui->channelList->currentIndex();
-   iRow = idx.row();
 
-   if (iRow == (pModel->rowCount() - 1))
+   do
    {
-      iRow = 0;
-   }
-   else
-   {
-      iRow ++;
-   }
+      iRow = idx.row();
 
-   idx = pModel->index(iRow, 0);
+      if (iRow == (pModel->rowCount() - 1))
+      {
+         iRow = 0;
+      }
+      else
+      {
+         iRow ++;
+      }
+
+      idx = pModel->index(iRow, 0);
+
+      // make sure to not mark a channel group ...
+      if (qvariant_cast<int>(idx.data(channellist::cidRole)) != -1)
+      {
+         bSuccess = true;
+      }
+
+   } while (!bSuccess);
 
    ui->channelList->setCurrentIndex(idx);
    ui->channelList->scrollTo(idx);
@@ -2929,15 +2950,11 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             //////////////////////////////////////////////////////////
 
             // check if file can be loaded ...
-            if (!icon.load(sLogoFile))
+            if (!icon.load(sLogoFile, "image/gif"))
             {
-               // can't load --> force to gif format ...
-               if (!icon.load(sLogoFile, "image/gif"))
-               {
-                  // still can't load --> load default image ...
-                  icon.load(":png/no_logo");
-                  mInfo(tr("Can't load channel image \"%1.gif\" ...").arg(chanlist[i].iId));
-               }
+               // still can't load --> load default image ...
+               icon.load(":png/no_logo");
+               mInfo(tr("Can't load channel image \"%1.gif\" ...").arg(chanlist[i].iId));
             }
          }
 
