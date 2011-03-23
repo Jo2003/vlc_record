@@ -78,7 +78,6 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
 
    QFont chanFont = option.font;
    chanFont.setPointSize(chanFont.pointSize() + 1);
-   // chanFont.setWeight(75);
    chanFont.setBold(true);
 
    QFontMetrics fmChan(chanFont);
@@ -134,11 +133,6 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
    iWidth += iconsize.width();
    iWidth += 4; // space between icon and text ...
 
-   // if (iWidth > option.rect.width())
-   // {
-   //    iWidth = option.rect.width();
-   // }
-
    return QSize(iWidth, iHeight);
 }
 
@@ -158,6 +152,7 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    painter->save();
 
    /////////////////////////////////////////////////////////////////////////////
+   int     iPos;
    int     iCid     = qvariant_cast<int>(index.data(channellist::cidRole));
    uint    uiStart  = qvariant_cast<uint>(index.data(channellist::startRole));
    uint    uiEnd    = qvariant_cast<uint>(index.data(channellist::endRole));
@@ -171,6 +166,14 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
                       .arg(QDateTime::fromTime_t(uiEnd).toString("hh:mm"));
    /////////////////////////////////////////////////////////////////////////////
 
+   // colorize background if this is a channel group ...
+   if ((iCid == -1) && (sColor != "")
+      && !(option.state & (QStyle::State_Selected | QStyle::State_MouseOver)))
+   {
+      // channel group ...
+      painter->fillRect(option.rect, QColor(sColor));
+   }
+
    // draw icon ...
    int   x = option.rect.x() + 2;
    int   y = option.rect.y() + ((option.rect.height() - iconsize.height()) / 2);
@@ -183,7 +186,6 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    // font stuff for channel line ...
    QFont chanFont = option.font;
    chanFont.setPointSize(chanFont.pointSize() + 1);
-   // chanFont.setWeight(75);
    chanFont.setBold(true);
    QFontMetrics fmChan(chanFont);
 
@@ -191,12 +193,6 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    if ((sProg == "") || !uiStart || !uiEnd)
    {
       // draw simple item only ...
-
-      if ((iCid == -1) && (sColor != ""))
-      {
-         // channel group ...
-         painter->fillRect(option.rect, QColor(sColor));
-      }
 
       // channel line ...
       y = option.rect.y() + ((option.rect.height() - fmChan.height()) / 2);
@@ -235,14 +231,15 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
       painter->drawText(timesRect, Qt::TextSingleLine, fromTo, &bounting);
 
       // progress bar ...
-      y = bounting.bottom() + 2;
+      y    = bounting.bottom() + 2;
+      iPos = (int)(QDateTime::currentDateTime().toTime_t() - uiStart);
       QRect progressRect(x, y, rightWidth, 5);
 
       QStyleOptionProgressBar progressBar;
       progressBar.rect        = progressRect;
       progressBar.minimum     = 0;
       progressBar.maximum     = (int)(uiEnd - uiStart);
-      progressBar.progress    = (int)(QDateTime::currentDateTime().toTime_t() - uiStart);
+      progressBar.progress    = (iPos > progressBar.maximum) ? progressBar.maximum : iPos;
       progressBar.textVisible = false;
 
       QApplication::style()->drawControl(QStyle::CE_ProgressBar,

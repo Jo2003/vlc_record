@@ -39,6 +39,7 @@
         <file alias="v_split_hover">resources/v_splitter_hover.png</file>
         <file alias="v_split_pressed">resources/v_splitter_pressed.png</file>
         <file alias="group">resources/channel_group.png</file>
+        <file alias="no_logo">resources/no_logo.png</file>
     </qresource>
     <qresource prefix="/player">
         <file alias="sound_on">resources/sound.png</file>

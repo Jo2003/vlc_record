@@ -2878,6 +2878,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    QStandardItem *pItem;
    int      iRow, iRowGroup;
    QPixmap  Pix(16, 16);
+   QPixmap  icon;
    int      iChanCount = 0;
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
@@ -2910,9 +2911,39 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(chanlist[i].iId);
          sLine     = QString("%1. %2").arg(++ iChanCount).arg(chanlist[i].sName);
 
+         // check if file exists ...
+         if (!QFile::exists(sLogoFile))
+         {
+            // no --> load default image ...
+            icon.load(":png/no_logo");
+         }
+         else
+         {
+            //////////////////////////////////////////////////////////
+            // Note: Some Icons can't be loaded.
+            // First we try to load the image.
+            // If this isn't possible we force
+            // the file format to gif.
+            // If it's still impossible to load
+            // the image we take the default image instead.
+            //////////////////////////////////////////////////////////
+
+            // check if file can be loaded ...
+            if (!icon.load(sLogoFile))
+            {
+               // can't load --> force to gif format ...
+               if (!icon.load(sLogoFile, "image/gif"))
+               {
+                  // still can't load --> load default image ...
+                  icon.load(":png/no_logo");
+                  mInfo(tr("Can't load channel image \"%1.gif\" ...").arg(chanlist[i].iId));
+               }
+            }
+         }
+
          pItem->setData(chanlist[i].iId, channellist::cidRole);
          pItem->setData(sLine, channellist::nameRole);
-         pItem->setData(QIcon(sLogoFile), channellist::iconRole);
+         pItem->setData(QIcon(icon), channellist::iconRole);
 
          if(Settings.extChanList())
          {

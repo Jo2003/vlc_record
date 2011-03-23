@@ -1498,22 +1498,22 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="2827"/>
-        <location filename="recorder.cpp" line="3329"/>
+        <location filename="recorder.cpp" line="3357"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3564"/>
+        <location filename="recorder.cpp" line="3592"/>
         <source>Program:</source>
         <translation>Передача:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3565"/>
+        <location filename="recorder.cpp" line="3593"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3566"/>
+        <location filename="recorder.cpp" line="3594"/>
         <source>End:</source>
         <translation>Окончание:</translation>
     </message>
@@ -1529,7 +1529,7 @@ or start time is later than end time!</source>
         <translation> (Ар.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3325"/>
+        <location filename="recorder.cpp" line="3353"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
@@ -1563,8 +1563,8 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="2014"/>
-        <location filename="recorder.cpp" line="3032"/>
-        <location filename="recorder.cpp" line="3087"/>
+        <location filename="recorder.cpp" line="3060"/>
+        <location filename="recorder.cpp" line="3115"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Невозможно заупстить VLC-Media Player!</translation>
     </message>
@@ -1669,8 +1669,8 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="2020"/>
-        <location filename="recorder.cpp" line="3039"/>
-        <location filename="recorder.cpp" line="3093"/>
+        <location filename="recorder.cpp" line="3067"/>
+        <location filename="recorder.cpp" line="3121"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
@@ -1751,21 +1751,26 @@ dataDir: %1
         <translation type="unfinished">Телегид / Видеотека</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2969"/>
-        <location filename="recorder.cpp" line="3121"/>
+        <location filename="recorder.cpp" line="2939"/>
+        <source>Can&apos;t load channel image &quot;%1.gif&quot; ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="2997"/>
+        <location filename="recorder.cpp" line="3149"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3394"/>
+        <location filename="recorder.cpp" line="3422"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Фаворит %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2014"/>
-        <location filename="recorder.cpp" line="3032"/>
-        <location filename="recorder.cpp" line="3087"/>
+        <location filename="recorder.cpp" line="3060"/>
+        <location filename="recorder.cpp" line="3115"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>

@@ -1475,22 +1475,22 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2827"/>
-        <location filename="recorder.cpp" line="3329"/>
+        <location filename="recorder.cpp" line="3357"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3564"/>
+        <location filename="recorder.cpp" line="3592"/>
         <source>Program:</source>
         <translation>Sendung:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3565"/>
+        <location filename="recorder.cpp" line="3593"/>
         <source>Start:</source>
         <translation>Beginn:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3566"/>
+        <location filename="recorder.cpp" line="3594"/>
         <source>End:</source>
         <translation>Ende:</translation>
     </message>
@@ -1506,7 +1506,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3325"/>
+        <location filename="recorder.cpp" line="3353"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
@@ -1639,15 +1639,15 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="2014"/>
-        <location filename="recorder.cpp" line="3032"/>
-        <location filename="recorder.cpp" line="3087"/>
+        <location filename="recorder.cpp" line="3060"/>
+        <location filename="recorder.cpp" line="3115"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Kann den VLC Mediaplayer nicht starten!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2020"/>
-        <location filename="recorder.cpp" line="3039"/>
-        <location filename="recorder.cpp" line="3093"/>
+        <location filename="recorder.cpp" line="3067"/>
+        <location filename="recorder.cpp" line="3121"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
@@ -1728,21 +1728,26 @@ dataDir: %1
         <translation>Zeige EPG / Videothek</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2969"/>
-        <location filename="recorder.cpp" line="3121"/>
+        <location filename="recorder.cpp" line="2939"/>
+        <source>Can&apos;t load channel image &quot;%1.gif&quot; ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="2997"/>
+        <location filename="recorder.cpp" line="3149"/>
         <source>Save Stream as</source>
         <translation type="unfinished">Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3394"/>
+        <location filename="recorder.cpp" line="3422"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Favorite %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2014"/>
-        <location filename="recorder.cpp" line="3032"/>
-        <location filename="recorder.cpp" line="3087"/>
+        <location filename="recorder.cpp" line="3060"/>
+        <location filename="recorder.cpp" line="3115"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
