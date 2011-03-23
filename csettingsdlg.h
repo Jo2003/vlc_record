@@ -101,6 +101,7 @@ public:
     int   GetBitRate ();
     void  addShortCut (const QString& descr, const QString& target, const QString& slot, const QString& keys);
     void  delShortCut (const QString& target, const QString& slot);
+    void  clearShortcutTable();
     QString shortCut (const QString& target, const QString& slot) const;
 
 protected:

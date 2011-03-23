@@ -223,6 +223,8 @@ private slots:
     void slotChannelUp();
     void slotToggleEpgVod();
     void slotCurrentChannelChanged(const QModelIndex & current);
+    void slotPlayNextChannel();
+    void slotPlayPreviousChannel();
 
 signals:
     void sigShow ();

@@ -1066,6 +1066,21 @@ void CSettingsDlg::delShortCut(const QString &target, const QString &slot)
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: clearShortcutTable
+|  Begin: 23.03.2011 / 13:20
+|  Author: Jo2003
+|  Description: clear shortcut table
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::clearShortcutTable()
+{
+   m_ui->tableShortCuts->clear();
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

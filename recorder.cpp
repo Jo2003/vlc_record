@@ -2388,6 +2388,38 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotPlayNextChannel [slot]
+|  Begin: 23.03.2011 / 13:00
+|  Author: Jo2003
+|  Description: chosse and play next channel
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotPlayNextChannel()
+{
+   slotChannelDown();
+   on_pushPlay_clicked();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotPlayPreviousChannel [slot]
+|  Begin: 23.03.2011 / 13:00
+|  Author: Jo2003
+|  Description: chosse and play previous channel
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotPlayPreviousChannel()
+{
+   slotChannelUp();
+   on_pushPlay_clicked();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
 ////////////////////////////////////////////////////////////////////////////////
@@ -2776,6 +2808,8 @@ void Recorder::InitShortCuts()
 
       {tr("Next Channel"),         this,       "Recorder", SLOT(slotChannelDown()),           "CTRL+N"},
       {tr("Previous Channel"),     this,       "Recorder", SLOT(slotChannelUp()),             "CTRL+P"},
+      {tr("Play Next Channel"),    this,       "Recorder", SLOT(slotPlayNextChannel()),       "CTRL+ALT+N"},
+      {tr("Play Prev. Channel"),   this,       "Recorder", SLOT(slotPlayPreviousChannel()),   "CTRL+ALT+P"},
       {tr("Show EPG / VOD"),       this,       "Recorder", SLOT(slotToggleEpgVod()),          "CTRL+E"},
       // add further entries below ...
 
