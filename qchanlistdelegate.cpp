@@ -148,6 +148,7 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
 \----------------------------------------------------------------- */
 void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+   // paint any selection / hover effect ...
    QStyledItemDelegate::paint(painter, option, index);
    painter->save();
 
@@ -265,8 +266,10 @@ void QChanListDelegate::cutProgString (QString &str, const QFontMetrics &fm, int
    str = str.section('\n', 0, 0);
    int iLength = str.length();
 
+   // check that text width matches ...
    while (fm.size(Qt::TextSingleLine, str).width() > width)
    {
+      // to wide --> shrink ...
       str = str.left(str.length() - 1);
    }
 
