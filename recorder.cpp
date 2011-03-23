@@ -2899,7 +2899,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          pItem->setData(-1, channellist::cidRole);
          pItem->setData(chanlist[i].sName, channellist::nameRole);
          pItem->setData(chanlist[i].sProgramm, channellist::bgcolorRole);
-         pItem->setData(QIcon(":app/group"), channellist::iconRole);
+         pItem->setData(QIcon(":png/group"), channellist::iconRole);
 
          // add channel group entry ...
          Pix.fill(QColor(chanlist[i].sProgramm));

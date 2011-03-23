@@ -20,7 +20,6 @@
         <file alias="bwd">resources/skip_backward.png</file>
         <file alias="fwd">resources/skip_forward.png</file>
         <file alias="pause">resources/pause.png</file>
-        <file alias="group">resources/channel_group.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
@@ -39,6 +38,7 @@
         <file alias="v_split">resources/v_splitter.png</file>
         <file alias="v_split_hover">resources/v_splitter_hover.png</file>
         <file alias="v_split_pressed">resources/v_splitter_pressed.png</file>
+        <file alias="group">resources/channel_group.png</file>
     </qresource>
     <qresource prefix="/player">
         <file alias="sound_on">resources/sound.png</file>

@@ -81,8 +81,7 @@ HEADERS += recorder.h \
     qchanlistdelegate.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
-    forms/ctimerrec.ui \
-    forms/qchandetails.ui
+    forms/ctimerrec.ui
 RESOURCES += vlc-record.qrc \
     lcd.qrc
 RC_FILE = vlc-record.rc
