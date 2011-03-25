@@ -316,6 +316,9 @@ void Recorder::changeEvent(QEvent *e)
 
       // translate search are cbx ...
       touchSearchAreaCbx();
+
+      // translate shortcut table ...
+      retranslateShortcutTable();
       break;
 
    default:
@@ -2425,6 +2428,74 @@ void Recorder::slotPlayPreviousChannel()
 ////////////////////////////////////////////////////////////////////////////////
 
 /* -----------------------------------------------------------------\
+|  Method: fillShortCutTab
+|  Begin: 25.03.2010 / 10:30
+|  Author: Jo2003
+|  Description: fill shortcut table with shortcut descriptos ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::fillShortCutTab()
+{
+   vShortCutTab.clear();
+   Ui::SShortCuts *pShort;
+   Ui::SShortCuts tmpTab[] = {
+      // ShortCut Source Table:
+      // All shortcuts used in this program will be generated from this
+      // table. If you need further shortcuts, add them here.
+      // Note: Make sure every object has an object name!
+      // ---------------------------------------------------------------
+      //  Description
+      //  |                        Object Pointer (which owns slot function)
+      //  |                        |           Slot function
+      //  |                        |           |                                  default Shortcut
+      //  |                        |           |                                  |
+      //  V                        V           V                                  V
+      {tr("Play / Pause"),         this,       SLOT(on_pushPlay_clicked()),       "ALT+P"},
+      {tr("Stop"),                 this,       SLOT(on_pushStop_clicked()),       "ALT+S"},
+      {tr("Record"),               this,       SLOT(on_pushRecord_clicked()),     "ALT+R"},
+      {tr("Timer Record"),         this,       SLOT(on_pushTimerRec_clicked()),   "ALT+T"},
+      {tr("Settings"),             this,       SLOT(on_pushSettings_clicked()),   "ALT+O"},
+      {tr("About"),                this,       SLOT(on_pushAbout_clicked()),      "ALT+I"},
+      {tr("Search EPG"),           this,       SLOT(on_btnSearch_clicked()),      "CTRL+F"},
+      {tr("Text Size +"),          this,       SLOT(on_btnFontLarger_clicked()),  "ALT++"},
+      {tr("Text Size -"),          this,       SLOT(on_btnFontSmaller_clicked()), "ALT+-"},
+      {tr("Quit"),                 this,       SLOT(close()),                     "ALT+Q"},
+
+#ifdef INCLUDE_LIBVLC
+      {tr("Toggle Aspect Ratio"),  ui->player, SLOT(slotToggleAspectRatio()),     "ALT+A"},
+      {tr("Toggle Crop Geometry"), ui->player, SLOT(slotToggleCropGeometry()),    "ALT+C"},
+      {tr("Toggle Fullscreen"),    ui->player, SLOT(slotToggleFullScreen()),      "ALT+F"},
+      {tr("Volume +"),             ui->player, SLOT(slotMoreLoudly()),            "+"},
+      {tr("Volume -"),             ui->player, SLOT(slotMoreQuietly()),           "-"},
+      {tr("Toggle Mute"),          ui->player, SLOT(slotMute()),                  "M"},
+      {tr("Jump Forward"),         this,       SLOT(on_pushFwd_clicked()),        "CTRL+ALT+F"},
+      {tr("Jump Backward"),        this,       SLOT(on_pushBwd_clicked()),        "CTRL+ALT+B"},
+#endif // INCLUDE_LIBVLC
+
+      {tr("Next Channel"),         this,       SLOT(slotChannelDown()),           "CTRL+N"},
+      {tr("Previous Channel"),     this,       SLOT(slotChannelUp()),             "CTRL+P"},
+      {tr("Play Next Channel"),    this,       SLOT(slotPlayNextChannel()),       "CTRL+ALT+N"},
+      {tr("Play Prev. Channel"),   this,       SLOT(slotPlayPreviousChannel()),   "CTRL+ALT+P"},
+      {tr("Show EPG / VOD"),       this,       SLOT(slotToggleEpgVod()),          "CTRL+E"},
+      // add further entries below ...
+
+      // last entry, don't touch ...
+      {"",                         NULL,       NULL,                              ""}
+   };
+
+   pShort = tmpTab;
+
+   while (pShort->pObj != NULL)
+   {
+      vShortCutTab.push_back(*pShort);
+      pShort ++;
+   }
+}
+
+/* -----------------------------------------------------------------\
 |  Method: initDialog
 |  Begin: 31.07.2010 / 15:33:40
 |  Author: Jo2003
@@ -2541,6 +2612,7 @@ void Recorder::initDialog ()
    }
 
    // init short cuts ...
+   fillShortCutTab();
    InitShortCuts ();
 }
 
@@ -2772,68 +2844,23 @@ void Recorder::TouchEpgNavi (bool bCreate)
 \----------------------------------------------------------------- */
 void Recorder::InitShortCuts()
 {
-   CShortcutEx    *pShortCut;
-   Ui::SShortCuts *pShort;
+   CShortcutEx                             *pShortCut;
+   QVector<Ui::SShortCuts>::const_iterator  cit;
 
-   Ui::SShortCuts shortCuts[] = {
-      // ShortCut Source Table:
-      // All shortcuts used in this program will be generated from this
-      // table. If you need further shortcuts, add them here.
-      // ---------------------------------------------------------------
-      //  Description
-      //  |                        Object Pointer (which owns slot function)
-      //  |                        |           Class name (which owns slot function)
-      //  |                        |           |           Slot function
-      //  |                        |           |           |                                  default Shortcut
-      //  |                        |           |           |                                  |
-      //  V                        V           V           V                                  V
-      {tr("Play / Pause"),         this,       "Recorder", SLOT(on_pushPlay_clicked()),       "ALT+P"},
-      {tr("Stop"),                 this,       "Recorder", SLOT(on_pushStop_clicked()),       "ALT+S"},
-      {tr("Record"),               this,       "Recorder", SLOT(on_pushRecord_clicked()),     "ALT+R"},
-      {tr("Timer Record"),         this,       "Recorder", SLOT(on_pushTimerRec_clicked()),   "ALT+T"},
-      {tr("Settings"),             this,       "Recorder", SLOT(on_pushSettings_clicked()),   "ALT+O"},
-      {tr("About"),                this,       "Recorder", SLOT(on_pushAbout_clicked()),      "ALT+I"},
-      {tr("Search EPG"),           this,       "Recorder", SLOT(on_btnSearch_clicked()),      "CTRL+F"},
-      {tr("Text Size +"),          this,       "Recorder", SLOT(on_btnFontLarger_clicked()),  "ALT++"},
-      {tr("Text Size -"),          this,       "Recorder", SLOT(on_btnFontSmaller_clicked()), "ALT+-"},
-      {tr("Quit"),                 this,       "Recorder", SLOT(close()),                     "ALT+Q"},
-
-#ifdef INCLUDE_LIBVLC
-      {tr("Toggle Aspect Ratio"),  ui->player, "CPlayer",  SLOT(slotToggleAspectRatio()),     "ALT+A"},
-      {tr("Toggle Crop Geometry"), ui->player, "CPlayer",  SLOT(slotToggleCropGeometry()),    "ALT+C"},
-      {tr("Toggle Fullscreen"),    ui->player, "CPlayer",  SLOT(slotToggleFullScreen()),      "ALT+F"},
-      {tr("Jump Forward"),         this,       "Recorder", SLOT(on_pushFwd_clicked()),        "CTRL+ALT+F"},
-      {tr("Jump Backward"),        this,       "Recorder", SLOT(on_pushBwd_clicked()),        "CTRL+ALT+B"},
-#endif // INCLUDE_LIBVLC
-
-      {tr("Next Channel"),         this,       "Recorder", SLOT(slotChannelDown()),           "CTRL+N"},
-      {tr("Previous Channel"),     this,       "Recorder", SLOT(slotChannelUp()),             "CTRL+P"},
-      {tr("Play Next Channel"),    this,       "Recorder", SLOT(slotPlayNextChannel()),       "CTRL+ALT+N"},
-      {tr("Play Prev. Channel"),   this,       "Recorder", SLOT(slotPlayPreviousChannel()),   "CTRL+ALT+P"},
-      {tr("Show EPG / VOD"),       this,       "Recorder", SLOT(slotToggleEpgVod()),          "CTRL+E"},
-      // add further entries below ...
-
-      // last entry, don't touch ...
-      {"",                         NULL,       "",         NULL,                              ""}
-   };
-
-   pShort = shortCuts;
-
-   while (pShort->pObj != NULL)
+   // go through table and create a shortcut for every entry ...
+   for (cit = vShortCutTab.constBegin(); cit != vShortCutTab.constEnd(); cit ++)
    {
-      Settings.addShortCut(pShort->sDescr, pShort->sObj, pShort->pSlot, pShort->sShortCut);
+      Settings.addShortCut((*cit).sDescr, (*cit).pObj->objectName(), (*cit).pSlot, (*cit).sShortCut);
 
-      pShortCut = new CShortcutEx (QKeySequence(Settings.shortCut(pShort->sObj, pShort->pSlot)), this);
+      pShortCut = new CShortcutEx (QKeySequence(Settings.shortCut((*cit).pObj->objectName(), (*cit).pSlot)), this);
 
       if (pShortCut)
       {
-         connect (pShortCut, SIGNAL(activated()), pShort->pObj, pShort->pSlot);
+         connect (pShortCut, SIGNAL(activated()), (*cit).pObj, (*cit).pSlot);
 
          // save shortcut ...
          vShortcutPool.push_back(pShortCut);
       }
-
-      pShort ++;
    }
 }
 
@@ -3667,6 +3694,40 @@ int Recorder::getCurrentCid()
    int         cid = qvariant_cast<int>(idx.data(channellist::cidRole));
 
    return cid;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: retranslateShortcutTable
+|  Begin: 25.03.2010 / 11:15
+|  Author: Jo2003
+|  Description: translate shortcut table
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::retranslateShortcutTable()
+{
+   QVector<Ui::SShortCuts>::const_iterator cit;
+
+   fillShortCutTab();
+
+   // go through table and update shortcut description ...
+   for (cit = vShortCutTab.constBegin(); cit != vShortCutTab.constEnd(); cit ++)
+   {
+      Settings.updateShortcutDescr((*cit).sDescr, (*cit).pObj->objectName(), (*cit).pSlot);
+   }
+
+   // add favourites ...
+   for (int i = 0; i < MAX_NO_FAVOURITES; i++)
+   {
+      if (pFavAct[i] != NULL)
+      {
+         Settings.updateShortcutDescr(tr("Favourite %1").arg(i + 1),
+                              QString("pFavAct[%1]").arg(i),
+                              SLOT(slotHandleFavAction(QAction*)));
+      }
+   }
 }
 
 /************************* History ***************************\

@@ -48,6 +48,7 @@ protected:
 private:
    QVector<CShortcutEx *> *pvShortcuts;
    QTimer                  tMouseHide;
+   int keyEventToKeySequence (QKeyEvent *pEvent, QKeySequence & seq);
 
 signals:
    void sigToggleFullscreen ();

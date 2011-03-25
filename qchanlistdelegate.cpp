@@ -71,8 +71,8 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
    QString sChan    = qvariant_cast<QString>(index.data(channellist::nameRole));
    QString sProg    = qvariant_cast<QString>(index.data(channellist::progRole));
    QString fromTo   = QString("%1 - %2")
-                      .arg(QDateTime::fromTime_t(uiStart).toString("hh:mm"))
-                      .arg(QDateTime::fromTime_t(uiEnd).toString("hh:mm"));
+                      .arg(QDateTime::fromTime_t(uiStart).toString("h:mm"))
+                      .arg(QDateTime::fromTime_t(uiEnd).toString("h:mm"));
 
    iHeight = iconsize.height() + 4; // space on top and bottom ...
 
@@ -163,8 +163,8 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    QString sProg    = qvariant_cast<QString>(index.data(channellist::progRole));
    QString sColor   = qvariant_cast<QString>(index.data(channellist::bgcolorRole));
    QString fromTo   = QString("%1 - %2")
-                      .arg(QDateTime::fromTime_t(uiStart).toString("hh:mm"))
-                      .arg(QDateTime::fromTime_t(uiEnd).toString("hh:mm"));
+                      .arg(QDateTime::fromTime_t(uiStart).toString("h:mm"))
+                      .arg(QDateTime::fromTime_t(uiEnd).toString("h:mm"));
    /////////////////////////////////////////////////////////////////////////////
 
    // colorize background if this is a channel group ...

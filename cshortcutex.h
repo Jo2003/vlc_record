@@ -51,61 +51,6 @@ public:
       // nothing to do so far ...
    }
 
-   /* -----------------------------------------------------------------\
-   |  Method: createShortcutString [static]
-   |  Begin: 24.03.2010 / 13:26:10
-   |  Author: Jo2003
-   |  Description: create shortcut string from modifier and key text
-   |
-   |  Parameters: modifier flags, key text, buffer for shortcut
-   |
-   |  Returns: 0 --> ok
-   |          -1 --> can't create shortcut
-   \----------------------------------------------------------------- */
-   static int createShortcutString (const Qt::KeyboardModifiers &flags,
-                                    const QString &key, QString &sBuf)
-   {
-      int iRV = -1;
-      sBuf    = "";
-
-      // is this a "normal" ascii key?
-      if (key != "")
-      {
-         // add modifier to shortcut  ...
-         if (flags & Qt::AltModifier)       // ALT+ ...
-         {
-            sBuf += QString("ALT+");
-         }
-
-         if (flags & Qt::ControlModifier)  // CTRL+ ...
-         {
-            sBuf += QString("CTRL+");
-         }
-
-         if (flags & Qt::ShiftModifier)    // CTRL+ ...
-         {
-            sBuf += QString("SHIFT+");
-         }
-
-         if (flags & Qt::MetaModifier)     // META+ ...
-         {
-            sBuf += QString("META+");
-         }
-
-         // any modifier added to shortcut ... ?
-         if (sBuf != "")
-         {
-            sBuf += key.toUpper();
-
-            // all is well ...
-            iRV = 0;
-         }
-      }
-
-      return iRV;
-   }
-
-
 public slots:
 
    /* -----------------------------------------------------------------\

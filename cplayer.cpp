@@ -1276,6 +1276,96 @@ uint CPlayer::getSilderPos ()
    return mToGmt(ui->posSlider->value());
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotMoreLoudly
+|  Begin: 25.03.2011 / 9:30
+|  Author: Jo2003
+|  Description: make it louder
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotMoreLoudly()
+{
+   if (pMediaPlayer)
+   {
+      int newVolume = libvlc_audio_get_volume (pMediaPlayer) + 5;
+
+      if (newVolume > ui->volSlider->maximum())
+      {
+         newVolume = ui->volSlider->maximum();
+      }
+
+      if(!libvlc_audio_set_volume (pMediaPlayer, newVolume))
+      {
+         ui->labSound->setPixmap(QPixmap(":/player/sound_on"));
+         ui->volSlider->setValue(newVolume);
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotMoreQuietly
+|  Begin: 25.03.2011 / 9:30
+|  Author: Jo2003
+|  Description: make it more quietly
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotMoreQuietly()
+{
+   if (pMediaPlayer)
+   {
+      int newVolume = libvlc_audio_get_volume (pMediaPlayer) - 5;
+
+      if (newVolume < 0)
+      {
+         newVolume = 0;
+      }
+
+      if (!libvlc_audio_set_volume (pMediaPlayer, newVolume))
+      {
+         if (!newVolume)
+         {
+            ui->labSound->setPixmap(QPixmap(":/player/sound_off"));
+         }
+         ui->volSlider->setValue(newVolume);
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotMute
+|  Begin: 25.03.2011 / 9:30
+|  Author: Jo2003
+|  Description: toggle mute
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotMute()
+{
+   if (pMediaPlayer)
+   {
+      int mute = (libvlc_audio_get_mute(pMediaPlayer)) ? 0 : 1;
+
+      if (mute)
+      {
+         ui->labSound->setPixmap(QPixmap(":/player/sound_off"));
+      }
+      else
+      {
+         ui->labSound->setPixmap(QPixmap(":/player/sound_on"));
+      }
+
+      libvlc_audio_set_mute(pMediaPlayer, mute);
+   }
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

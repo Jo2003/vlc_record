@@ -31,11 +31,18 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".42B2" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".42B3" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last beta ---
+|
+| 2011-03-25: Version x.42B3
+| - fix fullscreen shortcut problems
+| - shortcuts for volume + / - / mute
+| - re-translate shortcut table on language change
+| - use libVLC 1.1.8  (Windows only)
+| - display version of libVLC in about dialog
 |
 | 2011-03-23: Version x.42B2
 | - remove channel list widget

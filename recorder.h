@@ -71,7 +71,6 @@ namespace Ui
     {
        QString     sDescr;
        QObject    *pObj;
-       QString     sObj;
        const char *pSlot;
        QString     sShortCut;
     };
@@ -129,8 +128,10 @@ private:
     QString                        sExpires;
     QStandardItemModel            *pModel;
     QChanListDelegate             *pDelegate;
+    QVector<Ui::SShortCuts>        vShortCutTab;
 
 protected:
+    void fillShortCutTab();
     void touchSearchAreaCbx ();
     int FillChannelList (const QVector<cparser::SChan> &chanlist);
     int StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv = false);
@@ -156,6 +157,7 @@ protected:
     void initDialog ();
     QString createTooltip (const QString & name, const QString & prog, uint start, uint end);
     int     getCurrentCid();
+    void retranslateShortcutTable();
 
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);

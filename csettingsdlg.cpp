@@ -1067,18 +1067,30 @@ void CSettingsDlg::delShortCut(const QString &target, const QString &slot)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: clearShortcutTable
-|  Begin: 23.03.2011 / 13:20
+|  Method: updateShortcutDescr
+|  Begin: 25.03.2011 / 11:45
 |  Author: Jo2003
-|  Description: clear shortcut table
+|  Description: update description text
 |
-|  Parameters: --
+|  Parameters: description, target and slot
 |
 |  Returns:  --
 \----------------------------------------------------------------- */
-void CSettingsDlg::clearShortcutTable()
+void CSettingsDlg::updateShortcutDescr (const QString &descr, const QString &target, const QString &slot)
 {
-   m_ui->tableShortCuts->clear();
+   CShortCutGrabber *pGrab;
+   int     i;
+
+   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
+   {
+      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
+
+      if ((pGrab->target() == target) && (pGrab->slot() == slot))
+      {
+         m_ui->tableShortCuts->item (i, 0)->setText(descr);
+         break;
+      }
+   }
 }
 
 /************************* History ***************************\

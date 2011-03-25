@@ -105,6 +105,10 @@ void CAboutDialog::FillInfo(QString sExpires)
          << "<span style='font-weight: bold; font-size: 16px;'>vlc-record</span><br />" << endl
          << "<table border='0' cellpadding='0' cellspacing='0'>" << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Version:")).arg(__MY__VERSION__) << endl
+#ifdef INCLUDE_LIBVLC
+         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("libVLC:"))
+             .arg(QString("%1.%2.%3").arg(LIBVLC_VERSION_MAJOR).arg(LIBVLC_VERSION_MINOR).arg(LIBVLC_VERSION_REVISION)) << endl
+#endif
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>").arg(tr("Author:")) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>").arg(tr("Inspired by:")) << endl
          << QString("<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>").arg(qVersion()) << endl

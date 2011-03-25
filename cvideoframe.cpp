@@ -135,27 +135,21 @@ void CVideoFrame::slotHideMouse()
 \----------------------------------------------------------------- */
 void CVideoFrame::keyPressEvent(QKeyEvent *pEvent)
 {
-   QString sShortCut;
-   int     iRV;
+   QKeySequence seq;
 
-   // can we create a shortcut string for this key ... ?
-   iRV = CShortcutEx::createShortcutString(pEvent->modifiers(),
-                                           pEvent->text(), sShortCut);
-
-   if (!iRV)
+   // make key sequence from key event ...
+   if (!keyEventToKeySequence(pEvent, seq))
    {
-      // check if shortcut string matches one of our shortcuts ...
-      iRV = fakeShortCut(QKeySequence (sShortCut));
-
-      if (!iRV)
+      // success --> activate shortcut ...
+      if (!fakeShortCut(seq))
       {
+         // success --> accept event ...
          pEvent->accept();
       }
    }
-
-   // event not yet handled ... give it to base class ...
-   if (iRV == -1)
+   else
    {
+      // no key sequence --> handle by base class ...
       QWidget::keyPressEvent(pEvent);
    }
 }
@@ -213,6 +207,57 @@ int CVideoFrame::fakeShortCut (const QKeySequence &seq)
    }
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: keyEventToKeySequence
+|  Begin: 25.03.2011 / 8:30
+|  Author: Jo2003
+|  Description: make keysequence from key event
+|
+|  Parameters: key event, ref. to key sequence
+|
+|  Returns: 0 --> key sequence filled
+|          -1 --> not a key sequence
+\----------------------------------------------------------------- */
+int CVideoFrame::keyEventToKeySequence(QKeyEvent *pEvent, QKeySequence &seq)
+{
+   int iKey                    = pEvent->key();
+   Qt::KeyboardModifiers state = pEvent->modifiers();
+   QString text                = pEvent->text();
+
+   if ((iKey == Qt::Key_Control) || (iKey == Qt::Key_Shift) ||
+       (iKey == Qt::Key_Meta)    || (iKey == Qt::Key_Alt)   ||
+       (iKey == Qt::Key_Super_L) || (iKey == Qt::Key_AltGr))
+   {
+      // a single modifier can't be a shortcut / key sequence ...
+      return -1;
+   }
+
+   // does shift modifier make sense ... ?
+   if ((state & Qt::ShiftModifier) && ((text.size() == 0) || !text.at(0).isPrint() || text.at(0).isLetter() || text.at(0).isSpace()))
+   {
+      iKey |= Qt::SHIFT;
+   }
+
+   if (state & Qt::ControlModifier)
+   {
+      iKey |= Qt::CTRL;
+   }
+
+   if (state & Qt::MetaModifier)
+   {
+      iKey |= Qt::META;
+   }
+
+   if (state & Qt::AltModifier)
+   {
+      iKey |= Qt::ALT;
+   }
+
+   seq = QKeySequence(iKey);
+
+   return 0;
 }
 
 /************************* History ***************************\

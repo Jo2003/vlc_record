@@ -15,9 +15,11 @@
 #include <QDialog>
 #include <QTextStream>
 #include <QString>
+#include <vlc/libvlc_version.h>
 #include <version_info.h>
 #include "csettingsdlg.h"
 #include "customization.h"
+
 
 namespace Ui {
     class CAboutDialog;

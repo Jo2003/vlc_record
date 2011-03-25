@@ -126,6 +126,9 @@ public slots:
    int  slotToggleCropGeometry ();
    int  slotTimeJumpRelative (int iSeconds);
    void slotStoredAspectCrop ();
+   void slotMoreLoudly();
+   void slotMoreQuietly();
+   void slotMute();
 
 signals:
    void sigPlayState (int ps);
