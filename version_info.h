@@ -37,6 +37,12 @@
 /************************* History ***************************\
 | --- new since last beta ---
 |
+| 2011-03-30: Version x.43
+| - make sure shortcut table is only re-translated
+|   if there is something to translate
+| - add shortcut reset button
+| - updated translation
+|
 | 2011-03-25: Version x.42B3
 | - fix fullscreen shortcut problems
 | - shortcuts for volume + / - / mute

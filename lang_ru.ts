@@ -978,37 +978,42 @@ p, li { white-space: pre-wrap; }
         <translation>Сокращения</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="737"/>
+        <location filename="forms/csettingsdlg.ui" line="766"/>
+        <source>Reset Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/csettingsdlg.ui" line="776"/>
         <source>Registration</source>
         <translation>Регистрация</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="745"/>
+        <location filename="forms/csettingsdlg.ui" line="784"/>
         <source>User:</source>
         <translation>Пользователь:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="762"/>
+        <location filename="forms/csettingsdlg.ui" line="801"/>
         <source>Registration:</source>
         <translation>Регистрация:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="755"/>
+        <location filename="forms/csettingsdlg.ui" line="794"/>
         <source>Register</source>
         <translation>Сохранить</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="729"/>
         <source>Changes in shortcuts take effect only after restarting the program.</source>
-        <translation>Изменения в сокращеннях вступят в силу только после перезагрузки программа.</translation>
+        <translation>Изменения в сокращеннях вступят в силу только после перезагрузки программы.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="806"/>
+        <location filename="forms/csettingsdlg.ui" line="845"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="826"/>
+        <location filename="forms/csettingsdlg.ui" line="865"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -1513,22 +1518,22 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="2909"/>
-        <location filename="recorder.cpp" line="3435"/>
+        <location filename="recorder.cpp" line="3426"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3670"/>
+        <location filename="recorder.cpp" line="3661"/>
         <source>Program:</source>
         <translation>Передача:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3671"/>
+        <location filename="recorder.cpp" line="3662"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3672"/>
+        <location filename="recorder.cpp" line="3663"/>
         <source>End:</source>
         <translation>Окончание:</translation>
     </message>
@@ -1544,7 +1549,7 @@ or start time is later than end time!</source>
         <translation> (Ар.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3431"/>
+        <location filename="recorder.cpp" line="3422"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
@@ -1578,8 +1583,8 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="2013"/>
-        <location filename="recorder.cpp" line="3138"/>
-        <location filename="recorder.cpp" line="3193"/>
+        <location filename="recorder.cpp" line="3129"/>
+        <location filename="recorder.cpp" line="3184"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Невозможно заупстить VLC-Media Player!</translation>
     </message>
@@ -1684,8 +1689,8 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="2019"/>
-        <location filename="recorder.cpp" line="3145"/>
-        <location filename="recorder.cpp" line="3199"/>
+        <location filename="recorder.cpp" line="3136"/>
+        <location filename="recorder.cpp" line="3190"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
@@ -1781,27 +1786,27 @@ dataDir: %1
         <translation>Телегид / Видеотека</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3018"/>
+        <location filename="recorder.cpp" line="3009"/>
         <source>Can&apos;t load channel image &quot;%1.gif&quot; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3075"/>
-        <location filename="recorder.cpp" line="3227"/>
+        <location filename="recorder.cpp" line="3066"/>
+        <location filename="recorder.cpp" line="3218"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3500"/>
-        <location filename="recorder.cpp" line="3726"/>
+        <location filename="recorder.cpp" line="3491"/>
+        <location filename="recorder.cpp" line="3723"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Фаворит %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2013"/>
-        <location filename="recorder.cpp" line="3138"/>
-        <location filename="recorder.cpp" line="3193"/>
+        <location filename="recorder.cpp" line="3129"/>
+        <location filename="recorder.cpp" line="3184"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>

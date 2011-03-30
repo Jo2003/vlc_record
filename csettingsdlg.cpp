@@ -998,7 +998,7 @@ void CSettingsDlg::addShortCut(const QString &descr, const QString &target,
 
    pGrab->setTarget(target);
    pGrab->setSlot(slot);
-   pGrab->setKeySequence(QKeySequence(shortCut));
+   pGrab->setKeySequence(QKeySequence(shortCut), QKeySequence(keys));
 
    int iRow = m_ui->tableShortCuts->rowCount();
 
@@ -1093,6 +1093,45 @@ void CSettingsDlg::updateShortcutDescr (const QString &descr, const QString &tar
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: on_btnResetShortcuts_clicked
+|  Begin: 30.03.2011 / 16:45
+|  Author: Jo2003
+|  Description: reset shortcuts
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_btnResetShortcuts_clicked()
+{
+   CShortCutGrabber *pGrab;
+   int     i;
+
+   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
+   {
+      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
+
+      pGrab->revert();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: shortCutCount
+|  Begin: 30.03.2011 / 16:15
+|  Author: Jo2003
+|  Description: return number of shortcuts in shortcut table
+|
+|  Parameters: --
+|
+|  Returns:  number of shortcuts
+\----------------------------------------------------------------- */
+int CSettingsDlg::shortCutCount()
+{
+   return m_ui->tableShortCuts->rowCount();
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+

@@ -103,6 +103,7 @@ public:
     void  delShortCut (const QString& target, const QString& slot);
     void  updateShortcutDescr(const QString& descr, const QString& target, const QString& slot);
     QString shortCut (const QString& target, const QString& slot) const;
+    int shortCutCount();
 
 protected:
     void changeEvent(QEvent *e);
@@ -118,6 +119,7 @@ signals:
     void sigSetBuffer (int iBuffer);
 
 private slots:
+    void on_btnResetShortcuts_clicked();
     void on_pushDoRegister_clicked();
     void on_btnSaveStreamServer_clicked();
     void on_btnSaveBitrate_clicked();

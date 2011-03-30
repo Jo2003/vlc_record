@@ -967,22 +967,27 @@ p, li { white-space: pre-wrap; }
         <translation>Tastenkürzel</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="737"/>
+        <location filename="forms/csettingsdlg.ui" line="766"/>
+        <source>Reset Shortcuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/csettingsdlg.ui" line="776"/>
         <source>Registration</source>
         <translation>Registrierung</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="745"/>
+        <location filename="forms/csettingsdlg.ui" line="784"/>
         <source>User:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="762"/>
+        <location filename="forms/csettingsdlg.ui" line="801"/>
         <source>Registration:</source>
         <translation>Registrierung:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="755"/>
+        <location filename="forms/csettingsdlg.ui" line="794"/>
         <source>Register</source>
         <translation></translation>
     </message>
@@ -992,12 +997,12 @@ p, li { white-space: pre-wrap; }
         <translation>Shortcut-Änderungen werden erst nach einem Programmneustart gültig.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="806"/>
+        <location filename="forms/csettingsdlg.ui" line="845"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="826"/>
+        <location filename="forms/csettingsdlg.ui" line="865"/>
         <source>&amp;Cancel</source>
         <translation>A&amp;bbrechen</translation>
     </message>
@@ -1490,22 +1495,22 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2909"/>
-        <location filename="recorder.cpp" line="3435"/>
+        <location filename="recorder.cpp" line="3426"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3670"/>
+        <location filename="recorder.cpp" line="3661"/>
         <source>Program:</source>
         <translation>Sendung:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3671"/>
+        <location filename="recorder.cpp" line="3662"/>
         <source>Start:</source>
         <translation>Beginn:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3672"/>
+        <location filename="recorder.cpp" line="3663"/>
         <source>End:</source>
         <translation>Ende:</translation>
     </message>
@@ -1521,7 +1526,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3431"/>
+        <location filename="recorder.cpp" line="3422"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
@@ -1654,15 +1659,15 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="2013"/>
-        <location filename="recorder.cpp" line="3138"/>
-        <location filename="recorder.cpp" line="3193"/>
+        <location filename="recorder.cpp" line="3129"/>
+        <location filename="recorder.cpp" line="3184"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Kann den VLC Mediaplayer nicht starten!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2019"/>
-        <location filename="recorder.cpp" line="3145"/>
-        <location filename="recorder.cpp" line="3199"/>
+        <location filename="recorder.cpp" line="3136"/>
+        <location filename="recorder.cpp" line="3190"/>
         <source>Started VLC with pid #%1!</source>
         <translation></translation>
     </message>
@@ -1758,27 +1763,27 @@ dataDir: %1
         <translation>Zeige EPG / Videothek</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3018"/>
+        <location filename="recorder.cpp" line="3009"/>
         <source>Can&apos;t load channel image &quot;%1.gif&quot; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3075"/>
-        <location filename="recorder.cpp" line="3227"/>
+        <location filename="recorder.cpp" line="3066"/>
+        <location filename="recorder.cpp" line="3218"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3500"/>
-        <location filename="recorder.cpp" line="3726"/>
+        <location filename="recorder.cpp" line="3491"/>
+        <location filename="recorder.cpp" line="3723"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Favorit %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2013"/>
-        <location filename="recorder.cpp" line="3138"/>
-        <location filename="recorder.cpp" line="3193"/>
+        <location filename="recorder.cpp" line="3129"/>
+        <location filename="recorder.cpp" line="3184"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>

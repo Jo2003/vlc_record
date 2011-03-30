@@ -730,6 +730,45 @@ color: red;
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="btnResetShortcuts">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../vlc-record.qrc">
+             <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_18">
+           <property name="font">
+            <font>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Reset Shortcuts to default</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="tabRegister">

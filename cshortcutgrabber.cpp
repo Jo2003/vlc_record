@@ -181,18 +181,23 @@ void CShortCutGrabber::handleKeyEvent(QKeyEvent *e)
 |  Author: Jo2003
 |  Description: set internal key sequence, update lineEdit
 |
-|  Parameters: new key sequence
+|  Parameters: new key sequence, original key sequence
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CShortCutGrabber::setKeySequence(const QKeySequence &sequence)
+void CShortCutGrabber::setKeySequence (const QKeySequence &costSeq, const QKeySequence &orgSeq)
 {
-   if (sequence == m_keySequence)
+   if (!orgSeq.isEmpty())
+   {
+      m_orgkeySequence = orgSeq;
+   }
+
+   if (costSeq == m_keySequence)
    {
       return;
    }
    m_num = 0;
-   m_keySequence = sequence;
+   m_keySequence = costSeq;
    m_lineEdit->setText(m_keySequence.toString(QKeySequence::NativeText));
 }
 
@@ -410,4 +415,23 @@ QString CShortCutGrabber::target() const
 QString CShortCutGrabber::slot() const
 {
    return sSlot;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: revert
+|  Begin: 30.03.2011 / 16:34
+|  Author: Jo2003
+|  Description: revert shortcut to original value
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShortCutGrabber::revert()
+{
+   if (!m_orgkeySequence.isEmpty())
+   {
+      m_keySequence = m_orgkeySequence;
+      m_lineEdit->setText(m_keySequence.toString(QKeySequence::NativeText));
+   }
 }

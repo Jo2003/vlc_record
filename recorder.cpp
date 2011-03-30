@@ -3001,19 +3001,10 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          }
          else
          {
-            //////////////////////////////////////////////////////////
-            // Note: Some Icons can't be loaded.
-            // First we try to load the image.
-            // If this isn't possible we force
-            // the file format to gif.
-            // If it's still impossible to load
-            // the image we take the default image instead.
-            //////////////////////////////////////////////////////////
-
-            // check if file can be loaded ...
+            // check if image file can be loaded ...
             if (!icon.load(sLogoFile, "image/gif"))
             {
-               // still can't load --> load default image ...
+               // can't load --> load default image ...
                icon.load(":png/no_logo");
                mInfo(tr("Can't load channel image \"%1.gif\" ...").arg(chanlist[i].iId));
             }
@@ -3708,24 +3699,31 @@ int Recorder::getCurrentCid()
 \----------------------------------------------------------------- */
 void Recorder::retranslateShortcutTable()
 {
-   QVector<Ui::SShortCuts>::const_iterator cit;
-
-   fillShortCutTab();
-
-   // go through table and update shortcut description ...
-   for (cit = vShortCutTab.constBegin(); cit != vShortCutTab.constEnd(); cit ++)
+   // re-translate shortcut table if there's something to
+   // translate ...
+   if (Settings.shortCutCount() > 0)
    {
-      Settings.updateShortcutDescr((*cit).sDescr, (*cit).pObj->objectName(), (*cit).pSlot);
-   }
+      QVector<Ui::SShortCuts>::const_iterator cit;
 
-   // add favourites ...
-   for (int i = 0; i < MAX_NO_FAVOURITES; i++)
-   {
-      if (pFavAct[i] != NULL)
+      // update shortcut vector to include
+      // new translation ...
+      fillShortCutTab();
+
+      // go through table and update shortcut description ...
+      for (cit = vShortCutTab.constBegin(); cit != vShortCutTab.constEnd(); cit ++)
       {
-         Settings.updateShortcutDescr(tr("Favourite %1").arg(i + 1),
-                              QString("pFavAct[%1]").arg(i),
-                              SLOT(slotHandleFavAction(QAction*)));
+         Settings.updateShortcutDescr((*cit).sDescr, (*cit).pObj->objectName(), (*cit).pSlot);
+      }
+
+      // add favourites ...
+      for (int i = 0; i < MAX_NO_FAVOURITES; i++)
+      {
+         if (pFavAct[i] != NULL)
+         {
+            Settings.updateShortcutDescr(tr("Favourite %1").arg(i + 1),
+                                 QString("pFavAct[%1]").arg(i),
+                                 SLOT(slotHandleFavAction(QAction*)));
+         }
       }
    }
 }

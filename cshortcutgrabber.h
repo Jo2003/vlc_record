@@ -41,7 +41,8 @@ public:
    QString target() const;
 
 public slots:
-   void setKeySequence(const QKeySequence &sequence);
+   void setKeySequence(const QKeySequence &costSeq, const QKeySequence &orgSeq = QKeySequence());
+   void revert();
 
 signals:
    void keySequenceChanged(const QKeySequence &sequence);
@@ -62,6 +63,7 @@ private:
 
    int          m_num;
    QKeySequence m_keySequence;
+   QKeySequence m_orgkeySequence;
    QLineEdit   *m_lineEdit;
    QString      sTarget;
    QString      sSlot;
