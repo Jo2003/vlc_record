@@ -968,8 +968,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="766"/>
-        <source>Reset Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <source>Reset Shortcuts to default</source>
+        <oldsource>Reset Shortcuts</oldsource>
+        <translation>Tastenkürzel zurücksetzen</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="776"/>

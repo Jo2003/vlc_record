@@ -979,8 +979,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="766"/>
-        <source>Reset Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <source>Reset Shortcuts to default</source>
+        <oldsource>Reset Shortcuts</oldsource>
+        <translation>Вернуть стандартные настройки</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="776"/>
@@ -1713,7 +1714,7 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="2456"/>
         <source>Play / Pause</source>
-        <translation>Плей / Пауза</translation>
+        <translation>Воспроизведение / Пауза</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2458"/>
@@ -1723,7 +1724,7 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="2461"/>
         <source>About</source>
-        <translation>Информации о программе</translation>
+        <translation>Информация о программе</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2462"/>
@@ -1733,12 +1734,12 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="2463"/>
         <source>Text Size +</source>
-        <translation>Увеличить Размер Шрифта</translation>
+        <translation>Увеличить размер шрифта</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2464"/>
         <source>Text Size -</source>
-        <translation>Уменьшить Размер Шрифта</translation>
+        <translation>Уменьшить размер шрифта</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2468"/>
@@ -1748,12 +1749,12 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="2469"/>
         <source>Toggle Crop Geometry</source>
-        <translation>Подрезать Видеоформат</translation>
+        <translation>Подрезать видеоформат</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2470"/>
         <source>Toggle Fullscreen</source>
-        <translation>Полный экран</translation>
+        <translation>Полноэкранный режим</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2473"/>
@@ -1763,12 +1764,12 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="2478"/>
         <source>Next Channel</source>
-        <translation>Следующий Канал</translation>
+        <translation>Следующий канал</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2479"/>
         <source>Previous Channel</source>
-        <translation>Предыдущий Канал</translation>
+        <translation>Предыдущий канал</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2480"/>
