@@ -102,7 +102,7 @@ void CAboutDialog::FillInfo(QString sExpires)
    str << "<style type='text/css'>" << endl
          << "a:link, a:visited, a:active { text-decoration: underline; color: #0482FE;}" << endl
          << "</style>" << endl
-         << "<span style='font-weight: bold; font-size: 16px;'>vlc-record</span><br />" << endl
+         << "<span style='font-weight: bold; font-size: 16px;'>" << APP_NAME << "</span><br />" << endl
          << "<table border='0' cellpadding='0' cellspacing='0'>" << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Version:")).arg(__MY__VERSION__) << endl
 #ifdef INCLUDE_LIBVLC
