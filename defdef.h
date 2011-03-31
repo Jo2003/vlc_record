@@ -14,7 +14,11 @@
 
 #include <QtGlobal>
 
-#define APP_NAME          "vlc-record"
+#ifdef INCLUDE_LIBVLC
+   #define APP_NAME          "vlc-record"
+#else
+   #define APP_NAME          "vlc-record-classic"
+#endif // INCLUDE_LIBVLC
 
 #ifdef Q_OS_WIN32
    #define DATA_DIR_ENV   "APPDATA"
