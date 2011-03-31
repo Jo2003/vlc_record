@@ -28,7 +28,6 @@
    #define DATA_DIR       "." APP_NAME
 #endif
 
-#define APP_NAME          "vlc-record"
 #define APP_INI_FILE      "vlc-rcd.ini"
 #define APP_LOG_FILE      "vlc-record.log"
 #define PLAYER_LOG_FILE   "player.log"
