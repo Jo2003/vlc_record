@@ -38,4 +38,4 @@ debnew:
 	${CHKINST} ${PKGNAMENW} ${PKGGRP} ${PKGVERNW} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETNW} -f install.mak instnew
 
 debclc:
-	${CHKINST} ${PKGNAMECL} ${PKGGRP} ${PKGVERCL} ${MAINT} ${REQUIRES} ${PKGSRC} ${MAKE} TARGET=${TARGETCL} -f install.mak instclassic
+	${CHKINST} ${PKGNAMECL} ${PKGGRP} ${PKGVERCL} ${MAINT} ${REQUIRESCLC} ${PKGSRC} ${MAKE} TARGET=${TARGETCL} -f install.mak instclassic
