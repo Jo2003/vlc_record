@@ -33,7 +33,7 @@
 
 ;-------------------------------------------------------
 ; what to run when finished ... ?
-  !define MUI_FINISHPAGE_RUN "$INSTDIR\vlc-record.exe"
+  !define MUI_FINISHPAGE_RUN "$INSTDIR\vlc-record-classic.exe"
 
 ;-------------------------------------------------------
 ; Pages
@@ -58,7 +58,7 @@
 Section "VLC-Record" SecInst
   SectionIn RO
   SetOutPath "$INSTDIR"
-  File "${SRCDIR}\release\vlc-record.exe"
+  File "${SRCDIR}\release\vlc-record-classic.exe"
   File "${QTLIBS}\libgcc_s_dw2-1.dll"
   File "${QTLIBS}\mingwm10.dll"
 
@@ -97,14 +97,14 @@ SectionEnd
 ; start menu entries 
 Section "Start Menu Entries" SecStart
 	CreateDirectory "$SMPROGRAMS\${APPNAME} Classic"
-	CreateShortCut "$SMPROGRAMS\${APPNAME} Classic\${APPNAME} Classic.lnk" "$INSTDIR\vlc-record.exe"
+	CreateShortCut "$SMPROGRAMS\${APPNAME} Classic\${APPNAME} Classic.lnk" "$INSTDIR\vlc-record-classic.exe"
 	CreateShortCut "$SMPROGRAMS\${APPNAME} Classic\Uninstall.lnk" "$INSTDIR\uninstall.exe"
 SectionEnd
 
 ;-------------------------------------------------------
 ; desktop shortcut ...
 Section /o "Desktop Shortcut" SecDesktop
-	CreateShortCut "$DESKTOP\${APPNAME} Classic.lnk" "$INSTDIR\vlc-record.exe"
+	CreateShortCut "$DESKTOP\${APPNAME} Classic.lnk" "$INSTDIR\vlc-record-classic.exe"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -166,7 +166,7 @@ Section "un.Program"
   RMDir  "$INSTDIR\language"
 
   ; delete vlc-record itself ...
-  Delete "$INSTDIR\vlc-record.exe"
+  Delete "$INSTDIR\vlc-record-classic.exe"
   Delete "$INSTDIR\libgcc_s_dw2-1.dll"
   Delete "$INSTDIR\mingwm10.dll"
 
