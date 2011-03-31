@@ -57,6 +57,7 @@
 ; Installer Sections for vlc-record
 Section "VLC-Record" SecInst
   SectionIn RO
+  Rename "${SRCDIR}\release\vlc-record.exe" "${SRCDIR}\release\vlc-record-classic.exe"
   SetOutPath "$INSTDIR"
   File "${SRCDIR}\release\vlc-record-classic.exe"
   File "${QTLIBS}\libgcc_s_dw2-1.dll"
