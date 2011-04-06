@@ -1022,7 +1022,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CShortCutGrabber</name>
     <message>
-        <location filename="cshortcutgrabber.cpp" line="77"/>
+        <location filename="cshortcutgrabber.cpp" line="79"/>
         <source>Clear Shortcut</source>
         <translation>Удалить Сокращения</translation>
     </message>

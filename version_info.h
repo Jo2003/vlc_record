@@ -36,6 +36,8 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last beta ---
+| - new shortcut table
+| - take care of unique shortcuts
 |
 | 2011-03-30: Version x.43
 | - make sure shortcut table is only re-translated

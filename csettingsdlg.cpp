@@ -987,26 +987,7 @@ void CSettingsDlg::on_pushDoRegister_clicked()
 void CSettingsDlg::addShortCut(const QString &descr, const QString &target,
                               const QString &slot, const QString &keys)
 {
-   QString shortCut;
-   QTableWidgetItem *pItem = new QTableWidgetItem (descr);
-   CShortCutGrabber *pGrab = new CShortCutGrabber (this);
-
-   if((shortCut = pDb->getShortCut(target, slot)) == "")
-   {
-      shortCut = keys;
-   }
-
-   pGrab->setTarget(target);
-   pGrab->setSlot(slot);
-   pGrab->setKeySequence(QKeySequence(shortCut), QKeySequence(keys));
-
-   int iRow = m_ui->tableShortCuts->rowCount();
-
-   m_ui->tableShortCuts->setRowCount(iRow + 1);
-   m_ui->tableShortCuts->setItem(iRow, 0, pItem);
-   m_ui->tableShortCuts->setCellWidget(iRow, 1, pGrab);
-
-   m_ui->tableShortCuts->resizeColumnsToContents();
+   m_ui->tableShortCuts->addShortCut(descr, target, slot, keys);
 }
 
 /* -----------------------------------------------------------------\
@@ -1021,22 +1002,7 @@ void CSettingsDlg::addShortCut(const QString &descr, const QString &target,
 \----------------------------------------------------------------- */
 QString CSettingsDlg::shortCut(const QString &target, const QString &slot) const
 {
-   CShortCutGrabber *pGrab;
-   int     i;
-   QString key;
-
-   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
-   {
-      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
-
-      if ((pGrab->target() == target) && (pGrab->slot() == slot))
-      {
-         key = pGrab->shortCutString();
-         break;
-      }
-   }
-
-   return key;
+   return m_ui->tableShortCuts->shortCut(target, slot);
 }
 
 /* -----------------------------------------------------------------\
@@ -1051,19 +1017,7 @@ QString CSettingsDlg::shortCut(const QString &target, const QString &slot) const
 \----------------------------------------------------------------- */
 void CSettingsDlg::delShortCut(const QString &target, const QString &slot)
 {
-   CShortCutGrabber *pGrab;
-   int     i;
-
-   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
-   {
-      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
-
-      if ((pGrab->target() == target) && (pGrab->slot() == slot))
-      {
-         m_ui->tableShortCuts->removeRow(i);
-         break;
-      }
-   }
+   m_ui->tableShortCuts->delShortCut(target, slot);
 }
 
 /* -----------------------------------------------------------------\
@@ -1078,19 +1032,7 @@ void CSettingsDlg::delShortCut(const QString &target, const QString &slot)
 \----------------------------------------------------------------- */
 void CSettingsDlg::updateShortcutDescr (const QString &descr, const QString &target, const QString &slot)
 {
-   CShortCutGrabber *pGrab;
-   int     i;
-
-   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
-   {
-      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
-
-      if ((pGrab->target() == target) && (pGrab->slot() == slot))
-      {
-         m_ui->tableShortCuts->item (i, 0)->setText(descr);
-         break;
-      }
-   }
+   m_ui->tableShortCuts->updateShortcutDescr(descr, target, slot);
 }
 
 /* -----------------------------------------------------------------\
@@ -1105,15 +1047,7 @@ void CSettingsDlg::updateShortcutDescr (const QString &descr, const QString &tar
 \----------------------------------------------------------------- */
 void CSettingsDlg::on_btnResetShortcuts_clicked()
 {
-   CShortCutGrabber *pGrab;
-   int     i;
-
-   for (i = 0; i < m_ui->tableShortCuts->rowCount(); i++)
-   {
-      pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
-
-      pGrab->revert();
-   }
+   m_ui->tableShortCuts->revert();
 }
 
 /* -----------------------------------------------------------------\

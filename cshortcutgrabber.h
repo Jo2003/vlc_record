@@ -30,13 +30,15 @@ class CShortCutGrabber : public QWidget
    Q_OBJECT
 
 public:
-   CShortCutGrabber(QWidget *parent = 0);
+   CShortCutGrabber(QWidget *parent = 0, int row = -1);
 
    QKeySequence keySequence() const;
    QString shortCutString() const;
    bool eventFilter(QObject *o, QEvent *e);
    void setTarget(const QString &str);
    void setSlot(const QString &str);
+   void markRed ();
+   void unMark ();
    QString slot() const;
    QString target() const;
 
@@ -45,7 +47,7 @@ public slots:
    void revert();
 
 signals:
-   void keySequenceChanged(const QKeySequence &sequence);
+   void keySequenceChanged(const QKeySequence &sequence, int row);
 
 protected:
    void focusInEvent(QFocusEvent *e);
@@ -62,11 +64,13 @@ private:
    int translateModifiers(Qt::KeyboardModifiers state, const QString &text) const;
 
    int          m_num;
+   int          iRow;
    QKeySequence m_keySequence;
    QKeySequence m_orgkeySequence;
    QLineEdit   *m_lineEdit;
    QString      sTarget;
    QString      sSlot;
+   bool         bMarked;
 };
 
 #endif // __11022001_CSHORTCUTGRABBER_H

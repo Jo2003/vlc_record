@@ -21,10 +21,12 @@
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CShortCutGrabber::CShortCutGrabber(QWidget *parent)
+CShortCutGrabber::CShortCutGrabber(QWidget *parent, int row)
     : QWidget(parent), m_num(0), m_lineEdit(new QLineEdit(this))
 {
    QHBoxLayout *layout = new QHBoxLayout(this);
+   bMarked = false;
+   iRow    = row;
    layout->addWidget(m_lineEdit);
    layout->setMargin(0);
    m_lineEdit->installEventFilter(this);
@@ -105,7 +107,7 @@ void CShortCutGrabber::slotClearShortcut()
       return;
    }
    setKeySequence(QKeySequence());
-   emit keySequenceChanged(m_keySequence);
+   emit keySequenceChanged(m_keySequence, iRow);
 }
 
 /* -----------------------------------------------------------------\
@@ -172,7 +174,7 @@ void CShortCutGrabber::handleKeyEvent(QKeyEvent *e)
    m_keySequence = QKeySequence(k0, k1, k2, k3);
    m_lineEdit->setText(m_keySequence.toString(QKeySequence::NativeText));
    e->accept();
-   emit keySequenceChanged(m_keySequence);
+   emit keySequenceChanged(m_keySequence, iRow);
 }
 
 /* -----------------------------------------------------------------\
@@ -281,7 +283,11 @@ void CShortCutGrabber::focusInEvent(QFocusEvent *e)
 {
    m_lineEdit->event(e);
    m_lineEdit->selectAll();
-   m_lineEdit->setStyleSheet("QLineEdit {background-color: #c3ffc7}");
+
+   if (!bMarked)
+   {
+      m_lineEdit->setStyleSheet("QLineEdit {background-color: #c3ffc7}");
+   }
    QWidget::focusInEvent(e);
 }
 
@@ -299,7 +305,11 @@ void CShortCutGrabber::focusOutEvent(QFocusEvent *e)
 {
    m_num = 0;
    m_lineEdit->event(e);
-   m_lineEdit->setStyleSheet("QLineEdit {background-color: white}");
+
+   if (!bMarked)
+   {
+      m_lineEdit->setStyleSheet("QLineEdit {background-color: white}");
+   }
    QWidget::focusOutEvent(e);
 }
 
@@ -433,5 +443,46 @@ void CShortCutGrabber::revert()
    {
       m_keySequence = m_orgkeySequence;
       m_lineEdit->setText(m_keySequence.toString(QKeySequence::NativeText));
+      unMark();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: markRed
+|  Begin: 06.04.2011 / 10:25
+|  Author: Jo2003
+|  Description: mark background red (mark duplicated shortcuts)
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShortCutGrabber::markRed()
+{
+   bMarked = true;
+   m_lineEdit->setStyleSheet("QLineEdit {background-color: red}");
+}
+
+/* -----------------------------------------------------------------\
+|  Method: unMark
+|  Begin: 06.04.2011 / 10:25
+|  Author: Jo2003
+|  Description: remove mark
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShortCutGrabber::unMark()
+{
+   bMarked = false;
+
+   if (hasFocus())
+   {
+      m_lineEdit->setStyleSheet("QLineEdit {background-color: #c3ffc7}");
+   }
+   else
+   {
+      m_lineEdit->setStyleSheet("QLineEdit {background-color: white}");
    }
 }

@@ -47,7 +47,8 @@ SOURCES += main.cpp \
     cvodbrowser.cpp \
     cpixloader.cpp \
     cshortcutgrabber.cpp \
-    qchanlistdelegate.cpp
+    qchanlistdelegate.cpp \
+    qshortcuttable.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
@@ -76,7 +77,8 @@ HEADERS += recorder.h \
     cvodbrowser.h \
     cpixloader.h \
     cshortcutgrabber.h \
-    qchanlistdelegate.h
+    qchanlistdelegate.h \
+    qshortcuttable.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui

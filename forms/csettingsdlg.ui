@@ -688,7 +688,7 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_11">
        <item row="0" column="0">
-        <widget class="QTableWidget" name="tableShortCuts">
+        <widget class="QShortCutTable" name="tableShortCuts">
          <property name="rowCount">
           <number>0</number>
          </property>
@@ -883,6 +883,13 @@ color: red;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QShortCutTable</class>
+   <extends>QTableWidget</extends>
+   <header>qshortcuttable.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../vlc-record.qrc"/>
  </resources>
