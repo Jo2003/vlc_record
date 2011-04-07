@@ -2,6 +2,7 @@
 ; Include Modern UI
 
   !include "MUI2.nsh"
+  !include "FileFunc.nsh"
 
 ;-------------------------------------------------------
 ; Include defines ...
@@ -10,9 +11,13 @@
 ;-------------------------------------------------------
 ; General
 
+  ; Version information ...
+  !define STR_VERSION "2.${VER_MINOR}-${DATESTRING}"
+  
   ;Name and file
-  Name "${APPNAME} ${VER_INC}"
-  OutFile "${PACKAGES}\${APPNAME}-${VER_INC}-win-x86-setup.exe"
+  Name "${APPNAME} ${STR_VERSION}"
+
+  OutFile "${PACKAGES}\${APPNAME}-${STR_VERSION}-win-x86-setup.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\${APPNAME}"
@@ -59,6 +64,8 @@ Section "VLC-Record" SecInst
   SectionIn RO
   SetOutPath "$INSTDIR"
   File "${SRCDIR}\release\vlc-record.exe"
+  File "${SRCDIR}\resources\television.ico"
+  File "${SRCDIR}\installer\shortcut.url"
   File "${QTLIBS}\libgcc_s_dw2-1.dll"
   File "${QTLIBS}\mingwm10.dll"
 
@@ -134,8 +141,9 @@ SectionEnd
 Section "Start Menu Entries" SecStart
 	CreateDirectory "$SMPROGRAMS\${APPNAME}"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\vlc-record.exe"
-   CreateShortCut "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk" "$INSTDIR\clearcache.bat"
+  CreateShortCut "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk" "$INSTDIR\clearcache.bat"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+  CreateShortCut "$SMPROGRAMS\${APPNAME}\Check for new Version.lnk" "$INSTDIR\shortcut.url"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -147,12 +155,22 @@ SectionEnd
 ;-------------------------------------------------------
 ; write uninstall stuff ...
 Section -FinishSection
+  ; compute package size ...
+  ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
+  IntFmt $0 "0x%08X" $0
+
   ;store installation folder ...
   WriteRegStr HKLM "Software\${APPNAME}" "" "$INSTDIR"
 	
   ; create uninstall entries in registry ...
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${APPNAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$INSTDIR\uninstall.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayIcon" "$INSTDIR\television.ico"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "Publisher" "Jo2003"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "URLUpdateInfo" "http://code.google.com/p/vlc-record/downloads/list"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "URLInfoAbout" "http://code.google.com/p/vlc-record/"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayVersion" "${STR_VERSION}"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "EstimatedSize" "$0"
 
   ; write uninstaller ...
   WriteUninstaller "$INSTDIR\uninstall.exe"
@@ -162,12 +180,12 @@ SectionEnd
 ;-------------------------------------------------------
 ; Descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-	!insertmacro MUI_DESCRIPTION_TEXT ${SecInst} "The vlc-record executable, the language files and player modules."
-	!insertmacro MUI_DESCRIPTION_TEXT ${SecFw} "The libVLC framework. Only disable this section if you have already installed this framework or you want install it manually."
-	!insertmacro MUI_DESCRIPTION_TEXT ${SecQt} "The Qt framework. Only disable this section if you have already installed the Qt framework and have set the QTDIR environment variable."
-	!insertmacro MUI_DESCRIPTION_TEXT ${SecStart} "Creates a start menu entry for ${APPNAME}"
-	!insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "Creates a desktop shortcut for ${APPNAME}"
-   !insertmacro MUI_DESCRIPTION_TEXT ${SecCache} "Install Plugin Cache Tools for ${APPNAME}"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecInst} "The vlc-record executable, the language files and player modules."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecFw} "The libVLC framework. Only disable this section if you have already installed this framework or you want install it manually."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecQt} "The Qt framework. Only disable this section if you have already installed the Qt framework and have set the QTDIR environment variable."
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecStart} "Creates a start menu entry for ${APPNAME}"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "Creates a desktop shortcut for ${APPNAME}"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecCache} "Install Plugin Cache Tools for ${APPNAME}"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;-------------------------------------------------------
@@ -228,6 +246,8 @@ Section "un.Program"
   Delete "$INSTDIR\vlc-record.exe"
   Delete "$INSTDIR\libgcc_s_dw2-1.dll"
   Delete "$INSTDIR\mingwm10.dll"
+  Delete "$INSTDIR\television.ico"
+  Delete "$INSTDIR\shortcut.url"
 
 SectionEnd
 
@@ -241,11 +261,12 @@ SectionEnd
 ;-------------------------------------------------------
 ; Delete Shortcuts
 Section "un.Shortcuts"
-	Delete "$DESKTOP\${APPNAME}.lnk"
-	Delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
-   Delete "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk"
-	Delete "$SMPROGRAMS\${APPNAME}\Uninstall.lnk"
-	RMDir  "$SMPROGRAMS\${APPNAME}"
+  Delete "$DESKTOP\${APPNAME}.lnk"
+  Delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
+  Delete "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk"
+  Delete "$SMPROGRAMS\${APPNAME}\Check for new Version.lnk"  
+  Delete "$SMPROGRAMS\${APPNAME}\Uninstall.lnk"
+  RMDir  "$SMPROGRAMS\${APPNAME}"
 SectionEnd
 
 ;-------------------------------------------------------

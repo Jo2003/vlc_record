@@ -2,6 +2,7 @@
 ; Include Modern UI
 
   !include "MUI2.nsh"
+  !include "FileFunc.nsh"
 
 ;-------------------------------------------------------
 ; Include defines ...
@@ -10,9 +11,12 @@
 ;-------------------------------------------------------
 ; General
 
+  ; Version information ...
+  !define STR_VERSION "1.${VER_MINOR}-${DATESTRING}"
+  
   ;Name and file
-  Name "${APPNAME} Classic ${VER_CLASSIC}"
-  OutFile "${PACKAGES}\${APPNAME}-${VER_CLASSIC}-win-x86-setup.exe"
+  Name "${APPNAME} Classic ${STR_VERSION}"
+  OutFile "${PACKAGES}\${APPNAME}-${STR_VERSION}-win-x86-setup.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\${APPNAME} Classic"
@@ -59,6 +63,8 @@ Section "VLC-Record" SecInst
   SectionIn RO
   SetOutPath "$INSTDIR"
   File "${SRCDIR}\release\vlc-record.exe"
+  File "${SRCDIR}\resources\television.ico"
+  File "${SRCDIR}\installer\shortcut.url"
   File "${QTLIBS}\libgcc_s_dw2-1.dll"
   File "${QTLIBS}\mingwm10.dll"
   Rename vlc-record.exe vlc-record-classic.exe
@@ -100,6 +106,7 @@ Section "Start Menu Entries" SecStart
 	CreateDirectory "$SMPROGRAMS\${APPNAME} Classic"
 	CreateShortCut "$SMPROGRAMS\${APPNAME} Classic\${APPNAME} Classic.lnk" "$INSTDIR\vlc-record-classic.exe"
 	CreateShortCut "$SMPROGRAMS\${APPNAME} Classic\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+	CreateShortCut "$SMPROGRAMS\${APPNAME} Classic\Check for new Version.lnk" "$INSTDIR\shortcut.url"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -111,12 +118,22 @@ SectionEnd
 ;-------------------------------------------------------
 ; write uninstall stuff ...
 Section -FinishSection
+  ; compute package size ...
+  ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
+  IntFmt $0 "0x%08X" $0
+
   ;store installation folder ...
   WriteRegStr HKLM "Software\${APPNAME} Classic" "" "$INSTDIR"
 	
   ; create uninstall entries in registry ...
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "DisplayName" "${APPNAME} Classic"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "UninstallString" "$INSTDIR\uninstall.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "DisplayIcon" "$INSTDIR\television.ico"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "Publisher" "Jo2003"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "URLUpdateInfo" "http://code.google.com/p/vlc-record/downloads/list"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "URLInfoAbout" "http://code.google.com/p/vlc-record/"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "DisplayVersion" "${STR_VERSION}"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} Classic" "EstimatedSize" "$0"
 
   ; write uninstaller ...
   WriteUninstaller "$INSTDIR\uninstall.exe"
@@ -170,6 +187,8 @@ Section "un.Program"
   Delete "$INSTDIR\vlc-record-classic.exe"
   Delete "$INSTDIR\libgcc_s_dw2-1.dll"
   Delete "$INSTDIR\mingwm10.dll"
+  Delete "$INSTDIR\television.ico"
+  Delete "$INSTDIR\shortcut.url"
 
 SectionEnd
 
@@ -185,6 +204,7 @@ SectionEnd
 Section "un.Shortcuts"
 	Delete "$DESKTOP\${APPNAME} Classic.lnk"
 	Delete "$SMPROGRAMS\${APPNAME} Classic\${APPNAME} Classic.lnk"
+	Delete "$SMPROGRAMS\${APPNAME} Classic\Check for new Version.lnk"
 	Delete "$SMPROGRAMS\${APPNAME} Classic\Uninstall.lnk"
 	RMDir  "$SMPROGRAMS\${APPNAME} Classic"
 SectionEnd
