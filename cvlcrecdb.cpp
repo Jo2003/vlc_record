@@ -128,7 +128,7 @@ int CVlcRecDB::ask(const QString &question, QSqlQuery &query)
 |  Returns: 0 --> ok
 |          -1 --> error
 \----------------------------------------------------------------- */
-int CVlcRecDB::ask(const QString &question, QSqlQuery &query)
+int CVlcRecDB::ask(QSqlQuery &query)
 {
    return query.exec() ? 0 : -1;
 }
