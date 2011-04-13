@@ -118,6 +118,22 @@ int CVlcRecDB::ask(const QString &question, QSqlQuery &query)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: ask
+|  Begin: 13.04.2011 / 10:45
+|  Author: Jo2003
+|  Description: exec a query, return result
+|
+|  Parameters: ref. to query
+|
+|  Returns: 0 --> ok
+|          -1 --> error
+\----------------------------------------------------------------- */
+int CVlcRecDB::ask(const QString &question, QSqlQuery &query)
+{
+   return query.exec() ? 0 : -1;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: deleteDb
 |  Begin: 13.06.2010 / 16:17:51
 |  Author: Jo2003

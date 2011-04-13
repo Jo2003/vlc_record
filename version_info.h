@@ -31,11 +31,13 @@
 #endif
 
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".43" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR ".44B1" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last beta ---
+| 2011-04-13: Version x.44 Beta 1
+| - delete old db timerrec jobs from database
 | - new shortcut table
 | - take care of unique shortcuts
 |

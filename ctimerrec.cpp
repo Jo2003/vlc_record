@@ -449,15 +449,16 @@ int CTimerRec::ReadRecordList()
    int            iRV = 0;
    JobList.clear();
 
-   if (!pDb->ask("SELECT cid, timeshift, recstart, recend, name FROM timerrec", query))
+   if (!pDb->ask("SELECT id, cid, timeshift, recstart, recend, name FROM timerrec", query))
    {
       while (query.next())
       {
-         entry.cid        = query.value(0).toInt();
-         entry.iTimeShift = query.value(1).toInt();
-         entry.uiStart    = query.value(2).toUInt();
-         entry.uiEnd      = query.value(3).toUInt();
-         entry.sName      = query.value(4).toString();
+         entry.dbId       = query.value(0).toUInt();
+         entry.cid        = query.value(1).toInt();
+         entry.iTimeShift = query.value(2).toInt();
+         entry.uiStart    = query.value(3).toUInt();
+         entry.uiEnd      = query.value(4).toUInt();
+         entry.sName      = query.value(5).toString();
          entry.eState     = rec::REC_READY;
 
          // AddJob also adds the table row ...
@@ -759,6 +760,24 @@ void CTimerRec::DelRow(uint uiId)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: delDbEntry
+|  Begin: 13.04.2011 / 10:45
+|  Author: Jo2003
+|  Description: del row from timerrec table
+|
+|  Parameters: entry id
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CTimerRec::delDbEntry(int id)
+{
+   QSqlQuery query;
+   query.prepare("DELETE FROM timerrec WHERE id=?");
+   query.addBindValue(id);
+   pDb->ask(query);
+}
+
+/* -----------------------------------------------------------------\
 |  Method: on_btnDel_clicked
 |  Begin: 26.01.2010 / 16:05:00
 |  Author: Jo2003
@@ -825,6 +844,7 @@ void CTimerRec::slotRecTimer()
                   // old record ... delete without sending signals ...
                   mInfo(tr("Delete old entry #%1 (%2) from Joblist.").arg((*it).id).arg((*it).sName));
                   DelRow((*it).id);
+                  delDbEntry((*it).dbId);
                   it = JobList.erase(it);
                }
                else

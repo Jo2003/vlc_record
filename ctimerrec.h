@@ -57,6 +57,7 @@ namespace rec
 
    struct SRecEntry
    {
+      uint      dbId;
       uint      id;
       int       cid;
       int       iTimeShift;
@@ -103,6 +104,7 @@ protected:
    int  SanityCheck (const QDateTime &start, const QDateTime &end, uint uiUpdId = INVALID_ID);
    void GmtToTimeShift (uint &when, int iEntryTimeShift);
    void TimeShiftToGmt (uint &when, int iEntryTimeShift);
+   void delDbEntry (int id);
 
 private:
    Ui::CTimerRec *r_ui;
