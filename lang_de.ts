@@ -1068,7 +1068,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="341"/>
-        <location filename="ctimerrec.cpp" line="469"/>
+        <location filename="ctimerrec.cpp" line="470"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
@@ -1078,55 +1078,55 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="342"/>
-        <location filename="ctimerrec.cpp" line="470"/>
+        <location filename="ctimerrec.cpp" line="471"/>
         <source>SQL Error String: %1</source>
         <translation>SQL Fehler String: %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="586"/>
+        <location filename="ctimerrec.cpp" line="587"/>
         <source>Add Job #%1 (%2) to Joblist!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="640"/>
+        <location filename="ctimerrec.cpp" line="641"/>
         <source>Don&apos;t check ID %1 (it will be updated).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="826"/>
+        <location filename="ctimerrec.cpp" line="845"/>
         <source>Delete old entry #%1 (%2) from Joblist.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="833"/>
+        <location filename="ctimerrec.cpp" line="853"/>
         <source>Stopping timer record #%1 (%2). End time reached!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="875"/>
+        <location filename="ctimerrec.cpp" line="895"/>
         <source>Record #%1 (%2) starts soon. Set timer to standby!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="883"/>
+        <location filename="ctimerrec.cpp" line="903"/>
         <source>Start record #%1 (%2)!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="954"/>
-        <location filename="ctimerrec.cpp" line="1022"/>
+        <location filename="ctimerrec.cpp" line="974"/>
+        <location filename="ctimerrec.cpp" line="1042"/>
         <source>Can&apos;t start Player!</source>
         <translation>Kann den Player nicht starten!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="958"/>
-        <location filename="ctimerrec.cpp" line="1026"/>
+        <location filename="ctimerrec.cpp" line="978"/>
+        <location filename="ctimerrec.cpp" line="1046"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="954"/>
-        <location filename="ctimerrec.cpp" line="1022"/>
+        <location filename="ctimerrec.cpp" line="974"/>
+        <location filename="ctimerrec.cpp" line="1042"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
@@ -1135,7 +1135,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Kann den VLC Mediaplayer nicht starten!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="976"/>
+        <location filename="ctimerrec.cpp" line="996"/>
         <source>All records done. Shutdown system using command line:
   --&gt; %1</source>
         <translation></translation>
