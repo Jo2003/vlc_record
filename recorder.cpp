@@ -704,7 +704,7 @@ void Recorder::on_cbxChannelGroup_activated(int index)
    QModelIndex idx = pModel->index(row + 1, 0);
 
    ui->channelList->setCurrentIndex(idx);
-   ui->channelList->scrollTo(idx);
+   ui->channelList->scrollTo(idx, QAbstractItemView::PositionAtTop);
 }
 
 /* -----------------------------------------------------------------\
@@ -1877,7 +1877,7 @@ void Recorder::slotHandleFavAction(QAction *pAct)
          {
             // found --> mark row ...
             ui->channelList->setCurrentIndex(idx);
-            ui->channelList->scrollTo(idx);
+            ui->channelList->scrollTo(idx, QAbstractItemView::PositionAtTop);
             break;
          }
       }
