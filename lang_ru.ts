@@ -1519,22 +1519,22 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="recorder.cpp" line="2909"/>
-        <location filename="recorder.cpp" line="3426"/>
+        <location filename="recorder.cpp" line="3427"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3661"/>
+        <location filename="recorder.cpp" line="3662"/>
         <source>Program:</source>
         <translation>Передача:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3662"/>
+        <location filename="recorder.cpp" line="3663"/>
         <source>Start:</source>
         <translation>Начало:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3663"/>
+        <location filename="recorder.cpp" line="3664"/>
         <source>End:</source>
         <translation>Окончание:</translation>
     </message>
@@ -1550,7 +1550,7 @@ or start time is later than end time!</source>
         <translation> (Ар.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3422"/>
+        <location filename="recorder.cpp" line="3423"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>VLC Mediaplayer ещё в работе.&lt;br /&gt; &lt;br /&gt;Уверены ли Вы что хотите закрыть VLC-Player?</translation>
@@ -1798,8 +1798,8 @@ dataDir: %1
         <translation>Сохранить поток как</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3491"/>
-        <location filename="recorder.cpp" line="3723"/>
+        <location filename="recorder.cpp" line="3492"/>
+        <location filename="recorder.cpp" line="3724"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Фаворит %1</translation>

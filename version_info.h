@@ -36,8 +36,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last beta ---
-| 2011-07-07: Version x.45
+| 2011-07-10: Version x.45
 | - use new libVLC 1.1.10
+| - updated CleanShowName() to remove any forbidden filename
+|   character
 |
 | 2011-04-15: Version x.44
 | - no changes to last beta

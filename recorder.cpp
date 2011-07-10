@@ -3368,14 +3368,15 @@ void Recorder::SetProgress (const uint &start, const uint &end)
 QString Recorder::CleanShowName(const QString &str)
 {
    QString sName = str;
+
+   // remove html code for ' " ' ...
    sName.replace(QString("&quot;"), QString(" "));
-   sName.replace(QString("\""), QString(" "));
-   sName.replace(QString("'"), QString(" "));
-   sName.replace(QString("-"), QString(" "));
-   sName.replace(QString("."), QString(" "));
-   sName.replace(QString(","), QString(" "));
-   sName.replace(QString("/"), QString("-"));
-   sName.replace(QString("\\"), QString(""));
+
+   // remove Windows forbidden characters
+   // <>:?*|"\/ and in addition '-.
+   sName.replace(QRegExp("[<>:?*/|\\\\\"'.,-]"), " ");
+
+   // remove mutliple spaces ...
    sName = sName.simplified();
 
    // find space at good position ...

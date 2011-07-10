@@ -1496,22 +1496,22 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2909"/>
-        <location filename="recorder.cpp" line="3426"/>
+        <location filename="recorder.cpp" line="3427"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3661"/>
+        <location filename="recorder.cpp" line="3662"/>
         <source>Program:</source>
         <translation>Sendung:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3662"/>
+        <location filename="recorder.cpp" line="3663"/>
         <source>Start:</source>
         <translation>Beginn:</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3663"/>
+        <location filename="recorder.cpp" line="3664"/>
         <source>End:</source>
         <translation>Ende:</translation>
     </message>
@@ -1527,7 +1527,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3422"/>
+        <location filename="recorder.cpp" line="3423"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
@@ -1775,8 +1775,8 @@ dataDir: %1
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3491"/>
-        <location filename="recorder.cpp" line="3723"/>
+        <location filename="recorder.cpp" line="3492"/>
+        <location filename="recorder.cpp" line="3724"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Favorit %1</translation>
