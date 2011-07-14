@@ -73,6 +73,11 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->lineApiServer->setText (KARTINA_HOST);
    }
 
+   // in case we use customization we should hide the API server name stuff ...
+#ifdef _IS_OEM
+   m_ui->lineApiServer->setVisible(false);
+#endif // _IS_OEM
+
    m_ui->lineProxyHost->setText(pDb->stringValue("ProxyHost"));
    m_ui->lineProxyPort->setText(pDb->stringValue("ProxyPort"));
    m_ui->lineProxyUser->setText(pDb->stringValue("ProxyUser"));
@@ -191,6 +196,18 @@ void CSettingsDlg::changeEvent(QEvent *e)
 \----------------------------------------------------------------- */
 void CSettingsDlg::slotEnableApiServer()
 {
+#ifdef _IS_OEM
+   if (!m_ui->lineApiServer->isVisible())
+   {
+      m_ui->lineApiServer->setVisible(true);
+      m_ui->lineApiServer->setEnabled(true);
+   }
+   else
+   {
+      m_ui->lineApiServer->setEnabled(false);
+      m_ui->lineApiServer->setVisible(false);
+   }
+#else
    if (m_ui->lineApiServer->isEnabled())
    {
       m_ui->lineApiServer->setEnabled(false);
@@ -199,6 +216,7 @@ void CSettingsDlg::slotEnableApiServer()
    {
       m_ui->lineApiServer->setEnabled(true);
    }
+#endif // _IS_OEM
 }
 
 /* -----------------------------------------------------------------\
