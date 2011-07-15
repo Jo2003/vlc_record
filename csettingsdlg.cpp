@@ -240,6 +240,28 @@ void CSettingsDlg::on_pushVLC_clicked()
    QString sVLCPath = QFileDialog::getOpenFileName(this, tr("VLC Media Player"),
                                                    m_ui->lineVLC->text(), sFilter);
 
+#ifdef Q_OS_MAC
+   // on mac get executable file name from application bundle ...
+   QFileInfo fInfo (sVLCPath);
+
+   // quick 'n' dirty check for application bundle ...
+   if (fInfo.isDir() && (fInfo.suffix().toLower() == "app"))
+   {
+      QFile bundleInfo (sVLCPath + QString("/Contents/Info.plist"));
+      if (bundleInfo.open(QIODevice::ReadOnly))
+      {
+         QString infoString = bundleInfo.readAll();
+         QRegExp rx("<key>CFBundleExecutable</key>[^<]*<string>([^<]*)</string>");
+
+         // use reg. expressions instead of xml stream parser ...
+         if (rx.indexIn(infoString) > -1)
+         {
+            sVLCPath += QString("/Contents/MacOS/%1").arg(rx.cap(1));
+         }
+      }
+   }
+#endif // Q_OS_MAC
+
    m_ui->lineVLC->setText(sVLCPath);
 }
 

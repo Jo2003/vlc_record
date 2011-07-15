@@ -92,9 +92,9 @@ TRANSLATIONS = lang_de.ts \
 static {
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
-    QTPLUGIN += qico \
-        qgif \
-        qjpeg
+    QTPLUGIN += qsqlite
+    # QTPLUGIN += qico qgif qjpeg
+
 }
 
 # where the target should be stored ...

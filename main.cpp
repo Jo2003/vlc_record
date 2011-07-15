@@ -17,8 +17,9 @@
 
 #ifdef DINCLUDEPLUGS
 #include <QtPlugin>
-Q_IMPORT_PLUGIN(qgif)
-Q_IMPORT_PLUGIN(qico)
+Q_IMPORT_PLUGIN(qsqlite)
+// Q_IMPORT_PLUGIN(qgif)
+// Q_IMPORT_PLUGIN(qico)
 #endif // DINCLUDEPLUGS
 
 #ifdef Q_WS_X11
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
 {
    // bugfix for crash on exit on *nix ...
 #ifdef Q_WS_X11
-    XInitThreads();
+   XInitThreads();
 #endif
 
    int          iRV = -1;
