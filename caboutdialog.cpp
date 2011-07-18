@@ -125,10 +125,16 @@ void CAboutDialog::FillInfo(QString sExpires)
          << tr("It then will start the %1 to display (and record) the selected stream.").arg("<a href='http://www.videolan.org'>vlc media player</a>") << endl
          << QString("%1<br />").arg(tr("It supports <b>EPG and TimeShift</b>.")) << endl
          << tr("For News and Updates please visit my site at %1.").arg("<a href='http://vlc-record.coujo.de'>http://vlc-record.coujo.de</a>") << endl
+#ifndef _IS_OEM
          << "<br /> <br />" << tr("<b>vlc-record is free software!</b>") << endl
          << tr("Nevertheless ... if you like this software, please support me: ") << endl
          << "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
          << tr("Donate some $ and / or &euro; at Paypal for my work.") << "</a><br /> <br />" << endl
+#else
+         << "<br /> <br />" << tr("If you enjoy this software and would like to support its further development, please ") << endl
+         << "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
+         << tr("donate here via Paypal") << "</a>.<br /> <br />" << endl
+#endif
          << tr("Thank you,") << "<br />&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg" << endl;
 }
 

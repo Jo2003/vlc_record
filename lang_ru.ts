@@ -104,22 +104,32 @@ p, li { white-space: pre-wrap; }
         <translation>Для чтения новостей и обновлений, посетите мою Интернет-страницу %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="128"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</source>
         <translation>&lt;b&gt;vlc-record бесплатно!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="129"/>
+        <location filename="caboutdialog.cpp" line="130"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если Вам понравилась моя программа, вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="131"/>
+        <location filename="caboutdialog.cpp" line="132"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
+        <location filename="caboutdialog.cpp" line="134"/>
+        <source>If you enjoy this software and would like to support its further development, please </source>
+        <translation>Если Вам понравилась моя программа и Вы хотите поддержать меня, пожалуйста, </translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="136"/>
+        <source>donate here via Paypal</source>
+        <translation>поблагодарите через PayPal</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="138"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
@@ -656,27 +666,27 @@ p, li { white-space: pre-wrap; }
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="222"/>
+        <location filename="csettingsdlg.cpp" line="240"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="217"/>
+        <location filename="csettingsdlg.cpp" line="235"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="219"/>
+        <location filename="csettingsdlg.cpp" line="237"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="240"/>
+        <location filename="csettingsdlg.cpp" line="280"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="969"/>
+        <location filename="csettingsdlg.cpp" line="1009"/>
         <source>Reg Info</source>
         <translation></translation>
     </message>

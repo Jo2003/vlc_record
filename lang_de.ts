@@ -100,22 +100,32 @@ p, li { white-space: pre-wrap; }
         <translation>News und Updates findet Ihr auf meiner Homepage: %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="128"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</source>
         <translation>&lt;b&gt;vlc-record ist Freeware!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="129"/>
+        <location filename="caboutdialog.cpp" line="130"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Aber ... wenn Dir das Programm gefällt, unterstütze mich: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="131"/>
+        <location filename="caboutdialog.cpp" line="132"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <translation>Spende ein paar $ und / oder &amp;euro; bei PayPal für meine Arbeit.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
+        <location filename="caboutdialog.cpp" line="134"/>
+        <source>If you enjoy this software and would like to support its further development, please </source>
+        <translation>Wenn Dir diese Software gefällt und die die Weiterentwicklung unterstützden willst, bitte </translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="136"/>
+        <source>donate here via Paypal</source>
+        <translation>spende hier per PayPal</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="138"/>
         <source>Thank you,</source>
         <translation>Danke,</translation>
     </message>
@@ -644,27 +654,27 @@ p, li { white-space: pre-wrap; }
         <translation>Logge alles</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="222"/>
+        <location filename="csettingsdlg.cpp" line="240"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="217"/>
+        <location filename="csettingsdlg.cpp" line="235"/>
         <source>Executables (*.exe)</source>
         <translation>ausführbar (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="219"/>
+        <location filename="csettingsdlg.cpp" line="237"/>
         <source>Executables (*)</source>
         <translation>ausführbar (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="240"/>
+        <location filename="csettingsdlg.cpp" line="280"/>
         <source>Target Folder</source>
         <translation>Zielverzeichnis</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="969"/>
+        <location filename="csettingsdlg.cpp" line="1009"/>
         <source>Reg Info</source>
         <translation></translation>
     </message>
