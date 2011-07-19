@@ -36,6 +36,8 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last beta ---
+| - add app bundle support when getting VLCs file name
+|
 | 2011-07-10: Version x.45
 | - use new libVLC 1.1.10
 | - updated CleanShowName() to remove any forbidden filename
