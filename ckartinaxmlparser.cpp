@@ -1280,11 +1280,11 @@ int CKartinaXMLParser::checkResponse (const QString &sResp, const QString __UNUS
          iRV  = rx.cap(2).toInt();
 
 #ifdef QT_NO_DEBUG
-         sErr = tr("Error #%1: %2")
+         sErr = tr("Error #%1: %2!")
                 .arg(iRV)
                 .arg((mapError.contains(iRV)) ? mapError[iRV] : rx.cap(1));
 #else
-         sErr = tr("Error #%1 in %2():%3: %4")
+         sErr = tr("Error #%1 in %2():%3: %4!")
                 .arg(iRV)
                 .arg(sFunction)
                 .arg(iLine)
@@ -1390,8 +1390,8 @@ int CKartinaXMLParser::oneLevelParser(const QString &sEndElement, const QStringL
 int CKartinaXMLParser::fillErrorMap()
 {
    mapError.clear();
-   mapError.insert( 0, tr("Unknown Error"));
-   mapError.insert( 1, tr("Uncorrect Request"));
+   mapError.insert( 0, tr("Unknown error"));
+   mapError.insert( 1, tr("Incorrect request"));
    mapError.insert( 2, tr("Wrong login or password"));
    mapError.insert( 3, tr("Access denied"));
    mapError.insert( 4, tr("Login incorrect"));
@@ -1399,25 +1399,25 @@ int CKartinaXMLParser::fillErrorMap()
    mapError.insert( 6, tr("Your contract is paused"));
    mapError.insert( 7, tr("Channel not found or not allowed"));
    mapError.insert( 8, tr("Error in request: Bad parameters"));
-   mapError.insert( 9, tr("Need DAY parameter <DDMMYY>"));
-   mapError.insert(10, tr("Need Channel ID"));
+   mapError.insert( 9, tr("Missing parameter (day) in format <DDMMYY>"));
+   mapError.insert(10, tr("Missing parameter (cid)"));
    mapError.insert(11, tr("Another client with your data logged in"));
-   mapError.insert(12, tr("Authentication Error"));
+   mapError.insert(12, tr("Authentication error"));
    mapError.insert(13, tr("Your package expired"));
    mapError.insert(14, tr("Unknown API function"));
    mapError.insert(15, tr("Archive not available"));
-   mapError.insert(16, tr("Need location to set"));
-   mapError.insert(17, tr("Need name of settings variable"));
+   mapError.insert(16, tr("Missing parameter (place)"));
+   mapError.insert(17, tr("Missing parameter (name)"));
    mapError.insert(18, tr("Incorrect confirmation code"));
    mapError.insert(19, tr("Current code is wrong"));
    mapError.insert(20, tr("New code is wrong"));
-   mapError.insert(21, tr("Missing Parameter (val)"));
+   mapError.insert(21, tr("Missing parameter (val)"));
    mapError.insert(22, tr("Value not allowed"));
-   mapError.insert(23, tr("Missing Parameter"));
-   mapError.insert(24, tr("Missing Parameter (id)"));
-   mapError.insert(25, tr("Missing Parameter (fileid)"));
-   mapError.insert(26, tr("Missing Parameter (type)"));
-   mapError.insert(27, tr("Missing Parameter (query)"));
+   mapError.insert(23, tr("Missing parameter"));
+   mapError.insert(24, tr("Missing parameter (id)"));
+   mapError.insert(25, tr("Missing parameter (fileid)"));
+   mapError.insert(26, tr("Missing parameter (type)"));
+   mapError.insert(27, tr("Missing parameter (query)"));
    mapError.insert(29, tr("Bitrate not available"));
    mapError.insert(30, tr("Service not available"));
    mapError.insert(31, tr("Query limit exceeded"));
