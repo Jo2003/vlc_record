@@ -148,7 +148,8 @@ SectionEnd
 
 ;-------------------------------------------------------
 ; desktop shortcut ...
-Section /o "Desktop Shortcut" SecDesktop
+;Section /o "Desktop Shortcut" SecDesktop
+Section "Desktop Shortcut" SecDesktop
 	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\vlc-record.exe"
 SectionEnd
 
