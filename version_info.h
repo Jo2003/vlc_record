@@ -37,6 +37,9 @@
 /************************* History ***************************\
 | --- new since last beta ---
 | - add app bundle support when getting VLCs file name
+| - own translation of error codes sent by kartina.tv
+| - more common error message box
+| - default player modules 1_vlc-player.mod and 5_libvlc.mod
 |
 | 2011-07-10: Version x.45
 | - use new libVLC 1.1.10
