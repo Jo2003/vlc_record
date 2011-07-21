@@ -139,7 +139,6 @@ protected:
     void StartStreamDownload (const QString &sURL, const QString &sName, const QString &sFileExt = "ts");
     void TouchPlayCtrlBtns (bool bEnable = true);
     void SetProgress (const uint &start, const uint &end);
-    void changeEvent(QEvent *e);
     void TouchEpgNavi (bool bCreate);
     QString CleanShowName (const QString &str);
     void CreateSystray ();
@@ -159,6 +158,7 @@ protected:
     int     getCurrentCid();
     void retranslateShortcutTable();
 
+    virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
     virtual void closeEvent (QCloseEvent *event);

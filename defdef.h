@@ -28,6 +28,12 @@
    #define DATA_DIR       "." APP_NAME
 #endif
 
+#ifdef __GNUC__
+   #define __UNUSED        __attribute__ ((unused))
+#else
+   #define __UNUSED
+#endif
+
 #define APP_INI_FILE      "vlc-rcd.ini"
 #define APP_LOG_FILE      "vlc-record.log"
 #define PLAYER_LOG_FILE   "player.log"

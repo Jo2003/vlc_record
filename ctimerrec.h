@@ -100,7 +100,7 @@ public:
    void ShutDown ();
 
 protected:
-   void changeEvent(QEvent *e);
+   virtual void changeEvent(QEvent *e);
    int  SanityCheck (const QDateTime &start, const QDateTime &end, uint uiUpdId = INVALID_ID);
    void GmtToTimeShift (uint &when, int iEntryTimeShift);
    void TimeShiftToGmt (uint &when, int iEntryTimeShift);

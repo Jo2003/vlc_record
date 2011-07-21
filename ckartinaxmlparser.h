@@ -112,9 +112,8 @@ public:
    int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList);
    int parseUrl (const QString& sResp, QString& sUrl);
    int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
-
-   // will be replaced if API is ready ...
    int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
+   int fillErrorMap();
 
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);
@@ -131,6 +130,7 @@ private:
    int iOffset;
    QString sErr, sCleanResp;
    QXmlStreamReader xmlSr;
+   QMap<int, QString> mapError;
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

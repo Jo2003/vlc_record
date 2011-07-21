@@ -42,7 +42,7 @@ public:
     void ConnectSettings (CSettingsDlg *pSet);
 
 protected:
-    void changeEvent(QEvent *e);
+    virtual void changeEvent(QEvent *e);
     void FillInfo (QString sExpires);
 
 private:

@@ -319,6 +319,9 @@ void Recorder::changeEvent(QEvent *e)
 
       // translate shortcut table ...
       retranslateShortcutTable();
+
+      // translate error strings ...
+      XMLParser.fillErrorMap();
       break;
 
    default:

@@ -117,7 +117,21 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 
    m_ui->cbxLogLevel->setCurrentIndex((int)pDb->intValue("LogLevel"));
 
-   iIdx = m_ui->cbxPlayerMod->findText(pDb->stringValue("PlayerModule"));
+   if ((s = pDb->stringValue("PlayerModule")) == "")
+   {
+      // no player module chossen yet ...
+
+#ifdef INCLUDE_LIBVLC
+      // default module in version 2.xx is 5_libvlc.mod
+      s = "5_libvlc.mod";
+#else
+      // default module in version 1.xx is 1_vlc-player.mod
+      s = "1_vlc-player.mod";
+#endif
+
+   }
+
+   iIdx = m_ui->cbxPlayerMod->findText(s);
    m_ui->cbxPlayerMod->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 }
 

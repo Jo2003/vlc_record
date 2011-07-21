@@ -1254,7 +1254,7 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
 |
 |  Returns: error string
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::checkResponse (const QString &sResp, const QString &sFunction, int iLine)
+int CKartinaXMLParser::checkResponse (const QString &sResp, const QString __UNUSED &sFunction, int __UNUSED iLine)
 {
    int iRV = 0;
 
@@ -1278,11 +1278,18 @@ int CKartinaXMLParser::checkResponse (const QString &sResp, const QString &sFunc
       if (rx.indexIn(sCleanResp) > -1)
       {
          iRV  = rx.cap(2).toInt();
+
+#ifdef QT_NO_DEBUG
+         sErr = tr("Error #%1: %2")
+                .arg(iRV)
+                .arg((mapError.contains(iRV)) ? mapError[iRV] : rx.cap(1));
+#else
          sErr = tr("Error #%1 in %2():%3: %4")
                 .arg(iRV)
                 .arg(sFunction)
                 .arg(iLine)
-                .arg(rx.cap(1));
+                .arg((mapError.contains(iRV)) ? mapError[iRV] : rx.cap(1));
+#endif // QT_NO_DEBUG
 
          QMessageBox::critical(NULL, tr("Error"), sErr);
          mErr(QString("\n --> %1").arg(sErr));
@@ -1366,6 +1373,54 @@ int CKartinaXMLParser::oneLevelParser(const QString &sEndElement, const QStringL
          }
       }
    }
+
+   return 0;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: fillErrorMap
+|  Begin: 21.07.2011 / 12:30
+|  Author: Jo2003
+|  Description: fill error translation map
+|
+|  Parameters: --
+|
+|  Returns: 0
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::fillErrorMap()
+{
+   mapError.clear();
+   mapError.insert( 0, tr("Unknown Error"));
+   mapError.insert( 1, tr("Uncorrect Request"));
+   mapError.insert( 2, tr("Wrong login or password"));
+   mapError.insert( 3, tr("Access denied"));
+   mapError.insert( 4, tr("Login incorrect"));
+   mapError.insert( 5, tr("Your contract is inactive"));
+   mapError.insert( 6, tr("Your contract is paused"));
+   mapError.insert( 7, tr("Channel not found or not allowed"));
+   mapError.insert( 8, tr("Error in request: Bad parameters"));
+   mapError.insert( 9, tr("Need DAY parameter <DDMMYY>"));
+   mapError.insert(10, tr("Need Channel ID"));
+   mapError.insert(11, tr("Another client with your data logged in"));
+   mapError.insert(12, tr("Authentication Error"));
+   mapError.insert(13, tr("Your package expired"));
+   mapError.insert(14, tr("Unknown API function"));
+   mapError.insert(15, tr("Archive not available"));
+   mapError.insert(16, tr("Need location to set"));
+   mapError.insert(17, tr("Need name of settings variable"));
+   mapError.insert(18, tr("Incorrect confirmation code"));
+   mapError.insert(19, tr("Current code is wrong"));
+   mapError.insert(20, tr("New code is wrong"));
+   mapError.insert(21, tr("Missing Parameter (val)"));
+   mapError.insert(22, tr("Value not allowed"));
+   mapError.insert(23, tr("Missing Parameter"));
+   mapError.insert(24, tr("Missing Parameter (id)"));
+   mapError.insert(25, tr("Missing Parameter (fileid)"));
+   mapError.insert(26, tr("Missing Parameter (type)"));
+   mapError.insert(27, tr("Missing Parameter (query)"));
+   mapError.insert(29, tr("Bitrate not available"));
+   mapError.insert(30, tr("Service not available"));
+   mapError.insert(31, tr("Query limit exceeded"));
 
    return 0;
 }
