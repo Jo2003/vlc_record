@@ -22,6 +22,7 @@ PRE_TARGETDEPS += compiler_createts_make_all
 # create qm files from ts files.
 updateqm.input = TRANSLATIONS
 updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
+updateqm.clean = *.qm
 updateqm.commands = @$$QMAKE_LRELEASE -compress -silent ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
 updateqm.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += updateqm

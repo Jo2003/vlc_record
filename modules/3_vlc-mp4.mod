@@ -23,6 +23,7 @@
 # {[%CACHE%]}  - the cache value to use                                        #
 # {[%MUX%]}    - format the output stream should be muxed to                   #
 # {[%DST%]}    - the file the output stream should be saved to                 #
+# {[%TMP%]}    - the folder for timeshift data                                 #
 ################################################################################
 
 ###########################################
@@ -45,8 +46,8 @@ FORCE_MUX    = <<mp4>>
 ;-------------------------------------------------------------------------------
 ; complete command line vlc start with ...
 ;-------------------------------------------------------------------------------
-LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
+LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
 LIVE_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
 ARCH_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
 LIVE_SIL_REC = <<"{[%PLAYER%]}" -I dummy {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}">>

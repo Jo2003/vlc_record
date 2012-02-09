@@ -23,6 +23,7 @@
 # {[%CACHE%]}  - the cache value to use                                        #
 # {[%MUX%]}    - format the output stream should be muxed to                   #
 # {[%DST%]}    - the file the output stream should be saved to                 #
+# {[%TMP%]}    - the folder for timeshift data                                 #
 ################################################################################
 
 ################################################################################
@@ -56,8 +57,8 @@ DOWN_FIRST   = <<yes>>
 ; In a short: Separate command line arguments with ";;" if the mod file is
 ; for use with libvlc!
 ;-------------------------------------------------------------------------------
-LIVE_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:run-time=36000;;:http-caching={[%CACHE%]}>>
+LIVE_PLAY    = <<{[%URL%]};;:input-timeshift-path='{[%TMP%]}';;:input-timeshift-granularity=4096;;:no-http-reconnect;;:http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<{[%URL%]};;:input-timeshift-path='{[%TMP%]}';;:input-timeshift-granularity=4096;;:no-http-reconnect;;:run-time=36000;;:http-caching={[%CACHE%]}>>
 LIVE_REC     = <<{[%DST%]}.{[%MUX%]};;:file-caching=0>>
 ARCH_REC     = <<>>
 LIVE_SIL_REC = <<>>

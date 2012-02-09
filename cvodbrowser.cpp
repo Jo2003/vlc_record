@@ -72,7 +72,8 @@ void CVodBrowser::setSettings(CSettingsDlg *pDlg)
 |  Returns:  --
 \----------------------------------------------------------------- */
 void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
-                                 const QString &sGenre, bool bSaveList)
+                                 const QString &sGenre,
+                                 bool bSaveList)
 {
    int i, j, iCount = vList.count();
 
@@ -81,7 +82,7 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
       vVideos = vList;
    }
 
-   QString sTab, sRows, sCol;
+   QString sTab, sRows, sCol, sVidTitle;
    QString sContent = HTML_SITE;
    QFileInfo info;
    sContent.replace(TMPL_TITLE, tr("VOD"));
@@ -114,13 +115,19 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
                                          .arg(vList[j].sName).arg(vList[j].sCountry)
                                          .arg(vList[j].sYear));
 
+         // add title below image ...
+         sVidTitle = TMPL_VIDEO_TITLE;
+         sVidTitle.replace(TMPL_TITLE, vList[j].sName);
+
          // insert into row template ...
-         sRows.replace((j == i) ? TMPL_VOD_L : TMPL_VOD_R, sCol);
+         sRows.replace((j == i) ? TMPL_VOD_L   : TMPL_VOD_R,   sCol);
+         sRows.replace((j == i) ? TMPL_TITLE_L : TMPL_TITLE_R, sVidTitle);
       }
 
       if (j == (iCount - 1))
       {
-         sRows.replace(TMPL_VOD_R, "&nbsp;");
+         sRows.replace(TMPL_VOD_R,   "&nbsp;");
+         sRows.replace(TMPL_TITLE_R, "&nbsp;");
       }
    }
 
@@ -146,6 +153,9 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    QString   sDoc = HTML_SITE;
    QString   sCss = TMPL_CSS_WRAPPER;
    QString   sLinks;
+   QString   sLinkTab;
+   QString   sTitle;
+   QString   sFormat;
    QFileInfo info(sInfo.sImg);
 
    // add css stuff ...
@@ -182,40 +192,59 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    sDoc.replace(TMPL_ACTORS, tr("With: %1")
                 .arg(sInfo.sActors));
 
+   // insert genres ...
+   sDoc.replace(TMPL_GENRE, tr("Genre: %1")
+                .arg(sInfo.sGenres));
+
    // insert description ...
    sDoc.replace(TMPL_PROG, sInfo.sDescr);
 
+   // for the short info we can end here ...
+   sShortContent = sDoc;
+   sShortContent.replace(TMPL_LINK, "");
+
+   sLinks = TMPL_VIDEO_LINKS;
+
    // back link ...
-   sDoc.replace(TMPL_END, tr("Back"));
+   sLinks.replace(TMPL_END, tr("Back"));
+
+   sLinkTab = "<table>\n";
 
    // links ...
    for (int i = 0; i < sInfo.vVodFiles.count(); i ++)
    {
-      sLinks += QString("<br>\n<b>%1 %2:</b>&nbsp;&nbsp;").arg(tr("Part")).arg(i + 1);
+      sLinkTab += "<tr>\n";
+      sTitle  = (sInfo.vVodFiles[i].sTitle == "") ? tr("Part %1").arg(i + 1) : sInfo.vVodFiles[i].sTitle;
+      sFormat = TMPL_CODEC;
+      sFormat.replace(TMPL_TITLE, QString("(%1; %2)").arg(sInfo.vVodFiles[i].sFormat).arg(sInfo.vVodFiles[i].sCodec));
+
+      sLinkTab += QString("<td style='padding: 3px;'><b>%1</b></td>\n").arg(sTitle);
+      sLinkTab += QString("<td style='padding: 3px;'>%1</td>\n").arg(sFormat);
 
       // play link ...
-      sLinks += TMPL_IMG_LINK;
-      sLinks.replace(TMPL_IMG, ":png/play");
-      sLinks.replace(TMPL_LINK, QString("videothek?action=play&vid=%1")
-                     .arg(sInfo.vVodFiles[i]));
+      sLinkTab += "<td style='padding: 3px;'>\n";
+      sLinkTab += TMPL_IMG_LINK;
+      sLinkTab.replace(TMPL_IMG, ":png/play");
+      sLinkTab.replace(TMPL_LINK, QString("videothek?action=play&vid=%1")
+                        .arg(sInfo.vVodFiles[i].iId));
 
-      sLinks.replace(TMPL_TITLE, tr("Play Movie ..."));
+      sLinkTab.replace(TMPL_TITLE, tr("Play Movie ..."));
 
-      if (pSettings)
-      {
-         if (pSettings->regOk())
-         {
-            sLinks += "&nbsp;&nbsp;";
+      sLinkTab += "&nbsp;&nbsp;";
 
-            // record link ...
-            sLinks += TMPL_IMG_LINK;
-            sLinks.replace(TMPL_IMG, ":png/record");
-            sLinks.replace(TMPL_LINK, QString("videothek?action=record&vid=%1")
-                           .arg(sInfo.vVodFiles[i]));
-            sLinks.replace(TMPL_TITLE, tr("Record Movie ..."));
-         }
-      }
+      // record link ...
+      sLinkTab += TMPL_IMG_LINK;
+      sLinkTab.replace(TMPL_IMG, ":png/record");
+      sLinkTab.replace(TMPL_LINK, QString("videothek?action=record&vid=%1")
+                        .arg(sInfo.vVodFiles[i].iId));
+      sLinkTab.replace(TMPL_TITLE, tr("Record Movie ..."));
+
+      sLinkTab += "\n</td>\n</tr>\n";
    }
+
+   sLinkTab += "</table>\n";
+
+   sLinks.replace(TMPL_LINK, sLinkTab);
 
    sDoc.replace(TMPL_LINK, sLinks);
 
@@ -235,58 +264,6 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 const QString& CVodBrowser::getName()
 {
    return sName;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: findVideos
-|  Begin: 23.12.2010 / 8:30
-|  Author: Jo2003
-|  Description: find videos matching search criteria
-|
-|  Parameters: search string, search area
-|
-|  Returns:  --
-\----------------------------------------------------------------- */
-void CVodBrowser::findVideos(const QString &str, vodbrowser::eSearchArea eArea)
-{
-   QVector<cparser::SVodVideo>::const_iterator cit;
-   QVector<cparser::SVodVideo> tmpList;
-   QRegExp rx (str.toUpper());
-
-   for (cit = vVideos.constBegin(); cit != vVideos.constEnd(); cit ++)
-   {
-      // search in title ...
-      if ((eArea == vodbrowser::IN_TITLE) || (eArea == vodbrowser::IN_EVERYWHERE))
-      {
-         if (rx.indexIn((*cit).sName.toUpper()) > -1)
-         {
-            tmpList.push_back(*cit);
-            continue;
-         }
-      }
-
-      // search in description ...
-      if ((eArea == vodbrowser::IN_DESCRIPTION) || (eArea == vodbrowser::IN_EVERYWHERE))
-      {
-         if (rx.indexIn((*cit).sDescr.toUpper()) > -1)
-         {
-            tmpList.push_back(*cit);
-            continue;
-         }
-      }
-
-      // search in year ...
-      if ((eArea == vodbrowser::IN_YEAR) || (eArea == vodbrowser::IN_EVERYWHERE))
-      {
-         if ((*cit).sYear.toUInt() == str.toUInt())
-         {
-            tmpList.push_back(*cit);
-            continue;
-         }
-      }
-   }
-
-   displayVodList(tmpList, tr("Search Results"), false);
 }
 
 /* -----------------------------------------------------------------\
@@ -338,6 +315,21 @@ void CVodBrowser::ChangeFontSize(int iSz)
    QFont vodFont = font();
    vodFont.setPointSize(vodFont.pointSize() + iSz);
    setFont(vodFont);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getShortContent
+|  Begin: 22.09.2011
+|  Author: Jo2003
+|  Description: get short content html code
+|
+|  Parameters: --
+|
+|  Returns: html code as string
+\----------------------------------------------------------------- */
+const QString& CVodBrowser::getShortContent()
+{
+   return sShortContent;
 }
 
 /************************* History ***************************\

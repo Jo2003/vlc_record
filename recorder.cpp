@@ -44,16 +44,29 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    ui->setupUi(this);
 
    // set (customized) windows title ...
-   setWindowTitle(QString("VLC-Recorder - %1").arg(COMPANY_NAME));
+   // setWindowTitle(QString("VLC-Recorder - %1").arg(COMPANY_NAME));
+   setWindowTitle(COMPANY_NAME);
 
-   ePlayState     = IncPlay::PS_WTF;
-   bLogosReady    = false;
-   pTranslator    = trans;
-   iEpgOffset     = 0;
-   iFontSzChg     = 0;
+   ePlayState     =  IncPlay::PS_WTF;
+   pTranslator    =  trans;
+   iEpgOffset     =  0;
+   iFontSzChg     =  0;
    iDwnReqId      = -1;
-   bDoInitDlg     = true;
-   bFirstConnect  = true;
+   ulStartFlags   =  0;
+
+   // init account info ...
+   accountInfo.bHasArchive = false;
+   accountInfo.bHasVOD     = false;
+   accountInfo.sExpires    = QDateTime::currentDateTime().toString(DEF_TIME_FORMAT);
+
+   // init genre info ...
+   genreInfo.iCount        = 0;
+   genreInfo.iPage         = 0;
+   genreInfo.iTotal        = 0;
+   genreInfo.sType         = "wtf";
+
+   // init VOD site backup ...
+   lastVodSite.iScrollBarVal = 0;
 
    // init favourite buttons ...
    for (int i = 0; i < MAX_NO_FAVOURITES; i++)
@@ -72,22 +85,15 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    ui->channelList->setItemDelegate(pDelegate);
    ui->channelList->setModel(pModel);
 
+   // update checker ...
+   pUpdateChecker = new QNetworkAccessManager(this);
+
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
    timeRec.setParent(this, Qt::Dialog);
    trayIcon.setParent(this);
    vlcCtrl.setParent(this);
    favContext.setParent(this, Qt::Popup);
-
-   // if main settings aren't done, start settings dialog ...
-   if ((Settings.GetPasswd()      == "")
-#ifndef INCLUDE_LIBVLC
-        || (Settings.GetVLCPath() == "")
-#endif // INCLUDE_LIBVLC
-        || (Settings.GetUser()    == ""))
-   {
-      Settings.exec();
-   }
 
    // set logo dir and host for chan logo downloader ...
    dwnLogos.setHostAndFolder(Settings.GetAPIServer(), pFolders->getLogoDir());
@@ -114,17 +120,15 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // set proxy stuff ...
    if (Settings.UseProxy())
    {
-      KartinaTv.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
-                         Settings.GetProxyUser(), Settings.GetProxyPasswd());
-
-      dwnLogos.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
-                        Settings.GetProxyUser(), Settings.GetProxyPasswd());
-
-      dwnVodPics.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+      QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
+                          Settings.GetProxyHost(), Settings.GetProxyPort(),
                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
-      streamLoader.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
-                            Settings.GetProxyUser(), Settings.GetProxyPasswd());
+      KartinaTv.setProxy(proxy);
+      dwnLogos.setProxy(proxy);
+      dwnVodPics.setProxy(proxy);
+      streamLoader.setProxy(proxy);
+      pUpdateChecker->setProxy(proxy);
    }
 
    // configure trigger and start it ...
@@ -162,16 +166,24 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // connect vlc control with libvlc player ...
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
-   connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString, bool)), ui->player, SLOT(playMedia(QString, bool)));
+   connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString)), ui->player, SLOT(playMedia(QString)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcStop()), ui->player, SLOT(stop()));
 
    // aspect ratio, crop and full screen ...
-   connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(slotToggleFullScreen()));
+   connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(on_btnFullScreen_clicked()));
    connect (this, SIGNAL(sigToggleAspectRatio()), ui->player, SLOT(slotToggleAspectRatio()));
    connect (this, SIGNAL(sigToggleCropGeometry()), ui->player, SLOT(slotToggleCropGeometry()));
 
    // get state if libVLC player to change player state display ...
    connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
+
+   // progress bar update ...
+   connect (ui->player, SIGNAL(sigSliderPos(int,int,int)), this, SLOT(slotUpdateProgress(int,int,int)));
+
+   // short info update on archive play ...
+   connect (ui->player, SIGNAL(sigCheckArchProg(ulong)), this, SLOT(slotCheckArchProg(ulong)));
+   connect (this, SIGNAL(sigShowInfoUpdated()), ui->player, SLOT(slotShowInfoUpdated()));
+
 
 #endif /* INCLUDE_LIBVLC */
 
@@ -193,13 +205,17 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&KartinaTv,    SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
    connect (&Settings,     SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
    connect (&Settings,     SIGNAL(sigSetBitRate(int)), this, SLOT(slotSetBitrate(int)));
+   connect (&Settings,     SIGNAL(sigSetTimeShift(int)), this, SLOT(slotSetTimeShift(int)));
    connect (&KartinaTv,    SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
    connect (&KartinaTv,    SIGNAL(sigSrvForm(QString)), this, SLOT(slotServerForm(QString)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
    connect (&trayIcon,     SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
-   connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
-   connect (this,          SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
+   if (Settings.HideToSystray())
+   {
+      connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
+      connect (this,          SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
+   }
    connect (&vlcCtrl,      SIGNAL(sigVlcStarts(int)), this, SLOT(slotVlcStarts(int)));
    connect (&vlcCtrl,      SIGNAL(sigVlcEnds(int)), this, SLOT(slotVlcEnds(int)));
    connect (&timeRec,      SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
@@ -211,7 +227,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
    connect (&KartinaTv,    SIGNAL(sigGotVideoInfo(QString)), this, SLOT(slotGotVideoInfo(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotVodUrl(QString)), this, SLOT(slotVodURL(QString)));
-   connect(ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
+   connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
+   connect (pUpdateChecker, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotUpdateAnswer (QNetworkReply*)));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -221,11 +238,24 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // -------------------------------------------
    lFavourites = Settings.GetFavourites();
 
+   // last used EPG day ...
+   QString sDate;
+   if ((sDate = Settings.lastEpgDay()) != "")
+   {
+      iEpgOffset = QDate::currentDate().daysTo(QDate::fromString(sDate, "ddMMyyyy"));
+
+      // if offset exceeds our limits: reset!
+      if ((iEpgOffset < -14) || (iEpgOffset > 7))
+      {
+         iEpgOffset = 0;
+      }
+   }
+
    // enable button ...
    TouchPlayCtrlBtns(false);
 
-   // fill search area combo box ...
-   touchSearchAreaCbx();
+   // fill type combo box ...
+   touchLastOrBestCbx();
 
    // start refresh timer, if needed ...
    if (Settings.DoRefresh())
@@ -256,6 +286,11 @@ Recorder::~Recorder()
    if (pDelegate)
    {
       delete pDelegate;
+   }
+
+   if (pUpdateChecker)
+   {
+      delete pUpdateChecker;
    }
 }
 
@@ -314,8 +349,8 @@ void Recorder::changeEvent(QEvent *e)
       // translate systray tooltip ...
       CreateSystray();
 
-      // translate search are cbx ...
-      touchSearchAreaCbx();
+      // translate type cbx ...
+      touchLastOrBestCbx();
 
       // translate shortcut table ...
       retranslateShortcutTable();
@@ -368,6 +403,10 @@ void Recorder::closeEvent(QCloseEvent *event)
       // We want to close program, store all needed values ...
       // Note: putting this function in destructor doesn't work!
       savePositions();
+
+      // save channel and epg position ...
+      Settings.saveChannel(getCurrentCid());
+      Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
 
       // clear shortcuts ...
       ClearShortCuts ();
@@ -444,12 +483,12 @@ void Recorder::showEvent(QShowEvent *event)
 {
    emit sigShow();
 
-   if (bFirstConnect)
+   if (!(ulStartFlags & FLAG_CONN_CHAIN))
    {
-      bFirstConnect = false;
+      ulStartFlags |= FLAG_CONN_CHAIN;
 
-      // start authenitcate chain ...
-      Trigger.TriggerRequest(Kartina::REQ_COOKIE);
+      // start connection stuff in 0.5 seconds ...
+      QTimer::singleShot(500, this, SLOT(slotStartConnectionChain()));
    }
 
    QWidget::showEvent(event);
@@ -502,17 +541,15 @@ void Recorder::on_pushSettings_clicked()
       // set proxy ...
       if (Settings.UseProxy())
       {
-         KartinaTv.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
-                            Settings.GetProxyUser(), Settings.GetProxyPasswd());
-
-         dwnLogos.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
-                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
-
-         dwnVodPics.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
+         QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
+                             Settings.GetProxyHost(), Settings.GetProxyPort(),
                              Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
-         streamLoader.setProxy(Settings.GetProxyHost(), Settings.GetProxyPort(),
-                               Settings.GetProxyUser(), Settings.GetProxyPasswd());
+         KartinaTv.setProxy(proxy);
+         dwnLogos.setProxy(proxy);
+         dwnVodPics.setProxy(proxy);
+         streamLoader.setProxy(proxy);
+         pUpdateChecker->setProxy(proxy);
       }
 
       // set language as read ...
@@ -556,6 +593,17 @@ void Recorder::on_pushSettings_clicked()
          }
       }
    }
+
+   if (Settings.HideToSystray())
+   {
+      connect (this, SIGNAL(sigHide()), &trayIcon, SLOT(show()));
+      connect (this, SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
+   }
+   else
+   {
+      disconnect(this, SIGNAL(sigHide()));
+      disconnect(this, SIGNAL(sigShow()));
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -573,7 +621,8 @@ void Recorder::on_pushRecord_clicked()
 #ifdef INCLUDE_LIBVLC
 
    // is archive play active ...
-   if (showInfo.archive () && (showInfo.playState () == IncPlay::PS_PLAY))
+   if ((showInfo.showType() == ShowInfo::Archive)
+      && (showInfo.playState () == IncPlay::PS_PLAY))
    {
       if (AllowAction(IncPlay::PS_RECORD))
       {
@@ -608,11 +657,15 @@ void Recorder::on_pushRecord_clicked()
 
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
-            showInfo.setArchive(false);
+            showInfo.setShowType(ShowInfo::Live);
             showInfo.setShowName(chan.sProgramm);
             showInfo.setStartTime(chan.uiStart);
             showInfo.setEndTime(chan.uiEnd);
+            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
             showInfo.setPlayState(IncPlay::PS_RECORD);
+            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                   .arg("rgb(255, 254, 212)")
+                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
@@ -639,7 +692,7 @@ void Recorder::on_pushPlay_clicked()
 #ifdef INCLUDE_LIBVLC
    // play or pause functionality ...
    if ((showInfo.playState() == IncPlay::PS_PLAY)
-      && showInfo.archive())
+      && showInfo.canCtrlStream())
    {
       // we're playing ... we want pause ...
       ui->player->pause();
@@ -651,7 +704,7 @@ void Recorder::on_pushPlay_clicked()
       TouchPlayCtrlBtns(true);
    }
    else if ((showInfo.playState() == IncPlay::PS_PAUSE)
-      && showInfo.archive())
+      && showInfo.canCtrlStream())
    {
       // we're pausing ... want to play ...
       ui->player->play();
@@ -675,11 +728,15 @@ void Recorder::on_pushPlay_clicked()
 
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
-            showInfo.setArchive(false);
+            showInfo.setShowType(ShowInfo::Live);
             showInfo.setShowName(chan.sProgramm);
             showInfo.setStartTime(chan.uiStart);
             showInfo.setEndTime(chan.uiEnd);
+            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
             showInfo.setPlayState(IncPlay::PS_PLAY);
+            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                   .arg("rgb(255, 254, 212)")
+                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
@@ -722,7 +779,7 @@ void Recorder::on_cbxChannelGroup_activated(int index)
 \----------------------------------------------------------------- */
 void Recorder::on_pushAbout_clicked()
 {
-   CAboutDialog dlg(this, sExpires);
+   CAboutDialog dlg(this, accountInfo.sExpires);
    dlg.ConnectSettings(&Settings);
    dlg.exec();
 }
@@ -739,24 +796,31 @@ void Recorder::on_pushAbout_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
 {
-   int cid = qvariant_cast<int>(index.data(channellist::cidRole));
-
-   if (chanMap.contains(cid))
+   if (Settings.doubleClickToPlay())
    {
-      if (AllowAction(IncPlay::PS_PLAY))
+      int cid = qvariant_cast<int>(index.data(channellist::cidRole));
+
+      if (chanMap.contains(cid))
       {
-         cparser::SChan chan = chanMap[cid];
+         if (AllowAction(IncPlay::PS_PLAY))
+         {
+            cparser::SChan chan = chanMap[cid];
 
-         showInfo.setChanId(cid);
-         showInfo.setChanName(chan.sName);
-         showInfo.setArchive(false);
-         showInfo.setShowName(chan.sProgramm);
-         showInfo.setStartTime(chan.uiStart);
-         showInfo.setEndTime(chan.uiEnd);
-         showInfo.setPlayState(IncPlay::PS_PLAY);
+            showInfo.setChanId(cid);
+            showInfo.setChanName(chan.sName);
+            showInfo.setShowType(ShowInfo::Live);
+            showInfo.setShowName(chan.sProgramm);
+            showInfo.setStartTime(chan.uiStart);
+            showInfo.setEndTime(chan.uiEnd);
+            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+            showInfo.setPlayState(IncPlay::PS_PLAY);
+            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                   .arg("rgb(255, 254, 212)")
+                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
-         TouchPlayCtrlBtns(false);
-         Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+         }
       }
    }
 }
@@ -947,7 +1011,7 @@ void Recorder::on_pushFwd_clicked()
 #endif /* INCLUDE_LIBVLC */
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxGenre_currentIndexChanged [slot]
+|  Method: on_cbxGenre_activated [slot]
 |  Begin: 20.12.2010 / 14:18
 |  Author: Jo2003
 |  Description: vod genre changed
@@ -956,11 +1020,46 @@ void Recorder::on_pushFwd_clicked()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::on_cbxGenre_currentIndexChanged(int index)
+void Recorder::on_cbxGenre_activated(int index)
 {
-   int iGid = ui->cbxGenre->itemData(index).toInt();
+   int     iGid  = ui->cbxGenre->itemData(index).toInt();
+   QString sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   QUrl    url;
 
-   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, iGid);
+   url.addQueryItem("type", sType);
+
+   if (iGid != -1)
+   {
+      url.addQueryItem("genre", QString::number(iGid));
+   }
+
+   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_cbxLastOrBest_activated [slot]
+|  Begin: 14.09.2011 / 12:40
+|  Author: Jo2003
+|  Description: sort type
+|
+|  Parameters: new index ...
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_cbxLastOrBest_activated(int index)
+{
+   int     iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   QString sType = ui->cbxLastOrBest->itemData(index).toString();
+   QUrl    url;
+
+   url.addQueryItem("type", sType);
+
+   if (iGid != -1)
+   {
+      url.addQueryItem("genre", QString::number(iGid));
+   }
+
+   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -975,9 +1074,218 @@ void Recorder::on_cbxGenre_currentIndexChanged(int index)
 \----------------------------------------------------------------- */
 void Recorder::on_btnVodSearch_clicked()
 {
-   int iIdx = ui->cbxSearchArea->currentIndex();
-   vodbrowser::eSearchArea eArea = (vodbrowser::eSearchArea)ui->cbxSearchArea->itemData(iIdx).toUInt();
-   ui->vodBrowser->findVideos(ui->lineVodSearch->text(), eArea);
+   int     iGid;
+   QString sType;
+   QUrl    url;
+
+   if (ui->lineVodSearch->text() != "")
+   {
+      url.addQueryItem("type", "text");
+
+      // when searching show up to 100 results ...
+      url.addQueryItem("nums", QString::number(100));
+      url.addQueryItem("query", ui->lineVodSearch->text());
+
+      iGid = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+
+      if (iGid != -1)
+      {
+         url.addQueryItem("genre", QString::number(iGid));
+      }
+   }
+   else
+   {
+      // no text means normal list ...
+      iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+      sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+
+      url.addQueryItem("type", sType);
+
+      if (iGid != -1)
+      {
+         url.addQueryItem("genre", QString::number(iGid));
+      }
+   }
+
+   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_cbxSites_activated [slot]
+|  Begin: 15.09.2011 / 8:35
+|  Author: Jo2003
+|  Description: sites cbx activated
+|
+|  Parameters: new index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_cbxSites_activated(int index)
+{
+   // something changed ... ?
+   if ((index + 1) != genreInfo.iPage)
+   {
+      QUrl    url;
+      QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+      int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+
+      url.addQueryItem("type", sType);
+      url.addQueryItem("page", QString::number(index + 1));
+
+      if (iGenre != -1)
+      {
+         url.addQueryItem("genre", QString::number(iGenre));
+      }
+
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnPrevSite_clicked [slot]
+|  Begin: 15.09.2011 / 9:00
+|  Author: Jo2003
+|  Description: prev. site button pressed
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_btnPrevSite_clicked()
+{
+   QUrl    url;
+   QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   int     iPage  = ui->cbxSites->currentIndex() + 1;
+
+   url.addQueryItem("type", sType);
+   url.addQueryItem("page", QString::number(iPage - 1));
+
+   if (iGenre != -1)
+   {
+      url.addQueryItem("genre", QString::number(iGenre));
+   }
+
+   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnNextSite_clicked [slot]
+|  Begin: 15.09.2011 / 9:00
+|  Author: Jo2003
+|  Description: next site button pressed
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_btnNextSite_clicked()
+{
+   QUrl    url;
+   QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   int     iPage  = ui->cbxSites->currentIndex() + 1;
+
+   url.addQueryItem("type", sType);
+   url.addQueryItem("page", QString::number(iPage + 1));
+
+   if (iGenre != -1)
+   {
+      url.addQueryItem("genre", QString::number(iGenre));
+   }
+
+   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_pushLive_clicked [slot]
+|  Begin: 23.09.2011
+|  Author: Jo2003
+|  Description: live button pressed
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_pushLive_clicked()
+{
+   int cid = getCurrentCid();
+   if  (chanMap.contains(cid))
+   {
+      // set EPG offset to 0 ...
+      iEpgOffset = 0;
+      Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+
+      // fake play button press ...
+      if (AllowAction(IncPlay::PS_PLAY))
+      {
+         int cid  = getCurrentCid();
+
+         if (chanMap.contains(cid))
+         {
+            if (AllowAction(IncPlay::PS_PLAY))
+            {
+               cparser::SChan chan = chanMap[cid];
+
+               showInfo.setChanId(cid);
+               showInfo.setChanName(chan.sName);
+               showInfo.setShowType(ShowInfo::Live);
+               showInfo.setShowName(chan.sProgramm);
+               showInfo.setStartTime(chan.uiStart);
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setEndTime(chan.uiEnd);
+               showInfo.setPlayState(IncPlay::PS_PLAY);
+               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                      .arg("rgb(255, 254, 212)")
+                                      .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+            }
+         }
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_channelList_clicked [slot]
+|  Begin: 23.09.2011
+|  Author: Jo2003
+|  Description: on channel list was clicked once
+|
+|  Parameters: clicked model index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_channelList_clicked(QModelIndex index)
+{
+   if (!Settings.doubleClickToPlay())
+   {
+      int cid = qvariant_cast<int>(index.data(channellist::cidRole));
+
+      if (chanMap.contains(cid))
+      {
+         if (AllowAction(IncPlay::PS_PLAY))
+         {
+            cparser::SChan chan = chanMap[cid];
+
+            showInfo.setChanId(cid);
+            showInfo.setChanName(chan.sName);
+            showInfo.setShowType(ShowInfo::Live);
+            showInfo.setShowName(chan.sProgramm);
+            showInfo.setStartTime(chan.uiStart);
+            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+            showInfo.setEndTime(chan.uiEnd);
+            showInfo.setPlayState(IncPlay::PS_PLAY);
+            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                   .arg("rgb(255, 254, 212)")
+                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+         }
+      }
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -996,34 +1304,13 @@ void Recorder::on_btnVodSearch_clicked()
 \----------------------------------------------------------------- */
 void Recorder::show()
 {
-   if (bDoInitDlg)
+   if (!(ulStartFlags & FLAG_INITDIALOG))
    {
-      bDoInitDlg = false;
+      ulStartFlags |= FLAG_INITDIALOG;
       initDialog ();
    }
 
    QWidget::show();
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotTimeShiftChanged
-|  Begin: 19.01.2010 / 16:13:03
-|  Author: Jo2003
-|  Description: set new timeshift
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotTimeShiftChanged(const QString& str)
-{
-   TouchPlayCtrlBtns(false);
-
-   // set timeshift ...
-   ui->textEpg->SetTimeShift(str.toInt());
-   timeRec.SetTimeShift(str.toInt());
-
-   Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, str.toInt());
 }
 
 /* -----------------------------------------------------------------\
@@ -1160,7 +1447,7 @@ void Recorder::slotCookie (QString str)
    QString sCookie;
 
    // parse cookie ...
-   if (!XMLParser.parseCookie(str, sCookie, sExpires))
+   if (!XMLParser.parseCookie(str, sCookie, accountInfo))
    {
       KartinaTv.SetCookie(sCookie);
 
@@ -1213,33 +1500,15 @@ void Recorder::slotGotTimeShift(QString str)
 
    if (!XMLParser.parseSettings(str, vValues, iShift, sName))
    {
-      QVector<int>::const_iterator cit;
+      Settings.fillTimeShiftCbx(vValues, iShift);
 
       // set timeshift ...
       ui->textEpg->SetTimeShift(iShift);
       timeRec.SetTimeShift(iShift);
 
-      // clear timeshift cbx ...
-      ui->cbxTimeShift->clear();
-
-      // fill timeshift cbx ...
-      for (cit = vValues.constBegin(); cit != vValues.constEnd(); cit ++)
-      {
-         ui->cbxTimeShift->addItem(QString::number(*cit));
-      }
-
-      // mark active timeshift ...
-      ui->cbxTimeShift->setCurrentIndex(ui->cbxTimeShift->findText(QString::number(iShift)));
-
       // request channel list ...
       Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
-
    }
-
-   // Former there was a "on_cbxTimeShift_currentIndexChanged" slot. But because
-   // we have to change the timeshift cbx now also when changing the
-   // channel, we need the possibility to disconnect the signal from the slot!
-   connect (ui->cbxTimeShift, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotTimeShiftChanged(QString)));
 }
 
 /* -----------------------------------------------------------------\
@@ -1311,7 +1580,7 @@ void Recorder::slotChanList (QString str)
    }
 
    // only download channel logos, if they aren't there ...
-   if (!dwnLogos.IsRunning() && !bLogosReady)
+   if (!dwnLogos.IsRunning() && !(ulStartFlags & FLAG_CLOGOS_READY))
    {
       QStringList lLogos;
 
@@ -1358,7 +1627,7 @@ void Recorder::slotEPG(QString str)
    {
       ui->textEpg->DisplayEpg(epg, chanMap.value(cid).sName,
                               cid, epgTime.toTime_t(),
-                              chanMap.value(cid).bHasArchive);
+                              accountInfo.bHasArchive ? chanMap.value(cid).bHasArchive : false);
 
       // fill epg control ...
       icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
@@ -1372,9 +1641,12 @@ void Recorder::slotEPG(QString str)
       ui->channelList->setFocus(Qt::OtherFocusReason);
 
       // update vod stuff only at startup ...
-      if (ui->cbxGenre->count() == 0)
+      if (accountInfo.bHasVOD)
       {
-         Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
+         if (ui->cbxGenre->count() == 0)
+         {
+            Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
+         }
       }
    }
 }
@@ -1423,6 +1695,9 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    {
       TouchPlayCtrlBtns(false);
 
+      // get program map ...
+      archProgMap = ui->textEpg->exportProgMap();
+
       // new own downloader ...
       if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
       {
@@ -1441,9 +1716,15 @@ void Recorder::slotEpgAnchor (const QUrl &link)
       showInfo.setShowName(sepg.sShowName);
       showInfo.setStartTime(gmt.toUInt());
       showInfo.setEndTime(sepg.uiEnd);
-      showInfo.setArchive(true);
+      showInfo.setShowType(ShowInfo::Archive);
       showInfo.setPlayState(ePlayState);
       showInfo.setLastJumpTime(0);
+
+      showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                             .arg("rgb(255, 254, 212)")
+                             .arg(createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
+                                                QString("%1 %2").arg(sepg.sShowName).arg(sepg.sShowDescr),
+                                                sepg.uiStart, sepg.uiEnd))));
 
       // add additional info to LCD ...
       int     iTime = (sepg.uiEnd) ? (int)((sepg.uiEnd - sepg.uiStart) / 60) : 60;
@@ -1468,7 +1749,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 void Recorder::slotLogosReady()
 {
    // downloader sayd ... logos are there ...
-   bLogosReady = true;
+   ulStartFlags |= FLAG_CLOGOS_READY;
 }
 
 /* -----------------------------------------------------------------\
@@ -1483,7 +1764,8 @@ void Recorder::slotLogosReady()
 \----------------------------------------------------------------- */
 void Recorder::slotReloadLogos()
 {
-   bLogosReady = false;
+   // unset FLAG_CLOGOS_READY  ...
+   ulStartFlags &= ~FLAG_CLOGOS_READY;
 
    if (!dwnLogos.IsRunning())
    {
@@ -1520,8 +1802,15 @@ void Recorder::slotbtnBack_clicked()
    {
       // set actual day in previous week to munday ...
       int iActDay  = pEpgNavbar->currentIndex();
+      int iOffBack = iEpgOffset;
       iEpgOffset  -= 7 + iActDay;
-      Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+
+      correctEpgOffset();
+
+      if (iOffBack != iEpgOffset)
+      {
+         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+      }
    }
 }
 
@@ -1543,8 +1832,16 @@ void Recorder::slotbtnNext_clicked()
    {
       // set actual day in next week to munday ...
       int iActDay  = pEpgNavbar->currentIndex();
+      int iOffBack = iEpgOffset;
+
       iEpgOffset  += 7 - iActDay;
-      Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+
+      correctEpgOffset();
+
+      if (iOffBack != iEpgOffset)
+      {
+         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+      }
    }
 }
 
@@ -1568,7 +1865,7 @@ void Recorder::slotArchivURL(QString str)
       {
          if (!vlcCtrl.ownDwnld())
          {
-            StartVlcRec(sUrl, CleanShowName(showInfo.showName()), true);
+            StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
          }
          else
          {
@@ -1579,7 +1876,7 @@ void Recorder::slotArchivURL(QString str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         StartVlcPlay(sUrl, true);
+         StartVlcPlay(sUrl);
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }
@@ -1604,8 +1901,9 @@ void Recorder::slotDayTabChanged(int iIdx)
 
    if (chanMap.contains(cid))
    {
-      QDateTime epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
-      int       iDay    = epgTime.date().dayOfWeek() - 1;
+      QDateTime epgTime  = QDateTime::currentDateTime().addDays(iEpgOffset);
+      int       iDay     = epgTime.date().dayOfWeek() - 1;
+      int       iOffBack = iEpgOffset;
 
       // earlier or later ... ?
       if (iIdx < iDay)
@@ -1622,7 +1920,17 @@ void Recorder::slotDayTabChanged(int iIdx)
       // get epg for requested day ...
       if (iIdx != iDay)
       {
-         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         correctEpgOffset ();
+
+         if(iOffBack != iEpgOffset)
+         {
+            Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         }
+         else
+         {
+            // no change -> revert nav button ...
+            pEpgNavbar->setCurrentIndex(iDay);
+         }
       }
    }
 }
@@ -1655,6 +1963,27 @@ void Recorder::slotSetSServer(QString sIp)
 void Recorder::slotSetBitrate(int iRate)
 {
    Trigger.TriggerRequest(Kartina::REQ_SETBITRATE, iRate);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSetTimeShift
+|  Begin: 14.09.2011 / 10:00
+|  Author: Jo2003
+|  Description: set timeshift
+|
+|  Parameters: timeshift in hours
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotSetTimeShift(int iShift)
+{
+   TouchPlayCtrlBtns(false);
+
+   // set timeshift ...
+   ui->textEpg->SetTimeShift(iShift);
+   timeRec.SetTimeShift(iShift);
+
+   Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, iShift);
 }
 
 /* -----------------------------------------------------------------\
@@ -1708,7 +2037,7 @@ void Recorder::slotTimerRecActive (int iState)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotVlcEnds(int iState)
+void Recorder::slotVlcEnds(int iState __UNUSED)
 {
    iState = 0; // suppress warnings ...
    if (ePlayState != IncPlay::PS_STOP)
@@ -1934,7 +2263,7 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
 \----------------------------------------------------------------- */
 void Recorder::slotSplashScreen()
 {
-   CAboutDialog dlg(this, sExpires);
+   CAboutDialog dlg(this, accountInfo.sExpires);
    dlg.ConnectSettings(&Settings);
    dlg.exec();
 }
@@ -2052,8 +2381,13 @@ void Recorder::slotGotVodGenres(QString str)
       }
    }
 
-   // changing combo box will trigger all vod request ...
    ui->cbxGenre->setCurrentIndex(0);
+
+   // trigger video load ...
+   QUrl url;
+   url.addQueryItem("type", "last");
+   url.addQueryItem("nums", "10000");
+   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -2070,11 +2404,14 @@ void Recorder::slotGotVideos(QString str)
 {
    QVector<cparser::SVodVideo> vVodList;
    QVector<cparser::SVodVideo>::const_iterator cit;
+   cparser::SGenreInfo gInfo;
 
-   if (!XMLParser.parseVodList(str, vVodList))
+   if (!XMLParser.parseVodList(str, vVodList, gInfo))
    {
-      if (!dwnVodPics.IsRunning())
+      if (!(ulStartFlags & FLAG_VLOGOS_READY))
       {
+         ulStartFlags |= FLAG_VLOGOS_READY;
+
          // download pictures ...
          QStringList lPix;
 
@@ -2084,9 +2421,16 @@ void Recorder::slotGotVideos(QString str)
          }
 
          dwnVodPics.setPictureList(lPix);
-      }
 
-      ui->vodBrowser->displayVodList (vVodList, ui->cbxGenre->currentText());
+         // get normal video view ...
+         on_cbxGenre_activated(0);
+      }
+      else
+      {
+         genreInfo = gInfo;
+         touchVodNavBar(gInfo);
+         ui->vodBrowser->displayVodList (vVodList, ui->cbxGenre->currentText());
+      }
    }
 }
 
@@ -2108,16 +2452,18 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
    if (action == "vod_info")
    {
+      // buffer last used site (whole code) ...
+      lastVodSite.sContent      = ui->vodBrowser->toHtml();
+      lastVodSite.iScrollBarVal = ui->vodBrowser->verticalScrollBar()->value();
+
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
       Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id);
    }
    else if (action == "backtolist")
    {
-      id = ui->cbxGenre->currentIndex();
-
-      id = ui->cbxGenre->itemData(id).toInt();
-
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, id);
+      // restore last used site ...
+      ui->vodBrowser->setHtml(lastVodSite.sContent);
+      ui->vodBrowser->verticalScrollBar()->setValue(lastVodSite.iScrollBarVal);
    }
    else if (action == "play")
    {
@@ -2152,9 +2498,11 @@ void Recorder::slotVodAnchor(const QUrl &link)
       showInfo.setShowName(ui->vodBrowser->getName());
       showInfo.setStartTime(0);
       showInfo.setEndTime(0);
-      showInfo.setArchive(true); // enable spooling ...
+      showInfo.setShowType(ShowInfo::VOD);
       showInfo.setPlayState(ePlayState);
       showInfo.setLastJumpTime(0);
+      showInfo.setHtmlDescr(ui->vodBrowser->getShortContent());
+      showInfo.setVodId(id);
 
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
@@ -2214,7 +2562,7 @@ void Recorder::slotVodURL(QString str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         StartVlcPlay(sUrl, true);
+         StartVlcPlay(sUrl);
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }
@@ -2356,11 +2704,16 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
       cparser::SChan entry = chanMap.value(cid);
       int iTs;
 
-      ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR)
-                                .arg("rgb(255, 254, 212)")
-                                .arg(createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd)));
+      // update short info if we're in live mode
+      if ((showInfo.showType() == ShowInfo::Live)
+         && (showInfo.playState() == IncPlay::PS_STOP))
+      {
+         ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR)
+                                   .arg("rgb(255, 254, 212)")
+                                   .arg(createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd)));
 
-      SetProgress (entry.uiStart, entry.uiEnd);
+         SetProgress (entry.uiStart, entry.uiEnd);
+      }
 
       // quick'n'dirty timeshift hack ...
       if (entry.vTs.count() <= 2) // no timeshift available ...
@@ -2369,7 +2722,7 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
       }
       else
       {
-         iTs = ui->cbxTimeShift->currentText().toInt();
+         iTs = Settings.getTimeShift();
 
          if (ui->textEpg->GetTimeShift() != iTs)
          {
@@ -2426,6 +2779,141 @@ void Recorder::slotPlayPreviousChannel()
    on_pushPlay_clicked();
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotStartConnectionChain [slot]
+|  Begin: 23.09.2011
+|  Author: Jo2003
+|  Description: start the whole connection stuff
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotStartConnectionChain()
+{
+   Trigger.TriggerRequest(Kartina::REQ_COOKIE);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotUpdateProgress [slot]
+|  Begin: 28.09.2011
+|  Author: Jo2003
+|  Description: update progress bar
+|
+|  Parameters: min, max and actual value
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotUpdateProgress (int iMin, int iMax, int iAct)
+{
+   ui->progressBar->setMinimum(iMin);
+   ui->progressBar->setMaximum(iMax);
+   ui->progressBar->setValue(iAct);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotUpdateAnswer [slot]
+|  Begin: 12.10.2011
+|  Author: Jo2003
+|  Description: got update answer
+|
+|  Parameters: pointer to reply
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotUpdateAnswer (QNetworkReply* pRes)
+{
+   if (pRes->error() == QNetworkReply::NoError)
+   {
+      // got update info ...
+      QByteArray        ba = pRes->readAll();
+      cparser::SUpdInfo updInfo;
+
+      if (!XMLParser.parseUpdInfo(QString(ba), updInfo))
+      {
+         // compare version ...
+         if ((updInfo.iMinor > atoi(VERSION_MINOR))
+            && (updInfo.iMajor == atoi(VERSION_MAJOR))
+            && (updInfo.sUrl != ""))
+         {
+            QString s       = HTML_SITE;
+            QString content = tr("There is the new version %1 of %2 available.<br />Click %3 to download!")
+                  .arg(updInfo.sVersion)
+                  .arg(APP_NAME)
+                  .arg(QString("<a href='%1'>%2</a>").arg(updInfo.sUrl).arg(tr("here")));
+
+            s.replace(TMPL_CONT, content);
+
+            QMessageBox::information(this, tr("Update available"), s);
+         }
+      }
+   }
+   else
+   {
+      // only tell in log about the error ...
+      mInfo(pRes->errorString());
+   }
+
+   // schedule deletion ...
+   pRes->deleteLater();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotCheckArchProg [slot]
+|  Begin: 03.11.2011
+|  Author: Jo2003
+|  Description: check if short info below play is actual...
+|
+|  Parameters: archive timestamp
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotCheckArchProg(ulong ulArcGmt)
+{
+   // is actual showinfo still actual ?
+   if ((ulArcGmt >= showInfo.starts()) && (ulArcGmt <= showInfo.ends()))
+   {
+      // all is well ... no update needed ...
+   }
+   else
+   {
+      // search in archiv program map for matching entry ...
+      QMap<uint, epg::SShow>::const_iterator cit;
+
+      for (cit = archProgMap.constBegin(); cit != archProgMap.constEnd(); cit++)
+      {
+         if ((ulArcGmt >= (*cit).uiStart) && (ulArcGmt <= (*cit).uiEnd))
+         {
+            // found new entry ...
+
+            // update show info ...
+            showInfo.setShowName((*cit).sShowName);
+            showInfo.setStartTime((*cit).uiStart);
+            showInfo.setEndTime((*cit).uiEnd);
+            showInfo.setLastJumpTime(0);
+            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                   .arg("rgb(255, 254, 212)")
+                                   .arg(createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
+                                                      QString("%1 %2").arg((*cit).sShowName).arg((*cit).sShowDescr),
+                                                      (*cit).uiStart, (*cit).uiEnd))));
+
+            // add additional info to LCD ...
+            int     iTime = ((*cit).uiEnd) ? (int)(((*cit).uiEnd - (*cit).uiStart) / 60) : 60;
+            QString sTime = tr("Length: %1 min.").arg(iTime);
+            ui->labState->setFooter(sTime);
+            ui->labState->updateState(showInfo.playState());
+
+            // set short epg info ...
+            ui->textEpgShort->setHtml(showInfo.htmlDescr());
+
+            // done ...
+            emit sigShowInfoUpdated();
+            break;
+         }
+      }
+   }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
 ////////////////////////////////////////////////////////////////////////////////
@@ -2470,7 +2958,7 @@ void Recorder::fillShortCutTab()
 #ifdef INCLUDE_LIBVLC
       {tr("Toggle Aspect Ratio"),  ui->player, SLOT(slotToggleAspectRatio()),     "ALT+A"},
       {tr("Toggle Crop Geometry"), ui->player, SLOT(slotToggleCropGeometry()),    "ALT+C"},
-      {tr("Toggle Fullscreen"),    ui->player, SLOT(slotToggleFullScreen()),      "ALT+F"},
+      {tr("Toggle Fullscreen"),    ui->player, SLOT(on_btnFullScreen_clicked()),  "ALT+F"},
       {tr("Volume +"),             ui->player, SLOT(slotMoreLoudly()),            "+"},
       {tr("Volume -"),             ui->player, SLOT(slotMoreQuietly()),           "-"},
       {tr("Toggle Mute"),          ui->player, SLOT(slotMute()),                  "M"},
@@ -2617,6 +3105,12 @@ void Recorder::initDialog ()
    // init short cuts ...
    fillShortCutTab();
    InitShortCuts ();
+
+   // check for program updates ...
+   if (Settings.checkForUpdate())
+   {
+      pUpdateChecker->get(QNetworkRequest(QUrl(UPD_CHECK_URL)));
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -2692,12 +3186,12 @@ void Recorder::CleanContextMenu()
 \----------------------------------------------------------------- */
 void Recorder::CreateSystray()
 {
-   trayIcon.setIcon(QIcon(":/app/tv"));
-   trayIcon.setToolTip(tr("vlc-record - Click to activate!"));
+   trayIcon.setIcon(QIcon(":/app/kartina"));
+   trayIcon.setToolTip(tr("%1 - Click to activate!").arg(APP_NAME));
 }
 
 /* -----------------------------------------------------------------\
-|  Method: touchSearchAreaCbx
+|  Method: touchLastOrBestCbx
 |  Begin: 23.12.2010 / 10:30
 |  Author: Jo2003
 |  Description: create search area combo box
@@ -2706,15 +3200,13 @@ void Recorder::CreateSystray()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::touchSearchAreaCbx ()
+void Recorder::touchLastOrBestCbx ()
 {
    // fill search area combo box ...
-   ui->cbxSearchArea->clear();
-   ui->cbxSearchArea->addItem(tr("Title"), QVariant((int)vodbrowser::IN_TITLE));
-   ui->cbxSearchArea->addItem(tr("Description"), QVariant((int)vodbrowser::IN_DESCRIPTION));
-   ui->cbxSearchArea->addItem(tr("Year"), QVariant((int)vodbrowser::IN_YEAR));
-   ui->cbxSearchArea->addItem(tr("Everywhere"), QVariant((int)vodbrowser::IN_EVERYWHERE));
-   ui->cbxSearchArea->setCurrentIndex(0);
+   ui->cbxLastOrBest->clear();
+   ui->cbxLastOrBest->addItem(tr("Newest"), "last");
+   ui->cbxLastOrBest->addItem(tr("Best"), "best");
+   ui->cbxLastOrBest->setCurrentIndex(0);
 }
 
 /* -----------------------------------------------------------------\
@@ -2729,7 +3221,7 @@ void Recorder::touchSearchAreaCbx ()
 \----------------------------------------------------------------- */
 void Recorder::TouchEpgNavi (bool bCreate)
 {
-   QToolButton *pBtn;
+   QPushButton *pBtn;
 
    if (bCreate)
    {
@@ -2747,10 +3239,12 @@ void Recorder::TouchEpgNavi (bool bCreate)
       */
 
       // create back button and set style ...
-      pBtn = new QToolButton;
+      pBtn = new QPushButton;
       pBtn->setIcon(QIcon(":png/back"));
-      pBtn->setAutoRaise(true);
+      pBtn->setFlat(true);
+      pBtn->setAutoDefault(false);
       pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+      pBtn->setMaximumWidth(EPG_NAVBAR_HEIGHT);
       pBtn->setToolTip(tr("1 week backward"));
 
       // connect signal with slot ...
@@ -2779,10 +3273,12 @@ void Recorder::TouchEpgNavi (bool bCreate)
       ui->hLayoutEpgNavi->addStretch();
 
       // create next button and set style ...
-      pBtn = new QToolButton;
+      pBtn = new QPushButton;
       pBtn->setIcon(QIcon(":png/next"));
-      pBtn->setAutoRaise(true);
+      pBtn->setFlat(true);
+      pBtn->setAutoDefault(false);
       pBtn->setMaximumHeight(EPG_NAVBAR_HEIGHT);
+      pBtn->setMaximumWidth(EPG_NAVBAR_HEIGHT);
       pBtn->setToolTip(tr("1 week forward"));
 
       // connect signal with slot ...
@@ -2825,13 +3321,62 @@ void Recorder::TouchEpgNavi (bool bCreate)
       int iIdx;
       // back button ...
       iIdx = 0;
-      pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+      pBtn = (QPushButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
       pBtn->setToolTip(tr("1 week backward"));
 
       // next button ...
       iIdx = ui->hLayoutEpgNavi->count() - 1;
-      pBtn = (QToolButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
+      pBtn = (QPushButton *)ui->hLayoutEpgNavi->itemAt(iIdx)->widget();
       pBtn->setToolTip(tr("1 week forward"));
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: touchVodNavBar
+|  Begin: 15.09.2011 / 8:25
+|  Author: Jo2003
+|  Description: update Vod navbar
+|
+|  Parameters: ref. to genre info structure
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::touchVodNavBar(const cparser::SGenreInfo &gInfo)
+{
+   // delete sites ...
+   ui->cbxSites->clear();
+
+   // (de-)activate prev button ...
+   if (gInfo.iPage == 1)
+   {
+      ui->btnPrevSite->setDisabled(true);
+   }
+   else
+   {
+      ui->btnPrevSite->setEnabled(true);
+   }
+
+   int iSites = gInfo.iTotal / VIDEOS_PER_SITE;
+
+   if (gInfo.iTotal % VIDEOS_PER_SITE)
+   {
+      iSites ++;
+   }
+
+   for (int i = 1; i <= iSites; i++)
+   {
+      ui->cbxSites->addItem(QString::number(i));
+   }
+
+   ui->cbxSites->setCurrentIndex(gInfo.iPage - 1);
+
+   if (iSites == gInfo.iPage)
+   {
+      ui->btnNextSite->setDisabled(true);
+   }
+   else
+   {
+      ui->btnNextSite->setEnabled(true);
    }
 }
 
@@ -2891,36 +3436,6 @@ void Recorder::ClearShortCuts()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: WantToClose
-|  Begin: 01.02.2010 / 15:05:00
-|  Author: Jo2003
-|  Description: ask if we want to clse vlc-record
-|
-|  Parameters: --
-|
-|  Returns: true --> close
-|          false --> don't close
-\----------------------------------------------------------------- */
-bool Recorder::WantToClose()
-{
-   QString sText = HTML_SITE;
-   sText.replace(TMPL_CONT, tr("VLC is still running.<br />"
-                               "<b>Closing VLC record will also close the started VLC-Player.</b>"
-                               "<br /> <br />"
-                               "Do you really want to close VLC Record now?"));
-
-   if (QMessageBox::question(this, tr("Question"), sText,
-                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
-   {
-      return true;
-   }
-   else
-   {
-      return false;
-   }
-}
-
-/* -----------------------------------------------------------------\
 |  Method: FillChanMap
 |  Begin: 26.02.2010 / 09:20:24
 |  Author: Jo2003
@@ -2964,7 +3479,8 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    int      iRow, iRowGroup;
    QPixmap  Pix(16, 16);
    QPixmap  icon;
-   int      iChanCount = 0;
+   int      iChanCount =  0;
+   int      iLastChan  = -1;
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
    iRow      = ui->channelList->currentIndex().row();
@@ -2973,6 +3489,13 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 
    ui->cbxChannelGroup->clear();
    pModel->clear();
+
+   // any channel stored from former session ... ?
+   if (!(ulStartFlags & FLAG_CHAN_LIST))
+   {
+      iLastChan     = Settings.lastChannel() ? Settings.lastChannel() : -1;
+      ulStartFlags |= FLAG_CHAN_LIST;
+   }
 
    for (int i = 0; i < chanlist.size(); i++)
    {
@@ -3013,6 +3536,16 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             }
          }
 
+         // last used channel ...
+         if (iLastChan != -1)
+         {
+            if (iLastChan == chanlist[i].iId)
+            {
+               // save row with last used channel ...
+               iRow = i;
+            }
+         }
+
          pItem->setData(chanlist[i].iId, channellist::cidRole);
          pItem->setData(sLine, channellist::nameRole);
          pItem->setData(QIcon(icon), channellist::iconRole);
@@ -3033,9 +3566,9 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
       pModel->appendRow(pItem);
    }
 
+   ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
    ui->channelList->setCurrentIndex(pModel->index(iRow, 0));
    ui->channelList->scrollTo(pModel->index(iRow, 0));
-   ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
 
    return 0;
 }
@@ -3050,7 +3583,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bArchiv)
+int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel)
 {
    int         iRV      = -1;
    Q_PID       vlcpid   = 0;
@@ -3102,18 +3635,18 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 
    if (fileName != "")
    {
-      if (bArchiv)
+      if (showInfo.showType() == ShowInfo::Live)
       {
-         // archiv using RTSP ...
-         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_ARCH,
+         // normal stream using HTTP ...
+         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE,
                                          Settings.GetVLCPath(),
                                          sURL, Settings.GetBufferTime(),
                                          fileName, sExt);
       }
       else
       {
-         // normal stream using HTTP ...
-         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE,
+         // archiv using HTTP ...
+         sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_ARCH,
                                          Settings.GetVLCPath(),
                                          sURL, Settings.GetBufferTime(),
                                          fileName, sExt);
@@ -3122,7 +3655,8 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
       // start player if we have a command line ...
       if (sCmdLine != "")
       {
-         vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState, bArchiv);
+         ui->textEpgShort->setHtml(showInfo.htmlDescr());
+         vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
       }
 
       // successfully started ?
@@ -3153,23 +3687,23 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel, bool bA
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
+int Recorder::StartVlcPlay (const QString &sURL)
 {
    int         iRV      = 0;
    Q_PID       vlcpid   = 0;
    QString     sCmdLine;
 
-   if (bArchiv)
+   if (showInfo.showType() == ShowInfo::Live)
    {
-      // archiv using RTSP ...
-      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_ARCH,
+      // normal stream using HTTP ...
+      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_LIVE,
                                       Settings.GetVLCPath(), sURL,
                                       Settings.GetBufferTime());
    }
    else
    {
-      // normal stream using HTTP ...
-      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_LIVE,
+      // archiv using HTTP ...
+      sCmdLine = vlcCtrl.CreateClArgs(vlcctrl::VLC_PLAY_ARCH,
                                       Settings.GetVLCPath(), sURL,
                                       Settings.GetBufferTime());
    }
@@ -3177,7 +3711,8 @@ int Recorder::StartVlcPlay (const QString &sURL, bool bArchiv)
    // start player if we have a command line ...
    if (sCmdLine != "")
    {
-      vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState, bArchiv);
+      ui->textEpgShort->setHtml(showInfo.htmlDescr());
+      vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
    }
 
    // successfully started ?
@@ -3240,6 +3775,8 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
 
    if (fileName != "")
    {
+      ui->textEpgShort->setHtml(showInfo.htmlDescr());
+
       streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sExt),
                                    Settings.GetBufferTime ());
    }
@@ -3260,28 +3797,20 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
 #ifdef INCLUDE_LIBVLC
    if (vlcCtrl.withLibVLC())
    {
-      if (bEnable && (showInfo.playState() == IncPlay::PS_PLAY)
-         && showInfo.archive())
+      if ((showInfo.playState() == IncPlay::PS_PLAY)
+         && showInfo.canCtrlStream()
+         && bEnable)
       {
          ui->pushBwd->setEnabled(true);
          ui->pushFwd->setEnabled(true);
          ui->cbxTimeJumpVal->setEnabled(true);
+         ui->pushPlay->setIcon(QIcon(":/app/pause"));
       }
       else
       {
          ui->pushBwd->setEnabled(false);
          ui->pushFwd->setEnabled(false);
          ui->cbxTimeJumpVal->setEnabled(false);
-      }
-
-      if (bEnable && (showInfo.playState() == IncPlay::PS_PLAY)
-         && showInfo.archive()
-         && bEnable)
-      {
-         ui->pushPlay->setIcon(QIcon(":/app/pause"));
-      }
-      else
-      {
          ui->pushPlay->setIcon(QIcon(":/app/play"));
       }
    }
@@ -3296,31 +3825,31 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
    switch (ePlayState)
    {
    case IncPlay::PS_PLAY:
-      ui->cbxTimeShift->setEnabled(bEnable);
       ui->pushPlay->setEnabled(bEnable);
       ui->pushRecord->setEnabled(bEnable);
       ui->pushStop->setEnabled(bEnable);
+      ui->pushLive->setEnabled(bEnable);
       break;
 
    case IncPlay::PS_RECORD:
-      ui->cbxTimeShift->setEnabled(false);
       ui->pushPlay->setEnabled(false);
       ui->pushRecord->setEnabled(bEnable);
       ui->pushStop->setEnabled(bEnable);
+      ui->pushLive->setEnabled(false);
       break;
 
    case IncPlay::PS_TIMER_RECORD:
    case IncPlay::PS_TIMER_STBY:
-      ui->cbxTimeShift->setEnabled(false);
       ui->pushPlay->setEnabled(false);
       ui->pushRecord->setEnabled(false);
+      ui->pushLive->setEnabled(false);
       ui->pushStop->setEnabled(bEnable);
       break;
 
    default:
-      ui->cbxTimeShift->setEnabled(bEnable);
       ui->pushPlay->setEnabled(bEnable);
       ui->pushRecord->setEnabled(bEnable);
+      ui->pushLive->setEnabled(bEnable);
       ui->pushStop->setEnabled(false);
       break;
    }
@@ -3355,6 +3884,8 @@ void Recorder::SetProgress (const uint &start, const uint &end)
       }
    }
 
+   ui->progressBar->setMinimum(0);
+   ui->progressBar->setMaximum(100);
    ui->progressBar->setValue(iPercent);
 }
 
@@ -3665,10 +4196,12 @@ QString Recorder::createTooltip (const QString & name, const QString & prog, uin
    sToolTip.replace(TMPL_PROG, tr("Program:"));
    sToolTip.replace(TMPL_START, tr("Start:"));
    sToolTip.replace(TMPL_END, tr("End:"));
+   sToolTip.replace(TMPL_TIME, tr("Length:"));
 
    sToolTip = sToolTip.arg(name).arg(prog)
                .arg(QDateTime::fromTime_t(start).toString(DEF_TIME_FORMAT))
-               .arg(QDateTime::fromTime_t(end).toString(DEF_TIME_FORMAT));
+               .arg(end ? QDateTime::fromTime_t(end).toString(DEF_TIME_FORMAT) : "")
+               .arg(end ? tr("%1 min.").arg((end - start) / 60)                : "");
 
    return sToolTip;
 }
@@ -3732,6 +4265,30 @@ void Recorder::retranslateShortcutTable()
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: correctEpgOffset
+|  Begin: 23.09.2011
+|  Author: Jo2003
+|  Description: check / correct epg offset
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::correctEpgOffset()
+{
+   if (iEpgOffset > 7)
+   {
+      iEpgOffset = 7;
+   }
+   else if (iEpgOffset < -14)
+   {
+      iEpgOffset = -14;
+   }
+}
+
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+

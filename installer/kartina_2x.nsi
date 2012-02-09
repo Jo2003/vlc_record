@@ -20,31 +20,43 @@
   OutFile "${PACKAGES}\${APPNAME}-${STR_VERSION}-win-x86-setup.exe"
 
   ;Default installation folder
-  InstallDir "$PROGRAMFILES\${APPNAME}"
+  InstallDir "$LOCALAPPDATA\${APPNAME}"
   
   ;Get installation folder from registry if available
   InstallDirRegKey HKCU "Software\${APPNAME}" ""
 
   ;Request application privileges for Windows Vista
-  RequestExecutionLevel admin
+  RequestExecutionLevel user
 
   SetCompressor /FINAL /SOLID lzma
 
 ;-------------------------------------------------------
 ; Interface Settings
   !define MUI_HEADERIMAGE
-  !define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\nsis.bmp" ; optional
+  !define MUI_HEADERIMAGE_BITMAP "install_logo.bmp"
+  !define MUI_ICON "..\resources\kartina_tv.ico"
   !define MUI_ABORTWARNING
+  
+  ;Show all languages, despite user's codepage
+  !define MUI_LANGDLL_ALLLANGUAGES
+  
+;--------------------------------
+;Language Selection Dialog Settings
+
+  ;Remember the installer language
+  !define MUI_LANGDLL_REGISTRY_ROOT "HKCU" 
+  !define MUI_LANGDLL_REGISTRY_KEY "Software\${APPNAME}" 
+  !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
 
 ;-------------------------------------------------------
 ; what to run when finished ... ?
-  !define MUI_FINISHPAGE_RUN "$INSTDIR\vlc-record.exe"
-
+  !define MUI_FINISHPAGE_RUN "$INSTDIR\kartina_tv.exe"
+  
 ;-------------------------------------------------------
 ; Pages
-  !insertmacro MUI_PAGE_WELCOME
-  !insertmacro MUI_PAGE_LICENSE "gpl-3.0.txt"
-  !insertmacro MUI_PAGE_COMPONENTS
+;  !insertmacro MUI_PAGE_WELCOME
+;  !insertmacro MUI_PAGE_LICENSE "gpl-3.0.txt"
+;  !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH
@@ -54,17 +66,18 @@
   
 ;-------------------------------------------------------
 ; Languages
- 
+  !insertmacro MUI_LANGUAGE "Russian" ;first language is the default language
+  !insertmacro MUI_LANGUAGE "German"
   !insertmacro MUI_LANGUAGE "English"
   !insertmacro MUI_RESERVEFILE_LANGDLL
-
+  
 ;-------------------------------------------------------
 ; Installer Sections for vlc-record
 Section "VLC-Record" SecInst
   SectionIn RO
   SetOutPath "$INSTDIR"
-  File "${SRCDIR}\release\vlc-record.exe"
-  File "${SRCDIR}\resources\television.ico"
+  File "${SRCDIR}\release\kartina_tv.exe"
+  File "${SRCDIR}\resources\kartina_tv.ico"
   File "${SRCDIR}\installer\shortcut.url"
   File "${QTLIBS}\libgcc_s_dw2-1.dll"
   File "${QTLIBS}\mingwm10.dll"
@@ -140,7 +153,7 @@ SectionEnd
 ; start menu entries 
 Section "Start Menu Entries" SecStart
 	CreateDirectory "$SMPROGRAMS\${APPNAME}"
-	CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\vlc-record.exe"
+	CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\kartina_tv.exe"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk" "$INSTDIR\clearcache.bat"
 	CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Check for new Version.lnk" "$INSTDIR\shortcut.url"
@@ -150,8 +163,15 @@ SectionEnd
 ; desktop shortcut ...
 ;Section /o "Desktop Shortcut" SecDesktop
 Section "Desktop Shortcut" SecDesktop
-	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\vlc-record.exe"
+	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\kartina_tv.exe"
 SectionEnd
+
+;-------------------------------------------------------
+; Installer Functions
+
+Function .onInit
+  !insertmacro MUI_LANGDLL_DISPLAY
+FunctionEnd
 
 ;-------------------------------------------------------
 ; write uninstall stuff ...
@@ -166,7 +186,7 @@ Section -FinishSection
   ; create uninstall entries in registry ...
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${APPNAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$INSTDIR\uninstall.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayIcon" "$INSTDIR\television.ico"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayIcon" "$INSTDIR\kartina_tv.ico"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "Publisher" "Jo2003"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "URLUpdateInfo" "http://code.google.com/p/vlc-record/downloads/list"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "URLInfoAbout" "http://code.google.com/p/vlc-record/"
@@ -180,14 +200,14 @@ SectionEnd
 
 ;-------------------------------------------------------
 ; Descriptions
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecInst} "The vlc-record executable, the language files and player modules."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecFw} "The libVLC framework. Only disable this section if you have already installed this framework or you want install it manually."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecQt} "The Qt framework. Only disable this section if you have already installed the Qt framework and have set the QTDIR environment variable."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecStart} "Creates a start menu entry for ${APPNAME}"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "Creates a desktop shortcut for ${APPNAME}"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecCache} "Install Plugin Cache Tools for ${APPNAME}"
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
+;!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+;  !insertmacro MUI_DESCRIPTION_TEXT ${SecInst} "The vlc-record executable, the language files and player modules."
+;  !insertmacro MUI_DESCRIPTION_TEXT ${SecFw} "The libVLC framework. Only disable this section if you have already installed this framework or you want install it manually."
+;  !insertmacro MUI_DESCRIPTION_TEXT ${SecQt} "The Qt framework. Only disable this section if you have already installed the Qt framework and have set the QTDIR environment variable."
+;  !insertmacro MUI_DESCRIPTION_TEXT ${SecStart} "Creates a start menu entry for ${APPNAME}"
+;  !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} "Creates a desktop shortcut for ${APPNAME}"
+;  !insertmacro MUI_DESCRIPTION_TEXT ${SecCache} "Install Plugin Cache Tools for ${APPNAME}"
+;!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;-------------------------------------------------------
 ; Uninstaller Section framework ...
@@ -244,10 +264,10 @@ Section "un.Program"
   RMDir  "$INSTDIR\language"
 
   ; delete vlc-record itself ...
-  Delete "$INSTDIR\vlc-record.exe"
+  Delete "$INSTDIR\kartina_tv.exe"
   Delete "$INSTDIR\libgcc_s_dw2-1.dll"
   Delete "$INSTDIR\mingwm10.dll"
-  Delete "$INSTDIR\television.ico"
+  Delete "$INSTDIR\kartina_tv.ico"
   Delete "$INSTDIR\shortcut.url"
 
 SectionEnd
@@ -256,7 +276,8 @@ SectionEnd
 ; Remove from registry...
 Section "un.registry"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
-	DeleteRegKey HKLM "SOFTWARE\${APPNAME}"
+	DeleteRegKey HKLM "Software\${APPNAME}"
+  DeleteRegKey HKCU "Software\${APPNAME}"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -273,9 +294,18 @@ SectionEnd
 ;-------------------------------------------------------
 ; make final cleaning ...
 Section "un.FinalCleaning"
+  ; delete stored stuff ...
+  RMDir /r /REBOOTOK "$APPDATA\${APPNAME}"
+
 	; delete uninstaller ...
   Delete "$INSTDIR\Uninstall.exe"
 
   ; delete install dir ...
 	RMDir "$INSTDIR"
 SectionEnd
+
+;-------------------------------------------------------
+; Uninstaller Functions
+Function un.onInit
+  !insertmacro MUI_UNGETLANGUAGE
+FunctionEnd

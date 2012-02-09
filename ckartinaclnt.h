@@ -26,7 +26,6 @@
 
 #include "clogfile.h"
 #include "defdef.h"
-#include "customization.h"
 #include "version_info.h"
 
 
@@ -95,7 +94,7 @@ public:
    void GetBitRate ();
    void SetHttpBuffer (int iTime);
    void GetEPG (int iChanID, int iOffset = 0);
-   void GetVideos (int iGenreID);
+   void GetVideos (const QString &sPrepared);
    void GetVideoInfo (int iVodID);
    void SetCookie (const QString &cookie);
    bool busy ();

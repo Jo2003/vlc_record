@@ -236,6 +236,7 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
       iPos = (int)(QDateTime::currentDateTime().toTime_t() - uiStart);
       QRect progressRect(x, y, rightWidth, 5);
 
+#ifndef Q_OS_MAC
       QStyleOptionProgressBar progressBar;
       progressBar.rect        = progressRect;
       progressBar.minimum     = 0;
@@ -245,6 +246,35 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 
       QApplication::style()->drawControl(QStyle::CE_ProgressBar,
                                          &progressBar, painter);
+#else
+      // Drawing the progress bar on mac doesn't look nice
+      // because the height can't be shrinked as needed.
+      // So we try to draw our own progress bar here ...
+
+      // make sure background is white ...
+      painter->fillRect(progressRect, QColor("white"));
+
+      // prepare pen for border line ...
+      QPen pen(Qt::SolidLine);
+      pen.setColor(QColor("silver"));
+      pen.setWidth(1);
+      painter->setPen(pen);
+
+      // draw outline ...
+      painter->drawRect(progressRect);
+
+      // compute size of inner rect (take care of border) ...
+      x = progressRect.width()  - pen.width();
+      y = progressRect.height() - pen.width();
+      x = (x * iPos) / (int)(uiEnd - uiStart);
+
+      // inner rectangle (progess) ...
+      QRect macRect(progressRect.x() + pen.width(), progressRect.y() + pen.width(), x, y);
+
+      // paint progress ...
+      painter->fillRect(macRect, QColor("#036"));
+#endif // Q_OS_MAC
+
    }
 
    painter->restore();

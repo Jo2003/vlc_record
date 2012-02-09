@@ -57,6 +57,7 @@ public:
     void EnlargeFont ();
     void ReduceFont ();
     void ChangeFontSize (int iSz);
+    QMap<uint, epg::SShow> exportProgMap();
 
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());

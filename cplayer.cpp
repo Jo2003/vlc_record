@@ -49,6 +49,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    bCtrlStream   = false;
    bSpoolPending = true;
    uiDuration    = (uint)-1;
+   iCycleCount   = 0;
 
    // set log poller to single shot ...
    poller.setSingleShot(true);
@@ -57,17 +58,11 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    tAspectShot.setSingleShot (true);
    tAspectShot.setInterval (800);
 
-#ifdef QT_NO_DEBUG
-   uiVerboseLevel = 1;
-#else
-   uiVerboseLevel = 3;
-#endif /* QT_NO_DEBUG */
-
    // connect volume slider with volume change function ...
    connect(ui->volSlider, SIGNAL(sliderMoved(int)), this, SLOT(slotChangeVolume(int)));
 
    // connect double click signal from videoframe with fullscreen toggle ...
-   connect(ui->fVideo, SIGNAL(sigToggleFullscreen()), this, SLOT(slotToggleFullScreen()));
+   connect(ui->videoWidget, SIGNAL(fullScreen()), ui->videoWidget, SLOT(toggleFullScreen()));
 
    // connect slider timer with slider position slot ...
    connect(&sliderTimer, SIGNAL(timeout()), this, SLOT(slotUpdateSlider()));
@@ -83,6 +78,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    poller.start(1000);
    sliderTimer.start(1000);
+
+   // hide slider ...
+   ui->posSlider->hide();
 }
 
 /* -----------------------------------------------------------------\
@@ -108,16 +106,23 @@ CPlayer::~CPlayer()
       libvlc_media_player_release (pMediaPlayer);
    }
 
-   if (pVlcInstance)
-   {
-      libvlc_release(pVlcInstance);
-   }
-
    // close log if opened ...
    if (pLibVlcLog)
    {
       libvlc_log_close (pLibVlcLog);
       pLibVlcLog = NULL;
+   }
+
+   if (pVlcInstance)
+   {
+#ifdef Q_OS_MACX
+      // releasing it on Mac leads to crash if you end the
+      // player with running video ... no problem at all 'cause
+      // we want release at program close!
+      libvlc_retain(pVlcInstance);
+#else
+      libvlc_release(pVlcInstance);
+#endif
    }
 
    delete ui;
@@ -151,7 +156,7 @@ bool CPlayer::isPositionable()
 \----------------------------------------------------------------- */
 void CPlayer::setShortCuts(QVector<CShortcutEx *> *pvSc)
 {
-   ui->fVideo->setShortCuts(pvSc);
+   ui->videoWidget->setShortCuts(pvSc);
 }
 
 /* -----------------------------------------------------------------\
@@ -197,7 +202,9 @@ void CPlayer::setTrigger(CWaitTrigger *pTrig)
 \----------------------------------------------------------------- */
 int CPlayer::initPlayer()
 {
-   int iRV = -1;
+   int          iRV  = -1;
+   int          argc = 0;
+   const char **argv = NULL;
 
    // reset crop and aspect cbx ... because it should show the state
    // as used ...
@@ -205,12 +212,24 @@ int CPlayer::initPlayer()
    ui->cbxCrop->setCurrentIndex(0);
 
    //create a new libvlc instance
-   pVlcInstance = libvlc_new(0, NULL);
+#ifdef Q_WS_MAC
+   // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
+   const char *vlc_args[] = {
+      "--vout=macosx",
+      // "--opengl-provider=macosx",
+      // "-v"
+   };
+
+   argc = sizeof(vlc_args) / sizeof(vlc_args[0]);
+   argv = vlc_args;
+#endif
+
+   pVlcInstance = libvlc_new(argc, argv);
 
    if (pVlcInstance)
    {
       // set verbose mode ...
-      libvlc_set_log_verbosity (pVlcInstance, uiVerboseLevel);
+      libvlc_set_log_verbosity (pVlcInstance, pSettings->libVlcVerboseLevel());
 
       // get logger and mediaplayer ...
       pLibVlcLog   = libvlc_log_open(pVlcInstance);
@@ -220,7 +239,7 @@ int CPlayer::initPlayer()
    if (pLibVlcLog && pMediaPlayer)
    {
       // add player to window ...
-      connect_to_wnd(pMediaPlayer, ui->fVideo->winId());
+      connectToVideoWidget();
 
       // get volume ...
       ui->volSlider->setSliderPosition(libvlc_audio_get_volume (pMediaPlayer));
@@ -302,11 +321,10 @@ void CPlayer::slotChangeVolume(int newVolume)
 \----------------------------------------------------------------- */
 int CPlayer::play()
 {
-   int iRV = 0;
+   int  iRV    = 0;
 
    if (pMediaPlayer)
    {
-      // reset exception stuff ...
       libvlc_media_player_play (pMediaPlayer);
    }
 
@@ -372,15 +390,23 @@ int CPlayer::pause()
 |  Returns: 0 --> ok
 |          -1 --> any error
 \----------------------------------------------------------------- */
-int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
+int CPlayer::playMedia(const QString &sCmdLine)
 {
    int                         iRV  = 0;
    libvlc_media_t             *p_md = NULL;
    QStringList                 lArgs;
    QStringList::const_iterator cit;
 
-   // store control flag ...
-   bCtrlStream = bAllowCtrl;
+   // do we can control the stream ... ?
+   if ((showInfo.playState() == IncPlay::PS_PLAY)
+      && showInfo.canCtrlStream())
+   {
+      bCtrlStream = true;
+   }
+   else
+   {
+      bCtrlStream = false;
+   }
 
    // reset play timer stuff ...
    timer.reset();
@@ -393,7 +419,6 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
 
    // enable / disable position slider ...
    ui->posSlider->setValue(0);
-   // ui->posSlider->setEnabled(bCtrlStream);
    ui->labPos->setEnabled(bCtrlStream);
    ui->labPos->setText("00:00:00");
 
@@ -423,6 +448,40 @@ int CPlayer::playMedia(const QString &sCmdLine, bool bAllowCtrl)
 
       if (p_md)
       {
+         // do we use GPU acceleration ... ?
+         if (pSettings->useGpuAcc())
+         {
+            mInfo(tr("Add MRL Option: %1").arg(GPU_ACC_TOKEN));
+            libvlc_media_add_option(p_md, GPU_ACC_TOKEN);
+         }
+         
+         ///////////////////////////////////////////////////////////////////////////
+         // set proxy server ...
+         ///////////////////////////////////////////////////////////////////////////
+         if (pSettings->UseProxy())
+         {
+            sMrl = ":http_proxy=http://";
+
+            if (pSettings->GetProxyUser() != "")
+            {
+               sMrl += QString("%1@").arg(pSettings->GetProxyUser());
+            }
+
+            sMrl += QString("%1:%2/").arg(pSettings->GetProxyHost()).arg(pSettings->GetProxyPort());
+            mInfo(tr("Add MRL Option: %1").arg(sMrl));
+            libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+            if ((pSettings->GetProxyPasswd() != "") && (pSettings->GetProxyUser() != ""))
+            {
+               sMrl = QString(":http_proxy_pwd=%1").arg(pSettings->GetProxyPasswd());
+               mInfo(tr("Add MRL Option: :http_proxy_pwd=******"));
+               libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+            }
+         }
+         ///////////////////////////////////////////////////////////////////////////
+         // end proxy server ...
+         ///////////////////////////////////////////////////////////////////////////
+
          // add mrl options ...
          for (cit = lArgs.constBegin(); cit != lArgs.constEnd(); cit ++)
          {
@@ -465,7 +524,7 @@ void CPlayer::slotUpdateSlider()
 {
    if (pMediaPlayer)
    {
-      if (libvlc_media_player_is_playing(pMediaPlayer) && bCtrlStream)
+      if (libvlc_media_player_is_playing(pMediaPlayer))
       {
          uint pos;
          if (isPositionable())
@@ -476,18 +535,22 @@ void CPlayer::slotUpdateSlider()
             {
                ui->posSlider->setValue(pos);
                pos = pos / 1000; // ms ...
-               ui->labPos->setText(QTime((int)pos / 3600,
-                                         (int)(pos % 3600) / 60,
-                                         pos % 60).toString("hh:mm:ss"));
+               ui->labPos->setText(QTime(0, 0).addSecs(pos).toString("hh:mm:ss"));
             }
-
          }
          else
          {
+            pos = timer.gmtPosition();
+
+            // check archive program ...
+            if (!(++iCycleCount % 60))
+            {
+               iCycleCount = 0;
+               emit sigCheckArchProg(pos);
+            }
+
             if (!ui->posSlider->isSliderDown())
             {
-               pos = timer.gmtPosition();
-
                if (pos > mToGmt(ui->posSlider->maximum()))
                {
                   ui->posSlider->setMaximum(mFromGmt(pos + 300));
@@ -497,11 +560,12 @@ void CPlayer::slotUpdateSlider()
 
                pos -= showInfo.starts();
 
-               ui->labPos->setText(QTime((int)pos / 3600,
-                                         (int)(pos % 3600) / 60,
-                                         pos % 60).toString("hh:mm:ss"));
+               ui->labPos->setText(QTime(0, 0).addSecs(pos).toString("hh:mm:ss"));
             }
          }
+
+         // send slider position ...
+         emit sigSliderPos(ui->posSlider->minimum(), ui->posSlider->maximum(), ui->posSlider->value());
       }
    }
 }
@@ -764,22 +828,6 @@ void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotToggleFullScreen
-|  Begin: 08.03.2010 / 09:55:10
-|  Author: Jo2003
-|  Description: toggle fullscreen mode ...
-|
-|  Parameters: --
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CPlayer::slotToggleFullScreen()
-{
-   return myToggleFullscreen();
-}
-
-/* -----------------------------------------------------------------\
 |  Method: slotToggleAspectRatio
 |  Begin: 08.03.2010 / 15:10:10
 |  Author: Jo2003
@@ -971,7 +1019,7 @@ void CPlayer::stopPlayTimer()
 \----------------------------------------------------------------- */
 void CPlayer::on_btnFullScreen_clicked()
 {
-   slotToggleFullScreen();
+   ui->videoWidget->toggleFullScreen();
 }
 
 /* -----------------------------------------------------------------\
@@ -1030,96 +1078,6 @@ void CPlayer::slotStoredAspectCrop ()
          libvlc_video_set_crop_geometry(pMediaPlayer, sCrop.toAscii().data());
       }
    }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: myToggleFullscreen
-|  Begin: 20.06.2010 / 14:10:10
-|  Author: Jo2003
-|  Description: toggle fullscreen (only supported with libVLC1.10)
-|
-|  Parameters: --
-|
-|  Returns: 0 ==> ok
-|          -1 ==> any error
-\----------------------------------------------------------------- */
-int CPlayer::myToggleFullscreen()
-{
-   int iRV = 0;
-
-   if (pMediaPlayer)
-   {
-      // check if fullscreen is enabled ...
-      if (ui->fParent->isFullScreen ())
-      {
-         // hide screen ...
-         ui->fParent->hide ();
-
-         // end fullscreen ...
-         ui->fParent->showNormal();
-
-         // put parent frame back into the layout where it belongs to ...
-         // this also sets parent and resizes as needed ...
-         ui->vlMasterFrame->addWidget (ui->fParent);
-
-         // show normal ...
-         ui->fParent->show();
-
-         // video frame doesn't need any focus when in windowed mode ...
-         ui->fVideo->setFocusPolicy(Qt::NoFocus);
-      }
-      else
-      {
-         Qt::WindowFlags f;
-
-         // get active desktop widget ...
-         QDesktopWidget *pDesktop    = QApplication::desktop ();
-         int             iScreen     = pDesktop->screenNumber (this);
-         QWidget        *pActScreen  = pDesktop->screen (iScreen);
-         QRect           sizeDesktop = pDesktop->screenGeometry (this);
-
-         mInfo(tr("\n  --> Player Widget is located at %2 screen "
-                  "(Screen No. %1, Resolution %3px x %4px) ...")
-                  .arg(iScreen)
-                  .arg((iScreen == pDesktop->primaryScreen ()) ? "primary" : "secondary")
-                  .arg(sizeDesktop.width ())
-                  .arg(sizeDesktop.height ()));
-
-         if (!pActScreen)
-         {
-            mInfo(tr("Can't get active screen QWidget!"));
-         }
-
-         // frameless window which stays on top ...
-         f  = Qt::Window | Qt::FramelessWindowHint | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint;
-
-#ifdef Q_WS_X11
-         f |= Qt::X11BypassWindowManagerHint;
-#endif // Q_WS_X11
-
-         // hide screen ...
-         ui->fParent->hide ();
-
-         // reparent to active screen ...
-         ui->fParent->setParent(pActScreen, f);
-         ui->fParent->setGeometry (sizeDesktop);
-         ui->fParent->showFullScreen ();
-
-         // to grab keyboard input we need the focus ...
-         // set policy so we can get focus ...
-         ui->fVideo->setFocusPolicy(Qt::StrongFocus);
-
-         // get the focus ...
-         ui->fVideo->setFocus(Qt::OtherFocusReason);
-      }
-   }
-   else
-   {
-      iRV = -1;
-      mInfo(tr("Can't switch to fullscreen if there is no media to play!"));
-   }
-
-   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -1199,9 +1157,7 @@ void CPlayer::on_posSlider_valueChanged(int value)
             value -= showInfo.starts();
          }
 
-         ui->labPos->setText(QTime((int)value / 3600,
-                                   (int)(value % 3600) / 60,
-                                   value % 60).toString("hh:mm:ss"));
+         ui->labPos->setText(QTime(0, 0).addSecs(value).toString("hh:mm:ss"));
       }
    }
 }
@@ -1218,9 +1174,16 @@ void CPlayer::on_posSlider_valueChanged(int value)
 \----------------------------------------------------------------- */
 void CPlayer::enableDisablePlayControl (bool bEnable)
 {
-   ui->btnFwd->setEnabled (bEnable && bCtrlStream);
-   ui->btnBwd->setEnabled (bEnable && bCtrlStream);
-   ui->posSlider->setEnabled (bEnable && bCtrlStream);
+   if (bEnable && bCtrlStream)
+   {
+      ui->posSlider->show();
+      ui->posSlider->setEnabled (true);
+   }
+   else
+   {
+      ui->posSlider->setEnabled (false);
+      ui->posSlider->hide();
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -1240,20 +1203,26 @@ void CPlayer::initSlider()
    uiDuration = libvlc_media_player_get_length(pMediaPlayer);
    mInfo(tr("Film length: %1ms.").arg(uiDuration));
 
-   if (bCtrlStream)
+   if (isPositionable())
    {
-      if (isPositionable())
-      {
-         // VOD stuff ...
-         ui->posSlider->setRange(0, uiDuration);
+      // VOD stuff ...
+      ui->posSlider->setRange(0, uiDuration);
 
-         ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
+      ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
+   }
+   else
+   {
+      // set slider range to seconds ...
+      ui->posSlider->setRange(mFromGmt(showInfo.starts() - 300), mFromGmt(showInfo.ends() + 300));
+
+      if (showInfo.lastJump())
+      {
+         ui->posSlider->setValue(mFromGmt(showInfo.lastJump()));
+
+         ui->labPos->setText(QTime(0, 0).addSecs(showInfo.lastJump() - showInfo.starts()).toString("hh:mm:ss"));
       }
       else
       {
-         // set slider range to seconds ...
-         ui->posSlider->setRange(mFromGmt(showInfo.starts() - 300), mFromGmt(showInfo.ends() + 300));
-
          ui->posSlider->setValue(mFromGmt(showInfo.starts()));
 
          ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
@@ -1364,6 +1333,51 @@ void CPlayer::slotMute()
 
       libvlc_audio_set_mute(pMediaPlayer, mute);
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotShowInfoUpdated
+|  Begin: 04.11.2011
+|  Author: Jo2003
+|  Description: showinfo struct was updated ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotShowInfoUpdated()
+{
+   // we have to do the following:
+   // - Reset Timer
+   // - Reset Slider
+   ulong gmt = timer.gmtPosition();
+   timer.reset();
+   timer.setStartGmt(gmt);
+   timer.start();
+
+   // set slider range to seconds ...
+   ui->posSlider->setRange(mFromGmt(showInfo.starts() - 300), mFromGmt(showInfo.ends() + 300));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: connectToVideoWidget
+|  Begin: 31.01.2012
+|  Author: Jo2003
+|  Description: connect media player to video widget
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::connectToVideoWidget()
+{
+#ifdef Q_OS_WIN
+   libvlc_media_player_set_hwnd (pMediaPlayer, (void *)ui->videoWidget->widgetId());
+#elif defined Q_OS_MAC
+   libvlc_media_player_set_nsobject (pMediaPlayer, (void *)ui->videoWidget->widgetId());
+#else
+   libvlc_media_player_set_xwindow(pMediaPlayer, ui->videoWidget->widgetId());
+#endif
 }
 
 /************************* History ***************************\

@@ -61,7 +61,7 @@ public:
    void    SetProgPath(const QString &str);
 
    Q_PID   start (const QString& sCmdLine, int iRunTime = -1, bool bDetach = false,
-                  IncPlay::ePlayStates req = IncPlay::PS_WTF, bool bArchiv = false);
+                  IncPlay::ePlayStates req = IncPlay::PS_WTF);
 
    void    CancelTimer ();
    void    SetTimer (uint uiTime);
@@ -105,7 +105,7 @@ public slots:
 signals:
    void sigVlcEnds (int iState);
    void sigVlcStarts (int iState);
-   void sigLibVlcPlayMedia (const QString &str, bool bAllowCtrl);
+   void sigLibVlcPlayMedia (const QString &str);
    void sigLibVlcStop ();
 
 public slots:

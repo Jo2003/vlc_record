@@ -190,7 +190,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req,
    // post request ...
    iReq = request(header, content.toAscii(), &bufReq);
 
-   mInfo(tr("Request #%1 sent ...").arg(iReq));
+   mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -228,7 +228,7 @@ void CKartinaClnt::GetRequest (Kartina::EReq req,
    // post request ...
    iReq = request(header, QByteArray(), &bufReq);
 
-   mInfo(tr("Request #%1 sent ...").arg(iReq));
+   mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -522,22 +522,18 @@ void CKartinaClnt::GetVodGenres()
 |
 | Begin:       09.12.2010 / 13:18
 |
-| Description: get vidoes matching genre id (VOD)
+| Description: get vidoes matching to prepared search string
 |
-| Parameters:  genre id
+| Parameters:  prepared search string
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetVideos(int iGenreID)
+void CKartinaClnt::GetVideos(const QString &sPrepared)
 {
-   mInfo(tr("Request Videos for Genres %1...").arg(iGenreID));
+   mInfo(tr("Request Videos ..."));
 
-   QString sReq = QString("%1vod_list?type=first&nums=10000").arg(KARTINA_API_PATH);
-
-   if (iGenreID != -1)
-   {
-      sReq += QString("&genre=%1").arg(iGenreID);
-   }
+   QString sReq = QString("%1vod_list?%2")
+         .arg(KARTINA_API_PATH).arg(sPrepared);
 
    GetRequest(Kartina::REQ_GETVIDEOS, sReq);
 }
@@ -616,7 +612,7 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 
       if (!err)
       {
-         mInfo(tr("Request #%1 done!").arg(id));
+         mInfo(tr("Request #%1 (%2) done!").arg(id).arg(eReq));
 
          // send signals dependet on ended request ...
          switch (eReq)
@@ -706,8 +702,28 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 \----------------------------------------------------------------- */
 bool CKartinaClnt::busy ()
 {
-   return ((eReq != Kartina::REQ_UNKNOWN) || (sCookie == "")) ? true : false;
+   bool bRV;
+
+   switch (state())
+   {
+   case QHttp::Unconnected:
+   case QHttp::Connected:
+      bRV = false;
+      break;
+
+   case QHttp::HostLookup:
+   case QHttp::Connecting:
+   case QHttp::Sending:
+   case QHttp::Reading:
+   case QHttp::Closing:
+   default:
+      bRV = true;
+      break;
+   }
+
+   return (!bRV && (eReq == Kartina::REQ_UNKNOWN)) ? false : true;
 }
+
 
 /* -----------------------------------------------------------------\
 |  Method: cookieSet

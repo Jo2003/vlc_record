@@ -20,10 +20,10 @@
 #include <QDateTime>
 #include <QString>
 #include <QMap>
+#include <QMutex>
 
 #include "clogfile.h"
 #include "defdef.h"
-#include "customization.h"
 
 //===================================================================
 // namespace
@@ -70,6 +70,19 @@ namespace cparser
       QString sGName;
    };
 
+   struct SVodFileInfo
+   {
+      int     iId;
+      QString sTitle;
+      QString sFormat;
+      QString sUrl;
+      int     iSize;
+      int     iLength;
+      QString sCodec;
+      int     iWidth;
+      int     iHeight;
+   };
+
    struct SVodVideo
    {
       uint uiVidId;
@@ -80,8 +93,32 @@ namespace cparser
       QString sDescr;
       QString sImg;
       QString sDirector;
+      QString sGenres;
       uint    uiLength;
-      QVector<uint> vVodFiles;
+      QVector<cparser::SVodFileInfo> vVodFiles;
+   };
+
+   struct SAccountInfo
+   {
+      QString sExpires;
+      bool    bHasArchive;
+      bool    bHasVOD;
+   };
+
+   struct SGenreInfo
+   {
+      QString sType;
+      int     iCount;
+      int     iPage;
+      int     iTotal;
+   };
+
+   struct SUpdInfo
+   {
+      QString                sVersion;
+      int                    iMajor;
+      int                    iMinor;
+      QString                sUrl;
    };
 }
 
@@ -103,17 +140,18 @@ public:
 
    // new functions for use with API ...
    int checkResponse (const QString &sResp, const QString& sFunction, int iLine);
-   int parseCookie (const QString &sResp, QString &sCookie, QString &sExp);
+   int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
    int parseTimeShift (const QString &sResp, QVector<int> &vValues, int &iShift);
    int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    int parseSettings(const QString& sResp, QVector<int>& vValues, int& iActVal, QString &sName);
    int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
-   int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList);
+   int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
    int parseUrl (const QString& sResp, QString& sUrl);
    int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
    int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
    int fillErrorMap();
+   int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
 
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);
@@ -122,15 +160,15 @@ protected:
    int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
-   int parseVodParts (QXmlStreamReader &xml, QVector<uint>& vVodParts);
    int oneLevelParser (const QString &sEndElement, const QStringList& slNeeded, QMap<QString, QString>& mResults);
 
 
 private:
    int iOffset;
    QString sErr, sCleanResp;
-   QXmlStreamReader xmlSr;
+   QXmlStreamReader   xmlSr;
    QMap<int, QString> mapError;
+   QMutex             mutex;
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

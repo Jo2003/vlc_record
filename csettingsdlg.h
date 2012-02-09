@@ -16,13 +16,11 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
-#include <QCryptographicHash>
 #include <QTableWidget>
 
 #include "cvlcrecdb.h"
 #include "clogfile.h"
 #include "defdef.h"
-#include "customization.h"
 #include "cdirstuff.h"
 #include "ckartinaxmlparser.h"
 #include "cshortcutex.h"
@@ -73,8 +71,11 @@ public:
     bool AskForRecFile ();
     bool TranslitRecFile ();
     bool DetachPlayer ();
-    bool regOk();
     bool extChanList();
+    bool checkForUpdate();
+    int  getTimeShift();
+    bool doubleClickToPlay();
+    bool useGpuAcc();
 
     int GetRefrInt ();
     int GetProxyPort ();
@@ -89,21 +90,25 @@ public:
     void  SetIsMaximized (bool bMax);
     int   GetCustFontSize ();
     void  SetCustFontSize (int iSize);
-    int   SaveOtherSettings ();
     void  SaveFavourites (const QList<int> &favList);
     QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<cparser::SSrv>& vSrvList, const QString& sActSrv);
     void  SetBitrateCbx (const QVector<int>& vValues, int iActrate);
     void  SaveCookie (const QString &str);
     bool  DisableSplashScreen ();
-    QString hsah (const QString &str);
-    QString& reverse (QString &str);
     int   GetBitRate ();
     void  addShortCut (const QString& descr, const QString& target, const QString& slot, const QString& keys);
     void  delShortCut (const QString& target, const QString& slot);
     void  updateShortcutDescr(const QString& descr, const QString& target, const QString& slot);
     QString shortCut (const QString& target, const QString& slot) const;
-    int shortCutCount();
+    int  shortCutCount();
+    void readSettings ();
+    void fillTimeShiftCbx(const QVector<int> &vVals, int iAct);
+    void saveChannel(int cid);
+    int lastChannel();
+    void saveEpgDay(const QString &dateString);
+    QString lastEpgDay();
+    uint libVlcVerboseLevel();
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -111,25 +116,31 @@ protected:
 private:
     Ui::CSettingsDlg *m_ui;
     CShortcutEx *pShortApiServer;
+    CShortcutEx *pShortVerbLevel;
+    QVector<float> vBuffs;
 
 signals:
     void sigReloadLogos ();
     void sigSetServer (QString sIp);
     void sigSetBitRate (int iRate);
     void sigSetBuffer (int iBuffer);
+    void sigSetTimeShift (int iShift);
 
 private slots:
     void on_btnResetShortcuts_clicked();
-    void on_pushDoRegister_clicked();
-    void on_btnSaveStreamServer_clicked();
-    void on_btnSaveBitrate_clicked();
+    void on_checkAdvanced_clicked(bool checked);
     void on_pushDelLogos_clicked();
     void on_pushSave_clicked();
     void on_pushDir_clicked();
     void on_pushVLC_clicked();
     void slotEnableApiServer ();
+    void slotEnableVlcVerbLine ();
+    void on_cbxStreamServer_activated(int index);
+    void on_cbxBitRate_activated(int index);
 
- public slots:
+    void on_cbxTimeShift_activated(int index);
+
+public slots:
     void slotSplashStateChgd (bool bChecked);
 };
 

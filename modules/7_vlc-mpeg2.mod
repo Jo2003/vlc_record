@@ -23,6 +23,7 @@
 # {[%CACHE%]}  - the cache value to use                                        #
 # {[%MUX%]}    - format the output stream should be muxed to                   #
 # {[%DST%]}    - the file the output stream should be saved to                 #
+# {[%TMP%]}    - the folder for timeshift data                                 #
 ################################################################################
 
 ################################################################################
@@ -42,8 +43,8 @@ TRANSLIT     = <<no>>
 ;-------------------------------------------------------------------------------
 FORCE_MUX    = <<ps>>
 
-LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
+LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
 LIVE_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
 ARCH_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]} --sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}}>>
 LIVE_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout=#transcode{vcodec=mp2v,vb=5500,acodec=a52,ab=160,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{target=pal-dvd,keyint=12,hurry-up,vt=9800}}:std{access=file,mux={[%MUX%]},dst='{[%DST%]}.mpg'}>>

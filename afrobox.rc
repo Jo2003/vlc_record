@@ -1,0 +1,64 @@
+#include <windows.h>
+
+IDI_ICON1 ICON DISCARDABLE "resources/afrobox.ico"
+
+#define VER_FILEVERSION             0,2,50,0
+#define VER_FILEVERSION_STR         "0,2,50,0"
+
+#define VER_PRODUCTVERSION          VER_FILEVERSION
+#define VER_PRODUCTVERSION_STR      VER_FILEVERSION_STR
+
+#define COMP_NAME                   "Afrobox"
+#define COPYRIGHT                   "(c) 2009 - 2011 by Jo2003"
+#define ORG_FILENAME                "afrobox.exe"
+#define PROD_VER_STR                "2.50"
+#define FILE_VER_STR                "2.50.0"
+#define PROD_NAME                   "Afrobox Player"
+#define FILE_DESCR                  "A player for Video Streams sent from Afrobox.co.uk"
+#define INT_NAME                    "VLC-Record"
+
+#ifndef DEBUG
+#define VER_DEBUG                   0
+#else
+#define VER_DEBUG                   VS_FF_DEBUG
+#endif
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION    	VER_FILEVERSION
+PRODUCTVERSION 	VER_PRODUCTVERSION
+FILEFLAGSMASK  	VS_FFI_FILEFLAGSMASK
+FILEFLAGS      	0
+FILEOS         	VOS__WINDOWS32
+FILETYPE       	VFT_DLL
+FILESUBTYPE    	VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName",      COMP_NAME
+            VALUE "FileDescription",  FILE_DESCR
+            VALUE "FileVersion",      FILE_VER_STR
+            VALUE "InternalName",     INT_NAME
+            VALUE "LegalCopyright",   COPYRIGHT
+            VALUE "LegalTrademarks1", ""
+            VALUE "LegalTrademarks2", ""
+            VALUE "OriginalFilename", ORG_FILENAME
+            VALUE "ProductName",      PROD_NAME
+            VALUE "ProductVersion",   PROD_VER_STR
+        END
+    END
+
+    BLOCK "VarFileInfo"
+    BEGIN
+        /* The following line should only be modified for localized versions.     */
+        /* It consists of any number of WORD,WORD pairs, with each pair           */
+        /* describing a language,codepage combination supported by the file.      */
+        /*                                                                        */
+        /* For example, a file might have values "0x409,1252" indicating that it  */
+        /* supports English language (0x409) in the Windows ANSI codepage (1252). */
+
+        VALUE "Translation", 0x409, 1252
+
+    END
+END

@@ -296,6 +296,21 @@ const epg::SShow CEpgBrowser::epgShow(uint uiTimeT)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: exportProgMap
+|  Begin: 03.11.2011
+|  Author: Jo2003
+|  Description: export a copy of the program map
+|
+|  Parameters: --
+|
+|  Returns: program map
+\----------------------------------------------------------------- */
+QMap<uint, epg::SShow> CEpgBrowser::exportProgMap()
+{
+   return mProgram;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: EnlargeFont
 |  Begin: 02.02.2010 / 16:52:12
 |  Author: Jo2003

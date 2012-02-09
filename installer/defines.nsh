@@ -5,17 +5,13 @@
 
 ;------------------------------
 ; define versions ...
-!define VER_MINOR   "45"
+!define VER_MINOR   "51B1"
 
 ;------------------------------
 ; path defines ...
-!define LIBVLCFW "..\..\libVLC1.1.10"
+!define LIBVLCFW "..\..\libVLC1.1.7"
 !define SRCDIR ".."
 !define QTLIBS "..\..\qtlibs"
-
-;------------------------------
-; application name ...
-!define APPNAME "VLC-Record"
 
 ;------------------------------
 ; directory for the packages

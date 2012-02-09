@@ -25,8 +25,9 @@
 CShowInfo::CShowInfo()
 {
    iChannelId = -1;
-   bIsArchive = false;
-   ePlayState = IncPlay::PS_WTF;
+   iVodId     = -1;
+   ePlayState = IncPlay::PS_STOP;
+   eShowType  = ShowInfo::Live;
    uiStart    = 0;
    uiEnd      = 0;
    uiJumpTime = 0;
@@ -78,21 +79,6 @@ void CShowInfo::setChanId (int id)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setArchive
-|  Begin: 15.06.2010 / 14:25:00
-|  Author: Jo2003
-|  Description: stores the archive marker
-|
-|  Parameters: archive marker
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CShowInfo::setArchive (bool arch)
-{
-   bIsArchive = arch;
-}
-
-/* -----------------------------------------------------------------\
 |  Method: setStartTime
 |  Begin: 15.06.2010 / 14:25:00
 |  Author: Jo2003
@@ -100,7 +86,7 @@ void CShowInfo::setArchive (bool arch)
 |
 |  Parameters: time in seconds
 |
-|  Returns: --
+|  Returns: --.
 \----------------------------------------------------------------- */
 void CShowInfo::setStartTime (uint start)
 {
@@ -150,6 +136,51 @@ void CShowInfo::setEndTime (uint end)
 void CShowInfo::setPlayState (IncPlay::ePlayStates state)
 {
    ePlayState = state;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setShowType
+|  Begin: 22.09.2011
+|  Author: Jo2003
+|  Description: stores the show type
+|
+|  Parameters: show type
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::setShowType(ShowInfo::eProgType type)
+{
+   eShowType = type;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setVodId
+|  Begin: 04.11.2011
+|  Author: Jo2003
+|  Description: stores the VOD id
+|
+|  Parameters: VOD id
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::setVodId(int id)
+{
+   iVodId = id;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setHtmlDescr
+|  Begin: 22.09.2011
+|  Author: Jo2003
+|  Description: stores the html description of a show
+|
+|  Parameters: html string
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::setHtmlDescr(const QString &descr)
+{
+   sDescr = descr;
 }
 
 /* -----------------------------------------------------------------\
@@ -258,18 +289,72 @@ const IncPlay::ePlayStates &CShowInfo::playState()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: archive
-|  Begin: 15.06.2010 / 14:25:00
+|  Method: showType
+|  Begin: 22.09.2011
 |  Author: Jo2003
-|  Description: get the archive marker
+|  Description: get the show type
 |
 |  Parameters: --
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const bool &CShowInfo::archive()
+const ShowInfo::eProgType &CShowInfo::showType()
 {
-   return bIsArchive;
+   return eShowType;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: vodId
+|  Begin: 04.11.2011
+|  Author: Jo2003
+|  Description: get the VOD id
+|
+|  Parameters: --
+|
+|  Returns: ref. to value
+\----------------------------------------------------------------- */
+const int &CShowInfo::vodId()
+{
+   return iVodId;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: canCtrlStream
+|  Begin: 22.09.2011
+|  Author: Jo2003
+|  Description: is stream controlable?
+|
+|  Parameters: --
+|
+|  Returns: true --> yes
+|          false --> no
+\----------------------------------------------------------------- */
+bool CShowInfo::canCtrlStream()
+{
+   if ((eShowType == ShowInfo::Archive)
+      || (eShowType == ShowInfo::VOD))
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: htmlDescr
+|  Begin: 22.09.2011
+|  Author: Jo2003
+|  Description: get the show description
+|
+|  Parameters: --
+|
+|  Returns: ref. to value
+\----------------------------------------------------------------- */
+const QString& CShowInfo::htmlDescr()
+{
+   return sDescr;
 }
 
 /************************* History ***************************\

@@ -20,6 +20,7 @@
 #define TMPL_MUX         "{[%MUX%]}"
 #define TMPL_DST         "{[%DST%]}"
 #define TMPL_CACHE       "{[%CACHE%]}"
+#define TMPL_TEMP        "{[%TMP%]}"
 
 #define CMD_PLAY_LIVE    "LIVE_PLAY"
 #define CMD_PLAY_ARCH    "ARCH_PLAY"
@@ -31,13 +32,6 @@
 #define FORCE_MUX        "FORCE_MUX"
 #define DOWN_FIRST       "DOWN_FIRST"
 
-/*
-#define TMPL_PLAY_HTTP  "\"" TMPL_URL "\" --no-http-reconnect --http-caching=" TMPL_CACHE
-#define TMPL_PLAY_RTSP  "\"" TMPL_URL "\" --rtsp-tcp --rtsp-caching=" TMPL_CACHE
-#define TMPL_REC        " --sout=\"#duplicate{dst=display, dst=std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}}\""
-#define TMPL_SILENT_REC " --sout=\"#std{access=file,mux=" TMPL_MUX ",dst='" TMPL_DST "'}\""
-*/
-
 /**********************************************************/
 /*                      HTML templates                    */
 /**********************************************************/
@@ -48,6 +42,8 @@
 #define TMPL_START     "<!--{[%START%]}-->"
 #define TMPL_END       "<!--{[%END%]}-->"
 #define TMPL_TITLE     "<!--{[%TITLE%]}-->"
+#define TMPL_TITLE_L   "<!--{[%TITLE_L%]}-->"
+#define TMPL_TITLE_R   "<!--{[%TITLE_R%]}-->"
 #define TMPL_CONT      "<!--{[%CONTENT%]}-->"
 #define TMPL_VOD_L     "<!--{[%LEFTCOL%]}-->"
 #define TMPL_VOD_R     "<!--{[%RIGHTCOL%]}-->"
@@ -57,22 +53,34 @@
 #define TMPL_ACTORS    "<!--{[%ACTORS%]}-->"
 #define TMPL_DIREC     "<!--{[%DIREC%]}-->"
 #define TMPL_CSS       "<!--{[%CSS%]}-->"
+#define TMPL_GENRE     "<!--{[%GENRE%]}-->"
+#define TMPL_NAME      "<!--{[%NAME%]}-->"
+#define TMPL_DESCR     "<!--{[%DESCR%]}-->"
 
 #define EPG_TMPL  \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
 TMPL_ROWS \
 "</table>\n"
 
+#define TMPL_CODEC \
+"<span style='color: #888'>" TMPL_TITLE "</span>"
+
+#define TMPL_VIDEO_TITLE \
+"<div style='font-weight: bold; color: #800; padding: 10px;'>" TMPL_TITLE "</div>"
+
 #define TMPL_VIDEO_DETAILS \
-"<img class='floatright' src='" TMPL_IMG "'>\n" \
+"<img class='floatright' src='" TMPL_IMG "' title='" TMPL_TITLE "' />\n" \
 "<h3>" TMPL_TITLE  "</h3>\n" \
+"<p style='color: #008800'>"  TMPL_GENRE  "</p>\n" \
 "<p style='color: #888888'>"  TMPL_TIME   "</p>\n" \
 "<p style='color: #880000'>"  TMPL_DIREC  "</p>\n" \
 "<p style='color: #000088'>"  TMPL_ACTORS "</p>\n" \
 "<p>"  TMPL_PROG   "</p>\n" \
+TMPL_LINK "\n"
+
+#define TMPL_VIDEO_LINKS \
 "<p>"  TMPL_LINK   "</p>\n" \
 "<div align='center'>[ <a href='videothek?action=backtolist'>" TMPL_END "</a> ]</div>\n"
-
 
 #define HTML_SITE \
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"\
@@ -86,8 +94,8 @@ TMPL_CSS \
 
 #define TR_VOD_LIST \
 "  <tr>\n"\
-"    <td style='color: black; background-color: rgb(255, 254, 212); padding: 3px;'><div align='center'>" TMPL_VOD_L "</div></td>\n"\
-"    <td style='color: black; background-color: rgb(255, 254, 212); padding: 3px;'><div align='center'>" TMPL_VOD_R "</div></td>\n"\
+"    <td style='color: black; background-color: rgb(255, 254, 212); padding: 10px;'><div align='center'>" TMPL_VOD_L "<br>" TMPL_TITLE_L "</div></td>\n"\
+"    <td style='color: black; background-color: rgb(255, 254, 212); padding: 10px;'><div align='center'>" TMPL_VOD_R "<br>" TMPL_TITLE_R "</div></td>\n"\
 "  </tr>\n"
 
 #define TMPL_IMG_LINK \
@@ -126,7 +134,7 @@ TMPL_CSS \
 "</style>\n"
 
 #define TMPL_CSS_IMG_FLOAT \
-".floatright{float: right; margin: 0 0 10px 10px; border: 1px solid #666; padding: 2px;}\n" \
+".floatright{float: right; margin: 15px; padding: 2px; border: 1px solid #666;}\n" \
 "body {background-color: rgb(255, 254, 212);}\n"
 
 #define TMPL_BACKCOLOR \
@@ -182,7 +190,9 @@ TMPL_CSS \
 "<b style='color: red;'>%1</b><br />\n"\
 "<b>" TMPL_PROG  "</b> %2<br />\n"\
 "<b>" TMPL_START "</b> %3<br />\n"\
-"<b>" TMPL_END   "</b> %4\n"
+"<b>" TMPL_END   "</b> %4<br />\n"\
+"<b>" TMPL_TIME   "</b> %5<br />\n"
+
 
 #endif /* __011910__TEMPLATES_H */
 /************************* History ***************************\

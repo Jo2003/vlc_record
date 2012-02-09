@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/app">
+        <file alias="kartina">resources/Afrobox_Logo.png</file>
+        <file alias="live">resources/Afrobox_live.png</file>
+    </qresource>
+</RCC>

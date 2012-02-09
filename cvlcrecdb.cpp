@@ -237,11 +237,11 @@ QString CVlcRecDB::sqlError()
 |  Author: Jo2003
 |  Description: get stored settings value
 |
-|  Parameters: ref. to key string
+|  Parameters: ref. to key string, pointer to errornbuffer
 |
 |  Returns: value as string
 \----------------------------------------------------------------- */
-QString CVlcRecDB::stringValue(const QString &key)
+QString CVlcRecDB::stringValue(const QString &key, int *pErr)
 {
    QString   rv;
    QSqlQuery query;
@@ -252,7 +252,18 @@ QString CVlcRecDB::stringValue(const QString &key)
 
    if (query.first())
    {
+      if (pErr)
+      {
+         *pErr = 0;
+      }
       rv = query.value(0).toString();
+   }
+   else
+   {
+      if (pErr)
+      {
+         *pErr = -1;
+      }
    }
 
    return rv;
@@ -264,11 +275,11 @@ QString CVlcRecDB::stringValue(const QString &key)
 |  Author: Jo2003
 |  Description: get stored settings value
 |
-|  Parameters: ref. to key string
+|  Parameters: ref. to key string, pointer to errornbuffer
 |
 |  Returns: value as int
 \----------------------------------------------------------------- */
-int CVlcRecDB::intValue(const QString &key)
+int CVlcRecDB::intValue(const QString &key, int *pErr)
 {
    int       rv = 0;
    QSqlQuery query;
@@ -279,7 +290,18 @@ int CVlcRecDB::intValue(const QString &key)
 
    if (query.first())
    {
+      if (pErr)
+      {
+         *pErr = 0;
+      }
       rv = query.value(0).toInt();
+   }
+   else
+   {
+      if (pErr)
+      {
+         *pErr = -1;
+      }
    }
 
    return rv;
@@ -291,11 +313,11 @@ int CVlcRecDB::intValue(const QString &key)
 |  Author: Jo2003
 |  Description: get stored settings value
 |
-|  Parameters: ref. to key string
+|  Parameters: ref. to key string, pointer to errornbuffer
 |
 |  Returns: value as float
 \----------------------------------------------------------------- */
-float CVlcRecDB::floatValue(const QString &key)
+float CVlcRecDB::floatValue(const QString &key, int *pErr)
 {
    float     rv = 0;
    QSqlQuery query;
@@ -306,7 +328,18 @@ float CVlcRecDB::floatValue(const QString &key)
 
    if (query.first())
    {
+      if (pErr)
+      {
+         *pErr = 0;
+      }
       rv = query.value(0).toFloat();
+   }
+   else
+   {
+      if (pErr)
+      {
+         *pErr = -1;
+      }
    }
 
    return rv;

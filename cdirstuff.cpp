@@ -132,6 +132,8 @@ int CDirStuff::initDirectories()
 
    sAppDir = QApplication::applicationDirPath();
 
+#ifdef QT_NO_DEBUG // normal folder structure ...
+
 #ifdef Q_OS_WIN32
    // -----------------------------------------------------
    //                      Windows
@@ -209,6 +211,15 @@ int CDirStuff::initDirectories()
    }
 
 #endif // OS dependent
+
+#else // debug case ...
+   QRegExp rx("^(.*)/debug$");
+   if (rx.indexIn(sAppDir) > -1)
+   {
+      sLangDir = rx.cap(1);
+      sModDir  = QString("%1/%2").arg(rx.cap(1)).arg(MOD_DIR);
+   }
+#endif // QT_NO_DEBUG
 
    return iRV;
 }

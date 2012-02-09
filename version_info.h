@@ -12,7 +12,6 @@
 #ifndef __011910__VERSION_INFO_H
    #define __011910__VERSION_INFO_H
 #include <QtGlobal>
-#include "customization.h"
 
 #if defined Q_OS_WIN32
    #define MY_BUILD_SYS "Windows"
@@ -30,12 +29,51 @@
    #define VERSION_MAJOR "1"
 #endif
 
+#define VERSION_MINOR "51"
+#define BETA_EXT      "B2"
+
 #define __MY__VERSION__ \
-   VERSION_MAJOR ".45" VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
+   VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
-| --- new since last beta ---
+| --- new since last version ---
+| - add hardware acceleration switch in settings
+|
+| 2011-12-01: Version 2.50
+| - add new bitrate "mobile"
+| - update shortinfo / slider / progress on archive play
+|   on show change
+| - use older libvlc 1.1.7 which still can remux mp4 to ts
+| - use timeshift module of libVLC to buffer stream on
+|   pause (if it works, it makes life much easier)
+|
+| 2011-10-12: Version x.49B3
+| - updated translation
+| - add update check at startup
+| - don't show systray icon when not minimizing to systray
+| - when searching without searchstring, show videos normal
+| - searching shows up too 100 results
+|
+| 2011-09-29: Version x.49B2
+| - add first time settings dialog
+| - store pre-defined values into config to make
+|   a good first start
+| - rework on VOD to have max. 20 entries on one site
+| - add filter "newest" and "best"
+| - VOD search request goes now out to kartina.tv
+| - reworked settings dialog
+| - EPG access only 2 weeks back / 1 week ahead
+| - in short info window show only what's playing now
+| - rework for progress bar to show progress of playing show
+| - memory function for last seen channel / day
+| - rework on wait trigger to add command queue
+| - major GUI rework to make VOD easier accessable
+| - many updated translations
+| - updated installation
+|
+| ------ branch to make an official Kartina.TV app ------
+|
 | - add app bundle support when getting VLCs file name
 | - own translation of error codes sent by kartina.tv
 | - more common error message box

@@ -31,7 +31,7 @@
 #include "cshowinfo.h"
 #include "csettingsdlg.h"
 #include "cwaittrigger.h"
-#include "cvideoframe.h"
+#include "qvlcvideowidget.h"
 
 //===================================================================
 // namespace
@@ -45,17 +45,6 @@ namespace Ui
       int    argc;
    } vlcArgs;
 }
-
-//===================================================================
-// macro to connect player to hardware ...
-//===================================================================
-#ifdef Q_OS_WIN        // on windows ...
-   #define connect_to_wnd(a, b) libvlc_media_player_set_hwnd (a, b)
-#elif defined Q_OS_MAC // on MAC OS
-   #define connect_to_wnd(a, b) libvlc_media_player_set_agl (a, b)
-#else                  // on Linux
-   #define connect_to_wnd(a, b) libvlc_media_player_set_xwindow (a, b)
-#endif
 
 /********************************************************************\
 |  Class: CPlayer
@@ -86,8 +75,8 @@ public:
 
 protected:
    virtual void changeEvent(QEvent *e);
-   int  myToggleFullscreen ();
    void enableDisablePlayControl (bool bEnable);
+   void connectToVideoWidget ();
 
 private:
    Ui::CPlayer            *ui;
@@ -99,12 +88,12 @@ private:
    libvlc_media_player_t  *pMediaPlayer;
    libvlc_event_manager_t *pEMPlay;
    libvlc_log_t           *pLibVlcLog;
-   uint                    uiVerboseLevel;
    bool                    bCtrlStream;
    CSettingsDlg           *pSettings;
    CWaitTrigger           *pTrigger;
    bool                    bSpoolPending;
    uint                    uiDuration;
+   int                     iCycleCount;
 
 private slots:
    void on_posSlider_valueChanged(int value);
@@ -117,11 +106,10 @@ private slots:
    void slotUpdateSlider ();
 
 public slots:
-   int  playMedia (const QString &sCmdLine, bool bAllowCtrl);
+   int  playMedia (const QString &sCmdLine);
    int  play();
    int  stop();
    int  pause();
-   int  slotToggleFullScreen ();
    int  slotToggleAspectRatio ();
    int  slotToggleCropGeometry ();
    int  slotTimeJumpRelative (int iSeconds);
@@ -129,10 +117,13 @@ public slots:
    void slotMoreLoudly();
    void slotMoreQuietly();
    void slotMute();
+   void slotShowInfoUpdated();
 
 signals:
    void sigPlayState (int ps);
    void sigTriggerAspectChg ();
+   void sigSliderPos (int iMin, int iMax, int iAct);
+   void sigCheckArchProg(ulong ulArchGmt);
 };
 
 #endif /* __022410__CPLAYER_H */

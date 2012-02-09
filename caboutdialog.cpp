@@ -115,7 +115,7 @@ void CAboutDialog::FillInfo(QString sExpires)
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Account expires:")).arg(sExpires) << endl
          << "<tr><td><b>Most icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>" << endl
          << "</table><br /> <br />" << endl
-         << tr("<b>vlc-record</b> - a tool to <b>view / record program streams</b> from %1%2").arg(COMPANY_LINK)
+         << tr("This is a tool to <b>view / record program streams</b> from %1%2").arg(COMPANY_LINK)
 #ifdef _IS_OEM
               .arg(tr(" (click to buy a subscription).")) << endl
 #else
@@ -126,7 +126,7 @@ void CAboutDialog::FillInfo(QString sExpires)
          << QString("%1<br />").arg(tr("It supports <b>EPG and TimeShift</b>.")) << endl
          << tr("For News and Updates please visit my site at %1.").arg("<a href='http://vlc-record.coujo.de'>http://vlc-record.coujo.de</a>") << endl
 #ifndef _IS_OEM
-         << "<br /> <br />" << tr("<b>vlc-record is free software!</b>") << endl
+         << "<br /> <br />" << tr("<b>This program is free software!</b>") << endl
          << tr("Nevertheless ... if you like this software, please support me: ") << endl
          << "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
          << tr("Donate some $ and / or &euro; at Paypal for my work.") << "</a><br /> <br />" << endl

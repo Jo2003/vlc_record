@@ -17,6 +17,7 @@
 #include <QStyleOptionProgressBar>
 #include <QPainter>
 #include <QDateTime>
+#include <QPen>
 
 namespace channellist
 {

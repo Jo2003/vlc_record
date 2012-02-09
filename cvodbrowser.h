@@ -26,19 +26,6 @@
 #include "cdirstuff.h"
 #include "csettingsdlg.h"
 
-namespace vodbrowser {
-   enum eSearchArea
-   {
-      IN_TITLE,
-      IN_DESCRIPTION,
-      IN_YEAR,
-      IN_DIRECTOR,
-      IN_ACTORS,
-      IN_EVERYWHERE,
-      IN_UNKNOWN
-   };
-}
-
 /********************************************************************\
 |  Class: CVodBrowser
 |  Date:  21.12.2010 / 9:41
@@ -61,12 +48,13 @@ public:
     void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, bool bSaveList = true);
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();
-    void findVideos (const QString &str, vodbrowser::eSearchArea eArea = vodbrowser::IN_TITLE);
+    const QString& getShortContent ();
     void setSettings (CSettingsDlg *pDlg);
 
 private:
     QVector<cparser::SVodVideo> vVideos;
     QString sName;
+    QString sShortContent;
     CSettingsDlg *pSettings;
 };
 

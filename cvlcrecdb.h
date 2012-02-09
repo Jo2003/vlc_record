@@ -64,9 +64,9 @@ public:
       return query.exec() ? 0 : -1;
    }
 
-   QString stringValue(const QString &sKey);
-   int     intValue(const QString &sKey);
-   float   floatValue(const QString &sKey);
+   QString stringValue(const QString &sKey, int *pErr = NULL);
+   int     intValue(const QString &sKey, int *pErr = NULL);
+   float   floatValue(const QString &sKey, int *pErr = NULL);
    int     ask(const QString &question, QSqlQuery &query);
    int     ask(QSqlQuery &query);
    QString getShortCut (const QString &sTarget, const QString &sSlot);

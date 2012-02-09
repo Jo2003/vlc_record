@@ -31,6 +31,21 @@ namespace IncPlay
    };
 }
 
+//===================================================================
+/// \brief Namespace for buttons / button functions
+//===================================================================
+namespace Button
+{
+   enum eBtnRole
+   {
+      Play,            ///< play role
+      Stop,            ///< stop role
+      Pause,           ///< pause role
+      Stop_and_Save,   ///< stop and save position
+      Unknown          ///< unknown role
+   };
+}
+
 #endif // __030410__PLAYSTATES_H
 /************************* History ***************************\
 | $Log$

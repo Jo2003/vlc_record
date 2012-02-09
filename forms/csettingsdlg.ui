@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>461</width>
-    <height>524</height>
+    <width>651</width>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,41 +16,18 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tabConnection">
+     <widget class="QWidget" name="tabStdSettings">
       <attribute name="title">
-       <string>&amp;Access</string>
+       <string>&amp;Settings</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_9">
-       <item row="0" column="0" colspan="2">
-        <widget class="QGroupBox" name="grpApiServer">
-         <property name="title">
-          <string> API Server </string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_8">
-          <item row="0" column="0">
-           <widget class="QLabel" name="lanApiServer">
-            <property name="text">
-             <string>Server:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="lineApiServer">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
         <widget class="QGroupBox" name="groupAccount">
          <property name="title">
           <string> Subscription details provided by %1 </string>
@@ -90,7 +67,7 @@
           <item row="1" column="2">
            <widget class="QLabel" name="label_14">
             <property name="text">
-             <string>Password: </string>
+             <string>Parent Code: </string>
             </property>
            </widget>
           </item>
@@ -107,158 +84,322 @@
          </layout>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QGroupBox" name="groupStreamServer">
+       <item>
+        <widget class="QGroupBox" name="groupPath">
          <property name="title">
-          <string> Stream Server </string>
+          <string> Path Settings </string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_7">
+         <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
-           <widget class="QLabel" name="labStreamServer">
+           <widget class="QLabel" name="label_3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
-             <string>Server: </string>
+             <string>Record Dir:</string>
+            </property>
+            <property name="margin">
+             <number>2</number>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="cbxStreamServer"/>
+           <widget class="QLineEdit" name="lineDir"/>
           </item>
           <item row="0" column="2">
-           <widget class="QToolButton" name="btnSaveStreamServer">
-            <property name="maximumSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
+           <widget class="QPushButton" name="pushDir">
             <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="../vlc-record.qrc">
-              <normaloff>:/app/save</normaloff>:/app/save</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="autoRaise">
-             <bool>true</bool>
+             <string>...</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="labBitRate">
+           <widget class="QLabel" name="label">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
-             <string>Bitrate:</string>
+             <string>Player Path:</string>
+            </property>
+            <property name="margin">
+             <number>2</number>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QComboBox" name="cbxBitRate"/>
+           <widget class="QLineEdit" name="lineVLC"/>
           </item>
           <item row="1" column="2">
-           <widget class="QToolButton" name="btnSaveBitrate">
-            <property name="maximumSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
+           <widget class="QPushButton" name="pushVLC">
             <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset resource="../vlc-record.qrc">
-              <normaloff>:/app/save</normaloff>:/app/save</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="autoRaise">
-             <bool>true</bool>
+             <string>...</string>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QGroupBox" name="groupBuffer">
-         <property name="title">
-          <string> Buffering </string>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="55,45">
+         <property name="spacing">
+          <number>2</number>
          </property>
-         <layout class="QGridLayout" name="gridLayout_5">
-          <item row="0" column="0" rowspan="2">
-           <widget class="QLabel" name="labBuffer">
-            <property name="text">
-             <string>Time (msec.):</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2" rowspan="2">
-           <widget class="QComboBox" name="cbxBufferSeconds">
+         <item>
+          <widget class="QGroupBox" name="groupStreamServer">
+           <property name="title">
+            <string>Server Settings</string>
+           </property>
+           <layout class="QFormLayout" name="formLayout_3">
+            <item row="0" column="0">
+             <widget class="QLabel" name="labStreamServer">
+              <property name="text">
+               <string>Stream Server: </string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="cbxStreamServer"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="labBitRate">
+              <property name="text">
+               <string>Bitrate:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="cbxBitRate"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="labBuffer">
+              <property name="text">
+               <string>Buffer (sec.):</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QComboBox" name="cbxBufferSeconds"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Timeshift: </string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QComboBox" name="cbxTimeShift">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupStdSettings">
+           <property name="title">
+            <string>Program Settings </string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
-             <property name="text">
-              <string>1500</string>
-             </property>
+             <layout class="QFormLayout" name="formLayout">
+              <property name="horizontalSpacing">
+               <number>6</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>6</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_10">
+                <property name="text">
+                 <string>Language: </string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="cbxLanguage"/>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_12">
+                <property name="text">
+                 <string>Reload Logos:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QToolButton" name="pushDelLogos">
+                <property name="minimumSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>&amp;reload Logos</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../common.qrc">
+                  <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>24</width>
+                  <height>24</height>
+                 </size>
+                </property>
+                <property name="autoRaise">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
-             <property name="text">
-              <string>3000</string>
-             </property>
+             <widget class="QCheckBox" name="checkFixTime">
+              <property name="text">
+               <string>Try to fix time offset</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>5000</string>
-             </property>
+             <widget class="QCheckBox" name="checkExtChanInfo">
+              <property name="text">
+               <string>Extended Channel List</string>
+              </property>
+             </widget>
             </item>
             <item>
-             <property name="text">
-              <string>8000</string>
-             </property>
+             <widget class="QCheckBox" name="checkAdvanced">
+              <property name="text">
+               <string>Enable Advanced Settings</string>
+              </property>
+             </widget>
             </item>
-            <item>
-             <property name="text">
-              <string>15000</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>20000</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>30000</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>45000</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>60000</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>90000</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-         </layout>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabShortCuts">
+      <attribute name="title">
+       <string>Shortcuts</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_11">
+       <item row="0" column="0">
+        <widget class="QShortCutTable" name="tableShortCuts">
+         <property name="rowCount">
+          <number>0</number>
+         </property>
+         <property name="columnCount">
+          <number>2</number>
+         </property>
+         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+          <bool>true</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
+          <bool>true</bool>
+         </attribute>
+         <column>
+          <property name="text">
+           <string>Function</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>ShortCut</string>
+          </property>
+         </column>
         </widget>
        </item>
-       <item row="3" column="0" rowspan="2" colspan="2">
+       <item row="1" column="0">
+        <widget class="QLabel" name="labShortCutNote">
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel#labShortCutNote {
+color: red;
+}</string>
+         </property>
+         <property name="text">
+          <string>Changes in shortcuts take effect only after restarting the program.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="btnResetShortcuts">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../common.qrc">
+             <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_18">
+           <property name="font">
+            <font>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Reset Shortcuts to default</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabAdvanced">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>Advanced</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
         <widget class="QGroupBox" name="groupProxy">
          <property name="title">
           <string> Proxy Server </string>
@@ -351,222 +492,61 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="0">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>167</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabStdSettings">
-      <attribute name="title">
-       <string>&amp;Settings</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_10">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupPath">
+       <item>
+        <widget class="QGroupBox" name="groupAdvanced">
          <property name="title">
-          <string> Path Settings </string>
+          <string>Advanced Settings</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QGridLayout" name="gridLayout">
           <item row="0" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
+           <widget class="QLabel" name="lanApiServer">
             <property name="text">
-             <string>Record Dir:</string>
-            </property>
-            <property name="margin">
-             <number>2</number>
+             <string>API Server: </string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="lineDir"/>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="pushDir">
-            <property name="text">
-             <string>...</string>
+          <item row="0" column="3">
+           <widget class="QLineEdit" name="lineApiServer">
+            <property name="enabled">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Player Path:</string>
-            </property>
-            <property name="margin">
-             <number>2</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="lineVLC"/>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="pushVLC">
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="cbxPlayerMod"/>
-          </item>
-          <item row="2" column="0">
            <widget class="QLabel" name="label_15">
             <property name="text">
              <string>Player Module:</string>
             </property>
            </widget>
           </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QGroupBox" name="groupStdSettings">
-         <property name="title">
-          <string>Program Settings </string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Language: </string>
-            </property>
-           </widget>
+          <item row="1" column="3">
+           <widget class="QComboBox" name="cbxPlayerMod"/>
           </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="cbxLanguage">
-            <property name="minimumSize">
-             <size>
-              <width>100</width>
-              <height>0</height>
-             </size>
-            </property>
-            <item>
-             <property name="text">
-              <string>en</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../vlc-record.qrc">
-               <normaloff>:/flags/en</normaloff>:/flags/en</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>de</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../vlc-record.qrc">
-               <normaloff>:/flags/de</normaloff>:/flags/de</iconset>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>ru</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../vlc-record.qrc">
-               <normaloff>:/flags/ru</normaloff>:/flags/ru</iconset>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="label_11">
             <property name="text">
              <string>Log Level:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="cbxLogLevel">
-            <item>
-             <property name="text">
-              <string>Log disabled</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Log Errors only</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Log Errors and Warnings</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Log everything</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Reload Logos:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QToolButton" name="pushDelLogos">
-            <property name="minimumSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>&amp;reload Logos</string>
-            </property>
-            <property name="icon">
-             <iconset resource="../vlc-record.qrc">
-              <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>24</width>
-              <height>24</height>
-             </size>
-            </property>
-            <property name="autoRaise">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="6" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Shutdown Command:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QLineEdit" name="lineShutdown"/>
+          </item>
+          <item row="7" column="0" colspan="3">
            <widget class="QCheckBox" name="checkRefresh">
             <property name="text">
              <string>Refresh EPG every:</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="7" column="3">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QComboBox" name="cbxInterval">
@@ -597,228 +577,97 @@
               </property>
              </widget>
             </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </item>
-          <item row="7" column="0">
-           <widget class="QCheckBox" name="checkFixTime">
-            <property name="text">
-             <string>Try to fix time offset</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
+          <item row="8" column="0" colspan="2">
            <widget class="QCheckBox" name="checkAskForName">
             <property name="text">
              <string>Ask for Record Filename</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QLineEdit" name="lineShutdown"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Shutdown Command:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
+          <item row="8" column="2" colspan="2">
            <widget class="QCheckBox" name="checkHideToSystray">
             <property name="text">
              <string>Minimize to Systray</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
-           <widget class="QCheckBox" name="checkTranslit">
-            <property name="text">
-             <string>Translit Record Filename</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
+          <item row="9" column="0" colspan="2">
            <widget class="QCheckBox" name="checkDetach">
             <property name="text">
              <string>Detach Player at startup</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="1">
-           <widget class="QCheckBox" name="checkExtChanInfo">
+          <item row="9" column="2" colspan="2">
+           <widget class="QCheckBox" name="checkTranslit">
             <property name="text">
-             <string>Extended Channel List</string>
+             <string>Translit Record Filename</string>
             </property>
            </widget>
           </item>
+          <item row="11" column="0" colspan="2">
+           <widget class="QCheckBox" name="checkUpdate">
+            <property name="text">
+             <string>Check for updates</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="2" colspan="2">
+           <widget class="QCheckBox" name="checkGPUAcc">
+            <property name="text">
+             <string>Use GPU for video decoding</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QCheckBox" name="check2ClicksToPlay">
+            <property name="text">
+             <string>Doubleclick on channel list starts play</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="7,3">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QComboBox" name="cbxLogLevel">
+              <item>
+               <property name="text">
+                <string>Log disabled</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Log Errors only</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Log Errors and Warnings</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Log everything</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineVlcVerbose">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
          </layout>
         </widget>
-       </item>
-       <item row="2" column="0">
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>23</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabShortCuts">
-      <attribute name="title">
-       <string>Shortcuts</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_11">
-       <item row="0" column="0">
-        <widget class="QShortCutTable" name="tableShortCuts">
-         <property name="rowCount">
-          <number>0</number>
-         </property>
-         <property name="columnCount">
-          <number>2</number>
-         </property>
-         <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-          <bool>true</bool>
-         </attribute>
-         <attribute name="horizontalHeaderStretchLastSection">
-          <bool>true</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string>Function</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>ShortCut</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="labShortCutNote">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel#labShortCutNote {
-color: red;
-}</string>
-         </property>
-         <property name="text">
-          <string>Changes in shortcuts take effect only after restarting the program.</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <property name="spacing">
-          <number>2</number>
-         </property>
-         <item>
-          <widget class="QToolButton" name="btnResetShortcuts">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../vlc-record.qrc">
-             <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>16</width>
-             <height>16</height>
-            </size>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_18">
-           <property name="font">
-            <font>
-             <pointsize>9</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Reset Shortcuts to default</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabRegister">
-      <attribute name="title">
-       <string>Registration</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QGridLayout" name="gridLayout_6">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_16">
-           <property name="text">
-            <string>User:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLineEdit" name="lineUser"/>
-         </item>
-         <item row="0" column="2" rowspan="2">
-          <widget class="QPushButton" name="pushDoRegister">
-           <property name="text">
-            <string>Register</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_17">
-           <property name="text">
-            <string>Registration:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="lineRegData"/>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
        </item>
       </layout>
      </widget>
@@ -891,7 +740,7 @@ color: red;
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../vlc-record.qrc"/>
+  <include location="../common.qrc"/>
  </resources>
  <connections>
   <connection>

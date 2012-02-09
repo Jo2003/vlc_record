@@ -20,7 +20,7 @@
 #endif
 #include <version_info.h>
 #include "csettingsdlg.h"
-#include "customization.h"
+#include "defdef.h"
 
 
 namespace Ui {

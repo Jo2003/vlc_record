@@ -907,7 +907,7 @@ void CTimerRec::slotRecTimer()
 
                   showInfo.setChanId((*it).cid);
                   showInfo.setShowName((*it).sName);
-                  showInfo.setArchive(false);
+                  showInfo.setShowType(ShowInfo::Live);
                   showInfo.setStartTime((*it).uiStart);
                   showInfo.setEndTime((*it).uiEnd);
                   showInfo.setPlayState(IncPlay::PS_TIMER_RECORD);

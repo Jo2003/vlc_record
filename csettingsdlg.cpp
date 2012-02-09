@@ -38,17 +38,68 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->setupUi(this);
 
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
+   pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
 
    if (pShortApiServer)
    {
       connect(pShortApiServer, SIGNAL(activated()), this, SLOT(slotEnableApiServer()));
    }
 
+   if (pShortVerbLevel)
+   {
+      connect(pShortVerbLevel, SIGNAL(activated()), this, SLOT(slotEnableVlcVerbLine()));
+   }
+
+
    // set company name for login data ...
    QString s = m_ui->groupAccount->title();
    m_ui->groupAccount->setTitle(s.arg(COMPANY_NAME));
 
+   // fill in buffer values ...
+   vBuffs << 1.5 << 3 << 5 << 8 << 15 << 20 << 30 << 45 << 60 << 90;
+   qSort(vBuffs);
+
    // fill in values ...
+   readSettings();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: ~CSettingsDlg / dstructor
+|  Begin: 19.01.2010 / 15:45:48
+|  Author: Jo2003
+|  Description: clean at destruction
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+CSettingsDlg::~CSettingsDlg()
+{
+   if (pShortApiServer)
+   {
+      delete pShortApiServer;
+      pShortApiServer = NULL;
+   }
+
+   delete m_ui;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: readSettings
+|  Begin: 13.09.2011 / 10:20
+|  Author: Jo2003
+|  Description: read settings from database
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::readSettings()
+{
+   QString     s;
+   int         iErr;
+   QDir        folder;
+   QStringList sl;
 
    // line edits ...
    m_ui->lineVLC->setText (pDb->stringValue("VLCPath"));
@@ -57,9 +108,14 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->linePass->setText (pDb->stringValue("Passwd"));
    m_ui->lineErosPass->setText(pDb->stringValue("ErosPasswd"));
    m_ui->lineShutdown->setText(pDb->stringValue("ShutdwnCmd"));
-   m_ui->lineUser->setText(pDb->stringValue ("RegUser"));
-   m_ui->lineRegData->setText(pDb->stringValue ("RegData"));
    m_ui->lineApiServer->setText(pDb->stringValue ("APIServer"));
+   m_ui->lineVlcVerbose->setText(pDb->stringValue ("libVlcLogLevel", &iErr));
+
+   if (iErr)
+   {
+      // default log level ...
+      m_ui->lineVlcVerbose->setText("1");
+   }
 
 #ifdef Q_OS_WIN32
    if (m_ui->lineShutdown->text() == "")
@@ -93,6 +149,32 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->checkTranslit->setCheckState((Qt::CheckState)pDb->intValue("TranslitRecFile"));
    m_ui->checkDetach->setCheckState((Qt::CheckState)pDb->intValue("DetachPlayer"));
    m_ui->checkExtChanInfo->setCheckState((Qt::CheckState)pDb->intValue("ExtChanList"));
+   m_ui->checkAdvanced->setCheckState((Qt::CheckState)pDb->intValue("AdvSet"));
+   m_ui->checkGPUAcc->setCheckState((Qt::CheckState)pDb->intValue("GPUAcc"));
+   m_ui->check2ClicksToPlay->setCheckState((Qt::CheckState)pDb->intValue("2ClickPlay", &iErr));
+
+   // value doesn't exist in database ...
+   if (iErr)
+   {
+      // enable by default ...
+      m_ui->check2ClicksToPlay->setCheckState(Qt::Checked);
+   }
+
+   m_ui->checkUpdate->setCheckState((Qt::CheckState)pDb->intValue("UpdateCheck", &iErr));
+
+   // value doesn't exist in database ...
+   if (iErr)
+   {
+      // enable by default ...
+      m_ui->checkUpdate->setCheckState(Qt::Checked);
+   }
+
+   m_ui->tabWidget->setTabEnabled(2, pDb->intValue("AdvSet") ? true : false);
+
+   if (m_ui->checkAdvanced->isChecked())
+   {
+      vBuffs.prepend(0.5);
+   }
 
    // on update the password for adult channels may not be given ...
    if (m_ui->checkAdult->isChecked() && (m_ui->lineErosPass->text() == ""))
@@ -101,15 +183,38 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    }
 
    // fill player module box with available modules ...
-   QDir modDir(pFolders->getModDir());
-   m_ui->cbxPlayerMod->addItems(modDir.entryList(QStringList("*.mod"), QDir::Files, QDir::Name));
+   folder.setPath(pFolders->getModDir());
+   m_ui->cbxPlayerMod->addItems(folder.entryList(QStringList("*.mod"), QDir::Files, QDir::Name));
+
+   // fill language box ...
+   folder.setPath(pFolders->getLangDir());
+   sl = folder.entryList(QStringList("*.qm"), QDir::Files, QDir::Name);
+
+   // make sure english is part of list ...
+   sl.push_front("lang_en.qm");
+
+   QRegExp rx("^lang_([a-zA-Z]+).qm$");
+   for (int i = 0; i < sl.size(); i++)
+   {
+      // get out language from file name ...
+      if (sl.at(i).indexOf(rx) > -1)
+      {
+         m_ui->cbxLanguage->addItem(QIcon(QString(":/flags/%1").arg(rx.cap(1))), rx.cap(1));
+      }
+   }
 
    // combo boxes ...
    int iIdx;
    iIdx = m_ui->cbxLanguage->findText(pDb->stringValue("Language"));
    m_ui->cbxLanguage->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
-   iIdx = m_ui->cbxBufferSeconds->findText(pDb->stringValue("HttpCache"));
+   // fill buffer box with text in seconds, but data in msec ...
+   for (QVector<float>::const_iterator cit = vBuffs.constBegin(); cit != vBuffs.constEnd(); cit ++)
+   {
+      m_ui->cbxBufferSeconds->insertItem(vBuffs.count(), QString("%1").arg(*cit), (int)((*cit) * 1000.0));
+   }
+
+   iIdx = m_ui->cbxBufferSeconds->findData(pDb->intValue("HttpCache"));
    m_ui->cbxBufferSeconds->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
    iIdx = m_ui->cbxInterval->findText(pDb->stringValue("RefIntv"));
@@ -133,27 +238,12 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 
    iIdx = m_ui->cbxPlayerMod->findText(s);
    m_ui->cbxPlayerMod->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
-}
 
-/* -----------------------------------------------------------------\
-|  Method: ~CSettingsDlg / dstructor
-|  Begin: 19.01.2010 / 15:45:48
-|  Author: Jo2003
-|  Description: clean at destruction
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-CSettingsDlg::~CSettingsDlg()
-{
-   if (pShortApiServer)
-   {
-      delete pShortApiServer;
-      pShortApiServer = NULL;
-   }
+   // disable "minimize to tray" on mac because this isn't supported ...
+#ifdef Q_OS_MAC
+   m_ui->checkHideToSystray->setDisabled(true);
+#endif // Q_OS_MAC
 
-   delete m_ui;
 }
 
 /* -----------------------------------------------------------------\
@@ -169,7 +259,8 @@ CSettingsDlg::~CSettingsDlg()
 void CSettingsDlg::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
-    switch (e->type()) {
+    switch (e->type())
+    {
     case QEvent::LanguageChange:
        {
           // save current index from comboboxes ...
@@ -231,6 +322,28 @@ void CSettingsDlg::slotEnableApiServer()
       m_ui->lineApiServer->setEnabled(true);
    }
 #endif // _IS_OEM
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotEnableVlcVerbLine [slot]
+|  Begin: 08.02.2012
+|  Author: Jo2003
+|  Description: enable / disable libVLC verbose level server line
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotEnableVlcVerbLine()
+{
+   if (m_ui->lineVlcVerbose->isEnabled())
+   {
+      m_ui->lineVlcVerbose->setEnabled(false);
+   }
+   else
+   {
+      m_ui->lineVlcVerbose->setEnabled(true);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -322,6 +435,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("ProxyPasswd", m_ui->lineProxyPassword->text());
    pDb->setValue("ShutdwnCmd", m_ui->lineShutdown->text());
    pDb->setValue("APIServer", m_ui->lineApiServer->text());
+   pDb->setValue("libVlcLogLevel", m_ui->lineVlcVerbose->text());
 
    // check boxes ...
    pDb->setValue("UseProxy", (int)m_ui->useProxy->checkState());
@@ -333,10 +447,14 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
    pDb->setValue("DetachPlayer", (int)m_ui->checkDetach->checkState());
    pDb->setValue("ExtChanList", (int)m_ui->checkExtChanInfo->checkState());
+   pDb->setValue("AdvSet", (int)m_ui->checkAdvanced->checkState());
+   pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
+   pDb->setValue("UpdateCheck", (int)m_ui->checkUpdate->checkState());
+   pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
 
    // combo boxes ...
    pDb->setValue("Language", m_ui->cbxLanguage->currentText());
-   pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->currentText());
+   pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt());
    pDb->setValue("LogLevel", m_ui->cbxLogLevel->currentIndex());
    pDb->setValue("PlayerModule", m_ui->cbxPlayerMod->currentText());
    pDb->setValue("RefIntv", m_ui->cbxInterval->currentText());
@@ -347,6 +465,38 @@ void CSettingsDlg::on_pushSave_clicked()
    {
       pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
       pDb->setShortCut(pGrab->target(), pGrab->slot(), pGrab->shortCutString());
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_checkAdvanced_clicked
+|  Begin: 14.09.2011 / 08:45
+|  Author: Jo2003
+|  Description: enable advanced settings tab
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_checkAdvanced_clicked(bool checked)
+{
+   m_ui->tabWidget->setTabEnabled(2, checked);
+
+   int iIdx = m_ui->cbxBufferSeconds->findData(500);
+
+   if (checked)
+   {
+      if (iIdx < 0)
+      {
+         m_ui->cbxBufferSeconds->insertItem(-1, QString("%1").arg(0.5), 500);
+      }
+   }
+   else
+   {
+      if (iIdx > -1)
+      {
+         m_ui->cbxBufferSeconds->removeItem(iIdx);
+      }
    }
 }
 
@@ -428,6 +578,7 @@ void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
    int iActIdx = 0;
    int iCount  = 0;
    QVector<int>::const_iterator cit;
+   QString sName;
 
 
    m_ui->cbxBitRate->clear();
@@ -435,7 +586,31 @@ void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
    // add all available bitrates ...
    for (cit = vValues.constBegin(); cit != vValues.constEnd(); cit++)
    {
-      m_ui->cbxBitRate->addItem(QString::number(*cit), QVariant(*cit));
+      // build name ...
+      switch (*cit)
+      {
+      case 320:
+         sName = tr("Mobile");
+         break;
+
+      case 900:
+         sName = tr("Eco");
+         break;
+
+      case 1500:
+         sName = tr("Standard");
+         break;
+
+      case 2500:
+         sName = tr("Premium");
+         break;
+
+      default:
+         sName = tr("%1 Kbit/s").arg(*cit);
+         break;
+      }
+
+      m_ui->cbxBitRate->addItem(sName, QVariant(*cit));
 
       if (*cit == iActrate)
       {
@@ -450,39 +625,83 @@ void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnSaveStreamServer_clicked
-|  Begin: 21.01.2010 / 11:22:39
+|  Method: fillTimeShiftCbx
+|  Begin: 14.09.2011 / 09:30
 |  Author: Jo2003
-|  Description: signal set of stream server
+|  Description: fill / mark combobox for timeshift
 |
-|  Parameters: --
+|  Parameters: ref. to timeshift vector, act timeshift
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_btnSaveStreamServer_clicked()
+void CSettingsDlg::fillTimeShiftCbx(const QVector<int> &vVals, int iAct)
 {
-   // which server was choosed ... ?
-   int iSrv  = m_ui->cbxStreamServer->currentIndex();
+   int iActIdx = 0;
+   int iCount  = 0;
+   QVector<int>::const_iterator cit;
 
-   emit sigSetServer(m_ui->cbxStreamServer->itemData(iSrv).toString());
+   m_ui->cbxTimeShift->clear();
+
+   // add all available timeshift values ...
+   for (cit = vVals.constBegin(); cit != vVals.constEnd(); cit++)
+   {
+      m_ui->cbxTimeShift->addItem(QString::number(*cit), QVariant(*cit));
+
+      if (*cit == iAct)
+      {
+         iActIdx = iCount;
+      }
+
+      iCount ++;
+   }
+
+   // mark active rate ...
+   m_ui->cbxTimeShift->setCurrentIndex(iActIdx);
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnSaveBitrate_clicked
-|  Begin: 14.01.2011 / 14:45
+|  Method: on_cbxStreamServer_activated
+|  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
-|  Description: button set bitrate pressed
+|  Description: signal set of stream server
 |
-|  Parameters: --
+|  Parameters: current index
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_btnSaveBitrate_clicked()
+void CSettingsDlg::on_cbxStreamServer_activated(int index)
 {
-   // which bitrate was used ... ?
-   int iRate = m_ui->cbxBitRate->currentIndex();
+   emit sigSetServer(m_ui->cbxStreamServer->itemData(index).toString());
+}
 
-   emit sigSetBitRate(m_ui->cbxBitRate->itemData(iRate).toInt());
+/* -----------------------------------------------------------------\
+|  Method: on_cbxBitRate_activated
+|  Begin: 14.09.2011 / 09:40
+|  Author: Jo2003
+|  Description: set bitrate
+|
+|  Parameters: actual index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_cbxBitRate_activated(int index)
+{
+   emit sigSetBitRate(m_ui->cbxBitRate->itemData(index).toInt());
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_cbxTimeShift_activated
+|  Begin: 14.09.2011 / 09:40
+|  Author: Jo2003
+|  Description: set timeshift
+|
+|  Parameters: actual index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_cbxTimeShift_activated(int index)
+{
+   emit sigSetTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 }
 
 /* -----------------------------------------------------------------\
@@ -761,22 +980,6 @@ void CSettingsDlg::SaveCookie(const QString &str)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SaveOtherSettings
-|  Begin: 18.02.2010 / 11:22:39
-|  Author: Jo2003
-|  Description: write ini file to disk
-|
-|  Parameters: --
-|
-|  Returns:  0 --> ok
-|           -1 --> any error
-\----------------------------------------------------------------- */
-int CSettingsDlg::SaveOtherSettings()
-{
-   return 0; /*IniFile.SaveIni(); */
-}
-
-/* -----------------------------------------------------------------\
 |  Method: slotSplashStateChgd
 |  Begin: 08.03.2010 / 13:22:39
 |  Author: Jo2003
@@ -909,7 +1112,7 @@ vlclog::eLogLevel CSettingsDlg::GetLogLevel()
 
 int CSettingsDlg::GetBufferTime()
 {
-   return m_ui->cbxBufferSeconds->currentText().toInt();
+   return m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt();
 }
 
 QString CSettingsDlg::GetShutdownCmd()
@@ -920,11 +1123,6 @@ QString CSettingsDlg::GetShutdownCmd()
 bool CSettingsDlg::DisableSplashScreen()
 {
    return (pDb->intValue("NoSplash")) ? true : false;
-}
-
-bool CSettingsDlg::regOk()
-{
-   return (hsah(m_ui->lineUser->text()) == m_ui->lineRegData->text()) ? true : false;
 }
 
 int  CSettingsDlg::GetBitRate()
@@ -942,91 +1140,54 @@ bool CSettingsDlg::extChanList()
    return m_ui->checkExtChanInfo->isChecked();
 }
 
+bool CSettingsDlg::checkForUpdate()
+{
+   return m_ui->checkUpdate->isChecked();
+}
+
+int CSettingsDlg::getTimeShift()
+{
+   return m_ui->cbxTimeShift->itemData(m_ui->cbxTimeShift->currentIndex()).toInt();
+}
+
+void CSettingsDlg::saveChannel(int cid)
+{
+   pDb->setValue("lastChan", cid);
+}
+
+int CSettingsDlg::lastChannel()
+{
+   return pDb->intValue("lastChan");
+}
+
+void CSettingsDlg::saveEpgDay(const QString &dateString)
+{
+   pDb->setValue("epgDay", dateString);
+}
+
+QString CSettingsDlg::lastEpgDay()
+{
+   return pDb->stringValue("epgDay");
+}
+
+bool CSettingsDlg::doubleClickToPlay()
+{
+   return m_ui->check2ClicksToPlay->isChecked();
+}
+
+bool CSettingsDlg::useGpuAcc()
+{
+   return m_ui->checkGPUAcc->isChecked();
+}
+
+uint CSettingsDlg::libVlcVerboseLevel()
+{
+   return m_ui->lineVlcVerbose->text().toUInt();
+}
+
 //===================================================================
 // <== return internal stored values
 //===================================================================
-
-/* -----------------------------------------------------------------\
-|  Method: hsah (hash reversed ;-) )
-|  Begin: 23.12.2010 / 11:45
-|  Author: Jo2003
-|  Description: make a hash code
-|
-|  Parameters: string to hash
-|
-|  Returns:  hash
-\----------------------------------------------------------------- */
-QString CSettingsDlg::hsah (const QString &str)
-{
-   int i = 0;
-   QByteArray arr = QCryptographicHash::hash(str.toUtf8(), QCryptographicHash::Md5);
-   QStringList list;
-   QString sTmp(arr.toHex());
-
-   while (i < sTmp.length())
-   {
-      list.push_back(sTmp.mid(i, 8));
-      i += 8;
-   }
-
-   sTmp.clear();
-
-   for (i = 0; i <  list.count(); i++)
-   {
-      sTmp += (i ? QString("-") : QString("")) + reverse(list[i]);
-   }
-
-   return QString(QCryptographicHash::hash(sTmp.toUtf8(), QCryptographicHash::Sha1).toHex());
-}
-
-/* -----------------------------------------------------------------\
-|  Method: reverse
-|  Begin: 23.12.2010 / 11:45
-|  Author: Jo2003
-|  Description: reverse a string
-|
-|  Parameters: ref. to string
-|
-|  Returns:  ref. to string
-\----------------------------------------------------------------- */
-QString& CSettingsDlg::reverse(QString &str)
-{
-   int i, j = 0;
-   QString sTmp = str;
-
-   str.clear();
-
-   for (i = sTmp.count() - 1; i >= 0; i--)
-   {
-      str[j++] = sTmp[i];
-   }
-
-   return str;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: reverse
-|  Begin: 23.12.2010 / 11:45
-|  Author: Jo2003
-|  Description: reverse a string
-|
-|  Parameters: ref. to string
-|
-|  Returns:  ref. to string
-\----------------------------------------------------------------- */
-void CSettingsDlg::on_pushDoRegister_clicked()
-{
-   if (hsah(m_ui->lineUser->text()) != m_ui->lineRegData->text())
-   {
-      if (hsah(m_ui->lineRegData->text()) == MASTER_HASH)
-      {
-         QMessageBox::information(this, tr("Reg Info"), hsah(m_ui->lineUser->text()));
-      }
-   }
-
-   pDb->setValue ("RegUser", m_ui->lineUser->text());
-   pDb->setValue ("RegData", m_ui->lineRegData->text());
-}
 
 /* -----------------------------------------------------------------\
 |  Method: addShortCut
@@ -1122,4 +1283,3 @@ int CSettingsDlg::shortCutCount()
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-
