@@ -18,7 +18,7 @@
    #define APP_NAME          "VLC-Record"
    #define UPD_CHECK_URL     "http://rt.coujo.de/vlc_record_ver.xml"
 #else
-   #define APP_NAME          "Kartina.TV-classic"
+   #define APP_NAME          "VLC-Record-classic"
    #define UPD_CHECK_URL     "http://rt.coujo.de/vlc_record_ver_classic.xml"
 #endif // INCLUDE_LIBVLC
 

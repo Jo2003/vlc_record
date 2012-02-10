@@ -3,8 +3,8 @@ APPNAME=${1}
 TMPFILE=/tmp/plist.tmp
 CONTENTS=$APPNAME.app/Contents
 
-MINORVER=`cat version.mak | awk -F '=' '{if($1 == "MINORVER"){print $2}}'`
-MAJORVER=`cat version.mak | awk -F '=' '{if($1 == "NWMAJORVER"){print $2}}'`
+MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]\+\([^"]\+\).*/\1/p' version_info.h`
+BETAEXT=`sed -n 's/^#define[ \t]*BETA_EXT[^0-9B]\+\([^"]\+\).*/\1/p' version_info.h`
 DATESTR=`date +%Y%m%d`
 cd release
 mkdir -p $CONTENTS/Resources/language
@@ -21,6 +21,6 @@ cp -R ../mac/* $CONTENTS/MacOS
 sed -e "s/$APPNAME.rc/$APPNAME.icns/g" -e "s/yourcompany/Jo2003/g" $CONTENTS/Info.plist >$TMPFILE
 iconv -f ASCII -t UTF-8 $TMPFILE >$CONTENTS/Info.plist
 macdeployqt $APPNAME.app -dmg -verbose=0
-mv $APPNAME.dmg $APPNAME-${MAJORVER}.${MINORVER}-${DATESTR}-mac.dmg
+mv $APPNAME.dmg $APPNAME-2.${MINORVER}${BETAEXT}-${DATESTR}-mac.dmg
 cd ..
 

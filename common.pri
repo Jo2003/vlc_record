@@ -106,6 +106,11 @@ else  {
     else:DESTDIR = release
 }
 
+unix {
+   OTHER_FILES += create_install_mak.sh
+   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
+}
+
 # -------------------------------------
 # add includes if we want to build
 # with included player!

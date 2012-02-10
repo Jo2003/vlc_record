@@ -200,10 +200,10 @@ int CDirStuff::initDirectories()
       // found bin section --> create path names ...
 
       // language path ...
-      sLangDir = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(APP_NAME).arg(LANG_DIR);
+      sLangDir = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(LANG_DIR);
 
       // modules path ...
-      sModDir  = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(APP_NAME).arg(MOD_DIR);
+      sModDir  = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(MOD_DIR);
    }
    else
    {
