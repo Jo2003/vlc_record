@@ -521,7 +521,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="477"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="500"/>
@@ -1370,7 +1370,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="forms/qftsettings.ui" line="17"/>
         <source>%1 First Time Settings</source>
         <oldsource>Kartina.tv First Time Settings</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qftsettings.ui" line="28"/>
@@ -1411,7 +1411,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="qftsettings.cpp" line="168"/>
         <source>%1/Movies</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qftsettings.cpp" line="170"/>
@@ -1424,7 +1424,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="qvlcvideowidget.cpp" line="316"/>
         <source>Activate shortcut: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
