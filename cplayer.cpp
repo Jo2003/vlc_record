@@ -50,6 +50,38 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    bSpoolPending = true;
    uiDuration    = (uint)-1;
    iCycleCount   = 0;
+   mAspect.clear();
+   mCrop.clear();
+
+   QStringList slKey, slVal;
+   int i;
+
+   // aspect ratio ...
+   slKey << "std" << "1:1" << "4:3" << "16:9" << "16:10" << "2.21:1"  << "5:4";
+   slVal << ""    << "1:1" << "4:3" << "16:9" << "16:10" << "221:100" << "5:4";
+
+   for (i = 0; i < slKey.size(); i++)
+   {
+      mAspect.insert(slKey.value(i), slVal.value(i));
+   }
+
+   ui->cbxAspect->clear();
+   ui->cbxAspect->insertItems(0, slKey);
+
+   // crop geometry ...
+   slKey.clear();
+   slVal.clear();
+
+   slKey << "std" << "1:1" << "4:3" << "16:9" << "16:10" << "1.85:1"  << "2.21:1"  << "2.35:1"  << "2.39:1"  << "5:4";
+   slVal << ""    << "1:1" << "4:3" << "16:9" << "16:10" << "185:100" << "221:100" << "235:100" << "239:100" << "5:4";
+
+   for (i = 0; i < slKey.size(); i++)
+   {
+      mCrop.insert(slKey.value(i), slVal.value(i));
+   }
+
+   ui->cbxCrop->clear();
+   ui->cbxCrop->insertItems(0, slKey);
 
    // set log poller to single shot ...
    poller.setSingleShot(true);
@@ -778,7 +810,7 @@ void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
       QString sAspect, sCrop;
 
       // set new aspect ratio ...
-      libvlc_video_set_aspect_ratio(pMediaPlayer, str.toAscii().data());
+      libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(str).toUtf8().constData());
 
       // save aspect if changed ...
       pDb->aspect(showInfo.channelId(), sAspect, sCrop);
@@ -811,7 +843,7 @@ void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
       QString sAspect, sCrop;
 
       // set new aspect ratio ...
-      libvlc_video_set_crop_geometry(pMediaPlayer, str.toAscii().data());
+      libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(str).toUtf8().constData());
 
       // save crop if changed ...
       pDb->aspect(showInfo.channelId(), sAspect, sCrop);
@@ -1058,7 +1090,7 @@ void CPlayer::slotStoredAspectCrop ()
       {
          // since values don't differ, updating combobox will not
          // trigger format change. So set it directly to libVLC ...
-         libvlc_video_set_aspect_ratio(pMediaPlayer, sAspect.toAscii().data());
+         libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(sAspect).toUtf8().constData());
       }
 
       // change combo box value for crop ratio ...
@@ -1075,7 +1107,7 @@ void CPlayer::slotStoredAspectCrop ()
       {
          // since values don't differ, updating combobox will not
          // trigger format change. So set it directly to libVLC ...
-         libvlc_video_set_crop_geometry(pMediaPlayer, sCrop.toAscii().data());
+         libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(sCrop).toUtf8().constData());
       }
    }
 }

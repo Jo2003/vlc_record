@@ -20,6 +20,7 @@
 #include <QEvent>
 #include <QTime>
 #include <QDesktopWidget>
+#include <QMap>
 
 #include <vlc/vlc.h>
 
@@ -94,6 +95,8 @@ private:
    bool                    bSpoolPending;
    uint                    uiDuration;
    int                     iCycleCount;
+   QMap<QString, QString>  mAspect;
+   QMap<QString, QString>  mCrop;
 
 private slots:
    void on_posSlider_valueChanged(int value);
