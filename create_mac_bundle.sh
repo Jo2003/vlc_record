@@ -3,8 +3,8 @@ APPNAME=${1}
 TMPFILE=/tmp/plist.tmp
 CONTENTS=$APPNAME.app/Contents
 
-MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]\+\([^"]\+\).*/\1/p' version_info.h`
-BETAEXT=`sed -n 's/^#define[ \t]*BETA_EXT[^0-9B]\+\([^"]\+\).*/\1/p' version_info.h`
+MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]*\([^"]*\).*/\1/p' version_info.h`
+BETAEXT=`sed -n 's/^#define[ \t]*BETA_EXT[^0-9B]*\([^"]*\).*/\1/p' version_info.h`
 DATESTR=`date +%Y%m%d`
 cd release
 mkdir -p $CONTENTS/Resources/language
