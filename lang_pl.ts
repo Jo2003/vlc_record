@@ -546,48 +546,48 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="446"/>
+        <location filename="cplayer.cpp" line="478"/>
         <source>Use following URL:
   --&gt; %1</source>
         <translation>Użyj następującego URL:
   --&gt; %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="454"/>
-        <location filename="cplayer.cpp" line="471"/>
-        <location filename="cplayer.cpp" line="488"/>
+        <location filename="cplayer.cpp" line="486"/>
+        <location filename="cplayer.cpp" line="503"/>
+        <location filename="cplayer.cpp" line="520"/>
         <source>Add MRL Option: %1</source>
         <translation>Dodaj opcję MRL: %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="477"/>
+        <location filename="cplayer.cpp" line="509"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="500"/>
+        <location filename="cplayer.cpp" line="532"/>
         <source>Can&apos;t create media description ...</source>
         <translation>Nie można utworzyć opisu pliku multimedialnego …</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="698"/>
+        <location filename="cplayer.cpp" line="730"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation>Otrzymano nieznane wydarzenie nr %1  ...</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="743"/>
+        <location filename="cplayer.cpp" line="775"/>
         <source>Name: &quot;%1&quot;, Type: &quot;%2&quot;, Severity: %3
   --&gt; %4</source>
         <translation>Nazwa: &quot;%1&quot;, Typ: &quot;%2&quot;, Ważność: %3
   --&gt; %4</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="792"/>
+        <location filename="cplayer.cpp" line="824"/>
         <source>Aspect ratio: %1</source>
         <translation>Współczynnik kształtu obrazu: %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="825"/>
+        <location filename="cplayer.cpp" line="857"/>
         <source>Crop ratio: %1</source>
         <translation>Współczynnik proporcji kadru: %1</translation>
     </message>
@@ -606,12 +606,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Nie można przełączyć na tryb pełnoekranowy, jeśli nie ma wideo do odtwarzania!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1110"/>
+        <location filename="cplayer.cpp" line="1142"/>
         <source>Ignore slightly slider position change...</source>
         <translation>Zignoruj lekko zmienioną pozycję suwaka…</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1204"/>
+        <location filename="cplayer.cpp" line="1236"/>
         <source>Film length: %1ms.</source>
         <translation>Długość filmu: %1ms.</translation>
     </message>

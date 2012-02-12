@@ -16,7 +16,7 @@
 #include <QTextStream>
 #include <QString>
 #ifdef INCLUDE_LIBVLC
-   #include <vlc/libvlc_version.h>
+   #include <vlc/vlc.h>
 #endif
 #include <version_info.h>
 #include "csettingsdlg.h"

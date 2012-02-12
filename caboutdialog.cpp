@@ -107,7 +107,7 @@ void CAboutDialog::FillInfo(QString sExpires)
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Version:")).arg(__MY__VERSION__) << endl
 #ifdef INCLUDE_LIBVLC
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("libVLC:"))
-             .arg(QString("%1.%2.%3").arg(LIBVLC_VERSION_MAJOR).arg(LIBVLC_VERSION_MINOR).arg(LIBVLC_VERSION_REVISION)) << endl
+             .arg(QString("%1").arg(libvlc_get_version())) << endl
 #endif
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>").arg(tr("Author:")) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>").arg(tr("Inspired by:")) << endl
