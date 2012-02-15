@@ -81,14 +81,12 @@ protected:
 
 private:
    Ui::CPlayer            *ui;
-   QTimer                  poller;
    QTimer                  sliderTimer;
    QTimer                  tAspectShot;
    CTimerEx                timer;
    libvlc_instance_t      *pVlcInstance;
    libvlc_media_player_t  *pMediaPlayer;
    libvlc_event_manager_t *pEMPlay;
-   libvlc_log_t           *pLibVlcLog;
    bool                    bCtrlStream;
    CSettingsDlg           *pSettings;
    CWaitTrigger           *pTrigger;
@@ -105,7 +103,6 @@ private slots:
    void on_cbxAspect_currentIndexChanged(QString str);
    void on_cbxCrop_currentIndexChanged(QString str);
    void slotChangeVolume(int newVolume);
-   void slotLibVLCLog ();
    void slotUpdateSlider ();
 
 public slots:

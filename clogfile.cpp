@@ -22,6 +22,7 @@
 |  Returns: --
 \----------------------------------------------------------------- */
 CLogFile::CLogFile (const QString &sDir, const QString &sFile, vlclog::eLogLevel ll)
+   : bInit(false)
 {
    level     = ll;
    sDirName  = sDir;
@@ -42,10 +43,9 @@ CLogFile::CLogFile (const QString &sDir, const QString &sFile, vlclog::eLogLevel
 \----------------------------------------------------------------- */
 CLogFile::~CLogFile()
 {
-   // nothing to do ...
-   if (logFile.isOpen())
+   if (bInit)
    {
-      logFile.close();
+      fclose(stderr);
    }
 }
 
@@ -64,13 +64,11 @@ void CLogFile::TouchLogFile ()
    // truncate log file ...
    if ((sDirName != "") && (sFileName != "") && (level > vlclog::LOG_NOTHING))
    {
-      if (logFile.isOpen())
+      if (!bInit)
       {
-         logFile.close();
+         QString file = QString("%1/%2").arg(sDirName).arg(sFileName);
+         bInit        = freopen(file.toUtf8().constData(), "w", stderr) ? true : false;
       }
-
-      logFile.setFileName(QString("%1/%2").arg(sDirName).arg(sFileName));
-      logFile.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
    }
 }
 
@@ -105,11 +103,7 @@ void CLogFile::SetLogFile (const QString &sDir, const QString &sFile)
 void CLogFile::SetLogLevel(vlclog::eLogLevel ll)
 {
    level = ll;
-
-   if (!logFile.isOpen())
-   {
-      TouchLogFile();
-   }
+   TouchLogFile();
 }
 
 /* -----------------------------------------------------------------\
@@ -124,10 +118,10 @@ void CLogFile::SetLogLevel(vlclog::eLogLevel ll)
 \----------------------------------------------------------------- */
 void CLogFile::WriteLog(const QString &str)
 {
-   if (logFile.isOpen())
+   if (bInit)
    {
       mutex.lock();
-      QTextStream stream(&logFile);
+      QTextStream stream(stderr);
       stream.setCodec("UTF-8");
       stream << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss.zzz") << ": " << str << endl;
       mutex.unlock();

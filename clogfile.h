@@ -12,11 +12,11 @@
 #ifndef __011910__CLOGFILE_H
    #define __011910__CLOGFILE_H
 
-#include <QFile>
 #include <QString>
 #include <QMutex>
 #include <QTextStream>
 #include <QDateTime>
+#include <cstdio>
 
 //===================================================================
 // some macros to make logging easier ...
@@ -64,12 +64,12 @@ public:
    vlclog::eLogLevel GetLogLevel ();
 
 private:
+   bool bInit;
    vlclog::eLogLevel level;
    void    WriteLog (const QString &str);
    void    TouchLogFile ();
    QString sFileName;
    QString sDirName;
-   QFile   logFile;
    QMutex  mutex;
 };
 

@@ -39,11 +39,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 {
    ui->setupUi(this);
 
-   // nothing playing so far ...
    pMediaPlayer  = NULL;
    pVlcInstance  = NULL;
    pEMPlay       = NULL;
-   pLibVlcLog    = NULL;
    pSettings     = NULL;
    pTrigger      = NULL;
    bCtrlStream   = false;
@@ -83,9 +81,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    ui->cbxCrop->clear();
    ui->cbxCrop->insertItems(0, slKey);
 
-   // set log poller to single shot ...
-   poller.setSingleShot(true);
-
    // set aspect shot timer to single shot ...
    tAspectShot.setSingleShot (true);
    tAspectShot.setInterval (800);
@@ -99,16 +94,13 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    // connect slider timer with slider position slot ...
    connect(&sliderTimer, SIGNAL(timeout()), this, SLOT(slotUpdateSlider()));
 
-   // do periodical logging ...
-   connect(&poller, SIGNAL(timeout()), this, SLOT(slotLibVLCLog()));
-
    // connect aspect shot timer with aspect change function ...
    connect(&tAspectShot, SIGNAL(timeout()), this, SLOT(slotStoredAspectCrop()));
 
    // connect aspect trigger signal with timer start ...
    connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
 
-   poller.start(1000);
+   // poller.start(1000);
    sliderTimer.start(1000);
 
    // hide slider ...
@@ -128,7 +120,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 CPlayer::~CPlayer()
 {
    // stop timer ...
-   poller.stop();
    sliderTimer.stop();
 
    stop();
@@ -136,13 +127,6 @@ CPlayer::~CPlayer()
    if (pMediaPlayer)
    {
       libvlc_media_player_release (pMediaPlayer);
-   }
-
-   // close log if opened ...
-   if (pLibVlcLog)
-   {
-      libvlc_log_close (pLibVlcLog);
-      pLibVlcLog = NULL;
    }
 
    if (pVlcInstance)
@@ -234,41 +218,56 @@ void CPlayer::setTrigger(CWaitTrigger *pTrig)
 \----------------------------------------------------------------- */
 int CPlayer::initPlayer()
 {
-   int          iRV  = -1;
-   int          argc = 0;
-   const char **argv = NULL;
+   int          iRV     = -1;
+   int          argc    = 0;
+   const char **argv    = NULL;
+   const char  *pVerbose;
+
+   // set verbose mode ...
+   if (pSettings->libVlcVerboseLevel() <= 0)
+   {
+      pVerbose = "--verbose=0";
+   }
+   else if (pSettings->libVlcVerboseLevel() >= 2)
+   {
+      pVerbose = "--verbose=2";
+   }
+   else
+   {
+      pVerbose = "--verbose=1";
+   }
 
    // reset crop and aspect cbx ... because it should show the state
    // as used ...
    ui->cbxAspect->setCurrentIndex(0);
    ui->cbxCrop->setCurrentIndex(0);
 
-   //create a new libvlc instance
-#ifdef Q_WS_MAC
-   // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
+   // create a new libvlc instance ...
    const char *vlc_args[] = {
-      "--vout=macosx",
-      // "--opengl-provider=macosx",
-      // "-v"
+      "--ignore-config",
+      "--intf=dummy",
+      "--no-media-library",
+      pVerbose,
+#ifdef Q_WS_MAC
+      // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
+      // "--opengl-provider=macosx"
+      "--vout=macosx"
+#endif
    };
 
    argc = sizeof(vlc_args) / sizeof(vlc_args[0]);
    argv = vlc_args;
-#endif
+
 
    pVlcInstance = libvlc_new(argc, argv);
 
    if (pVlcInstance)
    {
-      // set verbose mode ...
-      libvlc_set_log_verbosity (pVlcInstance, pSettings->libVlcVerboseLevel());
-
-      // get logger and mediaplayer ...
-      pLibVlcLog   = libvlc_log_open(pVlcInstance);
+      // get mediaplayer ...
       pMediaPlayer = libvlc_media_player_new (pVlcInstance);
    }
 
-   if (pLibVlcLog && pMediaPlayer)
+   if (pMediaPlayer)
    {
       // add player to window ...
       connectToVideoWidget();
@@ -730,67 +729,6 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
       mInfo(tr("Unknown Event No. %1 received ...").arg(ev->type));
       break;
    }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotDoLog
-|  Begin: 02.03.2010 / 08:30:10
-|  Author: Jo2003
-|  Description: check libvlc_log for new entries in write into
-|               log file
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::slotLibVLCLog()
-{
-   // do we have a logger handle ... ?
-   if (pLibVlcLog)
-   {
-      // how many entries in log ... ?
-      uint uiEntryCount = libvlc_log_count (pLibVlcLog);
-
-      // no error and entries there ...
-      if (uiEntryCount > 0)
-      {
-         // log message buffer ...
-         libvlc_log_message_t   logMsg;
-         libvlc_log_message_t  *pLogMsg;
-
-         // get iterator to go through log entries ...
-         libvlc_log_iterator_t *it = libvlc_log_get_iterator(pLibVlcLog);
-
-         // do we have an iterator ... ?
-         if (it)
-         {
-            // while there are entries in log ...
-            while (libvlc_log_iterator_has_next(it))
-            {
-               // get log message presented by log iterator ...
-               pLogMsg = libvlc_log_iterator_next (it, &logMsg);
-
-               if (pLogMsg)
-               {
-                  // build log message ...
-                  mInfo(tr("Name: \"%1\", Type: \"%2\", Severity: %3\n  --> %4")
-                         .arg(QString::fromUtf8(pLogMsg->psz_name))
-                         .arg(QString::fromUtf8(pLogMsg->psz_type))
-                         .arg(pLogMsg->i_severity)
-                         .arg(QString::fromUtf8(pLogMsg->psz_message)));
-               }
-            }
-
-            // free log iterator ...
-            libvlc_log_iterator_free (it);
-         }
-
-         // delete all log entries ...
-         libvlc_log_clear(pLibVlcLog);
-      }
-   }
-
-   // check log again in a second ...
-   poller.start(1000);
 }
 
 /* -----------------------------------------------------------------\
