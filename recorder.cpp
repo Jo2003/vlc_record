@@ -147,11 +147,11 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    timeRec.SetStreamLoader(&streamLoader);
 
    // hide / remove VOD tab widget ...
-   vodTabWidget.iPos    = 1;
-   vodTabWidget.icon    = ui->tabEpgVod->tabIcon(1);
-   vodTabWidget.sText   = ui->tabEpgVod->tabText(1);
-   vodTabWidget.pWidget = ui->tabEpgVod->widget(1);
-   ui->tabEpgVod->removeTab(1);
+   vodTabWidget.iPos    = 1;  // index of VOD tab
+   vodTabWidget.icon    = ui->tabEpgVod->tabIcon(vodTabWidget.iPos);
+   vodTabWidget.sText   = ui->tabEpgVod->tabText(vodTabWidget.iPos);
+   vodTabWidget.pWidget = ui->tabEpgVod->widget(vodTabWidget.iPos);
+   ui->tabEpgVod->removeTab(vodTabWidget.iPos);
 
 #ifdef INCLUDE_LIBVLC
    // do we use libVLC ?
@@ -1461,7 +1461,7 @@ void Recorder::slotCookie (QString str)
       // decide if we should enable / disable VOD stuff ...
       if (accountInfo.bHasVOD)
       {
-         if (!ui->tabEpgVod->widget(1))
+         if (!ui->tabEpgVod->widget(vodTabWidget.iPos))
          {
             // make sure tab text is translated as needed
             QString title = pTranslator->translate(objectName().toUtf8().constData(),
@@ -1474,12 +1474,12 @@ void Recorder::slotCookie (QString str)
       }
       else
       {
-         if (ui->tabEpgVod->widget(1))
+         if (ui->tabEpgVod->widget(vodTabWidget.iPos))
          {
             // make sure the widget we want to remove
             // is not the active one ...
             ui->tabEpgVod->setCurrentIndex(0);
-            ui->tabEpgVod->removeTab(1);
+            ui->tabEpgVod->removeTab(vodTabWidget.iPos);
          }
       }
 
