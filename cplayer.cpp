@@ -247,6 +247,7 @@ int CPlayer::initPlayer()
       "--ignore-config",
       "--intf=dummy",
       "--no-media-library",
+      "--no-osd",
       pVerbose,
 #ifdef Q_WS_MAC
       // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
