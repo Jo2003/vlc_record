@@ -33,43 +33,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxAspect">
-       <item>
-        <property name="text">
-         <string>std.</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>4:3</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>16:9</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>16:10</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>1:1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>5:4</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2.35</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="cbxAspect"/>
      </item>
      <item>
       <widget class="QLabel" name="label">
@@ -79,43 +43,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxCrop">
-       <item>
-        <property name="text">
-         <string>std.</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>4:3</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>16:9</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>16:10</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>1:1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>5:4</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>2.35</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="cbxCrop"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
