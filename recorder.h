@@ -95,6 +95,14 @@ namespace Ui
        QString sContent;
        int     iScrollBarVal;
     };
+
+    struct STabWidget
+    {
+       QString  sText;
+       QIcon    icon;
+       int      iPos;
+       QWidget *pWidget;
+    };
 }
 
 /********************************************************************\
@@ -152,6 +160,7 @@ private:
     QNetworkAccessManager          *pUpdateChecker;
     Ui::SVodSite                    lastVodSite;
     QMap<uint, epg::SShow>          archProgMap;
+    Ui::STabWidget                  vodTabWidget;
 
 protected:
     void fillShortCutTab();
