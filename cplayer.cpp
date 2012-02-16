@@ -222,6 +222,7 @@ int CPlayer::initPlayer()
    int          argc    = 0;
    const char **argv    = NULL;
    const char  *pVerbose;
+   QStringList  slOpts;
 
    // set verbose mode ...
    if (pSettings->libVlcVerboseLevel() <= 0)
@@ -248,17 +249,23 @@ int CPlayer::initPlayer()
       "--intf=dummy",
       "--no-media-library",
       "--no-osd",
-      pVerbose,
-#ifdef Q_WS_MAC
+   #ifdef Q_WS_MAC
       // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
       // "--opengl-provider=macosx"
-      "--vout=macosx"
-#endif
+      "--vout=macosx",
+   #endif
+      pVerbose
    };
 
    argc = sizeof(vlc_args) / sizeof(vlc_args[0]);
    argv = vlc_args;
 
+   for (int i = 0; i < argc; i++)
+   {
+      slOpts.append(argv[i]);
+   }
+
+   mInfo(tr("Create libVLC with following global options:\n %1").arg(slOpts.join(" ")));
 
    pVlcInstance = libvlc_new(argc, argv);
 
@@ -510,11 +517,21 @@ int CPlayer::playMedia(const QString &sCmdLine)
                libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
             }
          }
-         ///////////////////////////////////////////////////////////////////////////
-         // end proxy server ...
-         ///////////////////////////////////////////////////////////////////////////
 
-         // add mrl options ...
+         ///////////////////////////////////////////////////////////////////////////
+         // timeshift stuff ...
+         ///////////////////////////////////////////////////////////////////////////
+         sMrl = QString(":input-timeshift-path='%1'").arg(QDir::tempPath());
+         mInfo(tr("Add MRL Option: %1").arg(sMrl));
+         libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+         sMrl = QString(":input-timeshift-granularity=%1").arg((int)(1.5 * 1024.0 * 1024.0 * 1024.0)); // 1.5GB
+         mInfo(tr("Add MRL Option: %1").arg(sMrl));
+         libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+         ///////////////////////////////////////////////////////////////////////////
+         // further mrl options from player module file ...
+         ///////////////////////////////////////////////////////////////////////////
          for (cit = lArgs.constBegin(); cit != lArgs.constEnd(); cit ++)
          {
             mInfo(tr("Add MRL Option: %1").arg(*cit));

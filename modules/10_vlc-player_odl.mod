@@ -48,8 +48,8 @@ FORCE_MUX    = <<no>>
 ;-------------------------------------------------------------------------------
 DOWN_FIRST   = <<yes>>
 
-LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
+LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=1610612736 --no-http-reconnect --http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=1610612736 --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
 LIVE_REC     = <<"{[%PLAYER%]}" "{[%DST%]}.{[%MUX%]}" --file-caching=0>>
 ARCH_REC     = <<>>
 LIVE_SIL_REC = <<>>

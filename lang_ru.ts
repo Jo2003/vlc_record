@@ -504,7 +504,16 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="496"/>
+        <location filename="cplayer.cpp" line="268"/>
+        <source>Create libVLC with following global options:
+ %1</source>
+        <oldsource>Create libVLC with following global options:
+ %1
+</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cplayer.cpp" line="485"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -512,44 +521,46 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="504"/>
-        <location filename="cplayer.cpp" line="521"/>
-        <location filename="cplayer.cpp" line="538"/>
+        <location filename="cplayer.cpp" line="493"/>
+        <location filename="cplayer.cpp" line="510"/>
+        <location filename="cplayer.cpp" line="525"/>
+        <location filename="cplayer.cpp" line="529"/>
+        <location filename="cplayer.cpp" line="537"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="527"/>
+        <location filename="cplayer.cpp" line="516"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="550"/>
+        <location filename="cplayer.cpp" line="549"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="748"/>
+        <location filename="cplayer.cpp" line="747"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="844"/>
+        <location filename="cplayer.cpp" line="780"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="877"/>
+        <location filename="cplayer.cpp" line="813"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1162"/>
+        <location filename="cplayer.cpp" line="1098"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1256"/>
+        <location filename="cplayer.cpp" line="1192"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -564,60 +575,17 @@ p, li { white-space: pre-wrap; }
         <translation>Формат изображения: </translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="39"/>
-        <location filename="forms/cplayer.ui" line="85"/>
-        <source>std.</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="44"/>
-        <location filename="forms/cplayer.ui" line="90"/>
-        <source>4:3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="49"/>
-        <location filename="forms/cplayer.ui" line="95"/>
-        <source>16:9</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="54"/>
-        <location filename="forms/cplayer.ui" line="100"/>
-        <source>16:10</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="59"/>
-        <location filename="forms/cplayer.ui" line="105"/>
-        <source>1:1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="64"/>
-        <location filename="forms/cplayer.ui" line="110"/>
-        <source>5:4</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="69"/>
-        <location filename="forms/cplayer.ui" line="115"/>
-        <source>2.35</source>
-        <oldsource>2.3</oldsource>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/cplayer.ui" line="77"/>
+        <location filename="forms/cplayer.ui" line="41"/>
         <source>Crop: </source>
         <translation>Размер кадра:</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="205"/>
+        <location filename="forms/cplayer.ui" line="133"/>
         <source>Switch to Fullscreen</source>
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="327"/>
+        <location filename="forms/cplayer.ui" line="255"/>
         <source>0:00:00</source>
         <translation></translation>
     </message>
@@ -956,12 +924,12 @@ p, li { white-space: pre-wrap; }
         <translation>GPU декодирует видео</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="694"/>
+        <location filename="forms/csettingsdlg.ui" line="700"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="714"/>
+        <location filename="forms/csettingsdlg.ui" line="720"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -1416,7 +1384,7 @@ or start time is later than end time!</source>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="316"/>
+        <location filename="qvlcvideowidget.cpp" line="320"/>
         <source>Activate shortcut: %1</source>
         <translation type="unfinished"></translation>
     </message>

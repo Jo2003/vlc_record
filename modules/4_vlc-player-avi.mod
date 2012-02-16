@@ -43,8 +43,8 @@ TRANSLIT     = <<no>>
 ;-------------------------------------------------------------------------------
 FORCE_MUX    = <<avi>>
 
-LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --http-caching={[%CACHE%]}>>
-ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=4096 --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
+LIVE_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=1610612736 --no-http-reconnect --http-caching={[%CACHE%]}>>
+ARCH_PLAY    = <<"{[%PLAYER%]}" {[%URL%]} --input-timeshift-path='{[%TMP%]}' --input-timeshift-granularity=1610612736 --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]}>>
 LIVE_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
 ARCH_REC     = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --run-time=36000 --http-caching={[%CACHE%]} --sout="#duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}">>
 LIVE_SIL_REC = <<"{[%PLAYER%]}" {[%URL%]} --no-http-reconnect --http-caching={[%CACHE%]} --sout="#std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}">>
