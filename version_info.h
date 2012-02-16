@@ -51,6 +51,8 @@
 | - hide VOD if not supported by account
 | - activate proxy server for libVLC
 |
+| ------ merge into trunk again ------
+|
 | 2011-12-01: Version 2.50
 | - add new bitrate "mobile"
 | - update shortinfo / slider / progress on archive play
