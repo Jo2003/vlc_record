@@ -105,6 +105,7 @@ private slots:
    void slotChangeVolume(int newVolume);
    void slotUpdateSlider ();
    void slotChangeVolumeDelta (const bool up);
+   void slotSiderClickNGo(int newPos);
 
 public slots:
    int  playMedia (const QString &sCmdLine);

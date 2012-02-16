@@ -120,7 +120,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    win32:INCLUDEPATH += include
 
    HEADERS += cplayer.h \
-        qvlcvideowidget.h
+        qvlcvideowidget.h \
+        qclickandgoslider.h
    FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
    SOURCES += qvlcvideowidget.cpp \

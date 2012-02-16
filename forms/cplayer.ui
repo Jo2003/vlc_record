@@ -161,7 +161,7 @@
       <number>2</number>
      </property>
      <item>
-      <widget class="QSlider" name="posSlider">
+      <widget class="QClickAndGoSlider" name="posSlider">
        <property name="enabled">
         <bool>false</bool>
        </property>
@@ -266,6 +266,11 @@ color: white;
    <extends>QWidget</extends>
    <header>qvlcvideowidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QClickAndGoSlider</class>
+   <extends>QSlider</extends>
+   <header>qclickandgoslider.h</header>
   </customwidget>
  </customwidgets>
  <resources>

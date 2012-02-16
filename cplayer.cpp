@@ -103,6 +103,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    // connect aspect trigger signal with timer start ...
    connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
 
+   // connect slider click'n'Go ...
+   connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSiderClickNGo(int)));
+
    // poller.start(1000);
    sliderTimer.start(1000);
 
@@ -1176,6 +1179,34 @@ void CPlayer::on_posSlider_valueChanged(int value)
 
          ui->labPos->setText(QTime(0, 0).addSecs(value).toString("hh:mm:ss"));
       }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSiderClickNGo [slot]
+|  Begin: 16.02.2012
+|  Author: Jo2003
+|  Description: update position label to relect
+|               slider position change
+|  Parameters: actual slider position
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotSiderClickNGo(int newPos)
+{
+   if (isPlaying() && bCtrlStream)
+   {
+      if (isPositionable())
+      {
+         newPos = newPos / 1000; // ms ...
+      }
+      else
+      {
+         newPos  = mToGmt(newPos);
+         newPos -= showInfo.starts();
+      }
+
+      ui->labPos->setText(QTime(0, 0).addSecs(newPos).toString("hh:mm:ss"));
    }
 }
 
