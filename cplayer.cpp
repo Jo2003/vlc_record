@@ -370,7 +370,7 @@ void CPlayer::slotChangeVolumeDelta(const bool up)
       int iVol = libvlc_audio_get_volume(pMediaPlayer);
 #ifdef Q_OS_MACX
       // mighty mouse may act to fast ...
-      iVol    += up ? 2 : -2;
+      iVol    += up ? 1 : -1;
 #else
       iVol    += up ? 5 : -5;
 #endif
