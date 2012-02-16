@@ -45,10 +45,6 @@ QFTSettings::QFTSettings(QWidget *parent, QTranslator *pTrans) :
     s = windowTitle();
     setWindowTitle(s.arg(COMPANY_NAME));
 
-    // set default user and password ...
-    ui->lineUsr->setText("144");
-    ui->linePass->setText("441");
-
     // fill language box ...
     QDir        folder(pFolders->getLangDir());
     QStringList sl = folder.entryList(QStringList("*.qm"), QDir::Files, QDir::Name);
@@ -205,8 +201,6 @@ void QFTSettings::on_pushReset_clicked()
 {
    ui->checkAdult->setCheckState(Qt::Unchecked);
    ui->lineErosPass->setText("");
-   ui->lineUsr->setText("144");
-   ui->linePass->setText("441");
 }
 
 //---------------------------------------------------------------------------

@@ -1351,7 +1351,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="forms/qftsettings.ui" line="63"/>
-        <location filename="forms/qftsettings.ui" line="84"/>
+        <location filename="forms/qftsettings.ui" line="87"/>
         <source>Password: </source>
         <translation>Passwort: </translation>
     </message>
@@ -1361,22 +1361,22 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Erlaube Erotik-Kanäle</translation>
     </message>
     <message>
-        <location filename="forms/qftsettings.ui" line="109"/>
+        <location filename="forms/qftsettings.ui" line="112"/>
         <source>&amp;Reset</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qftsettings.ui" line="132"/>
+        <location filename="forms/qftsettings.ui" line="135"/>
         <source>&amp;Save</source>
         <translation>&amp;Speichern</translation>
     </message>
     <message>
-        <location filename="qftsettings.cpp" line="168"/>
+        <location filename="qftsettings.cpp" line="164"/>
         <source>%1/Movies</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qftsettings.cpp" line="170"/>
+        <location filename="qftsettings.cpp" line="166"/>
         <source>%1/Videos</source>
         <translation></translation>
     </message>
