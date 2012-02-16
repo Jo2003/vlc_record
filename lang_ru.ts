@@ -513,7 +513,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="517"/>
+        <location filename="cplayer.cpp" line="522"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -521,46 +521,46 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="525"/>
-        <location filename="cplayer.cpp" line="542"/>
-        <location filename="cplayer.cpp" line="557"/>
-        <location filename="cplayer.cpp" line="561"/>
-        <location filename="cplayer.cpp" line="569"/>
+        <location filename="cplayer.cpp" line="530"/>
+        <location filename="cplayer.cpp" line="547"/>
+        <location filename="cplayer.cpp" line="562"/>
+        <location filename="cplayer.cpp" line="566"/>
+        <location filename="cplayer.cpp" line="574"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="548"/>
+        <location filename="cplayer.cpp" line="553"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="581"/>
+        <location filename="cplayer.cpp" line="586"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="779"/>
+        <location filename="cplayer.cpp" line="784"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="812"/>
+        <location filename="cplayer.cpp" line="817"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="845"/>
+        <location filename="cplayer.cpp" line="850"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1130"/>
+        <location filename="cplayer.cpp" line="1135"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1252"/>
+        <location filename="cplayer.cpp" line="1257"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>

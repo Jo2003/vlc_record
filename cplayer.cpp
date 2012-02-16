@@ -368,7 +368,12 @@ void CPlayer::slotChangeVolumeDelta(const bool up)
    if (pMediaPlayer)
    {
       int iVol = libvlc_audio_get_volume(pMediaPlayer);
+#ifdef Q_OS_MACX
+      // mighty mouse may act to fast ...
+      iVol    += up ? 2 : -2;
+#else
       iVol    += up ? 5 : -5;
+#endif
       iVol     = (iVol > 100) ? 100 : ((iVol < 0) ? 0 : iVol);
 
       if (iVol != ui->volSlider->value())
@@ -553,7 +558,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
          ///////////////////////////////////////////////////////////////////////////
          // timeshift stuff ...
          ///////////////////////////////////////////////////////////////////////////
-         sMrl = QString(":input-timeshift-path='%1'").arg(QDir::tempPath());
+         sMrl = QString(":input-timeshift-path=%1").arg(QDir::tempPath());
          mInfo(tr("Add MRL Option: %1").arg(sMrl));
          libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
 
