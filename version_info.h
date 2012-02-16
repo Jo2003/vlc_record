@@ -39,6 +39,17 @@
 /************************* History ***************************\
 | --- new since last version ---
 | - add hardware acceleration switch in settings
+| - add mac support (with some limitations)
+| - change fullscreen stuff (simplification)
+| - grab libVLC logging info from stderr
+| - prepare for other projects (Kartina.TV, Afrobox, Polsky.TV)
+| - VLC-Record project is back
+| - many changes to simplify package creation
+| - mouse wheel changes volume when in videoWidget
+| - fix problems in timeshift stuff (pause handling)
+| - fix mouse hiding in fullscreen mode
+| - hide VOD if not supported by account
+| - activate proxy server for libVLC
 |
 | 2011-12-01: Version 2.50
 | - add new bitrate "mobile"
