@@ -504,7 +504,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="268"/>
+        <location filename="cplayer.cpp" line="271"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -513,7 +513,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="485"/>
+        <location filename="cplayer.cpp" line="514"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -521,46 +521,46 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="493"/>
-        <location filename="cplayer.cpp" line="510"/>
-        <location filename="cplayer.cpp" line="525"/>
-        <location filename="cplayer.cpp" line="529"/>
-        <location filename="cplayer.cpp" line="537"/>
+        <location filename="cplayer.cpp" line="522"/>
+        <location filename="cplayer.cpp" line="539"/>
+        <location filename="cplayer.cpp" line="554"/>
+        <location filename="cplayer.cpp" line="558"/>
+        <location filename="cplayer.cpp" line="566"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="516"/>
+        <location filename="cplayer.cpp" line="545"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="549"/>
+        <location filename="cplayer.cpp" line="578"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="747"/>
+        <location filename="cplayer.cpp" line="776"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="780"/>
+        <location filename="cplayer.cpp" line="809"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="813"/>
+        <location filename="cplayer.cpp" line="842"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1098"/>
+        <location filename="cplayer.cpp" line="1127"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1192"/>
+        <location filename="cplayer.cpp" line="1221"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -1384,7 +1384,7 @@ or start time is later than end time!</source>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="320"/>
+        <location filename="qvlcvideowidget.cpp" line="328"/>
         <source>Activate shortcut: %1</source>
         <translation type="unfinished"></translation>
     </message>

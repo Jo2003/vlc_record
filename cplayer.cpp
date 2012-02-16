@@ -91,6 +91,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    // connect double click signal from videoframe with fullscreen toggle ...
    connect(ui->videoWidget, SIGNAL(fullScreen()), ui->videoWidget, SLOT(toggleFullScreen()));
 
+   // mouse wheel changes volume ...
+   connect(ui->videoWidget, SIGNAL(wheel(bool)), this, SLOT(slotChangeVolumeDelta(bool)));
+
    // connect slider timer with slider position slot ...
    connect(&sliderTimer, SIGNAL(timeout()), this, SLOT(slotUpdateSlider()));
 
@@ -341,9 +344,35 @@ void CPlayer::slotChangeVolume(int newVolume)
       ui->labSound->setPixmap(QPixmap(":/player/sound_on"));
    }
 
-   if (pVlcInstance)
+   if (pMediaPlayer)
    {
       libvlc_audio_set_volume (pMediaPlayer, newVolume);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotChangeVolumeDelta [slot]
+|  Begin: 16.02.2012
+|  Author: Jo2003
+|  Description: change volume
+|
+|  Parameters: up: true --> up, false --> down
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotChangeVolumeDelta(const bool up)
+{
+   if (pMediaPlayer)
+   {
+      int iVol = libvlc_audio_get_volume(pMediaPlayer);
+      iVol    += up ? 5 : -5;
+      iVol     = (iVol > 100) ? 100 : ((iVol < 0) ? 0 : iVol);
+
+      if (iVol != ui->volSlider->value())
+      {
+         ui->volSlider->setValue(iVol);
+         slotChangeVolume(iVol);
+      }
    }
 }
 

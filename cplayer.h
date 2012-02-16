@@ -104,6 +104,7 @@ private slots:
    void on_cbxCrop_currentIndexChanged(QString str);
    void slotChangeVolume(int newVolume);
    void slotUpdateSlider ();
+   void slotChangeVolumeDelta (const bool up);
 
 public slots:
    int  playMedia (const QString &sCmdLine);

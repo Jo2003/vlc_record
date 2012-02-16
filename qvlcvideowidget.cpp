@@ -198,34 +198,42 @@ void QVlcVideoWidget::toggleFullScreen()
 {
    if (!isFullScreen())
    {
-      // store default flags ...
+      // backup default flags ...
       _normalFlags = windowFlags();
 
       // create fullscreen flags ...
       Qt::WindowFlags f = _normalFlags;
+
+      // fullscreen only works on windows --> make it a window!
       f |= Qt::Window | Qt::FramelessWindowHint;
+
+      // mask out subwindow flag ...
       f &= ~(Qt::WindowFlags)Qt::SubWindow;
+
+      // before changing window flags, better hide ...
+      hide();
 
       // set flags ...
       setWindowFlags(f);
 
-#ifdef Q_WS_X11
-      // This works around a bug with Compiz
-      // as the window must be visible before we can set the state
+      // start fullscreen ...
+      showFullScreen();
       show();
-      raise();
-      setWindowState( windowState() | Qt::WindowFullScreen );
-#else
-      setWindowState( windowState() | Qt::WindowFullScreen );
-      show();
-#endif
+
+      // start mouse hiding ...
       _mouseHide->start(1000);
    }
    else
    {
+      // before changing window flags, better hide ...
+      hide();
+
       // restore default flags ...
       setWindowFlags(_normalFlags);
-      setWindowState( windowState() & ~(Qt::WindowStates)Qt::WindowFullScreen );
+
+      // end fullscreen ...
+      showNormal();
+
       QApplication::restoreOverrideCursor();
       show();
    }
