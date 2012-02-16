@@ -114,7 +114,7 @@ void CSettingsDlg::readSettings()
    if (iErr)
    {
       // default log level ...
-      m_ui->lineVlcVerbose->setText("1");
+      m_ui->lineVlcVerbose->setText("0");
    }
 
 #ifdef Q_OS_WIN32
