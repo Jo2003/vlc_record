@@ -130,7 +130,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    win32:LIBS += -Llib
 
    mac {
-      OTHER_FILES += create_mac_bundle.sh
+      OTHER_FILES += create_mac_bundle.sh \
+                     release/create_dmg.sh
       INCLUDEPATH += mac/include
 
       CONFIG(debug,debug|release):appclean.commands = cd debug && rm -rf *.app && rm -f *.dmg
