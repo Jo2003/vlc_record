@@ -504,7 +504,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="274"/>
+        <location filename="cplayer.cpp" line="275"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -513,7 +513,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="522"/>
+        <location filename="cplayer.cpp" line="523"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -521,21 +521,21 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="530"/>
-        <location filename="cplayer.cpp" line="547"/>
-        <location filename="cplayer.cpp" line="562"/>
-        <location filename="cplayer.cpp" line="566"/>
-        <location filename="cplayer.cpp" line="574"/>
+        <location filename="cplayer.cpp" line="531"/>
+        <location filename="cplayer.cpp" line="548"/>
+        <location filename="cplayer.cpp" line="563"/>
+        <location filename="cplayer.cpp" line="567"/>
+        <location filename="cplayer.cpp" line="575"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="553"/>
+        <location filename="cplayer.cpp" line="554"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="586"/>
+        <location filename="cplayer.cpp" line="587"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
@@ -560,7 +560,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1257"/>
+        <location filename="cplayer.cpp" line="1222"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>

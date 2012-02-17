@@ -98,14 +98,13 @@ private:
 
 private slots:
    void on_posSlider_valueChanged(int value);
-   void on_posSlider_sliderReleased();
    void on_btnFullScreen_clicked();
    void on_cbxAspect_currentIndexChanged(QString str);
    void on_cbxCrop_currentIndexChanged(QString str);
    void slotChangeVolume(int newVolume);
    void slotUpdateSlider ();
    void slotChangeVolumeDelta (const bool up);
-   void slotSiderClickNGo(int newPos);
+   void slotSliderPosChanged();
 
 public slots:
    int  playMedia (const QString &sCmdLine);

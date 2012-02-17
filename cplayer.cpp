@@ -104,7 +104,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
 
    // connect slider click'n'Go ...
-   connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSiderClickNGo(int)));
+   connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
+   connect(ui->posSlider, SIGNAL(sliderReleased()), this, SLOT(slotSliderPosChanged()));
 
    // poller.start(1000);
    sliderTimer.start(1000);
@@ -501,7 +502,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
    // QString     sMrl  = "d:/bbb.avi";
-   // QString     sMrl  = "/home/joergn/Videos/bbb.avi";
+   // QString     sMrl  = "/home/joergn/Videos/Butterfly_Effect_x264.mkv";
    // QString     sMrl  = "d:/BR-test.ts";
 
    // are there mrl options ... ?
@@ -615,12 +616,11 @@ void CPlayer::slotUpdateSlider()
          uint pos;
          if (isPositionable())
          {
-            pos = libvlc_media_player_get_time (pMediaPlayer);
+            pos = libvlc_media_player_get_time (pMediaPlayer) / 1000;
 
             if (!ui->posSlider->isSliderDown())
             {
                ui->posSlider->setValue(pos);
-               pos = pos / 1000; // ms ...
                ui->labPos->setText(QTime(0, 0).addSecs(pos).toString("hh:mm:ss"));
             }
          }
@@ -950,7 +950,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 
          libvlc_media_player_set_time(pMediaPlayer, pos);
 
-         ui->posSlider->setValue(pos);
+         ui->posSlider->setValue((int)(pos / 1000));
       }
       else
       {
@@ -1106,16 +1106,16 @@ void CPlayer::slotStoredAspectCrop ()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_posSlider_sliderReleased
-|  Begin: 23.06.2010 / 09:10:10
+|  Method: slotSliderPosChanged [slot]
+|  Begin: 17.02.2012
 |  Author: Jo2003
-|  Description: update position label to relect
-|               slider position change
-|  Parameters: actual slider position
+|  Description: slider position was changed active
+|
+|  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::on_posSlider_sliderReleased()
+void CPlayer::slotSliderPosChanged()
 {
    if (isPlaying() && bCtrlStream && !bSpoolPending)
    {
@@ -1123,7 +1123,7 @@ void CPlayer::on_posSlider_sliderReleased()
 
       if (isPositionable())
       {
-         libvlc_media_player_set_time(pMediaPlayer, position);
+         libvlc_media_player_set_time(pMediaPlayer, position * 1000);
       }
       else
       {
@@ -1170,48 +1170,13 @@ void CPlayer::on_posSlider_valueChanged(int value)
 {
    if (isPlaying() && bCtrlStream)
    {
-      if (ui->posSlider->isSliderDown())
+      if (!isPositionable())
       {
-         if (isPositionable())
-         {
-            value = value / 1000; // ms ...
-         }
-         else
-         {
-            value  = mToGmt(value);
-            value -= showInfo.starts();
-         }
-
-         ui->labPos->setText(QTime(0, 0).addSecs(value).toString("hh:mm:ss"));
-      }
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotSiderClickNGo [slot]
-|  Begin: 16.02.2012
-|  Author: Jo2003
-|  Description: update position label to relect
-|               slider position change
-|  Parameters: actual slider position
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::slotSiderClickNGo(int newPos)
-{
-   if (isPlaying() && bCtrlStream)
-   {
-      if (isPositionable())
-      {
-         newPos = newPos / 1000; // ms ...
-      }
-      else
-      {
-         newPos  = mToGmt(newPos);
-         newPos -= showInfo.starts();
+         value  = mToGmt(value);
+         value -= showInfo.starts();
       }
 
-      ui->labPos->setText(QTime(0, 0).addSecs(newPos).toString("hh:mm:ss"));
+      ui->labPos->setText(QTime(0, 0).addSecs(value).toString("hh:mm:ss"));
    }
 }
 
@@ -1259,7 +1224,7 @@ void CPlayer::initSlider()
    if (isPositionable())
    {
       // VOD stuff ...
-      ui->posSlider->setRange(0, uiDuration);
+      ui->posSlider->setRange(0, (int)(uiDuration / 1000));
 
       ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
    }

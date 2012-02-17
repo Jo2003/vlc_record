@@ -60,23 +60,43 @@ protected:
    //---------------------------------------------------------------------------
    virtual void mousePressEvent (QMouseEvent * event)
    {
+      // left click ...
       if (event->button() == Qt::LeftButton)
       {
          int pos;
+         int range = maximum() - minimum();
+
          if (orientation() == Qt::Vertical)
          {
-            pos = minimum() + ((maximum() - minimum()) * (height() - event->y())) / height();
+            pos = minimum() + (range * (height() - event->y())) / height();
          }
          else
          {
-            pos = minimum() + ((maximum() - minimum()) * event->x()) / width();
+            pos = minimum() + (range * event->x()) / width();
          }
 
-         setValue(pos);
-         emit sigClickNGo(pos);
-         event->accept();
+         // make sure pos is in between minimum and maximum ...
+         pos = (pos < minimum()) ? minimum() : ((pos > maximum()) ? maximum() : pos);
+
+         // check if position is different from slider ...
+         /// Note: We must use a practical threshold value here.
+         /// So we use the range which should be handled by
+         /// the slider / 80 so we must not click at the 100%
+         /// right position to get the "old" normal
+         /// slider behavior.
+         if (abs(value() - pos) > (range / 80))
+         {
+            setValue(pos);
+            emit sigClickNGo(pos);
+            event->accept();
+
+            // no further handling needed ...
+            return;
+         }
       }
 
+      // not handled --> delegate ...
+      event->ignore();
       QSlider::mousePressEvent(event);
    }
 
