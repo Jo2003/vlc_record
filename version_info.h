@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "51"
-#define BETA_EXT      "B4"
+#define BETA_EXT      "B6"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - change style of position slider (untested)
+| - remove progressbar from recorder because position slider
+|   will make this job
 | - add hardware acceleration switch in settings
 | - add mac support (with some limitations)
 | - change fullscreen stuff (simplification)

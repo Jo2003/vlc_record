@@ -109,9 +109,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // poller.start(1000);
    sliderTimer.start(1000);
-
-   // hide slider ...
-   ui->posSlider->hide();
 }
 
 /* -----------------------------------------------------------------\
@@ -494,11 +491,6 @@ int CPlayer::playMedia(const QString &sCmdLine)
    bSpoolPending = true;
    enableDisablePlayControl (false);
 
-   // enable / disable position slider ...
-   ui->posSlider->setValue(0);
-   ui->labPos->setEnabled(bCtrlStream);
-   ui->labPos->setText("00:00:00");
-
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
    // QString     sMrl  = "d:/bbb.avi";
@@ -649,9 +641,6 @@ void CPlayer::slotUpdateSlider()
                ui->labPos->setText(QTime(0, 0).addSecs(pos).toString("hh:mm:ss"));
             }
          }
-
-         // send slider position ...
-         emit sigSliderPos(ui->posSlider->minimum(), ui->posSlider->maximum(), ui->posSlider->value());
       }
    }
 }
@@ -1194,13 +1183,11 @@ void CPlayer::enableDisablePlayControl (bool bEnable)
 {
    if (bEnable && bCtrlStream)
    {
-      ui->posSlider->show();
       ui->posSlider->setEnabled (true);
    }
    else
    {
       ui->posSlider->setEnabled (false);
-      ui->posSlider->hide();
    }
 }
 

@@ -184,9 +184,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // get state if libVLC player to change player state display ...
    connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
 
-   // progress bar update ...
-   connect (ui->player, SIGNAL(sigSliderPos(int,int,int)), this, SLOT(slotUpdateProgress(int,int,int)));
-
    // short info update on archive play ...
    connect (ui->player, SIGNAL(sigCheckArchProg(ulong)), this, SLOT(slotCheckArchProg(ulong)));
    connect (this, SIGNAL(sigShowInfoUpdated()), ui->player, SLOT(slotShowInfoUpdated()));
@@ -2743,8 +2740,6 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
          ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
                                    .arg(createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd)));
-
-         SetProgress (entry.uiStart, entry.uiEnd);
       }
 
       // quick'n'dirty timeshift hack ...
@@ -2824,23 +2819,6 @@ void Recorder::slotPlayPreviousChannel()
 void Recorder::slotStartConnectionChain()
 {
    Trigger.TriggerRequest(Kartina::REQ_COOKIE);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotUpdateProgress [slot]
-|  Begin: 28.09.2011
-|  Author: Jo2003
-|  Description: update progress bar
-|
-|  Parameters: min, max and actual value
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotUpdateProgress (int iMin, int iMax, int iAct)
-{
-   ui->progressBar->setMinimum(iMin);
-   ui->progressBar->setMaximum(iMax);
-   ui->progressBar->setValue(iAct);
 }
 
 /* -----------------------------------------------------------------\
@@ -3887,38 +3865,6 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
    }
 
    emit sigLCDStateChange((int)ePlayState);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: SetProgress
-|  Begin: 19.01.2010 / 16:15:17
-|  Author: Jo2003
-|  Description: set progress bar (program time)
-|
-|  Parameters: start and end timestamp
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::SetProgress (const uint &start, const uint &end)
-{
-   int iPercent = 0;
-
-   if (start && end)
-   {
-      int iLength  = (int)(end - start);
-      int iNow     = (int)(QDateTime::currentDateTime().toTime_t() - start);
-
-      // error check (div / 0 PC doesn't like ;-) ) ...
-      if ((iNow > 0) && (iLength > 0))
-      {
-         // get percent ...
-         iPercent  = (int)((iNow * 100) / iLength);
-      }
-   }
-
-   ui->progressBar->setMinimum(0);
-   ui->progressBar->setMaximum(100);
-   ui->progressBar->setValue(iPercent);
 }
 
 /* -----------------------------------------------------------------\

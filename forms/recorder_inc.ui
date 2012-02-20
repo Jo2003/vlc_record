@@ -494,7 +494,7 @@ border-top: 0px;
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset resource="../vlc-record.qrc">
+                       <iconset resource="../common.qrc">
                         <normaloff>:/app/zoom-out</normaloff>:/app/zoom-out</iconset>
                       </property>
                       <property name="iconSize">
@@ -545,7 +545,7 @@ color: white;
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset resource="../vlc-record.qrc">
+                       <iconset resource="../common.qrc">
                         <normaloff>:/app/zoom-in</normaloff>:/app/zoom-in</iconset>
                       </property>
                       <property name="iconSize">
@@ -617,7 +617,7 @@ color: white;
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../vlc-record.qrc">
+                    <iconset resource="../common.qrc">
                      <normaloff>:/app/find</normaloff>:/app/find</iconset>
                    </property>
                    <property name="iconSize">
@@ -709,7 +709,7 @@ color: white;
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../vlc-record.qrc">
+             <iconset resource="../common.qrc">
               <normaloff>:/png/back</normaloff>:/png/back</iconset>
             </property>
             <property name="autoDefault">
@@ -748,7 +748,7 @@ color: white;
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../vlc-record.qrc">
+             <iconset resource="../common.qrc">
               <normaloff>:/png/next</normaloff>:/png/next</iconset>
             </property>
             <property name="autoDefault">
@@ -822,7 +822,7 @@ color: white;
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../vlc-record.qrc">
+             <iconset resource="../common.qrc">
               <normaloff>:/app/find</normaloff>:/app/find</iconset>
             </property>
             <property name="iconSize">
@@ -878,7 +878,7 @@ QSplitter#hSplitterPlayer::handle:pressed {
          </property>
          <widget class="CPlayer" name="player" native="true"/>
          <widget class="QWidget" name="layoutWidget">
-          <layout class="QVBoxLayout" name="vLayoutPlayInfo" stretch="0,80,0">
+          <layout class="QVBoxLayout" name="vLayoutPlayInfo" stretch="0,80">
            <property name="spacing">
             <number>2</number>
            </property>
@@ -975,7 +975,7 @@ border-top: 0px;
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../vlc-record.qrc">
+                 <iconset resource="../common.qrc">
                   <normaloff>:/app/play</normaloff>:/app/play</iconset>
                 </property>
                 <property name="iconSize">
@@ -1007,7 +1007,7 @@ border-top: 0px;
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../vlc-record.qrc">
+                 <iconset resource="../common.qrc">
                   <normaloff>:/app/record</normaloff>:/app/record</iconset>
                 </property>
                 <property name="iconSize">
@@ -1048,7 +1048,7 @@ border-top: 0px;
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../vlc-record.qrc">
+                 <iconset resource="../common.qrc">
                   <normaloff>:/app/stop</normaloff>:/app/stop</iconset>
                 </property>
                 <property name="iconSize">
@@ -1096,7 +1096,7 @@ border-top: 0px;
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../vlc-record.qrc">
+                 <iconset resource="../common.qrc">
                   <normaloff>:/app/bwd</normaloff>:/app/bwd</iconset>
                 </property>
                 <property name="iconSize">
@@ -1171,7 +1171,7 @@ border-top: 0px;
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../vlc-record.qrc">
+                 <iconset resource="../common.qrc">
                   <normaloff>:/app/fwd</normaloff>:/app/fwd</iconset>
                 </property>
                 <property name="iconSize">
@@ -1207,7 +1207,7 @@ border-top: 0px;
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="../vlc-record.qrc">
+                 <iconset resource="../common.qrc">
                   <normaloff>:/app/timerrec</normaloff>:/app/timerrec</iconset>
                 </property>
                 <property name="iconSize">
@@ -1231,31 +1231,6 @@ border-top: 0px;
             <widget class="CEpgBrowser" name="textEpgShort">
              <property name="whatsThis">
               <string>Short EPG</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QProgressBar" name="progressBar">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>10</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>10</height>
-              </size>
-             </property>
-             <property name="whatsThis">
-              <string>Time Progress for played programm</string>
-             </property>
-             <property name="value">
-              <number>0</number>
-             </property>
-             <property name="textVisible">
-              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -1372,7 +1347,7 @@ border-top: 0px;
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../vlc-record.qrc">
+             <iconset resource="../common.qrc">
               <normaloff>:/app/settings</normaloff>:/app/settings</iconset>
             </property>
             <property name="iconSize">
@@ -1410,7 +1385,7 @@ border-top: 0px;
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../vlc-record.qrc">
+             <iconset resource="../common.qrc">
               <normaloff>:/app/info</normaloff>:/app/info</iconset>
             </property>
             <property name="iconSize">
@@ -1448,7 +1423,7 @@ border-top: 0px;
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="../vlc-record.qrc">
+             <iconset resource="../common.qrc">
               <normaloff>:/app/quit</normaloff>:/app/quit</iconset>
             </property>
             <property name="iconSize">
@@ -1505,8 +1480,8 @@ border-top: 0px;
  </tabstops>
  <resources>
   <include location="../kartina_tv.qrc"/>
+  <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
-  <include location="../vlc-record.qrc"/>
  </resources>
  <connections>
   <connection>

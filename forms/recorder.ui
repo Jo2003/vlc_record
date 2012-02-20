@@ -252,31 +252,6 @@ background-color: rgb(255, 110, 14);
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QProgressBar" name="progressBar">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>10</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>10</height>
-               </size>
-              </property>
-              <property name="whatsThis">
-               <string>Time Progress for played programm</string>
-              </property>
-              <property name="value">
-               <number>0</number>
-              </property>
-              <property name="textVisible">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
            </layout>
           </widget>
          </widget>
@@ -505,7 +480,7 @@ border-top: 0px;
                       <string/>
                      </property>
                      <property name="icon">
-                      <iconset resource="../vlc-record.qrc">
+                      <iconset resource="../common.qrc">
                        <normaloff>:/app/zoom-out</normaloff>:/app/zoom-out</iconset>
                      </property>
                      <property name="iconSize">
@@ -553,7 +528,7 @@ color: white;
                       <string/>
                      </property>
                      <property name="icon">
-                      <iconset resource="../vlc-record.qrc">
+                      <iconset resource="../common.qrc">
                        <normaloff>:/app/zoom-in</normaloff>:/app/zoom-in</iconset>
                      </property>
                      <property name="iconSize">
@@ -625,7 +600,7 @@ color: white;
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="../vlc-record.qrc">
+                   <iconset resource="../common.qrc">
                     <normaloff>:/app/find</normaloff>:/app/find</iconset>
                   </property>
                   <property name="iconSize">
@@ -714,7 +689,7 @@ color: white;
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/png/back</normaloff>:/png/back</iconset>
            </property>
            <property name="autoDefault">
@@ -753,7 +728,7 @@ color: white;
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/png/next</normaloff>:/png/next</iconset>
            </property>
            <property name="autoDefault">
@@ -827,7 +802,7 @@ color: white;
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/app/find</normaloff>:/app/find</iconset>
            </property>
            <property name="iconSize">
@@ -948,7 +923,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/app/play</normaloff>:/app/play</iconset>
            </property>
            <property name="iconSize">
@@ -980,7 +955,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/app/record</normaloff>:/app/record</iconset>
            </property>
            <property name="iconSize">
@@ -1021,7 +996,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/app/stop</normaloff>:/app/stop</iconset>
            </property>
            <property name="iconSize">
@@ -1060,7 +1035,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/app/timerrec</normaloff>:/app/timerrec</iconset>
            </property>
            <property name="iconSize">
@@ -1165,7 +1140,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../vlc-record.qrc">
+         <iconset resource="../common.qrc">
           <normaloff>:/app/settings</normaloff>:/app/settings</iconset>
         </property>
         <property name="iconSize">
@@ -1203,7 +1178,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../vlc-record.qrc">
+         <iconset resource="../common.qrc">
           <normaloff>:/app/info</normaloff>:/app/info</iconset>
         </property>
         <property name="iconSize">
@@ -1241,7 +1216,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
          <string/>
         </property>
         <property name="icon">
-         <iconset resource="../vlc-record.qrc">
+         <iconset resource="../common.qrc">
           <normaloff>:/app/quit</normaloff>:/app/quit</iconset>
         </property>
         <property name="iconSize">
@@ -1292,8 +1267,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
  </tabstops>
  <resources>
   <include location="../kartina_tv.qrc"/>
+  <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
-  <include location="../vlc-record.qrc"/>
  </resources>
  <connections>
   <connection>

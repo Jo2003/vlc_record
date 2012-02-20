@@ -171,7 +171,6 @@ protected:
     void StartStreamDownload (const QString &sURL, const QString &sName, const QString &sFileExt = "ts");
     void TouchPlayCtrlBtns (bool bEnable = true);
     void touchVodNavBar(const cparser::SGenreInfo &gInfo);
-    void SetProgress (const uint &start, const uint &end);
     void TouchEpgNavi (bool bCreate);
     QString CleanShowName (const QString &str);
     void CreateSystray ();
@@ -267,7 +266,6 @@ private slots:
     void slotPlayNextChannel();
     void slotPlayPreviousChannel();
     void slotStartConnectionChain();
-    void slotUpdateProgress (int iMin, int iMax, int iAct);
     void slotUpdateAnswer (QNetworkReply* pRes);
     void slotCheckArchProg(ulong ulArcGmt);
 
