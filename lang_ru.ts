@@ -504,7 +504,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="275"/>
+        <location filename="cplayer.cpp" line="272"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -513,7 +513,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="523"/>
+        <location filename="cplayer.cpp" line="515"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -521,46 +521,46 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="531"/>
-        <location filename="cplayer.cpp" line="548"/>
-        <location filename="cplayer.cpp" line="563"/>
+        <location filename="cplayer.cpp" line="523"/>
+        <location filename="cplayer.cpp" line="540"/>
+        <location filename="cplayer.cpp" line="555"/>
+        <location filename="cplayer.cpp" line="559"/>
         <location filename="cplayer.cpp" line="567"/>
-        <location filename="cplayer.cpp" line="575"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="554"/>
+        <location filename="cplayer.cpp" line="546"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="587"/>
+        <location filename="cplayer.cpp" line="579"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="781"/>
+        <location filename="cplayer.cpp" line="773"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="814"/>
+        <location filename="cplayer.cpp" line="806"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="847"/>
+        <location filename="cplayer.cpp" line="839"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1132"/>
+        <location filename="cplayer.cpp" line="1124"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1219"/>
+        <location filename="cplayer.cpp" line="1209"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -585,7 +585,7 @@ p, li { white-space: pre-wrap; }
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="269"/>
+        <location filename="forms/cplayer.ui" line="248"/>
         <source>0:00:00</source>
         <translation></translation>
     </message>

@@ -177,48 +177,27 @@
    border: 1px inset #999999;
    background-color: #777;
    height: 4px;  /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-   margin: 2px 0;
+   margin: 2px -12px;
 }
 
- QSlider::handle:horizontal {
-    background-image: url(:/player/invisible);
-    width: 6px;
-    margin: -8px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
-    border-radius: 3px;
+ QSlider::handle:horizontal, QSlider::handle:horizontal:disabled {
+   background-image: url(:/player/slider_inv);
+   background-repeat: no-repeat;
+   background-position: center middle;
+   width:  20px;
+   margin: -7px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
  }
 
 QSlider::handle:horizontal:hover {
-   border: 1px outset gray;
-   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.7 #fc0, stop:1 #dedede);
+   background-image: url(:/player/slider_hdl);
 }
 
-QSlider::handle:horizontal:pressed {
-   border: 1px outset gray;
-   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #dedede, stop:0.3 #fc0, stop:1	#eee);
+QSlider::add-page:horizontal, QSlider::add-page:horizontal:disabled {
+   background-color: #555;
 }
 
-QSlider::add-page:horizontal {
-   background-color: #666;
-}
-
-QSlider::sub-page:horizontal {
+QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(11, 148, 11, 255), stop:0.35 rgba(183, 255, 88, 255), stop:0.75 rgba(18, 197, 23, 255));
-}
-
-QSlider::sub-page:horizontal:disabled {
-   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(11, 148, 11, 255), stop:0.35 rgba(183, 255, 88, 255), stop:0.75 rgba(18, 197, 23, 255));
-}
-
-QSlider::add-page:horizontal:disabled {
-   background-color: #666;
-}
-
-QSlider::handle:horizontal:disabled {
-   background-color: white;
-   border: 0px;
-   width: 0px;
-   margin: 0px;
-   border-radius: 0px;
 }
 </string>
        </property>
