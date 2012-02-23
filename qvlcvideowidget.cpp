@@ -220,6 +220,12 @@ void QVlcVideoWidget::toggleFullScreen()
       showFullScreen();
       show();
 
+#ifdef Q_OS_MACX
+      // make sure render view comes on top ...
+      _render->show();
+      _render->raise();
+#endif
+
       // start mouse hiding ...
       _mouseHide->start(1000);
    }

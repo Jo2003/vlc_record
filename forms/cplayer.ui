@@ -177,19 +177,23 @@
    border: 1px inset #999999;
    background-color: #777;
    height: 4px;  /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-   margin: 2px -12px;
+   margin: 2px 0;
 }
 
- QSlider::handle:horizontal, QSlider::handle:horizontal:disabled {
-   background-image: url(:/player/slider_inv);
+ QSlider::handle:horizontal {
+   background-image: url(:/player/sl-hdl);
    background-repeat: no-repeat;
    background-position: center middle;
-   width:  20px;
-   margin: -7px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+   width:  10px;
+   margin: -10px -5px; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+ }
+ 
+ QSlider::handle:horizontal:disabled {
+   background-image: url(:/player/sl-hdl-inv);
  }
 
-QSlider::handle:horizontal:hover {
-   background-image: url(:/player/slider_hdl);
+QSlider::handle:horizontal:pressed {
+   background-image: url(:/player/sl-hld-hov);
 }
 
 QSlider::add-page:horizontal, QSlider::add-page:horizontal:disabled {

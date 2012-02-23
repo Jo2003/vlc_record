@@ -107,8 +107,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
    connect(ui->posSlider, SIGNAL(sliderReleased()), this, SLOT(slotSliderPosChanged()));
 
-   // poller.start(1000);
-   sliderTimer.start(1000);
+   // update position slider every 3 secs.
+   sliderTimer.start(3000);
 }
 
 /* -----------------------------------------------------------------\
@@ -1108,6 +1108,9 @@ void CPlayer::slotSliderPosChanged()
 {
    if (isPlaying() && bCtrlStream && !bSpoolPending)
    {
+      // stop slider update timer ...
+      sliderTimer.stop();
+
       uint position = (uint)ui->posSlider->value();
 
       if (isPositionable())
@@ -1142,6 +1145,9 @@ void CPlayer::slotSliderPosChanged()
             pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
          }
       }
+
+      // restart slider update timer ...
+      sliderTimer.start(3000);
    }
 }
 
