@@ -181,27 +181,31 @@
 }
 
  QSlider::handle:horizontal {
-   background-image: url(:/player/sl-hdl);
-   background-repeat: no-repeat;
-   background-position: center middle;
-   width:  10px;
-   margin: -10px -5px; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+   background-color: white;
+   border: 1px solid #5c5c5c;
+   border-radius: 2px;
+   width:  6px;
+   margin: -8px -4px;
  }
  
  QSlider::handle:horizontal:disabled {
-   background-image: url(:/player/sl-hdl-inv);
+   border: 0;
+   width:  0;
+   margin: 0;
  }
 
-QSlider::handle:horizontal:pressed {
-   background-image: url(:/player/sl-hld-hov);
+QSlider::handle:horizontal:pressed, QSlider::handle:horizontal:hover {
+   background-color: #fc0
 }
 
 QSlider::add-page:horizontal, QSlider::add-page:horizontal:disabled {
    background-color: #555;
+   border-radius:    4px;
 }
 
 QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
-   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(11, 148, 11, 255), stop:0.35 rgba(183, 255, 88, 255), stop:0.75 rgba(18, 197, 23, 255));
+   background-color: white;;
+   border-radius:    4px;
 }
 </string>
        </property>
