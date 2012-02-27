@@ -585,9 +585,10 @@ p, li { white-space: pre-wrap; }
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="251"/>
-        <source>0:00:00</source>
-        <translation></translation>
+        <location filename="forms/cplayer.ui" line="254"/>
+        <source> 0:00:00</source>
+        <oldsource>0:00:00</oldsource>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Jump Backward</source>

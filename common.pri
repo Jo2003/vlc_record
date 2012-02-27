@@ -121,7 +121,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
 
    HEADERS += cplayer.h \
         qvlcvideowidget.h \
-        qclickandgoslider.h
+        qclickandgoslider.h \
+        qtimelabel.h
    FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
    SOURCES += qvlcvideowidget.cpp \

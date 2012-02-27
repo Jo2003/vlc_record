@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "51"
-#define BETA_EXT      "B6"
+#define BETA_EXT      "B7"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,7 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - many changes, tests and optimization on position slider
 | - change style of position slider (untested)
 | - remove progressbar from recorder because position slider
 |   will make this job

@@ -232,7 +232,7 @@ QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="labPos">
+      <widget class="QTimeLabel" name="labPos">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -242,13 +242,19 @@ color: white;
 }</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::Panel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Sunken</enum>
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
        </property>
        <property name="text">
-        <string>0:00:00</string>
+        <string> 0:00:00</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </item>
@@ -267,6 +273,11 @@ color: white;
    <class>QClickAndGoSlider</class>
    <extends>QSlider</extends>
    <header>qclickandgoslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTimeLabel</class>
+   <extends>QLabel</extends>
+   <header>qtimelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources>

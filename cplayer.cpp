@@ -107,8 +107,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
    connect(ui->posSlider, SIGNAL(sliderReleased()), this, SLOT(slotSliderPosChanged()));
 
-   // update position slider every 1.5 secs.
-   sliderTimer.start(1500);
+   // update position slider every 0.333 seconds ...
+   sliderTimer.start(333);
 }
 
 /* -----------------------------------------------------------------\
@@ -611,7 +611,7 @@ void CPlayer::slotUpdateSlider()
             if (!ui->posSlider->isSliderDown())
             {
                ui->posSlider->setValue(pos);
-               ui->labPos->setText(QTime(0, 0).addSecs(pos).toString("hh:mm:ss"));
+               ui->labPos->setTime(pos);
             }
          }
          else
@@ -636,7 +636,7 @@ void CPlayer::slotUpdateSlider()
 
                pos -= showInfo.starts();
 
-               ui->labPos->setText(QTime(0, 0).addSecs(pos).toString("hh:mm:ss"));
+               ui->labPos->setTime(pos);
             }
          }
       }
@@ -1145,7 +1145,7 @@ void CPlayer::slotSliderPosChanged()
       }
 
       // restart slider update timer ...
-      sliderTimer.start(1500);
+      sliderTimer.start(333);
    }
 }
 
@@ -1169,7 +1169,7 @@ void CPlayer::on_posSlider_valueChanged(int value)
          value -= showInfo.starts();
       }
 
-      ui->labPos->setText(QTime(0, 0).addSecs(value).toString("hh:mm:ss"));
+      ui->labPos->setTime(value);
    }
 }
 
@@ -1217,7 +1217,7 @@ void CPlayer::initSlider()
       // VOD stuff ...
       ui->posSlider->setRange(0, (int)(uiDuration / 1000));
 
-      ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
+      ui->labPos->setTime(0);
    }
    else
    {
@@ -1228,13 +1228,13 @@ void CPlayer::initSlider()
       {
          ui->posSlider->setValue(mFromGmt(showInfo.lastJump()));
 
-         ui->labPos->setText(QTime(0, 0).addSecs(showInfo.lastJump() - showInfo.starts()).toString("hh:mm:ss"));
+         ui->labPos->setTime(showInfo.lastJump() - showInfo.starts());
       }
       else
       {
          ui->posSlider->setValue(mFromGmt(showInfo.starts()));
 
-         ui->labPos->setText(QTime(0, 0).toString("hh:mm:ss"));
+         ui->labPos->setTime(0);
       }
    }
 }
