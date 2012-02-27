@@ -46,8 +46,5 @@
         <file alias="sound_on">resources/sound.png</file>
         <file alias="sound_off">resources/sound_muted.png</file>
         <file alias="fullscreen">resources/view-fullscreen.png</file>
-        <file alias="sl-hdl">resources/slider-handle.png</file>
-        <file alias="sl-hdl-hov">resources/slider-handle_hover.png</file>
-        <file alias="sl-hdl-inv">resources/slider_handle_invisible.png</file>
     </qresource>
 </RCC>

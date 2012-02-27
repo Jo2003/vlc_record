@@ -174,18 +174,17 @@
        </property>
        <property name="styleSheet">
         <string notr="true">QSlider::groove:horizontal {
-   border: 1px inset #999999;
-   background-color: #777;
-   height: 4px;  /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-   margin: 2px 0;
+   background-color: #555;
+   height:           10px;
+   border-radius:    3px;
 }
 
  QSlider::handle:horizontal {
-   background-color: white;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #727272, stop:0.15 white, stop:0.75 white, stop:1 #888);
    border: 1px solid #5c5c5c;
-   border-radius: 2px;
-   width:  6px;
-   margin: -8px -4px;
+   border-radius: 3px;
+   width:         4px;
+   margin:       -7px 0;
  }
  
  QSlider::handle:horizontal:disabled {
@@ -195,17 +194,13 @@
  }
 
 QSlider::handle:horizontal:pressed, QSlider::handle:horizontal:hover {
-   background-color: #fc0
-}
-
-QSlider::add-page:horizontal, QSlider::add-page:horizontal:disabled {
-   background-color: #555;
-   border-radius:    4px;
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #720000, stop:0.15 #fc0, stop:0.75 #fc0, stop:1 #880000);
+   border-color:     #800;
 }
 
 QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
    background-color: white;;
-   border-radius:    4px;
+   border-radius:    3px;
 }
 </string>
        </property>

@@ -107,8 +107,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
    connect(ui->posSlider, SIGNAL(sliderReleased()), this, SLOT(slotSliderPosChanged()));
 
-   // update position slider every 3 secs.
-   sliderTimer.start(3000);
+   // update position slider every 1.5 secs.
+   sliderTimer.start(1500);
 }
 
 /* -----------------------------------------------------------------\
@@ -493,9 +493,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
 
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
-   // QString     sMrl  = "d:/bbb.avi";
-   // QString     sMrl  = "/home/joergn/Videos/Butterfly_Effect_x264.mkv";
-   // QString     sMrl  = "d:/BR-test.ts";
+   // QString     sMrl  = "http://172.25.1.145/~joergn/hobbit.mov";
 
    // are there mrl options ... ?
    if (sCmdLine.contains(";;"))
@@ -1147,7 +1145,7 @@ void CPlayer::slotSliderPosChanged()
       }
 
       // restart slider update timer ...
-      sliderTimer.start(3000);
+      sliderTimer.start(1500);
    }
 }
 
