@@ -92,7 +92,6 @@ private:
    CWaitTrigger           *pTrigger;
    bool                    bSpoolPending;
    uint                    uiDuration;
-   int                     iCycleCount;
    QMap<QString, QString>  mAspect;
    QMap<QString, QString>  mCrop;
 

@@ -184,7 +184,7 @@
    border: 1px solid #5c5c5c;
    border-radius: 3px;
    width:         4px;
-   margin:       -7px 0;
+   margin:       -5px 0;
  }
  
  QSlider::handle:horizontal:disabled {

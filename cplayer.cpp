@@ -47,7 +47,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    bCtrlStream   = false;
    bSpoolPending = true;
    uiDuration    = (uint)-1;
-   iCycleCount   = 0;
    mAspect.clear();
    mCrop.clear();
 
@@ -107,8 +106,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
    connect(ui->posSlider, SIGNAL(sliderReleased()), this, SLOT(slotSliderPosChanged()));
 
-   // update position slider every 0.333 seconds ...
-   sliderTimer.start(333);
+   // update position slider every second ...
+   sliderTimer.start(1000);
 }
 
 /* -----------------------------------------------------------------\
@@ -618,18 +617,13 @@ void CPlayer::slotUpdateSlider()
          {
             pos = timer.gmtPosition();
 
-            // check archive program ...
-            if (!(++iCycleCount % 60))
-            {
-               iCycleCount = 0;
-               emit sigCheckArchProg(pos);
-            }
-
             if (!ui->posSlider->isSliderDown())
             {
+               // reaching the end of this show ... ?
                if (pos > mToGmt(ui->posSlider->maximum()))
                {
-                  ui->posSlider->setMaximum(mFromGmt(pos + 300));
+                  // check archive program ...
+                  emit sigCheckArchProg(pos);
                }
 
                ui->posSlider->setValue(mFromGmt(pos));
@@ -927,12 +921,15 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
       if (isPositionable())
       {
          pos  = libvlc_media_player_get_time(pMediaPlayer);
-         pos += iSeconds * 1000; // ms ...
 
          // make sure we don't go negative ...
-         if ((int)pos < 0)
+         if ((iSeconds < 0) && ((abs(iSeconds) * 1000) > pos))
          {
             pos = 0;
+         }
+         else
+         {
+            pos += iSeconds * 1000; // ms ...
          }
 
          libvlc_media_player_set_time(pMediaPlayer, pos);
@@ -943,17 +940,6 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
       {
          // get new gmt value ...
          pos = timer.gmtPosition() + iSeconds;
-
-         // update min / max slider values if needed ...
-         if (pos < mToGmt(ui->posSlider->minimum()))
-         {
-            ui->posSlider->setMinimum(mFromGmt(pos - 300));
-         }
-
-         if (pos > mToGmt(ui->posSlider->maximum()))
-         {
-            ui->posSlider->setMaximum(mFromGmt(pos + 300));
-         }
 
          // trigger request for the new stream position ...
          QString req = QString("cid=%1&gmt=%2")
@@ -968,6 +954,14 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          showInfo.setLastJumpTime(pos);
 
          pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
+
+         // do we reach another show?
+         if ((pos < mToGmt(ui->posSlider->minimum()))
+             || (pos > mToGmt(ui->posSlider->maximum())))
+         {
+            // yes --> update show info ...
+            emit sigCheckArchProg(pos);
+         }
       }
    }
 
@@ -1145,7 +1139,7 @@ void CPlayer::slotSliderPosChanged()
       }
 
       // restart slider update timer ...
-      sliderTimer.start(333);
+      sliderTimer.start(1000);
    }
 }
 
@@ -1222,7 +1216,7 @@ void CPlayer::initSlider()
    else
    {
       // set slider range to seconds ...
-      ui->posSlider->setRange(mFromGmt(showInfo.starts() - 300), mFromGmt(showInfo.ends() + 300));
+      ui->posSlider->setRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
 
       if (showInfo.lastJump())
       {
@@ -1365,7 +1359,7 @@ void CPlayer::slotShowInfoUpdated()
    timer.start();
 
    // set slider range to seconds ...
-   ui->posSlider->setRange(mFromGmt(showInfo.starts() - 300), mFromGmt(showInfo.ends() + 300));
+   ui->posSlider->setRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
 }
 
 /* -----------------------------------------------------------------\
