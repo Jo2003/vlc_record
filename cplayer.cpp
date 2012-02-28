@@ -923,7 +923,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          pos  = libvlc_media_player_get_time(pMediaPlayer);
 
          // make sure we don't go negative ...
-         if ((iSeconds < 0) && ((abs(iSeconds) * 1000) > pos))
+         if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
          {
             pos = 0;
          }
