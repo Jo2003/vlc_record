@@ -79,7 +79,8 @@ HEADERS += recorder.h \
     cshortcutgrabber.h \
     qchanlistdelegate.h \
     qshortcuttable.h \
-    qftsettings.h
+    qftsettings.h \
+    small_helpers.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -157,3 +158,4 @@ else:FORMS += forms/recorder.ui
 
 # translation stuff ...
 include (language.pri)
+

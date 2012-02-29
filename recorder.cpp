@@ -10,6 +10,7 @@
 | $Id$
 \*************************************************************/
 #include "recorder.h"
+#include "small_helpers.h"
 
 #ifndef INCLUDE_LIBVLC
    #include "ui_recorder.h"
@@ -249,7 +250,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       iEpgOffset = QDate::currentDate().daysTo(QDate::fromString(sDate, "ddMMyyyy"));
 
       // if offset exceeds our limits: reset!
-      if ((iEpgOffset < -14) || (iEpgOffset > 7))
+      if (!inBetween(-14, 7, iEpgOffset))
       {
          iEpgOffset = 0;
       }
@@ -2881,18 +2882,14 @@ void Recorder::slotUpdateAnswer (QNetworkReply* pRes)
 void Recorder::slotCheckArchProg(ulong ulArcGmt)
 {
    // is actual showinfo still actual ?
-   if ((ulArcGmt >= showInfo.starts()) && (ulArcGmt <= showInfo.ends()))
-   {
-      // all is well ... no update needed ...
-   }
-   else
+   if (!inBetween(showInfo.starts(), showInfo.ends(), (uint)ulArcGmt))
    {
       // search in archiv program map for matching entry ...
       QMap<uint, epg::SShow>::const_iterator cit;
 
       for (cit = archProgMap.constBegin(); cit != archProgMap.constEnd(); cit++)
       {
-         if ((ulArcGmt >= (*cit).uiStart) && (ulArcGmt <= (*cit).uiEnd))
+         if (inBetween((*cit).uiStart, (*cit).uiEnd, (uint)ulArcGmt))
          {
             // found new entry ...
 
@@ -2900,7 +2897,7 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
             showInfo.setShowName((*cit).sShowName);
             showInfo.setStartTime((*cit).uiStart);
             showInfo.setEndTime((*cit).uiEnd);
-            showInfo.setLastJumpTime((ulArcGmt != (*cit).uiStart) ? ulArcGmt : 0); // take care of relative time jumps!
+            showInfo.setLastJumpTime((ulArcGmt > (*cit).uiStart) ? ulArcGmt : 0); // take care of relative time jumps!
             showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
                                    .arg(createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
