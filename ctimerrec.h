@@ -112,7 +112,6 @@ private:
    QMap<uint, rec::SRecEntry> JobList;
    QMap<int, rec::SChanEntry> ChanList;
    QMap<uint, rec::SRecEntry>::iterator itActJob;
-   QString sListFile;
    uint    uiActId;
    uint    uiEdtId;
    QTimer  recTimer;

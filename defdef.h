@@ -41,7 +41,6 @@
 
 #define APP_LOG_FILE      BIN_NAME ".log"
 #define PLAYER_LOG_FILE   "player.log"
-#define TIMER_LIST_FILE   "reclist.xml"
 #define MOD_DIR           "modules"
 #define LANG_DIR          "language"
 #define LOGO_DIR          "logos"
@@ -59,7 +58,6 @@
 #define ARCHIV_OFFSET     900             // 15 minutes after show start, archiv should be available
 #define MAX_ARCHIV_AGE    1209000         // < 2 weeks in seconds
 #define MAX_NO_FAVOURITES 10              // max. number of favourites ...
-#define JUMP_TIME         120             // forward / backward jump in archive play
 #define MIN_CACHE_SIZE    5000000         // < 5 MB ...
 #define TIME_OFFSET       (35 * 365 * 24 * 3600) // make the slider handle gmt
 #define VIDEOS_PER_SITE   20              // number of videos / site

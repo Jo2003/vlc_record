@@ -975,18 +975,18 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CTimerRec</name>
     <message>
-        <location filename="ctimerrec.cpp" line="422"/>
-        <location filename="ctimerrec.cpp" line="428"/>
+        <location filename="ctimerrec.cpp" line="421"/>
+        <location filename="ctimerrec.cpp" line="427"/>
         <source>Please Correct!</source>
         <translation>Пожалуйста, исправьте!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="423"/>
+        <location filename="ctimerrec.cpp" line="422"/>
         <source>Please insert a name!</source>
         <translation>Пожалуйста, введите имя!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="429"/>
+        <location filename="ctimerrec.cpp" line="428"/>
         <source>The entry you want to add overlapps with an existing entry
 or start time is later than end time!</source>
         <oldsource>The entry you want to add overlapps with an existing entry or start time is later than end time!</oldsource>
@@ -994,67 +994,67 @@ or start time is later than end time!</source>
 или время начала находится позднее времени завершения!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="341"/>
-        <location filename="ctimerrec.cpp" line="470"/>
+        <location filename="ctimerrec.cpp" line="340"/>
+        <location filename="ctimerrec.cpp" line="469"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="342"/>
-        <location filename="ctimerrec.cpp" line="471"/>
+        <location filename="ctimerrec.cpp" line="341"/>
+        <location filename="ctimerrec.cpp" line="470"/>
         <source>SQL Error String: %1</source>
         <translation>Ошибка SQL строки: %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="587"/>
+        <location filename="ctimerrec.cpp" line="586"/>
         <source>Add Job #%1 (%2) to Joblist!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="641"/>
+        <location filename="ctimerrec.cpp" line="640"/>
         <source>Don&apos;t check ID %1 (it will be updated).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="845"/>
+        <location filename="ctimerrec.cpp" line="844"/>
         <source>Delete old entry #%1 (%2) from Joblist.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="853"/>
+        <location filename="ctimerrec.cpp" line="852"/>
         <source>Stopping timer record #%1 (%2). End time reached!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="895"/>
+        <location filename="ctimerrec.cpp" line="894"/>
         <source>Record #%1 (%2) starts soon. Set timer to standby!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="903"/>
+        <location filename="ctimerrec.cpp" line="902"/>
         <source>Start record #%1 (%2)!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="974"/>
-        <location filename="ctimerrec.cpp" line="1042"/>
+        <location filename="ctimerrec.cpp" line="973"/>
+        <location filename="ctimerrec.cpp" line="1041"/>
         <source>Can&apos;t start Player!</source>
         <translation>Не удается запустить плеер!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="978"/>
-        <location filename="ctimerrec.cpp" line="1046"/>
+        <location filename="ctimerrec.cpp" line="977"/>
+        <location filename="ctimerrec.cpp" line="1045"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="974"/>
-        <location filename="ctimerrec.cpp" line="1042"/>
+        <location filename="ctimerrec.cpp" line="973"/>
+        <location filename="ctimerrec.cpp" line="1041"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="996"/>
+        <location filename="ctimerrec.cpp" line="995"/>
         <source>All records done. Shutdown system using command line:
   --&gt; %1</source>
         <translation></translation>

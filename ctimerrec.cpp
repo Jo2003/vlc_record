@@ -41,7 +41,6 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
    iReqId        = -1;
    uiActId       = 0;
    uiEdtId       = INVALID_ID;
-   sListFile     = QString("%1/%2").arg(pFolders->getDataDir()).arg(TIMER_LIST_FILE);
    pTrigger      = NULL;
    pXmlParser    = NULL;
    pSettings     = NULL;
