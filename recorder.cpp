@@ -2900,7 +2900,7 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
             showInfo.setShowName((*cit).sShowName);
             showInfo.setStartTime((*cit).uiStart);
             showInfo.setEndTime((*cit).uiEnd);
-            showInfo.setLastJumpTime(0);
+            showInfo.setLastJumpTime((ulArcGmt != (*cit).uiStart) ? ulArcGmt : 0); // take care of relative time jumps!
             showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
                                    .arg(createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
