@@ -1,11 +1,11 @@
 ;------------------------------
-; date string for use in 
+; date string for use in
 ; file name ...
 !define /date DATESTRING "%Y%m%d"
 
 ;------------------------------
 ; define versions ...
-!define VER_MINOR   "51B8"
+!define VER_MINOR   "52"
 
 ;------------------------------
 ; path defines ...

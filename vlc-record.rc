@@ -2,8 +2,8 @@
 
 IDI_ICON1 ICON DISCARDABLE "resources/television.ico"
 
-#define VER_FILEVERSION             0,2,50,0
-#define VER_FILEVERSION_STR         "0,2,50,0"
+#define VER_FILEVERSION             0,2,52,0
+#define VER_FILEVERSION_STR         "0,2,52,0"
 
 #define VER_PRODUCTVERSION          VER_FILEVERSION
 #define VER_PRODUCTVERSION_STR      VER_FILEVERSION_STR
@@ -11,8 +11,8 @@ IDI_ICON1 ICON DISCARDABLE "resources/television.ico"
 #define COMP_NAME                   "Jo2003"
 #define COPYRIGHT                   "(c) 2009 - 2012 by Jo2003"
 #define ORG_FILENAME                "vlc-record.exe"
-#define PROD_VER_STR                "2.50"
-#define FILE_VER_STR                "2.50.0"
+#define PROD_VER_STR                "2.52"
+#define FILE_VER_STR                "2.52.0"
 #define PROD_NAME                   "VLC-Record Player"
 #define FILE_DESCR                  "A player for Video Streams sent from Kartina.TV"
 #define INT_NAME                    "VLC-Record"

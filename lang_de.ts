@@ -580,15 +580,15 @@ p, li { white-space: pre-wrap; }
         <translation>Zuschneiden: </translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="134"/>
+        <location filename="forms/cplayer.ui" line="137"/>
         <source>Switch to Fullscreen</source>
         <translation>Fullscreen</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="266"/>
+        <location filename="forms/cplayer.ui" line="270"/>
         <source> 0:00:00</source>
         <oldsource>0:00:00</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Jump Backward</source>
