@@ -194,15 +194,15 @@
    border-radius:    3px;
 }
 
- QSlider::handle:horizontal {
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #727272, stop:0.15 white, stop:0.75 white, stop:1 #888);
+QSlider::handle:horizontal {
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #727272, stop:0.15 white, stop:0.75 white, stop:1 #888);
    border: 1px solid #5c5c5c;
    border-radius: 3px;
    width:         4px;
-   margin:       -7px 0;
+   margin:       -6px 0;
  }
  
- QSlider::handle:horizontal:disabled {
+QSlider::handle:horizontal:disabled {
    border: 0;
    width:  0;
    margin: 0;
@@ -214,10 +214,10 @@ QSlider::handle:horizontal:pressed, QSlider::handle:horizontal:hover {
 }
 
 QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
-   background-color: white;;
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #bacbdb, stop:0.280 #5077ae, stop:0.281 #406da6, stop:0.660 #b9ddf3, stop:0.950 #88bbe8, stop:0.951 #84b4da, stop:1 #84b4da);
+   border: 1px solid #1e4785;
    border-radius:    3px;
-}
-</string>
+}</string>
        </property>
        <property name="maximum">
         <number>1000</number>
