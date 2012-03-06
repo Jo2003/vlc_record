@@ -43,17 +43,13 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _mouseHide           = new QTimer(this);
    _render->setMouseTracking(true);
    _render->setAutoFillBackground(true);
-   QPalette plt = palette();
-   plt.setColor(QPalette::Window, Qt::black);
-   _render->setPalette(plt);
-   _render->setObjectName(QString::fromUtf8("renderView"));
+   _render->setObjectName("renderView");
    _render->setStyleSheet("QWidget#renderView {"
                           "background-color: black;"
                           "background-image: url(:/app/kartina);"
                           "background-repeat: no-repeat;"
                           "background-position: center middle;}");
-   pLayout->setSpacing(0);
-   pLayout->setContentsMargins(0, 0, 0, 0);
+   pLayout->setMargin(0);
    pLayout->addWidget(_render);
    setLayout(pLayout);
 
