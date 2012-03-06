@@ -13,7 +13,12 @@
    #define __150610_CSHOWINFO_H
 
 #include <QString>
+#include <QMap>
+#include <QObject>
 #include "playstates.h"
+#include "cepgbrowser.h"
+
+typedef QMap<uint, epg::SShow> t_EpgMap;
 
 namespace ShowInfo
 {
@@ -36,12 +41,14 @@ namespace ShowInfo
 |  Description: a simple storage class for show information
 |
 \********************************************************************/
-class CShowInfo
+class CShowInfo : public QObject
 {
+   Q_OBJECT
+
 public:
 
    // constructor ...
-   CShowInfo();
+   CShowInfo(QObject *parent = 0);
 
    // save values ...
    void setShowName (const QString &name);
@@ -54,6 +61,7 @@ public:
    void setLastJumpTime (uint start);
    void setHtmlDescr (const QString &descr);
    void setVodId (int id);
+   void setEpgMap(const t_EpgMap &map);
 
    // get values ...
    const QString &showName();
@@ -68,6 +76,9 @@ public:
    bool  canCtrlStream();
    const int& vodId();
 
+   int autoUpdate(uint uiTime);
+   static QString createTooltip (const QString & name, const QString & prog, uint start, uint end);
+
 private:
    QString              sShowName;
    int                  iChannelId;
@@ -79,6 +90,7 @@ private:
    ShowInfo::eProgType  eShowType;
    QString              sDescr;
    int                  iVodId;
+   t_EpgMap             epgMap;
 };
 
 #endif // __150610_CSHOWINFO_H

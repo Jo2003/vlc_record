@@ -10,6 +10,8 @@
 | $Id$
 \*************************************************************/
 #include "cshowinfo.h"
+#include "templates.h"
+#include "small_helpers.h"
 
 
 /* -----------------------------------------------------------------\
@@ -22,7 +24,7 @@
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CShowInfo::CShowInfo()
+CShowInfo::CShowInfo(QObject *parent) : QObject(parent)
 {
    iChannelId = -1;
    iVodId     = -1;
@@ -31,6 +33,7 @@ CShowInfo::CShowInfo()
    uiStart    = 0;
    uiEnd      = 0;
    uiJumpTime = 0;
+   epgMap.clear();
 }
 
 /* -----------------------------------------------------------------\
@@ -181,6 +184,21 @@ void CShowInfo::setVodId(int id)
 void CShowInfo::setHtmlDescr(const QString &descr)
 {
    sDescr = descr;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setEpgMap
+|  Begin: 05.03.2012
+|  Author: Jo2003
+|  Description: stores epg map
+|
+|  Parameters: ref. to epg map
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::setEpgMap(const t_EpgMap &map)
+{
+   epgMap = map;
 }
 
 /* -----------------------------------------------------------------\
@@ -355,6 +373,71 @@ bool CShowInfo::canCtrlStream()
 const QString& CShowInfo::htmlDescr()
 {
    return sDescr;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: autoUpdate
+|  Begin: 05.03.2012
+|  Author: Jo2003
+|  Description: auto update showInfo with values from epg
+|               matching to given time
+|  Parameters:  time to update showinfo to
+|
+|  Returns: 0 --> ok
+|          -1 --> no entry matching to time found
+\----------------------------------------------------------------- */
+int CShowInfo::autoUpdate(uint uiTime)
+{
+   int iRV = -1;
+   t_EpgMap::const_iterator cit;
+
+   for (cit = epgMap.constBegin(); cit != epgMap.constEnd(); cit++)
+   {
+      if (inBetween((*cit).uiStart, (*cit).uiEnd, uiTime))
+      {
+         sShowName  = (*cit).sShowName;
+         uiStart    = (*cit).uiStart;
+         uiEnd      = (*cit).uiEnd;
+         uiJumpTime = (uiTime > (*cit).uiStart) ? uiTime : 0; // take care of relative time jumps!
+         sDescr     = QString(TMPL_BACKCOLOR)
+                         .arg("rgb(255, 254, 212)")
+                         .arg(createTooltip(tr("%1 (Archive)").arg(sChanName),
+                                 QString("%1 %2").arg((*cit).sShowName).arg((*cit).sShowDescr),
+                                 uiStart, uiEnd));
+         iRV = 0;
+         break;
+      }
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: createTooltip [static]
+|  Begin: 22.03.2010 / 18:15
+|  Author: Jo2003
+|  Description: create a tooltip for given data
+|
+|  Parameters: channel name, program description,
+|              start time, end time
+|
+|  Returns: tool tip string
+\----------------------------------------------------------------- */
+QString CShowInfo::createTooltip (const QString & name, const QString & prog, uint start, uint end)
+{
+   // create tool tip with programm info ...
+   QString sToolTip = PROG_INFO_TOOL_TIP;
+   sToolTip.replace(TMPL_PROG, tr("Program:"));
+   sToolTip.replace(TMPL_START, tr("Start:"));
+   sToolTip.replace(TMPL_END, tr("End:"));
+   sToolTip.replace(TMPL_TIME, tr("Length:"));
+
+   sToolTip = sToolTip.arg(name).arg(prog)
+               .arg(QDateTime::fromTime_t(start).toString(DEF_TIME_FORMAT))
+               .arg(end ? QDateTime::fromTime_t(end).toString(DEF_TIME_FORMAT) : "")
+               .arg(end ? tr("%1 min.").arg((end - start) / 60)                : "");
+
+   return sToolTip;
 }
 
 /************************* History ***************************\

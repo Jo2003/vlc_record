@@ -670,7 +670,7 @@ void Recorder::on_pushRecord_clicked()
             showInfo.setPlayState(IncPlay::PS_RECORD);
             showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
-                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
@@ -741,7 +741,7 @@ void Recorder::on_pushPlay_clicked()
             showInfo.setPlayState(IncPlay::PS_PLAY);
             showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
-                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
@@ -821,7 +821,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
             showInfo.setPlayState(IncPlay::PS_PLAY);
             showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
-                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
@@ -1242,7 +1242,7 @@ void Recorder::on_pushLive_clicked()
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                       .arg("rgb(255, 254, 212)")
-                                      .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                TouchPlayCtrlBtns(false);
                Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
@@ -1284,7 +1284,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
             showInfo.setPlayState(IncPlay::PS_PLAY);
             showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
-                                   .arg(createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
             Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
@@ -1726,7 +1726,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
       TouchPlayCtrlBtns(false);
 
       // get program map ...
-      archProgMap = ui->textEpg->exportProgMap();
+      showInfo.setEpgMap(ui->textEpg->exportProgMap());
 
       // new own downloader ...
       if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
@@ -1752,7 +1752,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
       showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                              .arg("rgb(255, 254, 212)")
-                             .arg(createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
+                             .arg(CShowInfo::createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
                                                 QString("%1 %2").arg(sepg.sShowName).arg(sepg.sShowDescr),
                                                 sepg.uiStart, sepg.uiEnd))));
 
@@ -2740,7 +2740,7 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
       {
          ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
-                                   .arg(createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd)));
+                                   .arg(CShowInfo::createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd)));
       }
 
       // quick'n'dirty timeshift hack ...
@@ -2885,38 +2885,19 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
    if (!inBetween(showInfo.starts(), showInfo.ends(), (uint)ulArcGmt))
    {
       // search in archiv program map for matching entry ...
-      QMap<uint, epg::SShow>::const_iterator cit;
-
-      for (cit = archProgMap.constBegin(); cit != archProgMap.constEnd(); cit++)
+      if (!showInfo.autoUpdate(ulArcGmt))
       {
-         if (inBetween((*cit).uiStart, (*cit).uiEnd, (uint)ulArcGmt))
-         {
-            // found new entry ...
+         // add additional info to LCD ...
+         int     iTime = showInfo.ends() ? (int)((showInfo.ends() - showInfo.starts()) / 60) : 60;
+         QString sTime = tr("Length: %1 min.").arg(iTime);
+         ui->labState->setFooter(sTime);
+         ui->labState->updateState(showInfo.playState());
 
-            // update show info ...
-            showInfo.setShowName((*cit).sShowName);
-            showInfo.setStartTime((*cit).uiStart);
-            showInfo.setEndTime((*cit).uiEnd);
-            showInfo.setLastJumpTime((ulArcGmt > (*cit).uiStart) ? ulArcGmt : 0); // take care of relative time jumps!
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
-                                                      QString("%1 %2").arg((*cit).sShowName).arg((*cit).sShowDescr),
-                                                      (*cit).uiStart, (*cit).uiEnd))));
+         // set short epg info ...
+         ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
-            // add additional info to LCD ...
-            int     iTime = ((*cit).uiEnd) ? (int)(((*cit).uiEnd - (*cit).uiStart) / 60) : 60;
-            QString sTime = tr("Length: %1 min.").arg(iTime);
-            ui->labState->setFooter(sTime);
-            ui->labState->updateState(showInfo.playState());
-
-            // set short epg info ...
-            ui->textEpgShort->setHtml(showInfo.htmlDescr());
-
-            // done ...
-            emit sigShowInfoUpdated();
-            break;
-         }
+         // done ...
+         emit sigShowInfoUpdated();
       }
    }
 }
@@ -3565,7 +3546,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          }
          else
          {
-            pItem->setToolTip(createTooltip(chanlist[i].sName, chanlist[i].sProgramm,
+            pItem->setToolTip(CShowInfo::createTooltip(chanlist[i].sName, chanlist[i].sProgramm,
                                             chanlist[i].uiStart, chanlist[i].uiEnd));
          }
       }
@@ -4151,34 +4132,6 @@ bool Recorder::TimeJumpAllowed()
    }
 
    return bRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: createTooltip
-|  Begin: 22.03.2010 / 18:15
-|  Author: Jo2003
-|  Description: create a tooltip for given data
-|
-|  Parameters: channel name, program description,
-|              start time, end time
-|
-|  Returns: tool tip string
-\----------------------------------------------------------------- */
-QString Recorder::createTooltip (const QString & name, const QString & prog, uint start, uint end)
-{
-   // create tool tip with programm info ...
-   QString sToolTip = PROG_INFO_TOOL_TIP;
-   sToolTip.replace(TMPL_PROG, tr("Program:"));
-   sToolTip.replace(TMPL_START, tr("Start:"));
-   sToolTip.replace(TMPL_END, tr("End:"));
-   sToolTip.replace(TMPL_TIME, tr("Length:"));
-
-   sToolTip = sToolTip.arg(name).arg(prog)
-               .arg(QDateTime::fromTime_t(start).toString(DEF_TIME_FORMAT))
-               .arg(end ? QDateTime::fromTime_t(end).toString(DEF_TIME_FORMAT) : "")
-               .arg(end ? tr("%1 min.").arg((end - start) / 60)                : "");
-
-   return sToolTip;
 }
 
 /* -----------------------------------------------------------------\

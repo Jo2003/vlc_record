@@ -159,7 +159,6 @@ private:
     ulong                           ulStartFlags;
     QNetworkAccessManager          *pUpdateChecker;
     Ui::SVodSite                    lastVodSite;
-    QMap<uint, epg::SShow>          archProgMap;
     Ui::STabWidget                  vodTabWidget;
 
 protected:
@@ -185,8 +184,7 @@ protected:
     void ClearShortCuts ();
     void savePositions ();
     void initDialog ();
-    QString createTooltip (const QString & name, const QString & prog, uint start, uint end);
-    int     getCurrentCid();
+    int  getCurrentCid();
     void retranslateShortcutTable();
     void correctEpgOffset();
 
