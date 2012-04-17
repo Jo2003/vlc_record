@@ -252,9 +252,10 @@ int CPlayer::initPlayer()
       "--intf=dummy",
       "--no-media-library",
       "--no-osd",
+      "--no-stats",
+      "--no-video-title-show",
    #ifdef Q_WS_MAC
       // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
-      // "--opengl-provider=macosx"
       "--vout=macosx",
    #endif
       pVerbose
