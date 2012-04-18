@@ -286,7 +286,7 @@ const QString& CDirStuff::getLangDir()
 |
 |  Returns: ref. to Qt language dir string
 \----------------------------------------------------------------- */
-const QString& CDirStuff::getLangDir()
+const QString& CDirStuff::getQtLangDir()
 {
    return sQtLangDir;
 }
