@@ -10,6 +10,7 @@
 | $Id$
 \*************************************************************/
 #include "cdirstuff.h"
+#include <QLibraryInfo>
 
 /* -----------------------------------------------------------------\
 |  Method: CDirStuff / constructor
@@ -130,7 +131,11 @@ int CDirStuff::initDirectories()
       iRV = -1;
    }
 
-   sAppDir = QApplication::applicationDirPath();
+   // app folder
+   sAppDir    = QApplication::applicationDirPath();
+
+   // qt languages dir ...
+   sQtLangDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 
 #ifdef QT_NO_DEBUG // normal folder structure ...
 
@@ -157,7 +162,9 @@ int CDirStuff::initDirectories()
    //       \   \__vlc-record (binary)
    //       \__Resources
    //       \   \__language
-   //       \       \__*.qm (language files)
+   //       \   \   \__*.qm (own language files)
+   //       \   \__translations
+   //       \       \__*.qm (Qt language files)
    //       \__PlugIns
    //           \__modules
    //               \__*.mod (player modules)
@@ -200,10 +207,10 @@ int CDirStuff::initDirectories()
       // found bin section --> create path names ...
 
       // language path ...
-      sLangDir = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(LANG_DIR);
+      sLangDir   = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(LANG_DIR);
 
       // modules path ...
-      sModDir  = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(MOD_DIR);
+      sModDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(MOD_DIR);
    }
    else
    {
@@ -267,6 +274,21 @@ const QString& CDirStuff::getDataDir()
 const QString& CDirStuff::getLangDir()
 {
    return sLangDir;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getQtLangDir
+|  Begin: 18.04.2012
+|  Author: Jo2003
+|  Description: get Qt language directory
+|
+|  Parameters: --
+|
+|  Returns: ref. to Qt language dir string
+\----------------------------------------------------------------- */
+const QString& CDirStuff::getLangDir()
+{
+   return sQtLangDir;
 }
 
 /* -----------------------------------------------------------------\

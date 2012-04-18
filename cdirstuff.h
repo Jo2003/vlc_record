@@ -39,6 +39,7 @@ public:
    const QString& getLogoDir ();
    const QString& getVodPixDir ();
    const QString& getLangDir ();
+   const QString& getQtLangDir ();
    const QString& getModDir ();
    const QString& getAppDir ();
    bool  isInitialized ();
@@ -52,6 +53,7 @@ private:
    QString                sLogoDir;
    QString                sVodPixDir;
    QString                sLangDir;
+   QString                sQtLangDir;
    QString                sModDir;
    QString                sAppDir;
    QMap<QString, QString> mSysEnv;
