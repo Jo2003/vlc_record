@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "52"
-#define BETA_EXT      ""
+#define VERSION_MINOR "53"
+#define BETA_EXT      "B1"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-04-18: Version 2.53B1
+| - add Qt translations so standard widgets will use right
+|   translation
+| - optimized global init flags for libVLC
+| - many changes to the Mac port (mostly for App bundle)
 |
 | 2012-03-02: Version 2.52
 | - take care on timejump for offset time in showinfo
