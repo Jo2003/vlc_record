@@ -188,7 +188,7 @@ void CSettingsDlg::readSettings()
 
    // fill language box ...
    folder.setPath(pFolders->getLangDir());
-   sl = folder.entryList(QStringList("*.qm"), QDir::Files, QDir::Name);
+   sl = folder.entryList(QStringList("lang_*.qm"), QDir::Files, QDir::Name);
 
    // make sure english is part of list ...
    sl.push_front("lang_en.qm");

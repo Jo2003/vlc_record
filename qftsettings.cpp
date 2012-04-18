@@ -47,7 +47,7 @@ QFTSettings::QFTSettings(QWidget *parent, QTranslator *pTrans) :
 
     // fill language box ...
     QDir        folder(pFolders->getLangDir());
-    QStringList sl = folder.entryList(QStringList("*.qm"), QDir::Files, QDir::Name);
+    QStringList sl = folder.entryList(QStringList("lang_*.qm"), QDir::Files, QDir::Name);
 
     // make sure english is part of list ...
     sl.push_front("lang_en.qm");
@@ -136,7 +136,8 @@ void QFTSettings::changeEvent(QEvent *e)
 void QFTSettings::on_cbxLanguage_currentIndexChanged(QString str)
 {
    // set language as read ...
-   pTranslator->load(QString("lang_%1").arg(str), pFolders->getLangDir());
+   (pTranslator + Translators::TRANS_OWN)->load(QString("lang_%1").arg(str), pFolders->getLangDir());
+   (pTranslator + Translators::TRANS_QT)->load(QString("qt_%1").arg(str), pFolders->getQtLangDir());
 }
 
 //---------------------------------------------------------------------------

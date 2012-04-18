@@ -16,6 +16,7 @@
 
 #include <QDialog>
 #include <QTranslator>
+#include <QVector>
 
 #include "cvlcrecdb.h"
 #include "defdef.h"
@@ -36,7 +37,7 @@ class QFTSettings : public QDialog
     Q_OBJECT
 
 public:
-    QFTSettings(QWidget *parent = 0, QTranslator *pTrans = 0);
+   QFTSettings(QWidget *parent = 0, QTranslator *pTrans = 0);
     ~QFTSettings();
 
 private slots:

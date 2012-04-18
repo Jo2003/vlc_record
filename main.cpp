@@ -19,8 +19,6 @@
 #ifdef DINCLUDEPLUGS
 #include <QtPlugin>
 Q_IMPORT_PLUGIN(qsqlite)
-// Q_IMPORT_PLUGIN(qgif)
-// Q_IMPORT_PLUGIN(qico)
 #endif // DINCLUDEPLUGS
 
 #ifdef Q_WS_X11
@@ -58,9 +56,10 @@ int main(int argc, char *argv[])
 #endif
 
    int          iRV = -1;
-   QTranslator  trans;
+   QTranslator  trans[Translators::TRANS_MAX];
    QApplication app(argc, argv);
-   QApplication::installTranslator (&trans);
+   QApplication::installTranslator (&trans[Translators::TRANS_QT]);
+   QApplication::installTranslator (&trans[Translators::TRANS_OWN]);
 
    pFolders = new CDirStuff();
 
@@ -76,11 +75,11 @@ int main(int argc, char *argv[])
             if ((pDb->stringValue("User") == "")
                && (pDb->stringValue("Passwd") == ""))
             {
-               QFTSettings ftSet(NULL, &trans);
+               QFTSettings ftSet(NULL, trans);
                ftSet.exec();
             }
 
-            Recorder rec(&trans);
+            Recorder rec(trans);
 
             rec.show ();
 

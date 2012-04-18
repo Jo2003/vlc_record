@@ -63,6 +63,17 @@
 #define VIDEOS_PER_SITE   20              // number of videos / site
 #define GPU_ACC_TOKEN     ":ffmpeg-hw"    // mrl option to use GPU acceleration
 
+// a namespace for translators ...
+namespace Translators
+{
+   enum ETranslators
+   {
+      TRANS_QT,
+      TRANS_OWN,
+      TRANS_MAX
+   };
+}
+
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\
 | $Log$

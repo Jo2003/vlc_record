@@ -558,8 +558,8 @@ void Recorder::on_pushSettings_clicked()
       }
 
       // set language as read ...
-      pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()),
-                        pFolders->getLangDir());
+      (pTranslator + Translators::TRANS_OWN)->load(QString("lang_%1").arg(Settings.GetLanguage ()), pFolders->getLangDir());
+      (pTranslator + Translators::TRANS_QT)->load(QString("qt_%1").arg(Settings.GetLanguage ()), pFolders->getQtLangDir());
 
 #ifdef INCLUDE_LIBVLC
       // do we use libVLC ?
@@ -1462,7 +1462,7 @@ void Recorder::slotCookie (QString str)
          if (!ui->tabEpgVod->widget(vodTabWidget.iPos))
          {
             // make sure tab text is translated as needed
-            QString title = pTranslator->translate(objectName().toUtf8().constData(),
+            QString title = (pTranslator + Translators::TRANS_OWN)->translate(objectName().toUtf8().constData(),
                                                    vodTabWidget.sText.toUtf8().constData());
 
             // add tab ...
@@ -2997,8 +2997,10 @@ void Recorder::initDialog ()
    CreateSystray();
 
    // set language as read ...
-   pTranslator->load(QString("lang_%1").arg(Settings.GetLanguage ()),
+   (pTranslator + Translators::TRANS_OWN)->load(QString("lang_%1").arg(Settings.GetLanguage ()),
                      pFolders->getLangDir());
+   (pTranslator + Translators::TRANS_QT)->load(QString("qt_%1").arg(Settings.GetLanguage ()),
+                     pFolders->getQtLangDir());
 
    // get player module ...
    vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());

@@ -162,12 +162,12 @@ int CDirStuff::initDirectories()
    //       \   \__vlc-record (binary)
    //       \__Resources
    //       \   \__language
-   //       \   \   \__*.qm (own language files)
-   //       \   \__translations
-   //       \       \__*.qm (Qt language files)
+   //       \       \__*.qm (own language files)
    //       \__PlugIns
-   //           \__modules
-   //               \__*.mod (player modules)
+   //       \   \__modules
+   //       \       \__*.mod (player modules)
+   //       \__translations
+   //           \__*.qm (Qt language files)
 
    // find bundle dir ...
    QRegExp rx("^(.*)/MacOS");

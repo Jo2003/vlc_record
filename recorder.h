@@ -117,7 +117,7 @@ class Recorder : public QDialog
     Q_OBJECT
 
 public:
-    Recorder(QTranslator *trans = 0, QWidget *parent = 0);
+   Recorder(QTranslator *trans = 0, QWidget *parent = 0);
     ~Recorder();
 
 public slots:
