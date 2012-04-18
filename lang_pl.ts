@@ -512,39 +512,39 @@ p, li { white-space: pre-wrap; }
         <translation>Przejdź to trybu pełnoekranowego</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="271"/>
+        <location filename="cplayer.cpp" line="272"/>
         <source>Create libVLC with following global options:
  %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="512"/>
+        <location filename="cplayer.cpp" line="513"/>
         <source>Use following URL:
   --&gt; %1</source>
         <translation>Użyj następującego URL:
   --&gt; %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="520"/>
-        <location filename="cplayer.cpp" line="537"/>
-        <location filename="cplayer.cpp" line="552"/>
-        <location filename="cplayer.cpp" line="556"/>
-        <location filename="cplayer.cpp" line="564"/>
+        <location filename="cplayer.cpp" line="521"/>
+        <location filename="cplayer.cpp" line="538"/>
+        <location filename="cplayer.cpp" line="553"/>
+        <location filename="cplayer.cpp" line="557"/>
+        <location filename="cplayer.cpp" line="565"/>
         <source>Add MRL Option: %1</source>
         <translation>Dodaj opcję MRL: %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="543"/>
+        <location filename="cplayer.cpp" line="544"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="576"/>
+        <location filename="cplayer.cpp" line="577"/>
         <source>Can&apos;t create media description ...</source>
         <translation>Nie można utworzyć opisu pliku multimedialnego …</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="765"/>
+        <location filename="cplayer.cpp" line="766"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation>Otrzymano nieznane wydarzenie nr %1  ...</translation>
     </message>
@@ -555,12 +555,12 @@ p, li { white-space: pre-wrap; }
   --&gt; %4</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="798"/>
+        <location filename="cplayer.cpp" line="799"/>
         <source>Aspect ratio: %1</source>
         <translation>Współczynnik kształtu obrazu: %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="831"/>
+        <location filename="cplayer.cpp" line="832"/>
         <source>Crop ratio: %1</source>
         <translation>Współczynnik proporcji kadru: %1</translation>
     </message>
@@ -579,12 +579,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Nie można przełączyć na tryb pełnoekranowy, jeśli nie ma wideo do odtwarzania!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1119"/>
+        <location filename="cplayer.cpp" line="1120"/>
         <source>Ignore slightly slider position change...</source>
         <translation>Zignoruj lekko zmienioną pozycję suwaka…</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1207"/>
+        <location filename="cplayer.cpp" line="1208"/>
         <source>Film length: %1ms.</source>
         <translation>Długość filmu: %1ms.</translation>
     </message>
@@ -1423,12 +1423,12 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation>&amp;Zapisz</translation>
     </message>
     <message>
-        <location filename="qftsettings.cpp" line="164"/>
+        <location filename="qftsettings.cpp" line="165"/>
         <source>%1/Movies</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qftsettings.cpp" line="166"/>
+        <location filename="qftsettings.cpp" line="167"/>
         <source>%1/Videos</source>
         <translation>%1/Wideo</translation>
     </message>
@@ -1436,7 +1436,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="317"/>
+        <location filename="qvlcvideowidget.cpp" line="313"/>
         <source>Activate shortcut: %1</source>
         <translation>Aktywuj skrót: %1</translation>
     </message>
@@ -1749,22 +1749,22 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="2375"/>
-        <location filename="recorder.cpp" line="3654"/>
-        <location filename="recorder.cpp" line="3710"/>
+        <location filename="recorder.cpp" line="3656"/>
+        <location filename="recorder.cpp" line="3712"/>
         <source>Error!</source>
         <translation>Błąd!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2375"/>
-        <location filename="recorder.cpp" line="3654"/>
-        <location filename="recorder.cpp" line="3710"/>
+        <location filename="recorder.cpp" line="3656"/>
+        <location filename="recorder.cpp" line="3712"/>
         <source>Can&apos;t start VLC-Media Player!</source>
         <translation>Nie można uruchomić VLC-Media Player!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2381"/>
-        <location filename="recorder.cpp" line="3661"/>
-        <location filename="recorder.cpp" line="3716"/>
+        <location filename="recorder.cpp" line="3663"/>
+        <location filename="recorder.cpp" line="3718"/>
         <source>Started VLC with pid #%1!</source>
         <translation>Uruchomiony VLC z pid #%1!</translation>
     </message>
@@ -1879,98 +1879,98 @@ dataDir: %1
         <translation>Pokaż EPG / VOD</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3178"/>
+        <location filename="recorder.cpp" line="3180"/>
         <source>%1 - Click to activate!</source>
         <translation>%1 - Kliknij, aby aktywować!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3195"/>
+        <location filename="recorder.cpp" line="3197"/>
         <source>Newest</source>
         <translation>Nowości</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3196"/>
+        <location filename="recorder.cpp" line="3198"/>
         <source>Best</source>
         <translation>Najlepsze</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3236"/>
-        <location filename="recorder.cpp" line="3313"/>
+        <location filename="recorder.cpp" line="3238"/>
+        <location filename="recorder.cpp" line="3315"/>
         <source>1 week backward</source>
         <translation>tydzień wstecz</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3270"/>
-        <location filename="recorder.cpp" line="3318"/>
+        <location filename="recorder.cpp" line="3272"/>
+        <location filename="recorder.cpp" line="3320"/>
         <source>1 week forward</source>
         <translation>tydzień do przodu</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3279"/>
-        <location filename="recorder.cpp" line="3300"/>
+        <location filename="recorder.cpp" line="3281"/>
+        <location filename="recorder.cpp" line="3302"/>
         <source>Mon</source>
         <translation>Pon</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3280"/>
-        <location filename="recorder.cpp" line="3301"/>
+        <location filename="recorder.cpp" line="3282"/>
+        <location filename="recorder.cpp" line="3303"/>
         <source>Tue</source>
         <translation>Wt</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3281"/>
-        <location filename="recorder.cpp" line="3302"/>
+        <location filename="recorder.cpp" line="3283"/>
+        <location filename="recorder.cpp" line="3304"/>
         <source>Wed</source>
         <translation>Śr</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3282"/>
-        <location filename="recorder.cpp" line="3303"/>
+        <location filename="recorder.cpp" line="3284"/>
+        <location filename="recorder.cpp" line="3305"/>
         <source>Thu</source>
         <translation>Czw</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3283"/>
-        <location filename="recorder.cpp" line="3304"/>
+        <location filename="recorder.cpp" line="3285"/>
+        <location filename="recorder.cpp" line="3306"/>
         <source>Fri</source>
         <translation>Pt</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3284"/>
-        <location filename="recorder.cpp" line="3305"/>
+        <location filename="recorder.cpp" line="3286"/>
+        <location filename="recorder.cpp" line="3307"/>
         <source>Sat</source>
         <translation>Sob</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3293"/>
-        <location filename="recorder.cpp" line="3306"/>
+        <location filename="recorder.cpp" line="3295"/>
+        <location filename="recorder.cpp" line="3308"/>
         <source>Sun</source>
         <translation>Niedz</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3523"/>
+        <location filename="recorder.cpp" line="3525"/>
         <source>Can&apos;t load channel image &quot;%1.gif&quot; ...</source>
         <translation>Nie można załadować widoku kanału &quot;%1.gif&quot; …</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3590"/>
-        <location filename="recorder.cpp" line="3744"/>
+        <location filename="recorder.cpp" line="3592"/>
+        <location filename="recorder.cpp" line="3746"/>
         <source>Save Stream as</source>
         <translation>Zachowaj strumień jako</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3913"/>
+        <location filename="recorder.cpp" line="3915"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <translation>Nagrywanie trwa!&lt;br /&gt; &lt;br /&gt;Czy na pewno chcesz teraz zatrzymać nagrywanie?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3917"/>
+        <location filename="recorder.cpp" line="3919"/>
         <source>Question</source>
         <translation>Pytanie</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3982"/>
-        <location filename="recorder.cpp" line="4188"/>
+        <location filename="recorder.cpp" line="3984"/>
+        <location filename="recorder.cpp" line="4190"/>
         <source>Favourite %1</source>
         <translation>Ulubione %1</translation>
     </message>
