@@ -43,6 +43,7 @@
 #define PLAYER_LOG_FILE   "player.log"
 #define MOD_DIR           "modules"
 #define LANG_DIR          "language"
+#define LANG_DIR_QT       "translations"
 #define LOGO_DIR          "logos"
 #define VOD_DIR           "vod"
 #define KARTINA_API_PATH  "/api/xml/"

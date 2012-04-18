@@ -144,10 +144,11 @@ int CDirStuff::initDirectories()
    //                      Windows
    // -----------------------------------------------------
 
-   // language dir and modules dir will be right
-   // in installation folder
-   sLangDir = QString("%1/%2").arg(sAppDir).arg(LANG_DIR);
-   sModDir  = QString("%1/%2").arg(sAppDir).arg(MOD_DIR);
+   // language dir, modules dir and translations dir
+   // will be right in installation folder
+   sLangDir   = QString("%1/%2").arg(sAppDir).arg(LANG_DIR);
+   sModDir    = QString("%1/%2").arg(sAppDir).arg(MOD_DIR);
+   sQtLangDir = QString("%1/%2").arg(sAppDir).arg(LANG_DIR_QT);
 
 #elif defined Q_OS_MAC
    // -----------------------------------------------------
