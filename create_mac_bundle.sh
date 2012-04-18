@@ -3,6 +3,9 @@ APPNAME=${1}
 TMPFILE=/tmp/plist.tmp
 CONTENTS=$APPNAME.app/Contents
 OFFNAME=""
+if [ -z $QTTRANS ] ; then
+    QTTRANS=/Developer/Applications/Qt/translations
+fi
 
 # create official name ...
 case $APPNAME in
@@ -35,10 +38,17 @@ rm -rf $APPNAME-*-mac*
 mkdir -p $CONTENTS/Resources/language
 mkdir -p $CONTENTS/PlugIns/modules
 mkdir -p $CONTENTS/Frameworks
+mkdir -p $CONTENTS/translations
 cp ../*.qm $CONTENTS/Resources/language/
 cp ../modules/*.mod $CONTENTS/PlugIns/modules/
 cp ../resources/$APPNAME.icns $CONTENTS/Resources/$APPNAME.icns
 cp -R ../mac/* $CONTENTS/MacOS
+
+# copy Qt translations
+cp $QTTRANS/qt_de.qm $CONTENTS/translations
+cp $QTTRANS/qt_fr.qm $CONTENTS/translations
+cp $QTTRANS/qt_pl.qm $CONTENTS/translations
+cp $QTTRANS/qt_ru.qm $CONTENTS/translations
 
 # patch Info.plist file ...
 sed -e "s/$APPNAME.rc/$APPNAME.icns/g" -e "s/yourcompany/Jo2003/g" -e "s/<\/dict>/	<key>CFBundleName<\/key>\\
