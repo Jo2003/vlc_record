@@ -1,11 +1,46 @@
 #!/bin/bash
 
 NAME=${1}
+OFFNAME=""
+
+# create official name ...
+case ${NAME} in
+   vlc-record)
+      OFFNAME="VLC-Record"
+      ;;
+   kartina_tv)
+      OFFNAME="Kartina.TV"
+      ;;
+   polsky_tv)
+      OFFNAME="Polsky.TV"
+      ;;
+   afrobox)
+      OFFNAME="AfroBox"
+      ;;
+   *)
+      OFFNAME=${NAME}
+      ;;
+esac
+   
 
 # get release information ...
 MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]\+\([^"]\+\).*/\1/p' version_info.h`
 BETAEXT=`sed -n 's/^#define[ \t]*BETA_EXT[^0-9B]\+\([^"]\+\).*/\1/p' version_info.h`
 
+# create application launcher ...
+cat << EOF >$NAME.desktop
+[Desktop Entry]
+Name=${OFFNAME}
+Comment=A tool to watch / record IPTV program streams from ${OFFNAME}.
+Exec=/usr/bin/${NAME}
+Terminal=false
+Type=Application
+Icon=/usr/share/${NAME}/${NAME}.png
+Categories=Application;VideoPlayer;
+
+EOF
+
+# create install makefile ...
 cat << EOF >install.mak
 INSTALL=install
 TARGETNW=/usr
@@ -48,6 +83,7 @@ install_base:
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/7_vlc-mpeg2.mod
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/10_vlc-player_odl.mod
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER} resources/${NAME}.png
+	\${INSTALL} -m 644 -t \${TARGET}/share/applications ${NAME}.desktop
 
 install_libvlc: install_base
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/5_libvlc.mod
