@@ -512,39 +512,44 @@ p, li { white-space: pre-wrap; }
         <translation>Przejdź to trybu pełnoekranowego</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="272"/>
+        <location filename="cplayer.cpp" line="59"/>
+        <source>MacOSX 10.6 -&gt; take care for fullscreen bug!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cplayer.cpp" line="282"/>
         <source>Create libVLC with following global options:
  %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="513"/>
+        <location filename="cplayer.cpp" line="520"/>
         <source>Use following URL:
   --&gt; %1</source>
         <translation>Użyj następującego URL:
   --&gt; %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="521"/>
-        <location filename="cplayer.cpp" line="538"/>
-        <location filename="cplayer.cpp" line="553"/>
-        <location filename="cplayer.cpp" line="557"/>
-        <location filename="cplayer.cpp" line="565"/>
+        <location filename="cplayer.cpp" line="528"/>
+        <location filename="cplayer.cpp" line="545"/>
+        <location filename="cplayer.cpp" line="560"/>
+        <location filename="cplayer.cpp" line="564"/>
+        <location filename="cplayer.cpp" line="572"/>
         <source>Add MRL Option: %1</source>
         <translation>Dodaj opcję MRL: %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="544"/>
+        <location filename="cplayer.cpp" line="551"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="577"/>
+        <location filename="cplayer.cpp" line="584"/>
         <source>Can&apos;t create media description ...</source>
         <translation>Nie można utworzyć opisu pliku multimedialnego …</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="766"/>
+        <location filename="cplayer.cpp" line="767"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation>Otrzymano nieznane wydarzenie nr %1  ...</translation>
     </message>
@@ -555,12 +560,12 @@ p, li { white-space: pre-wrap; }
   --&gt; %4</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="799"/>
+        <location filename="cplayer.cpp" line="800"/>
         <source>Aspect ratio: %1</source>
         <translation>Współczynnik kształtu obrazu: %1</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="832"/>
+        <location filename="cplayer.cpp" line="833"/>
         <source>Crop ratio: %1</source>
         <translation>Współczynnik proporcji kadru: %1</translation>
     </message>
@@ -579,12 +584,12 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Nie można przełączyć na tryb pełnoekranowy, jeśli nie ma wideo do odtwarzania!</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1120"/>
+        <location filename="cplayer.cpp" line="1121"/>
         <source>Ignore slightly slider position change...</source>
         <translation>Zignoruj lekko zmienioną pozycję suwaka…</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1208"/>
+        <location filename="cplayer.cpp" line="1209"/>
         <source>Film length: %1ms.</source>
         <translation>Długość filmu: %1ms.</translation>
     </message>

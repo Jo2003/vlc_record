@@ -94,6 +94,7 @@ private:
    uint                    uiDuration;
    QMap<QString, QString>  mAspect;
    QMap<QString, QString>  mCrop;
+   bool                    bFixMacFsBug;
 
 private slots:
    void on_posSlider_valueChanged(int value);
@@ -104,6 +105,7 @@ private slots:
    void slotUpdateSlider ();
    void slotChangeVolumeDelta (const bool up);
    void slotSliderPosChanged();
+   void slotToggleFullscreen();
 
 public slots:
    int  playMedia (const QString &sCmdLine);

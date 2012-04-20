@@ -11,6 +11,7 @@
 \*************************************************************/
 #include "cplayer.h"
 #include "ui_cplayer.h"
+#include <QSysInfo>
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -46,9 +47,18 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pTrigger      = NULL;
    bCtrlStream   = false;
    bSpoolPending = true;
+   bFixMacFsBug  = false;
    uiDuration    = (uint)-1;
    mAspect.clear();
    mCrop.clear();
+
+#ifdef Q_OS_MACX
+   if (QSysInfo::MacintoshVersion == QSysInfo::MV_SNOWLEOPARD)
+   {
+      bFixMacFsBug = true;
+      mInfo(tr("MacOSX 10.6 -> take care for fullscreen bug!"));
+   }
+#endif
 
    QStringList slKey, slVal;
    int i;
@@ -88,7 +98,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(ui->volSlider, SIGNAL(sliderMoved(int)), this, SLOT(slotChangeVolume(int)));
 
    // connect double click signal from videoframe with fullscreen toggle ...
-   connect(ui->videoWidget, SIGNAL(fullScreen()), ui->videoWidget, SLOT(toggleFullScreen()));
+   connect(ui->videoWidget, SIGNAL(fullScreen()), this, SLOT(slotToggleFullscreen()));
 
    // mouse wheel changes volume ...
    connect(ui->videoWidget, SIGNAL(wheel(bool)), this, SLOT(slotChangeVolumeDelta(bool)));
@@ -303,9 +313,6 @@ int CPlayer::initPlayer()
                                 CPlayer::eventCallback, (void *)this);
 
       iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerOpening,
-                                 CPlayer::eventCallback, (void *)this);
-
-      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerBuffering,
                                  CPlayer::eventCallback, (void *)this);
 
       iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPlaying,
@@ -724,12 +731,6 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
    case libvlc_MediaPlayerOpening:
       mInfo("libvlc_MediaPlayerOpening ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
-      break;
-
-   // buffering media ...
-   case libvlc_MediaPlayerBuffering:
-      mInfo("libvlc_MediaPlayerBuffering ...");
-      emit pPlayer->sigPlayState((int)IncPlay::PS_BUFFER);
       break;
 
    // playing media ...
@@ -1378,9 +1379,42 @@ void CPlayer::connectToVideoWidget()
 #ifdef Q_OS_WIN
    libvlc_media_player_set_hwnd (pMediaPlayer, (void *)ui->videoWidget->widgetId());
 #elif defined Q_OS_MAC
-   libvlc_media_player_set_nsobject (pMediaPlayer, (void *)ui->videoWidget->widgetId());
+   libvlc_media_player_set_nsobject(pMediaPlayer, (void *)ui->videoWidget->widgetId());
 #else
    libvlc_media_player_set_xwindow(pMediaPlayer, ui->videoWidget->widgetId());
+#endif
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotToggleFullscreen
+|  Begin: 20.04.2012
+|  Author: Jo2003
+|  Description: a wrapper for toogle fullscreen of video widget
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotToggleFullscreen()
+{
+#ifdef Q_OS_MACX
+   void *pNsObj;
+   if (bFixMacFsBug && pMediaPlayer)
+   {
+      libvlc_media_player_set_pause(pMediaPlayer, 1);
+      pNsObj = libvlc_media_player_get_nsobject(pMediaPlayer);
+      libvlc_media_player_set_nsobject(pMediaPlayer, NULL);
+   }
+#endif
+
+   ui->videoWidget->toggleFullScreen();
+
+#ifdef Q_OS_MACX
+   if (bFixMacFsBug && pMediaPlayer)
+   {
+      libvlc_media_player_set_nsobject(pMediaPlayer, (void *)ui->videoWidget->widgetId());
+      libvlc_media_player_set_pause(pMediaPlayer, 0);
+   }
 #endif
 }
 
