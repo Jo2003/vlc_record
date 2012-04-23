@@ -1026,7 +1026,7 @@ void CPlayer::stopPlayTimer()
 \----------------------------------------------------------------- */
 void CPlayer::on_btnFullScreen_clicked()
 {
-   ui->videoWidget->toggleFullScreen();
+   slotToggleFullscreen();
 }
 
 /* -----------------------------------------------------------------\
