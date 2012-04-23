@@ -56,7 +56,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    if (QSysInfo::MacintoshVersion == QSysInfo::MV_SNOWLEOPARD)
    {
       bFixMacFsBug = true;
-      mInfo(tr("MacOSX 10.6 -> take care for fullscreen bug!"));
    }
 #endif
 
@@ -1401,17 +1400,26 @@ void CPlayer::slotToggleFullscreen()
    void *pNsObj;
    if (bFixMacFsBug && pMediaPlayer)
    {
+      // We have a really horrible bug when enabling Fullscreen.
+      // This bug is only active on Mac OSX 10.6 (Snow Leopard)
+      // Try to fix the fullscreen bug the following way:
+      // 1. Pause playing
+      // 2. get (and hopefully remove) nsobject from player
+      // 3. set nsobject in player to NULL
+      mInfo(tr("MacOSX 10.6 -> take care for fullscreen bug!"));
       libvlc_media_player_set_pause(pMediaPlayer, 1);
       pNsObj = libvlc_media_player_get_nsobject(pMediaPlayer);
       libvlc_media_player_set_nsobject(pMediaPlayer, NULL);
    }
 #endif
-
+      // 4. toggle fullscreen
    ui->videoWidget->toggleFullScreen();
 
 #ifdef Q_OS_MACX
    if (bFixMacFsBug && pMediaPlayer)
    {
+      // 5. set new nsobject to player
+      // 6. resume play
       libvlc_media_player_set_nsobject(pMediaPlayer, (void *)ui->videoWidget->widgetId());
       libvlc_media_player_set_pause(pMediaPlayer, 0);
    }

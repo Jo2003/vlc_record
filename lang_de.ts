@@ -504,12 +504,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="59"/>
+        <location filename="cplayer.cpp" line="1409"/>
         <source>MacOSX 10.6 -&gt; take care for fullscreen bug!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="282"/>
+        <location filename="cplayer.cpp" line="281"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -518,7 +518,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="520"/>
+        <location filename="cplayer.cpp" line="519"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -526,46 +526,46 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="528"/>
-        <location filename="cplayer.cpp" line="545"/>
-        <location filename="cplayer.cpp" line="560"/>
-        <location filename="cplayer.cpp" line="564"/>
-        <location filename="cplayer.cpp" line="572"/>
+        <location filename="cplayer.cpp" line="527"/>
+        <location filename="cplayer.cpp" line="544"/>
+        <location filename="cplayer.cpp" line="559"/>
+        <location filename="cplayer.cpp" line="563"/>
+        <location filename="cplayer.cpp" line="571"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="551"/>
+        <location filename="cplayer.cpp" line="550"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="584"/>
+        <location filename="cplayer.cpp" line="583"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="767"/>
+        <location filename="cplayer.cpp" line="766"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="800"/>
+        <location filename="cplayer.cpp" line="799"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="833"/>
+        <location filename="cplayer.cpp" line="832"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1121"/>
+        <location filename="cplayer.cpp" line="1120"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1209"/>
+        <location filename="cplayer.cpp" line="1208"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
