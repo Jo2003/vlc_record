@@ -15,6 +15,11 @@
 #include <QVBoxLayout>
 #include <QApplication>
 
+#ifdef Q_OS_MAC
+   #include <NSView.h>
+   #include <NSAutoreleasePool.h>
+#endif
+
 // log file functions ...
 extern CLogFile VlcLog;
 
@@ -39,7 +44,15 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    setMouseTracking(true);
 
    QVBoxLayout *pLayout = new QVBoxLayout();
+#ifdef Q_OS_MAC
+   NSAutoreleasePool* pNSPool   = [[NSAutoreleasePool alloc] init];
+   NSView*            pNSVideo  = [[NSView alloc] init];
+   _render                      = new QMacCocoaViewContainer(pNSVideo, this);
+   [pNSVideo release];
+   [pNSPool release];
+#else
    _render              = new QWidget(this);
+#endif
    _mouseHide           = new QTimer(this);
    _render->setMouseTracking(true);
    _render->setAutoFillBackground(true);
