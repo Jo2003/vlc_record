@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "53"
-#define BETA_EXT      "B1"
+#define BETA_EXT      "B5"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,20 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2012-04-26: Version 2.53B5
+| - only show erotic channels in channel list if allowed
+|   in settings
+| - remove not working mac bugfix for fullscreen
+| - try to make another change to raise renderView after
+|   switching to fullscreen
+| - erotic channels are now off by default again in
+|   first time settings
+| - on ubuntu add another package dependency to make sure
+|   there are no GTK theme warnings at startup
+| - libVLC is initiated to be quiet now (you can set
+|   verbose level in settings [Ctrl+ALT+V])
+|
 | 2012-04-18: Version 2.53B1
 | - add Qt translations so standard widgets will use right
 |   translation

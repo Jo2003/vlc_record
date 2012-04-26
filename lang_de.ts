@@ -504,11 +504,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="1409"/>
-        <source>MacOSX 10.6 -&gt; take care for fullscreen bug!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="cplayer.cpp" line="281"/>
         <source>Create libVLC with following global options:
  %1</source>
