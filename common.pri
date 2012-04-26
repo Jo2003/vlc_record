@@ -126,7 +126,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
         qtimelabel.h
    FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
-   SOURCES += cplayer.cpp
+   SOURCES += qvlcvideowidget.cpp \
+              cplayer.cpp
    LIBS += -lvlc
    win32:LIBS += -Llib
 
@@ -134,10 +135,9 @@ contains(DEFINES,INCLUDE_LIBVLC) {
       OTHER_FILES += create_mac_bundle.sh \
                      release/create_dmg.sh
       INCLUDEPATH += mac/include
-      OBJECTIVE_SOURCES += qvlcvideowidget.mm
 
-      CONFIG(debug,debug|release):appclean.commands = cp qvlcvideowidget.cpp qvlcvideowidget.mm && cd debug && rm -rf *.app && rm -f *.dmg
-      CONFIG(release,debug|release):appclean.commands = cp qvlcvideowidget.cpp qvlcvideowidget.mm && cd release && rm -rf *.app && rm -f *.dmg
+      CONFIG(debug,debug|release):appclean.commands = cd debug && rm -rf *.app && rm -f *.dmg
+      CONFIG(release,debug|release):appclean.commands = cd release && rm -rf *.app && rm -f *.dmg
       QMAKE_EXTRA_TARGETS += appclean
 
       # Hook our appclean target in between qmake's Makefile update and the actual project target.
@@ -148,9 +148,6 @@ contains(DEFINES,INCLUDE_LIBVLC) {
 
       LIBS += -L./mac/lib
       QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
-   }
-   else {
-      SOURCES += qvlcvideowidget.cpp
    }
 
 #    unix:LIBS += -L/opt/vlc-1.1.1/lib \

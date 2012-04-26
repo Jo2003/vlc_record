@@ -142,7 +142,7 @@ public:
    int checkResponse (const QString &sResp, const QString& sFunction, int iLine);
    int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
    int parseTimeShift (const QString &sResp, QVector<int> &vValues, int &iShift);
-   int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
+   int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime, bool bAllowEros);
    int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    int parseSettings(const QString& sResp, QVector<int>& vValues, int& iActVal, QString &sName);
    int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
@@ -157,8 +157,8 @@ protected:
    void checkTimeOffSet (const uint &uiSrvTime);
    QString xmlElementToValue (const QString &sElement, const QString &sName);
    void initChanEntry (cparser::SChan &entry, bool bIsChan = true);
-   int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
-   int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime, bool bAllowEros);
+   int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime, bool bAllowEros);
    int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
    int oneLevelParser (const QString &sEndElement, const QStringList& slNeeded, QMap<QString, QString>& mResults);
 

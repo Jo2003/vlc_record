@@ -1599,7 +1599,7 @@ void Recorder::slotChanList (QString str)
    QVector<cparser::SChan> chanList;
    QVector<cparser::SChan>::const_iterator cit;
 
-   if (!XMLParser.parseChannelList(str, chanList, Settings.FixTime()))
+   if (!XMLParser.parseChannelList(str, chanList, Settings.FixTime(), Settings.AllowEros()))
    {
       FillChanMap(chanList);
       FillChannelList(chanList);

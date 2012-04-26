@@ -15,11 +15,6 @@
 #include <QVBoxLayout>
 #include <QApplication>
 
-#ifdef Q_OS_MAC
-   #include <NSView.h>
-   #include <NSAutoreleasePool.h>
-#endif
-
 // log file functions ...
 extern CLogFile VlcLog;
 
@@ -38,21 +33,12 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    QWidget(parent),
    _render(0),
    _mouseHide(0),
-   _shortcuts(0),
-   _normalFlags(0)
+   _shortcuts(0)
 {
    setMouseTracking(true);
 
    QVBoxLayout *pLayout = new QVBoxLayout();
-#ifdef Q_OS_MAC
-   NSAutoreleasePool* pNSPool   = [[NSAutoreleasePool alloc] init];
-   NSView*            pNSVideo  = [[NSView alloc] init];
-   _render                      = new QMacCocoaViewContainer(pNSVideo, this);
-   [pNSVideo release];
-   [pNSPool release];
-#else
    _render              = new QWidget(this);
-#endif
    _mouseHide           = new QTimer(this);
    _render->setMouseTracking(true);
    _render->setAutoFillBackground(true);
@@ -207,28 +193,24 @@ void QVlcVideoWidget::toggleFullScreen()
 {
    if (!isFullScreen())
    {
-      // backup default flags ...
-      _normalFlags = windowFlags();
-
-      // before changing window flags, better hide ...
-      hide();
-
-      // let the widget become a window ...
-      setWindowFlags(Qt::Window);
+      // make it Window ...
+      setWindowFlags(windowFlags() | Qt::Window);
 
       // show fullscreen ...
       showFullScreen();
+
+      // make sure render window is raised ...
+      _render->show();
+      _render->activateWindow();
+      _render->raise();
 
       // start mouse hiding ...
       _mouseHide->start(1000);
    }
    else
    {
-      // before changing window flags, better hide ...
-      hide();
-
-      // restore default flags ...
-      setWindowFlags(_normalFlags);
+      // embedd it ...
+      setWindowFlags(windowFlags() & ~(Qt::WindowFlags)Qt::Window);
 
       // end fullscreen ...
       showNormal();

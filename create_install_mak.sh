@@ -53,7 +53,7 @@ CHKINST=checkinstall
 
 PKGNAMENW=--pkgname ${NAME}
 PKGNAMECL=--pkgname ${NAME}-classic
-REQUIRES=--requires "libqtcore4, libqtgui4, libqt4-network, libqt4-sql-sqlite, vlc, libvlc5, libqt4-xml"
+REQUIRES=--requires "libqtcore4, libqtgui4, libqt4-network, libqt4-sql-sqlite, vlc, libvlc5, libqt4-xml, gtk2-engines-pixbuf"
 REQUIRESCLC=--requires "libqtcore4, libqtgui4, libqt4-network, libqt4-sql-sqlite, vlc, libqt4-xml"
 MAINT=--maintainer "Jo2003 \(coujo@gmx.net\)"
 PKGVERCL=--pkgversion 1.${MINORVER}${BETAEXT}

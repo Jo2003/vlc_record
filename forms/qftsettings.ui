@@ -77,7 +77,7 @@
          <string>Allow Adult Channels</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -91,7 +91,7 @@
       <item row="1" column="3">
        <widget class="QLineEdit" name="lineErosPass">
         <property name="enabled">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>

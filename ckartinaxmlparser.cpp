@@ -137,7 +137,7 @@ void CKartinaXMLParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
-                                         bool bFixTime)
+                                         bool bFixTime, bool bAllowEros)
 {
    int           iRV;
 
@@ -164,7 +164,7 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
             if (xmlSr.name() == "groups")
             {
                // go into next level and parse groups ...
-               parseGroups(xmlSr, chanList, bFixTime);
+               parseGroups(xmlSr, chanList, bFixTime, bAllowEros);
             }
             break;
 
@@ -202,7 +202,7 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
 |  Returns: 0
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                    bool bFixTime)
+                                    bool bFixTime, bool bAllowEros)
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
@@ -245,7 +245,7 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
             chanList.push_back(groupEntry);
 
             // go into next level (channels)
-            parseChannels(xml, chanList, bFixTime);
+            parseChannels(xml, chanList, bFixTime, bAllowEros);
          }
          else
          {
@@ -281,7 +281,7 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
 |  Returns: 0
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                     bool bFixTime)
+                                     bool bFixTime, bool bAllowEros)
 {
    QString        sUnknown;
    cparser::SChan chanEntry;
@@ -398,7 +398,11 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
          // item end -> save entry ...
          if (xml.name() == "item")
          {
-            chanList.push_back(chanEntry);
+            // only if erotic channels are allowed, display them in channel list ...
+            if (!chanEntry.bIsProtected || (chanEntry.bIsProtected && bAllowEros))
+            {
+               chanList.push_back(chanEntry);
+            }
          }
       }
    }

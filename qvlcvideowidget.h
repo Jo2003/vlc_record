@@ -19,9 +19,7 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QKeyEvent>
-#ifdef Q_OS_MAC
-   #include <QMacCocoaViewContainer>
-#endif
+
 #include "clogfile.h"
 #include "cshortcutex.h"
 
@@ -53,15 +51,9 @@ protected:
    int keyEventToKeySequence (QKeyEvent *event, QKeySequence &seq);
 
 private:
-#ifdef Q_OS_MAC
-   QMacCocoaViewContainer *_render;
-#else
    QWidget                *_render;
-#endif
-
    QTimer                 *_mouseHide;
    QVector<CShortcutEx *> *_shortcuts;
-   Qt::WindowFlags         _normalFlags;
 
 signals:
    void fullScreen();

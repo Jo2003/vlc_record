@@ -254,35 +254,35 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="181"/>
-        <location filename="ckartinaxmlparser.cpp" line="579"/>
-        <location filename="ckartinaxmlparser.cpp" line="698"/>
-        <location filename="ckartinaxmlparser.cpp" line="776"/>
-        <location filename="ckartinaxmlparser.cpp" line="880"/>
-        <location filename="ckartinaxmlparser.cpp" line="1005"/>
-        <location filename="ckartinaxmlparser.cpp" line="1101"/>
-        <location filename="ckartinaxmlparser.cpp" line="1193"/>
-        <location filename="ckartinaxmlparser.cpp" line="1522"/>
+        <location filename="ckartinaxmlparser.cpp" line="583"/>
+        <location filename="ckartinaxmlparser.cpp" line="702"/>
+        <location filename="ckartinaxmlparser.cpp" line="780"/>
+        <location filename="ckartinaxmlparser.cpp" line="884"/>
+        <location filename="ckartinaxmlparser.cpp" line="1009"/>
+        <location filename="ckartinaxmlparser.cpp" line="1105"/>
+        <location filename="ckartinaxmlparser.cpp" line="1197"/>
+        <location filename="ckartinaxmlparser.cpp" line="1526"/>
         <source>Error in %1</source>
         <translation>Błąd w %1</translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="182"/>
-        <location filename="ckartinaxmlparser.cpp" line="580"/>
-        <location filename="ckartinaxmlparser.cpp" line="699"/>
-        <location filename="ckartinaxmlparser.cpp" line="777"/>
-        <location filename="ckartinaxmlparser.cpp" line="881"/>
-        <location filename="ckartinaxmlparser.cpp" line="1006"/>
-        <location filename="ckartinaxmlparser.cpp" line="1102"/>
-        <location filename="ckartinaxmlparser.cpp" line="1194"/>
-        <location filename="ckartinaxmlparser.cpp" line="1523"/>
+        <location filename="ckartinaxmlparser.cpp" line="584"/>
+        <location filename="ckartinaxmlparser.cpp" line="703"/>
+        <location filename="ckartinaxmlparser.cpp" line="781"/>
+        <location filename="ckartinaxmlparser.cpp" line="885"/>
+        <location filename="ckartinaxmlparser.cpp" line="1010"/>
+        <location filename="ckartinaxmlparser.cpp" line="1106"/>
+        <location filename="ckartinaxmlparser.cpp" line="1198"/>
+        <location filename="ckartinaxmlparser.cpp" line="1527"/>
         <source>XML Error String: %1</source>
         <translation>Błąd wiersza XML: %1</translation>
     </message>
     <message>
         <location filename="ckartinaxmlparser.cpp" line="256"/>
         <location filename="ckartinaxmlparser.cpp" line="384"/>
-        <location filename="ckartinaxmlparser.cpp" line="460"/>
-        <location filename="ckartinaxmlparser.cpp" line="1374"/>
+        <location filename="ckartinaxmlparser.cpp" line="464"/>
+        <location filename="ckartinaxmlparser.cpp" line="1378"/>
         <source>Found unused element %1 ...</source>
         <translation>Znaleziono nieużywany element %1 ...</translation>
     </message>
@@ -293,177 +293,177 @@ p, li { white-space: pre-wrap; }
         <translation>Znaleziono nieużywany element potomny %1: %2 ...</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="842"/>
+        <location filename="ckartinaxmlparser.cpp" line="846"/>
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <translation>Masz Typ: %1, Liczba: %2, Strona: %3, Suma: %4</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1282"/>
+        <location filename="ckartinaxmlparser.cpp" line="1286"/>
         <source>Error #%1: %2!</source>
         <translation>Błąd #%1: %2!</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1286"/>
+        <location filename="ckartinaxmlparser.cpp" line="1290"/>
         <source>Error #%1 in %2():%3: %4!</source>
         <translation>Błąd #%1 w %2():%3: %4!</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1293"/>
+        <location filename="ckartinaxmlparser.cpp" line="1297"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1418"/>
+        <location filename="ckartinaxmlparser.cpp" line="1422"/>
         <source>Unknown error</source>
         <translation>Nieznany błąd</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1419"/>
+        <location filename="ckartinaxmlparser.cpp" line="1423"/>
         <source>Incorrect request</source>
         <translation>Niepoprawne żądanie</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1420"/>
+        <location filename="ckartinaxmlparser.cpp" line="1424"/>
         <source>Wrong login or password</source>
         <translation>Niepoprawna nazwa użytkownika lub hasło</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1421"/>
+        <location filename="ckartinaxmlparser.cpp" line="1425"/>
         <source>Access denied</source>
         <translation>Odmowa dostępu</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1422"/>
+        <location filename="ckartinaxmlparser.cpp" line="1426"/>
         <source>Login incorrect</source>
         <translation>Niepoprawna nazwa użytkownika</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1423"/>
+        <location filename="ckartinaxmlparser.cpp" line="1427"/>
         <source>Your contract is inactive</source>
         <translation>Twoja umowa jest nieaktywna</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1424"/>
+        <location filename="ckartinaxmlparser.cpp" line="1428"/>
         <source>Your contract is paused</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1425"/>
+        <location filename="ckartinaxmlparser.cpp" line="1429"/>
         <source>Channel not found or not allowed</source>
         <translation>Kanał nie został znaleziony lub jest zabroniony</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1426"/>
+        <location filename="ckartinaxmlparser.cpp" line="1430"/>
         <source>Error in request: Bad parameters</source>
         <translation>Błąd w żądaniu: złe parametry</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1427"/>
+        <location filename="ckartinaxmlparser.cpp" line="1431"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation>Brakujący parametr (dzień) w formacie &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1428"/>
+        <location filename="ckartinaxmlparser.cpp" line="1432"/>
         <source>Missing parameter (cid)</source>
         <translation>Brakujący parametr (cid)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1429"/>
+        <location filename="ckartinaxmlparser.cpp" line="1433"/>
         <source>Another client with your data logged in</source>
         <translation>Inny klient jest zalogowany z Twoimi danymi</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1430"/>
+        <location filename="ckartinaxmlparser.cpp" line="1434"/>
         <source>Authentication error</source>
         <translation>Błąd weryfikacji</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1431"/>
+        <location filename="ckartinaxmlparser.cpp" line="1435"/>
         <source>Your package expired</source>
         <translation>Twój pakiet wygasł</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1432"/>
+        <location filename="ckartinaxmlparser.cpp" line="1436"/>
         <source>Unknown API function</source>
         <translation>Nieznana funkcja API</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1433"/>
+        <location filename="ckartinaxmlparser.cpp" line="1437"/>
         <source>Archive not available</source>
         <translation>Archiwum niedostępne</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1434"/>
+        <location filename="ckartinaxmlparser.cpp" line="1438"/>
         <source>Missing parameter (place)</source>
         <translation>Brakujący parametr (miejsce)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1435"/>
+        <location filename="ckartinaxmlparser.cpp" line="1439"/>
         <source>Missing parameter (name)</source>
         <translation>Brakujący parametr (nazwa)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1436"/>
+        <location filename="ckartinaxmlparser.cpp" line="1440"/>
         <source>Incorrect confirmation code</source>
         <translation>Niepoprawny kod potwierdzenia</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1437"/>
+        <location filename="ckartinaxmlparser.cpp" line="1441"/>
         <source>Current code is wrong</source>
         <translation>Obecny kod jest niepoprawny</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1438"/>
+        <location filename="ckartinaxmlparser.cpp" line="1442"/>
         <source>New code is wrong</source>
         <translation>Nowy kod jest niepoprawny</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1439"/>
+        <location filename="ckartinaxmlparser.cpp" line="1443"/>
         <source>Missing parameter (val)</source>
         <translation>Brakujący parametr (val)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1440"/>
+        <location filename="ckartinaxmlparser.cpp" line="1444"/>
         <source>Value not allowed</source>
         <translation>Wartość niedostępna</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1441"/>
+        <location filename="ckartinaxmlparser.cpp" line="1445"/>
         <source>Missing parameter</source>
         <translation>Brakujący parametr</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1442"/>
+        <location filename="ckartinaxmlparser.cpp" line="1446"/>
         <source>Missing parameter (id)</source>
         <translation>Brakujący parametr (id)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1443"/>
+        <location filename="ckartinaxmlparser.cpp" line="1447"/>
         <source>Missing parameter (fileid)</source>
         <translation>Brakujący parametr (fileid)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1444"/>
+        <location filename="ckartinaxmlparser.cpp" line="1448"/>
         <source>Missing parameter (type)</source>
         <translation>Brakujący parametr (typ)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1445"/>
+        <location filename="ckartinaxmlparser.cpp" line="1449"/>
         <source>Missing parameter (query)</source>
         <translation>Brakujący parametr (zapytanie)</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1446"/>
+        <location filename="ckartinaxmlparser.cpp" line="1450"/>
         <source>Bitrate not available</source>
         <translation>Bitrate jest niedostępny</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1447"/>
+        <location filename="ckartinaxmlparser.cpp" line="1451"/>
         <source>Service not available</source>
         <translation>Serwis jest niedostępny</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1448"/>
+        <location filename="ckartinaxmlparser.cpp" line="1452"/>
         <source>Query limit exceeded</source>
         <translation>Limit zapytań przekroczony</translation>
     </message>
@@ -1441,7 +1441,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="313"/>
+        <location filename="qvlcvideowidget.cpp" line="308"/>
         <source>Activate shortcut: %1</source>
         <translation>Aktywuj skrót: %1</translation>
     </message>
