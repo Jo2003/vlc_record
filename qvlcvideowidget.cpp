@@ -33,7 +33,8 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    QWidget(parent),
    _render(0),
    _mouseHide(0),
-   _shortcuts(0)
+   _shortcuts(0),
+   _extFullScreen(false)
 {
    setMouseTracking(true);
 
@@ -130,7 +131,7 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
 {
    event->ignore();
 
-   if(isFullScreen())
+   if(isFullScreen() || _extFullScreen)
    {
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
@@ -232,7 +233,7 @@ void QVlcVideoWidget::toggleFullScreen()
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::hideMouse()
 {
-   if(isFullScreen())
+   if(isFullScreen() || _extFullScreen)
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
       _mouseHide->stop();
@@ -371,4 +372,48 @@ int QVlcVideoWidget::keyEventToKeySequence(QKeyEvent *event, QKeySequence &seq)
    seq = QKeySequence(iKey);
 
    return 0;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   raise render view
+//
+//! \author  Jo2003
+//! \date    27.04.2012
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::raiseRender()
+{
+   if (_render)
+   {
+      _render->raise();
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   fullscreen toggled, do cursor hide stuff
+//
+//! \author  Jo2003
+//! \date    30.04.2012
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::fullScreenToggled(int on)
+{
+   if (on)
+   {
+      _extFullScreen = true;
+
+      // start mouse hiding ...
+      _mouseHide->start(1000);
+   }
+   else
+   {
+      _extFullScreen = false;
+
+      // restore visible cursor ...
+      QApplication::restoreOverrideCursor();
+   }
 }

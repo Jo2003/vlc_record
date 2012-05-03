@@ -56,6 +56,10 @@
 #include "cstreamloader.h"
 #include "qchanlistdelegate.h"
 #include "cepgbrowser.h"
+#ifdef INCLUDE_LIBVLC
+   #include <QStackedLayout>
+   #include "qvlcvideowidget.h"
+#endif
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -160,6 +164,10 @@ private:
     QNetworkAccessManager          *pUpdateChecker;
     Ui::SVodSite                    lastVodSite;
     Ui::STabWidget                  vodTabWidget;
+#ifdef INCLUDE_LIBVLC
+    QStackedLayout                 *stackedLayout;
+    QVlcVideoWidget                *pVideoWidget;
+#endif //INCLUDE_LIBVLC
 
 protected:
     void fillShortCutTab();
@@ -198,6 +206,7 @@ private slots:
 #ifdef INCLUDE_LIBVLC
     void on_pushBwd_clicked();
     void on_pushFwd_clicked();
+    void slotToogleFullscreen();
 #endif /* INCLUDE_LIBVLC */
     void on_btnVodSearch_clicked();
     void on_cbxGenre_activated(int index);
@@ -277,6 +286,7 @@ signals:
     void sigJmpFwd ();
     void sigJmpBwd ();
     void sigShowInfoUpdated();
+    void sigFullScreenToggled (int on);
 };
 
 #endif /* __011910__RECORDER_H */

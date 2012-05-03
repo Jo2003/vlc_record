@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="../kartina_tv.qrc">
+   <iconset resource="../polsky_tv.qrc">
     <normaloff>:/app/kartina</normaloff>:/app/kartina</iconset>
   </property>
   <property name="styleSheet">
@@ -22,7 +22,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5">
+  <layout class="QVBoxLayout" name="vMainLayout">
    <item>
     <widget class="QTabWidget" name="tabEpgVod">
      <property name="styleSheet">
@@ -887,7 +887,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../kartina_tv.qrc">
+            <iconset resource="../polsky_tv.qrc">
              <normaloff>:/app/live</normaloff>:/app/live</iconset>
            </property>
            <property name="iconSize">
@@ -1266,7 +1266,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
   <tabstop>pushAbout</tabstop>
  </tabstops>
  <resources>
-  <include location="../kartina_tv.qrc"/>
+  <include location="../polsky_tv.qrc"/>
   <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
  </resources>

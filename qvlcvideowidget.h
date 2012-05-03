@@ -39,6 +39,7 @@ public:
    virtual ~QVlcVideoWidget();
    void setShortCuts (QVector<CShortcutEx *> *pvSc);
    WId widgetId();
+   void raiseRender();
 
 protected:
    virtual void mouseDoubleClickEvent(QMouseEvent *event);
@@ -54,6 +55,7 @@ private:
    QWidget                *_render;
    QTimer                 *_mouseHide;
    QVector<CShortcutEx *> *_shortcuts;
+   bool                    _extFullScreen;
 
 signals:
    void fullScreen();
@@ -65,6 +67,7 @@ signals:
 public slots:
    void toggleFullScreen ();
    void hideMouse ();
+   void fullScreenToggled(int on);
 };
 
 #endif // __20120208_QVLCVIDEOWIDGET_H

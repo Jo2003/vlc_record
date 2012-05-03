@@ -16,7 +16,7 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,100,1">
+  <layout class="QVBoxLayout" name="vPlayerLayout" stretch="1,100,1">
    <property name="spacing">
     <number>3</number>
    </property>
