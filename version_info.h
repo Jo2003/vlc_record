@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "53"
-#define BETA_EXT      "B5"
+#define VERSION_MINOR "54"
+#define BETA_EXT      ""
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,13 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-05-03: Version 2.54
+| - fullscreen problem on Mac Snowleo fixed:
+|   + use QStackedLayout to place the videoWidget inside
+|     the main window at upper most layer
+|   + after that make mainwindow fullscreen
+| - as small minus the main window may flicker for a short
+|   time when toggeling fullscreen
 |
 | 2012-04-26: Version 2.53B5
 | - only show erotic channels in channel list if allowed
