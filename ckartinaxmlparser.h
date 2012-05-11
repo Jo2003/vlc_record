@@ -145,7 +145,9 @@ public:
    int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime, bool bAllowEros);
    int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    int parseSettings(const QString& sResp, QVector<int>& vValues, int& iActVal, QString &sName);
+   int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
    int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
+   int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
    int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
    int parseUrl (const QString& sResp, QString& sUrl);
    int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);

@@ -235,7 +235,6 @@ private slots:
     void slotEPG(QString str);
     void slotStreamURL (QString str);
     void slotArchivURL (QString str);
-    void slotServerForm (QString str);
     void slotCookie (QString str);
     void slotTimeShift (QString str);
     void slotEpgAnchor (const QUrl & link);
@@ -255,7 +254,6 @@ private slots:
     void slotFavBtnContext (const QPoint &pt);
     void slotSplashScreen ();
     void slotIncPlayState (int);
-    void slotGotTimeShift (QString str);
     void slotLogout (QString str);
     void slotDownloadStarted (int id, QString sFileName);
     void slotGotVodGenres (QString str);
@@ -263,7 +261,6 @@ private slots:
     void slotVodAnchor (const QUrl &link);
     void slotGotVideoInfo (QString str);
     void slotVodURL(QString str);
-    void slotGotBitrate (QString str);
     void slotSetBitrate (int iRate);
     void slotSetTimeShift (int iShift);
     void slotChannelDown();

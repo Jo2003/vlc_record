@@ -39,14 +39,15 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 {
    ui->setupUi(this);
 
-   pMediaPlayer  = NULL;
-   pVlcInstance  = NULL;
-   pEMPlay       = NULL;
-   pSettings     = NULL;
-   pTrigger      = NULL;
-   bCtrlStream   = false;
-   bSpoolPending = true;
-   uiDuration    = (uint)-1;
+   pMediaPlayer     = NULL;
+   pVlcInstance     = NULL;
+   pMedialistPlayer = NULL;
+   pEMPlay          = NULL;
+   pSettings        = NULL;
+   pTrigger         = NULL;
+   bCtrlStream      = false;
+   bSpoolPending    = true;
+   uiDuration       = (uint)-1;
    mAspect.clear();
    mCrop.clear();
 
@@ -130,6 +131,13 @@ CPlayer::~CPlayer()
    if (pMediaPlayer)
    {
       libvlc_media_player_release (pMediaPlayer);
+      pMediaPlayer = NULL;
+   }
+
+   if (pMedialistPlayer)
+   {
+       libvlc_media_list_player_release (pMedialistPlayer);
+       pMedialistPlayer = NULL;
    }
 
    if (pVlcInstance)
@@ -318,6 +326,15 @@ int CPlayer::initPlayer()
                                  CPlayer::eventCallback, (void *)this);
    }
 
+   // create media list player ...
+   if (!iRV)
+   {
+      if ((pMedialistPlayer = libvlc_media_list_player_new(pVlcInstance)) != NULL)
+      {
+          libvlc_media_list_player_set_media_player (pMedialistPlayer, pMediaPlayer);
+      }
+   }
+
    return iRV;
 }
 
@@ -394,9 +411,9 @@ int CPlayer::play()
 {
    int  iRV    = 0;
 
-   if (pMediaPlayer)
+   if (pMedialistPlayer)
    {
-      libvlc_media_player_play (pMediaPlayer);
+      libvlc_media_list_player_play (pMedialistPlayer);
    }
 
    return iRV;
@@ -417,9 +434,9 @@ int CPlayer::stop()
 {
    int iRV = 0;
 
-   if (pMediaPlayer)
+   if (pMedialistPlayer)
    {
-      libvlc_media_player_stop (pMediaPlayer);
+      libvlc_media_list_player_stop (pMedialistPlayer);
    }
 
    stopPlayTimer();
@@ -442,9 +459,9 @@ int CPlayer::pause()
 {
    int iRV = 0;
 
-   if (pMediaPlayer && bCtrlStream)
+   if (pMedialistPlayer && bCtrlStream)
    {
-      libvlc_media_player_pause(pMediaPlayer);
+      libvlc_media_list_player_pause(pMedialistPlayer);
    }
 
    return iRV;
@@ -465,6 +482,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
 {
    int                         iRV  = 0;
    libvlc_media_t             *p_md = NULL;
+   libvlc_media_list_t        *p_ml = NULL;
    QStringList                 lArgs;
    QStringList::const_iterator cit;
 
@@ -563,8 +581,23 @@ int CPlayer::playMedia(const QString &sCmdLine)
             libvlc_media_add_option(p_md, (*cit).toUtf8().constData());
          }
 
-         // set media in player ...
-         libvlc_media_player_set_media (pMediaPlayer, p_md);
+         // create media list ...
+         if ((p_ml = libvlc_media_list_new(pVlcInstance)) != NULL)
+         {
+            // add media ...
+            libvlc_media_list_add_media(p_ml, p_md);
+
+            // set media in player ...
+            libvlc_media_list_player_set_media_list (pMedialistPlayer, p_ml);
+
+            // now it's safe to release medialist ...
+            libvlc_media_list_release (p_ml);
+         }
+         else
+         {
+            mInfo(tr("Can't create media list ..."));
+            iRV = -1;
+         }
 
          // now it's safe to release media ...
          libvlc_media_release (p_md);
@@ -1439,6 +1472,25 @@ void CPlayer::slotFsToggled(int on)
 {
    ui->videoWidget->fullScreenToggled(on);
 }
+
+/* -----------------------------------------------------------------\
+|  Method: playMediaList [ slot ]
+|  Begin: 08.05.2012
+|  Author: Jo2003
+|  Description: play a media list
+|
+|  Parameters: playlist
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+/*
+int CPlayer::playMediaList (const PlayList &playList)
+{
+   int iRV = 0;
+   return iRV;
+}
+*/
 
 /************************* History ***************************\
 | $Log$

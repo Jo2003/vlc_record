@@ -40,12 +40,16 @@
 namespace Ui
 {
    class CPlayer;
-   typedef struct _vlcArgs
-   {
-      char** argArray;
-      int    argc;
-   } vlcArgs;
 }
+
+// define a simple playlist element ...
+struct SPlayUrl
+{
+   QString sCmdLine;
+   bool    bIsAdd;
+};
+
+typedef QList<SPlayUrl> PlayList;
 
 /********************************************************************\
 |  Class: CPlayer
@@ -82,20 +86,21 @@ protected:
    void connectToVideoWidget ();
 
 private:
-   Ui::CPlayer            *ui;
-   QTimer                  sliderTimer;
-   QTimer                  tAspectShot;
-   CTimerEx                timer;
-   libvlc_instance_t      *pVlcInstance;
-   libvlc_media_player_t  *pMediaPlayer;
-   libvlc_event_manager_t *pEMPlay;
-   bool                    bCtrlStream;
-   CSettingsDlg           *pSettings;
-   CWaitTrigger           *pTrigger;
-   bool                    bSpoolPending;
-   uint                    uiDuration;
-   QMap<QString, QString>  mAspect;
-   QMap<QString, QString>  mCrop;
+   Ui::CPlayer                 *ui;
+   QTimer                       sliderTimer;
+   QTimer                       tAspectShot;
+   CTimerEx                     timer;
+   libvlc_instance_t           *pVlcInstance;
+   libvlc_media_player_t       *pMediaPlayer;
+   libvlc_event_manager_t      *pEMPlay;
+   libvlc_media_list_player_t  *pMedialistPlayer;
+   bool                         bCtrlStream;
+   CSettingsDlg                *pSettings;
+   CWaitTrigger                *pTrigger;
+   bool                         bSpoolPending;
+   uint                         uiDuration;
+   QMap<QString, QString>       mAspect;
+   QMap<QString, QString>       mCrop;
 
 private slots:
    void on_posSlider_valueChanged(int value);
@@ -110,6 +115,7 @@ private slots:
 
 public slots:
    int  playMedia (const QString &sCmdLine);
+   // int  playMediaList (const PlayList &playList);
    int  play();
    int  stop();
    int  pause();

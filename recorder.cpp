@@ -55,7 +55,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 #endif
 
    // set (customized) windows title ...
-   // setWindowTitle(QString("VLC-Recorder - %1").arg(COMPANY_NAME));
    setWindowTitle(APP_NAME);
 
    ePlayState     =  IncPlay::PS_WTF;
@@ -165,6 +164,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    ui->tabEpgVod->removeTab(vodTabWidget.iPos);
 
 #ifdef INCLUDE_LIBVLC
+   // qRegisterMetaType<PlayList>("PlayList");
+
    // do we use libVLC ?
    if (Settings.GetPlayerModule().contains("libvlc", Qt::CaseInsensitive))
    {
@@ -208,13 +209,11 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // connect signals and slots ...Поиск в телегиде
    connect (&KartinaTv,    SIGNAL(sigLogout(QString)), this, SLOT(slotLogout(QString)));
    connect (&KartinaTv,    SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotTimeShift(QString)), this, SLOT(slotGotTimeShift(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotStreamURL(QString)), this, SLOT(slotStreamURL(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotCookie(QString)), this, SLOT(slotCookie(QString)));
    connect (&KartinaTv,    SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
    connect (&KartinaTv,    SIGNAL(sigTimeShiftSet(QString)), this, SLOT(slotTimeShift(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotBitRate(QString)), this, SLOT(slotGotBitrate(QString)));
    connect (&streamLoader, SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
    connect (&Refresh,      SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
    connect (ui->textEpg,   SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
@@ -225,7 +224,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&Settings,     SIGNAL(sigSetBitRate(int)), this, SLOT(slotSetBitrate(int)));
    connect (&Settings,     SIGNAL(sigSetTimeShift(int)), this, SLOT(slotSetTimeShift(int)));
    connect (&KartinaTv,    SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
-   connect (&KartinaTv,    SIGNAL(sigSrvForm(QString)), this, SLOT(slotServerForm(QString)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
    connect (&trayIcon,     SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
@@ -1504,88 +1502,43 @@ void Recorder::slotCookie (QString str)
          }
       }
 
-      // request streamserver ...
-      Trigger.TriggerRequest(Kartina::REQ_GET_SERVER);
-   }
-}
+      // ------------------------------------------------
+      // parse settings (new 11.05.2012)
+      // ------------------------------------------------
 
-/* -----------------------------------------------------------------\
-|  Method: slotServerForm
-|  Begin: 27.02.2010 / 18:35:12
-|  Author: Jo2003
-|  Description: got server list form
-|
-|  Parameters: html form
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotServerForm(QString str)
-{
-   QVector<cparser::SSrv> vSrv;
-   QString                sActSrv;
+      // timeshift
+      QVector<int> values;
+      int          actVal = -1;
+      if (!XMLParser.parseSetting(str, "timeshift", values, actVal))
+      {
+         Settings.fillTimeShiftCbx(values, actVal);
 
-   if (!XMLParser.parseSServers(str, vSrv, sActSrv))
-   {
-      Settings.SetStreamServerCbx(vSrv, sActSrv);
+         // set timeshift ...
+         ui->textEpg->SetTimeShift(actVal);
+         timeRec.SetTimeShift(actVal);
+         mInfo(tr("Using following timeshift: %1").arg(actVal));
+      }
 
-      mInfo(tr("Active stream server is %1").arg(sActSrv));
+      // bitrate
+      values.clear();
+      actVal = -1;
+      if (!XMLParser.parseSetting(str, "bitrate", values, actVal))
+      {
+         Settings.SetBitrateCbx(values, actVal);
+         mInfo (tr("Using Bitrate %1 kbit/s ...").arg(actVal));
+      }
 
-      Trigger.TriggerRequest(Kartina::REQ_GETBITRATE);
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotGotTimeShift
-|  Begin: 29.10.2010 / 16:10:23
-|  Author: Jo2003
-|  Description: parse timeshift response
-|
-|  Parameters: response string
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotGotTimeShift(QString str)
-{
-   // parse timeshift ...
-   QVector<int> vValues;
-   int          iShift;
-   QString      sName;
-
-   if (!XMLParser.parseSettings(str, vValues, iShift, sName))
-   {
-      Settings.fillTimeShiftCbx(vValues, iShift);
-
-      // set timeshift ...
-      ui->textEpg->SetTimeShift(iShift);
-      timeRec.SetTimeShift(iShift);
+      // stream server
+      QVector<cparser::SSrv> vSrv;
+      QString sActIp;
+      if (!XMLParser.parseSServersLogin(str, vSrv, sActIp))
+      {
+         Settings.SetStreamServerCbx(vSrv, sActIp);
+         mInfo(tr("Active stream server is %1").arg(sActIp));
+      }
 
       // request channel list ...
       Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotGotBitrate
-|  Begin: 14.01.2011 / 14:20
-|  Author: Jo2003
-|  Description: parse bitrate response
-|
-|  Parameters: response string
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotGotBitrate(QString str)
-{
-   QVector<int> vValues;
-   int          iActVal = 0;
-   QString      sName;
-
-   if (!XMLParser.parseSettings(str, vValues, iActVal, sName))
-   {
-      Settings.SetBitrateCbx(vValues, iActVal);
-      mInfo (tr("Using Bitrate %1 kbit/s ...").arg(iActVal));
-
-      Trigger.TriggerRequest(Kartina::REQ_GETTIMESHIFT);
    }
 }
 

@@ -249,7 +249,7 @@ void CKartinaClnt::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    PostRequest(Kartina::REQ_COOKIE, KARTINA_API_PATH "login",
-               QString("login=%1&pass=%2").arg(sUsr).arg(sPw));
+               QString("login=%1&pass=%2&settings=all").arg(sUsr).arg(sPw));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -440,7 +440,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 {
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
-   PostRequest(Kartina::REQ_SERVER, KARTINA_API_PATH "settings_set",
+   PostRequest(Kartina::REQ_HTTPBUFF, KARTINA_API_PATH "settings_set",
                QString("var=http_caching&val=%1").arg(iTime));
 }
 

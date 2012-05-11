@@ -149,6 +149,9 @@ contains(DEFINES,INCLUDE_LIBVLC) {
       LIBS += -L./mac/lib
       QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
    }
+   else {
+      unix:LIBS += -lX11
+   }
 
 #    unix:LIBS += -L/opt/vlc-1.1.1/lib \
 #        -Wl,-rpath \

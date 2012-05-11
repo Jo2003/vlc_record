@@ -21,7 +21,7 @@
 Q_IMPORT_PLUGIN(qsqlite)
 #endif // DINCLUDEPLUGS
 
-#ifdef Q_WS_X11
+#if ((defined Q_WS_X11) && (defined INCLUDE_LIBVLC))
    #include <X11/Xlib.h>
 #endif
 
@@ -51,7 +51,7 @@ CShowInfo showInfo;
 int main(int argc, char *argv[])
 {
    // bugfix for crash on exit on *nix ...
-#ifdef Q_WS_X11
+#if ((defined Q_WS_X11) && (defined INCLUDE_LIBVLC))
    XInitThreads();
 #endif
 
