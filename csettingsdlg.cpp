@@ -59,6 +59,10 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    vBuffs << 1.5 << 3 << 5 << 8 << 15 << 20 << 30 << 45 << 60 << 90;
    qSort(vBuffs);
 
+#ifdef ENABLE_AD_SWITCH
+   m_ui->checkAds->setEnabled(true);
+#endif // ENABLE_AD_SWITCH
+
    // fill in values ...
    readSettings();
 }
@@ -151,6 +155,15 @@ void CSettingsDlg::readSettings()
    m_ui->checkExtChanInfo->setCheckState((Qt::CheckState)pDb->intValue("ExtChanList"));
    m_ui->checkAdvanced->setCheckState((Qt::CheckState)pDb->intValue("AdvSet"));
    m_ui->checkGPUAcc->setCheckState((Qt::CheckState)pDb->intValue("GPUAcc"));
+   m_ui->checkAds->setCheckState((Qt::CheckState)pDb->intValue("AdsEnabled", &iErr));
+
+   // value doesn't exist in database ...
+   if (iErr)
+   {
+      // enable by default ...
+      m_ui->checkAds->setCheckState(Qt::Checked);
+   }
+
    m_ui->check2ClicksToPlay->setCheckState((Qt::CheckState)pDb->intValue("2ClickPlay", &iErr));
 
    // value doesn't exist in database ...
@@ -451,6 +464,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
    pDb->setValue("UpdateCheck", (int)m_ui->checkUpdate->checkState());
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
+   pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
 
    // combo boxes ...
    pDb->setValue("Language", m_ui->cbxLanguage->currentText());
@@ -1178,6 +1192,11 @@ bool CSettingsDlg::doubleClickToPlay()
 bool CSettingsDlg::useGpuAcc()
 {
    return m_ui->checkGPUAcc->isChecked();
+}
+
+bool CSettingsDlg::showAds()
+{
+   return m_ui->checkAds->isChecked();
 }
 
 uint CSettingsDlg::libVlcVerboseLevel()

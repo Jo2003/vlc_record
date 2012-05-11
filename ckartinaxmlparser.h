@@ -150,6 +150,7 @@ public:
    int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
    int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
    int parseUrl (const QString& sResp, QString& sUrl);
+   int parseVodUrls (const QString& sResp, QStringList& sUrls);
    int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
    int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
    int fillErrorMap();

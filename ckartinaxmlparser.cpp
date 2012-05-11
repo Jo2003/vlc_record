@@ -1468,6 +1468,102 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: parseVodUrls
+|  Begin: 11.05.2012
+|  Author: Jo2003
+|  Description: parse vod url response (may include ad_url
+|
+|  Parameters: ref. to response, ref. to stringlist
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
+{
+   int     iRV;
+   QString sUrl, sAdUrl;
+
+   // clear string list ...
+   sUrls.clear();
+
+   // lock parser ...
+   mutex.lock();
+
+   // check for errors ...
+   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+
+   if (!iRV)
+   {
+      xmlSr.clear();
+      xmlSr.addData(sCleanResp);
+
+      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      {
+         switch (xmlSr.readNext())
+         {
+         // we aren't interested in ...
+         case QXmlStreamReader::StartDocument:
+         case QXmlStreamReader::EndDocument:
+         case QXmlStreamReader::EndElement:
+            break;
+
+         // any xml element starts ...
+         case QXmlStreamReader::StartElement:
+            if (xmlSr.name() == "url")
+            {
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  sUrl = xmlSr.text().toString();
+                  if (sUrl.contains(QChar(' ')))
+                  {
+                     sUrl = sUrl.left(sUrl.indexOf(QChar(' ')));
+                  }
+               }
+            }
+            else if (xmlSr.name() == "ad_url")
+            {
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  sAdUrl = xmlSr.text().toString();
+                  if (sAdUrl.contains(QChar(' ')))
+                  {
+                     sAdUrl = sAdUrl.left(sAdUrl.indexOf(QChar(' ')));
+                  }
+               }
+            }
+            break;
+
+         default:
+            break;
+
+         } // end switch ...
+
+      } // end while ...
+
+      // fill string list with url(s) ...
+      sUrls << sUrl;
+      if (sAdUrl != "")
+      {
+         sUrls << sAdUrl;
+      }
+
+      // check for xml errors ...
+      if(xmlSr.hasError())
+      {
+         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+         iRV = -1;
+      }
+   }
+
+   // unlock parser ...
+   mutex.unlock();
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: checkResponse
 |  Begin: 28.07.2010 / 18:42:54
 |  Author: Jo2003

@@ -577,7 +577,7 @@ void CKartinaClnt::GetVodUrl(int iVidId)
 {
    mInfo(tr("Request Video Url for video %1...").arg(iVidId));
 
-   GetRequest(Kartina::REQ_GETVODURL, QString("%1vod_geturl?fileid=%2")
+   GetRequest(Kartina::REQ_GETVODURL, QString("%1vod_geturl?fileid=%2&ad=1")
                                             .arg(KARTINA_API_PATH)
                                             .arg(iVidId));
 }

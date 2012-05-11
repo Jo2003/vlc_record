@@ -42,15 +42,6 @@ namespace Ui
    class CPlayer;
 }
 
-// define a simple playlist element ...
-struct SPlayUrl
-{
-   QString sCmdLine;
-   bool    bIsAdd;
-};
-
-typedef QList<SPlayUrl> PlayList;
-
 /********************************************************************\
 |  Class: CPlayer
 |  Date:  14.02.2010 / 11:42:24
@@ -84,6 +75,7 @@ protected:
    virtual void changeEvent(QEvent *e);
    void enableDisablePlayControl (bool bEnable);
    void connectToVideoWidget ();
+   int  addAd (libvlc_media_list_t *pList);
 
 private:
    Ui::CPlayer                 *ui;
@@ -115,7 +107,6 @@ private slots:
 
 public slots:
    int  playMedia (const QString &sCmdLine);
-   // int  playMediaList (const PlayList &playList);
    int  play();
    int  stop();
    int  pause();

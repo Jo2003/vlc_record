@@ -164,7 +164,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    ui->tabEpgVod->removeTab(vodTabWidget.iPos);
 
 #ifdef INCLUDE_LIBVLC
-   // qRegisterMetaType<PlayList>("PlayList");
 
    // do we use libVLC ?
    if (Settings.GetPlayerModule().contains("libvlc", Qt::CaseInsensitive))
@@ -681,6 +680,7 @@ void Recorder::on_pushRecord_clicked()
                iDwnReqId = -1;
             }
 
+            showInfo.cleanShowInfo();
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
             showInfo.setShowType(ShowInfo::Live);
@@ -752,6 +752,7 @@ void Recorder::on_pushPlay_clicked()
          {
             cparser::SChan chan = chanMap[cid];
 
+            showInfo.cleanShowInfo();
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
             showInfo.setShowType(ShowInfo::Live);
@@ -832,6 +833,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
          {
             cparser::SChan chan = chanMap[cid];
 
+            showInfo.cleanShowInfo();
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
             showInfo.setShowType(ShowInfo::Live);
@@ -1253,6 +1255,7 @@ void Recorder::on_pushLive_clicked()
             {
                cparser::SChan chan = chanMap[cid];
 
+               showInfo.cleanShowInfo();
                showInfo.setChanId(cid);
                showInfo.setChanName(chan.sName);
                showInfo.setShowType(ShowInfo::Live);
@@ -1295,6 +1298,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
          {
             cparser::SChan chan = chanMap[cid];
 
+            showInfo.cleanShowInfo();
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
             showInfo.setShowType(ShowInfo::Live);
@@ -1717,6 +1721,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
       epg::SShow sepg = ui->textEpg->epgShow(gmt.toUInt());
 
       // store all info about show ...
+      showInfo.cleanShowInfo();
       showInfo.setChanId(cid.toInt());
       showInfo.setChanName(chanMap.value(cid.toInt()).sName);
       showInfo.setShowName(sepg.sShowName);
@@ -2499,14 +2504,10 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
       id = link.encodedQueryItemValue(QByteArray("vid")).toInt();
 
-      showInfo.setChanId(-1);
-      showInfo.setChanName("");
+      showInfo.cleanShowInfo();
       showInfo.setShowName(ui->vodBrowser->getName());
-      showInfo.setStartTime(0);
-      showInfo.setEndTime(0);
       showInfo.setShowType(ShowInfo::VOD);
       showInfo.setPlayState(ePlayState);
-      showInfo.setLastJumpTime(0);
       showInfo.setHtmlDescr(ui->vodBrowser->getShortContent());
       showInfo.setVodId(id);
 
@@ -2548,27 +2549,32 @@ void Recorder::slotGotVideoInfo(QString str)
 \----------------------------------------------------------------- */
 void Recorder::slotVodURL(QString str)
 {
-   QString sUrl;
+   QStringList sUrls;
 
-   if (!XMLParser.parseUrl(str, sUrl))
+   if (!XMLParser.parseVodUrls(str, sUrls))
    {
+      if (sUrls.count() > 1)
+      {
+         showInfo.setAdUrl(sUrls[1]);
+      }
+
       if (ePlayState == IncPlay::PS_RECORD)
       {
          // use own downloader ... ?
          if (!vlcCtrl.ownDwnld())
          {
-            StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
+            StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
          }
          else
          {
-            StartStreamDownload(sUrl, CleanShowName(showInfo.showName()), "m4v");
+            StartStreamDownload(sUrls[0], CleanShowName(showInfo.showName()), "m4v");
          }
 
          showInfo.setPlayState(IncPlay::PS_RECORD);
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         StartVlcPlay(sUrl);
+         StartVlcPlay(sUrls[0]);
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }

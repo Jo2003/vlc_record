@@ -4,4 +4,5 @@ RC_FILE = vlc-record.rc
 TRANSLATIONS = lang_de.ts \
                lang_ru.ts \
                lang_pl.ts
+DEFINES += ENABLE_AD_SWITCH
 include (common.pri)

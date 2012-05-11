@@ -480,9 +480,9 @@ int CPlayer::pause()
 \----------------------------------------------------------------- */
 int CPlayer::playMedia(const QString &sCmdLine)
 {
-   int                         iRV  = 0;
-   libvlc_media_t             *p_md = NULL;
-   libvlc_media_list_t        *p_ml = NULL;
+   int                         iRV    = 0;
+   libvlc_media_t             *p_md   = NULL;
+   libvlc_media_list_t        *p_ml   = NULL;
    QStringList                 lArgs;
    QStringList::const_iterator cit;
 
@@ -584,6 +584,9 @@ int CPlayer::playMedia(const QString &sCmdLine)
          // create media list ...
          if ((p_ml = libvlc_media_list_new(pVlcInstance)) != NULL)
          {
+            // add commercials if needed ...
+            addAd(p_ml);
+
             // add media ...
             libvlc_media_list_add_media(p_ml, p_md);
 
@@ -612,6 +615,75 @@ int CPlayer::playMedia(const QString &sCmdLine)
    if (!iRV)
    {
       iRV = play();
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: addAd
+|  Begin: 11.05.2012
+|  Author: Jo2003
+|  Description: add commercial
+|
+|  Parameters: medialist to add ad
+|
+|  Returns: 0 --> none added
+|           1 --> added
+\----------------------------------------------------------------- */
+int CPlayer::addAd(libvlc_media_list_t *pList)
+{
+   // play add ... ?
+   int             iRV    = 0;
+   libvlc_media_t *p_mdad = NULL;
+   QString         adUrl  = showInfo.adUrl();
+   QString         sOpt;
+
+   if ((adUrl != "") && (showInfo.showType() == ShowInfo::VOD) && pSettings->showAds())
+   {
+      mInfo(tr("Prepend Ad (Url):\n  --> %1").arg(adUrl));
+      if ((p_mdad = libvlc_media_new_location(pVlcInstance, adUrl.toUtf8().constData())) != NULL)
+      {
+         sOpt = QString(":http-caching=%1").arg(pSettings->GetBufferTime());
+         mInfo(tr("Add MRL Option: %1").arg(sOpt));
+         libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+
+         sOpt = ":no-http-reconnect";
+         mInfo(tr("Add MRL Option: %1").arg(sOpt));
+         libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+
+         ///////////////////////////////////////////////////////////////////////////
+         // set proxy server ...
+         ///////////////////////////////////////////////////////////////////////////
+         if (pSettings->UseProxy())
+         {
+            sOpt = ":http_proxy=http://";
+
+            if (pSettings->GetProxyUser() != "")
+            {
+               sOpt += QString("%1@").arg(pSettings->GetProxyUser());
+            }
+
+            sOpt += QString("%1:%2/").arg(pSettings->GetProxyHost()).arg(pSettings->GetProxyPort());
+            mInfo(tr("Add MRL Option: %1").arg(sOpt));
+            libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+
+            if ((pSettings->GetProxyPasswd() != "") && (pSettings->GetProxyUser() != ""))
+            {
+               sOpt = QString(":http_proxy_pwd=%1").arg(pSettings->GetProxyPasswd());
+               mInfo(tr("Add MRL Option: :http_proxy_pwd=******"));
+               libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+            }
+         }
+
+         // add media ...
+         libvlc_media_list_add_media(pList, p_mdad);
+
+         // release ad ...
+         libvlc_media_release (p_mdad);
+
+         iRV = 1;
+      }
    }
 
    return iRV;
@@ -1472,25 +1544,6 @@ void CPlayer::slotFsToggled(int on)
 {
    ui->videoWidget->fullScreenToggled(on);
 }
-
-/* -----------------------------------------------------------------\
-|  Method: playMediaList [ slot ]
-|  Begin: 08.05.2012
-|  Author: Jo2003
-|  Description: play a media list
-|
-|  Parameters: playlist
-|
-|  Returns: 0 --> ok
-|        else --> any error
-\----------------------------------------------------------------- */
-/*
-int CPlayer::playMediaList (const PlayList &playList)
-{
-   int iRV = 0;
-   return iRV;
-}
-*/
 
 /************************* History ***************************\
 | $Log$

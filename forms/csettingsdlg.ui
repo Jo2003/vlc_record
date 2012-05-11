@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>651</width>
-    <height>544</height>
+    <width>588</width>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -497,7 +497,13 @@ color: red;
          <property name="title">
           <string>Advanced Settings</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
+         <layout class="QFormLayout" name="formLayout_2">
+          <property name="horizontalSpacing">
+           <number>2</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>2</number>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="lanApiServer">
             <property name="text">
@@ -505,29 +511,39 @@ color: red;
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
-           <widget class="QLineEdit" name="lineApiServer">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="label_15">
             <property name="text">
              <string>Player Module:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="3">
-           <widget class="QComboBox" name="cbxPlayerMod"/>
-          </item>
-          <item row="2" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="label_11">
             <property name="text">
              <string>Log Level:</string>
             </property>
            </widget>
+          </item>
+          <item row="5" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="3">
+            <property name="spacing">
+             <number>2</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="lineVlcVerbose">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="6" column="0">
            <widget class="QLabel" name="label_13">
@@ -536,17 +552,113 @@ color: red;
             </property>
            </widget>
           </item>
-          <item row="6" column="3">
-           <widget class="QLineEdit" name="lineShutdown"/>
-          </item>
-          <item row="7" column="0" colspan="3">
+          <item row="8" column="0">
            <widget class="QCheckBox" name="checkRefresh">
             <property name="text">
              <string>Refresh EPG every:</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="3">
+          <item row="10" column="0">
+           <widget class="QCheckBox" name="checkAskForName">
+            <property name="text">
+             <string>Ask for Record Filename</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QCheckBox" name="checkHideToSystray">
+            <property name="text">
+             <string>Minimize to Systray</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QCheckBox" name="checkDetach">
+            <property name="text">
+             <string>Detach Player at startup</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1">
+           <widget class="QCheckBox" name="checkTranslit">
+            <property name="text">
+             <string>Translit Record Filename</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="0">
+           <widget class="QCheckBox" name="checkUpdate">
+            <property name="text">
+             <string>Check for updates</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QCheckBox" name="checkGPUAcc">
+            <property name="text">
+             <string>Use GPU for video decoding</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="0">
+           <widget class="QCheckBox" name="check2ClicksToPlay">
+            <property name="text">
+             <string>Doubleclick on channel list starts play</string>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="1">
+           <widget class="QCheckBox" name="checkAds">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Show Ads</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineApiServer">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="cbxPlayerMod"/>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="cbxLogLevel">
+            <item>
+             <property name="text">
+              <string>Log disabled</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Log Errors only</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Log Errors and Warnings</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Log everything</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLineEdit" name="lineShutdown"/>
+          </item>
+          <item row="8" column="1">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
              <widget class="QComboBox" name="cbxInterval">
@@ -574,99 +686,6 @@ color: red;
              <widget class="QLabel" name="label_9">
               <property name="text">
                <string>Minute(s)</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="8" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkAskForName">
-            <property name="text">
-             <string>Ask for Record Filename</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="2" colspan="2">
-           <widget class="QCheckBox" name="checkHideToSystray">
-            <property name="text">
-             <string>Minimize to Systray</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkDetach">
-            <property name="text">
-             <string>Detach Player at startup</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="2" colspan="2">
-           <widget class="QCheckBox" name="checkTranslit">
-            <property name="text">
-             <string>Translit Record Filename</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0" colspan="2">
-           <widget class="QCheckBox" name="checkUpdate">
-            <property name="text">
-             <string>Check for updates</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="2" colspan="2">
-           <widget class="QCheckBox" name="checkGPUAcc">
-            <property name="text">
-             <string>Use GPU for video decoding</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QCheckBox" name="check2ClicksToPlay">
-            <property name="text">
-             <string>Doubleclick on channel list starts play</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
-           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="7,3">
-            <property name="spacing">
-             <number>2</number>
-            </property>
-            <item>
-             <widget class="QComboBox" name="cbxLogLevel">
-              <item>
-               <property name="text">
-                <string>Log disabled</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Log Errors only</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Log Errors and Warnings</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Log everything</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineVlcVerbose">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>60</width>
-                <height>0</height>
-               </size>
               </property>
              </widget>
             </item>

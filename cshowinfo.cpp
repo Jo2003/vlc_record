@@ -26,6 +26,25 @@
 \----------------------------------------------------------------- */
 CShowInfo::CShowInfo(QObject *parent) : QObject(parent)
 {
+   cleanShowInfo();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: cleanShowInfo
+|  Begin: 11.05.2012
+|  Author: Jo2003
+|  Description: clean whole showinfo
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::cleanShowInfo()
+{
+   sShowName  = "";
+   sChanName  = "";
+   sDescr     = "";
+   sAdUrl     = "";
    iChannelId = -1;
    iVodId     = -1;
    ePlayState = IncPlay::PS_STOP;
@@ -184,6 +203,21 @@ void CShowInfo::setVodId(int id)
 void CShowInfo::setHtmlDescr(const QString &descr)
 {
    sDescr = descr;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setAdUrl
+|  Begin: 12.05.2012
+|  Author: Jo2003
+|  Description: stores the ad url of a video
+|
+|  Parameters: url string
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::setAdUrl(const QString &adUrl)
+{
+   sAdUrl = adUrl;
 }
 
 /* -----------------------------------------------------------------\
@@ -373,6 +407,21 @@ bool CShowInfo::canCtrlStream()
 const QString& CShowInfo::htmlDescr()
 {
    return sDescr;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: adUrl
+|  Begin: 12.05.2012
+|  Author: Jo2003
+|  Description: get the ad url
+|
+|  Parameters: --
+|
+|  Returns: ref. to value
+\----------------------------------------------------------------- */
+const QString& CShowInfo::adUrl()
+{
+   return sAdUrl;
 }
 
 /* -----------------------------------------------------------------\

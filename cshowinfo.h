@@ -50,6 +50,9 @@ public:
    // constructor ...
    CShowInfo(QObject *parent = 0);
 
+   // clean showInfo ...
+   void cleanShowInfo();
+
    // save values ...
    void setShowName (const QString &name);
    void setChanName (const QString &name);
@@ -60,6 +63,7 @@ public:
    void setPlayState (IncPlay::ePlayStates state);
    void setLastJumpTime (uint start);
    void setHtmlDescr (const QString &descr);
+   void setAdUrl(const QString &adUrl);
    void setVodId (int id);
    void setEpgMap(const t_EpgMap &map);
 
@@ -67,6 +71,7 @@ public:
    const QString &showName();
    const QString &chanName();
    const QString &htmlDescr();
+   const QString &adUrl();
    const int &channelId();
    const uint &starts();
    const uint &ends();
@@ -89,6 +94,7 @@ private:
    IncPlay::ePlayStates ePlayState;
    ShowInfo::eProgType  eShowType;
    QString              sDescr;
+   QString              sAdUrl;
    int                  iVodId;
    t_EpgMap             epgMap;
 };

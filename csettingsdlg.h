@@ -76,6 +76,7 @@ public:
     int  getTimeShift();
     bool doubleClickToPlay();
     bool useGpuAcc();
+    bool showAds();
 
     int GetRefrInt ();
     int GetProxyPort ();
