@@ -48,6 +48,7 @@ public:
    void SetKartinaClient (CKartinaClnt *pKartinaClient);
    void TriggerRequest (Kartina::EReq req, int iArg1 = 0, int iArg2 = 0);
    void TriggerRequest (Kartina::EReq req, const QString &sReq1, const QString &sReq2 = QString());
+   void TriggerRequest (Kartina::EReq req, int iArg1, const QString &sArg1);
    void stop ();
 
 protected:

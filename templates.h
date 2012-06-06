@@ -56,6 +56,8 @@
 #define TMPL_GENRE     "<!--{[%GENRE%]}-->"
 #define TMPL_NAME      "<!--{[%NAME%]}-->"
 #define TMPL_DESCR     "<!--{[%DESCR%]}-->"
+#define TMPL_FAVO      "<!--{[%FAVO%]}-->"
+#define TMPL_ERR       "<!--{[%ERROR%]}-->"
 
 #define EPG_TMPL  \
 "<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
@@ -68,9 +70,12 @@ TMPL_ROWS \
 #define TMPL_VIDEO_TITLE \
 "<div style='font-weight: bold; color: #800; padding: 10px;'>" TMPL_TITLE "</div>"
 
+#define TEMPL_VOD_FAV \
+"<a href='" TMPL_LINK "'><img src='" TMPL_IMG "' width='20' height='20' title='" TMPL_TITLE "' /></a>\n"
+
 #define TMPL_VIDEO_DETAILS \
 "<img class='floatright' src='" TMPL_IMG "' title='" TMPL_TITLE "' />\n" \
-"<h3>" TMPL_TITLE  "</h3>\n" \
+"<h3>" TMPL_TITLE  "</h3>&nbsp;&nbsp;<span>" TMPL_FAVO "</span>\n" \
 "<p style='color: #008800'>"  TMPL_GENRE  "</p>\n" \
 "<p style='color: #888888'>"  TMPL_TIME   "</p>\n" \
 "<p style='color: #880000'>"  TMPL_DIREC  "</p>\n" \
@@ -103,6 +108,9 @@ TMPL_CSS \
 
 #define TMPL_SIMPLE_LINK \
 "<a href='" TMPL_LINK "'>" TMPL_TITLE "</a>\n"
+
+#define TMPL_HTML_ICON \
+"<img style='border: 0px;' src='" TMPL_IMG "' height='20' width='20' title='" TMPL_TITLE "' />"
 
 
 #define TR_TMPL_A \
@@ -191,7 +199,25 @@ TMPL_CSS \
 "<b>" TMPL_PROG  "</b> %2<br />\n"\
 "<b>" TMPL_START "</b> %3<br />\n"\
 "<b>" TMPL_END   "</b> %4<br />\n"\
-"<b>" TMPL_TIME   "</b> %5<br />\n"
+"<b>" TMPL_TIME  "</b> %5<br />\n"
+
+#define TMPL_DETAILED_ERROR \
+"<p><b>%1</b></p>\n"\
+" <br />\n"\
+"<table border='0'>\n"\
+   "<tr>\n"\
+      "<td style='font-weight: bold;'>" TMPL_NAME  " </td>\n"\
+      "<td> %2</td>\n"\
+   "</tr>\n"\
+   "<tr>\n"\
+      "<td style='font-weight: bold;'>" TMPL_ERR   " </td>\n"\
+      "<td> %3</td>\n"\
+   "</tr>\n"\
+   "<tr>\n"\
+      "<td style='font-weight: bold;'>" TMPL_DESCR " </td>\n"\
+      "<td> %4</td>\n"\
+   "</tr>\n"\
+"</table>\n"
 
 
 #endif /* __011910__TEMPLATES_H */

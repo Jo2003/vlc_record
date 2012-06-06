@@ -49,7 +49,8 @@ SOURCES += main.cpp \
     cshortcutgrabber.cpp \
     qchanlistdelegate.cpp \
     qshortcuttable.cpp \
-    qftsettings.cpp
+    qftsettings.cpp \
+    qseccodedlg.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
@@ -80,11 +81,13 @@ HEADERS += recorder.h \
     qchanlistdelegate.h \
     qshortcuttable.h \
     qftsettings.h \
-    small_helpers.h
+    small_helpers.h \
+    qseccodedlg.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
-    forms/qftsettings.ui
+    forms/qftsettings.ui \
+    forms/qseccodedlg.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

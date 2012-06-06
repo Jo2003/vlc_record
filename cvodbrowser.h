@@ -25,6 +25,7 @@
 #include "defdef.h"
 #include "cdirstuff.h"
 #include "csettingsdlg.h"
+#include "cpixloader.h"
 
 /********************************************************************\
 |  Class: CVodBrowser
@@ -44,6 +45,7 @@ public:
     void EnlargeFont ();
     void ReduceFont ();
     void ChangeFontSize (int iSz);
+    void setPixCache (CPixLoader *pCache);
 
     void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, bool bSaveList = true);
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
@@ -51,11 +53,16 @@ public:
     const QString& getShortContent ();
     void setSettings (CSettingsDlg *pDlg);
 
+private slots:
+    void slotSetBufferedHtml();
+
 private:
     QVector<cparser::SVodVideo> vVideos;
     QString sName;
     QString sShortContent;
-    CSettingsDlg *pSettings;
+    QString sContentBuffer;
+    CSettingsDlg  *pSettings;
+    CPixLoader    *pPixCache;
 };
 
 #endif // __21122010_CVODBROWSER_H

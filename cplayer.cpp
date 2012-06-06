@@ -523,6 +523,12 @@ int CPlayer::playMedia(const QString &sCmdLine)
       iRV = initPlayer();
    }
 
+   // make sure we stop the player - needed since playlist support ...
+   if (isPlaying())
+   {
+       stop();
+   }
+
    if (!iRV)
    {
       mInfo(tr("Use following URL:\n  --> %1").arg(sMrl));
@@ -1050,7 +1056,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          // save jump time ...
          showInfo.setLastJumpTime(pos);
 
-         pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
+         pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
 
          // do we reach another show?
          if ((pos < mToGmt(ui->posSlider->minimum()))
@@ -1231,7 +1237,7 @@ void CPlayer::slotSliderPosChanged()
             showInfo.setLastJumpTime(position);
 
             // trigger stream request ...
-            pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req);
+            pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
 

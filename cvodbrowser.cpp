@@ -29,7 +29,8 @@ extern CDirStuff *pFolders;
 \----------------------------------------------------------------- */
 CVodBrowser::CVodBrowser(QWidget *parent) : QTextBrowser(parent)
 {
-   pSettings = NULL;
+   pSettings   = NULL;
+   pPixCache   = NULL;
 }
 
 /* -----------------------------------------------------------------\
@@ -62,6 +63,24 @@ void CVodBrowser::setSettings(CSettingsDlg *pDlg)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: setPixCache
+|  Begin: 31.05.2012
+|  Author: Jo2003
+|  Description: set pix loader
+|
+|  Parameters: pointer to pix loader
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CVodBrowser::setPixCache(CPixLoader *pCache)
+{
+   pPixCache = pCache;
+
+   // we need to know when we can display the VOD site ...
+   connect(pPixCache, SIGNAL(allDone()), this, SLOT(slotSetBufferedHtml()));
+}
+
+/* -----------------------------------------------------------------\
 |  Method: displayVodList
 |  Begin: 21.12.2010 / 10:11
 |  Author: Jo2003
@@ -75,14 +94,14 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
                                  const QString &sGenre,
                                  bool bSaveList)
 {
-   int i, j, iCount = vList.count();
+   int i, j, iCount = vList.count(), iPixToLoad = 0;
 
    if (bSaveList)
    {
       vVideos = vList;
    }
 
-   QString sTab, sRows, sCol, sVidTitle;
+   QString sTab, sRows, sCol, sVidTitle, sLock, sImage;
    QString sContent = HTML_SITE;
    QFileInfo info;
    sContent.replace(TMPL_TITLE, tr("VOD"));
@@ -101,23 +120,41 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
          sCol = TMPL_IMG_LINK;
 
          // add link ...
-         sCol.replace(TMPL_LINK,  QString("videothek?action=vod_info&vodid=%1")
-                                         .arg(vList[j].uiVidId));
+         sCol.replace(TMPL_LINK,  QString("videothek?action=vod_info&vodid=%1&pass_protect=%2")
+                      .arg(vList[j].uiVidId)
+                      .arg(vList[j].bProtected ? 1 : 0));
+
+         // handle image ...
+         info.setFile(vList[j].sImg);
+         sImage = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
+
+         // enqueue pic if not already there in cache ...
+         if (!QFile::exists(sImage))
+         {
+            iPixToLoad ++;
+            pPixCache->enqueuePic(vList[j].sImg, pFolders->getVodPixDir());
+         }
 
          // add image ...
-         info.setFile(vList[j].sImg);
-         sCol.replace(TMPL_IMG,   QUrl::toPercentEncoding(QString("%1/%2")
-                                         .arg(pFolders->getVodPixDir())
-                                         .arg(info.fileName())));
+         sCol.replace(TMPL_IMG,   QUrl::toPercentEncoding(sImage));
 
          // add title ...
          sCol.replace(TMPL_TITLE, QString("%1 (%2 %3)")
                                          .arg(vList[j].sName).arg(vList[j].sCountry)
                                          .arg(vList[j].sYear));
 
+         sLock = "";
+         // show if video is protected ...
+         if (vList[j].bProtected)
+         {
+            sLock = TMPL_HTML_ICON;
+            sLock.replace(TMPL_IMG, ":/access/locked");
+            sLock.replace(TMPL_TITLE, tr("password protected"));
+         }
+
          // add title below image ...
          sVidTitle = TMPL_VIDEO_TITLE;
-         sVidTitle.replace(TMPL_TITLE, vList[j].sName);
+         sVidTitle.replace(TMPL_TITLE, QString("%1%2").arg(sLock).arg(vList[j].sName));
 
          // insert into row template ...
          sRows.replace((j == i) ? TMPL_VOD_L   : TMPL_VOD_R,   sCol);
@@ -135,7 +172,34 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
    sTab.replace(TMPL_ROWS, sRows);
    sContent.replace(TMPL_CONT, sTab);
 
-   setHtml(sContent);
+   if (iPixToLoad && pPixCache->busy())
+   {
+      // postbone display (when all pictures are ready) ...
+      sContentBuffer = sContent;
+   }
+   else
+   {
+      setHtml(sContent);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotSetBufferedHtml
+|  Begin: 31.05.2012
+|  Author: Jo2003
+|  Description: display buffered content
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CVodBrowser::slotSetBufferedHtml()
+{
+   if (sContentBuffer != "")
+   {
+      setHtml(sContentBuffer);
+      sContentBuffer = "";
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -156,6 +220,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    QString   sLinkTab;
    QString   sTitle;
    QString   sFormat;
+   QString   sFav;
    QFileInfo info(sInfo.sImg);
 
    // add css stuff ...
@@ -202,6 +267,29 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    // for the short info we can end here ...
    sShortContent = sDoc;
    sShortContent.replace(TMPL_LINK, "");
+   sShortContent.replace(TMPL_FAVO, "");
+
+   // add favourite stuff ...
+   sFav = TEMPL_VOD_FAV;
+   if (sInfo.bFavourit)
+   {
+      // is favourite ...
+      sFav.replace(TMPL_IMG, ":/vod/is_fav");
+      sFav.replace(TMPL_TITLE, tr("Remove from favourites."));
+      sFav.replace(TMPL_LINK, QString("videothek?action=del_fav&vodid=%1&pass_protect=%2")
+                   .arg(sInfo.uiVidId)
+                   .arg(sInfo.bProtected ? 1 : 0));
+   }
+   else
+   {
+      // not a favourite ...
+      sFav.replace(TMPL_IMG, ":/vod/not_fav");
+      sFav.replace(TMPL_TITLE, tr("Add to favourites."));
+      sFav.replace(TMPL_LINK, QString("videothek?action=add_fav&vodid=%1&pass_protect=%2")
+                   .arg(sInfo.uiVidId)
+                   .arg(sInfo.bProtected ? 1 : 0));
+   }
+   sDoc.replace(TMPL_FAVO, sFav);
 
    sLinks = TMPL_VIDEO_LINKS;
 
@@ -225,8 +313,9 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       sLinkTab += "<td style='padding: 3px;'>\n";
       sLinkTab += TMPL_IMG_LINK;
       sLinkTab.replace(TMPL_IMG, ":png/play");
-      sLinkTab.replace(TMPL_LINK, QString("videothek?action=play&vid=%1")
-                        .arg(sInfo.vVodFiles[i].iId));
+      sLinkTab.replace(TMPL_LINK, QString("videothek?action=play&vid=%1&pass_protect=%2")
+                       .arg(sInfo.vVodFiles[i].iId)
+                       .arg(sInfo.bProtected ? 1 : 0));
 
       sLinkTab.replace(TMPL_TITLE, tr("Play Movie ..."));
 
@@ -235,8 +324,9 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       // record link ...
       sLinkTab += TMPL_IMG_LINK;
       sLinkTab.replace(TMPL_IMG, ":png/record");
-      sLinkTab.replace(TMPL_LINK, QString("videothek?action=record&vid=%1")
-                        .arg(sInfo.vVodFiles[i].iId));
+      sLinkTab.replace(TMPL_LINK, QString("videothek?action=record&vid=%1&pass_protect=%2")
+                       .arg(sInfo.vVodFiles[i].iId)
+                       .arg(sInfo.bProtected ? 1 : 0));
       sLinkTab.replace(TMPL_TITLE, tr("Record Movie ..."));
 
       sLinkTab += "\n</td>\n</tr>\n";

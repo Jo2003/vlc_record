@@ -45,6 +45,7 @@ void CShowInfo::cleanShowInfo()
    sChanName  = "";
    sDescr     = "";
    sAdUrl     = "";
+   sPCode     = "";
    iChannelId = -1;
    iVodId     = -1;
    ePlayState = IncPlay::PS_STOP;
@@ -218,6 +219,21 @@ void CShowInfo::setHtmlDescr(const QString &descr)
 void CShowInfo::setAdUrl(const QString &adUrl)
 {
    sAdUrl = adUrl;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setPCode
+|  Begin: 01.06.2012
+|  Author: Jo2003
+|  Description: stores the pcode of protected channel
+|
+|  Parameters: url string
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::setPCode(const QString &code)
+{
+   sPCode = code;
 }
 
 /* -----------------------------------------------------------------\
@@ -425,6 +441,21 @@ const QString& CShowInfo::adUrl()
 }
 
 /* -----------------------------------------------------------------\
+|  Method: pCode
+|  Begin: 01.06.2012
+|  Author: Jo2003
+|  Description: get the pcode
+|
+|  Parameters: --
+|
+|  Returns: ref. to value
+\----------------------------------------------------------------- */
+const QString& CShowInfo::pCode()
+{
+   return sPCode;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: autoUpdate
 |  Begin: 05.03.2012
 |  Author: Jo2003
@@ -442,7 +473,7 @@ int CShowInfo::autoUpdate(uint uiTime)
 
    for (cit = epgMap.constBegin(); cit != epgMap.constEnd(); cit++)
    {
-      if (inBetween((*cit).uiStart, (*cit).uiEnd, uiTime))
+      if (CSmallHelpers::inBetween((*cit).uiStart, (*cit).uiEnd, uiTime))
       {
          sShowName  = (*cit).sShowName;
          uiStart    = (*cit).uiStart;

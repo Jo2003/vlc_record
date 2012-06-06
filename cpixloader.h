@@ -16,10 +16,19 @@
 #include <QHttpRequestHeader>
 #include <QHttpResponseHeader>
 #include <QBuffer>
-#include <QDir>
-#include <QStringList>
 #include <QFileInfo>
+#include <QVector>
+#include <QMutex>
 
+namespace PixCache {
+   struct SPixDesc
+   {
+      QString sRemote;
+      QString sLocal;
+   };
+}
+
+typedef QVector<PixCache::SPixDesc> PixVector;
 
 /********************************************************************\
 |  Class: CPixLoader
@@ -35,25 +44,22 @@ class CPixLoader : public QHttp
 public:
    CPixLoader();
    virtual ~CPixLoader();
-   void setPictureList (const QStringList &list);
-   void setHostAndFolder (const QString &host, const QString &folder);
-   bool IsRunning () { return bRun; }
-
-signals:
-   void sigPixReady ();
+   void enqueuePic (const QString& sRemote, const QString &sLocal);
+   bool busy();
 
 protected:
    void startDownLoad ();
 
+signals:
+   void allDone();
+
 private:
+   QMutex      mtxCacheQueue;
+   PixVector   cacheQueue;
    QBuffer     dataBuffer;
-   QStringList lPicList;
-   QStringList::const_iterator cit;
-   QString     sLocalFolder;
-   QString     sHost;
-   bool bRun;
-   bool bIsAnswer;
-   int  iReq;
+   bool        bRun;
+   bool        bIsAnswer;
+   int         iReq;
 
 private slots:
    void slotCheckResp (int iReqID, bool err);

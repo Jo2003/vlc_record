@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="../polsky_tv.qrc">
+   <iconset resource="../kartina_tv.qrc">
     <normaloff>:/app/kartina</normaloff>:/app/kartina</iconset>
   </property>
   <property name="styleSheet">
@@ -637,7 +637,7 @@ color: white;
         <number>4</number>
        </property>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="0,10,0,5,0,0,0,2,0">
+        <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="0,8,0,10,0,0,0,1,0">
          <item>
           <widget class="QLabel" name="labGenre">
            <property name="text">
@@ -887,7 +887,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../polsky_tv.qrc">
+            <iconset resource="../kartina_tv.qrc">
              <normaloff>:/app/live</normaloff>:/app/live</iconset>
            </property>
            <property name="iconSize">
@@ -1257,16 +1257,34 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>tabEpgVod</tabstop>
   <tabstop>cbxChannelGroup</tabstop>
   <tabstop>channelList</tabstop>
   <tabstop>textEpgShort</tabstop>
   <tabstop>textEpg</tabstop>
+  <tabstop>btnFontSmaller</tabstop>
+  <tabstop>btnFontLarger</tabstop>
+  <tabstop>lineSearch</tabstop>
+  <tabstop>btnSearch</tabstop>
+  <tabstop>pushLive</tabstop>
+  <tabstop>pushPlay</tabstop>
+  <tabstop>pushRecord</tabstop>
+  <tabstop>pushStop</tabstop>
+  <tabstop>pushTimerRec</tabstop>
   <tabstop>pushSettings</tabstop>
-  <tabstop>pushQuit</tabstop>
   <tabstop>pushAbout</tabstop>
+  <tabstop>pushQuit</tabstop>
+  <tabstop>cbxGenre</tabstop>
+  <tabstop>cbxLastOrBest</tabstop>
+  <tabstop>btnPrevSite</tabstop>
+  <tabstop>cbxSites</tabstop>
+  <tabstop>btnNextSite</tabstop>
+  <tabstop>vodBrowser</tabstop>
+  <tabstop>lineVodSearch</tabstop>
+  <tabstop>btnVodSearch</tabstop>
  </tabstops>
  <resources>
-  <include location="../polsky_tv.qrc"/>
+  <include location="../kartina_tv.qrc"/>
   <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
  </resources>

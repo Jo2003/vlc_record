@@ -11,6 +11,7 @@
 \*************************************************************/
 #include "csettingsdlg.h"
 #include "ui_csettingsdlg.h"
+#include <QRadioButton>
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -36,7 +37,9 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
     m_ui(new Ui::CSettingsDlg)
 {
    m_ui->setupUi(this);
-
+   pParser         = NULL;
+   pCmdQueue       = NULL;
+   pAccountInfo    = NULL;
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
 
@@ -89,6 +92,51 @@ CSettingsDlg::~CSettingsDlg()
 }
 
 /* -----------------------------------------------------------------\
+|  Method: setXmlParser
+|  Begin: 22.05.2012
+|  Author: Jo2003
+|  Description: set xml parser to use in settings
+|
+|  Parameters: pointer to XML parser
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::setXmlParser(CKartinaXMLParser *parser)
+{
+   pParser = parser;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setAccountInfo
+|  Begin: 06.06.2012
+|  Author: Jo2003
+|  Description: set account info struct
+|
+|  Parameters: pointer to account info struct
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::setAccountInfo(const cparser::SAccountInfo *pInfo)
+{
+   pAccountInfo = pInfo;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setWaitTrigger
+|  Begin: 14.05.2012
+|  Author: Jo2003
+|  Description: set wait trigger (command queue) to send requests
+|
+|  Parameters: pointer to trigger
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::setWaitTrigger(CWaitTrigger *pTrigger)
+{
+   pCmdQueue = pTrigger;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: readSettings
 |  Begin: 13.09.2011 / 10:20
 |  Author: Jo2003
@@ -104,13 +152,50 @@ void CSettingsDlg::readSettings()
    int         iErr;
    QDir        folder;
    QStringList sl;
+   bool        bUpdCase = false;
+
+   ////////////////////////////////////////////////////////////////////////////////
+   // update case: Encrypted passwords ---->
+   // We added a simply password encryption. In case there is an update,
+   // we must make sure that the unencrypted password is converted
+   // into an encrypted one. To make our lives easier we'll use new
+   // keys for the encrypted passwords ...
+   if (((s = pDb->stringValue("Passwd")) != "")
+       && (pDb->stringValue("PasswdEnc") == ""))
+   {
+      bUpdCase = true;
+      pDb->setPassword("PasswdEnc", s);
+   }
+
+   if (((s = pDb->stringValue("ErosPasswd")) != "")
+       && (pDb->stringValue("ErosPasswdEnc") == ""))
+   {
+      pDb->setPassword("ErosPasswdEnc", s);
+   }
+
+   if (((s = pDb->stringValue("ProxyPasswd")) != "")
+       && (pDb->stringValue("ProxyPasswdEnc") == ""))
+   {
+      pDb->setPassword("ProxyPasswdEnc", s);
+   }
+
+   // remove unused settings ...
+   if (bUpdCase)
+   {
+      pDb->removeSetting("Passwd");
+      pDb->removeSetting("ErosPasswd");
+      pDb->removeSetting("ProxyPasswd");
+   }
+   // update case: Encrypted passwords <----
+   ////////////////////////////////////////////////////////////////////////////////
+
 
    // line edits ...
    m_ui->lineVLC->setText (pDb->stringValue("VLCPath"));
    m_ui->lineDir->setText (pDb->stringValue("TargetDir"));
    m_ui->lineUsr->setText (pDb->stringValue("User"));
-   m_ui->linePass->setText (pDb->stringValue("Passwd"));
-   m_ui->lineErosPass->setText(pDb->stringValue("ErosPasswd"));
+   m_ui->linePass->setText (pDb->password("PasswdEnc"));
+   m_ui->lineErosPass->setText(pDb->password("ErosPasswdEnc"));
    m_ui->lineShutdown->setText(pDb->stringValue("ShutdwnCmd"));
    m_ui->lineApiServer->setText(pDb->stringValue ("APIServer"));
    m_ui->lineVlcVerbose->setText(pDb->stringValue ("libVlcLogLevel", &iErr));
@@ -141,7 +226,7 @@ void CSettingsDlg::readSettings()
    m_ui->lineProxyHost->setText(pDb->stringValue("ProxyHost"));
    m_ui->lineProxyPort->setText(pDb->stringValue("ProxyPort"));
    m_ui->lineProxyUser->setText(pDb->stringValue("ProxyUser"));
-   m_ui->lineProxyPassword->setText(pDb->stringValue("ProxyPasswd"));
+   m_ui->lineProxyPassword->setText(pDb->password("ProxyPasswdEnc"));
 
    // check boxes ...
    m_ui->useProxy->setCheckState((Qt::CheckState)pDb->intValue("UseProxy"));
@@ -187,12 +272,6 @@ void CSettingsDlg::readSettings()
    if (m_ui->checkAdvanced->isChecked())
    {
       vBuffs.prepend(0.5);
-   }
-
-   // on update the password for adult channels may not be given ...
-   if (m_ui->checkAdult->isChecked() && (m_ui->lineErosPass->text() == ""))
-   {
-      m_ui->lineErosPass->setText(m_ui->linePass->text());
    }
 
    // fill player module box with available modules ...
@@ -298,7 +377,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
        }
        break;
     default:
-        break;
+       break;
     }
 }
 
@@ -439,20 +518,18 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("VLCPath", m_ui->lineVLC->text());
    pDb->setValue("User", m_ui->lineUsr->text());
    pDb->setValue("TargetDir", m_ui->lineDir->text());
-   pDb->setValue("Passwd", m_ui->linePass->text());
-   pDb->setValue("ErosPasswd", m_ui->lineErosPass->text());
+   pDb->setPassword("PasswdEnc", m_ui->linePass->text());
 
    pDb->setValue("ProxyHost", m_ui->lineProxyHost->text());
    pDb->setValue("ProxyPort", m_ui->lineProxyPort->text());
    pDb->setValue("ProxyUser", m_ui->lineProxyUser->text());
-   pDb->setValue("ProxyPasswd", m_ui->lineProxyPassword->text());
+   pDb->setPassword("ProxyPasswdEnc", m_ui->lineProxyPassword->text());
    pDb->setValue("ShutdwnCmd", m_ui->lineShutdown->text());
    pDb->setValue("APIServer", m_ui->lineApiServer->text());
    pDb->setValue("libVlcLogLevel", m_ui->lineVlcVerbose->text());
 
    // check boxes ...
    pDb->setValue("UseProxy", (int)m_ui->useProxy->checkState());
-   pDb->setValue("AllowAdult", (int)m_ui->checkAdult->checkState());
    pDb->setValue("FixTime", (int)m_ui->checkFixTime->checkState());
    pDb->setValue("Refresh", (int)m_ui->checkRefresh->checkState());
    pDb->setValue("TrayHide", (int)m_ui->checkHideToSystray->checkState());
@@ -1297,6 +1374,484 @@ void CSettingsDlg::on_btnResetShortcuts_clicked()
 int CSettingsDlg::shortCutCount()
 {
    return m_ui->tableShortCuts->rowCount();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotLockParentalManager [slot]
+|  Begin: 14.05.2012
+|  Author: Jo2003
+|  Description: lock parental manager
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotLockParentalManager()
+{
+   sTempPasswd = "";
+   m_ui->stackedWidget->setCurrentIndex(0);
+   m_ui->tabWidget->setTabIcon(3, QIcon(":/access/locked"));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotBuildChanManager [slot]
+|  Begin: 14.05.2012
+|  Author: Jo2003
+|  Description: fill channel manager with data
+|
+|  Parameters: XML data
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotBuildChanManager(const QString &str)
+{
+   QString          sLogo;
+   QListWidgetItem *pItem;
+
+   channelVector.clear();
+
+   if (!pParser->parseChannelList(str, channelVector, false))
+   {
+      m_ui->listHide->clear();
+
+      for (int i = 0; i < channelVector.count(); i++)
+      {
+         if (!channelVector[i].bIsGroup)
+         {
+            sLogo = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(channelVector[i].iId);
+            pItem = new QListWidgetItem (QIcon(sLogo), channelVector[i].sName);
+
+            // save channel id in list item ...
+            pItem->setData(Qt::UserRole, channelVector[i].iId);
+
+            m_ui->listHide->addItem(pItem);
+
+            if (channelVector[i].bIsHidden)
+            {
+               pItem->setSelected(true);
+            }
+         }
+      }
+
+      if (pAccountInfo->bHasVOD)
+      {
+         // request vod manager data ...
+         pCmdQueue->TriggerRequest(Kartina::REQ_GET_VOD_MANAGER, sTempPasswd);
+      }
+      else
+      {
+         // show manager widget ...
+         m_ui->stackedWidget->setCurrentIndex(1);
+         m_ui->tabWidget->setTabIcon(m_ui->tabWidget->currentIndex(), QIcon(":/access/unlocked"));
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotBuildVodManager [slot]
+|  Begin: 23.05.2012
+|  Author: Jo2003
+|  Description: fill VOD manager with data
+|
+|  Parameters: XML data
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotBuildVodManager(const QString &str)
+{
+   vodRatesVector.clear();
+
+   QLayout      *pLayout = m_ui->scrollAreaContents->layout();
+   QVBoxLayout  *pVMainLayout, *pVChildLayout;
+   QLabel       *pTitle;
+   QFrame       *pChildWidget;
+   QRadioButton *pRadHide, *pRadShow, *pRadPass;
+   QString       sLabel;
+   QFont         font;
+   QStringList   sl;
+   const char   *pGenre;
+
+   // help translate the vod manager strings ...
+   sl << tr("blood") << tr("violence") << tr("obscene") << tr("porn") << tr("horror");
+
+   // clear layout ...
+   if (pLayout)
+   {
+      QLayoutItem *child;
+      while ((child = pLayout->takeAt(0)) != 0)
+      {
+         child->widget()->deleteLater();
+         delete child;
+      }
+      delete pLayout;
+   }
+
+   if (!pParser->parseVodManager(str, vodRatesVector))
+   {
+      pVMainLayout = new QVBoxLayout();
+
+      // make forms for every rate ...
+      for (int i = 0; i < vodRatesVector.count(); i++)
+      {
+         // fix a small typo in API ...
+         pGenre    = (vodRatesVector[i].sGenre == "obsence") ? "obscene" : vodRatesVector[i].sGenre.toUtf8().constData();
+
+         // translate label ...
+         sLabel    = tr(pGenre);
+
+         // make label better looking ...
+         sLabel[0] = sLabel[0].toUpper();
+         sLabel   += ":";
+
+         // create the whole bunch new widgets needed in this form ...
+         pChildWidget  = new QFrame();
+         pVChildLayout = new QVBoxLayout();
+         pTitle        = new QLabel(sLabel);
+         pRadHide      = new QRadioButton (tr("hide"));
+         pRadShow      = new QRadioButton (tr("show"));
+         pRadPass      = new QRadioButton (tr("password protected"));
+
+         // store the name of the form so we can check it later ...
+         pChildWidget->setObjectName(vodRatesVector[i].sGenre);
+
+         // make label bold ...
+         font = pTitle->font();
+         font.setBold(true);
+         pTitle->setFont(font);
+
+         // set spacing ...
+         pVChildLayout->setSpacing(2);
+
+         // add all widgets to layout ...
+         pVChildLayout->addWidget(pTitle);
+         pVChildLayout->addWidget(pRadShow);
+         pVChildLayout->addWidget(pRadHide);
+         pVChildLayout->addWidget(pRadPass);
+
+         // set layout to form ...
+         pChildWidget->setLayout(pVChildLayout);
+
+         // mark radio button as needed ...
+         if (vodRatesVector[i].sAccess == "hide")
+         {
+            pRadHide->setChecked(true);
+         }
+         else if (vodRatesVector[i].sAccess == "show")
+         {
+            pRadShow->setChecked(true);
+         }
+         else if (vodRatesVector[i].sAccess == "pass")
+         {
+            pRadPass->setChecked(true);
+         }
+
+         // add form to main layout ...
+         pVMainLayout->addWidget(pChildWidget);
+      }
+
+      // show what we've done ...
+      m_ui->scrollAreaContents->setLayout(pVMainLayout);
+      m_ui->stackedWidget->setCurrentIndex(1);
+      m_ui->tabWidget->setTabIcon(m_ui->tabWidget->currentIndex(), QIcon(":/access/unlocked"));
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnSaveExitManager_clicked [slot]
+|  Begin: 23.05.2012
+|  Author: Jo2003
+|  Description: save all changes, request reload where needed
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_btnSaveExitManager_clicked()
+{
+   //////////////////////////////////////////////////
+   // Adult Channels (Live) ...
+   //////////////////////////////////////////////////
+   pDb->setValue("AllowAdult", (int)m_ui->checkAdult->checkState());
+   pDb->setPassword("ErosPasswdEnc", m_ui->lineErosPass->text());
+
+
+   //////////////////////////////////////////////////
+   // Channel Manager ...
+   //////////////////////////////////////////////////
+
+   // find differences ...
+   QVector<int>     toShow, toHide, nowShow;
+   QListWidgetItem *pItem;
+   QStringList      ids;
+   int              i, cid;
+
+   // build show vector with actual values ...
+   for (i = 0; i < channelVector.count(); i++)
+   {
+      if (!channelVector[i].bIsGroup)
+      {
+         if (!channelVector[i].bIsHidden)
+         {
+            nowShow.append(channelVector[i].iId);
+         }
+      }
+   }
+
+   // create hide and show vector with changed values only ...
+   for (i = 0; i < m_ui->listHide->count(); i++)
+   {
+      pItem = m_ui->listHide->item(i);
+      cid   = qvariant_cast<int>(pItem->data(Qt::UserRole));
+
+      if (pItem->isSelected())
+      {
+         // means hide ...
+         if (nowShow.contains(cid))
+         {
+            toHide.append(cid);
+         }
+      }
+      else
+      {
+         // means show ...
+         if (!nowShow.contains(cid))
+         {
+            toShow.append(cid);
+         }
+      }
+   }
+
+   // enqueue channel list changes ...
+   if (toHide.count())
+   {
+      for (i = 0; i < toHide.count(); i++)
+      {
+         ids << QString::number(toHide[i]);
+      }
+      pCmdQueue->TriggerRequest(Kartina::REQ_SETCHAN_HIDE, ids.join(","), sTempPasswd);
+   }
+
+   ids.clear();
+   if (toShow.count())
+   {
+      for (i = 0; i < toShow.count(); i++)
+      {
+         ids << QString::number(toShow[i]);
+      }
+      pCmdQueue->TriggerRequest(Kartina::REQ_SETCHAN_SHOW, ids.join(","), sTempPasswd);
+   }
+
+   if (toHide.count() || toShow.count())
+   {
+      // request new channel list ...
+      pCmdQueue->TriggerRequest(Kartina::REQ_CHANNELLIST);
+   }
+
+   //////////////////////////////////////////////////
+   // VOD Manager ...
+   //////////////////////////////////////////////////
+   if (pAccountInfo->bHasVOD)
+   {
+      QVBoxLayout  *pMainLayout, *pChildLayout;
+      QLayoutItem  *child;
+      QRadioButton *pRadShow, *pRadHide, *pRadPass;
+      QString       sRules, sAccess;
+      pMainLayout = (QVBoxLayout *)m_ui->scrollAreaContents->layout();
+
+      for (i = 0; i < pMainLayout->count(); i++)
+      {
+         // layout was buildt from rates vector so we can
+         // assume that the index of the layout is equal
+         // to the index in the rates vector ...
+         if ((child = pMainLayout->itemAt(i)) != 0)
+         {
+            // simple check ...
+            if (vodRatesVector[i].sGenre == child->widget()->objectName())
+            {
+               sAccess      = "";
+               pChildLayout = (QVBoxLayout *)child->widget()->layout();
+
+               // assume the order as created ...
+               pRadShow = (QRadioButton *)pChildLayout->itemAt(1)->widget();
+               pRadHide = (QRadioButton *)pChildLayout->itemAt(2)->widget();
+               pRadPass = (QRadioButton *)pChildLayout->itemAt(3)->widget();
+
+               if (pRadShow->isChecked())
+               {
+                  sAccess = "show";
+               }
+               else if (pRadHide->isChecked())
+               {
+                  sAccess = "hide";
+               }
+               else if (pRadPass->isChecked())
+               {
+                  sAccess = "pass";
+               }
+
+               if ((sAccess != "") && (sAccess != vodRatesVector[i].sAccess))
+               {
+                  sRules += QString("&%1=%2")
+                        .arg(vodRatesVector[i].sGenre)
+                        .arg(sAccess);
+               }
+            }
+         }
+      }
+
+      if (sRules != "")
+      {
+         mInfo(tr("Changed VOD Rate: %1").arg(sRules));
+         pCmdQueue->TriggerRequest(Kartina::REQ_SET_VOD_MANAGER, sRules, sTempPasswd);
+      }
+   }
+
+   QTimer::singleShot(1000, this, SLOT(slotLockParentalManager()));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnEnterManager_clicked [slot]
+|  Begin: 22.05.2012
+|  Author: Jo2003
+|  Description: request channel list for settings used in channel
+|               manager
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_btnEnterManager_clicked()
+{
+   sTempPasswd = m_ui->linePasswd->text();
+   m_ui->linePasswd->clear();
+   pCmdQueue->TriggerRequest(Kartina::REQ_CHANLIST_ALL, sTempPasswd);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_linePasswd_returnPressed [slot]
+|  Begin: 22.05.2012
+|  Author: Jo2003
+|  Description: request channel list for settings used in channel
+|               manager
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_linePasswd_returnPressed()
+{
+   on_btnEnterManager_clicked();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnChgPCode_clicked [slot]
+|  Begin: 01.06.2012
+|  Author: Jo2003
+|  Description: save new pcode ...
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_btnChgPCode_clicked()
+{
+   // precheck ...
+   QRegExp rx("[^0-9]+");
+   QString sOldPCode = m_ui->lineOldPCode->text();
+   QString sNewPCode = m_ui->lineNewPCode->text();
+   QString sConPCode = m_ui->lineConfirmPCode->text();
+
+
+
+   if ((sOldPCode == sTempPasswd)                     // old password is ok
+      && (sNewPCode == sConPCode)                     // new and confirm are equal
+      && (sNewPCode.count() > 0)                      // there is a new password at all
+      && ((sOldPCode.indexOf(rx) == -1)               // there are only numbers
+          && (sNewPCode.indexOf(rx) == -1)))
+   {
+      // disable dialog items while we're settings ...
+      m_ui->lineOldPCode->setDisabled(true);
+      m_ui->lineNewPCode->setDisabled(true);
+      m_ui->lineConfirmPCode->setDisabled(true);
+      m_ui->btnChgPCode->setDisabled(true);
+
+      pCmdQueue->TriggerRequest(Kartina::REQ_SET_PCODE, sOldPCode, sNewPCode);
+   }
+   else
+   {
+      QMessageBox::critical(this, tr("Error!"),
+                            tr("<b>Please check the data entered.</b>\n"
+                               "<br /> <br />\n"
+                               "To change the parent code make sure:\n"
+                               "<ul>\n"
+                               "<li>The old parent code is correct.</li>\n"
+                               "<li>The new code and the confirm code are equal.</li>\n"
+                               "<li>The new code isn't empty.</li>\n"
+                               "<li>The new code contains <b style='color: red;'>numbers only</b>.</li>\n"
+                               "</ul>\n"));
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotNewPCodeSet [slot]
+|  Begin: 01.06.2012
+|  Author: Jo2003
+|  Description: got pcode change response
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotNewPCodeSet()
+{
+   QString oldPw;
+
+   // internally store changed pcode ...
+   sTempPasswd = m_ui->lineNewPCode->text();
+
+   // Was there a code stored for adult channels ... ?
+   // To be sure ask database, but not text field.
+   if ((oldPw = pDb->password("ErosPasswdEnc")) != "")
+   {
+      // there was an adult code stored ...
+      if (sTempPasswd != oldPw)
+      {
+         // update eros passwd if set ...
+         m_ui->lineErosPass->setText(sTempPasswd);
+
+         // save to database ...
+         pDb->setPassword("ErosPasswdEnc", sTempPasswd);
+      }
+   }
+
+   slotEnablePCodeForm();
+
+   QMessageBox::information(this, tr("Information"), tr("Parent Code successfully changed."));
+   mInfo(tr("Parent Code successfully changed."));
+
+   // on error we'll get a message box from the Recorder ...
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotEnablePCodeForm [slot]
+|  Begin: 05.06.2012
+|  Author: Jo2003
+|  Description: enable dialog items
+|
+|  Parameters: --
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::slotEnablePCodeForm()
+{
+   // clear form ...
+   m_ui->lineOldPCode->clear();
+   m_ui->lineNewPCode->clear();
+   m_ui->lineConfirmPCode->clear();
+
+   // enable items ...
+   m_ui->lineOldPCode->setEnabled(true);
+   m_ui->lineNewPCode->setEnabled(true);
+   m_ui->lineConfirmPCode->setEnabled(true);
+   m_ui->btnChgPCode->setEnabled(true);
 }
 
 /************************* History ***************************\

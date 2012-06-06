@@ -154,11 +154,11 @@ void QFTSettings::on_cbxLanguage_currentIndexChanged(QString str)
 void QFTSettings::saveFTSettings()
 {
    // use settings from form ...
-   pDb->setValue("User",         ui->lineUsr->text());
-   pDb->setValue("Passwd",       ui->linePass->text());
-   pDb->setValue("ErosPasswd",   ui->lineErosPass->text());
-   pDb->setValue("AllowAdult",   (int)ui->checkAdult->checkState());
-   pDb->setValue("Language",     ui->cbxLanguage->currentText());
+   pDb->setValue("User",             ui->lineUsr->text());
+   pDb->setValue("AllowAdult",  (int)ui->checkAdult->checkState());
+   pDb->setValue("Language",         ui->cbxLanguage->currentText());
+   pDb->setPassword("PasswdEnc",     ui->linePass->text());
+   pDb->setPassword("ErosPasswdEnc", ui->lineErosPass->text());
 
    // set commonly used settings ...
 #ifdef Q_OS_MAC

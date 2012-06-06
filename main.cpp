@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
          {
             // check if needed settings are there ...
             if ((pDb->stringValue("User") == "")
-               && (pDb->stringValue("Passwd") == ""))
+               && (pDb->stringValue("PasswdEnc") == ""))
             {
                QFTSettings ftSet(NULL, trans);
                ftSet.exec();

@@ -125,6 +125,12 @@ int CDirStuff::initDirectories()
       {
          helpDir.mkpath(sLogoDir);
       }
+
+      helpDir.setPath(sVodPixDir);
+      if (!helpDir.exists())
+      {
+         helpDir.mkpath(sVodPixDir);
+      }
    }
    else
    {

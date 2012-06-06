@@ -121,6 +121,7 @@ void CKartinaXMLParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
    entry.sProgramm    = "";
    entry.uiEnd        = 0;
    entry.uiStart      = 0;
+   entry.bIsHidden    = false;
    entry.vTs.clear();
 }
 
@@ -137,9 +138,9 @@ void CKartinaXMLParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
-                                         bool bFixTime, bool bAllowEros)
+                                         bool bFixTime)
 {
-   int           iRV;
+   int iRV = 0;
 
    // lock parser ...
    mutex.lock();
@@ -147,42 +148,36 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
    // clear channel list ...
    chanList.clear();
 
-   // check for errors ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "groups")
          {
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "groups")
-            {
-               // go into next level and parse groups ...
-               parseGroups(xmlSr, chanList, bFixTime, bAllowEros);
-            }
-            break;
+            // go into next level and parse groups ...
+            parseGroups(xmlSr, chanList, bFixTime);
+         }
+         break;
 
-         default:
-            break;
+      default:
+         break;
 
-         } // end switch ...
+      } // end switch ...
 
-      } // end while ...
+   } // end while ...
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
 
-         iRV = -1;
-      }
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -202,7 +197,7 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
 |  Returns: 0
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                    bool bFixTime, bool bAllowEros)
+                                    bool bFixTime)
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
@@ -245,7 +240,7 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
             chanList.push_back(groupEntry);
 
             // go into next level (channels)
-            parseChannels(xml, chanList, bFixTime, bAllowEros);
+            parseChannels(xml, chanList, bFixTime);
          }
          else
          {
@@ -281,7 +276,7 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
 |  Returns: 0
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                     bool bFixTime, bool bAllowEros)
+                                     bool bFixTime)
 {
    QString        sUnknown;
    cparser::SChan chanEntry;
@@ -370,6 +365,13 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
                }
             }
          }
+         else if (xml.name() == "hide")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.bIsHidden = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+         }
          else if (xml.name() == "stream_params")
          {
             // go into next level ... parse stream params ...
@@ -398,11 +400,7 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
          // item end -> save entry ...
          if (xml.name() == "item")
          {
-            // only if erotic channels are allowed, display them in channel list ...
-            if (!chanEntry.bIsProtected || (chanEntry.bIsProtected && bAllowEros))
-            {
-               chanList.push_back(chanEntry);
-            }
+            chanList.push_back(chanEntry);
          }
       }
    }
@@ -504,7 +502,7 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
                                      QString &sActIp)
 {
    cparser::SSrv srv;
-   int           iRV;
+   int           iRV = 0;
 
    // clear epg list ...
    vSrv.clear();
@@ -512,33 +510,141 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // we aren't interested in ...
+      case QXmlStreamReader::StartDocument:
+      case QXmlStreamReader::EndDocument:
+         break;
+
+      // any xml element ends ...
+      case QXmlStreamReader::EndElement:
+         if (xmlSr.name() == "item")
          {
-         // we aren't interested in ...
-         case QXmlStreamReader::StartDocument:
-         case QXmlStreamReader::EndDocument:
-            break;
+            vSrv.push_back(srv);
+         }
+         break;
 
-         // any xml element ends ...
-         case QXmlStreamReader::EndElement:
-            if (xmlSr.name() == "item")
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "item")
+         {
+            srv.sName = "";
+            srv.sIp   = "";
+         }
+         else if (xmlSr.name() == "ip")
+         {
+            // read srv ip address ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               vSrv.push_back(srv);
+               srv.sIp = xmlSr.text().toString();
             }
-            break;
+         }
+         else if (xmlSr.name() == "descr")
+         {
+            // read srv name ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               srv.sName = xmlSr.text().toString();
+            }
+         }
+         else if (xmlSr.name() == "value")
+         {
+            // read actual srv ip ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               sActIp = xmlSr.text().toString();
+            }
+         }
+         break;
 
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
+      default:
+         break;
+
+      } // end switch ...
+
+   } // end while ...
+
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+      iRV = -1;
+   }
+
+   // unlock parser ...
+   mutex.unlock();
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseSServersLogin
+|  Begin: 11.05.2012
+|  Author: Jo2003
+|  Description: parse stream server from login response
+|
+|  Parameters: XML in, ref. to srv vector, ref. to act value
+|
+|  Returns: 0 ==> ok
+|        else ==> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
+                                     QString &sActIp)
+{
+   cparser::SSrv srv;
+   int           iRV      = 0;
+   bool          bStarted = false;
+   bool          bAtEnd   = false;
+
+   // clear epg list ...
+   vSrv.clear();
+
+   // lock parser ...
+   mutex.lock();
+
+   xmlSr.clear();
+   xmlSr.addData(sResp);
+
+   while(!xmlSr.atEnd() && !xmlSr.hasError() && !bAtEnd)
+   {
+      switch (xmlSr.readNext())
+      {
+      // we aren't interested in ...
+      case QXmlStreamReader::StartDocument:
+      case QXmlStreamReader::EndDocument:
+         break;
+
+      // any xml element ends ...
+      case QXmlStreamReader::EndElement:
+         if (xmlSr.name() == "stream_server")
+         {
+            bStarted = false;
+            bAtEnd   = true;
+         }
+
+         if ((xmlSr.name() == "item") && bStarted)
+         {
+            vSrv.push_back(srv);
+         }
+         break;
+
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "stream_server")
+         {
+            bStarted = true;
+         }
+
+         if (bStarted)
+         {
             if (xmlSr.name() == "item")
             {
                srv.sName = "";
@@ -568,143 +674,23 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
                   sActIp = xmlSr.text().toString();
                }
             }
-            break;
+         }
+         break;
 
-         default:
-            break;
+      default:
+         break;
 
-         } // end switch ...
+      } // end switch ...
 
-      } // end while ...
+   } // end while ...
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
-
-         iRV = -1;
-      }
-   }
-
-   // unlock parser ...
-   mutex.unlock();
-
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: parseSServersLogin
-|  Begin: 11.05.2012
-|  Author: Jo2003
-|  Description: parse stream server from login response
-|
-|  Parameters: XML in, ref. to srv vector, ref. to act value
-|
-|  Returns: 0 ==> ok
-|        else ==> any error
-\----------------------------------------------------------------- */
-int CKartinaXMLParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
-                                     QString &sActIp)
-{
-   cparser::SSrv srv;
-   int           iRV;
-   bool          bStarted = false;
-   bool          bAtEnd   = false;
-
-   // clear epg list ...
-   vSrv.clear();
-
-   // lock parser ...
-   mutex.lock();
-
-   // check for errors ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
-
-   if (!iRV)
+   // check for xml errors ...
+   if(xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
 
-      while(!xmlSr.atEnd() && !xmlSr.hasError() && !bAtEnd)
-      {
-         switch (xmlSr.readNext())
-         {
-         // we aren't interested in ...
-         case QXmlStreamReader::StartDocument:
-         case QXmlStreamReader::EndDocument:
-            break;
-
-         // any xml element ends ...
-         case QXmlStreamReader::EndElement:
-            if (xmlSr.name() == "stream_server")
-            {
-               bStarted = false;
-               bAtEnd   = true;
-            }
-
-            if ((xmlSr.name() == "item") && bStarted)
-            {
-               vSrv.push_back(srv);
-            }
-            break;
-
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "stream_server")
-            {
-               bStarted = true;
-            }
-
-            if (bStarted)
-            {
-               if (xmlSr.name() == "item")
-               {
-                  srv.sName = "";
-                  srv.sIp   = "";
-               }
-               else if (xmlSr.name() == "ip")
-               {
-                  // read srv ip address ...
-                  if (xmlSr.readNext() == QXmlStreamReader::Characters)
-                  {
-                     srv.sIp = xmlSr.text().toString();
-                  }
-               }
-               else if (xmlSr.name() == "descr")
-               {
-                  // read srv name ...
-                  if (xmlSr.readNext() == QXmlStreamReader::Characters)
-                  {
-                     srv.sName = xmlSr.text().toString();
-                  }
-               }
-               else if (xmlSr.name() == "value")
-               {
-                  // read actual srv ip ...
-                  if (xmlSr.readNext() == QXmlStreamReader::Characters)
-                  {
-                     sActIp = xmlSr.text().toString();
-                  }
-               }
-            }
-            break;
-
-         default:
-            break;
-
-         } // end switch ...
-
-      } // end while ...
-
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
-
-         iRV = -1;
-      }
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -726,6 +712,7 @@ int CKartinaXMLParser::parseSServersLogin(const QString &sResp, QVector<cparser:
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf)
 {
+   int                    iRV = 0;
    QString                sSid, sSidName;
    QStringList            slNeeded;
    QMap<QString, QString> mResults;
@@ -734,96 +721,90 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie, cpar
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   int iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "sid")
          {
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "sid")
+            // read sid ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               // read sid ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  sSid = xmlSr.text().toString();
-               }
+               sSid = xmlSr.text().toString();
             }
-            else if (xmlSr.name() == "sid_name")
+         }
+         else if (xmlSr.name() == "sid_name")
+         {
+            // read sid_name ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               // read sid_name ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  sSidName = xmlSr.text().toString();
-               }
+               sSidName = xmlSr.text().toString();
             }
-            else if (xmlSr.name() == "account")
+         }
+         else if (xmlSr.name() == "account")
+         {
+            mResults.clear();
+            slNeeded.clear();
+            slNeeded << "login" << "packet_name" << "packet_expire";
+
+            // get expires value ...
+            oneLevelParser("account", slNeeded, mResults);
+
+            // format into string ...
+            sInf.sExpires = QDateTime::fromTime_t(mResults.value("packet_expire").toUInt())
+                  .toString(DEF_TIME_FORMAT);
+         }
+         else if (xmlSr.name() == "services")
+         {
+            mResults.clear();
+            slNeeded.clear();
+            slNeeded << "vod" << "archive";
+
+            // get values ...
+            oneLevelParser("services", slNeeded, mResults);
+
+            sInf.bHasVOD     = mResults.value("vod").toInt() ? true : false;
+            sInf.bHasArchive = mResults.value("archive").toInt() ? true : false;
+         }
+         else if (xmlSr.name() == "servertime")
+         {
+            // read server time ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               mResults.clear();
-               slNeeded.clear();
-               slNeeded << "login" << "packet_name" << "packet_expire";
-
-               // get expires value ...
-               oneLevelParser("account", slNeeded, mResults);
-
-               // format into string ...
-               sInf.sExpires = QDateTime::fromTime_t(mResults.value("packet_expire").toUInt())
-                     .toString(DEF_TIME_FORMAT);
+               // check offset ...
+               checkTimeOffSet (xmlSr.text().toString().toUInt());
             }
-            else if (xmlSr.name() == "services")
-            {
-               mResults.clear();
-               slNeeded.clear();
-               slNeeded << "vod" << "archive";
+         }
+         break;
 
-               // get values ...
-               oneLevelParser("services", slNeeded, mResults);
+      default:
+         break;
 
-               sInf.bHasVOD     = mResults.value("vod").toInt() ? true : false;
-               sInf.bHasArchive = mResults.value("archive").toInt() ? true : false;
-            }
-            else if (xmlSr.name() == "servertime")
-            {
-               // read server time ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  // check offset ...
-                  checkTimeOffSet (xmlSr.text().toString().toUInt());
-               }
-            }
-            break;
+      } // end switch ...
 
-         default:
-            break;
+   } // end while ...
 
-         } // end switch ...
+   if ((sSid != "") && (sSidName != ""))
+   {
+      sCookie = QString("%1=%2").arg(sSidName).arg(sSid);
+   }
+   else
+   {
+      iRV = -1;
+   }
 
-      } // end while ...
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
 
-      if ((sSid != "") && (sSidName != ""))
-      {
-         sCookie = QString("%1=%2").arg(sSidName).arg(sSid);
-      }
-      else
-      {
-         iRV = -1;
-      }
-
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
-
-         iRV = -1;
-      }
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -836,72 +817,158 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie, cpar
 |  Method: parseGenres
 |  Begin: 09.12.2010 / 13:27
 |  Author: Jo2003
-|  Description: parse genre html (when api supports xml, we must
-|               change this function
+|  Description: parse genre XML
 |
-|  Parameters: ref. to response, ref. to ganres vector
+|  Parameters: ref. to response, ref. to genres vector
 |
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
 {
+   int             iRV = 0;
    cparser::SGenre sGenre;
    vGenres.clear ();
 
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   int iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "id")
          {
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "id")
+            // read id ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               // read id ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  sGenre.uiGid = xmlSr.text().toString().toUInt();
-               }
+               sGenre.uiGid = xmlSr.text().toString().toUInt();
             }
-            else if (xmlSr.name() == "name")
+         }
+         else if (xmlSr.name() == "name")
+         {
+            // read name ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               // read name ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  sGenre.sGName = xmlSr.text().toString();
+               sGenre.sGName = xmlSr.text().toString();
 
-                  // add genre to vector ...
-                  vGenres.push_back(sGenre);
-               }
+               // add genre to vector ...
+               vGenres.push_back(sGenre);
             }
-            break;
+         }
+         break;
 
-         default:
-            break;
+      default:
+         break;
 
-         } // end switch ...
+      } // end switch ...
 
-      } // end while ...
+   } // end while ...
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+      iRV = -1;
+   }
+
+   // unlock parser ...
+   mutex.unlock();
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: parseVodManager
+|  Begin: 23.05.2012
+|  Author: Jo2003
+|  Description: parse Vod Manager data (genre rating)
+|
+|  Parameters: ref. to response, ref. to rates vector
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CKartinaXMLParser::parseVodManager (const QString &sResp, QVector<cparser::SVodRate> &vRates)
+{
+   int               iRV = 0;
+   cparser::SVodRate sRate;
+   vRates.clear ();
+
+   // lock parser ...
+   mutex.lock();
+
+   xmlSr.clear();
+   xmlSr.addData(sResp);
+
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
+   {
+      switch (xmlSr.readNext())
       {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "item")
+         {
+            sRate.iRateID = -1;
+            sRate.sAccess = "";
+            sRate.sGenre  = "";
+         }
+         else if (xmlSr.name() == "id_rate")
+         {
+            // read id ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               sRate.iRateID = xmlSr.text().toString().toUInt();
+            }
+         }
+         else if (xmlSr.name() == "rate_name")
+         {
+            // read genre name  ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               sRate.sGenre = xmlSr.text().toString();
+            }
+         }
+         else if (xmlSr.name() == "action")
+         {
+            // read access  ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               sRate.sAccess = xmlSr.text().toString();
+            }
+         }
+         break;
 
-         iRV = -1;
-      }
+      // any xml element ends ...
+      case QXmlStreamReader::EndElement:
+         if (xmlSr.name() == "item")
+         {
+            // add rate ...
+            vRates.append(sRate);
+         }
+         break;
+
+      default:
+         break;
+
+      } // end switch ...
+
+   } // end while ...
+
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -924,6 +991,7 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList, cparser::SGenreInfo &gInfo)
 {
+   int                    iRV = 0;
    QStringList            slNeeded;
    QMap<QString, QString> mResults;
    cparser::SVodVideo     vod;
@@ -934,78 +1002,74 @@ int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodV
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   int iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "response")
          {
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "response")
-            {
-               mResults.clear();
-               slNeeded.clear();
+            mResults.clear();
+            slNeeded.clear();
 
-               // we need following data ...
-               slNeeded << "type" << "total" << "count" << "page";
+            // we need following data ...
+            slNeeded << "type" << "total" << "count" << "page";
 
-               oneLevelParser("page", slNeeded, mResults);
+            oneLevelParser("page", slNeeded, mResults);
 
-               gInfo.sType  = mResults.value("type");
-               gInfo.iCount = mResults.value("count").toInt();
-               gInfo.iPage  = mResults.value("page").toInt();
-               gInfo.iTotal = mResults.value("total").toInt();
+            gInfo.sType  = mResults.value("type");
+            gInfo.iCount = mResults.value("count").toInt();
+            gInfo.iPage  = mResults.value("page").toInt();
+            gInfo.iTotal = mResults.value("total").toInt();
 
-               mInfo(tr("Got Type: %1, Count: %2, Page: %3, Total: %4")
-                     .arg(gInfo.sType)
-                     .arg(gInfo.iCount)
-                     .arg(gInfo.iPage)
-                     .arg(gInfo.iTotal));
-            }
-            else if (xmlSr.name() == "item")
-            {
-               mResults.clear();
-               slNeeded.clear();
+            mInfo(tr("Got Type: %1, Count: %2, Page: %3, Total: %4")
+                  .arg(gInfo.sType)
+                  .arg(gInfo.iCount)
+                  .arg(gInfo.iPage)
+                  .arg(gInfo.iTotal));
+         }
+         else if (xmlSr.name() == "item")
+         {
+            mResults.clear();
+            slNeeded.clear();
 
-               // we need following data ...
-               slNeeded << "id" << "name" << "description" << "year" << "country" << "poster";
+            // we need following data ...
+            slNeeded << "id" << "name" << "description" << "year" << "country" << "poster" << "pass_protect" << "favorite";
 
-               oneLevelParser("item", slNeeded, mResults);
+            oneLevelParser("item", slNeeded, mResults);
 
-               vod.uiVidId  = mResults.value("id").toUInt();
-               vod.sName    = mResults.value("name");
-               vod.sDescr   = mResults.value("description");
-               vod.sYear    = mResults.value("year");
-               vod.sCountry = mResults.value("country");
-               vod.sImg     = mResults.value("poster");
+            vod.uiVidId    =   mResults.value("id").toUInt();
+            vod.sName      =   mResults.value("name");
+            vod.sDescr     =   mResults.value("description");
+            vod.sYear      =   mResults.value("year");
+            vod.sCountry   =   mResults.value("country");
+            vod.sImg       =   mResults.value("poster");
+            vod.bProtected = !!mResults.value("pass_protect").toInt();
+            vod.bFavourit  = !!mResults.value("favorite").toInt();
 
-               // store element ...
-               vVodList.push_back(vod);
-            }
-            break;
+            // store element ...
+            vVodList.push_back(vod);
+         }
+         break;
 
-         default:
-            break;
+      default:
+         break;
 
-         } // end switch ...
+      } // end switch ...
 
-      } // end while ...
+   } // end while ...
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
 
-         iRV = -1;
-      }
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -1027,6 +1091,7 @@ int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodV
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
 {
+   int                    iRV = 0;
    QStringList            slNeeded;
    QMap<QString, QString> mResults;
    cparser::SVodFileInfo  fInfo;
@@ -1035,102 +1100,116 @@ int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   int iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
-
    // init struct ...
-   vidInfo.sActors   = "";
-   vidInfo.sCountry  = "";
-   vidInfo.sDescr    = "";
-   vidInfo.sDirector = "";
-   vidInfo.sImg      = "";
-   vidInfo.sName     = "";
-   vidInfo.sYear     = "";
-   vidInfo.uiLength  = 0;
-   vidInfo.uiVidId   = 0;
+   vidInfo.sActors    = "";
+   vidInfo.sCountry   = "";
+   vidInfo.sDescr     = "";
+   vidInfo.sDirector  = "";
+   vidInfo.sImg       = "";
+   vidInfo.sName      = "";
+   vidInfo.sYear      = "";
+   vidInfo.uiLength   = 0;
+   vidInfo.uiVidId    = 0;
+   vidInfo.bProtected = false;
+   vidInfo.bFavourit  = false;
    vidInfo.vVodFiles.clear();
 
-   if (!iRV)
+   xmlSr.clear();
+   xmlSr.addData(sResp);
+
+   while(!xmlSr.atEnd() && !xmlSr.hasError() && !bEnd)
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError() && !bEnd)
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "film")
          {
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "film")
-            {
-               mResults.clear();
-               slNeeded.clear();
+            mResults.clear();
+            slNeeded.clear();
 
-               slNeeded << "name" << "lenght" << "description" << "actors"
-                        << "country" << "director" << "poster" << "year"
-                        << "id" << "genre_str";
+            slNeeded << "name" << "lenght" << "description" << "actors"
+                     << "country" << "director" << "poster" << "year"
+                     << "id" << "genre_str";
 
-               oneLevelParser("vis", slNeeded, mResults);
+            oneLevelParser("vis", slNeeded, mResults);
 
-               vidInfo.sActors   = mResults.value("actors");
-               vidInfo.sCountry  = mResults.value("country");
-               vidInfo.sDescr    = mResults.value("description");
-               vidInfo.sDirector = mResults.value("director");
-               vidInfo.sImg      = mResults.value("poster");
-               vidInfo.sName     = mResults.value("name");
-               vidInfo.sYear     = mResults.value("year");
-               vidInfo.sGenres   = mResults.value("genre_str");
-               vidInfo.uiLength  = mResults.value("lenght").toUInt();
-               vidInfo.uiVidId   = mResults.value("id").toUInt();
-
-            }
-            else if (xmlSr.name() == "item")
-            {
-               mResults.clear();
-               slNeeded.clear();
-
-               slNeeded << "id" << "title" << "format" << "url"
-                        << "size" << "length" << "codec" << "width"
-                        << "height";
-
-               // parse vod parts ...
-               oneLevelParser("item", slNeeded, mResults);
-
-               fInfo.iHeight = mResults.value("height").toInt();
-               fInfo.iId     = mResults.value("id").toInt();
-               fInfo.iLength = mResults.value("length").toInt();
-               fInfo.iSize   = mResults.value("size").toInt();
-               fInfo.iWidth  = mResults.value("width").toInt();
-               fInfo.sCodec  = mResults.value("codec");
-               fInfo.sFormat = mResults.value("format");
-               fInfo.sTitle  = mResults.value("title");
-               fInfo.sUrl    = mResults.value("url");
-
-               vidInfo.vVodFiles.push_back(fInfo);
-            }
-            break;
-
-         case QXmlStreamReader::EndElement:
-            // end of videos means end of needed info ...
-            if (xmlSr.name() == "videos")
-            {
-               bEnd = true;
-            }
-            break;
-
-         default:
-            break;
+            vidInfo.sActors   = mResults.value("actors");
+            vidInfo.sCountry  = mResults.value("country");
+            vidInfo.sDescr    = mResults.value("description");
+            vidInfo.sDirector = mResults.value("director");
+            vidInfo.sImg      = mResults.value("poster");
+            vidInfo.sName     = mResults.value("name");
+            vidInfo.sYear     = mResults.value("year");
+            vidInfo.sGenres   = mResults.value("genre_str");
+            vidInfo.uiLength  = mResults.value("lenght").toUInt();
+            vidInfo.uiVidId   = mResults.value("id").toUInt();
          }
-      }
+         else if (xmlSr.name() == "item")
+         {
+            mResults.clear();
+            slNeeded.clear();
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+            slNeeded << "id" << "title" << "format" << "url"
+                     << "size" << "length" << "codec" << "width"
+                     << "height";
 
-         iRV = -1;
+            // parse vod parts ...
+            oneLevelParser("item", slNeeded, mResults);
+
+            fInfo.iHeight = mResults.value("height").toInt();
+            fInfo.iId     = mResults.value("id").toInt();
+            fInfo.iLength = mResults.value("length").toInt();
+            fInfo.iSize   = mResults.value("size").toInt();
+            fInfo.iWidth  = mResults.value("width").toInt();
+            fInfo.sCodec  = mResults.value("codec");
+            fInfo.sFormat = mResults.value("format");
+            fInfo.sTitle  = mResults.value("title");
+            fInfo.sUrl    = mResults.value("url");
+
+            vidInfo.vVodFiles.push_back(fInfo);
+         }
+         else if (xmlSr.name() == "genres")
+         {
+            // there is nothing we need from genres ...
+            ignoreUntil("genres");
+         }
+         else if (xmlSr.name() == "pass_protect")
+         {
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               vidInfo.bProtected = !!xmlSr.text().toString().toInt();
+            }
+         }
+         else if (xmlSr.name() == "favorite")
+         {
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               vidInfo.bFavourit = !!xmlSr.text().toString().toInt();
+            }
+         }
+         break;
+
+      case QXmlStreamReader::EndElement:
+         // end of videos means end of needed info ...
+         if (xmlSr.name() == "film")
+         {
+            bEnd = true;
+         }
+         break;
+
+      default:
+         break;
       }
+   }
+
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -1156,7 +1235,7 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
    QMap<QString, QString> mResults;
    QStringList            slNeeded;
    cparser::SEpg epg;
-   int           iRV;
+   int           iRV = 0;
 
    // clear epg list ...
    epgList.clear();
@@ -1164,69 +1243,63 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   slNeeded << "ut_start" << "progname" << "pdescr";
+
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      slNeeded << "ut_start" << "progname" << "pdescr";
-
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      case QXmlStreamReader::StartElement:
+
+         if (xmlSr.name() == "item")
          {
-         case QXmlStreamReader::StartElement:
+            epg.sDescr = "";
 
-            if (xmlSr.name() == "item")
+            oneLevelParser("item", slNeeded, mResults);
+
+            epg.uiGmt = mResults.value("ut_start").toUInt();
+
+            // program description will be after '\n' ...
+            if (rx.indexIn(mResults.value("progname")) > -1)
             {
-               epg.sDescr = "";
-
-               oneLevelParser("item", slNeeded, mResults);
-
-               epg.uiGmt = mResults.value("ut_start").toUInt();
-
-               // program description will be after '\n' ...
-               if (rx.indexIn(mResults.value("progname")) > -1)
-               {
-                  // yes, program description there ...
-                  epg.sName  = rx.cap(1);
-                  epg.sDescr = rx.cap(2);
-               }
-               else
-               {
-                  // program name only ...
-                  epg.sName = mResults.value("progname");
-               }
-
-               // is there a description ... ?
-               if (mResults.value("pdescr") != "")
-               {
-                  epg.sDescr = mResults.value("pdescr");
-               }
-
-               // store element ...
-               epgList.push_back(epg);
+               // yes, program description there ...
+               epg.sName  = rx.cap(1);
+               epg.sDescr = rx.cap(2);
             }
-            break;
+            else
+            {
+               // program name only ...
+               epg.sName = mResults.value("progname");
+            }
 
-         default:
-            break;
+            // is there a description ... ?
+            if (mResults.value("pdescr") != "")
+            {
+               epg.sDescr = mResults.value("pdescr");
+            }
 
-         } // end switch ...
+            // store element ...
+            epgList.push_back(epg);
+         }
+         break;
 
-      } // end while ...
+      default:
+         break;
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+      } // end switch ...
 
-         iRV = -1;
-      }
+   } // end while ...
+
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -1250,7 +1323,7 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
 int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValues,
                                       int &iActVal, QString &sName)
 {
-   int     iRV;
+   int iRV = 0;
 
    // clear epg list ...
    vValues.clear();
@@ -1258,67 +1331,61 @@ int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValue
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // we aren't interested in ...
+      case QXmlStreamReader::StartDocument:
+      case QXmlStreamReader::EndDocument:
+      case QXmlStreamReader::EndElement:
+         break;
+
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "item")
          {
-         // we aren't interested in ...
-         case QXmlStreamReader::StartDocument:
-         case QXmlStreamReader::EndDocument:
-         case QXmlStreamReader::EndElement:
-            break;
-
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "item")
+            // read item ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               // read item ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  vValues.push_back(xmlSr.text().toString().toInt());
-               }
+               vValues.push_back(xmlSr.text().toString().toInt());
             }
-            else if (xmlSr.name() == "value")
+         }
+         else if (xmlSr.name() == "value")
+         {
+            // read actual value ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               // read actual value ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  iActVal = xmlSr.text().toString().toInt();
-               }
+               iActVal = xmlSr.text().toString().toInt();
             }
-            else if (xmlSr.name() == "name")
+         }
+         else if (xmlSr.name() == "name")
+         {
+            // read actual value ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               // read actual value ...
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
-               {
-                  sName = xmlSr.text().toString();
-               }
+               sName = xmlSr.text().toString();
             }
-            break;
+         }
+         break;
 
-         default:
-            break;
+      default:
+         break;
 
-         } // end switch ...
+      } // end switch ...
 
-      } // end while ...
+   } // end while ...
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
 
-         iRV = -1;
-      }
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -1341,7 +1408,7 @@ int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValue
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal)
 {
-   int  iRV;
+   int  iRV      = 0;
    bool bAtEnd   = false;
    bool bStarted = false;
 
@@ -1351,74 +1418,68 @@ int CKartinaXMLParser::parseSetting(const QString& sResp, const QString &sName, 
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError() && !bAtEnd)
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError() && !bAtEnd)
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // we aren't interested in ...
+      case QXmlStreamReader::StartDocument:
+      case QXmlStreamReader::EndDocument:
+         break;
+
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == sName)
          {
-         // we aren't interested in ...
-         case QXmlStreamReader::StartDocument:
-         case QXmlStreamReader::EndDocument:
-            break;
+            bStarted = true;
+         }
 
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == sName)
+         if (bStarted)
+         {
+            if (xmlSr.name() == "item")
             {
-               bStarted = true;
-            }
-
-            if (bStarted)
-            {
-               if (xmlSr.name() == "item")
+               // read item ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
                {
-                  // read item ...
-                  if (xmlSr.readNext() == QXmlStreamReader::Characters)
-                  {
-                     vValues.push_back(xmlSr.text().toString().toInt());
-                  }
-               }
-               else if (xmlSr.name() == "value")
-               {
-                  // read actual value ...
-                  if (xmlSr.readNext() == QXmlStreamReader::Characters)
-                  {
-                     iActVal = xmlSr.text().toString().toInt();
-                  }
+                  vValues.push_back(xmlSr.text().toString().toInt());
                }
             }
-            break;
-
-         case QXmlStreamReader::EndElement:
-            if (xmlSr.name() == sName)
+            else if (xmlSr.name() == "value")
             {
-               bStarted = false;
-               bAtEnd   = true;
+               // read actual value ...
+               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               {
+                  iActVal = xmlSr.text().toString().toInt();
+               }
             }
-            break;
+         }
+         break;
 
-         default:
-            break;
+      case QXmlStreamReader::EndElement:
+         if (xmlSr.name() == sName)
+         {
+            bStarted = false;
+            bAtEnd   = true;
+         }
+         break;
 
-         } // end switch ...
+      default:
+         break;
 
-      } // end while ...
+      } // end switch ...
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+   } // end while ...
 
-         iRV = -1;
-      }
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -1449,16 +1510,14 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
    // lock parser ...
    mutex.lock();
 
-   // error check ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
-
-   if (!iRV)
+   // use reg. expressions instead of xml stream parser ...
+   if (rx.indexIn(sResp) > -1)
    {
-      // use reg. expressions instead of xml stream parser ...
-      if (rx.indexIn(sCleanResp) > -1)
-      {
-         sUrl = rx.cap(1);
-      }
+      sUrl = rx.cap(1);
+   }
+   else
+   {
+      iRV = -1;
    }
 
    // unlock parser ...
@@ -1480,7 +1539,7 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
 {
-   int     iRV;
+   int     iRV = 0;
    QString sUrl, sAdUrl;
 
    // clear string list ...
@@ -1489,131 +1548,70 @@ int CKartinaXMLParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
    // lock parser ...
    mutex.lock();
 
-   // check for errors ...
-   iRV = checkResponse(sResp, __FUNCTION__, __LINE__);
+   xmlSr.clear();
+   xmlSr.addData(sResp);
 
-   if (!iRV)
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
    {
-      xmlSr.clear();
-      xmlSr.addData(sCleanResp);
-
-      while(!xmlSr.atEnd() && !xmlSr.hasError())
+      switch (xmlSr.readNext())
       {
-         switch (xmlSr.readNext())
+      // we aren't interested in ...
+      case QXmlStreamReader::StartDocument:
+      case QXmlStreamReader::EndDocument:
+      case QXmlStreamReader::EndElement:
+         break;
+
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "url")
          {
-         // we aren't interested in ...
-         case QXmlStreamReader::StartDocument:
-         case QXmlStreamReader::EndDocument:
-         case QXmlStreamReader::EndElement:
-            break;
-
-         // any xml element starts ...
-         case QXmlStreamReader::StartElement:
-            if (xmlSr.name() == "url")
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               sUrl = xmlSr.text().toString();
+               if (sUrl.contains(QChar(' ')))
                {
-                  sUrl = xmlSr.text().toString();
-                  if (sUrl.contains(QChar(' ')))
-                  {
-                     sUrl = sUrl.left(sUrl.indexOf(QChar(' ')));
-                  }
+                  sUrl = sUrl.left(sUrl.indexOf(QChar(' ')));
                }
             }
-            else if (xmlSr.name() == "ad_url")
+         }
+         else if (xmlSr.name() == "ad_url")
+         {
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               if (xmlSr.readNext() == QXmlStreamReader::Characters)
+               sAdUrl = xmlSr.text().toString();
+               if (sAdUrl.contains(QChar(' ')))
                {
-                  sAdUrl = xmlSr.text().toString();
-                  if (sAdUrl.contains(QChar(' ')))
-                  {
-                     sAdUrl = sAdUrl.left(sAdUrl.indexOf(QChar(' ')));
-                  }
+                  sAdUrl = sAdUrl.left(sAdUrl.indexOf(QChar(' ')));
                }
             }
-            break;
+         }
+         break;
 
-         default:
-            break;
+      default:
+         break;
 
-         } // end switch ...
+      } // end switch ...
 
-      } // end while ...
+   } // end while ...
 
-      // fill string list with url(s) ...
-      sUrls << sUrl;
-      if (sAdUrl != "")
-      {
-         sUrls << sAdUrl;
-      }
+   // fill string list with url(s) ...
+   sUrls << sUrl;
+   if (sAdUrl != "")
+   {
+      sUrls << sAdUrl;
+   }
 
-      // check for xml errors ...
-      if(xmlSr.hasError())
-      {
-         QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
-                               tr("XML Error String: %1").arg(xmlSr.errorString()));
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
 
-         iRV = -1;
-      }
+      iRV = -1;
    }
 
    // unlock parser ...
    mutex.unlock();
-
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: checkResponse
-|  Begin: 28.07.2010 / 18:42:54
-|  Author: Jo2003
-|  Description: format kartina error string
-|
-|  Parameters: --
-|
-|  Returns: error string
-\----------------------------------------------------------------- */
-int CKartinaXMLParser::checkResponse (const QString &sResp, const QString __UNUSED &sFunction, int __UNUSED iLine)
-{
-   int iRV = 0;
-
-   // clean response ... (delete content which may come
-   // after / before the xml code ...
-   QString sEndTag = "</response>";
-   int iStartPos   = sResp.indexOf("<?xml");
-   int iEndPos     = sResp.indexOf(sEndTag) + sEndTag.length();
-
-   // store clean string in private variable ...
-   sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);
-
-   QRegExp rx("<message>(.*)</message>[ \t\n\r]*"
-              "<code>(.*)</code>");
-
-   sErr = "";
-
-   // quick'n'dirty error check ...
-   if (sCleanResp.contains("<error>"))
-   {
-      if (rx.indexIn(sCleanResp) > -1)
-      {
-         iRV  = rx.cap(2).toInt();
-
-#ifdef QT_NO_DEBUG
-         sErr = tr("Error #%1: %2!")
-                .arg(iRV)
-                .arg((mapError.contains(iRV)) ? mapError[iRV] : rx.cap(1));
-#else
-         sErr = tr("Error #%1 in %2():%3: %4!")
-                .arg(iRV)
-                .arg(sFunction)
-                .arg(iLine)
-                .arg((mapError.contains(iRV)) ? mapError[iRV] : rx.cap(1));
-#endif // QT_NO_DEBUG
-
-         QMessageBox::critical(NULL, tr("Error"), sErr);
-         mErr(QString("\n --> %1").arg(sErr));
-      }
-   }
 
    return iRV;
 }
@@ -1656,9 +1654,9 @@ QString CKartinaXMLParser::xmlElementToValue(const QString &sElement, const QStr
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::oneLevelParser(const QString &sEndElement, const QStringList &slNeeded, QMap<QString, QString> &mResults)
 {
-   QString sUnknown, sKey;
+   QString sUnknown, sKey, sVal;
    mResults.clear();
-   bool bEndMain = false, bEndSub;
+   bool bEndMain = false;
 
    while(!xmlSr.atEnd() && !xmlSr.hasError() && !bEndMain)
    {
@@ -1671,12 +1669,17 @@ int CKartinaXMLParser::oneLevelParser(const QString &sEndElement, const QStringL
          if (slNeeded.contains(xmlSr.name().toString()))
          {
             // store key / value in map ...
+            // make sure we add an empty string if there is no text
+            // inside this element.
             sKey = xmlSr.name().toString();
+            sVal = "";
 
             if (xmlSr.readNext() == QXmlStreamReader::Characters)
             {
-               mResults.insert(sKey, xmlSr.text().toString());
+               sVal = xmlSr.text().toString();
             }
+
+            mResults.insert(sKey, sVal);
          }
          else if (xmlSr.name().toString() == sEndElement)
          {
@@ -1687,7 +1690,6 @@ int CKartinaXMLParser::oneLevelParser(const QString &sEndElement, const QStringL
          else
          {
             // starttag unknown element ...
-            bEndSub  = false;
             sUnknown = xmlSr.name().toString();
 
 #ifndef QT_NO_DEBUG
@@ -1695,15 +1697,7 @@ int CKartinaXMLParser::oneLevelParser(const QString &sEndElement, const QStringL
 #endif
 
             // search for endtag of unknown element ...
-            while(!xmlSr.atEnd() && !xmlSr.hasError() && !bEndSub)
-            {
-               if ((xmlSr.readNext() == QXmlStreamReader::EndElement)
-                  && (xmlSr.name().toString() == sUnknown))
-               {
-                  // found end tag of unknown element ...
-                  bEndSub = true;
-               }
-            }
+            ignoreUntil(sUnknown);
          }
          break;
 
@@ -1723,51 +1717,29 @@ int CKartinaXMLParser::oneLevelParser(const QString &sEndElement, const QStringL
 }
 
 /* -----------------------------------------------------------------\
-|  Method: fillErrorMap
-|  Begin: 21.07.2011 / 12:30
+|  Method: ignoreUntil
+|  Begin: 30.05.2012
 |  Author: Jo2003
-|  Description: fill error translation map
+|  Description: ignore XML tree 'til we found end element (or error)
 |
-|  Parameters: --
+|  Parameters: end element
 |
-|  Returns: 0
+|  Returns: 0 --> ok (ignored 'til end element)
+|          -1 --> end element not found or error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::fillErrorMap()
+int CKartinaXMLParser::ignoreUntil(const QString &sEndElement)
 {
-   mapError.clear();
-   mapError.insert( 0, tr("Unknown error"));
-   mapError.insert( 1, tr("Incorrect request"));
-   mapError.insert( 2, tr("Wrong login or password"));
-   mapError.insert( 3, tr("Access denied"));
-   mapError.insert( 4, tr("Login incorrect"));
-   mapError.insert( 5, tr("Your contract is inactive"));
-   mapError.insert( 6, tr("Your contract is paused"));
-   mapError.insert( 7, tr("Channel not found or not allowed"));
-   mapError.insert( 8, tr("Error in request: Bad parameters"));
-   mapError.insert( 9, tr("Missing parameter (day) in format <DDMMYY>"));
-   mapError.insert(10, tr("Missing parameter (cid)"));
-   mapError.insert(11, tr("Another client with your data logged in"));
-   mapError.insert(12, tr("Authentication error"));
-   mapError.insert(13, tr("Your package expired"));
-   mapError.insert(14, tr("Unknown API function"));
-   mapError.insert(15, tr("Archive not available"));
-   mapError.insert(16, tr("Missing parameter (place)"));
-   mapError.insert(17, tr("Missing parameter (name)"));
-   mapError.insert(18, tr("Incorrect confirmation code"));
-   mapError.insert(19, tr("Current code is wrong"));
-   mapError.insert(20, tr("New code is wrong"));
-   mapError.insert(21, tr("Missing parameter (val)"));
-   mapError.insert(22, tr("Value not allowed"));
-   mapError.insert(23, tr("Missing parameter"));
-   mapError.insert(24, tr("Missing parameter (id)"));
-   mapError.insert(25, tr("Missing parameter (fileid)"));
-   mapError.insert(26, tr("Missing parameter (type)"));
-   mapError.insert(27, tr("Missing parameter (query)"));
-   mapError.insert(29, tr("Bitrate not available"));
-   mapError.insert(30, tr("Service not available"));
-   mapError.insert(31, tr("Query limit exceeded"));
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
+   {
+      if ((xmlSr.readNext() == QXmlStreamReader::EndElement)
+         && (xmlSr.name().toString() == sEndElement))
+      {
+         // found end tag of searched element ...
+         break;
+      }
+   }
 
-   return 0;
+   return (xmlSr.atEnd() || xmlSr.hasError()) ? -1 : 0;
 }
 
 /* -----------------------------------------------------------------\

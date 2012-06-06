@@ -17,6 +17,7 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QTableWidget>
+#include <QTimer>
 
 #include "cvlcrecdb.h"
 #include "clogfile.h"
@@ -25,6 +26,7 @@
 #include "ckartinaxmlparser.h"
 #include "cshortcutex.h"
 #include "cshortcutgrabber.h"
+#include "cwaittrigger.h"
 
 //===================================================================
 // namespace
@@ -110,15 +112,24 @@ public:
     void saveEpgDay(const QString &dateString);
     QString lastEpgDay();
     uint libVlcVerboseLevel();
+    void setWaitTrigger (CWaitTrigger *pTrigger);
+    void setXmlParser (CKartinaXMLParser *parser);
+    void setAccountInfo(const cparser::SAccountInfo *pInfo);
 
 protected:
     virtual void changeEvent(QEvent *e);
 
 private:
-    Ui::CSettingsDlg *m_ui;
-    CShortcutEx *pShortApiServer;
-    CShortcutEx *pShortVerbLevel;
-    QVector<float> vBuffs;
+    Ui::CSettingsDlg  *m_ui;
+    QString            sTempPasswd;
+    CShortcutEx       *pShortApiServer;
+    CShortcutEx       *pShortVerbLevel;
+    QVector<float>     vBuffs;
+    CWaitTrigger      *pCmdQueue;
+    CKartinaXMLParser *pParser;
+    QVector<cparser::SChan>      channelVector;
+    QVector<cparser::SVodRate>   vodRatesVector;
+    const cparser::SAccountInfo *pAccountInfo;
 
 signals:
     void sigReloadLogos ();
@@ -138,11 +149,22 @@ private slots:
     void slotEnableVlcVerbLine ();
     void on_cbxStreamServer_activated(int index);
     void on_cbxBitRate_activated(int index);
-
     void on_cbxTimeShift_activated(int index);
+    void on_btnSaveExitManager_clicked();
+    void on_btnEnterManager_clicked();
+    void slotLockParentalManager ();
+
+    void on_btnChgPCode_clicked();
+
+    void on_linePasswd_returnPressed();
+
 
 public slots:
     void slotSplashStateChgd (bool bChecked);
+    void slotBuildChanManager (const QString &str);
+    void slotBuildVodManager (const QString &str);
+    void slotNewPCodeSet ();
+    void slotEnablePCodeForm ();
 };
 
 #endif /* __011910__CSETTINGSDLG_H */

@@ -45,61 +45,6 @@ CPixLoader::~CPixLoader()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setHostAndFolder
-|  Begin:  21.12.2010 / 12:22
-|  Author: Jo2003
-|  Description: set hostname and local folder
-|
-|  Parameters: host name and local folder
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPixLoader::setHostAndFolder(const QString &host, const QString &folder)
-{
-   sLocalFolder = folder;
-   sHost        = host;
-
-   // check, if dir exists ...
-   QDir PicDir(sLocalFolder);
-
-   if (!PicDir.exists())
-   {
-      PicDir.mkpath(sLocalFolder);
-   }
-
-   // set hostname ...
-   setHost(sHost);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: setPictureList
-|  Begin: 18.01.2010 / 16:18:33
-|  Author: Jo2003
-|  Description: set picture list, start download
-|
-|  Parameters: picture list
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPixLoader::setPictureList(const QStringList &list)
-{
-   // set picture list only if download process
-   // isn't already running ...
-   if (!bRun)
-   {
-      lPicList = list;
-
-      cit      = lPicList.constBegin();
-
-      if (cit != lPicList.constEnd())
-      {
-         bRun     = true;
-         startDownLoad();
-      }
-   }
-}
-
-/* -----------------------------------------------------------------\
 |  Method: startDownLoad
 |  Begin: 18.01.2010 / 16:19:04
 |  Author: Jo2003
@@ -111,12 +56,12 @@ void CPixLoader::setPictureList(const QStringList &list)
 \----------------------------------------------------------------- */
 void CPixLoader::startDownLoad()
 {
-   QFileInfo info(*cit);
+   QFileInfo info(cacheQueue[0].sRemote);
 
-   if (!QFile::exists(QString("%1/%2").arg(sLocalFolder).arg(info.fileName())))
+   if (!QFile::exists(QString("%1/%2").arg(cacheQueue[0].sLocal).arg(info.fileName())))
    {
       dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
-      iReq = get(*cit, &dataBuffer);
+      iReq = get(cacheQueue[0].sRemote, &dataBuffer);
    }
    else
    {
@@ -145,21 +90,17 @@ void CPixLoader::slotCheckResp(int iReqID, bool err)
       dataBuffer.close();
 
       // copy response into local buffer ...
-      if (iReqID > -1)
+      if ((iReqID > -1) && !err)
       {
          dataBuffer.open(QIODevice::ReadOnly);
          ba = dataBuffer.data();
          dataBuffer.close();
-      }
 
-      // if no error, save file ...
-      if (!err)
-      {
          // is this a gif file ... ?
          if (ba.size() > 0)
          {
-            QFileInfo info(*cit);
-            QFile     pic(QString("%1/%2").arg(sLocalFolder).arg(info.fileName()));
+            QFileInfo info(cacheQueue[0].sRemote);
+            QFile     pic(QString("%1/%2").arg(cacheQueue[0].sLocal).arg(info.fileName()));
 
             if (pic.open(QIODevice::WriteOnly))
             {
@@ -170,8 +111,12 @@ void CPixLoader::slotCheckResp(int iReqID, bool err)
          }
       }
 
-      // check if we can get next item ...
-      if (++ cit != lPicList.constEnd())
+      // remove requested item ...
+      mtxCacheQueue.lock();
+      cacheQueue.remove(0);
+      mtxCacheQueue.unlock();
+
+      if (cacheQueue.count() > 0)
       {
          // download next ...
          startDownLoad();
@@ -180,11 +125,52 @@ void CPixLoader::slotCheckResp(int iReqID, bool err)
       {
          // last item ... download finished ...
          bRun = false;
-
-         // send signal that we're done ...
-         emit sigPixReady();
+         emit allDone();
       }
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: enqueuePic
+|  Begin: 31.05.2012
+|  Author: Jo2003
+|  Description: queue in picture to load
+|
+|  Parameters: remote url, local folder
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPixLoader::enqueuePic(const QString &sRemote, const QString &sLocal)
+{
+   PixCache::SPixDesc desc;
+   desc.sLocal  = sLocal;
+   desc.sRemote = sRemote;
+
+   mtxCacheQueue.lock();
+   cacheQueue.append(desc);
+   mtxCacheQueue.unlock();
+
+   if (!bRun)
+   {
+      bRun = true;
+      startDownLoad();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: busy
+|  Begin: 31.05.2012
+|  Author: Jo2003
+|  Description: is any download in progress
+|
+|  Parameters: --
+|
+|  Returns: true --> yes
+|          false --> no
+\----------------------------------------------------------------- */
+bool CPixLoader::busy()
+{
+   return bRun;
 }
 
 /************************* History ***************************\

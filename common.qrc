@@ -47,4 +47,12 @@
         <file alias="sound_off">resources/sound_muted.png</file>
         <file alias="fullscreen">resources/view-fullscreen.png</file>
     </qresource>
+    <qresource prefix="/vod">
+        <file alias="is_fav">resources/heart_red.png</file>
+        <file alias="not_fav">resources/heart_gray.png</file>
+    </qresource>
+    <qresource prefix="/access">
+        <file alias="unlocked">resources/lock_open.png</file>
+        <file alias="locked">resources/lock_closed.png</file>
+    </qresource>
 </RCC>

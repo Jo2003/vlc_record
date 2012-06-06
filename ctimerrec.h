@@ -127,12 +127,14 @@ signals:
    void sigRecActive (int);
    void sigShutdown ();
 
+public slots:
+   void slotTimerStreamUrl (const QString &str);
+
 private slots:
    void on_btnDel_clicked();
    void on_tableRecordEntries_cellDoubleClicked(int row, int column);
    void on_btnSet_clicked();
    void slotRecTimer ();
-   void slotTimerStreamUrl (QString str);
    int  slotSaveRecordList ();
    void slotStreamReady (int Id, QString sName);
 };

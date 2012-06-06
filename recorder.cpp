@@ -100,17 +100,23 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
+   secCodeDlg.setParent(this, Qt::Dialog);
+   Settings.setXmlParser(&XMLParser);
+   Settings.setWaitTrigger(&Trigger);
+   Settings.setAccountInfo(&accountInfo);
    timeRec.setParent(this, Qt::Dialog);
    trayIcon.setParent(this);
    vlcCtrl.setParent(this);
    favContext.setParent(this, Qt::Popup);
 
-   // set logo dir and host for chan logo downloader ...
-   dwnLogos.setHostAndFolder(Settings.GetAPIServer(), pFolders->getLogoDir());
-   dwnVodPics.setHostAndFolder(Settings.GetAPIServer(), pFolders->getVodPixDir());
+   // set host for pix cache ...
+   pixCache.setHost(Settings.GetAPIServer());
 
    // set settings for vod browser ...
    ui->vodBrowser->setSettings(&Settings);
+
+   // set pix cache ...
+   ui->vodBrowser->setPixCache(&pixCache);
 
    // set log level ...
    VlcLog.SetLogLevel(Settings.GetLogLevel());
@@ -123,8 +129,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
           + tr("appDir:  %1").arg(pFolders->getAppDir()));
 
    // set connection data ...
-   KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(),
-                     Settings.GetErosPasswd(), Settings.AllowEros());
+   KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
 
 
    // set proxy stuff ...
@@ -135,8 +140,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
       KartinaTv.setProxy(proxy);
-      dwnLogos.setProxy(proxy);
-      dwnVodPics.setProxy(proxy);
+      pixCache.setProxy(proxy);
       streamLoader.setProxy(proxy);
       pUpdateChecker->setProxy(proxy);
    }
@@ -205,24 +209,17 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
 #endif /* INCLUDE_LIBVLC */
 
-   // connect signals and slots ...Поиск в телегиде
-   connect (&KartinaTv,    SIGNAL(sigLogout(QString)), this, SLOT(slotLogout(QString)));
-   connect (&KartinaTv,    SIGNAL(sigError(QString)), this, SLOT(slotErr(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotChannelList(QString)), this, SLOT(slotChanList(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotStreamURL(QString)), this, SLOT(slotStreamURL(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotCookie(QString)), this, SLOT(slotCookie(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotEPG(QString)), this, SLOT(slotEPG(QString)));
-   connect (&KartinaTv,    SIGNAL(sigTimeShiftSet(QString)), this, SLOT(slotTimeShift(QString)));
+   // connect signals and slots ...
+   connect (&pixCache,     SIGNAL(allDone()), this, SLOT(slotRefreshChanLogos()));
+   connect (&KartinaTv,    SIGNAL(sigHttpResponse(QString,int)), this, SLOT(slotKartinaResponse(QString,int)));
+   connect (&KartinaTv,    SIGNAL(sigError(QString,int,int)), this, SLOT(slotKartinaErr(QString,int,int)));
    connect (&streamLoader, SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
    connect (&Refresh,      SIGNAL(timeout()), &Trigger, SLOT(slotReqChanList()));
    connect (ui->textEpg,   SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
-   connect (&dwnLogos,     SIGNAL(sigPixReady()), this, SLOT(slotLogosReady()));
    connect (&Settings,     SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
-   connect (&KartinaTv,    SIGNAL(sigGotArchivURL(QString)), this, SLOT(slotArchivURL(QString)));
    connect (&Settings,     SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
    connect (&Settings,     SIGNAL(sigSetBitRate(int)), this, SLOT(slotSetBitrate(int)));
    connect (&Settings,     SIGNAL(sigSetTimeShift(int)), this, SLOT(slotSetTimeShift(int)));
-   connect (&KartinaTv,    SIGNAL(sigGotTimerStreamURL(QString)), &timeRec, SLOT(slotTimerStreamUrl(QString)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
    connect (&trayIcon,     SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
@@ -231,19 +228,16 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
       connect (this,          SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
    }
-   connect (&vlcCtrl,      SIGNAL(sigVlcStarts(int)), this, SLOT(slotVlcStarts(int)));
-   connect (&vlcCtrl,      SIGNAL(sigVlcEnds(int)), this, SLOT(slotVlcEnds(int)));
-   connect (&timeRec,      SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
+   connect (&vlcCtrl,       SIGNAL(sigVlcStarts(int)), this, SLOT(slotVlcStarts(int)));
+   connect (&vlcCtrl,       SIGNAL(sigVlcEnds(int)), this, SLOT(slotVlcEnds(int)));
+   connect (&timeRec,       SIGNAL(sigShutdown()), this, SLOT(slotShutdown()));
    connect (ui->channelList, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotChanListContext(QPoint)));
-   connect (&favContext,   SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
-   connect (this,          SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
-   connect (&KartinaTv,    SIGNAL(sigGotVodGenres(QString)), this, SLOT(slotGotVodGenres(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotVideos(QString)), this, SLOT(slotGotVideos(QString)));
+   connect (&favContext,    SIGNAL(triggered(QAction*)), this, SLOT(slotChgFavourites(QAction*)));
+   connect (this,           SIGNAL(sigLCDStateChange(int)), ui->labState, SLOT(updateState(int)));
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
-   connect (&KartinaTv,    SIGNAL(sigGotVideoInfo(QString)), this, SLOT(slotGotVideoInfo(QString)));
-   connect (&KartinaTv,    SIGNAL(sigGotVodUrl(QString)), this, SLOT(slotVodURL(QString)));
    connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
    connect (pUpdateChecker, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotUpdateAnswer (QNetworkReply*)));
+   connect (this,           SIGNAL(sigLockParentalManager()), &Settings, SLOT(slotLockParentalManager()));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -260,7 +254,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       iEpgOffset = QDate::currentDate().daysTo(QDate::fromString(sDate, "ddMMyyyy"));
 
       // if offset exceeds our limits: reset!
-      if (!inBetween(-14, 7, iEpgOffset))
+      if (!CSmallHelpers::inBetween(-14, 7, iEpgOffset))
       {
          iEpgOffset = 0;
       }
@@ -377,11 +371,14 @@ void Recorder::changeEvent(QEvent *e)
       // translate type cbx ...
       touchLastOrBestCbx();
 
+      // translate genre cbx ...
+      touchGenreCbx();
+
       // translate shortcut table ...
       retranslateShortcutTable();
 
       // translate error strings ...
-      XMLParser.fillErrorMap();
+      KartinaTv.fillErrorMap();
       break;
 
    default:
@@ -444,7 +441,7 @@ void Recorder::closeEvent(QCloseEvent *event)
       CleanContextMenu();
 
       // cancel any running kartina request ...
-      KartinaTv.abort();
+      Trigger.TriggerRequest (Kartina::REQ_ABORT);
 
       // are we authenticated ... ?
       if (KartinaTv.cookieSet())
@@ -551,6 +548,12 @@ void Recorder::hideEvent(QHideEvent *event)
 \----------------------------------------------------------------- */
 void Recorder::on_pushSettings_clicked()
 {
+   // pause EPG reload ...
+   if (Refresh.isActive())
+   {
+      Refresh.stop();
+   }
+
    if (Settings.exec() == QDialog::Accepted)
    {
       // if changes where saved, accept it here ...
@@ -560,8 +563,7 @@ void Recorder::on_pushSettings_clicked()
       KartinaTv.abort();
 
       // update connection data ...
-      KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(),
-                        Settings.GetErosPasswd(), Settings.AllowEros());
+      KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
 
       // set proxy ...
       if (Settings.UseProxy())
@@ -571,8 +573,7 @@ void Recorder::on_pushSettings_clicked()
                              Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
          KartinaTv.setProxy(proxy);
-         dwnLogos.setProxy(proxy);
-         dwnVodPics.setProxy(proxy);
+         pixCache.setProxy(proxy);
          streamLoader.setProxy(proxy);
          pUpdateChecker->setProxy(proxy);
       }
@@ -619,6 +620,9 @@ void Recorder::on_pushSettings_clicked()
       }
    }
 
+   // lock parental manager ...
+   emit sigLockParentalManager();
+
    if (Settings.HideToSystray())
    {
       connect (this, SIGNAL(sigHide()), &trayIcon, SLOT(show()));
@@ -628,6 +632,12 @@ void Recorder::on_pushSettings_clicked()
    {
       disconnect(this, SIGNAL(sigHide()));
       disconnect(this, SIGNAL(sigShow()));
+   }
+
+   // enable EPG reload again ...
+   if (Settings.DoRefresh() && !Refresh.isActive())
+   {
+      Refresh.start(Settings.GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
    }
 }
 
@@ -658,7 +668,7 @@ void Recorder::on_pushRecord_clicked()
          showInfo.setPlayState(IncPlay::PS_RECORD);
 
          TouchPlayCtrlBtns(false);
-         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req);
+         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
       }
    }
    else
@@ -673,28 +683,32 @@ void Recorder::on_pushRecord_clicked()
          {
             cparser::SChan chan = chanMap[cid];
 
-            // new own downloader ...
-            if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+            if (grantAdultAccess(chan.bIsProtected))
             {
-               streamLoader.stopDownload (iDwnReqId);
-               iDwnReqId = -1;
+               // new own downloader ...
+               if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+               {
+                  streamLoader.stopDownload (iDwnReqId);
+                  iDwnReqId = -1;
+               }
+
+               showInfo.cleanShowInfo();
+               showInfo.setChanId(cid);
+               showInfo.setChanName(chan.sName);
+               showInfo.setShowType(ShowInfo::Live);
+               showInfo.setShowName(chan.sProgramm);
+               showInfo.setStartTime(chan.uiStart);
+               showInfo.setEndTime(chan.uiEnd);
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setPCode(secCodeDlg.passWd());
+               showInfo.setPlayState(IncPlay::PS_RECORD);
+               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                      .arg("rgb(255, 254, 212)")
+                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
             }
-
-            showInfo.cleanShowInfo();
-            showInfo.setChanId(cid);
-            showInfo.setChanName(chan.sName);
-            showInfo.setShowType(ShowInfo::Live);
-            showInfo.setShowName(chan.sProgramm);
-            showInfo.setStartTime(chan.uiStart);
-            showInfo.setEndTime(chan.uiEnd);
-            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-            showInfo.setPlayState(IncPlay::PS_RECORD);
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
-
-            TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
          }
       }
 
@@ -752,21 +766,25 @@ void Recorder::on_pushPlay_clicked()
          {
             cparser::SChan chan = chanMap[cid];
 
-            showInfo.cleanShowInfo();
-            showInfo.setChanId(cid);
-            showInfo.setChanName(chan.sName);
-            showInfo.setShowType(ShowInfo::Live);
-            showInfo.setShowName(chan.sProgramm);
-            showInfo.setStartTime(chan.uiStart);
-            showInfo.setEndTime(chan.uiEnd);
-            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-            showInfo.setPlayState(IncPlay::PS_PLAY);
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+            if (grantAdultAccess(chan.bIsProtected))
+            {
+               showInfo.cleanShowInfo();
+               showInfo.setChanId(cid);
+               showInfo.setChanName(chan.sName);
+               showInfo.setShowType(ShowInfo::Live);
+               showInfo.setShowName(chan.sProgramm);
+               showInfo.setStartTime(chan.uiStart);
+               showInfo.setEndTime(chan.uiEnd);
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setPlayState(IncPlay::PS_PLAY);
+               showInfo.setPCode(secCodeDlg.passWd());
+               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                      .arg("rgb(255, 254, 212)")
+                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
-            TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+            }
          }
       }
 
@@ -833,21 +851,25 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
          {
             cparser::SChan chan = chanMap[cid];
 
-            showInfo.cleanShowInfo();
-            showInfo.setChanId(cid);
-            showInfo.setChanName(chan.sName);
-            showInfo.setShowType(ShowInfo::Live);
-            showInfo.setShowName(chan.sProgramm);
-            showInfo.setStartTime(chan.uiStart);
-            showInfo.setEndTime(chan.uiEnd);
-            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-            showInfo.setPlayState(IncPlay::PS_PLAY);
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+            if (grantAdultAccess(chan.bIsProtected))
+            {
+               showInfo.cleanShowInfo();
+               showInfo.setChanId(cid);
+               showInfo.setChanName(chan.sName);
+               showInfo.setShowType(ShowInfo::Live);
+               showInfo.setShowName(chan.sProgramm);
+               showInfo.setStartTime(chan.uiStart);
+               showInfo.setEndTime(chan.uiEnd);
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setPlayState(IncPlay::PS_PLAY);
+               showInfo.setPCode(secCodeDlg.passWd());
+               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                      .arg("rgb(255, 254, 212)")
+                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
-            TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+            }
          }
       }
    }
@@ -1050,9 +1072,17 @@ void Recorder::on_pushFwd_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_cbxGenre_activated(int index)
 {
-   int     iGid  = ui->cbxGenre->itemData(index).toInt();
+   // check for vod favourites ...
    QString sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int     iGid  = ui->cbxGenre->itemData(index).toInt();
    QUrl    url;
+
+   if (sType == "vodfav")
+   {
+      // set filter cbx to "last"  ...
+      ui->cbxLastOrBest->setCurrentIndex(0);
+      sType = "last";
+   }
 
    url.addQueryItem("type", sType);
 
@@ -1076,18 +1106,26 @@ void Recorder::on_cbxGenre_activated(int index)
 \----------------------------------------------------------------- */
 void Recorder::on_cbxLastOrBest_activated(int index)
 {
-   int     iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
    QString sType = ui->cbxLastOrBest->itemData(index).toString();
-   QUrl    url;
 
-   url.addQueryItem("type", sType);
-
-   if (iGid != -1)
+   if (sType == "vodfav")
    {
-      url.addQueryItem("genre", QString::number(iGid));
+      Trigger.TriggerRequest(Kartina::REQ_GET_VOD_FAV);
    }
+   else
+   {
+      int  iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+      QUrl url;
 
-   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      url.addQueryItem("type", sType);
+
+      if (iGid != -1)
+      {
+         url.addQueryItem("genre", QString::number(iGid));
+      }
+
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -1126,6 +1164,13 @@ void Recorder::on_btnVodSearch_clicked()
       // no text means normal list ...
       iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
       sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+
+      // make sure type is supported ...
+      if (sType == "vodfav")
+      {
+         sType = "last";
+         ui->cbxLastOrBest->setCurrentIndex(0);
+      }
 
       url.addQueryItem("type", sType);
 
@@ -1255,21 +1300,25 @@ void Recorder::on_pushLive_clicked()
             {
                cparser::SChan chan = chanMap[cid];
 
-               showInfo.cleanShowInfo();
-               showInfo.setChanId(cid);
-               showInfo.setChanName(chan.sName);
-               showInfo.setShowType(ShowInfo::Live);
-               showInfo.setShowName(chan.sProgramm);
-               showInfo.setStartTime(chan.uiStart);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-               showInfo.setEndTime(chan.uiEnd);
-               showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                      .arg("rgb(255, 254, 212)")
-                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+               if (grantAdultAccess(chan.bIsProtected))
+               {
+                  showInfo.cleanShowInfo();
+                  showInfo.setChanId(cid);
+                  showInfo.setChanName(chan.sName);
+                  showInfo.setShowType(ShowInfo::Live);
+                  showInfo.setShowName(chan.sProgramm);
+                  showInfo.setStartTime(chan.uiStart);
+                  showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+                  showInfo.setEndTime(chan.uiEnd);
+                  showInfo.setPCode(secCodeDlg.passWd());
+                  showInfo.setPlayState(IncPlay::PS_PLAY);
+                  showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                         .arg("rgb(255, 254, 212)")
+                                         .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
-               TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+                  TouchPlayCtrlBtns(false);
+                  Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               }
             }
          }
       }
@@ -1298,21 +1347,25 @@ void Recorder::on_channelList_clicked(QModelIndex index)
          {
             cparser::SChan chan = chanMap[cid];
 
-            showInfo.cleanShowInfo();
-            showInfo.setChanId(cid);
-            showInfo.setChanName(chan.sName);
-            showInfo.setShowType(ShowInfo::Live);
-            showInfo.setShowName(chan.sProgramm);
-            showInfo.setStartTime(chan.uiStart);
-            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-            showInfo.setEndTime(chan.uiEnd);
-            showInfo.setPlayState(IncPlay::PS_PLAY);
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+            if (grantAdultAccess(chan.bIsProtected))
+            {
+               showInfo.cleanShowInfo();
+               showInfo.setChanId(cid);
+               showInfo.setChanName(chan.sName);
+               showInfo.setShowType(ShowInfo::Live);
+               showInfo.setShowName(chan.sProgramm);
+               showInfo.setStartTime(chan.uiStart);
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setEndTime(chan.uiEnd);
+               showInfo.setPCode(secCodeDlg.passWd());
+               showInfo.setPlayState(IncPlay::PS_PLAY);
+               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                      .arg("rgb(255, 254, 212)")
+                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
-            TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid);
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+            }
          }
       }
    }
@@ -1341,6 +1394,143 @@ void Recorder::show()
    }
 
    QWidget::show();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotKartinaResponse [slot]
+|  Begin: 29.05.2012
+|  Author: Jo2003
+|  Description: A central point to catch all http responses
+|               from kartina client.
+|               Please note: There is no real need for this
+|               function because signals / slots can be connected
+|               directly. The main goal of this function is to have
+|               a central point to find out which function is called
+|               when a certain response comes in.
+|
+|  Parameters: resp: response string
+|              req: request type as defined in Kartina workspace
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotKartinaResponse(const QString& resp, int req)
+{
+   // helper macro to have a nice info printout ...
+#define mkCase(__x__, __y__) \
+      case __x__: \
+         mInfo(tr("\n  --> HTTP Response '%1', calling '%2'").arg(#__x__).arg(#__y__)); \
+         __y__; \
+         break
+
+   switch ((Kartina::EReq)req)
+   {
+   ///////////////////////////////////////////////
+   // This function also grabs all settings
+   // from response. After that channel list
+   // will be requested.
+   mkCase(Kartina::REQ_COOKIE, slotCookie(resp));
+
+   ///////////////////////////////////////////////
+   // Fills channel list as well as channel map.
+   // Due to changing actual channel entry
+   // slotCurrentChannelChanged() will be called
+   // which requests the EPG ...
+   mkCase(Kartina::REQ_CHANNELLIST, slotChanList(resp));
+
+   ///////////////////////////////////////////////
+   // Fills EPG browser and triggers the load
+   // of VOD genres (if there in account info).
+   mkCase(Kartina::REQ_EPG, slotEPG(resp));
+
+   ///////////////////////////////////////////////
+   // Indicates that a new timeshift value was set.
+   // Triggers reload of channel list.
+   mkCase(Kartina::REQ_TIMESHIFT, slotTimeShift(resp));
+
+   ///////////////////////////////////////////////
+   // Got Stream URL, start play or record
+   mkCase(Kartina::REQ_STREAM, slotStreamURL(resp));
+
+   ///////////////////////////////////////////////
+   // Got requested stream url for timer record
+   mkCase(Kartina::REQ_TIMERREC, timeRec.slotTimerStreamUrl(resp));
+
+   ///////////////////////////////////////////////
+   // got requested archiv url
+   mkCase(Kartina::REQ_ARCHIV, slotArchivURL(resp));
+
+   ///////////////////////////////////////////////
+   // logout done
+   mkCase(Kartina::REQ_LOGOUT, slotLogout(resp));
+
+   ///////////////////////////////////////////////
+   // got requested VOD genres
+   mkCase(Kartina::REQ_GETVODGENRES, slotGotVodGenres(resp));
+
+   ///////////////////////////////////////////////
+   // got requested videos
+   mkCase(Kartina::REQ_GETVIDEOS, slotGotVideos(resp));
+
+   ///////////////////////////////////////////////
+   // got requested video details
+   mkCase(Kartina::REQ_GETVIDEOINFO, slotGotVideoInfo(resp));
+
+   ///////////////////////////////////////////////
+   // got requested vod url
+   mkCase(Kartina::REQ_GETVODURL, slotVodURL(resp));
+
+   ///////////////////////////////////////////////
+   // got complete channel list
+   // (used in settings dialog)
+   mkCase(Kartina::REQ_CHANLIST_ALL, Settings.slotBuildChanManager(resp));
+
+   ///////////////////////////////////////////////
+   // got requested VOD management data
+   // (used in settings dialog)
+   mkCase(Kartina::REQ_GET_VOD_MANAGER, Settings.slotBuildVodManager(resp));
+
+   ///////////////////////////////////////////////
+   // handle vod favourites like vod genre to display
+   // all videos in favourites
+   mkCase(Kartina::REQ_GET_VOD_FAV, slotGotVideos(resp, true));
+
+   ///////////////////////////////////////////////
+   // response after trying to change parent code
+   mkCase(Kartina::REQ_SET_PCODE, slotPCodeChangeResp(resp));
+
+   ///////////////////////////////////////////////
+   // Make sure the unused responses are listed
+   // This makes it easier to understand the log.
+   mkCase(Kartina::REQ_ADD_VOD_FAV, slotUnused(resp));
+   mkCase(Kartina::REQ_REM_VOD_FAV, slotUnused(resp));
+   mkCase(Kartina::REQ_SET_VOD_MANAGER, slotUnused(resp));
+   mkCase(Kartina::REQ_SETCHAN_SHOW, slotUnused(resp));
+   mkCase(Kartina::REQ_SETCHAN_HIDE, slotUnused(resp));
+   mkCase(Kartina::REQ_SETBITRATE, slotUnused(resp));
+   mkCase(Kartina::REQ_GETBITRATE, slotUnused(resp));
+   mkCase(Kartina::REQ_GETTIMESHIFT, slotUnused(resp));
+   mkCase(Kartina::REQ_GET_SERVER, slotUnused(resp));
+   mkCase(Kartina::REQ_SERVER, slotUnused(resp));
+   mkCase(Kartina::REQ_HTTPBUFF, slotUnused(resp));
+   default:
+      break;
+   }
+#undef mkCase
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotUnused
+|  Begin: 29.05.2012
+|  Author: Jo2003
+|  Description: an unused response was received
+|
+|  Parameters: unused response
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotUnused(const QString &str)
+{
+   Q_UNUSED(str)
 }
 
 /* -----------------------------------------------------------------\
@@ -1373,7 +1563,7 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotErr
+|  Method: slotKartinaErr
 |  Begin: 19.01.2010 / 16:08:51
 |  Author: Jo2003
 |  Description: display errors signaled by other threads
@@ -1382,11 +1572,38 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotErr(QString str)
+void Recorder::slotKartinaErr (const QString &str, int req, int err)
 {
-   QMessageBox::critical(this, tr("Error"),
-                         tr("%1 Client API reports some errors: %2")
-                         .arg(COMPANY_NAME).arg(str));
+   // special error handling for special requests ...
+   switch ((Kartina::EReq)req)
+   {
+   case Kartina::REQ_SET_PCODE:
+      Settings.slotEnablePCodeForm();
+      break;
+   default:
+      break;
+   }
+
+   // special error handling for special errors ...
+   switch ((Kartina::EErr)err)
+   {
+   case Kartina::ERR_WRONG_PCODE:
+      showInfo.setPCode("");
+      secCodeDlg.slotClearPasswd();
+      break;
+   default:
+      break;
+   }
+
+   mErr(tr("Error %1 (%2) in request '%3'")
+        .arg(err)
+        .arg(metaKartina.errValToKey((Kartina::EErr)err))
+        .arg(metaKartina.reqValToKey((Kartina::EReq)req)));
+
+   QMessageBox::critical(this, tr("Error"), tr("%1 Client API Error:\n%2 (#%3)")
+                         .arg(COMPANY_NAME)
+                         .arg(str)
+                         .arg(err));
    TouchPlayCtrlBtns();
 }
 
@@ -1400,13 +1617,12 @@ void Recorder::slotErr(QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotLogout(QString str)
+void Recorder::slotLogout(const QString &str)
 {
-
-   XMLParser.checkResponse(str, __FUNCTION__, __LINE__);
+   // no need to look for errors in response ...
+   Q_UNUSED(str);
 
    mInfo(tr("logout done ..."));
-
    QDialog::accept ();
 }
 
@@ -1420,7 +1636,7 @@ void Recorder::slotLogout(QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotStreamURL(QString str)
+void Recorder::slotStreamURL(const QString &str)
 {
    QString sChan, sShow, sUrl, sTime;
 
@@ -1472,7 +1688,7 @@ void Recorder::slotStreamURL(QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotCookie (QString str)
+void Recorder::slotCookie (const QString &str)
 {
    QString sCookie;
 
@@ -1556,12 +1772,10 @@ void Recorder::slotCookie (QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotTimeShift (QString str)
+void Recorder::slotTimeShift (const QString &str)
 {
-   if(!XMLParser.checkResponse(str, __FUNCTION__, __LINE__))
-   {
-      Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
-   }
+   Q_UNUSED(str)
+   Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
 }
 
 /* -----------------------------------------------------------------\
@@ -1574,12 +1788,11 @@ void Recorder::slotTimeShift (QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotChanList (QString str)
+void Recorder::slotChanList (const QString &str)
 {
    QVector<cparser::SChan> chanList;
-   QVector<cparser::SChan>::const_iterator cit;
 
-   if (!XMLParser.parseChannelList(str, chanList, Settings.FixTime(), Settings.AllowEros()))
+   if (!XMLParser.parseChannelList(str, chanList, Settings.FixTime()))
    {
       FillChanMap(chanList);
       FillChannelList(chanList);
@@ -1587,22 +1800,6 @@ void Recorder::slotChanList (QString str)
       // set channel list in timeRec class ...
       timeRec.SetChanList(chanList);
       timeRec.StartTimer();
-   }
-
-   // only download channel logos, if they aren't there ...
-   if (!dwnLogos.IsRunning() && !(ulStartFlags & FLAG_CLOGOS_READY))
-   {
-      QStringList lLogos;
-
-      for (cit = chanList.constBegin(); cit != chanList.constEnd(); cit ++)
-      {
-         if(!(*cit).bIsGroup)
-         {
-            lLogos.push_back((*cit).sIcon);
-         }
-      }
-
-      dwnLogos.setPictureList(lLogos);
    }
 
    // create favourite buttons if needed ...
@@ -1624,7 +1821,7 @@ void Recorder::slotChanList (QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotEPG(QString str)
+void Recorder::slotEPG(const QString &str)
 {
    QVector<cparser::SEpg> epg;
 
@@ -1703,64 +1900,53 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
    if (ok)
    {
-      TouchPlayCtrlBtns(false);
+      QString cid  = link.encodedQueryItemValue(QByteArray("cid"));
 
-      // get program map ...
-      showInfo.setEpgMap(ui->textEpg->exportProgMap());
-
-      // new own downloader ...
-      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+      if (grantAdultAccess(chanMap[cid.toInt()].bIsProtected))
       {
-         streamLoader.stopDownload (iDwnReqId);
-         iDwnReqId = -1;
+         TouchPlayCtrlBtns(false);
+
+         // get program map ...
+         showInfo.setEpgMap(ui->textEpg->exportProgMap());
+
+         // new own downloader ...
+         if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+         {
+            streamLoader.stopDownload (iDwnReqId);
+            iDwnReqId = -1;
+         }
+
+         QString    gmt  = link.encodedQueryItemValue(QByteArray("gmt"));
+         QString    req  = QString("cid=%1&gmt=%2").arg(cid.toInt()).arg(gmt.toUInt());
+         epg::SShow sepg = ui->textEpg->epgShow(gmt.toUInt());
+
+         // store all info about show ...
+         showInfo.cleanShowInfo();
+         showInfo.setChanId(cid.toInt());
+         showInfo.setChanName(chanMap.value(cid.toInt()).sName);
+         showInfo.setShowName(sepg.sShowName);
+         showInfo.setStartTime(gmt.toUInt());
+         showInfo.setEndTime(sepg.uiEnd);
+         showInfo.setShowType(ShowInfo::Archive);
+         showInfo.setPlayState(ePlayState);
+         showInfo.setLastJumpTime(0);
+         showInfo.setPCode(secCodeDlg.passWd());
+
+         showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                .arg("rgb(255, 254, 212)")
+                                .arg(CShowInfo::createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
+                                                   QString("%1 %2").arg(sepg.sShowName).arg(sepg.sShowDescr),
+                                                   sepg.uiStart, sepg.uiEnd))));
+
+         // add additional info to LCD ...
+         int     iTime = (sepg.uiEnd) ? (int)((sepg.uiEnd - sepg.uiStart) / 60) : 60;
+         QString sTime = tr("Length: %1 min.").arg(iTime);
+         ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
+         ui->labState->setFooter(sTime);
+
+         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, secCodeDlg.passWd());
       }
-
-      QString    cid  = link.encodedQueryItemValue(QByteArray("cid"));
-      QString    gmt  = link.encodedQueryItemValue(QByteArray("gmt"));
-      QString    req  = QString("cid=%1&gmt=%2").arg(cid.toInt()).arg(gmt.toUInt());
-      epg::SShow sepg = ui->textEpg->epgShow(gmt.toUInt());
-
-      // store all info about show ...
-      showInfo.cleanShowInfo();
-      showInfo.setChanId(cid.toInt());
-      showInfo.setChanName(chanMap.value(cid.toInt()).sName);
-      showInfo.setShowName(sepg.sShowName);
-      showInfo.setStartTime(gmt.toUInt());
-      showInfo.setEndTime(sepg.uiEnd);
-      showInfo.setShowType(ShowInfo::Archive);
-      showInfo.setPlayState(ePlayState);
-      showInfo.setLastJumpTime(0);
-
-      showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                             .arg("rgb(255, 254, 212)")
-                             .arg(CShowInfo::createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
-                                                QString("%1 %2").arg(sepg.sShowName).arg(sepg.sShowDescr),
-                                                sepg.uiStart, sepg.uiEnd))));
-
-      // add additional info to LCD ...
-      int     iTime = (sepg.uiEnd) ? (int)((sepg.uiEnd - sepg.uiStart) / 60) : 60;
-      QString sTime = tr("Length: %1 min.").arg(iTime);
-      ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
-      ui->labState->setFooter(sTime);
-
-      Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req);
    }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotLogosReady
-|  Begin: 19.01.2010 / 16:17:23
-|  Author: Jo2003
-|  Description: logo downloader told us that logos are ready ...
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotLogosReady()
-{
-   // downloader sayd ... logos are there ...
-   ulStartFlags |= FLAG_CLOGOS_READY;
 }
 
 /* -----------------------------------------------------------------\
@@ -1775,24 +1961,15 @@ void Recorder::slotLogosReady()
 \----------------------------------------------------------------- */
 void Recorder::slotReloadLogos()
 {
-   // unset FLAG_CLOGOS_READY  ...
-   ulStartFlags &= ~FLAG_CLOGOS_READY;
+   QChanMap::const_iterator cit;
 
-   if (!dwnLogos.IsRunning())
+   // create tmp channel list with channels from channelList ...
+   for (cit = chanMap.constBegin(); cit != chanMap.constEnd(); cit++)
    {
-      QStringList lLogos;
-      QMap<int, cparser::SChan>::const_iterator cit;
-
-      // create tmp channel list with channels from channelList ...
-      for (cit = chanMap.constBegin(); cit != chanMap.constEnd(); cit++)
+      if (!(*cit).bIsGroup)
       {
-         if (!(*cit).bIsGroup)
-         {
-            lLogos.push_back((*cit).sIcon);
-         }
+         pixCache.enqueuePic((*cit).sIcon, pFolders->getLogoDir());
       }
-
-      dwnLogos.setPictureList(lLogos);
    }
 }
 
@@ -1866,7 +2043,7 @@ void Recorder::slotbtnNext_clicked()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotArchivURL(QString str)
+void Recorder::slotArchivURL(const QString &str)
 {
    QString sUrl;
 
@@ -2373,10 +2550,11 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotGotVodGenres(QString str)
+void Recorder::slotGotVodGenres(const QString &str)
 {
    QVector<cparser::SGenre> vGenres;
    QVector<cparser::SGenre>::const_iterator cit;
+   QString sName;
 
    // delete content ...
    ui->cbxGenre->clear();
@@ -2388,7 +2566,10 @@ void Recorder::slotGotVodGenres(QString str)
 
       for (cit = vGenres.constBegin(); cit != vGenres.constEnd(); cit ++)
       {
-         ui->cbxGenre->addItem((*cit).sGName, QVariant((int)(*cit).uiGid));
+         // make first genre character upper case ...
+         sName    = (*cit).sGName;
+         sName[0] = sName[0].toUpper();
+         ui->cbxGenre->addItem(sName, QVariant((int)(*cit).uiGid));
       }
    }
 
@@ -2396,8 +2577,8 @@ void Recorder::slotGotVodGenres(QString str)
 
    // trigger video load ...
    QUrl url;
-   url.addQueryItem("type", "last");
-   url.addQueryItem("nums", "10000");
+   url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
+   url.addQueryItem("nums", "20");
    Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
@@ -2411,37 +2592,17 @@ void Recorder::slotGotVodGenres(QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotGotVideos(QString str)
+void Recorder::slotGotVideos(const QString &str, bool bVodFavs)
 {
    QVector<cparser::SVodVideo> vVodList;
-   QVector<cparser::SVodVideo>::const_iterator cit;
    cparser::SGenreInfo gInfo;
 
    if (!XMLParser.parseVodList(str, vVodList, gInfo))
    {
-      if (!(ulStartFlags & FLAG_VLOGOS_READY))
-      {
-         ulStartFlags |= FLAG_VLOGOS_READY;
-
-         // download pictures ...
-         QStringList lPix;
-
-         for (cit = vVodList.constBegin(); cit != vVodList.constEnd(); cit ++)
-         {
-            lPix.push_back((*cit).sImg);
-         }
-
-         dwnVodPics.setPictureList(lPix);
-
-         // get normal video view ...
-         on_cbxGenre_activated(0);
-      }
-      else
-      {
-         genreInfo = gInfo;
-         touchVodNavBar(gInfo);
-         ui->vodBrowser->displayVodList (vVodList, ui->cbxGenre->currentText());
-      }
+      QString sGenre = bVodFavs ? ui->cbxLastOrBest->currentText() : ui->cbxGenre->currentText();
+      genreInfo      = gInfo;
+      touchVodNavBar(gInfo);
+      ui->vodBrowser->displayVodList (vVodList, sGenre);
    }
 }
 
@@ -2461,6 +2622,20 @@ void Recorder::slotVodAnchor(const QUrl &link)
    bool ok        = false;
    int  id        = 0;
 
+   // check password ...
+   if (link.encodedQueryItemValue(QByteArray("pass_protect")).toInt())
+   {
+      // need password ... ?
+      if (secCodeDlg.passWd().isEmpty())
+      {
+         // request password ...
+         secCodeDlg.exec();
+      }
+
+      // no further error check here, API will tell
+      // about a missing password ...
+   }
+
    if (action == "vod_info")
    {
       // buffer last used site (whole code) ...
@@ -2468,7 +2643,8 @@ void Recorder::slotVodAnchor(const QUrl &link)
       lastVodSite.iScrollBarVal = ui->vodBrowser->verticalScrollBar()->value();
 
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id);
+
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
    else if (action == "backtolist")
    {
@@ -2489,6 +2665,18 @@ void Recorder::slotVodAnchor(const QUrl &link)
       {
          ok = true;
       }
+   }
+   else if (action == "add_fav")
+   {
+      id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
+      Trigger.TriggerRequest(Kartina::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+   }
+   else if (action == "del_fav")
+   {
+      id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
+      Trigger.TriggerRequest(Kartina::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
+      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
 
    if (ok)
@@ -2514,7 +2702,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
 
-      Trigger.TriggerRequest(Kartina::REQ_GETVODURL, id);
+      Trigger.TriggerRequest(Kartina::REQ_GETVODURL, id, secCodeDlg.passWd());
    }
 }
 
@@ -2528,7 +2716,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotGotVideoInfo(QString str)
+void Recorder::slotGotVideoInfo(const QString &str)
 {
    cparser::SVodVideo vodInfo;
    if (!XMLParser.parseVideoInfo(str, vodInfo))
@@ -2547,7 +2735,7 @@ void Recorder::slotGotVideoInfo(QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotVodURL(QString str)
+void Recorder::slotVodURL(const QString &str)
 {
    QStringList sUrls;
 
@@ -2864,7 +3052,7 @@ void Recorder::slotUpdateAnswer (QNetworkReply* pRes)
 void Recorder::slotCheckArchProg(ulong ulArcGmt)
 {
    // is actual showinfo still actual ?
-   if (!inBetween(showInfo.starts(), showInfo.ends(), (uint)ulArcGmt))
+   if (!CSmallHelpers::inBetween(showInfo.starts(), showInfo.ends(), (uint)ulArcGmt))
    {
       // search in archiv program map for matching entry ...
       if (!showInfo.autoUpdate(ulArcGmt))
@@ -2882,6 +3070,72 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
          emit sigShowInfoUpdated();
       }
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotRefreshChanLogos [slot]
+|  Begin: 31.05.2012
+|  Author: Jo2003
+|  Description: update channel logos in channel list ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotRefreshChanLogos()
+{
+   if (!(ulStartFlags & FLAG_CLOGO_COMPL))
+   {
+      QStandardItem      *pItem;
+      QPixmap             icon;
+      int                 cid, curCid, i;
+      QString             fLogo;
+
+      // get current selection ...
+      curCid = pModel->itemFromIndex(ui->channelList->currentIndex())->data(channellist::cidRole).toInt();
+
+      for (i = 0; i < pModel->rowCount(); i++)
+      {
+         pItem = pModel->item(i);
+         cid   = pItem->data(channellist::cidRole).toInt();
+         fLogo = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid);
+
+         if (icon.load(fLogo, "image/gif"))
+         {
+            pItem->setData(QIcon(icon), channellist::iconRole);
+
+            // update channel icon on EPG browser ...
+            if (cid == curCid)
+            {
+               ui->labChanIcon->setPixmap(QIcon(icon).pixmap(24, 24));
+            }
+         }
+      }
+
+      // mark logo stuff as completed ...
+      ulStartFlags |= FLAG_CLOGO_COMPL;
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotRefreshChanLogos [slot]
+|  Begin: 31.05.2012
+|  Author: Jo2003
+|  Description: update channel logos in channel list ...
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotPCodeChangeResp(const QString &str)
+{
+   Q_UNUSED(str)
+
+   // clear buffered password ...
+   secCodeDlg.setPasswd("");
+   showInfo.setPCode("");
+
+   Settings.slotNewPCodeSet();
 }
 
 #ifdef INCLUDE_LIBVLC
@@ -3230,11 +3484,56 @@ void Recorder::CreateSystray()
 \----------------------------------------------------------------- */
 void Recorder::touchLastOrBestCbx ()
 {
-   // fill search area combo box ...
-   ui->cbxLastOrBest->clear();
-   ui->cbxLastOrBest->addItem(tr("Newest"), "last");
-   ui->cbxLastOrBest->addItem(tr("Best"), "best");
-   ui->cbxLastOrBest->setCurrentIndex(0);
+   // fill / update search area combo box ...
+   if (!ui->cbxLastOrBest->count())
+   {
+      ui->cbxLastOrBest->addItem(tr("Newest"), "last");
+      ui->cbxLastOrBest->addItem(tr("Best"), "best");
+      ui->cbxLastOrBest->addItem(tr("My Favourites"), "vodfav");
+      ui->cbxLastOrBest->setCurrentIndex(0);
+   }
+   else
+   {
+      int idx;
+
+      if ((idx = ui->cbxLastOrBest->findData("last")) > -1)
+      {
+         ui->cbxLastOrBest->setItemText(idx, tr("Newest"));
+      }
+
+      if ((idx = ui->cbxLastOrBest->findData("best")) > -1)
+      {
+         ui->cbxLastOrBest->setItemText(idx, tr("Best"));
+      }
+
+      if ((idx = ui->cbxLastOrBest->findData("vodfav")) > -1)
+      {
+         ui->cbxLastOrBest->setItemText(idx, tr("My Favourites"));
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: touchGenreCbx
+|  Begin: 30.05.2012
+|  Author: Jo2003
+|  Description: update genre cbx
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::touchGenreCbx()
+{
+   if (ui->cbxGenre->count())
+   {
+      int idx;
+
+      if ((idx = ui->cbxGenre->findData((int)-1)) > -1)
+      {
+         ui->cbxGenre->setItemText(idx, tr("All"));
+      }
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -3504,11 +3803,13 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    QString  sLine;
    QString  sLogoFile;
    QStandardItem *pItem;
-   int      iRow, iRowGroup;
-   QPixmap  Pix(16, 16);
-   QPixmap  icon;
-   int      iChanCount =  0;
-   int      iLastChan  = -1;
+   bool      bMissingIcon = false;
+   int       iRow, iRowGroup;
+   QFileInfo fInfo;
+   QPixmap   Pix(16, 16);
+   QPixmap   icon;
+   int       iChanCount =  0;
+   int       iLastChan  = -1;
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
    iRow      = ui->channelList->currentIndex().row();
@@ -3527,71 +3828,104 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 
    for (int i = 0; i < chanlist.size(); i++)
    {
-      // create new item ...
-      pItem = new QStandardItem;
-
-      // is this a channel group ... ?
-      if (chanlist[i].bIsGroup)
+      // check if we should display channel in channel list ...
+      if (chanlist[i].bIsHidden || (chanlist[i].bIsProtected && !Settings.AllowEros()))
       {
-         pItem->setData(-1, channellist::cidRole);
-         pItem->setData(chanlist[i].sName, channellist::nameRole);
-         pItem->setData(chanlist[i].sProgramm, channellist::bgcolorRole);
-         pItem->setData(QIcon(":png/group"), channellist::iconRole);
-
-         // add channel group entry ...
-         Pix.fill(QColor(chanlist[i].sProgramm));
-         ui->cbxChannelGroup->addItem(QIcon(Pix), chanlist[i].sName, QVariant(i));
+         mInfo(tr("Exclude '%1' from channel list (hidden: %2, protected: %3).")
+               .arg(chanlist[i].sName)
+               .arg(chanlist[i].bIsHidden)
+               .arg(chanlist[i].bIsProtected));
       }
       else
       {
-         sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(chanlist[i].iId);
-         sLine     = QString("%1. %2").arg(++ iChanCount).arg(chanlist[i].sName);
+         // create new item ...
+         pItem = new QStandardItem;
 
-         // check if file exists ...
-         if (!QFile::exists(sLogoFile))
+         // is this a channel group ... ?
+         if (chanlist[i].bIsGroup)
          {
-            // no --> load default image ...
-            icon.load(":png/no_logo");
+            pItem->setData(-1, channellist::cidRole);
+            pItem->setData(chanlist[i].sName, channellist::nameRole);
+            pItem->setData(chanlist[i].sProgramm, channellist::bgcolorRole);
+            pItem->setData(QIcon(":png/group"), channellist::iconRole);
+
+            // add channel group entry ...
+            Pix.fill(QColor(chanlist[i].sProgramm));
+            ui->cbxChannelGroup->addItem(QIcon(Pix), chanlist[i].sName, QVariant(i));
          }
          else
          {
-            // check if image file can be loaded ...
-            if (!icon.load(sLogoFile, "image/gif"))
+            fInfo.setFile(chanlist[i].sIcon);
+            sLogoFile = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
+            sLine     = QString("%1. %2").arg(++ iChanCount).arg(chanlist[i].sName);
+
+            // check if file exists ...
+            if (!QFile::exists(sLogoFile))
             {
-               // can't load --> load default image ...
+               // no --> load default image ...
                icon.load(":png/no_logo");
-               mInfo(tr("Can't load channel image \"%1.gif\" ...").arg(chanlist[i].iId));
-            }
-         }
 
-         // last used channel ...
-         if (iLastChan != -1)
-         {
-            if (iLastChan == chanlist[i].iId)
+               // enqueue pic to cache ...
+               pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
+
+               // mark for reload ...
+               bMissingIcon = true;
+            }
+            else
             {
-               // save row with last used channel ...
-               iRow = i;
+               // check if image file can be loaded ...
+               if (!icon.load(sLogoFile, "image/gif"))
+               {
+                  // can't load --> load default image ...
+                  icon.load(":png/no_logo");
+
+                  mInfo(tr("Can't load channel image \"%1.gif\" ...").arg(chanlist[i].iId));
+
+                  // delete logo file ...
+                  QFile::remove(sLogoFile);
+
+                  // enqueue pic to cache ...
+                  pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
+
+                  // mark for reload ...
+                  bMissingIcon = true;
+               }
+            }
+
+            // last used channel ...
+            if (iLastChan != -1)
+            {
+               if (iLastChan == chanlist[i].iId)
+               {
+                  // save row with last used channel ...
+                  iRow = i;
+               }
+            }
+
+            pItem->setData(chanlist[i].iId, channellist::cidRole);
+            pItem->setData(sLine, channellist::nameRole);
+            pItem->setData(QIcon(icon), channellist::iconRole);
+
+            if(Settings.extChanList())
+            {
+               pItem->setData(chanlist[i].sProgramm, channellist::progRole);
+               pItem->setData(chanlist[i].uiStart, channellist::startRole);
+               pItem->setData(chanlist[i].uiEnd, channellist::endRole);
+            }
+            else
+            {
+               pItem->setToolTip(CShowInfo::createTooltip(chanlist[i].sName, chanlist[i].sProgramm,
+                                               chanlist[i].uiStart, chanlist[i].uiEnd));
             }
          }
 
-         pItem->setData(chanlist[i].iId, channellist::cidRole);
-         pItem->setData(sLine, channellist::nameRole);
-         pItem->setData(QIcon(icon), channellist::iconRole);
+         pModel->appendRow(pItem);
+      } // not hidden ...
+   }
 
-         if(Settings.extChanList())
-         {
-            pItem->setData(chanlist[i].sProgramm, channellist::progRole);
-            pItem->setData(chanlist[i].uiStart, channellist::startRole);
-            pItem->setData(chanlist[i].uiEnd, channellist::endRole);
-         }
-         else
-         {
-            pItem->setToolTip(CShowInfo::createTooltip(chanlist[i].sName, chanlist[i].sProgramm,
-                                            chanlist[i].uiStart, chanlist[i].uiEnd));
-         }
-      }
-
-      pModel->appendRow(pItem);
+   if (!bMissingIcon)
+   {
+      ulStartFlags |= FLAG_CLOGO_COMPL;
    }
 
    ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
@@ -4253,6 +4587,57 @@ void Recorder::correctEpgOffset()
    {
       iEpgOffset = -14;
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: grantAdultAccess
+|  Begin: 01.06.2012
+|  Author: Jo2003
+|  Description: check protected channel / password
+|
+|  Parameters: channel entry
+|
+|  Returns: 1 --> access granted
+|           0 --> no access
+\----------------------------------------------------------------- */
+int Recorder::grantAdultAccess(bool bProtected)
+{
+   int iRV = 0;
+
+   if (!bProtected)
+   {
+      // unprotected channel --> always grant access ...
+      iRV = 1;
+   }
+   else
+   {
+      // protected channel allowed ... ?
+      if (Settings.AllowEros())
+      {
+         // is parent code stored ... ?
+         if (Settings.GetErosPasswd() != "")
+         {
+            // set external password to sec code dialog ...
+            secCodeDlg.setPasswd(Settings.GetErosPasswd());
+         }
+
+         // no password set?
+         if (secCodeDlg.passWd() == "")
+         {
+            // request password ...
+            secCodeDlg.exec();
+         }
+
+         // finaly we only can grant access if
+         // we have a password ...
+         if (secCodeDlg.passWd() != "")
+         {
+            iRV = 1;
+         }
+      }
+   }
+
+   return iRV;
 }
 
 /************************* History ***************************\

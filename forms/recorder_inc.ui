@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="../polsky_tv.qrc">
+   <iconset resource="../kartina_tv.qrc">
     <normaloff>:/app/kartina</normaloff>:/app/kartina</iconset>
   </property>
   <property name="styleSheet">
@@ -672,7 +672,7 @@ color: white;
             <number>6</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,10,0,5,0,0,0,2,0">
+            <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,8,0,8,0,0,0,0,0">
              <item>
               <widget class="QLabel" name="labGenre">
                <property name="text">
@@ -743,7 +743,14 @@ color: white;
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cbxSites"/>
+              <widget class="QComboBox" name="cbxSites">
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QPushButton" name="btnNextSite">
@@ -954,7 +961,7 @@ border-top: 0px;
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../polsky_tv.qrc">
+                    <iconset resource="../kartina_tv.qrc">
                      <normaloff>:/app/live</normaloff>:/app/live</iconset>
                    </property>
                    <property name="iconSize">
@@ -1492,12 +1499,37 @@ border-top: 0px;
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>tabEpgVod</tabstop>
   <tabstop>cbxChannelGroup</tabstop>
   <tabstop>channelList</tabstop>
   <tabstop>textEpg</tabstop>
+  <tabstop>pushLive</tabstop>
+  <tabstop>pushPlay</tabstop>
+  <tabstop>pushRecord</tabstop>
+  <tabstop>pushStop</tabstop>
+  <tabstop>pushBwd</tabstop>
+  <tabstop>cbxTimeJumpVal</tabstop>
+  <tabstop>pushFwd</tabstop>
+  <tabstop>pushTimerRec</tabstop>
+  <tabstop>textEpgShort</tabstop>
+  <tabstop>btnFontSmaller</tabstop>
+  <tabstop>btnFontLarger</tabstop>
+  <tabstop>lineSearch</tabstop>
+  <tabstop>btnSearch</tabstop>
+  <tabstop>pushSettings</tabstop>
+  <tabstop>pushAbout</tabstop>
+  <tabstop>pushQuit</tabstop>
+  <tabstop>cbxGenre</tabstop>
+  <tabstop>cbxLastOrBest</tabstop>
+  <tabstop>btnPrevSite</tabstop>
+  <tabstop>cbxSites</tabstop>
+  <tabstop>btnNextSite</tabstop>
+  <tabstop>vodBrowser</tabstop>
+  <tabstop>lineVodSearch</tabstop>
+  <tabstop>btnVodSearch</tabstop>
  </tabstops>
  <resources>
-  <include location="../polsky_tv.qrc"/>
+  <include location="../kartina_tv.qrc"/>
   <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
  </resources>

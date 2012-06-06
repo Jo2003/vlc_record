@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "54"
-#define BETA_EXT      ""
+#define VERSION_MINOR "55"
+#define BETA_EXT      "B10"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,27 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-06-05: Version 2.55B10
+| - put response error checking into kartina client class
+| - build pseudo class "Kartina" to have access to Qt's
+|   meta system (mainly for debug output)
+| - clear buffered passwords on password error
+|
+| 2012-06-01: Version 2.55B7
+| - new parental system ready (needs tests)
+| - still missing translation for the new stuff
+|
+| 2012-05-30: Version 2.55B5
+| - add password dialog
+| - ask for password on password protected videos
+| - show per icon that a video is protected
+| - add favourite handling
+|
+| 2012-05-25: Version 2.55B1
+| - add VOD Manager
+| - add Channel Manager
+| - first steps to add fovourites
+|
 | 2012-05-03: Version 2.54
 | - fullscreen problem on Mac Snowleo fixed:
 |   + use QStackedLayout to place the videoWidget inside

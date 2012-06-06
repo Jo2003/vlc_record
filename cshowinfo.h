@@ -64,6 +64,7 @@ public:
    void setLastJumpTime (uint start);
    void setHtmlDescr (const QString &descr);
    void setAdUrl(const QString &adUrl);
+   void setPCode (const QString &code);
    void setVodId (int id);
    void setEpgMap(const t_EpgMap &map);
 
@@ -72,6 +73,7 @@ public:
    const QString &chanName();
    const QString &htmlDescr();
    const QString &adUrl();
+   const QString &pCode();
    const int &channelId();
    const uint &starts();
    const uint &ends();
@@ -95,6 +97,7 @@ private:
    ShowInfo::eProgType  eShowType;
    QString              sDescr;
    QString              sAdUrl;
+   QString              sPCode;
    int                  iVodId;
    t_EpgMap             epgMap;
 };

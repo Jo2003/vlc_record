@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>536</width>
+    <width>567</width>
     <height>441</height>
    </rect>
   </property>
@@ -17,6 +17,9 @@
    <string notr="true">QDialog#CTimerRec {
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.2 #555, stop:0.7 grey, stop:1 #dedede);
 }</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,60,0">
    <item>
@@ -233,7 +236,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/app/add</normaloff>:/app/add</iconset>
            </property>
            <property name="iconSize">
@@ -271,7 +274,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../vlc-record.qrc">
+            <iconset resource="../common.qrc">
              <normaloff>:/app/del</normaloff>:/app/del</iconset>
            </property>
            <property name="iconSize">
@@ -395,8 +398,21 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>dtEdtStart</tabstop>
+  <tabstop>dtEdtEnd</tabstop>
+  <tabstop>edtName</tabstop>
+  <tabstop>cbxChannel</tabstop>
+  <tabstop>cbxTimeShift</tabstop>
+  <tabstop>checkShutdown</tabstop>
+  <tabstop>checkRecMini</tabstop>
+  <tabstop>btnSet</tabstop>
+  <tabstop>btnDel</tabstop>
+  <tabstop>tableRecordEntries</tabstop>
+  <tabstop>pushOK</tabstop>
+ </tabstops>
  <resources>
-  <include location="../vlc-record.qrc"/>
+  <include location="../common.qrc"/>
  </resources>
  <connections>
   <connection>

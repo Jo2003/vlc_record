@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>413</width>
-    <height>184</height>
+    <width>370</width>
+    <height>307</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,21 +46,33 @@
      <property name="title">
       <string> Subscription details provided by %1 </string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>User: </string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="lineUsr"/>
-      </item>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <property name="spacing">
+       <number>4</number>
+      </property>
       <item row="0" column="2">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Password: </string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>User: </string>
         </property>
        </widget>
       </item>
@@ -71,32 +83,89 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineUsr"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string> Adult Channels </string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_11">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
        <widget class="QCheckBox" name="checkAdult">
         <property name="text">
          <string>Allow Adult Channels</string>
         </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="label_14">
-        <property name="text">
-         <string>Password: </string>
+      <item>
+       <widget class="QScrollArea" name="scrollArea_2">
+        <property name="widgetResizable">
+         <bool>true</bool>
         </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>340</width>
+           <height>99</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_10">
+          <item>
+           <widget class="QLabel" name="label_23">
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Please Note:&lt;/span&gt;&lt;br/&gt;If you insert the parental code below you're able to watch any adult channel without the need to insert the parent code. &lt;/p&gt;&lt;p&gt;Leaving this field blank you'll have to enter the parent code each time you want to watch an adult channel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
-      <item row="1" column="3">
-       <widget class="QLineEdit" name="lineErosPass">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="echoMode">
-         <enum>QLineEdit::Password</enum>
-        </property>
-       </widget>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Parent Code: </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineErosPass">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -146,6 +215,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>cbxLanguage</tabstop>
+  <tabstop>lineUsr</tabstop>
+  <tabstop>linePass</tabstop>
+  <tabstop>checkAdult</tabstop>
+  <tabstop>scrollArea_2</tabstop>
+  <tabstop>lineErosPass</tabstop>
+  <tabstop>pushSave</tabstop>
+  <tabstop>pushReset</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -155,12 +234,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>111</x>
-     <y>110</y>
+     <x>34</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
-     <x>327</x>
-     <y>108</y>
+     <x>329</x>
+     <y>267</y>
     </hint>
    </hints>
   </connection>

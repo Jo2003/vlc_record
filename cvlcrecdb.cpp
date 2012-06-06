@@ -11,6 +11,7 @@
 \*************************************************************/
 #include "cvlcrecdb.h"
 #include "tables.h"
+#include "small_helpers.h"
 
 // for folders ...
 extern CDirStuff *pFolders;
@@ -394,6 +395,58 @@ QString CVlcRecDB::getShortCut(const QString &sTarget, const QString &sSlot)
    }
 
    return rv;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setPassword
+|  Begin: 04.06.2012
+|  Author: Jo2003
+|  Description: encrypt and save a password
+|
+|  Parameters: key to store password, plaintext password
+|
+|  Returns: 0 --> ok
+|        else --> any error
+\----------------------------------------------------------------- */
+int CVlcRecDB::setPassword(const QString& key, const QString &pass)
+{
+   return setValue(key, CSmallHelpers::streamCipher(pass));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: password
+|  Begin: 04.06.2012
+|  Author: Jo2003
+|  Description: get and decrypt a password
+|
+|  Parameters: key where the password is stored below
+|
+|  Returns: "" --> any error
+|         else --> decrypted password
+\----------------------------------------------------------------- */
+QString CVlcRecDB::password(const QString &sKey)
+{
+   return CSmallHelpers::streamDecipher(stringValue(sKey));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: removeSetting
+|  Begin: 04.06.2012
+|  Author: Jo2003
+|  Description: remove setting from settings table
+|
+|  Parameters: key for setting to remove
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CVlcRecDB::removeSetting(const QString &sKey)
+{
+   QSqlQuery query;
+
+   query.prepare("DELETE FROM settings WHERE name=?");
+   query.addBindValue(sKey);
+   return query.exec() ? 0 : -1;
 }
 
 /************************* History ***************************\
