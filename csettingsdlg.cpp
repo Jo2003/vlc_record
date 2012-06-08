@@ -1787,6 +1787,11 @@ void CSettingsDlg::on_btnChgPCode_clicked()
                                "<li>The new code isn't empty.</li>\n"
                                "<li>The new code contains <b style='color: red;'>numbers only</b>.</li>\n"
                                "</ul>\n"));
+
+      // clear password forms ...
+      m_ui->lineOldPCode->clear();
+      m_ui->lineNewPCode->clear();
+      m_ui->lineConfirmPCode->clear();
    }
 }
 

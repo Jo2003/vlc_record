@@ -900,7 +900,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.cpp" line="1475"/>
         <source>horror</source>
-        <translation type="unfinished">ужасы</translation>
+        <translation>ужасы</translation>
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="1475"/>
@@ -1313,7 +1313,7 @@ To change the parent code make sure:
         <location filename="forms/csettingsdlg.ui" line="911"/>
         <source>Chan&amp;ge</source>
         <oldsource>&amp;Change</oldsource>
-        <translation>&amp;Принять изменения</translation>
+        <translation>Смен&amp;ить</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="936"/>
