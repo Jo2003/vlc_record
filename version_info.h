@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "55"
-#define BETA_EXT      "B10"
+#define VERSION_MINOR "56"
+#define BETA_EXT      ""
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-06-13: Version 2.56
+| - small changes in translation
+| - delete parent code fields when wrong data was entered
+|
 | 2012-06-05: Version 2.55B10
 | - put response error checking into kartina client class
 | - build pseudo class "Kartina" to have access to Qt's

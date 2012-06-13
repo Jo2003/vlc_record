@@ -965,13 +965,13 @@ To change the parent code make sure:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1827"/>
+        <location filename="csettingsdlg.cpp" line="1832"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1827"/>
-        <location filename="csettingsdlg.cpp" line="1828"/>
+        <location filename="csettingsdlg.cpp" line="1832"/>
+        <location filename="csettingsdlg.cpp" line="1833"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>
