@@ -138,9 +138,12 @@ QSplitter#hSplitterChannels::handle:pressed {
            </property>
            <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
             <item>
-             <widget class="QFrame" name="hFrameFav">
+             <widget class="QFavFrame" name="hFrameFav">
               <property name="contextMenuPolicy">
                <enum>Qt::DefaultContextMenu</enum>
+              </property>
+              <property name="acceptDrops">
+               <bool>true</bool>
               </property>
               <property name="styleSheet">
                <string notr="true">QFrame#hFrameFav {
@@ -226,6 +229,18 @@ QListView#channelList::item:hover {
 background-color: rgb(255, 110, 14);
 }
 </string>
+              </property>
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="showDropIndicator" stdset="0">
+               <bool>false</bool>
+              </property>
+              <property name="dragEnabled">
+               <bool>true</bool>
+              </property>
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::DragOnly</enum>
               </property>
               <property name="alternatingRowColors">
                <bool>true</bool>
@@ -1254,6 +1269,12 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
    <class>CVodBrowser</class>
    <extends>QTextBrowser</extends>
    <header>cvodbrowser.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QFavFrame</class>
+   <extends>QFrame</extends>
+   <header>qfavframe.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

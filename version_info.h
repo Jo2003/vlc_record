@@ -38,6 +38,8 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - can drag / drop favourites into fav frame
+|
 | 2012-06-13: Version 2.56
 | - small changes in translation
 | - delete parent code fields when wrong data was entered

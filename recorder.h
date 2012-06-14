@@ -280,6 +280,7 @@ private slots:
     void slotUnused(const QString &str);
     void slotRefreshChanLogos ();
     void slotPCodeChangeResp (const QString &str);
+    void slotAddFav(int cid);
 
 signals:
     void sigShow ();

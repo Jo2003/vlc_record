@@ -50,7 +50,8 @@ SOURCES += main.cpp \
     qchanlistdelegate.cpp \
     qshortcuttable.cpp \
     qftsettings.cpp \
-    qseccodedlg.cpp
+    qseccodedlg.cpp \
+    qfavframe.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
@@ -82,7 +83,8 @@ HEADERS += recorder.h \
     qshortcuttable.h \
     qftsettings.h \
     small_helpers.h \
-    qseccodedlg.h
+    qseccodedlg.h \
+    qfavframe.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

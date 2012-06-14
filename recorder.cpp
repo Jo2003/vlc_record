@@ -210,6 +210,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 #endif /* INCLUDE_LIBVLC */
 
    // connect signals and slots ...
+   connect (ui->hFrameFav, SIGNAL(sigAddFav(int)), this, SLOT(slotAddFav(int)));
    connect (&pixCache,     SIGNAL(allDone()), this, SLOT(slotRefreshChanLogos()));
    connect (&KartinaTv,    SIGNAL(sigHttpResponse(QString,int)), this, SLOT(slotKartinaResponse(QString,int)));
    connect (&KartinaTv,    SIGNAL(sigError(QString,int,int)), this, SLOT(slotKartinaErr(QString,int,int)));
@@ -2341,26 +2342,32 @@ void Recorder::slotChgFavourites (QAction *pAct)
    // what to do ... ?
    if (action == kartinafav::FAV_ADD)
    {
-      if (lFavourites.count() < MAX_NO_FAVOURITES)
+      if (!lFavourites.contains(iCid))
       {
-         // add new favourite ...
-         lFavourites.push_back(iCid);
+         if (lFavourites.count() < MAX_NO_FAVOURITES)
+         {
+            // add new favourite ...
+            lFavourites.push_back(iCid);
 
-         HandleFavourites();
-      }
-      else
-      {
-         QMessageBox::information(this, tr("Note"),
-                                  tr("Max. number of favourites (%1) reached.")
-                                  .arg(MAX_NO_FAVOURITES));
+            HandleFavourites();
+         }
+         else
+         {
+            QMessageBox::information(this, tr("Note"),
+                                     tr("Max. number of favourites (%1) reached.")
+                                     .arg(MAX_NO_FAVOURITES));
+         }
       }
    }
    else if (action == kartinafav::FAV_DEL)
    {
-      // remove favourite ...
-      lFavourites.removeOne(iCid);
+      if (lFavourites.contains(iCid))
+      {
+         // remove favourite ...
+         lFavourites.removeOne(iCid);
 
-      HandleFavourites();
+         HandleFavourites();
+      }
    }
 }
 
@@ -2428,7 +2435,7 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
       {
          sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(lFavourites[i]);
          pContextAct[i]->setIcon(QIcon(sLogoFile));
-         pContextAct[i]->setText(tr("Remove from favourites"));
+         pContextAct[i]->setText(tr("Remove \"%1\" from favourites").arg(chanMap[lFavourites[i]].sName));
          pContextAct[i]->setFavData(lFavourites[i], kartinafav::FAV_DEL);
          favContext.addAction(pContextAct[i]);
       }
@@ -3136,6 +3143,34 @@ void Recorder::slotPCodeChangeResp(const QString &str)
    showInfo.setPCode("");
 
    Settings.slotNewPCodeSet();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotAddFav [slot]
+|  Begin: 14.06.2012
+|  Author: Jo2003
+|  Description: add one favourite
+|
+|  Parameters: favourite to add
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotAddFav(int cid)
+{
+   if (!lFavourites.contains(cid))
+   {
+      if (lFavourites.count() < MAX_NO_FAVOURITES)
+      {
+         lFavourites.append(cid);
+         HandleFavourites();
+      }
+      else
+      {
+         QMessageBox::information(this, tr("Note"),
+                                  tr("Max. number of favourites (%1) reached.")
+                                  .arg(MAX_NO_FAVOURITES));
+      }
+   }
 }
 
 #ifdef INCLUDE_LIBVLC
