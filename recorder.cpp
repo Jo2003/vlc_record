@@ -3189,6 +3189,9 @@ void Recorder::slotToogleFullscreen()
 {
    if (!pVideoWidget)
    {
+      // store size and position ...
+      sizePos = geometry();
+
       // get videoWidget ...
       pVideoWidget = ui->player->getAndRemoveVideoWidget();
 
@@ -3221,9 +3224,12 @@ void Recorder::slotToogleFullscreen()
       // reset videoWidgets local pointer ...
       pVideoWidget = NULL;
 
+      // restore geometry ...
+      setGeometry(sizePos);
+
       // show normal ...
-      // show();
       showNormal();
+
       emit sigFullScreenToggled(0);
    }
 }
