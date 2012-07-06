@@ -1051,7 +1051,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1475"/>
+        <location filename="csettingsdlg.cpp" line="1474"/>
         <source>blood</source>
         <translation>krwawy</translation>
     </message>
@@ -1061,47 +1061,48 @@ p, li { white-space: pre-wrap; }
         <translation>przemoc</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1475"/>
+        <location filename="csettingsdlg.cpp" line="1478"/>
         <source>porn</source>
         <translation>porno</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1475"/>
+        <location filename="csettingsdlg.cpp" line="1479"/>
         <source>horror</source>
         <translation>horror</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1475"/>
+        <location filename="csettingsdlg.cpp" line="1476"/>
+        <location filename="csettingsdlg.cpp" line="1477"/>
         <source>obscene</source>
         <translation>nieprzyzwoity</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1510"/>
+        <location filename="csettingsdlg.cpp" line="1511"/>
         <source>hide</source>
         <translation>ukryj</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1511"/>
+        <location filename="csettingsdlg.cpp" line="1512"/>
         <source>show</source>
         <translation>pokaż</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1512"/>
+        <location filename="csettingsdlg.cpp" line="1513"/>
         <source>password protected</source>
         <translation>zabezpieczony hasłem</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1704"/>
+        <location filename="csettingsdlg.cpp" line="1705"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1780"/>
+        <location filename="csettingsdlg.cpp" line="1781"/>
         <source>Error!</source>
         <translation>Błąd!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1781"/>
+        <location filename="csettingsdlg.cpp" line="1782"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1133,13 +1134,13 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1832"/>
+        <location filename="csettingsdlg.cpp" line="1833"/>
         <source>Information</source>
         <translation>Informacje</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1832"/>
         <location filename="csettingsdlg.cpp" line="1833"/>
+        <location filename="csettingsdlg.cpp" line="1834"/>
         <source>Parent Code successfully changed.</source>
         <translation>Kod kontroli rodzicielskiej został pomyślnie zmieniony.</translation>
     </message>

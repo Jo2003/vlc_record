@@ -1468,11 +1468,15 @@ void CSettingsDlg::slotBuildVodManager(const QString &str)
    QRadioButton *pRadHide, *pRadShow, *pRadPass;
    QString       sLabel;
    QFont         font;
-   QStringList   sl;
-   const char   *pGenre;
+   QMap<QString, QString> transMap;
 
    // help translate the vod manager strings ...
-   sl << tr("blood") << tr("violence") << tr("obscene") << tr("porn") << tr("horror");
+   transMap.insert("blood",    tr("blood"));
+   transMap.insert("violence", tr("violence"));
+   transMap.insert("obscene",  tr("obscene"));
+   transMap.insert("obsence",  tr("obscene")); // fix a small typo in API ...
+   transMap.insert("porn",     tr("porn"));
+   transMap.insert("horror",   tr("horror"));
 
    // clear layout ...
    if (pLayout)
@@ -1493,11 +1497,8 @@ void CSettingsDlg::slotBuildVodManager(const QString &str)
       // make forms for every rate ...
       for (int i = 0; i < vodRatesVector.count(); i++)
       {
-         // fix a small typo in API ...
-         pGenre    = (vodRatesVector[i].sGenre == "obsence") ? "obscene" : vodRatesVector[i].sGenre.toUtf8().constData();
-
          // translate label ...
-         sLabel    = tr(pGenre);
+         sLabel    = transMap.value(vodRatesVector[i].sGenre, vodRatesVector[i].sGenre);
 
          // make label better looking ...
          sLabel[0] = sLabel[0].toUpper();
