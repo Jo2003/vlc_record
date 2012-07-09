@@ -2262,8 +2262,8 @@ dataDir: %1
         <translation>Zeige EPG / Videothek</translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="1152"/>
-        <location filename="forms/recorder_inc.ui" line="1378"/>
+        <location filename="forms/recorder.ui" line="1228"/>
+        <location filename="forms/recorder_inc.ui" line="1454"/>
         <location filename="recorder.cpp" line="3322"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
@@ -2461,15 +2461,15 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="1190"/>
-        <location filename="forms/recorder_inc.ui" line="1416"/>
+        <location filename="forms/recorder.ui" line="1152"/>
+        <location filename="forms/recorder_inc.ui" line="1378"/>
         <location filename="recorder.cpp" line="3299"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="forms/recorder.ui" line="1228"/>
-        <location filename="forms/recorder_inc.ui" line="1454"/>
+        <location filename="forms/recorder.ui" line="1190"/>
+        <location filename="forms/recorder_inc.ui" line="1416"/>
         <source>About ...</source>
         <translation>Über ...</translation>
     </message>

@@ -8,7 +8,7 @@
 
   ; Version information ...
   !define STR_VERSION "2.${VER_MINOR}-${DATESTRING}"
-  
+
   ;Name and file
   Name "${APPNAME} ${STR_VERSION}"
 
@@ -16,7 +16,7 @@
 
   ;Default installation folder
   InstallDir "$LOCALAPPDATA\${APPNAME}"
-  
+
   ;Get installation folder from registry if available
   InstallDirRegKey HKCU "Software\${APPNAME}" ""
 
@@ -31,22 +31,22 @@
   !define MUI_HEADERIMAGE_BITMAP ${INSTBMP}
   !define MUI_ICON "..\resources\${INSTICON}"
   !define MUI_ABORTWARNING
-  
+
   ;Show all languages, despite user's codepage
   !define MUI_LANGDLL_ALLLANGUAGES
-  
+
 ;--------------------------------
 ;Language Selection Dialog Settings
 
   ;Remember the installer language
-  !define MUI_LANGDLL_REGISTRY_ROOT "HKCU" 
-  !define MUI_LANGDLL_REGISTRY_KEY "Software\${APPNAME}" 
+  !define MUI_LANGDLL_REGISTRY_ROOT "HKCU"
+  !define MUI_LANGDLL_REGISTRY_KEY "Software\${APPNAME}"
   !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
 
 ;-------------------------------------------------------
 ; what to run when finished ... ?
   !define MUI_FINISHPAGE_RUN "$INSTDIR\${BINNAME}"
-  
+
 ;-------------------------------------------------------
 ; Pages
 ;  !insertmacro MUI_PAGE_WELCOME
@@ -55,10 +55,10 @@
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH
-  
+
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
-  
+
 ;-------------------------------------------------------
 ; Languages
   !insertmacro MUI_LANGUAGE "Russian" ;first language is the default language
@@ -67,7 +67,7 @@
   !insertmacro MUI_LANGUAGE "French"
   !insertmacro MUI_LANGUAGE "Polish"
   !insertmacro MUI_RESERVEFILE_LANGDLL
-  
+
 ;-------------------------------------------------------
 ; Installer Sections for vlc-record
 Section "VLC-Record" SecInst
@@ -94,6 +94,10 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\modules\9_libvlc_odl.mod"
   File "${SRCDIR}\modules\10_vlc-player_odl.mod"
   File "${SRCDIR}\modules\11_libvlc-mp4.mod"
+
+  SetOutPath "$INSTDIR\doc"
+  File /r "${SRCDIR}\documentation\*.qhc"
+  File /r "${SRCDIR}\documentation\*.qch"
 
 SectionEnd
 
@@ -143,18 +147,18 @@ Section "qt Framework" SecQt
 
    SetOutPath "$INSTDIR\sqldrivers"
    File /r "${QTLIBS}\sqldrivers\*.dll"
-   
+
    SetOutPath "$INSTDIR\translations"
    File /r "${QTLIBS}\translations\*.qm"
 SectionEnd
 
 ;-------------------------------------------------------
-; start menu entries 
+; start menu entries
 Section "Start Menu Entries" SecStart
-	CreateDirectory "$SMPROGRAMS\${APPNAME}"
-	CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\${BINNAME}"
+   CreateDirectory "$SMPROGRAMS\${APPNAME}"
+   CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\${BINNAME}"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk" "$INSTDIR\clearcache.bat"
-	CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+   CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Check for new Version.lnk" "$INSTDIR\shortcut.url"
 SectionEnd
 
@@ -162,7 +166,7 @@ SectionEnd
 ; desktop shortcut ...
 ;Section /o "Desktop Shortcut" SecDesktop
 Section "Desktop Shortcut" SecDesktop
-	CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\${BINNAME}"
+   CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\${BINNAME}"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -181,7 +185,7 @@ Section -FinishSection
 
   ;store installation folder ...
   WriteRegStr HKLM "Software\${APPNAME}" "" "$INSTDIR"
-	
+
   ; create uninstall entries in registry ...
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayName" "${APPNAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$INSTDIR\uninstall.exe"
@@ -245,6 +249,8 @@ SectionEnd
 Section "un.Program"
   ; delete installed language files ...
   Delete "$INSTDIR\language\*.qm"
+  Delete "$INSTDIR\doc\*.q??"
+
 
   ; delete installed module files ...
   Delete "$INSTDIR\modules\1_vlc-player.mod"
@@ -262,6 +268,7 @@ Section "un.Program"
   ; delete directories ...
   RMDir  "$INSTDIR\modules"
   RMDir  "$INSTDIR\language"
+  RMDir  "$INSTDIR\doc"
 
   ; delete vlc-record itself ...
   Delete "$INSTDIR\${BINNAME}"
@@ -275,8 +282,8 @@ SectionEnd
 ;-------------------------------------------------------
 ; Remove from registry...
 Section "un.registry"
-	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
-	DeleteRegKey HKLM "Software\${APPNAME}"
+   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
+   DeleteRegKey HKLM "Software\${APPNAME}"
   DeleteRegKey HKCU "Software\${APPNAME}"
 SectionEnd
 
@@ -286,7 +293,7 @@ Section "un.Shortcuts"
   Delete "$DESKTOP\${APPNAME}.lnk"
   Delete "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk"
   Delete "$SMPROGRAMS\${APPNAME}\Clear Cache.lnk"
-  Delete "$SMPROGRAMS\${APPNAME}\Check for new Version.lnk"  
+  Delete "$SMPROGRAMS\${APPNAME}\Check for new Version.lnk"
   Delete "$SMPROGRAMS\${APPNAME}\Uninstall.lnk"
   RMDir  "$SMPROGRAMS\${APPNAME}"
 SectionEnd
@@ -297,11 +304,11 @@ Section "un.FinalCleaning"
   ; delete stored stuff ...
   RMDir /r /REBOOTOK "$APPDATA\${APPNAME}"
 
-	; delete uninstaller ...
+   ; delete uninstaller ...
   Delete "$INSTDIR\Uninstall.exe"
 
   ; delete install dir ...
-	RMDir "$INSTDIR"
+   RMDir "$INSTDIR"
 SectionEnd
 
 ;-------------------------------------------------------
