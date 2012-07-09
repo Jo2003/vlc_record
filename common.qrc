@@ -19,6 +19,7 @@
         <file alias="bwd">resources/skip_backward.png</file>
         <file alias="fwd">resources/skip_forward.png</file>
         <file alias="pause">resources/pause.png</file>
+        <file alias="help">resources/help.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

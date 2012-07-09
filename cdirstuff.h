@@ -42,6 +42,7 @@ public:
    const QString& getQtLangDir ();
    const QString& getModDir ();
    const QString& getAppDir ();
+   const QString& getDocDir ();
    bool  isInitialized ();
 
 protected:
@@ -50,6 +51,7 @@ protected:
 
 private:
    QString                sDataDir;
+   QString                sDocDir;
    QString                sLogoDir;
    QString                sVodPixDir;
    QString                sLangDir;

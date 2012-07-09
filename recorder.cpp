@@ -109,6 +109,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    vlcCtrl.setParent(this);
    favContext.setParent(this, Qt::Popup);
 
+   // non-modal ...
+   Help.setParent(NULL);
+
    // set host for pix cache ...
    pixCache.setHost(Settings.GetAPIServer());
 
@@ -127,6 +130,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
           + tr("langDir: %1\n").arg(pFolders->getLangDir())
           + tr("modDir:  %1\n").arg(pFolders->getModDir())
           + tr("appDir:  %1").arg(pFolders->getAppDir()));
+
+   // set help file ...
+   Help.setHelpFile(QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage()));
 
    // set connection data ...
    KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
@@ -420,6 +426,9 @@ void Recorder::closeEvent(QCloseEvent *event)
 
    if (bAccept)
    {
+      // close help dialog ..
+      Help.close();
+
       // disconnect trayicon stuff ...
       disconnect (&trayIcon);
 
@@ -640,6 +649,9 @@ void Recorder::on_pushSettings_clicked()
    {
       Refresh.start(Settings.GetRefrInt() * 60000); // 1 minutes: (60 * 1000 msec) ...
    }
+
+   // set new(?) helpfile ...
+   Help.setHelpFile(QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage()));
 }
 
 /* -----------------------------------------------------------------\
@@ -1370,6 +1382,21 @@ void Recorder::on_channelList_clicked(QModelIndex index)
          }
       }
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_pushHelp_clicked [slot]
+|  Begin: 09.07.2012
+|  Author: Jo2003
+|  Description: help button (or shortcut) clicked
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::on_pushHelp_clicked()
+{
+   Help.show();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3292,6 +3319,7 @@ void Recorder::fillShortCutTab()
       {tr("Play Next Channel"),    this,       SLOT(slotPlayNextChannel()),       "CTRL+ALT+N"},
       {tr("Play Prev. Channel"),   this,       SLOT(slotPlayPreviousChannel()),   "CTRL+ALT+P"},
       {tr("Show EPG / VOD"),       this,       SLOT(slotToggleEpgVod()),          "CTRL+E"},
+      {tr("Help"),                 this,       SLOT(on_pushHelp_clicked()),       "F1"},
       // add further entries below ...
 
       // last entry, don't touch ...
@@ -4685,8 +4713,3 @@ int Recorder::grantAdultAccess(bool bProtected)
 | $Log$
 \*************************************************************/
 
-void Recorder::on_pushButton_clicked()
-{
-   QHelpDialog *pHelp = new QHelpDialog("/home/joergn/src/vlc-record/doc/help_en.qhc");
-   pHelp->exec();
-}

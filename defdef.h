@@ -46,6 +46,7 @@
 #define LANG_DIR_QT       "translations"
 #define LOGO_DIR          "logos"
 #define VOD_DIR           "vod"
+#define DOC_DIR           "doc"
 #define KARTINA_API_PATH  "/api/xml/"
 #define LOGO_URL          "/img/ico/24"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"

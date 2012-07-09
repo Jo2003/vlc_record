@@ -131,6 +131,7 @@ public slots:
 private:
     Ui::Recorder                   *ui;
     CSettingsDlg                    Settings;
+    QHelpDialog                     Help;
     QSecCodeDlg                     secCodeDlg;
     CKartinaClnt                    KartinaTv;
     CKartinaXMLParser               XMLParser;
@@ -282,8 +283,7 @@ private slots:
     void slotRefreshChanLogos ();
     void slotPCodeChangeResp (const QString &str);
     void slotAddFav(int cid);
-
-    void on_pushButton_clicked();
+    void on_pushHelp_clicked();
 
 signals:
     void sigShow ();

@@ -155,6 +155,7 @@ int CDirStuff::initDirectories()
    sLangDir   = QString("%1/%2").arg(sAppDir).arg(LANG_DIR);
    sModDir    = QString("%1/%2").arg(sAppDir).arg(MOD_DIR);
    sQtLangDir = QString("%1/%2").arg(sAppDir).arg(LANG_DIR_QT);
+   sDocDir    = QString("%1/%2").arg(sAppDir).arg(DOC_DIR);
 
 #elif defined Q_OS_MAC
    // -----------------------------------------------------
@@ -187,6 +188,9 @@ int CDirStuff::initDirectories()
 
       // modules path ...
       sModDir  = QString("%1/PlugIns/%2").arg(rx.cap(1)).arg(MOD_DIR);
+
+      // docu folder ...
+      sDocDir  = QString("%1/Resources/%2").arg(rx.cap(1)).arg(DOC_DIR);
    }
    else
    {
@@ -218,6 +222,9 @@ int CDirStuff::initDirectories()
 
       // modules path ...
       sModDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(MOD_DIR);
+
+      // docu folder ...
+      sDocDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(DOC_DIR);
    }
    else
    {
@@ -266,6 +273,21 @@ const QString& CDirStuff::getAppDir()
 const QString& CDirStuff::getDataDir()
 {
    return sDataDir;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getDocDir
+|  Begin: 09.07.2012
+|  Author: Jo2003
+|  Description: get doc directory
+|
+|  Parameters: --
+|
+|  Returns: ref. to doc dir string
+\----------------------------------------------------------------- */
+const QString& CDirStuff::getDocDir()
+{
+   return sDocDir;
 }
 
 /* -----------------------------------------------------------------\
