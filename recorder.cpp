@@ -4684,3 +4684,9 @@ int Recorder::grantAdultAccess(bool bProtected)
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+
+void Recorder::on_pushButton_clicked()
+{
+   QHelpDialog *pHelp = new QHelpDialog("/home/joergn/src/vlc-record/doc/help_en.qhc");
+   pHelp->exec();
+}

@@ -5,6 +5,8 @@ QT += network \
     sql \
     xml
 
+CONFIG += help
+
 # build debug and release ...
 CONFIG += debug_and_release \
     windows
@@ -51,7 +53,8 @@ SOURCES += main.cpp \
     qshortcuttable.cpp \
     qftsettings.cpp \
     qseccodedlg.cpp \
-    qfavframe.cpp
+    qfavframe.cpp \
+    qhelpdialog.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
@@ -84,12 +87,14 @@ HEADERS += recorder.h \
     qftsettings.h \
     small_helpers.h \
     qseccodedlg.h \
-    qfavframe.h
+    qfavframe.h \
+    qhelpdialog.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
     forms/qftsettings.ui \
-    forms/qseccodedlg.ui
+    forms/qseccodedlg.ui \
+    forms/qhelpdialog.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

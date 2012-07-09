@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="../kartina_tv.qrc">
+   <iconset resource="../vlc-record.qrc">
     <normaloff>:/app/kartina</normaloff>:/app/kartina</iconset>
   </property>
   <property name="styleSheet">
@@ -973,7 +973,7 @@ border-top: 0px;
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="../kartina_tv.qrc">
+                    <iconset resource="../vlc-record.qrc">
                      <normaloff>:/app/live</normaloff>:/app/live</iconset>
                    </property>
                    <property name="iconSize">
@@ -1361,6 +1361,13 @@ border-top: 0px;
               </widget>
              </item>
              <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>?</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="pushSettings">
                <property name="minimumSize">
                 <size>
@@ -1547,7 +1554,7 @@ border-top: 0px;
   <tabstop>btnVodSearch</tabstop>
  </tabstops>
  <resources>
-  <include location="../kartina_tv.qrc"/>
+  <include location="../vlc-record.qrc"/>
   <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
  </resources>

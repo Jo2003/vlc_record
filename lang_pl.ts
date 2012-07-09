@@ -1654,6 +1654,14 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
 </context>
 <context>
+    <name>QHelpDialog</name>
+    <message>
+        <location filename="forms/qhelpdialog.ui" line="14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QSecCodeDlg</name>
     <message>
         <location filename="forms/qseccodedlg.ui" line="14"/>
@@ -1790,20 +1798,20 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1152"/>
-        <location filename="forms/recorder_inc.ui" line="1378"/>
+        <location filename="forms/recorder_inc.ui" line="1385"/>
         <location filename="recorder.cpp" line="3272"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1190"/>
-        <location filename="forms/recorder_inc.ui" line="1416"/>
+        <location filename="forms/recorder_inc.ui" line="1423"/>
         <source>About ...</source>
         <translation>O …</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1228"/>
-        <location filename="forms/recorder_inc.ui" line="1454"/>
+        <location filename="forms/recorder_inc.ui" line="1461"/>
         <location filename="recorder.cpp" line="3277"/>
         <source>Quit</source>
         <translation>Wyjdź</translation>
@@ -1859,6 +1867,11 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="recorder.cpp" line="3286"/>
         <source>Jump Forward</source>
         <translation>Do przodu</translation>
+    </message>
+    <message>
+        <location filename="forms/recorder_inc.ui" line="1366"/>
+        <source>?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="125"/>

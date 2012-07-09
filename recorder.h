@@ -57,6 +57,7 @@
 #include "qchanlistdelegate.h"
 #include "cepgbrowser.h"
 #include "qseccodedlg.h"
+#include "qhelpdialog.h"
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
    #include "qvlcvideowidget.h"
@@ -281,6 +282,8 @@ private slots:
     void slotRefreshChanLogos ();
     void slotPCodeChangeResp (const QString &str);
     void slotAddFav(int cid);
+
+    void on_pushButton_clicked();
 
 signals:
     void sigShow ();
