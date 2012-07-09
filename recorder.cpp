@@ -43,6 +43,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
     ui(new Ui::Recorder)
 {
    ui->setupUi(this);
+   QString sHlp;
 
 #ifdef INCLUDE_LIBVLC
    // build layout stack ...
@@ -132,7 +133,15 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
           + tr("appDir:  %1").arg(pFolders->getAppDir()));
 
    // set help file ...
-   Help.setHelpFile(QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage()));
+   // be sure the file we want to load exists ... fallback to english help ...
+   sHlp = QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage());
+
+   if (!QFile::exists(sHlp))
+   {
+      sHlp = QString("%1/help_en.qhc").arg(pFolders->getDocDir());
+   }
+
+   Help.setHelpFile(sHlp);
 
    // set connection data ...
    KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
@@ -558,6 +567,8 @@ void Recorder::hideEvent(QHideEvent *event)
 \----------------------------------------------------------------- */
 void Recorder::on_pushSettings_clicked()
 {
+   QString sHlp;
+
    // pause EPG reload ...
    if (Refresh.isActive())
    {
@@ -651,7 +662,15 @@ void Recorder::on_pushSettings_clicked()
    }
 
    // set new(?) helpfile ...
-   Help.setHelpFile(QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage()));
+   // be sure the file we want to load exists ... fallback to english help ...
+   sHlp = QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage());
+
+   if (!QFile::exists(sHlp))
+   {
+      sHlp = QString("%1/help_en.qhc").arg(pFolders->getDocDir());
+   }
+
+   Help.setHelpFile(sHlp);
 }
 
 /* -----------------------------------------------------------------\
@@ -1397,6 +1416,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
 void Recorder::on_pushHelp_clicked()
 {
    Help.show();
+   Help.raise();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
