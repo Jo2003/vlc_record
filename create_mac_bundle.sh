@@ -36,12 +36,15 @@ DSTFOLDER=$APPNAME-2.${MINORVER}${BETAEXT}-${DATESTR}-mac
 cd release
 rm -rf $APPNAME-*-mac*
 mkdir -p $CONTENTS/Resources/language
+mkdir -p $CONTENTS/Resources/doc
 mkdir -p $CONTENTS/PlugIns/modules
 mkdir -p $CONTENTS/Frameworks
 mkdir -p $CONTENTS/translations
 cp ../*.qm $CONTENTS/Resources/language/
 cp ../modules/*.mod $CONTENTS/PlugIns/modules/
 cp ../resources/$APPNAME.icns $CONTENTS/Resources/$APPNAME.icns
+cp ../documentation/*.qhc $CONTENTS/Resources/doc/
+cp ../documentation/*.qch $CONTENTS/Resources/doc/
 cp -R ../mac/* $CONTENTS/MacOS
 
 # copy Qt translations
