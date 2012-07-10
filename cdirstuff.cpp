@@ -239,6 +239,7 @@ int CDirStuff::initDirectories()
    {
       sLangDir = rx.cap(1);
       sModDir  = QString("%1/%2").arg(rx.cap(1)).arg(MOD_DIR);
+      sDocDir  = sLangDir + "/documentation";
    }
 #endif // QT_NO_DEBUG
 
