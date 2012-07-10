@@ -1954,9 +1954,6 @@ void Recorder::slotEpgAnchor (const QUrl &link)
       {
          TouchPlayCtrlBtns(false);
 
-         // get program map ...
-         showInfo.setEpgMap(ui->textEpg->exportProgMap());
-
          // new own downloader ...
          if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
          {
@@ -1970,6 +1967,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
          // store all info about show ...
          showInfo.cleanShowInfo();
+         showInfo.setEpgMap(ui->textEpg->exportProgMap());
          showInfo.setChanId(cid.toInt());
          showInfo.setChanName(chanMap.value(cid.toInt()).sName);
          showInfo.setShowName(sepg.sShowName);

@@ -284,54 +284,48 @@ int CPlayer::initPlayer()
    if (pVlcInstance)
    {
       // get mediaplayer ...
-      pMediaPlayer = libvlc_media_player_new (pVlcInstance);
-   }
-
-   if (pMediaPlayer)
-   {
-      // add player to window ...
-      connectToVideoWidget();
-
-      // get volume ...
-      ui->volSlider->setSliderPosition(libvlc_audio_get_volume (pMediaPlayer));
-
-      // get event manager ...
-      pEMPlay = libvlc_media_player_event_manager(pMediaPlayer);
-
-      // switch off handling of hotkeys ...
-      libvlc_video_set_key_input(pMediaPlayer, 0);
-
-      libvlc_video_set_mouse_input(pMediaPlayer, 0);
-   }
-
-   // if we've got the event manager, register for some events ...
-   if (pEMPlay)
-   {
-      iRV  = libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEncounteredError,
-                                CPlayer::eventCallback, (void *)this);
-
-      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerOpening,
-                                 CPlayer::eventCallback, (void *)this);
-
-      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPlaying,
-                                 CPlayer::eventCallback, (void *)this);
-
-      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPaused,
-                                 CPlayer::eventCallback, (void *)this);
-
-      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerStopped,
-                                 CPlayer::eventCallback, (void *)this);
-
-      iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEndReached,
-                                 CPlayer::eventCallback, (void *)this);
-   }
-
-   // create media list player ...
-   if (!iRV)
-   {
-      if ((pMedialistPlayer = libvlc_media_list_player_new(pVlcInstance)) != NULL)
+      if ((pMediaPlayer = libvlc_media_player_new (pVlcInstance)) != NULL)
       {
-          libvlc_media_list_player_set_media_player (pMedialistPlayer, pMediaPlayer);
+         // add player to window ...
+         connectToVideoWidget();
+
+         // get volume ...
+         ui->volSlider->setSliderPosition(libvlc_audio_get_volume (pMediaPlayer));
+
+         // switch off handling of hotkeys ...
+         libvlc_video_set_key_input(pMediaPlayer, 0);
+
+         libvlc_video_set_mouse_input(pMediaPlayer, 0);
+
+         // create media list player ...
+         if ((pMedialistPlayer = libvlc_media_list_player_new(pVlcInstance)) != NULL)
+         {
+            libvlc_media_list_player_set_media_player (pMedialistPlayer, pMediaPlayer);
+
+            // get event manager ...
+            if ((pEMPlay = libvlc_media_player_event_manager(pMediaPlayer)) != NULL)
+            {
+               // if we've got the event manager, register for some events ...
+
+               iRV  = libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEncounteredError,
+                                         CPlayer::eventCallback, (void *)this);
+
+               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerOpening,
+                                          CPlayer::eventCallback, (void *)this);
+
+               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPlaying,
+                                          CPlayer::eventCallback, (void *)this);
+
+               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPaused,
+                                          CPlayer::eventCallback, (void *)this);
+
+               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerStopped,
+                                          CPlayer::eventCallback, (void *)this);
+
+               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEndReached,
+                                          CPlayer::eventCallback, (void *)this);
+            }
+         }
       }
    }
 
@@ -532,9 +526,8 @@ int CPlayer::playMedia(const QString &sCmdLine)
    if (!iRV)
    {
       mInfo(tr("Use following URL:\n  --> %1").arg(sMrl));
-      p_md = libvlc_media_new_location(pVlcInstance, sMrl.toUtf8().constData());
 
-      if (p_md)
+      if ((p_md = libvlc_media_new_location(pVlcInstance, sMrl.toUtf8().constData())) != NULL)
       {
          // do we use GPU acceleration ... ?
          if (pSettings->useGpuAcc())
@@ -761,9 +754,9 @@ bool CPlayer::isPlaying()
 {
    bool bRV = false;
 
-   if (pMediaPlayer)
+   if (pMedialistPlayer)
    {
-      libvlc_state_t playState = libvlc_media_player_get_state (pMediaPlayer);
+      libvlc_state_t playState = libvlc_media_list_player_get_state (pMedialistPlayer);
 
       switch (playState)
       {
