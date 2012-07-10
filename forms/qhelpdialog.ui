@@ -26,7 +26,11 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QHelpBrowser" name="helpBrowser"/>
+     <widget class="QHelpBrowser" name="helpBrowser">
+      <property name="openExternalLinks">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
    </item>
    <item>

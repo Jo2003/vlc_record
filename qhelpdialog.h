@@ -29,9 +29,6 @@ namespace Ui {
    class QHelpDialog;
 }
 
-// forward declaration ...
-class QHelpBrowser;
-
 //---------------------------------------------------------------------------
 //! \class   QHelpDialog
 //! \date    06.07.2012
