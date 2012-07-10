@@ -23,6 +23,7 @@
 #include <QShowEvent>
 #include <QDesktopServices>
 #include <QFileInfo>
+#include <QScrollBar>
 
 // #include "clogfile.h"
 

@@ -252,9 +252,17 @@ void QHelpBrowser::setHelpEngine(QHelpEngine *helpEngine)
 //---------------------------------------------------------------------------
 void QHelpBrowser::slotHelpAnchor(const QUrl &link)
 {
+   // backup old position ...
+   QUrl src = source();
+   int  pos = verticalScrollBar()->value();
+
    // open external Url in browser ...
    if ((link.scheme() == "http") || (link.scheme() == "https"))
    {
       QDesktopServices::openUrl(link);
+
+      // restore old position ...
+      setSource(src);
+      verticalScrollBar()->setValue(pos);
    }
 }
