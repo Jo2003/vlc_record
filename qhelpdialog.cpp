@@ -65,7 +65,7 @@ QHelpDialog::~QHelpDialog()
 void QHelpDialog::showEvent(QShowEvent *event)
 {
    event->accept();
-   QTimer::singleShot(10, this, SLOT(adjustSplitter()));
+   QTimer::singleShot(20, this, SLOT(adjustSplitter()));
 }
 
 //---------------------------------------------------------------------------
@@ -108,7 +108,7 @@ void QHelpDialog::setHelpFile(const QString &helpFile)
 {
    if (pHe && (sFile != helpFile))
    {
-      disconnect(ui->helpBrowser, SLOT(setSource(const QUrl &)));
+      disconnect(this, SLOT(slotContentClick(const QModelIndex &)));
       ui->helpBrowser->setHelpEngine(NULL);
       ui->splitter->widget(0)->deleteLater();
 
@@ -123,10 +123,31 @@ void QHelpDialog::setHelpFile(const QString &helpFile)
 
       ui->helpBrowser->setHelpEngine(pHe);
       ui->splitter->insertWidget(0, pHe->contentWidget());
-      connect(pHe->contentWidget(), SIGNAL(linkActivated(const QUrl &)),ui->helpBrowser, SLOT(setSource(const QUrl &)));
+
+      connect(pHe->contentWidget(), SIGNAL(clicked(const QModelIndex &)),
+              this, SLOT(slotContentClick(const QModelIndex &)));
    }
 
    sFile = helpFile;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   content in content widget was clicked (single click) [slot]
+//
+//! \author  Jo2003
+//! \date    10.07.2012
+//
+//! \param   idx clicked index
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QHelpDialog::slotContentClick(const QModelIndex &idx)
+{
+   if (pHe)
+   {
+      ui->helpBrowser->setSource(pHe->contentModel()->contentItemAt(idx)->url());
+   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

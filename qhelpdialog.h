@@ -52,6 +52,7 @@ protected:
 
 private slots:
    void adjustSplitter();
+   void slotContentClick (const QModelIndex &idx);
 
 private:
    Ui::QHelpDialog *ui;
