@@ -15,6 +15,9 @@
 #include "qhelpdialog.h"
 #include "ui_qhelpdialog.h"
 
+// for logging ...
+// extern CLogFile VlcLog;
+
 //---------------------------------------------------------------------------
 //
 //! \brief   constructs QHelpDialog object
@@ -65,7 +68,7 @@ QHelpDialog::~QHelpDialog()
 void QHelpDialog::showEvent(QShowEvent *event)
 {
    event->accept();
-   QTimer::singleShot(20, this, SLOT(adjustSplitter()));
+   QTimer::singleShot(10, this, SLOT(adjustSplitter()));
 }
 
 //---------------------------------------------------------------------------
@@ -126,6 +129,12 @@ void QHelpDialog::setHelpFile(const QString &helpFile)
 
       connect(pHe->contentWidget(), SIGNAL(clicked(const QModelIndex &)),
               this, SLOT(slotContentClick(const QModelIndex &)));
+
+      // display whole document (first link) ...
+      QFileInfo fi(helpFile);
+      QString sUrl = QString("qthelp://%1/doc/%2.html").arg(pHe->registeredDocumentations().at(0)).arg(fi.baseName());
+      ui->helpBrowser->setSource(QUrl(sUrl));
+
    }
 
    sFile = helpFile;
@@ -168,7 +177,8 @@ void QHelpDialog::slotContentClick(const QModelIndex &idx)
 QHelpBrowser::QHelpBrowser(QWidget *parent, QHelpEngine *helpEngine)
    : QTextBrowser(parent), pHe(helpEngine)
 {
-   // nothing to do so far ...
+   // decide which link where to open ...
+   connect(this, SIGNAL(anchorClicked(const QUrl &)), this, SLOT(slotHelpAnchor(const QUrl &)));
 }
 
 //---------------------------------------------------------------------------
@@ -227,4 +237,24 @@ QVariant QHelpBrowser::loadResource(int type, const QUrl &url)
 void QHelpBrowser::setHelpEngine(QHelpEngine *helpEngine)
 {
    pHe = helpEngine;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   anchor in help text was clicked
+//
+//! \author  Jo2003
+//! \date    10.07.2012
+//
+//! \param   link clicked url
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QHelpBrowser::slotHelpAnchor(const QUrl &link)
+{
+   // open external Url in browser ...
+   if ((link.scheme() == "http") || (link.scheme() == "https"))
+   {
+      QDesktopServices::openUrl(link);
+   }
 }

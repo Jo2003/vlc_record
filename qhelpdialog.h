@@ -21,6 +21,10 @@
 #include <QTextBrowser>
 #include <QTimer>
 #include <QShowEvent>
+#include <QDesktopServices>
+#include <QFileInfo>
+
+// #include "clogfile.h"
 
 // -----------------------------------------------
 // namespace ...
@@ -71,7 +75,10 @@ public:
    QHelpBrowser(QWidget * parent = NULL, QHelpEngine *helpEngine = NULL);
    virtual ~QHelpBrowser();
    void     setHelpEngine (QHelpEngine *helpEngine);
-   virtual QVariant loadResource(int type, const QUrl &url);
+   virtual  QVariant loadResource(int type, const QUrl &url);
+
+private slots:
+   void slotHelpAnchor (const QUrl &link);
 
 private:
    QHelpEngine *pHe;
