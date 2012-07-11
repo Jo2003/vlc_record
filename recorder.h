@@ -121,19 +121,13 @@ class Recorder : public QDialog
 {
    Q_OBJECT
 
-   struct SPosition
-   {
-      QRect            pos;
-      Qt::WindowStates state;
-   };
-
 public:
    Recorder(QTranslator *trans = 0, QWidget *parent = 0);
     ~Recorder();
 
 public slots:
     virtual void show();
-    void slotRestoreWindow();
+    void slotRestoreMinimized ();
 
 private:
     Ui::Recorder                   *ui;
@@ -173,7 +167,6 @@ private:
     Ui::SVodSite                    lastVodSite;
     Ui::STabWidget                  vodTabWidget;
     Kartina                         metaKartina;
-    SPosition                       lastPos;
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
@@ -207,14 +200,13 @@ protected:
     void retranslateShortcutTable();
     void correctEpgOffset();
     int  grantAdultAccess (bool bProtected);
+    void toggleFullscreen();
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
     virtual void hideEvent (QHideEvent * event);
     virtual void closeEvent (QCloseEvent *event);
     virtual void keyPressEvent (QKeyEvent *event);
-    virtual void resizeEvent (QResizeEvent * event);
-    virtual void moveEvent (QMoveEvent * event);
 
 private slots:
 #ifdef INCLUDE_LIBVLC
@@ -293,6 +285,7 @@ private slots:
     void slotPCodeChangeResp (const QString &str);
     void slotAddFav(int cid);
     void on_pushHelp_clicked();
+    void printStateChange(const Qt::WindowStates &old);
 
 signals:
     void sigShow ();

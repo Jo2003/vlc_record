@@ -27,6 +27,9 @@ extern CDirStuff *pFolders;
 // global showinfo class ...
 extern CShowInfo showInfo;
 
+// global rec db ...
+extern CVlcRecDB *pDb;
+
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
 |  Begin: 19.01.2010 / 16:01:44
@@ -349,11 +352,8 @@ void Recorder::changeEvent(QEvent *e)
    {
    // catch minimize event ...
    case QEvent::WindowStateChange:
-      if (isMinimized() || isFullScreen())
-      {
-         lastPos.state = ((QWindowStateChangeEvent *)e)->oldState();
-      }
 
+      // printStateChange (((QWindowStateChangeEvent *)e)->oldState());
       if (isMinimized())
       {
          // only hide window, if trayicon stuff is available ...
@@ -541,50 +541,6 @@ void Recorder::hideEvent(QHideEvent *event)
 {
    emit sigHide();
    QWidget::hideEvent(event);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: resizeEvent
-|  Begin: 11.07.2012
-|  Author: Jo2003
-|  Description: catch resize event
-|
-|  Parameters: event pointer
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::resizeEvent(QResizeEvent *event)
-{
-   if (windowState().testFlag(Qt::WindowNoState))
-   {
-      lastPos.pos = geometry();
-   }
-   else
-   {
-      QWidget::resizeEvent(event);
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: moveEvent
-|  Begin: 11.07.2012
-|  Author: Jo2003
-|  Description: catch move event
-|
-|  Parameters: event pointer
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::moveEvent(QMoveEvent *event)
-{
-   if (windowState().testFlag(Qt::WindowNoState))
-   {
-      lastPos.pos = geometry();
-   }
-   else
-   {
-      QWidget::moveEvent(event);
-   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1637,7 +1593,7 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
    case QSystemTrayIcon::Context:
       if (isHidden())
       {
-         QTimer::singleShot(300, this, SLOT(slotRestoreWindow()));
+         QTimer::singleShot(300, this, SLOT(slotRestoreMinimized()));
       }
       break;
    default:
@@ -3254,20 +3210,19 @@ void Recorder::slotAddFav(int cid)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotRestoreWindow [slot]
+|  Method: slotRestoreMinimized [slot]
 |  Begin: 11.07.2012
 |  Author: Jo2003
-|  Description: restore window as former stored
+|  Description: restore window from minimized state
 |
 |  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotRestoreWindow()
+void Recorder::slotRestoreMinimized()
 {
-   showNormal();
-   setGeometry(lastPos.pos);
-   setWindowState(lastPos.state);
+   setWindowState(windowState() & ~(Qt::WindowMinimized | Qt::WindowActive));
+   show();
 }
 
 #ifdef INCLUDE_LIBVLC
@@ -3296,7 +3251,7 @@ void Recorder::slotToggleFullscreen()
       stackedLayout->setCurrentWidget(pVideoWidget);
 
       // make dialog fullscreen ...
-      showFullScreen();
+      toggleFullscreen();
 
       emit sigFullScreenToggled(1);
    }
@@ -3315,7 +3270,7 @@ void Recorder::slotToggleFullscreen()
       pVideoWidget = NULL;
 
       // show normal ...
-      slotRestoreWindow();
+      toggleFullscreen();
 
       emit sigFullScreenToggled(0);
    }
@@ -3408,7 +3363,6 @@ void Recorder::fillShortCutTab()
 void Recorder::initDialog ()
 {
    bool ok;
-   int  iWndState;
 
    // -------------------------------------------
    // create epg nav bar ...
@@ -3432,21 +3386,16 @@ void Recorder::initDialog ()
    // -------------------------------------------
    // set last windows size / position ...
    // -------------------------------------------
-   lastPos.pos = Settings.GetWindowRect(&ok);
-
-   if (ok)
+   if (Settings.getGeometry().size() > 0)
    {
-      setGeometry(lastPos.pos);
+      restoreGeometry(Settings.getGeometry());
    }
-
-   // -------------------------------------------
-   // maximize if it was maximized
-   // -------------------------------------------
-   iWndState = Settings.getWindowState(&ok);
-
-   if (ok)
+   else
    {
-      setWindowState((Qt::WindowStates)iWndState);
+      // delete old values ...
+      pDb->removeSetting("WndRect");
+      pDb->removeSetting("WndState");
+      pDb->removeSetting("IsMaximized");
    }
 
    // -------------------------------------------
@@ -3538,8 +3487,7 @@ void Recorder::savePositions()
    // -------------------------------------------
    // save gui settings ...
    // -------------------------------------------
-   Settings.SaveWindowRect(lastPos.pos);
-   Settings.saveWindowState((int)windowState());
+   Settings.setGeometry(saveGeometry());
 
 #ifndef INCLUDE_LIBVLC
    Settings.SaveSplitterSizes("spChanEpg", ui->vSplitterChanEpg->sizes());
@@ -4761,6 +4709,81 @@ int Recorder::grantAdultAccess(bool bProtected)
    return iRV;
 }
 
+/* -----------------------------------------------------------------\
+|  Method: toggleFullscreen
+|  Begin: 11.07.2012
+|  Author: Jo2003
+|  Description: toggle fullscreen
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::toggleFullscreen()
+{
+    setWindowState(windowState() ^ Qt::WindowFullScreen);
+    show();
+}
+
+void Recorder::printStateChange(const Qt::WindowStates &old)
+{
+   Qt::WindowStates cur = windowState();
+   QStringList sOld, sNew;
+
+   if (old.testFlag(Qt::WindowNoState))
+   {
+      sOld << "Qt::WindowNoState";
+   }
+
+   if (old.testFlag(Qt::WindowMinimized))
+   {
+      sOld << "Qt::WindowMinimized";
+   }
+
+   if (old.testFlag(Qt::WindowMaximized))
+   {
+      sOld << "Qt::WindowMaximized";
+   }
+
+   if (old.testFlag(Qt::WindowFullScreen))
+   {
+      sOld << "Qt::WindowFullScreen";
+   }
+
+   if (old.testFlag(Qt::WindowActive))
+   {
+      sOld << "Qt::WindowActive";
+   }
+
+   //////////
+
+   if (cur.testFlag(Qt::WindowNoState))
+   {
+      sNew << "Qt::WindowNoState";
+   }
+
+   if (cur.testFlag(Qt::WindowMinimized))
+   {
+      sNew << "Qt::WindowMinimized";
+   }
+
+   if (cur.testFlag(Qt::WindowMaximized))
+   {
+      sNew << "Qt::WindowMaximized";
+   }
+
+   if (cur.testFlag(Qt::WindowFullScreen))
+   {
+      sNew << "Qt::WindowFullScreen";
+   }
+
+   if (cur.testFlag(Qt::WindowActive))
+   {
+      sNew << "Qt::WindowActive";
+   }
+
+   mInfo(tr("WindowState change: \n --> %1 <--> %2").arg(sOld.join("|")).arg(sNew.join("|")));
+}
 
 /************************* History ***************************\
 | $Log$
