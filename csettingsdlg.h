@@ -87,6 +87,8 @@ public:
 
     void  SaveWindowRect (const QRect &wnd);
     QRect GetWindowRect (bool *ok = NULL);
+    int   getWindowState (bool *ok = NULL);
+    void  saveWindowState(int state);
     void  SaveSplitterSizes (const QString &name, const QList<int> &sz);
     QList<int> GetSplitterSizes (const QString &name, bool *ok = NULL);
     bool  IsMaximized ();

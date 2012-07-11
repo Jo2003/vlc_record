@@ -814,6 +814,21 @@ void CSettingsDlg::SaveWindowRect (const QRect &wnd)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: saveWindowState
+|  Begin: 10.07.2012
+|  Author: Jo2003
+|  Description: save windows state
+|
+|  Parameters: window state as integer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::saveWindowState(int state)
+{
+   pDb->setValue("WndState", state);
+}
+
+/* -----------------------------------------------------------------\
 |  Method: GetWindowRect
 |  Begin: 27.01.2010 / 11:22:39
 |  Author: Jo2003
@@ -852,6 +867,29 @@ QRect CSettingsDlg::GetWindowRect (bool *ok)
    }
 
    return wnd;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getWindowState
+|  Begin: 10.07.2012
+|  Author: Jo2003
+|  Description: get window state
+|
+|  Parameters: pointer to ok flag
+|
+|  Returns:  window state
+\----------------------------------------------------------------- */
+int CSettingsDlg::getWindowState(bool *ok)
+{
+   int iErr  = 0;
+   int state = pDb->intValue("WndState", &iErr);
+
+   if (ok)
+   {
+      *ok = !iErr;
+   }
+
+   return state;
 }
 
 /* -----------------------------------------------------------------\
