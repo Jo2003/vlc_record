@@ -1658,7 +1658,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/qhelpdialog.ui" line="14"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Pomóż</translation>
     </message>
 </context>
 <context>
@@ -2145,21 +2145,22 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="3513"/>
-        <source>&amp;Restore %1!</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;restore %1</source>
+        <oldsource>&amp;Restore %1!</oldsource>
+        <translation>&amp;przywrócić %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4760"/>
         <source>WindowState change: 
  --&gt; %1 &lt;--&gt; %2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1228"/>
         <location filename="forms/recorder_inc.ui" line="1454"/>
         <location filename="recorder.cpp" line="3305"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Pomóż</translation>
     </message>
     <message>
         <source>%1 - Click to activate!</source>
