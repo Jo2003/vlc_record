@@ -119,7 +119,13 @@ namespace Ui
 \********************************************************************/
 class Recorder : public QDialog
 {
-    Q_OBJECT
+   Q_OBJECT
+
+   struct SPosition
+   {
+      QRect            pos;
+      Qt::WindowStates state;
+   };
 
 public:
    Recorder(QTranslator *trans = 0, QWidget *parent = 0);
@@ -127,6 +133,7 @@ public:
 
 public slots:
     virtual void show();
+    void slotRestoreWindow();
 
 private:
     Ui::Recorder                   *ui;
@@ -144,7 +151,6 @@ private:
     QTabBar                        *pEpgNavbar;
     CTimerRec                       timeRec;
     QSystemTrayIcon                 trayIcon;
-    QRect                           sizePos;
     CVlcCtrl                        vlcCtrl;
     CTranslit                       translit;
     int                             iFontSzChg;
@@ -167,6 +173,7 @@ private:
     Ui::SVodSite                    lastVodSite;
     Ui::STabWidget                  vodTabWidget;
     Kartina                         metaKartina;
+    SPosition                       lastPos;
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
@@ -206,12 +213,14 @@ protected:
     virtual void hideEvent (QHideEvent * event);
     virtual void closeEvent (QCloseEvent *event);
     virtual void keyPressEvent (QKeyEvent *event);
+    virtual void resizeEvent (QResizeEvent * event);
+    virtual void moveEvent (QMoveEvent * event);
 
 private slots:
 #ifdef INCLUDE_LIBVLC
     void on_pushBwd_clicked();
     void on_pushFwd_clicked();
-    void slotToogleFullscreen();
+    void slotToggleFullscreen();
 #endif /* INCLUDE_LIBVLC */
     void on_btnVodSearch_clicked();
     void on_cbxGenre_activated(int index);

@@ -218,7 +218,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (ui->player, SIGNAL(sigCheckArchProg(ulong)), this, SLOT(slotCheckArchProg(ulong)));
    connect (this, SIGNAL(sigShowInfoUpdated()), ui->player, SLOT(slotShowInfoUpdated()));
 
-   connect (ui->player, SIGNAL(sigToggleFullscreen()), this, SLOT(slotToogleFullscreen()));
+   connect (ui->player, SIGNAL(sigToggleFullscreen()), this, SLOT(slotToggleFullscreen()));
    connect (this, SIGNAL(sigFullScreenToggled(int)), ui->player, SLOT(slotFsToggled(int)));
 
 
@@ -345,31 +345,22 @@ Recorder::~Recorder()
 \----------------------------------------------------------------- */
 void Recorder::changeEvent(QEvent *e)
 {
-   QDialog::changeEvent(e);
-
    switch (e->type())
    {
    // catch minimize event ...
    case QEvent::WindowStateChange:
-
-      // only hide window, if trayicon stuff is available ...
-      if (QSystemTrayIcon::isSystemTrayAvailable ())
+      if (isMinimized() || isFullScreen())
       {
-         if (isMinimized())
+         lastPos.state = ((QWindowStateChangeEvent *)e)->oldState();
+      }
+
+      if (isMinimized())
+      {
+         // only hide window, if trayicon stuff is available ...
+         if (QSystemTrayIcon::isSystemTrayAvailable () && Settings.HideToSystray())
          {
-            QWindowStateChangeEvent *pEvent = (QWindowStateChangeEvent *)e;
-
-            // store last position only, if it wasn't maximized or fullscreen ...
-            if (!(pEvent->oldState() & (Qt::WindowMaximized | Qt::WindowFullScreen)))
-            {
-               sizePos = geometry();
-            }
-
-            if (Settings.HideToSystray())
-            {
-               // hide dialog ...
-               QTimer::singleShot(300, this, SLOT(hide()));
-            }
+            // hide dialog ...
+            QTimer::singleShot(300, this, SLOT(hide()));
          }
       }
       break;
@@ -398,6 +389,7 @@ void Recorder::changeEvent(QEvent *e)
       break;
 
    default:
+      QWidget::changeEvent(e);
       break;
    }
 }
@@ -549,6 +541,50 @@ void Recorder::hideEvent(QHideEvent *event)
 {
    emit sigHide();
    QWidget::hideEvent(event);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: resizeEvent
+|  Begin: 11.07.2012
+|  Author: Jo2003
+|  Description: catch resize event
+|
+|  Parameters: event pointer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::resizeEvent(QResizeEvent *event)
+{
+   if (windowState().testFlag(Qt::WindowNoState))
+   {
+      lastPos.pos = geometry();
+   }
+   else
+   {
+      QWidget::resizeEvent(event);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: moveEvent
+|  Begin: 11.07.2012
+|  Author: Jo2003
+|  Description: catch move event
+|
+|  Parameters: event pointer
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::moveEvent(QMoveEvent *event)
+{
+   if (windowState().testFlag(Qt::WindowNoState))
+   {
+      lastPos.pos = geometry();
+   }
+   else
+   {
+      QWidget::moveEvent(event);
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1601,8 +1637,7 @@ void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
    case QSystemTrayIcon::Context:
       if (isHidden())
       {
-         setGeometry(sizePos);
-         QTimer::singleShot(300, this, SLOT(showNormal()));
+         QTimer::singleShot(300, this, SLOT(slotRestoreWindow()));
       }
       break;
    default:
@@ -3218,9 +3253,26 @@ void Recorder::slotAddFav(int cid)
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotRestoreWindow [slot]
+|  Begin: 11.07.2012
+|  Author: Jo2003
+|  Description: restore window as former stored
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotRestoreWindow()
+{
+   showNormal();
+   setGeometry(lastPos.pos);
+   setWindowState(lastPos.state);
+}
+
 #ifdef INCLUDE_LIBVLC
 /* -----------------------------------------------------------------\
-|  Method: slotToogleFullscreen [slot]
+|  Method: slotToggleFullscreen [slot]
 |  Begin: 27.04.2012
 |  Author: Jo2003
 |  Description: toggle fullscreen
@@ -3230,13 +3282,10 @@ void Recorder::slotAddFav(int cid)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotToogleFullscreen()
+void Recorder::slotToggleFullscreen()
 {
    if (!pVideoWidget)
    {
-      // store size and position ...
-      sizePos = geometry();
-
       // get videoWidget ...
       pVideoWidget = ui->player->getAndRemoveVideoWidget();
 
@@ -3249,10 +3298,6 @@ void Recorder::slotToogleFullscreen()
       // make dialog fullscreen ...
       showFullScreen();
 
-      // a possible bug fix -> make sure all is visible ...
-      pVideoWidget->show();
-      pVideoWidget->raise();
-      pVideoWidget->raiseRender();
       emit sigFullScreenToggled(1);
    }
    else
@@ -3269,11 +3314,8 @@ void Recorder::slotToogleFullscreen()
       // reset videoWidgets local pointer ...
       pVideoWidget = NULL;
 
-      // restore geometry ...
-      setGeometry(sizePos);
-
       // show normal ...
-      showNormal();
+      slotRestoreWindow();
 
       emit sigFullScreenToggled(0);
    }
@@ -3365,6 +3407,9 @@ void Recorder::fillShortCutTab()
 \----------------------------------------------------------------- */
 void Recorder::initDialog ()
 {
+   bool ok;
+   int  iWndState;
+
    // -------------------------------------------
    // create epg nav bar ...
    // -------------------------------------------
@@ -3387,25 +3432,21 @@ void Recorder::initDialog ()
    // -------------------------------------------
    // set last windows size / position ...
    // -------------------------------------------
-   bool ok = false;
-   sizePos = Settings.GetWindowRect(&ok);
+   lastPos.pos = Settings.GetWindowRect(&ok);
 
    if (ok)
    {
-      setGeometry(sizePos);
-   }
-   else
-   {
-      // store default size ...
-      sizePos = geometry();
+      setGeometry(lastPos.pos);
    }
 
    // -------------------------------------------
    // maximize if it was maximized
    // -------------------------------------------
-   if (Settings.IsMaximized())
+   iWndState = Settings.getWindowState(&ok);
+
+   if (ok)
    {
-      setWindowState(Qt::WindowMaximized);
+      setWindowState((Qt::WindowStates)iWndState);
    }
 
    // -------------------------------------------
@@ -3497,15 +3538,8 @@ void Recorder::savePositions()
    // -------------------------------------------
    // save gui settings ...
    // -------------------------------------------
-   if (windowState() != Qt::WindowMaximized)
-   {
-      Settings.SaveWindowRect(geometry());
-      Settings.SetIsMaximized(false);
-   }
-   else
-   {
-      Settings.SetIsMaximized(true);
-   }
+   Settings.SaveWindowRect(lastPos.pos);
+   Settings.saveWindowState((int)windowState());
 
 #ifndef INCLUDE_LIBVLC
    Settings.SaveSplitterSizes("spChanEpg", ui->vSplitterChanEpg->sizes());
@@ -4726,6 +4760,7 @@ int Recorder::grantAdultAccess(bool bProtected)
 
    return iRV;
 }
+
 
 /************************* History ***************************\
 | $Log$

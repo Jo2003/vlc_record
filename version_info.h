@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "56"
-#define BETA_EXT      ""
+#define VERSION_MINOR "57"
+#define BETA_EXT      "B3"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,7 +38,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2012-07-10: Version 2.57B3
 | - can drag / drop favourites into fav frame
+| - add documentation in QtHelp format
+| - add simple help view dialog
+| - save / restore player position on fullscreen toggle
+| - uses libVLC2.0.2 (Windows)
+| - bugfix for non updating showInfo on show end
 |
 | 2012-06-13: Version 2.56
 | - small changes in translation
