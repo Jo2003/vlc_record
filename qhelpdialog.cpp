@@ -109,35 +109,43 @@ void QHelpDialog::adjustSplitter()
 //---------------------------------------------------------------------------
 void QHelpDialog::setHelpFile(const QString &helpFile)
 {
-   if (pHe && (sFile != helpFile))
+   // check if new file exists ...
+   if (QFile::exists(helpFile))
    {
-      disconnect(this, SLOT(slotContentClick(const QModelIndex &)));
-      ui->helpBrowser->setHelpEngine(NULL);
-      ui->splitter->widget(0)->deleteLater();
+      if (pHe && (sFile != helpFile))
+      {
+         disconnect(this, SLOT(slotContentClick(const QModelIndex &)));
+         ui->helpBrowser->setHelpEngine(NULL);
+         ui->splitter->widget(0)->deleteLater();
 
-      delete pHe;
-      pHe = NULL;
+         delete pHe;
+         pHe = NULL;
+      }
+
+      if (!pHe)
+      {
+         pHe = new QHelpEngine (helpFile, this);
+         pHe->setupData();
+
+         ui->helpBrowser->setHelpEngine(pHe);
+         ui->splitter->insertWidget(0, pHe->contentWidget());
+
+         connect(pHe->contentWidget(), SIGNAL(clicked(const QModelIndex &)),
+                 this, SLOT(slotContentClick(const QModelIndex &)));
+
+         // display whole document (first link) ...
+         QStringList sl = pHe->registeredDocumentations();
+
+         if (sl.count() > 0)
+         {
+            QFileInfo fi(helpFile);
+            QString   sUrl = QString("qthelp://%1/doc/%2.html").arg(sl.at(0)).arg(fi.baseName());
+            ui->helpBrowser->setSource(QUrl(sUrl));
+         }
+      }
+
+      sFile = helpFile;
    }
-
-   if (!pHe)
-   {
-      pHe = new QHelpEngine (helpFile, this);
-      pHe->setupData();
-
-      ui->helpBrowser->setHelpEngine(pHe);
-      ui->splitter->insertWidget(0, pHe->contentWidget());
-
-      connect(pHe->contentWidget(), SIGNAL(clicked(const QModelIndex &)),
-              this, SLOT(slotContentClick(const QModelIndex &)));
-
-      // display whole document (first link) ...
-      QFileInfo fi(helpFile);
-      QString sUrl = QString("qthelp://%1/doc/%2.html").arg(pHe->registeredDocumentations().at(0)).arg(fi.baseName());
-      ui->helpBrowser->setSource(QUrl(sUrl));
-
-   }
-
-   sFile = helpFile;
 }
 
 //---------------------------------------------------------------------------
