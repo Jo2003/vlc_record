@@ -85,14 +85,8 @@ public:
     int GetBufferTime ();
     vlclog::eLogLevel GetLogLevel ();
 
-    void  SaveWindowRect (const QRect &wnd);
-    QRect GetWindowRect (bool *ok = NULL);
-    int   getWindowState (bool *ok = NULL);
-    void  saveWindowState(int state);
     void  SaveSplitterSizes (const QString &name, const QList<int> &sz);
     QList<int> GetSplitterSizes (const QString &name, bool *ok = NULL);
-    bool  IsMaximized ();
-    void  SetIsMaximized (bool bMax);
     int   GetCustFontSize ();
     void  SetCustFontSize (int iSize);
     void  SaveFavourites (const QList<int> &favList);
@@ -117,6 +111,8 @@ public:
     void setWaitTrigger (CWaitTrigger *pTrigger);
     void setXmlParser (CKartinaXMLParser *parser);
     void setAccountInfo(const cparser::SAccountInfo *pInfo);
+    void setGeometry(const QByteArray &ba);
+    QByteArray getGeometry();
 
 protected:
     virtual void changeEvent(QEvent *e);

@@ -449,6 +449,70 @@ int CVlcRecDB::removeSetting(const QString &sKey)
    return query.exec() ? 0 : -1;
 }
 
+/* -----------------------------------------------------------------\
+|  Method: setBlob
+|  Begin: 11.07.2012
+|  Author: Jo2003
+|  Description: store BLOB value as string in db
+|
+|  Parameters: ref. to key string, blob value to store
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CVlcRecDB::setBlob(const QString &sKey, const QByteArray &blob)
+{
+   QStringList byteStream;
+   uchar       ch;
+
+   for (int i = 0; i < blob.count(); i++)
+   {
+      ch = (uchar)blob[i];
+      byteStream << QString("%1").arg((uint)ch, 2, 16, QChar('0'));
+   }
+
+   return setValue(sKey, byteStream.join(":"));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: blobValue
+|  Begin: 11.07.2012
+|  Author: Jo2003
+|  Description: get stored blob value
+|
+|  Parameters: ref. to key string, pointer to errornbuffer
+|
+|  Returns: value as byte array
+\----------------------------------------------------------------- */
+QByteArray CVlcRecDB::blobValue(const QString &sKey, int *pErr)
+{
+   int         err;
+   QString     s    = stringValue(sKey, &err);
+   QByteArray  blob;
+
+   if (pErr)
+   {
+      *pErr = -1;
+   }
+
+   if ((s.size() > 0) && !err)
+   {
+      QStringList byteStream = s.split(":");
+
+      for (int i = 0; i < byteStream.count(); i++)
+      {
+         blob += (char)byteStream.at(i).toUInt(NULL, 16);
+      }
+
+      if (pErr)
+      {
+         *pErr = 0;
+      }
+   }
+
+   return blob;
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
