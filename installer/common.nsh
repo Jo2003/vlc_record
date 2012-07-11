@@ -112,7 +112,7 @@ Section "libVLC Framework" SecFw
 ;   File "${LIBVLCFW}\npvlc.dll"
 
    SetOutPath "$INSTDIR\plugins"
-   File /r "${LIBVLCFW}\plugins\*.dll"
+   File /r "${LIBVLCFW}\plugins\*"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -218,7 +218,7 @@ SectionEnd
 ; Uninstaller Section framework ...
 Section "un.Framework"
   ; delete vlc framework ...
-  Delete "$INSTDIR\plugins\*.*"
+  RMDir /r "$INSTDIR\plugins"
   Delete "$INSTDIR\libvlc.dll"
   Delete "$INSTDIR\libvlccore.dll"
 ;  Delete "$INSTDIR\axvlc.dll"
@@ -226,7 +226,7 @@ Section "un.Framework"
   Delete "$INSTDIR\cache-gen.exe"
   Delete "$INSTDIR\clearcache.bat"
 
-  RMDir  "$INSTDIR\plugins"
+  
 SectionEnd
 
 ;-------------------------------------------------------
