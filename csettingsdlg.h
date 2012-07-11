@@ -18,6 +18,7 @@
 #include <QDir>
 #include <QTableWidget>
 #include <QTimer>
+#include <QSystemTrayIcon>
 
 #include "cvlcrecdb.h"
 #include "clogfile.h"

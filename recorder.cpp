@@ -241,8 +241,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&Settings,     SIGNAL(sigSetTimeShift(int)), this, SLOT(slotSetTimeShift(int)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
-   connect (&trayIcon,     SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(slotSystrayActivated(QSystemTrayIcon::ActivationReason)));
-   if (Settings.HideToSystray())
+   if (Settings.HideToSystray() && QSystemTrayIcon::isSystemTrayAvailable())
    {
       connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
       connect (this,          SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
@@ -429,9 +428,6 @@ void Recorder::closeEvent(QCloseEvent *event)
    {
       // close help dialog ..
       Help.close();
-
-      // disconnect trayicon stuff ...
-      disconnect (&trayIcon);
 
       // We want to close program, store all needed values ...
       // Note: putting this function in destructor doesn't work!
@@ -636,7 +632,7 @@ void Recorder::on_pushSettings_clicked()
    // lock parental manager ...
    emit sigLockParentalManager();
 
-   if (Settings.HideToSystray())
+   if (Settings.HideToSystray() && QSystemTrayIcon::isSystemTrayAvailable())
    {
       connect (this, SIGNAL(sigHide()), &trayIcon, SLOT(show()));
       connect (this, SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
@@ -1571,34 +1567,6 @@ void Recorder::slotKartinaResponse(const QString& resp, int req)
 void Recorder::slotUnused(const QString &str)
 {
    Q_UNUSED(str)
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotSystrayActivated
-|  Begin: 26.01.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: systray icon clicked, restore app window ...
-|
-|  Parameters: what kind of click ...
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotSystrayActivated(QSystemTrayIcon::ActivationReason reason)
-{
-   switch (reason)
-   {
-   case QSystemTrayIcon::MiddleClick:
-   case QSystemTrayIcon::DoubleClick:
-   case QSystemTrayIcon::Trigger:
-   case QSystemTrayIcon::Context:
-      if (isHidden())
-      {
-         QTimer::singleShot(300, this, SLOT(slotRestoreMinimized()));
-      }
-      break;
-   default:
-      break;
-   }
 }
 
 /* -----------------------------------------------------------------\
@@ -3538,7 +3506,14 @@ void Recorder::CleanContextMenu()
 void Recorder::CreateSystray()
 {
    trayIcon.setIcon(QIcon(":/app/kartina"));
-   trayIcon.setToolTip(tr("%1 - Click to activate!").arg(APP_NAME));
+
+   // create context menu for tray icon ...
+   QMenu *pShowMenu = new QMenu (this);
+   pShowMenu->addAction(QIcon(":/app/restore"),
+                        tr("&restore %1").arg(APP_NAME),
+                        this, SLOT(slotRestoreMinimized()));
+
+   trayIcon.setContextMenu(pShowMenu);
 }
 
 /* -----------------------------------------------------------------\

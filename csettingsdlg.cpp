@@ -331,11 +331,11 @@ void CSettingsDlg::readSettings()
    iIdx = m_ui->cbxPlayerMod->findText(s);
    m_ui->cbxPlayerMod->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
-   // disable "minimize to tray" on mac because this isn't supported ...
-#ifdef Q_OS_MAC
-   m_ui->checkHideToSystray->setDisabled(true);
-#endif // Q_OS_MAC
-
+   // check if hide to systray is supported ...
+   if (!QSystemTrayIcon::isSystemTrayAvailable())
+   {
+      m_ui->checkHideToSystray->setDisabled(true);
+   }
 }
 
 /* -----------------------------------------------------------------\

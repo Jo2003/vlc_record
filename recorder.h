@@ -251,7 +251,6 @@ private slots:
     void slotVlcStarts (int iState);
     void slotVlcEnds (int iState);
     void slotShutdown ();
-    void slotSystrayActivated (QSystemTrayIcon::ActivationReason reason);
     void slotChanListContext (const QPoint &pt);
     void slotChgFavourites (QAction *pAct);
     void slotHandleFavAction (QAction *pAct);
