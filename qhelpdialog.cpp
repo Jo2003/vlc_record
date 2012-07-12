@@ -67,7 +67,7 @@ QHelpDialog::~QHelpDialog()
 //---------------------------------------------------------------------------
 void QHelpDialog::showEvent(QShowEvent *event)
 {
-   event->accept();
+   Q_UNUSED(event)
    QTimer::singleShot(10, this, SLOT(adjustSplitter()));
 }
 
@@ -114,7 +114,6 @@ void QHelpDialog::setHelpFile(const QString &helpFile)
    {
       if (pHe && (sFile != helpFile))
       {
-         disconnect(this, SLOT(slotContentClick(const QModelIndex &)));
          ui->helpBrowser->setHelpEngine(NULL);
          ui->splitter->widget(0)->deleteLater();
 

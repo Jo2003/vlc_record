@@ -355,6 +355,8 @@ void Recorder::changeEvent(QEvent *e)
       // printStateChange (((QWindowStateChangeEvent *)e)->oldState());
       if (isMinimized())
       {
+         Help.close();
+
          // only hide window, if trayicon stuff is available ...
          if (QSystemTrayIcon::isSystemTrayAvailable () && Settings.HideToSystray())
          {
@@ -3506,6 +3508,7 @@ void Recorder::CleanContextMenu()
 void Recorder::CreateSystray()
 {
    trayIcon.setIcon(QIcon(":/app/kartina"));
+   trayIcon.setToolTip(APP_NAME);
 
    // create context menu for tray icon ...
    QMenu *pShowMenu = new QMenu (this);
