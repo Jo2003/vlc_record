@@ -337,14 +337,12 @@ void Recorder::changeEvent(QEvent *e)
       // printStateChange (((QWindowStateChangeEvent *)e)->oldState());
       if (isMinimized())
       {
-         if (pHelp->isVisible())
-         {
-            pHelp->showMinimized();
-         }
-
          // only hide window, if trayicon stuff is available ...
          if (QSystemTrayIcon::isSystemTrayAvailable () && Settings.HideToSystray())
          {
+            // close help ...
+            pHelp->close();
+
             // hide dialog ...
             QTimer::singleShot(300, this, SLOT(hide()));
          }

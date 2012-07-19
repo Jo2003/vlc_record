@@ -30,7 +30,7 @@
 //
 //---------------------------------------------------------------------------
 QHelpDialog::QHelpDialog (QWidget *parent, const QString &helpFile)
-   : QDialog(parent),
+   : QDialog(parent, Qt::Window),
      ui(new Ui::QHelpDialog), pHe(NULL)
 {
    ui->setupUi(this);
