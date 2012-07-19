@@ -69,17 +69,9 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
 //---------------------------------------------------------------------------
 QVlcVideoWidget::~QVlcVideoWidget()
 {
-   if (_mouseHide)
-   {
-      delete _mouseHide;
-      _mouseHide = NULL;
-   }
-
-   if (_render)
-   {
-      delete _render;
-      _render = NULL;
-   }
+   // Qt memory management takes care of
+   // object deletion e.g. will delete
+   // all child objects!
 }
 
 //---------------------------------------------------------------------------

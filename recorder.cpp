@@ -93,8 +93,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    VlcLog.SetLogFile(pFolders->getDataDir(), APP_LOG_FILE);
 
    // set channel list model and delegate ...
-   pModel    = new QStandardItemModel;
-   pDelegate = new QChanListDelegate;
+   pModel    = new QStandardItemModel(this);
+   pDelegate = new QChanListDelegate(this);
 
    ui->channelList->setItemDelegate(pDelegate);
    ui->channelList->setModel(pModel);
@@ -113,8 +113,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    vlcCtrl.setParent(this);
    favContext.setParent(this, Qt::Popup);
 
-   // non-modal ...
-   Help.setParent(NULL);
+   // help dialog class (non modal) ...
+   pHelp = new QHelpDialog(NULL);
 
    // set host for pix cache ...
    pixCache.setHost(Settings.GetAPIServer());
@@ -144,7 +144,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       sHlp = QString("%1/help_en.qhc").arg(pFolders->getDocDir());
    }
 
-   Help.setHelpFile(sHlp);
+   pHelp->setHelpFile(sHlp);
 
    // set connection data ...
    KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
@@ -305,30 +305,12 @@ Recorder::~Recorder()
 {
    delete ui;
 
-   if (pModel)
+   // pHelp isn't owned by Recorder --> delete separatly ...
+   if (pHelp != NULL)
    {
-      delete pModel;
-      pModel = NULL;
+      delete pHelp;
+      pHelp = NULL;
    }
-
-   if (pDelegate)
-   {
-      delete pDelegate;
-      pDelegate = NULL;
-   }
-
-   if (pUpdateChecker)
-   {
-      delete pUpdateChecker;
-      pUpdateChecker = NULL;
-   }
-#ifdef INCLUDE_LIBVLC
-   if (stackedLayout)
-   {
-      delete stackedLayout;
-      stackedLayout = NULL;
-   }
-#endif // INCLUDE_LIBVLC
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +337,10 @@ void Recorder::changeEvent(QEvent *e)
       // printStateChange (((QWindowStateChangeEvent *)e)->oldState());
       if (isMinimized())
       {
-         Help.close();
+         if (pHelp->isVisible())
+         {
+            pHelp->showMinimized();
+         }
 
          // only hide window, if trayicon stuff is available ...
          if (QSystemTrayIcon::isSystemTrayAvailable () && Settings.HideToSystray())
@@ -429,7 +414,7 @@ void Recorder::closeEvent(QCloseEvent *event)
    if (bAccept)
    {
       // close help dialog ..
-      Help.close();
+      pHelp->close();
 
       // We want to close program, store all needed values ...
       // Note: putting this function in destructor doesn't work!
@@ -660,7 +645,7 @@ void Recorder::on_pushSettings_clicked()
       sHlp = QString("%1/help_en.qhc").arg(pFolders->getDocDir());
    }
 
-   Help.setHelpFile(sHlp);
+   pHelp->setHelpFile(sHlp);
 }
 
 /* -----------------------------------------------------------------\
@@ -1405,8 +1390,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
 \----------------------------------------------------------------- */
 void Recorder::on_pushHelp_clicked()
 {
-   Help.show();
-   Help.raise();
+   pHelp->show();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

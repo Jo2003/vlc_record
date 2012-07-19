@@ -132,7 +132,7 @@ public slots:
 private:
     Ui::Recorder                   *ui;
     CSettingsDlg                    Settings;
-    QHelpDialog                     Help;
+    QHelpDialog                    *pHelp;
     QSecCodeDlg                     secCodeDlg;
     CKartinaClnt                    KartinaTv;
     CKartinaXMLParser               XMLParser;
