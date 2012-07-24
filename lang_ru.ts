@@ -2246,7 +2246,7 @@ dataDir: %1
         <location filename="recorder.cpp" line="3498"/>
         <source>&amp;restore %1</source>
         <oldsource>&amp;Restore %1!</oldsource>
-        <translation>&amp;восстанавливать %1</translation>
+        <translation>&amp;показать %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4745"/>
