@@ -4,7 +4,7 @@ TMPFILE=/tmp/plist.tmp
 CONTENTS=$APPNAME.app/Contents
 OFFNAME=""
 if [ -z $QTTRANS ] ; then
-    QTTRANS=/Users/joergn/Qt/4.8.1/translations
+    QTTRANS=/Users/joergn/Qt/4.8.2/translations
 fi
 
 # create official name ...

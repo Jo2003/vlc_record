@@ -56,7 +56,10 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    ui->vMainLayout->removeWidget(ui->masterFrame);
    stackedLayout->addWidget(ui->masterFrame);
    ui->vMainLayout->addLayout(stackedLayout);
-#endif
+#ifdef Q_OS_MAC
+   pNoIdleProc = new QNoIdleProc (this);
+#endif // Q_OS_MAC
+#endif // INCLUDE_LIBVLC
 
    // set (customized) windows title ...
    setWindowTitle(APP_NAME);
@@ -2470,11 +2473,18 @@ void Recorder::slotIncPlayState(int iState)
       // might be play, record, timer record -->
       // therefore use internal state ...
       emit sigLCDStateChange ((int)ePlayState);
+#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
+      pNoIdleProc->startNoIdle();
+#endif
       break;
 
    case IncPlay::PS_END:
+   case IncPlay::PS_STOP:
       // display "stop" in case of "end" ...
       emit sigLCDStateChange ((int)IncPlay::PS_STOP);
+#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
+      pNoIdleProc->endNoIdle();
+#endif
       break;
 
    case IncPlay::PS_ERROR:

@@ -45,6 +45,7 @@ QNoIdleProc::QNoIdleProc(QObject *parent) :
 QNoIdleProc::~QNoIdleProc()
 {
    endNoIdle();
+   waitForFinished();
 }
 
 //---------------------------------------------------------------------------
