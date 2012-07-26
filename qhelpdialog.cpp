@@ -86,9 +86,9 @@ void QHelpDialog::adjustSplitter()
    QList<int> sz = ui->splitter->sizes();
 
    // adjust splitter to have good dimension ...
-   // 1/5 <--> 4/5
+   // 1:3
    i = sz.value(0) + sz.value(1);
-   j = (int)(i / 5);
+   j = (int)(i / 4);
    sz.clear();
    sz.insert(0, j);
    sz.insert(1, i - j);
