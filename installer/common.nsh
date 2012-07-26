@@ -96,8 +96,8 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\modules\11_libvlc-mp4.mod"
 
   SetOutPath "$INSTDIR\doc"
-  File /r "${SRCDIR}\documentation\*.qhc"
-  File /r "${SRCDIR}\documentation\*.qch"
+  File /r "${SRCDIR}\qhc\${APPNAME}\*.qhc"
+  File /r "${SRCDIR}\qhc\${APPNAME}\*.qch"
 
 SectionEnd
 
@@ -226,7 +226,7 @@ Section "un.Framework"
   Delete "$INSTDIR\cache-gen.exe"
   Delete "$INSTDIR\clearcache.bat"
 
-  
+
 SectionEnd
 
 ;-------------------------------------------------------
