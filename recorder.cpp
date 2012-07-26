@@ -2474,6 +2474,7 @@ void Recorder::slotIncPlayState(int iState)
       // therefore use internal state ...
       emit sigLCDStateChange ((int)ePlayState);
 #if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
+      // disable idle timer as long as a stream is played ...
       pNoIdleProc->startNoIdle();
 #endif
       break;
@@ -2483,6 +2484,7 @@ void Recorder::slotIncPlayState(int iState)
       // display "stop" in case of "end" ...
       emit sigLCDStateChange ((int)IncPlay::PS_STOP);
 #if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
+      //re-enable idle timer when player ends ...
       pNoIdleProc->endNoIdle();
 #endif
       break;
