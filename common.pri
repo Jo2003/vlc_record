@@ -120,7 +120,7 @@ else  {
 unix {
    OTHER_FILES += create_install_mak.sh \
       documentation/create_qthelp.sh
-   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET) && cd documentation && ./create_qthelp.sh $$basename(TARGET)
+   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
 }
 
 # -------------------------------------
