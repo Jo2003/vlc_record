@@ -77,8 +77,8 @@ install_base:
 	\${INSTALL} -m 755 -d \${TARGET}/share/\${PROGFOLDER}/doc/
 	\${INSTALL} -s -t \${TARGET}/bin release/\${PROG}
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/language lang_*.qm
-	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/doc documentation/*.qch
-	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/doc documentation/*.qhc
+	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/doc qhc/${OFFNAME}/*.qch
+	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/doc qhc/${OFFNAME}/*.qhc
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/1_vlc-player.mod
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/2_MPlayer.mod
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/3_vlc-mp4.mod

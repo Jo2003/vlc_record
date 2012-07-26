@@ -43,8 +43,8 @@ mkdir -p $CONTENTS/translations
 cp ../*.qm $CONTENTS/Resources/language/
 cp ../modules/*.mod $CONTENTS/PlugIns/modules/
 cp ../resources/$APPNAME.icns $CONTENTS/Resources/$APPNAME.icns
-cp ../documentation/*.qhc $CONTENTS/Resources/doc/
-cp ../documentation/*.qch $CONTENTS/Resources/doc/
+cp ../qhc/$OFFNAME/*.qhc $CONTENTS/Resources/doc/
+cp ../qhc/$OFFNAME/*.qch $CONTENTS/Resources/doc/
 cp -R ../mac/* $CONTENTS/MacOS
 
 # copy Qt translations
