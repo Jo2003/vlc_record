@@ -834,6 +834,9 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
       emit pPlayer->sigTriggerAspectChg ();
       pPlayer->startPlayTimer();
       pPlayer->initSlider();
+#ifdef Q_OS_MAC
+      noIdleProc.startNoIdle();
+#endif
       break;
 
    // player paused ...
@@ -848,6 +851,9 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
       mInfo("libvlc_MediaPlayerStopped ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
       pPlayer->stopPlayTimer();
+#ifdef Q_OS_MAC
+      noIdleProc.endNoIdle();
+#endif
       break;
 
    // end of media reached ...
@@ -855,6 +861,9 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
       mInfo("libvlc_MediaPlayerEndReached ...");
       emit pPlayer->sigPlayState((int)IncPlay::PS_END);
       pPlayer->stopPlayTimer();
+#ifdef Q_OS_MAC
+      noIdleProc.endNoIdle();
+#endif
       break;
 
    default:

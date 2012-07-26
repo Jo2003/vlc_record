@@ -34,6 +34,10 @@
 #include "cwaittrigger.h"
 #include "qvlcvideowidget.h"
 
+#ifdef Q_OS_MAC
+   #include "qnoidleproc.h"
+#endif
+
 //===================================================================
 // namespace
 //===================================================================
@@ -93,6 +97,9 @@ private:
    uint                         uiDuration;
    QMap<QString, QString>       mAspect;
    QMap<QString, QString>       mCrop;
+#ifdef Q_OS_MAC
+   QNoIdleProc                  noIdleProc;
+#endif
 
 private slots:
    void on_posSlider_valueChanged(int value);

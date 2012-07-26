@@ -143,6 +143,9 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    win32:LIBS += -Llib
 
    mac {
+
+      SOURCES += qnoidleproc.cpp
+      HEADERS += qnoidleproc.h
       OTHER_FILES += create_mac_bundle.sh \
                      release/create_dmg.sh
       INCLUDEPATH += mac/include

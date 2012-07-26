@@ -755,27 +755,27 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="861"/>
+        <location filename="cplayer.cpp" line="870"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="894"/>
+        <location filename="cplayer.cpp" line="903"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="927"/>
+        <location filename="cplayer.cpp" line="936"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1215"/>
+        <location filename="cplayer.cpp" line="1224"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1303"/>
+        <location filename="cplayer.cpp" line="1312"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -1852,6 +1852,14 @@ or start time is later than end time!</source>
         <location filename="forms/qhelpdialog.ui" line="14"/>
         <source>Help</source>
         <translation>Помощь</translation>
+    </message>
+</context>
+<context>
+    <name>QNoIdleProc</name>
+    <message>
+        <location filename="qnoidleproc.cpp" line="94"/>
+        <source>NoIdleProc state change to %1</source>
+        <translation></translation>
     </message>
 </context>
 <context>
