@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "57"
-#define BETA_EXT      "B3"
+#define BETA_EXT      "B4"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-07-26: Version 2.57B4
+| - use branded help
+| - updated help
+| - test for mac "no idle"
 |
 | 2012-07-10: Version 2.57B3
 | - can drag / drop favourites into fav frame
