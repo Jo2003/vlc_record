@@ -61,9 +61,10 @@
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
    #include "qvlcvideowidget.h"
-   #ifdef Q_OS_MAC
-      #include "qnoidleproc.h"
-   #endif
+#endif
+
+#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
+   #include "qnoidleproc.h"
 #endif
 
 //------------------------------------------------------------------
@@ -173,10 +174,11 @@ private:
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
-#ifdef Q_OS_MAC
-    QNoIdleProc                    *pNoIdleProc;
-#endif // Q_OS_MAC
 #endif //INCLUDE_LIBVLC
+
+#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
+    QNoIdleProc                    *pNoIdleProc;
+#endif
 
 protected:
     void fillShortCutTab();
