@@ -111,6 +111,10 @@ Section "libVLC Framework" SecFw
 ;   File "${LIBVLCFW}\axvlc.dll"
 ;   File "${LIBVLCFW}\npvlc.dll"
 
+; In case of update make sure we delete all old 
+; VLC plugins!
+   RMDir /r "$INSTDIR\plugins"
+
    SetOutPath "$INSTDIR\plugins"
    File /r "${LIBVLCFW}\plugins\*"
 SectionEnd
