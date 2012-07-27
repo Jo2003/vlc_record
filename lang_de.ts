@@ -1997,12 +1997,12 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="recorder.cpp" line="4328"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
-        <translation>Der VLC Player läuft noch.&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du ihn schließen willst?</translation>
+        <translation>Aufnahme läuft.&lt;br /&gt; &lt;br /&gt;Sind Sie sicher, dass Sie die Aufnahme abbrechen wollen?</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2294"/>
         <source>Remove from favourites</source>
-        <translation>Entfernen</translation>
+        <translation>Aus Favoriten entfernen</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2301"/>
@@ -2063,11 +2063,8 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2540"/>
-        <location filename="recorder.cpp" line="4069"/>
-        <location filename="recorder.cpp" line="4125"/>
         <source>Can&apos;t start VLC-Media Player!</source>
-        <translation>Kann den VLC Mediaplayer nicht starten!</translation>
+        <translation type="obsolete">Kann den VLC Mediaplayer nicht starten!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2572"/>
@@ -2157,7 +2154,8 @@ dataDir: %1
         <location filename="recorder.cpp" line="2546"/>
         <location filename="recorder.cpp" line="4076"/>
         <location filename="recorder.cpp" line="4131"/>
-        <source>Started VLC with pid #%1!</source>
+        <source>Started player with pid #%1!</source>
+        <oldsource>Started VLC with pid #%1!</oldsource>
         <translation></translation>
     </message>
     <message>
@@ -2182,6 +2180,13 @@ dataDir: %1
         <location filename="recorder.cpp" line="2429"/>
         <source>Remove &quot;%1&quot; from favourites</source>
         <translation>&quot;%1&quot; aus den Favoriten entfernen</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="2540"/>
+        <location filename="recorder.cpp" line="4069"/>
+        <location filename="recorder.cpp" line="4125"/>
+        <source>Can&apos;t start player!</source>
+        <translation>Kann Player nicht starten!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3031"/>
@@ -2469,8 +2474,9 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="1008"/>
         <location filename="forms/recorder_inc.ui" line="1079"/>
-        <source>Stop VLC ...</source>
-        <translation>Schließe den VLC Player ...</translation>
+        <source>Stop Player</source>
+        <oldsource>Stop VLC ...</oldsource>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1047"/>

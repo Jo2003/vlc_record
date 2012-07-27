@@ -1076,7 +1076,7 @@ border-top: 0px;
                     </size>
                    </property>
                    <property name="toolTip">
-                    <string>Stop VLC ...</string>
+                    <string>Stop Player</string>
                    </property>
                    <property name="text">
                     <string/>

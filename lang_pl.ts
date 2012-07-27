@@ -1794,8 +1794,9 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/recorder.ui" line="1008"/>
         <location filename="forms/recorder_inc.ui" line="1079"/>
-        <source>Stop VLC ...</source>
-        <translation>Zatrzymaj VLC …</translation>
+        <source>Stop Player</source>
+        <oldsource>Stop VLC ...</oldsource>
+        <translation>Zatrzymaj Odtwarzacz</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1047"/>
@@ -2016,17 +2017,15 @@ dataDir: %1
         <translation>Błąd!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2540"/>
-        <location filename="recorder.cpp" line="4069"/>
-        <location filename="recorder.cpp" line="4125"/>
         <source>Can&apos;t start VLC-Media Player!</source>
-        <translation>Nie można uruchomić VLC-Media Player!</translation>
+        <translation type="obsolete">Nie można uruchomić VLC-Media Player!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2546"/>
         <location filename="recorder.cpp" line="4076"/>
         <location filename="recorder.cpp" line="4131"/>
-        <source>Started VLC with pid #%1!</source>
+        <source>Started player with pid #%1!</source>
+        <oldsource>Started VLC with pid #%1!</oldsource>
         <translation></translation>
     </message>
     <message>
@@ -2050,6 +2049,13 @@ dataDir: %1
         <location filename="recorder.cpp" line="2429"/>
         <source>Remove &quot;%1&quot; from favourites</source>
         <translation>Usuń &quot;%1&quot; z ulubionych</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="2540"/>
+        <location filename="recorder.cpp" line="4069"/>
+        <location filename="recorder.cpp" line="4125"/>
+        <source>Can&apos;t start player!</source>
+        <translation>Nie można uruchomić odtwarzacza!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3031"/>

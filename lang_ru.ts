@@ -995,7 +995,7 @@ To change the parent code make sure:
         <location filename="forms/csettingsdlg.ui" line="39"/>
         <location filename="forms/csettingsdlg.ui" line="440"/>
         <source>User: </source>
-        <translation>Логин:</translation>
+        <translation>Абонемент:</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="33"/>
@@ -1215,7 +1215,7 @@ To change the parent code make sure:
         <location filename="forms/csettingsdlg.ui" line="283"/>
         <source>Sh&amp;ortcuts</source>
         <oldsource>Shortcuts</oldsource>
-        <translation>Со&amp;кращения</translation>
+        <translation>Горячии &amp;клавиши</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="302"/>
@@ -1246,7 +1246,7 @@ To change the parent code make sure:
     <message>
         <location filename="forms/csettingsdlg.ui" line="647"/>
         <source>Doubleclick on channel list starts play</source>
-        <translation>Двойной щелчок на список каналов стартует плеер</translation>
+        <translation>Двойной щелчок на списке каналов стартует плеер</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="633"/>
@@ -1262,7 +1262,7 @@ To change the parent code make sure:
         <location filename="forms/csettingsdlg.ui" line="675"/>
         <source>Parental &amp;Manager</source>
         <oldsource>Parental Manager</oldsource>
-        <translation>Родительский &amp;менеджер</translation>
+        <translation>&amp;Родительский контроль</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="694"/>
@@ -1532,7 +1532,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="forms/ctimerrec.ui" line="28"/>
         <source> Job Control </source>
-        <translation>Список таймера</translation>
+        <translation> Планировщик записи </translation>
     </message>
     <message>
         <location filename="forms/ctimerrec.ui" line="132"/>
@@ -1592,7 +1592,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="forms/ctimerrec.ui" line="214"/>
         <source>Shutdown when all is done</source>
-        <translation>Выключить компьютер по окончанию</translation>
+        <translation>Выключить компьютер по окончании</translation>
     </message>
     <message>
         <location filename="forms/ctimerrec.ui" line="329"/>
@@ -1719,12 +1719,12 @@ or start time is later than end time!</source>
     <message>
         <location filename="cvodbrowser.cpp" line="278"/>
         <source>Remove from favourites.</source>
-        <translation>Удалить из избранного.</translation>
+        <translation>Удалить из избранных.</translation>
     </message>
     <message>
         <location filename="cvodbrowser.cpp" line="287"/>
         <source>Add to favourites.</source>
-        <translation>Добавить в избранное.</translation>
+        <translation>Добавить в избранные.</translation>
     </message>
     <message>
         <location filename="cvodbrowser.cpp" line="231"/>
@@ -1798,7 +1798,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="forms/qftsettings.ui" line="75"/>
         <source>User: </source>
-        <translation>Логин:</translation>
+        <translation>Абонемент:</translation>
     </message>
     <message>
         <location filename="forms/qftsettings.ui" line="68"/>
@@ -1972,7 +1972,7 @@ or start time is later than end time!</source>
         <location filename="recorder.cpp" line="1935"/>
         <location filename="recorder.cpp" line="3069"/>
         <source>Length: %1 min.</source>
-        <translation>Длительность: %1 мин.</translation>
+        <translation>Длит.: %1 мин.</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1936"/>
@@ -1994,12 +1994,12 @@ or start time is later than end time!</source>
     <message>
         <location filename="recorder.cpp" line="2294"/>
         <source>Remove from favourites</source>
-        <translation>Удалить</translation>
+        <translation>Удалить из избранных</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2301"/>
         <source>Add to favourites</source>
-        <translation>Добавить в избранное</translation>
+        <translation>Добавить в избранные</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2347"/>
@@ -2011,14 +2011,11 @@ or start time is later than end time!</source>
         <location filename="recorder.cpp" line="2348"/>
         <location filename="recorder.cpp" line="3170"/>
         <source>Max. number of favourites (%1) reached.</source>
-        <translation>Макс. число фаворитов (%1) достигнуто.</translation>
+        <translation>Макс. число избранных (%1) достигнуто.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2540"/>
-        <location filename="recorder.cpp" line="4069"/>
-        <location filename="recorder.cpp" line="4125"/>
         <source>Can&apos;t start VLC-Media Player!</source>
-        <translation>Не удается запустить VLC Media Player!</translation>
+        <translation type="obsolete">Не удается запустить VLC Media Player!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3616"/>
@@ -2144,14 +2141,15 @@ dataDir: %1
         <location filename="recorder.cpp" line="2546"/>
         <location filename="recorder.cpp" line="4076"/>
         <location filename="recorder.cpp" line="4131"/>
-        <source>Started VLC with pid #%1!</source>
+        <source>Started player with pid #%1!</source>
+        <oldsource>Started VLC with pid #%1!</oldsource>
         <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3533"/>
         <location filename="recorder.cpp" line="3552"/>
         <source>My Favourites</source>
-        <translation>Любимые фильмы</translation>
+        <translation>Избранные фильмы</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3028"/>
@@ -2168,7 +2166,14 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="2429"/>
         <source>Remove &quot;%1&quot; from favourites</source>
-        <translation>Удалить &quot;%1&quot;</translation>
+        <translation>Удалить &quot;%1&quot; из избранных</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="2540"/>
+        <location filename="recorder.cpp" line="4069"/>
+        <location filename="recorder.cpp" line="4125"/>
+        <source>Can&apos;t start player!</source>
+        <translation>Не удается запустить плеер!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3031"/>
@@ -2188,12 +2193,12 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="3279"/>
         <source>About</source>
-        <translation>Информация о программе</translation>
+        <translation>О программе</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3280"/>
         <source>Search EPG</source>
-        <translation>Поиск в телегиде</translation>
+        <translation>Поиск в программе</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3281"/>
@@ -2248,7 +2253,7 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="3300"/>
         <source>Show EPG / VOD</source>
-        <translation>Телегид / Видеотека</translation>
+        <translation>Программа / Видеотека</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3510"/>
@@ -2297,7 +2302,7 @@ dataDir: %1
         <location filename="recorder.cpp" line="4603"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
-        <translation>Фаворит %1</translation>
+        <translation>Избранное %1</translation>
     </message>
     <message>
         <source>Length:</source>
@@ -2451,8 +2456,9 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="1008"/>
         <location filename="forms/recorder_inc.ui" line="1079"/>
-        <source>Stop VLC ...</source>
-        <translation>Остановить VLC Player ...</translation>
+        <source>Stop Player</source>
+        <oldsource>Stop VLC ...</oldsource>
+        <translation>Остановить плеер</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1047"/>

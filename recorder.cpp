@@ -2537,13 +2537,13 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
    // successfully started ?
    if (!vlcpid)
    {
-      QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+      QMessageBox::critical(this, tr("Error!"), tr("Can't start player!"));
       ePlayState = IncPlay::PS_ERROR;
       TouchPlayCtrlBtns();
    }
    else
    {
-      mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
+      mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
    }
 }
 
@@ -4066,14 +4066,14 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel)
       if (!vlcpid)
       {
          iRV = -1;
-         QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+         QMessageBox::critical(this, tr("Error!"), tr("Can't start player!"));
          ePlayState = IncPlay::PS_ERROR;
          TouchPlayCtrlBtns();
       }
       else
       {
          iRV = 0;
-         mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
+         mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
       }
    }
 
@@ -4122,13 +4122,13 @@ int Recorder::StartVlcPlay (const QString &sURL)
    if (!vlcpid)
    {
       iRV = -1;
-      QMessageBox::critical(this, tr("Error!"), tr("Can't start VLC-Media Player!"));
+      QMessageBox::critical(this, tr("Error!"), tr("Can't start player!"));
       ePlayState = IncPlay::PS_ERROR;
       TouchPlayCtrlBtns();
    }
    else
    {
-      mInfo(tr("Started VLC with pid #%1!").arg((uint)vlcpid));
+      mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
    }
    return iRV;
 }
