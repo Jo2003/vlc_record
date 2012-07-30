@@ -144,8 +144,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
 
    mac {
 
-      SOURCES += qnoidleproc.cpp
-      HEADERS += qnoidleproc.h
+      OBJECTIVE_SOURCES += qnoidleproc.mm
+      OBJECTIVE_HEADERS += qnoidleproc.h
       OTHER_FILES += create_mac_bundle.sh \
                      release/create_dmg.sh
       INCLUDEPATH += mac/include

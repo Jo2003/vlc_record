@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/trunk/vlc-record/qnoidleproc.cpp $
  *
  *  @file     qnoidleproc.cpp
  *
@@ -8,7 +8,7 @@
  *
  *  @date     26.07.2012
  *
- *  $Id$
+ *  $Id: qnoidleproc.cpp 836 2012-07-26 09:48:01Z Olenka.Joerg@gmail.com $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 
@@ -28,10 +28,9 @@ extern CLogFile VlcLog;
 //
 //---------------------------------------------------------------------------
 QNoIdleProc::QNoIdleProc(QObject *parent) :
-   QProcess(parent)
+   QObject(parent), bNoIdleOn(false)
 {
-   connect (this, SIGNAL(stateChanged(QProcess::ProcessState)),
-            this, SLOT(slotStateChanged(QProcess::ProcessState)));
+   reasonForActivity = CFSTR("Playing a stream!");
 }
 
 //---------------------------------------------------------------------------
@@ -45,12 +44,11 @@ QNoIdleProc::QNoIdleProc(QObject *parent) :
 QNoIdleProc::~QNoIdleProc()
 {
    endNoIdle();
-   waitForFinished();
 }
 
 //---------------------------------------------------------------------------
 //
-//! \brief   start pmset with option "noidle"
+//! \brief   start "noidle" in kernel
 //
 //! \author  Jo2003
 //! \date    26.07.2012
@@ -58,15 +56,22 @@ QNoIdleProc::~QNoIdleProc()
 //---------------------------------------------------------------------------
 void QNoIdleProc::startNoIdle()
 {
-   if (state() == QProcess::NotRunning)
+   if (!bNoIdleOn)
    {
-      start("pmset noidle");
+      if (IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep,
+                                      kIOPMAssertionLevelOn,
+                                      reasonForActivity,
+                                      &assertionID) == kIOReturnSuccess)
+      {
+         mInfo(tr("No Idle successful initiated!"));
+         bNoIdleOn = true;
+      }
    }
 }
 
 //---------------------------------------------------------------------------
 //
-//! \brief   terminate pmset (if running)
+//! \brief   stop "nodile" in kernel
 //
 //! \author  Jo2003
 //! \date    26.07.2012
@@ -74,34 +79,12 @@ void QNoIdleProc::startNoIdle()
 //---------------------------------------------------------------------------
 void QNoIdleProc::endNoIdle()
 {
-   if (state() != QProcess::NotRunning)
+   if (bNoIdleOn)
    {
-      terminate();
+      if (IOPMAssertionRelease(assertionID) == kIOReturnSuccess)
+      {
+         mInfo(tr("No Idle successful finished!"));
+         bNoIdleOn = false;
+      }
    }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   log state change of pmset process
-//
-//! \author  Jo2003
-//! \date    26.07.2012
-//
-//! \param   newState new process state
-//
-//---------------------------------------------------------------------------
-void QNoIdleProc::slotStateChanged(QProcess::ProcessState newState)
-{
-#define mkProcState(__x__) case __x__: mInfo(tr("NoIdleProc state change to %1").arg(#__x__)); break
-
-   switch (newState)
-   {
-   mkProcState(QProcess::NotRunning);
-   mkProcState(QProcess::Starting);
-   mkProcState(QProcess::Running);
-   default:
-      break;
-   }
-
-#undef mkProcState
 }

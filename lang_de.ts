@@ -1874,14 +1874,6 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
 </context>
 <context>
-    <name>QNoIdleProc</name>
-    <message>
-        <location filename="qnoidleproc.cpp" line="95"/>
-        <source>NoIdleProc state change to %1</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
     <name>QSecCodeDlg</name>
     <message>
         <location filename="forms/qseccodedlg.ui" line="14"/>
