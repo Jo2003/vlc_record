@@ -56,9 +56,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    ui->vMainLayout->removeWidget(ui->masterFrame);
    stackedLayout->addWidget(ui->masterFrame);
    ui->vMainLayout->addLayout(stackedLayout);
-#ifdef Q_OS_MAC
-   pNoIdleProc = new QNoIdleProc (this);
-#endif // Q_OS_MAC
 #endif // INCLUDE_LIBVLC
 
    // set (customized) windows title ...
@@ -1585,6 +1582,28 @@ void Recorder::slotKartinaErr (const QString &str, int req, int err)
       showInfo.setPCode("");
       secCodeDlg.slotClearPasswd();
       break;
+
+   case Kartina::ERR_MULTIPLE_ACCOUNT_USE:
+      // if someone else uses this account
+      // we have to stop the player ...
+      if (vlcCtrl.withLibVLC())
+      {
+         // stop internal player ...
+         if (ui->player->isPlaying())
+         {
+            ui->player->stop();
+         }
+      }
+      else
+      {
+         // stop external player if under control ...
+         if (!Settings.DetachPlayer())
+         {
+            vlcCtrl.stop();
+         }
+      }
+      break;
+
    default:
       break;
    }
@@ -2473,20 +2492,11 @@ void Recorder::slotIncPlayState(int iState)
       // might be play, record, timer record -->
       // therefore use internal state ...
       emit sigLCDStateChange ((int)ePlayState);
-#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
-      // disable idle timer as long as a stream is played ...
-      pNoIdleProc->startNoIdle();
-#endif
       break;
 
    case IncPlay::PS_END:
-   case IncPlay::PS_STOP:
       // display "stop" in case of "end" ...
       emit sigLCDStateChange ((int)IncPlay::PS_STOP);
-#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
-      //re-enable idle timer when player ends ...
-      pNoIdleProc->endNoIdle();
-#endif
       break;
 
    case IncPlay::PS_ERROR:

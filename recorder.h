@@ -63,10 +63,6 @@
    #include "qvlcvideowidget.h"
 #endif
 
-#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
-   #include "qnoidleproc.h"
-#endif
-
 //------------------------------------------------------------------
 /// \name definition of start flags
 //------------------------------------------------------------------
@@ -175,10 +171,6 @@ private:
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
 #endif //INCLUDE_LIBVLC
-
-#if (defined Q_OS_MAC && defined INCLUDE_LIBVLC)
-    QNoIdleProc                    *pNoIdleProc;
-#endif
 
 protected:
     void fillShortCutTab();
