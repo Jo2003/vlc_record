@@ -143,9 +143,9 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    win32:LIBS += -Llib
 
    mac {
-
-      OBJECTIVE_SOURCES += qnoidleproc.mm
-      OBJECTIVE_HEADERS += qnoidleproc.h
+      SOURCES -= cplayer.cpp
+      OBJECTIVE_SOURCES += cplayer.mm
+      OBJECTIVE_HEADERS += cplayer.hpp
       OTHER_FILES += create_mac_bundle.sh \
                      release/create_dmg.sh
       INCLUDEPATH += mac/include
@@ -160,7 +160,7 @@ contains(DEFINES,INCLUDE_LIBVLC) {
       CONFIG(release,debug|release):appcleanhook.target = Makefile.Release
       QMAKE_EXTRA_TARGETS += appcleanhook
 
-      LIBS += -L./mac/lib
+      LIBS += -L./mac/lib -F/System/Library/Frameworks -framework IOKit -framework CoreFoundation -framework Foundation
       QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
    }
    else {
@@ -175,4 +175,7 @@ else:FORMS += forms/recorder.ui
 
 # translation stuff ...
 include (language.pri)
+
+OTHER_FILES += \
+    main.mm
 

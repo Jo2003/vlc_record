@@ -9,7 +9,11 @@
 |
 | $Id$
 \*************************************************************/
-#include "cplayer.h"
+
+#ifndef Q_OS_MAC
+   #include "cplayer.h"
+#endif
+
 #include "ui_cplayer.h"
 
 // log file functions ...
@@ -39,6 +43,11 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 {
    ui->setupUi(this);
 
+#ifdef Q_OS_MAC
+   bNoIdleOn        = false;
+   pool             = [[NSAutoreleasePool alloc] init];
+#endif
+
    pMediaPlayer     = NULL;
    pVlcInstance     = NULL;
    pMedialistPlayer = NULL;
@@ -50,7 +59,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    uiDuration       = (uint)-1;
    mAspect.clear();
    mCrop.clear();
-
    QStringList slKey, slVal;
    int i;
 
@@ -142,7 +150,7 @@ CPlayer::~CPlayer()
 
    if (pVlcInstance)
    {
-#ifdef Q_OS_MACX
+#ifdef Q_OS_MAC
       // releasing it on Mac leads to crash if you end the
       // player with running video ... no problem at all 'cause
       // we want release at program close!
@@ -151,6 +159,10 @@ CPlayer::~CPlayer()
       libvlc_release(pVlcInstance);
 #endif
    }
+
+#ifdef Q_OS_MAC
+   [pool release];
+#endif
 
    delete ui;
 }
@@ -1077,6 +1089,9 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 void CPlayer::startPlayTimer()
 {
    timer.start();
+#ifdef Q_OS_MAC
+   setNoIdle(true);
+#endif
 }
 
 /* -----------------------------------------------------------------\
@@ -1107,6 +1122,9 @@ void CPlayer::pausePlayTimer()
 void CPlayer::stopPlayTimer()
 {
    timer.reset();
+#ifdef Q_OS_MAC
+   setNoIdle(false);
+#endif
 }
 
 /* -----------------------------------------------------------------\
@@ -1543,6 +1561,46 @@ void CPlayer::slotFsToggled(int on)
 {
    ui->videoWidget->fullScreenToggled(on);
 }
+
+#ifdef Q_OS_MAC
+/* -----------------------------------------------------------------\
+|  Method: setNoIdle
+|  Begin: 06.08.2012
+|  Author: Jo2003
+|  Description: enable / disable no-idle
+|
+|  Parameters: bOn == true -> enable, else disable
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+/*
+void CPlayer::setNoIdle(bool bOn)
+{
+   if (bOn != bNoIdleOn)
+   {
+      if (bOn)
+      {
+         if (IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep,
+                                         kIOPMAssertionLevelOn,
+                                         CFSTR("Playing a stream!"),
+                                         &assertionID) == kIOReturnSuccess)
+         {
+            mInfo(tr("No Idle successful initiated!"));
+            bNoIdleOn = true;
+         }
+      }
+      else
+      {
+         if (IOPMAssertionRelease(assertionID) == kIOReturnSuccess)
+         {
+            mInfo(tr("No Idle successful finished!"));
+            bNoIdleOn = false;
+         }
+      }
+   }
+}
+*/
+#endif
 
 /************************* History ***************************\
 | $Log$

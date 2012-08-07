@@ -44,71 +44,72 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="113"/>
+        <source>Homepage:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="114"/>
         <source>Inspired by:</source>
         <translation>Dla:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="115"/>
+        <location filename="caboutdialog.cpp" line="116"/>
         <source>Account expires:</source>
         <translation>Konto wygasa:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="118"/>
+        <location filename="caboutdialog.cpp" line="122"/>
+        <source>Donate some $ and / or â¬ at Paypal for my work.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>This is a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
-        <translation>To narzędzie służy do &lt;b&gt;oglądania/ nagrywania strumieni wideo&lt;/b&gt; z %1%2</translation>
+        <translation type="obsolete">To narzędzie służy do &lt;b&gt;oglądania/ nagrywania strumieni wideo&lt;/b&gt; z %1%2</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="120"/>
         <source> (click to buy a subscription).</source>
-        <translation>(kliknij, aby kupić subskrypcję).</translation>
+        <translation type="obsolete">(kliknij, aby kupić subskrypcję).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="124"/>
         <source>To do this you will need to authorise using username and password provided by %1.</source>
-        <translation>Aby to zrobić, musisz zezwolić wpisując nazwę użytkownika i hasło dostarczone przez %1.</translation>
+        <translation type="obsolete">Aby to zrobić, musisz zezwolić wpisując nazwę użytkownika i hasło dostarczone przez %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="125"/>
         <source>It then will start the %1 to display (and record) the selected stream.</source>
-        <translation>Następnie rozpocznie %1, aby wyświetlić (i nagrać) wybrany strumień.</translation>
+        <translation type="obsolete">Następnie rozpocznie %1, aby wyświetlić (i nagrać) wybrany strumień.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="126"/>
         <source>It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.</source>
-        <translation>Obsługuje &lt;b&gt;Przewodnik TV i TimeShift&lt;/b&gt;.</translation>
+        <translation type="obsolete">Obsługuje &lt;b&gt;Przewodnik TV i TimeShift&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="127"/>
         <source>For News and Updates please visit my site at %1.</source>
-        <translation>Aby zapoznać się z nowościami i aktualizacjami odwiedź moją stronę %1.</translation>
+        <translation type="obsolete">Aby zapoznać się z nowościami i aktualizacjami odwiedź moją stronę %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="129"/>
+        <location filename="caboutdialog.cpp" line="119"/>
         <source>&lt;b&gt;This program is free software!&lt;/b&gt;</source>
         <translation>&lt;b&gt;Ten program jest bezpłatny!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="130"/>
+        <location filename="caboutdialog.cpp" line="120"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Niemniej jednak, jeśli chcesz korzystać z tego programu, proszę wesprzyj mnie:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
-        <translation>Zrób wpłatę w $ i / lub &amp;euro; przez Paypal, aby wesprzeć moją pracę.</translation>
+        <translation type="obsolete">Zrób wpłatę w $ i / lub &amp;euro; przez Paypal, aby wesprzeć moją pracę.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="134"/>
         <source>If you enjoy this software and would like to support its further development, please </source>
-        <translation>Jeśli podoba Ci się ten program i chciałbyś wesprzeć jego rozwój, proszę</translation>
+        <translation type="obsolete">Jeśli podoba Ci się ten program i chciałbyś wesprzeć jego rozwój, proszę</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="136"/>
         <source>donate here via Paypal</source>
-        <translation>zrób wpłatę przez Paypal</translation>
+        <translation type="obsolete">zrób wpłatę przez Paypal</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="138"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>Thank you,</source>
         <translation>Dziękuję,</translation>
     </message>
@@ -554,37 +555,37 @@ p, li { white-space: pre-wrap; }
         <translation>Przejdź to trybu pełnoekranowego</translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="280"/>
+        <location filename="cplayer.cpp" line="292"/>
         <source>Create libVLC with following global options:
  %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="528"/>
+        <location filename="cplayer.cpp" line="540"/>
         <source>Use following URL:
   --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="535"/>
-        <location filename="cplayer.cpp" line="552"/>
-        <location filename="cplayer.cpp" line="567"/>
-        <location filename="cplayer.cpp" line="571"/>
+        <location filename="cplayer.cpp" line="547"/>
+        <location filename="cplayer.cpp" line="564"/>
         <location filename="cplayer.cpp" line="579"/>
-        <location filename="cplayer.cpp" line="647"/>
-        <location filename="cplayer.cpp" line="651"/>
-        <location filename="cplayer.cpp" line="667"/>
+        <location filename="cplayer.cpp" line="583"/>
+        <location filename="cplayer.cpp" line="591"/>
+        <location filename="cplayer.cpp" line="659"/>
+        <location filename="cplayer.cpp" line="663"/>
+        <location filename="cplayer.cpp" line="679"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="558"/>
-        <location filename="cplayer.cpp" line="673"/>
+        <location filename="cplayer.cpp" line="570"/>
+        <location filename="cplayer.cpp" line="685"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="643"/>
+        <location filename="cplayer.cpp" line="655"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -592,37 +593,37 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="600"/>
+        <location filename="cplayer.cpp" line="612"/>
         <source>Can&apos;t create media list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="609"/>
+        <location filename="cplayer.cpp" line="621"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="861"/>
+        <location filename="cplayer.cpp" line="873"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="894"/>
+        <location filename="cplayer.cpp" line="906"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="927"/>
+        <location filename="cplayer.cpp" line="939"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1215"/>
+        <location filename="cplayer.cpp" line="1233"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1303"/>
+        <location filename="cplayer.cpp" line="1321"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -1659,14 +1660,6 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="forms/qhelpdialog.ui" line="14"/>
         <source>Help</source>
         <translation>Pomóż</translation>
-    </message>
-</context>
-<context>
-    <name>QNoIdleProc</name>
-    <message>
-        <location filename="qnoidleproc.cpp" line="95"/>
-        <source>NoIdleProc state change to %1</source>
-        <translation></translation>
     </message>
 </context>
 <context>

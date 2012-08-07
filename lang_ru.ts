@@ -49,76 +49,77 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="113"/>
+        <source>Homepage:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="114"/>
         <source>Inspired by:</source>
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="115"/>
+        <location filename="caboutdialog.cpp" line="116"/>
         <source>Account expires:</source>
         <translation>Пакет истекает:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="118"/>
+        <location filename="caboutdialog.cpp" line="122"/>
+        <source>Donate some $ and / or â¬ at Paypal for my work.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>This is a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
         <oldsource>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</oldsource>
-        <translation>Эта программа для &lt;b&gt;просмотра и записи видеопотока&lt;/b&gt; с %1%2</translation>
+        <translation type="obsolete">Эта программа для &lt;b&gt;просмотра и записи видеопотока&lt;/b&gt; с %1%2</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="120"/>
         <source> (click to buy a subscription).</source>
         <oldsource> (Click to buy a subscription).</oldsource>
-        <translation>(нажимите на ссылку, чтобы купить подписку).</translation>
+        <translation type="obsolete">(нажимите на ссылку, чтобы купить подписку).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="124"/>
         <source>To do this you will need to authorise using username and password provided by %1.</source>
         <oldsource>To do this it will authenticate you with username and password at %1.</oldsource>
-        <translation>Программа подключается к %1 при помощи Вашей абонемента (Логин/Пароль).</translation>
+        <translation type="obsolete">Программа подключается к %1 при помощи Вашей абонемента (Логин/Пароль).</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="125"/>
         <source>It then will start the %1 to display (and record) the selected stream.</source>
-        <translation>После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью %1.</translation>
+        <translation type="obsolete">После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="126"/>
         <source>It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.</source>
-        <translation>В программе отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.</translation>
+        <translation type="obsolete">В программе отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="127"/>
         <source>For News and Updates please visit my site at %1.</source>
         <oldsource>For News and Updates please visit my site at %1</oldsource>
-        <translation>Следите за обновлениями и новостями на моей интернет-странице %1.</translation>
+        <translation type="obsolete">Следите за обновлениями и новостями на моей интернет-странице %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="129"/>
+        <location filename="caboutdialog.cpp" line="119"/>
         <source>&lt;b&gt;This program is free software!&lt;/b&gt;</source>
         <oldsource>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</oldsource>
         <translation>&lt;b&gt;Эта программа является бесплатной!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="130"/>
+        <location filename="caboutdialog.cpp" line="120"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если Вам понравилась моя программа, вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
-        <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
+        <translation type="obsolete">Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="134"/>
         <source>If you enjoy this software and would like to support its further development, please </source>
-        <translation>Если Вам понравилась моя программа и Вы хотите поддержать меня, пожалуйста, </translation>
+        <translation type="obsolete">Если Вам понравилась моя программа и Вы хотите поддержать меня, пожалуйста, </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="136"/>
         <source>donate here via Paypal</source>
-        <translation>поблагодарите через PayPal</translation>
+        <translation type="obsolete">поблагодарите через PayPal</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="138"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
@@ -702,7 +703,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="280"/>
+        <location filename="cplayer.cpp" line="292"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -711,7 +712,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="528"/>
+        <location filename="cplayer.cpp" line="540"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -719,25 +720,25 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="535"/>
-        <location filename="cplayer.cpp" line="552"/>
-        <location filename="cplayer.cpp" line="567"/>
-        <location filename="cplayer.cpp" line="571"/>
+        <location filename="cplayer.cpp" line="547"/>
+        <location filename="cplayer.cpp" line="564"/>
         <location filename="cplayer.cpp" line="579"/>
-        <location filename="cplayer.cpp" line="647"/>
-        <location filename="cplayer.cpp" line="651"/>
-        <location filename="cplayer.cpp" line="667"/>
+        <location filename="cplayer.cpp" line="583"/>
+        <location filename="cplayer.cpp" line="591"/>
+        <location filename="cplayer.cpp" line="659"/>
+        <location filename="cplayer.cpp" line="663"/>
+        <location filename="cplayer.cpp" line="679"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="558"/>
-        <location filename="cplayer.cpp" line="673"/>
+        <location filename="cplayer.cpp" line="570"/>
+        <location filename="cplayer.cpp" line="685"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="643"/>
+        <location filename="cplayer.cpp" line="655"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -745,37 +746,37 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="600"/>
+        <location filename="cplayer.cpp" line="612"/>
         <source>Can&apos;t create media list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="609"/>
+        <location filename="cplayer.cpp" line="621"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="861"/>
+        <location filename="cplayer.cpp" line="873"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="894"/>
+        <location filename="cplayer.cpp" line="906"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="927"/>
+        <location filename="cplayer.cpp" line="939"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1215"/>
+        <location filename="cplayer.cpp" line="1233"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1303"/>
+        <location filename="cplayer.cpp" line="1321"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -1116,7 +1117,7 @@ To change the parent code make sure:
     <message>
         <location filename="forms/csettingsdlg.ui" line="657"/>
         <source>Show Ads</source>
-        <translation>Показать рекламы</translation>
+        <translation>Показать рекламу</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="578"/>
@@ -1215,7 +1216,7 @@ To change the parent code make sure:
         <location filename="forms/csettingsdlg.ui" line="283"/>
         <source>Sh&amp;ortcuts</source>
         <oldsource>Shortcuts</oldsource>
-        <translation>Горячии &amp;клавиши</translation>
+        <translation>Горячие &amp;клавиши</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="302"/>
@@ -1225,7 +1226,7 @@ To change the parent code make sure:
     <message>
         <location filename="forms/csettingsdlg.ui" line="307"/>
         <source>ShortCut</source>
-        <translation>Сокращения</translation>
+        <translation>Комбинации клавиш</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="362"/>
@@ -1236,7 +1237,7 @@ To change the parent code make sure:
     <message>
         <location filename="forms/csettingsdlg.ui" line="325"/>
         <source>Changes in shortcuts take effect only after restarting the program.</source>
-        <translation>Изменения в сокращеннях вступят в силу только после перезагрузки программы.</translation>
+        <translation>Изменения в горячих клавишах вступят в силу только после перезагрузки программы.</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="474"/>
