@@ -44,8 +44,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="113"/>
-        <source>Homepage:</source>
-        <translation type="unfinished"></translation>
+        <source>Project Site:</source>
+        <translation>Strona projektu:</translation>
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="114"/>
@@ -59,8 +59,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="122"/>
-        <source>Donate some $ and / or â¬ at Paypal for my work.</source>
-        <translation type="unfinished"></translation>
+        <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
+        <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
+        <translation>Zrób wpłatę w $ i / lub &amp;euro; przez Paypal, aby wesprzeć moją pracę.</translation>
     </message>
     <message>
         <source>This is a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
@@ -95,10 +96,6 @@ p, li { white-space: pre-wrap; }
         <location filename="caboutdialog.cpp" line="120"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Niemniej jednak, jeśli chcesz korzystać z tego programu, proszę wesprzyj mnie:</translation>
-    </message>
-    <message>
-        <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
-        <translation type="obsolete">Zrób wpłatę w $ i / lub &amp;euro; przez Paypal, aby wesprzeć moją pracę.</translation>
     </message>
     <message>
         <source>If you enjoy this software and would like to support its further development, please </source>

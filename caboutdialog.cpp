@@ -110,7 +110,7 @@ void CAboutDialog::FillInfo(QString sExpires)
              .arg(QString("%1").arg(libvlc_get_version())) << endl
 #endif
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>").arg(tr("Author:")) << endl
-         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='http://vlc-record.coujo.de'>vlc-record.coujo.de</a></td></tr>").arg(tr("Homepage:")) << endl
+         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='http://vlc-record.coujo.de'>vlc-record.coujo.de</a></td></tr>").arg(tr("Project Site:")) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>").arg(tr("Inspired by:")) << endl
          << QString("<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>").arg(qVersion()) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Account expires:")).arg(sExpires) << endl
@@ -119,8 +119,8 @@ void CAboutDialog::FillInfo(QString sExpires)
          << tr("<b>This program is free software!</b>") << endl
          << tr("Nevertheless ... if you like this software, please support me: ") << endl
          << "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
-         << tr("Donate some $ and / or € at Paypal for my work.") << "</a><br /> <br />" << endl
-         << tr("Thank you,") << "<br />&nbsp;&nbsp;&nbsp;&nbsp;Jörg" << endl;
+         << tr("Donate some $ and / or &euro; at Paypal for my work.") << "</a><br /> <br />" << endl
+         << tr("Thank you,") << "<br />&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg" << endl;
 }
 
 /************************* History ***************************\
