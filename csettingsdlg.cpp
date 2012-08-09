@@ -331,8 +331,11 @@ void CSettingsDlg::readSettings()
    iIdx = m_ui->cbxPlayerMod->findText(s);
    m_ui->cbxPlayerMod->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
+#ifndef Q_OS_MAC
    // check if hide to systray is supported ...
+   // always disable on mac!
    if (!QSystemTrayIcon::isSystemTrayAvailable())
+#endif
    {
       m_ui->checkHideToSystray->setDisabled(true);
    }
