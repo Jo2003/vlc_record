@@ -10,9 +10,7 @@
 | $Id$
 \*************************************************************/
 
-#ifndef Q_OS_MAC
-   #include "cplayer.h"
-#endif
+#include "cplayer.h"
 
 #include "ui_cplayer.h"
 
@@ -43,11 +41,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 {
    ui->setupUi(this);
 
-#ifdef Q_OS_MAC
-   bNoIdleOn        = false;
-   pool             = [[NSAutoreleasePool alloc] init];
-#endif
-
    pMediaPlayer     = NULL;
    pVlcInstance     = NULL;
    pMedialistPlayer = NULL;
@@ -59,6 +52,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    uiDuration       = (uint)-1;
    mAspect.clear();
    mCrop.clear();
+   tNoIdlePing.setInterval(20000); // 20 secs.
    QStringList slKey, slVal;
    int i;
 
@@ -107,6 +101,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // connect aspect shot timer with aspect change function ...
    connect(&tAspectShot, SIGNAL(timeout()), this, SLOT(slotStoredAspectCrop()));
+
+   // connect noidle timer with slot ...
+   connect(&tNoIdlePing, SIGNAL(timeout()), this, SLOT(slotNoIdlePing()));
 
    // connect aspect trigger signal with timer start ...
    connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
@@ -159,10 +156,6 @@ CPlayer::~CPlayer()
       libvlc_release(pVlcInstance);
 #endif
    }
-
-#ifdef Q_OS_MAC
-   [pool release];
-#endif
 
    delete ui;
 }
@@ -1089,9 +1082,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 void CPlayer::startPlayTimer()
 {
    timer.start();
-#ifdef Q_OS_MAC
-   setNoIdle(true);
-#endif
+   tNoIdlePing.start();
 }
 
 /* -----------------------------------------------------------------\
@@ -1122,9 +1113,7 @@ void CPlayer::pausePlayTimer()
 void CPlayer::stopPlayTimer()
 {
    timer.reset();
-#ifdef Q_OS_MAC
-   setNoIdle(false);
-#endif
+   tNoIdlePing.stop();
 }
 
 /* -----------------------------------------------------------------\
@@ -1562,45 +1551,25 @@ void CPlayer::slotFsToggled(int on)
    ui->videoWidget->fullScreenToggled(on);
 }
 
-#ifdef Q_OS_MAC
 /* -----------------------------------------------------------------\
-|  Method: setNoIdle
-|  Begin: 06.08.2012
+|  Method: slotNoIdlePing
+|  Begin: 09.08.2012
 |  Author: Jo2003
-|  Description: enable / disable no-idle
+|  Description: emulate mouse event to avoid idle
 |
-|  Parameters: bOn == true -> enable, else disable
+|  Parameters: --
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-/*
-void CPlayer::setNoIdle(bool bOn)
+void CPlayer::slotNoIdlePing()
 {
-   if (bOn != bNoIdleOn)
-   {
-      if (bOn)
-      {
-         if (IOPMAssertionCreateWithName(kIOPMAssertionTypeNoDisplaySleep,
-                                         kIOPMAssertionLevelOn,
-                                         CFSTR("Playing a stream!"),
-                                         &assertionID) == kIOReturnSuccess)
-         {
-            mInfo(tr("No Idle successful initiated!"));
-            bNoIdleOn = true;
-         }
-      }
-      else
-      {
-         if (IOPMAssertionRelease(assertionID) == kIOReturnSuccess)
-         {
-            mInfo(tr("No Idle successful finished!"));
-            bNoIdleOn = false;
-         }
-      }
-   }
+   QMouseEvent event(QEvent::MouseButtonPress, pos(),
+                     Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+
+   QCoreApplication::postEvent(this, &event);
+
+   mInfo("* No-idle-ping *");
 }
-*/
-#endif
 
 /************************* History ***************************\
 | $Log$

@@ -36,7 +36,7 @@
 
 //===================================================================
 // namespace
-//===================================================pool = [[NSAutoreleasePool alloc] init];================
+//===================================================================
 namespace Ui
 {
    class CPlayer;
@@ -76,14 +76,12 @@ protected:
    void enableDisablePlayControl (bool bEnable);
    void connectToVideoWidget ();
    int  addAd (libvlc_media_list_t *pList);
-#ifdef Q_OS_MAC
-   void setNoIdle(bool bOn);
-#endif
 
 private:
    Ui::CPlayer                 *ui;
    QTimer                       sliderTimer;
    QTimer                       tAspectShot;
+   QTimer                       tNoIdlePing;
    CTimerEx                     timer;
    libvlc_instance_t           *pVlcInstance;
    libvlc_media_player_t       *pMediaPlayer;
@@ -96,11 +94,6 @@ private:
    uint                         uiDuration;
    QMap<QString, QString>       mAspect;
    QMap<QString, QString>       mCrop;
-#if (defined Q_OS_MAC && defined __ENABLE_OBJC_STUFF)
-   bool                         bNoIdleOn;
-   IOPMAssertionID              assertionID;
-   NSAutoreleasePool           *pool;
-#endif // (defined Q_OS_MAC && defined __ENABLE_OBJC_STUFF)
 
 private slots:
    void on_posSlider_valueChanged(int value);
@@ -112,6 +105,7 @@ private slots:
    void slotChangeVolumeDelta (const bool up);
    void slotSliderPosChanged();
    void slotToggleFullscreen();
+   void slotNoIdlePing();
 
 public slots:
    int  playMedia (const QString &sCmdLine);
