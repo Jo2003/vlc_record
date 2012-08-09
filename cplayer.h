@@ -81,7 +81,6 @@ private:
    Ui::CPlayer                 *ui;
    QTimer                       sliderTimer;
    QTimer                       tAspectShot;
-   QTimer                       tNoIdlePing;
    CTimerEx                     timer;
    libvlc_instance_t           *pVlcInstance;
    libvlc_media_player_t       *pMediaPlayer;
@@ -105,7 +104,6 @@ private slots:
    void slotChangeVolumeDelta (const bool up);
    void slotSliderPosChanged();
    void slotToggleFullscreen();
-   void slotNoIdlePing();
 
 public slots:
    int  playMedia (const QString &sCmdLine);

@@ -52,7 +52,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    uiDuration       = (uint)-1;
    mAspect.clear();
    mCrop.clear();
-   tNoIdlePing.setInterval(20000); // 20 secs.
    QStringList slKey, slVal;
    int i;
 
@@ -101,9 +100,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // connect aspect shot timer with aspect change function ...
    connect(&tAspectShot, SIGNAL(timeout()), this, SLOT(slotStoredAspectCrop()));
-
-   // connect noidle timer with slot ...
-   connect(&tNoIdlePing, SIGNAL(timeout()), this, SLOT(slotNoIdlePing()));
 
    // connect aspect trigger signal with timer start ...
    connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
@@ -1082,7 +1078,6 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 void CPlayer::startPlayTimer()
 {
    timer.start();
-   tNoIdlePing.start();
 }
 
 /* -----------------------------------------------------------------\
@@ -1113,7 +1108,6 @@ void CPlayer::pausePlayTimer()
 void CPlayer::stopPlayTimer()
 {
    timer.reset();
-   tNoIdlePing.stop();
 }
 
 /* -----------------------------------------------------------------\
@@ -1549,26 +1543,6 @@ void CPlayer::addAndEmbedVideoWidget()
 void CPlayer::slotFsToggled(int on)
 {
    ui->videoWidget->fullScreenToggled(on);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotNoIdlePing
-|  Begin: 09.08.2012
-|  Author: Jo2003
-|  Description: emulate mouse event to avoid idle
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::slotNoIdlePing()
-{
-   QMouseEvent event(QEvent::MouseButtonPress, pos(),
-                     Qt::NoButton, Qt::NoButton, Qt::NoModifier);
-
-   QCoreApplication::postEvent(this, &event);
-
-   mInfo("* No-idle-ping *");
 }
 
 /************************* History ***************************\

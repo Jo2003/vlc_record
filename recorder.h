@@ -140,6 +140,7 @@ private:
     CStreamLoader                   streamLoader;
     QTranslator                    *pTranslator;
     QTimer                          Refresh;
+    QTimer                          tNoIdlePing;
     CPixLoader                      pixCache;
     int                             iEpgOffset;
     QTabBar                        *pEpgNavbar;
@@ -285,6 +286,7 @@ private slots:
     void slotAddFav(int cid);
     void on_pushHelp_clicked();
     void printStateChange(const Qt::WindowStates &old);
+    void slotNoIdlePing();
 
 signals:
     void sigShow ();

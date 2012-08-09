@@ -67,6 +67,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    iFontSzChg     =  0;
    iDwnReqId      = -1;
    ulStartFlags   =  0;
+   tNoIdlePing.setInterval(20000); // 20 secs.
 
    // init account info ...
    accountInfo.bHasArchive = false;
@@ -228,6 +229,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 #endif /* INCLUDE_LIBVLC */
 
    // connect signals and slots ...
+   // connect noidle timer with slot ...
+   connect(&tNoIdlePing,   SIGNAL(timeout()), this, SLOT(slotNoIdlePing()));
    connect (ui->hFrameFav, SIGNAL(sigAddFav(int)), this, SLOT(slotAddFav(int)));
    connect (&pixCache,     SIGNAL(allDone()), this, SLOT(slotRefreshChanLogos()));
    connect (&KartinaTv,    SIGNAL(sigHttpResponse(QString,int)), this, SLOT(slotKartinaResponse(QString,int)));
@@ -2492,16 +2495,21 @@ void Recorder::slotIncPlayState(int iState)
       // might be play, record, timer record -->
       // therefore use internal state ...
       emit sigLCDStateChange ((int)ePlayState);
+      tNoIdlePing.start();
       break;
 
    case IncPlay::PS_END:
+   case IncPlay::PS_STOP:
       // display "stop" in case of "end" ...
       emit sigLCDStateChange ((int)IncPlay::PS_STOP);
+      tNoIdlePing.stop();
       break;
 
    case IncPlay::PS_ERROR:
       // note about the error also in showInfo class ...
       showInfo.setPlayState((IncPlay::ePlayStates)iState);
+
+      tNoIdlePing.stop();
 
       // update play buttons ...
       TouchPlayCtrlBtns(true);
@@ -3197,6 +3205,26 @@ void Recorder::slotRestoreMinimized()
 {
    setWindowState(windowState() & ~(Qt::WindowMinimized | Qt::WindowActive));
    show();
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotNoIdlePing
+|  Begin: 09.08.2012
+|  Author: Jo2003
+|  Description: emulate mouse event to avoid idle
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotNoIdlePing()
+{
+   QMouseEvent event(QEvent::MouseButtonPress, pos(),
+                     Qt::NoButton, Qt::NoButton, Qt::NoModifier);
+
+   QCoreApplication::sendEvent(this, &event);
+
+   mInfo("* No-idle-ping *");
 }
 
 #ifdef INCLUDE_LIBVLC
