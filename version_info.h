@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "57"
-#define BETA_EXT      "B4"
+#define BETA_EXT      "B7"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,16 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-08-10: Version 2.57B7
+| - many tries to get no-idle working
+| - use again libVLC2.0.1 on mac due to program crashes
+|   (hopefully this works now)
+| - again updated help due to translation changes
+| - update translation
+| - disable trayicon stuff on Mac - it only causes trouble
+| - stop stream play if another one uses the account
+| - add autoreleasepool on mac
+|
 | 2012-07-26: Version 2.57B4
 | - use branded help
 | - updated help
@@ -431,4 +441,3 @@
 | - prepare for linux build
 | - reload epg only if we are at current day
 \*************************************************************/
-
