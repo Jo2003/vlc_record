@@ -62,8 +62,8 @@ public:
    virtual ~CLCDDisplay ();
 
 protected:
-   void addHeader ();
-   void addFooter ();
+   void addHeader (const QString& str = QString());
+   void addFooter (const QString& str = QString());
    void loadImage (lcd::eState state);
    void showLCD ();
 
@@ -79,6 +79,7 @@ public slots:
    void setState (int iState, const QString& sHead = QString(), const QString& sFoot = QString());
    void setHeader (const QString& str);
    void setFooter (const QString& str);
+   void bufferPercent (int percent);
 };
 
 #endif // __040110__CLCDDISPLAY_H

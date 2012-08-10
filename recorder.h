@@ -287,6 +287,7 @@ private slots:
     void on_pushHelp_clicked();
     void printStateChange(const Qt::WindowStates &old);
     void slotNoIdlePing();
+    void slotDownStreamRequested (int id);
 
 signals:
     void sigShow ();

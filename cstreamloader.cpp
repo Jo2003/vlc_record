@@ -35,7 +35,7 @@ CStreamLoader::CStreamLoader() :QHttp()
    bUseTimerRec = false;
 
    // set timer interval for file check ...
-   tFileCheck.setInterval(1000); // 1 sec ...
+   tFileCheck.setInterval(2000); // 2 sec ...
 
    connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
    connect(&tFileCheck, SIGNAL(timeout()), this, SLOT(slotStreamDataAvailable()));
@@ -55,6 +55,8 @@ CStreamLoader::CStreamLoader() :QHttp()
 \-----------------------------------------------------------------------------*/
 CStreamLoader::~CStreamLoader()
 {
+   tFileCheck.stop();
+
    abort();
 
    if (fStream.isOpen ())
@@ -105,6 +107,8 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
 
       // start file check timer ...
       tFileCheck.start();
+
+      emit sigStreamRequested(iReq);
    }
 }
 
@@ -123,6 +127,9 @@ void CStreamLoader::stopDownload(int id)
    // we should abort only the download ...
    if (id == iReq)
    {
+      // make sure we don't check filesize anymore ...
+      tFileCheck.stop();
+
       // quit download ...
       abort();
 
@@ -144,14 +151,23 @@ void CStreamLoader::stopDownload(int id)
 \----------------------------------------------------------------- */
 void CStreamLoader::slotStreamDataAvailable()
 {
+   // Make sure downloaded part of video is "big" enough
+   // so libVLC will not reach the end when reading it.
+   // We assume worst case here: HD.
+   // FullHD stream will have about 6Mbit/s.
+
+   // 6Mbit/s -> 750kB/s
+
    // wait until file is filled with cache size ...
-   int iSize = (iCache / 1000) * 450000;
+   int iSize = (iCache / 1000) * 750000;
 
    iSize = (iSize < MIN_CACHE_SIZE) ? MIN_CACHE_SIZE : iSize;
 
-
    if (fStream.size() >= iSize)
    {
+      // check no more needed ...
+      tFileCheck.stop();
+
       if (!bUseTimerRec)
       {
          emit sigStreamDownload(iReq, fStream.fileName());
@@ -160,7 +176,11 @@ void CStreamLoader::slotStreamDataAvailable()
       {
          emit sigStreamDwnTimer(iReq, fStream.fileName());
       }
-      tFileCheck.stop();
+      emit sigBufferPercent(100);
+   }
+   else
+   {
+      emit sigBufferPercent((int)((100 * fStream.size()) / iSize));
    }
 }
 

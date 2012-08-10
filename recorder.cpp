@@ -229,8 +229,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 #endif /* INCLUDE_LIBVLC */
 
    // connect signals and slots ...
-   // connect noidle timer with slot ...
-   connect(&tNoIdlePing,   SIGNAL(timeout()), this, SLOT(slotNoIdlePing()));
+   connect (&streamLoader, SIGNAL(sigStreamRequested(int)), this, SLOT(slotDownStreamRequested(int)));
+   connect (&streamLoader, SIGNAL(sigBufferPercent(int)), ui->labState, SLOT(bufferPercent(int)));
+   connect (&tNoIdlePing,  SIGNAL(timeout()), this, SLOT(slotNoIdlePing()));
    connect (ui->hFrameFav, SIGNAL(sigAddFav(int)), this, SLOT(slotAddFav(int)));
    connect (&pixCache,     SIGNAL(allDone()), this, SLOT(slotRefreshChanLogos()));
    connect (&KartinaTv,    SIGNAL(sigHttpResponse(QString,int)), this, SLOT(slotKartinaResponse(QString,int)));
@@ -2511,6 +2512,13 @@ void Recorder::slotIncPlayState(int iState)
 
       tNoIdlePing.stop();
 
+      // new own downloader ...
+      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+      {
+         streamLoader.stopDownload (iDwnReqId);
+         iDwnReqId = -1;
+      }
+
       // update play buttons ...
       TouchPlayCtrlBtns(true);
 
@@ -2534,7 +2542,6 @@ void Recorder::slotIncPlayState(int iState)
 \----------------------------------------------------------------- */
 void Recorder::slotDownloadStarted(int id, QString sFileName)
 {
-
    Q_PID     vlcpid   = 0;
    QString   sCmdLine, fileName, sExt;
    QFileInfo info(sFileName);
@@ -3225,6 +3232,21 @@ void Recorder::slotNoIdlePing()
    QCoreApplication::sendEvent(this, &event);
 
    mInfo("* No-idle-ping *");
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotDownStreamRequested
+|  Begin: 10.08.2012
+|  Author: Jo2003
+|  Description: store stream download request id ...
+|
+|  Parameters: request id
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotDownStreamRequested (int id)
+{
+   iDwnReqId = id;
 }
 
 #ifdef INCLUDE_LIBVLC

@@ -214,11 +214,11 @@ void CLCDDisplay::resetState()
 |  Author: Jo2003
 |  Description: insert header text + shadow into image
 |
-|  Parameters: --
+|  Parameters: optional string to add
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CLCDDisplay::addHeader()
+void CLCDDisplay::addHeader(const QString &str)
 {
    QPainter painter(&lcdImg);
 
@@ -227,13 +227,13 @@ void CLCDDisplay::addHeader()
    painter.setFont(QFont("Monospace", 8, QFont::Bold, false));
 
    // paint shadow ...
-   painter.drawText(3, 10, sHeader);
+   painter.drawText(3, 10, (str == "") ? sHeader : str);
 
    // set text color ...
    painter.setPen(QColor(COLOR_TEXT));
 
    // paint text ...
-   painter.drawText(2, 9, sHeader);
+   painter.drawText(2, 9, (str == "") ? sHeader : str);
 }
 
 /* -----------------------------------------------------------------\
@@ -242,11 +242,11 @@ void CLCDDisplay::addHeader()
 |  Author: Jo2003
 |  Description: insert footer text + shadow into image
 |
-|  Parameters: --
+|  Parameters: optional string to add
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CLCDDisplay::addFooter()
+void CLCDDisplay::addFooter(const QString &str)
 {
    QPainter painter(&lcdImg);
 
@@ -255,13 +255,13 @@ void CLCDDisplay::addFooter()
    painter.setFont(QFont("Monospace", 8, QFont::Bold, false));
 
    // paint shadow ...
-   painter.drawText(3, lcdImg.height() - 1, sFooter);
+   painter.drawText(3, lcdImg.height() - 1, (str == "") ? sFooter : str);
 
    // set text color ...
    painter.setPen(QColor(COLOR_TEXT));
 
    // paint text ...
-   painter.drawText(2, lcdImg.height() - 2, sFooter);
+   painter.drawText(2, lcdImg.height() - 2, (str == "") ? sFooter : str);
 }
 
 /* -----------------------------------------------------------------\
@@ -336,6 +336,31 @@ void CLCDDisplay::showLCD()
 
    // set / display pixmap ...
    setPixmap(QPixmap::fromImage(lcdImg));
+}
+
+/* -----------------------------------------------------------------\
+|  Method: bufferPercent
+|  Begin: 10.08.2012
+|  Author: Jo2003
+|  Description: show download buffer in percent,
+|               don't touch internally stored values
+|
+|  Parameters: buffer value in %
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CLCDDisplay::bufferPercent(int percent)
+{
+   if (percent < 100)
+   {
+      loadImage(lcd::BUFFER);
+      addHeader(QString("  %1% ...").arg(percent));
+      showLCD();
+   }
+   else
+   {
+      resetState();
+   }
 }
 
 /************************* History ***************************\

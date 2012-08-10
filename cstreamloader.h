@@ -59,9 +59,11 @@ private slots:
    void slotStreamDataAvailable();
 
 signals:
+   void sigStreamRequested (int iReqId);
    void sigStreamDownload (int iReqId, QString sFileName);
    void sigStreamDwnTimer (int iReqId, QString sFileName);
    void sigError (QString str);
+   void sigBufferPercent (int percent);
 };
 
 #endif // __20101214185500_CSTREAMLOADER_H
