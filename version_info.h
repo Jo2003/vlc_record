@@ -38,15 +38,18 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
-| 2012-08-10: Version 2.57B7
+| 2012-08-11: Version 2.57B7
 | - many tries to get no-idle working
-| - use again libVLC2.0.1 on mac due to program crashes
-|   (hopefully this works now)
 | - again updated help due to translation changes
 | - update translation
 | - disable trayicon stuff on Mac - it only causes trouble
 | - stop stream play if another one uses the account
 | - add autoreleasepool on mac
+| - try that libVLC handles no-idle stuff (needs testing)
+| - fix a huge bug in CPlayer
+|   + eventCallback causes big trouble when emiiting signals
+|   + eventCallback now only stores event type
+|   + a poller checks for state changes
 |
 | 2012-07-26: Version 2.57B4
 | - use branded help
