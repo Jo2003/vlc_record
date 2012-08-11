@@ -2496,21 +2496,21 @@ void Recorder::slotIncPlayState(int iState)
       // might be play, record, timer record -->
       // therefore use internal state ...
       emit sigLCDStateChange ((int)ePlayState);
-      tNoIdlePing.start();
+      // NoIdlePing.start();
       break;
 
    case IncPlay::PS_END:
    case IncPlay::PS_STOP:
       // display "stop" in case of "end" ...
       emit sigLCDStateChange ((int)IncPlay::PS_STOP);
-      tNoIdlePing.stop();
+      // tNoIdlePing.stop();
       break;
 
    case IncPlay::PS_ERROR:
       // note about the error also in showInfo class ...
       showInfo.setPlayState((IncPlay::ePlayStates)iState);
 
-      tNoIdlePing.stop();
+      // tNoIdlePing.stop();
 
       // new own downloader ...
       if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
@@ -2551,7 +2551,8 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
    sExt      = info.suffix();
 
    sCmdLine  = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE, Settings.GetVLCPath(),
-                                    "", Settings.GetBufferTime(), fileName, sExt);
+                                    "", Settings.GetBufferTime(),
+                                    QString("file://%1").arg(fileName), sExt);
 
    // start player if we have a command line ...
    if (sCmdLine != "")

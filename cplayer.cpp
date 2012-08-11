@@ -27,6 +27,8 @@ extern CShowInfo showInfo;
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
 
+libvlc_event_type_t CPlayer::_actEvent  = libvlc_MediaPlayerStopped;
+
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
 |  Begin: 24.02.2010 / 12:17:51
@@ -50,6 +52,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    bCtrlStream      = false;
    bSpoolPending    = true;
    uiDuration       = (uint)-1;
+   lastEvent        = libvlc_MediaPlayerStopped;
    mAspect.clear();
    mCrop.clear();
    QStringList slKey, slVal;
@@ -86,6 +89,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    tAspectShot.setSingleShot (true);
    tAspectShot.setInterval (800);
 
+   // poll for state change events with 250ms interval ...
+   tEventPoll.setInterval(250);
+
    // connect volume slider with volume change function ...
    connect(ui->volSlider, SIGNAL(sliderMoved(int)), this, SLOT(slotChangeVolume(int)));
 
@@ -108,8 +114,12 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
    connect(ui->posSlider, SIGNAL(sliderReleased()), this, SLOT(slotSliderPosChanged()));
 
+   // event poll ...
+   connect(&tEventPoll, SIGNAL(timeout()), this, SLOT(slotEventPoll()));
+
    // update position slider every second ...
    sliderTimer.start(1000);
+   tEventPoll.start();
 }
 
 /* -----------------------------------------------------------------\
@@ -126,6 +136,7 @@ CPlayer::~CPlayer()
 {
    // stop timer ...
    sliderTimer.stop();
+   tEventPoll.stop();
 
    stop();
 
@@ -231,6 +242,8 @@ void CPlayer::setTrigger(CWaitTrigger *pTrig)
 int CPlayer::initPlayer()
 {
    int          iRV     = -1;
+   int          i;
+   int          iEventCount;
    int          argc    = 0;
    const char **argv    = NULL;
    const char  *pVerbose;
@@ -273,7 +286,7 @@ int CPlayer::initPlayer()
    argc = sizeof(vlc_args) / sizeof(vlc_args[0]);
    argv = vlc_args;
 
-   for (int i = 0; i < argc; i++)
+   for (i = 0; i < argc; i++)
    {
       slOpts.append(argv[i]);
    }
@@ -307,24 +320,24 @@ int CPlayer::initPlayer()
             if ((pEMPlay = libvlc_media_player_event_manager(pMediaPlayer)) != NULL)
             {
                // if we've got the event manager, register for some events ...
+               libvlc_event_type_t eventsMediaListPlayer[] = {
+                  libvlc_MediaPlayerEncounteredError,
+                  libvlc_MediaPlayerOpening,
+                  libvlc_MediaPlayerPlaying,
+                  libvlc_MediaPlayerPaused,
+                  libvlc_MediaPlayerStopped,
+                  libvlc_MediaPlayerEndReached
+               };
 
-               iRV  = libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEncounteredError,
-                                         CPlayer::eventCallback, (void *)this);
+               // so far so good ...
+               iRV = 0;
 
-               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerOpening,
-                                          CPlayer::eventCallback, (void *)this);
-
-               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPlaying,
-                                          CPlayer::eventCallback, (void *)this);
-
-               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerPaused,
-                                          CPlayer::eventCallback, (void *)this);
-
-               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerStopped,
-                                          CPlayer::eventCallback, (void *)this);
-
-               iRV |= libvlc_event_attach(pEMPlay, libvlc_MediaPlayerEndReached,
-                                          CPlayer::eventCallback, (void *)this);
+               iEventCount = sizeof(eventsMediaListPlayer) / sizeof(*eventsMediaListPlayer);
+               for (i = 0; i < iEventCount; i++)
+               {
+                  iRV |= libvlc_event_attach(pEMPlay, eventsMediaListPlayer[i],
+                                            eventCallback, NULL);
+               }
             }
          }
       }
@@ -573,6 +586,13 @@ int CPlayer::playMedia(const QString &sCmdLine)
          libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
 
          ///////////////////////////////////////////////////////////////////////////
+         // screensaver stuff ...
+         ///////////////////////////////////////////////////////////////////////////
+         sMrl = ":disable-screensaver";
+         mInfo(tr("Add MRL Option: %1").arg(sMrl));
+         libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+         ///////////////////////////////////////////////////////////////////////////
          // further mrl options from player module file ...
          ///////////////////////////////////////////////////////////////////////////
          for (cit = lArgs.constBegin(); cit != lArgs.constEnd(); cit ++)
@@ -805,62 +825,93 @@ void CPlayer::changeEvent(QEvent *e)
 |  Author: Jo2003
 |  Description: callback for vlc events
 |
-|  Parameters: pointer to event raised, pointer to player class
+|  Parameters: pointer to event raised, pointer to user data
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::eventCallback(const libvlc_event_t *ev, void *player)
+void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
 {
-   CPlayer *pPlayer = (CPlayer *)player;
+   Q_UNUSED(userdata)
 
-   switch (ev->type)
+   /////////////////////////////////////////////////////////////////
+   // Note:
+   // Sending signals etc. from this callback brings much trouble
+   // on MacOSX. So I decided to only store the event type here.
+   // A poller will periodically check this value for changes.
+   // Using it this way fixes the strange behavior!
+   /////////////////////////////////////////////////////////////////
+
+   // store event type so the event poller can handle it...
+   CPlayer::_actEvent = ev->type;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotEventPoll [slot]
+|  Begin: 11.ß8.2012
+|  Author: Jo2003
+|  Description: poll for state changes
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotEventPoll()
+{
+   if (_actEvent != lastEvent)
    {
-   // error ...
-   case libvlc_MediaPlayerEncounteredError:
-      mInfo("libvlc_MediaPlayerEncounteredError ...");
-      emit pPlayer->sigPlayState((int)IncPlay::PS_ERROR);
-      pPlayer->stopPlayTimer();
-      break;
+      // accept event ...
+      lastEvent = _actEvent;
 
-   // opening media ...
-   case libvlc_MediaPlayerOpening:
-      mInfo("libvlc_MediaPlayerOpening ...");
-      emit pPlayer->sigPlayState((int)IncPlay::PS_OPEN);
-      break;
+      // what happened ?
+      switch (lastEvent)
+      {
+      // error ...
+      case libvlc_MediaPlayerEncounteredError:
+         mInfo("libvlc_MediaPlayerEncounteredError ...");
+         emit sigPlayState((int)IncPlay::PS_ERROR);
+         stopPlayTimer();
+         break;
 
-   // playing media ...
-   case libvlc_MediaPlayerPlaying:
-      mInfo("libvlc_MediaPlayerPlaying ...");
-      emit pPlayer->sigPlayState((int)IncPlay::PS_PLAY);
-      emit pPlayer->sigTriggerAspectChg ();
-      pPlayer->startPlayTimer();
-      pPlayer->initSlider();
-      break;
+      // opening media ...
+      case libvlc_MediaPlayerOpening:
+         mInfo("libvlc_MediaPlayerOpening ...");
+         emit sigPlayState((int)IncPlay::PS_OPEN);
+         break;
 
-   // player paused ...
-   case libvlc_MediaPlayerPaused:
-      mInfo("libvlc_MediaPlayerPaused ...");
-      emit pPlayer->sigPlayState((int)IncPlay::PS_PAUSE);
-      pPlayer->pausePlayTimer();
-      break;
+      // playing media ...
+      case libvlc_MediaPlayerPlaying:
+         mInfo("libvlc_MediaPlayerPlaying ...");
+         emit sigPlayState((int)IncPlay::PS_PLAY);
+         emit sigTriggerAspectChg ();
+         startPlayTimer();
+         initSlider();
+         break;
 
-   // player stopped ...
-   case libvlc_MediaPlayerStopped:
-      mInfo("libvlc_MediaPlayerStopped ...");
-      emit pPlayer->sigPlayState((int)IncPlay::PS_STOP);
-      pPlayer->stopPlayTimer();
-      break;
+      // player paused ...
+      case libvlc_MediaPlayerPaused:
+         mInfo("libvlc_MediaPlayerPaused ...");
+         emit sigPlayState((int)IncPlay::PS_PAUSE);
+         pausePlayTimer();
+         break;
 
-   // end of media reached ...
-   case libvlc_MediaPlayerEndReached:
-      mInfo("libvlc_MediaPlayerEndReached ...");
-      emit pPlayer->sigPlayState((int)IncPlay::PS_END);
-      pPlayer->stopPlayTimer();
-      break;
+      // player stopped ...
+      case libvlc_MediaPlayerStopped:
+         mInfo("libvlc_MediaPlayerStopped ...");
+         emit sigPlayState((int)IncPlay::PS_STOP);
+         stopPlayTimer();
+         break;
 
-   default:
-      mInfo(tr("Unknown Event No. %1 received ...").arg(ev->type));
-      break;
+      // end of media reached ...
+      case libvlc_MediaPlayerEndReached:
+         mInfo("libvlc_MediaPlayerEndReached ...");
+         emit sigPlayState((int)IncPlay::PS_END);
+         stopPlayTimer();
+         break;
+
+      default:
+         mInfo(tr("Unknown Event No. %1 received ...").arg(_actEvent));
+         break;
+      }
    }
 }
 

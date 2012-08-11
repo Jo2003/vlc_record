@@ -64,12 +64,14 @@ public:
    void stopPlayTimer ();
    void setSettings (CSettingsDlg *pDlg);
    void setTrigger (CWaitTrigger *pTrig);
-   static void eventCallback (const libvlc_event_t *ev, void *player);
+   static void eventCallback (const libvlc_event_t *ev, void *userdata);
    bool isPositionable();
    void initSlider ();
    uint getSilderPos();
    QVlcVideoWidget* getAndRemoveVideoWidget();
    void addAndEmbedVideoWidget();
+
+   static libvlc_event_type_t _actEvent;
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -81,11 +83,13 @@ private:
    Ui::CPlayer                 *ui;
    QTimer                       sliderTimer;
    QTimer                       tAspectShot;
+   QTimer                       tEventPoll;
    CTimerEx                     timer;
    libvlc_instance_t           *pVlcInstance;
    libvlc_media_player_t       *pMediaPlayer;
    libvlc_event_manager_t      *pEMPlay;
    libvlc_media_list_player_t  *pMedialistPlayer;
+   libvlc_event_type_t          lastEvent;
    bool                         bCtrlStream;
    CSettingsDlg                *pSettings;
    CWaitTrigger                *pTrigger;
@@ -104,6 +108,7 @@ private slots:
    void slotChangeVolumeDelta (const bool up);
    void slotSliderPosChanged();
    void slotToggleFullscreen();
+   void slotEventPoll();
 
 public slots:
    int  playMedia (const QString &sCmdLine);
