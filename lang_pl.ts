@@ -20,7 +20,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/caboutdialog.ui" line="51"/>
@@ -565,7 +565,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="358"/>
         <source>Error: Can&apos;t create media list!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="563"/>
@@ -603,7 +603,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="1646"/>
         <source>Error: Can&apos;t delete media item from media list!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="638"/>
@@ -613,7 +613,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="922"/>
         <source>Unknown Event No. %1 received ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="956"/>
@@ -2049,7 +2049,7 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="132"/>
         <source>Starting: %1 / Version: %2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2454"/>
