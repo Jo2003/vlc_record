@@ -77,7 +77,8 @@ protected:
    virtual void changeEvent(QEvent *e);
    void enableDisablePlayControl (bool bEnable);
    void connectToVideoWidget ();
-   int  addAd (libvlc_media_list_t *pList);
+   int  addAd ();
+   int  clearMediaList();
 
 private:
    Ui::CPlayer                 *ui;
@@ -89,6 +90,7 @@ private:
    libvlc_media_player_t       *pMediaPlayer;
    libvlc_event_manager_t      *pEMPlay;
    libvlc_media_list_player_t  *pMedialistPlayer;
+   libvlc_media_list_t         *pMediaList;
    libvlc_event_type_t          lastEvent;
    bool                         bCtrlStream;
    CSettingsDlg                *pSettings;

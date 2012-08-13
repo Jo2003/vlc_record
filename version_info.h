@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "57"
-#define BETA_EXT      "B7"
+#define BETA_EXT      "B8"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-08-13: Version 2.57B8
+| - use class own libvlc_media_list_t to avoid crashes on Mac
+|
 | 2012-08-11: Version 2.57B7
 | - many tries to get no-idle working
 | - again updated help due to translation changes

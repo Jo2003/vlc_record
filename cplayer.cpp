@@ -46,6 +46,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pMediaPlayer     = NULL;
    pVlcInstance     = NULL;
    pMedialistPlayer = NULL;
+   pMediaList       = NULL;
    pEMPlay          = NULL;
    pSettings        = NULL;
    pTrigger         = NULL;
@@ -139,6 +140,12 @@ CPlayer::~CPlayer()
    tEventPoll.stop();
 
    stop();
+
+   if (pMediaList)
+   {
+      libvlc_media_list_release (pMediaList);
+      pMediaList = NULL;
+   }
 
    if (pMediaPlayer)
    {
@@ -320,7 +327,7 @@ int CPlayer::initPlayer()
             if ((pEMPlay = libvlc_media_player_event_manager(pMediaPlayer)) != NULL)
             {
                // if we've got the event manager, register for some events ...
-               libvlc_event_type_t eventsMediaListPlayer[] = {
+               libvlc_event_type_t eventsMediaPlayer[] = {
                   libvlc_MediaPlayerEncounteredError,
                   libvlc_MediaPlayerOpening,
                   libvlc_MediaPlayerPlaying,
@@ -332,12 +339,24 @@ int CPlayer::initPlayer()
                // so far so good ...
                iRV = 0;
 
-               iEventCount = sizeof(eventsMediaListPlayer) / sizeof(*eventsMediaListPlayer);
+               iEventCount = sizeof(eventsMediaPlayer) / sizeof(*eventsMediaPlayer);
                for (i = 0; i < iEventCount; i++)
                {
-                  iRV |= libvlc_event_attach(pEMPlay, eventsMediaListPlayer[i],
+                  iRV |= libvlc_event_attach(pEMPlay, eventsMediaPlayer[i],
                                             eventCallback, NULL);
                }
+            }
+
+            // create media list ...
+            if ((pMediaList = libvlc_media_list_new(pVlcInstance)) != NULL)
+            {
+               // set media list ...
+               libvlc_media_list_player_set_media_list (pMedialistPlayer, pMediaList);
+            }
+            else
+            {
+               mInfo(tr("Error: Can't create media list!"));
+               iRV = -1;
             }
          }
       }
@@ -490,7 +509,6 @@ int CPlayer::playMedia(const QString &sCmdLine)
 {
    int                         iRV    = 0;
    libvlc_media_t             *p_md   = NULL;
-   libvlc_media_list_t        *p_ml   = NULL;
    QStringList                 lArgs;
    QStringList::const_iterator cit;
 
@@ -539,6 +557,9 @@ int CPlayer::playMedia(const QString &sCmdLine)
 
    if (!iRV)
    {
+      // clear media list ...
+      clearMediaList();
+
       mInfo(tr("Use following URL:\n  --> %1").arg(sMrl));
 
       if ((p_md = libvlc_media_new_location(pVlcInstance, sMrl.toUtf8().constData())) != NULL)
@@ -601,26 +622,13 @@ int CPlayer::playMedia(const QString &sCmdLine)
             libvlc_media_add_option(p_md, (*cit).toUtf8().constData());
          }
 
-         // create media list ...
-         if ((p_ml = libvlc_media_list_new(pVlcInstance)) != NULL)
-         {
-            // add commercials if needed ...
-            addAd(p_ml);
+         // add commercial to media list (if any) ...
+         addAd();
 
-            // add media ...
-            libvlc_media_list_add_media(p_ml, p_md);
-
-            // set media in player ...
-            libvlc_media_list_player_set_media_list (pMedialistPlayer, p_ml);
-
-            // now it's safe to release medialist ...
-            libvlc_media_list_release (p_ml);
-         }
-         else
-         {
-            mInfo(tr("Can't create media list ..."));
-            iRV = -1;
-         }
+         // add main feature ...
+         libvlc_media_list_lock (pMediaList);
+         libvlc_media_list_add_media (pMediaList, p_md);
+         libvlc_media_list_unlock (pMediaList);
 
          // now it's safe to release media ...
          libvlc_media_release (p_md);
@@ -646,12 +654,12 @@ int CPlayer::playMedia(const QString &sCmdLine)
 |  Author: Jo2003
 |  Description: add commercial
 |
-|  Parameters: medialist to add ad
+|  Parameters: --
 |
 |  Returns: 0 --> none added
 |           1 --> added
 \----------------------------------------------------------------- */
-int CPlayer::addAd(libvlc_media_list_t *pList)
+int CPlayer::addAd()
 {
    // play add ... ?
    int             iRV    = 0;
@@ -697,7 +705,9 @@ int CPlayer::addAd(libvlc_media_list_t *pList)
          }
 
          // add media ...
-         libvlc_media_list_add_media(pList, p_mdad);
+         libvlc_media_list_lock (pMediaList);
+         libvlc_media_list_add_media(pMediaList, p_mdad);
+         libvlc_media_list_unlock (pMediaList);
 
          // release ad ...
          libvlc_media_release (p_mdad);
@@ -1594,6 +1604,55 @@ void CPlayer::addAndEmbedVideoWidget()
 void CPlayer::slotFsToggled(int on)
 {
    ui->videoWidget->fullScreenToggled(on);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: clearMediaList
+|  Begin: 13.08.2012
+|  Author: Jo2003
+|  Description: clear medial list
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> error
+\----------------------------------------------------------------- */
+int CPlayer::clearMediaList()
+{
+   int iRV = 0;
+
+   if (pMediaList)
+   {
+      int iCount;
+
+      // media list should be locked while removing items ...
+      libvlc_media_list_lock (pMediaList);
+
+      do {
+
+         // are there some items to remove ... ?
+         iCount = libvlc_media_list_count (pMediaList);
+
+         if (iCount > 0)
+         {
+            // remove first list item ...
+            if (!libvlc_media_list_remove_index(pMediaList, 0))
+            {
+               iCount --;
+            }
+            else
+            {
+               iRV |= -1;
+               mInfo(tr("Error: Can't delete media item from media list!"));
+            }
+         }
+
+      } while (iCount > 0);
+
+      libvlc_media_list_unlock (pMediaList);
+   }
+
+   return iRV;
 }
 
 /************************* History ***************************\

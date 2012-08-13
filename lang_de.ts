@@ -700,7 +700,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="294"/>
+        <location filename="cplayer.cpp" line="301"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -709,7 +709,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="542"/>
+        <location filename="cplayer.cpp" line="358"/>
+        <source>Error: Can&apos;t create media list!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cplayer.cpp" line="563"/>
         <source>Use following URL:
   --&gt; %1</source>
         <oldsource>Use following MRL:
@@ -717,26 +722,26 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="549"/>
-        <location filename="cplayer.cpp" line="566"/>
-        <location filename="cplayer.cpp" line="581"/>
-        <location filename="cplayer.cpp" line="585"/>
-        <location filename="cplayer.cpp" line="592"/>
-        <location filename="cplayer.cpp" line="600"/>
-        <location filename="cplayer.cpp" line="668"/>
-        <location filename="cplayer.cpp" line="672"/>
-        <location filename="cplayer.cpp" line="688"/>
+        <location filename="cplayer.cpp" line="570"/>
+        <location filename="cplayer.cpp" line="587"/>
+        <location filename="cplayer.cpp" line="602"/>
+        <location filename="cplayer.cpp" line="606"/>
+        <location filename="cplayer.cpp" line="613"/>
+        <location filename="cplayer.cpp" line="621"/>
+        <location filename="cplayer.cpp" line="676"/>
+        <location filename="cplayer.cpp" line="680"/>
+        <location filename="cplayer.cpp" line="696"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="572"/>
-        <location filename="cplayer.cpp" line="694"/>
+        <location filename="cplayer.cpp" line="593"/>
+        <location filename="cplayer.cpp" line="702"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="664"/>
+        <location filename="cplayer.cpp" line="672"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -744,37 +749,37 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="621"/>
-        <source>Can&apos;t create media list ...</source>
-        <translation></translation>
+        <location filename="cplayer.cpp" line="1646"/>
+        <source>Error: Can&apos;t delete media item from media list!</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="630"/>
+        <location filename="cplayer.cpp" line="638"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="912"/>
+        <location filename="cplayer.cpp" line="922"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="946"/>
+        <location filename="cplayer.cpp" line="956"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="979"/>
+        <location filename="cplayer.cpp" line="989"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1267"/>
+        <location filename="cplayer.cpp" line="1277"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1355"/>
+        <location filename="cplayer.cpp" line="1365"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
