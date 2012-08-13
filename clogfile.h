@@ -24,6 +24,7 @@
 #define mInfo(a) VlcLog.LogInfo (QString("%1 / %2():%3: %4").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(a))
 #define mWarn(a) VlcLog.LogWarn (QString("%1 / %2():%3: %4").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(a))
 #define mErr(a) VlcLog.LogErr (QString("%1 / %2():%3: %4").arg(__FILE__).arg(__FUNCTION__).arg(__LINE__).arg(a))
+#define mLog(a) mErr(a)
 
 //===================================================================
 // namespace

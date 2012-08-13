@@ -129,6 +129,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // set log level ...
    VlcLog.SetLogLevel(Settings.GetLogLevel());
 
+   mLog(tr("Starting: %1 / Version: %2").arg(APP_NAME).arg(__MY__VERSION__));
+
    // log folder locations ...
    mInfo (tr("\ndataDir: %1\n").arg(pFolders->getDataDir())
           + tr("logoDir: %1\n").arg(pFolders->getLogoDir())
