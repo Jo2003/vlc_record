@@ -131,6 +131,10 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    mLog(tr("Starting: %1 / Version: %2").arg(APP_NAME).arg(__MY__VERSION__));
 
+#ifdef INCLUDE_LIBVLC
+   mLog(tr("Using libVLC 0x%1").arg(ui->player->libvlcVersion(), 8, 16, QChar('0')));
+#endif
+
    // log folder locations ...
    mInfo (tr("\ndataDir: %1\n").arg(pFolders->getDataDir())
           + tr("logoDir: %1\n").arg(pFolders->getLogoDir())
@@ -2554,7 +2558,7 @@ void Recorder::slotDownloadStarted(int id, QString sFileName)
 
    sCmdLine  = vlcCtrl.CreateClArgs(vlcctrl::VLC_REC_LIVE, Settings.GetVLCPath(),
                                     "", Settings.GetBufferTime(),
-                                    QString("file://%1").arg(fileName), sExt);
+                                    fileName, sExt);
 
    // start player if we have a command line ...
    if (sCmdLine != "")

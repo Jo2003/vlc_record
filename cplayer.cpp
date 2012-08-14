@@ -53,11 +53,24 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    bCtrlStream      = false;
    bSpoolPending    = true;
    uiDuration       = (uint)-1;
+   ulLibvlcVersion  = 0;
    lastEvent        = libvlc_MediaPlayerStopped;
    mAspect.clear();
    mCrop.clear();
    QStringList slKey, slVal;
    int i;
+
+   // libVlcVersion ...
+   QRegExp rx("^([0-9.]+).*$");
+   QString s = libvlc_get_version();
+
+   if (rx.indexIn(s) > -1)
+   {
+      s               = rx.cap(1);
+      ulLibvlcVersion = (s.section('.', 0, 0).toUInt() << 24)
+                      | (s.section('.', 1, 1).toUInt() << 16)
+                      | (s.section('.', 2, 2).toUInt() <<  8);
+   }
 
    // aspect ratio ...
    slKey << "std" << "1:1" << "4:3" << "16:9" << "16:10" << "2.21:1"  << "5:4";
@@ -535,6 +548,15 @@ int CPlayer::playMedia(const QString &sCmdLine)
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
    // QString     sMrl  = "http://172.25.1.145/~joergn/hobbit.mov";
+
+   /////////////////////////////////////////////////////////////////////////////
+   // libVLC2 needs the file prefix if we want to play a recorded file!
+   /////////////////////////////////////////////////////////////////////////////
+   if (!sMrl.contains("://") && (libVlcVersionEnum() > libVlc::V_1))
+   {
+      mInfo(tr("Adding file protocol prefix to MRL."));
+      sMrl = QString("file://%1").arg(sMrl);
+   }
 
    // are there mrl options ... ?
    if (sCmdLine.contains(";;"))
@@ -1653,6 +1675,52 @@ int CPlayer::clearMediaList()
    }
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: libvlcVersion
+|  Begin: 14.08.2012
+|  Author: Jo2003
+|  Description: return libVlcVersion as ULONG
+|
+|  Parameters: --
+|
+|  Returns: 0 --> parse error
+|        else --> version
+\----------------------------------------------------------------- */
+ulong CPlayer::libvlcVersion()
+{
+   return ulLibvlcVersion;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: libVlcVersionEnum
+|  Begin: 14.08.2012
+|  Author: Jo2003
+|  Description: return libVlcVersion as enum
+|
+|  Parameters: --
+|
+|  Returns: libVlc::Version enum
+\----------------------------------------------------------------- */
+libVlc::Version CPlayer::libVlcVersionEnum()
+{
+   libVlc::Version ver;
+
+   switch (ulLibvlcVersion & 0xFF000000)
+   {
+   case (1 << 24):
+      ver = libVlc::V_1;
+      break;
+   case (2 << 24):
+      ver = libVlc::V_2;
+      break;
+   default:
+      ver = libVlc::V_Unknown;
+      break;
+   }
+
+   return ver;
 }
 
 /************************* History ***************************\

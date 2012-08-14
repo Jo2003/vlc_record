@@ -42,6 +42,16 @@ namespace Ui
    class CPlayer;
 }
 
+namespace libVlc
+{
+   enum Version
+   {
+      V_Unknown,
+      V_1,
+      V_2
+   };
+}
+
 /********************************************************************\
 |  Class: CPlayer
 |  Date:  14.02.2010 / 11:42:24
@@ -69,7 +79,9 @@ public:
    void initSlider ();
    uint getSilderPos();
    QVlcVideoWidget* getAndRemoveVideoWidget();
-   void addAndEmbedVideoWidget();
+   void  addAndEmbedVideoWidget();
+   ulong libvlcVersion();
+   libVlc::Version libVlcVersionEnum();
 
    static libvlc_event_type_t _actEvent;
 
@@ -99,6 +111,7 @@ private:
    uint                         uiDuration;
    QMap<QString, QString>       mAspect;
    QMap<QString, QString>       mCrop;
+   ulong                        ulLibvlcVersion;
 
 private slots:
    void on_posSlider_valueChanged(int value);
