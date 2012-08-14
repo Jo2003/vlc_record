@@ -87,8 +87,9 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    QUrl    url(tmpUrl);
 
    // print out host ...
-   mInfo(tr("Download Stream from http://%1:%2")
-         .arg(url.host()).arg((url.port() == -1) ? 80 : url.port()));
+   mInfo(tr("Download Stream from http://%1:%2\n --> to %3")
+         .arg(url.host()).arg((url.port() == -1) ? 80 : url.port())
+         .arg(sFileName));
 
    // save cache time ...
    iCache = iCacheTime;
