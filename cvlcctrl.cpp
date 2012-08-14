@@ -456,7 +456,7 @@ QString CVlcCtrl::CreateClArgs (vlcctrl::eVlcAct eAct, const QString &sPlayer,
       sMux = sFrcMx;
    }
 
-   if (bTranslit || bForcedTranslit)
+   if (doTranslit() && !bOwnDownloader)
    {
       sDstFile = QString("%1/%2").arg(dstInfo.path())
                  .arg(pTranslit->CyrToLat(dstInfo.baseName()));
@@ -675,6 +675,29 @@ bool CVlcCtrl::withLibVLC()
 bool CVlcCtrl::ownDwnld()
 {
    return bOwnDownloader;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: doTranslit
+|  Begin: 14.08.2012
+|  Author: Jo2003
+|  Description: should we translit the filename
+|
+|  Parameters: --
+|
+|  Returns: true --> yes
+|          false --> no
+\----------------------------------------------------------------- */
+bool CVlcCtrl::doTranslit()
+{
+   if (bTranslit || bForcedTranslit)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
 }
 
 /************************* History ***************************\

@@ -888,7 +888,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
 
 /* -----------------------------------------------------------------\
 |  Method: slotEventPoll [slot]
-|  Begin: 11.ß8.2012
+|  Begin: 11.08.2012
 |  Author: Jo2003
 |  Description: poll for state changes
 |

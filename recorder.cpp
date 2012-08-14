@@ -2780,20 +2780,22 @@ void Recorder::slotVodURL(const QString &str)
 
    if (!XMLParser.parseVodUrls(str, sUrls))
    {
-      if (sUrls.count() > 1)
-      {
-         showInfo.setAdUrl(sUrls[1]);
-      }
-
       if (ePlayState == IncPlay::PS_RECORD)
       {
          // use own downloader ... ?
          if (!vlcCtrl.ownDwnld())
          {
+            // normal libvlc usage -> show adds!
+            if (sUrls.count() > 1)
+            {
+               showInfo.setAdUrl(sUrls[1]);
+            }
+
             StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
          }
          else
          {
+            // stream loader doesn't support adds so far ... ;-)
             StartStreamDownload(sUrls[0], CleanShowName(showInfo.showName()), "m4v");
          }
 
@@ -4240,7 +4242,8 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
    {
       // create filename as we think it's good ...
       fileName = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                 .arg(sName).arg(now.toString("yyyy-MM-dd__hh-mm"));
+                 .arg(vlcCtrl.doTranslit() ? translit.CyrToLat(sName, true) : sName)
+                 .arg(now.toString("yyyy-MM-dd__hh-mm"));
    }
 
    if (fileName != "")

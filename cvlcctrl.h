@@ -77,6 +77,7 @@ public:
    void    UseLibVlc (bool bUsage);
    bool    withLibVLC();
    bool    ownDwnld();
+   bool    doTranslit();
 
 private:
    QTimer     tRunTime;
