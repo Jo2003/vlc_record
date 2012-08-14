@@ -42,16 +42,6 @@ namespace Ui
    class CPlayer;
 }
 
-namespace libVlc
-{
-   enum Version
-   {
-      V_Unknown,
-      V_1,
-      V_2
-   };
-}
-
 /********************************************************************\
 |  Class: CPlayer
 |  Date:  14.02.2010 / 11:42:24
@@ -81,7 +71,6 @@ public:
    QVlcVideoWidget* getAndRemoveVideoWidget();
    void  addAndEmbedVideoWidget();
    ulong libvlcVersion();
-   libVlc::Version libVlcVersionEnum();
 
    static libvlc_event_type_t _actEvent;
 

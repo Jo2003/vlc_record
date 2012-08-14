@@ -17,6 +17,7 @@
 #include <QTextStream>
 #include <QDateTime>
 #include <cstdio>
+#include <QFile>
 
 //===================================================================
 // some macros to make logging easier ...
@@ -69,9 +70,12 @@ private:
    vlclog::eLogLevel level;
    void    WriteLog (const QString &str);
    void    TouchLogFile ();
-   QString sFileName;
-   QString sDirName;
-   QMutex  mutex;
+
+   QString     sFileName;
+   QString     sDirName;
+   QTextStream logStream;
+   QFile       fLogFile;
+   QMutex      mutex;
 };
 
 #endif /* __011910__CLOGFILE_H */

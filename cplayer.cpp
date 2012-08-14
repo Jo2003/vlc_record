@@ -524,6 +524,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
    libvlc_media_t             *p_md   = NULL;
    QStringList                 lArgs;
    QStringList::const_iterator cit;
+   bool                        bLocal = false;
 
    // do we can control the stream ... ?
    if ((showInfo.playState() == IncPlay::PS_PLAY)
@@ -549,15 +550,6 @@ int CPlayer::playMedia(const QString &sCmdLine)
    QString     sMrl  = sCmdLine.section(";;", 0, 0);
    // QString     sMrl  = "http://172.25.1.145/~joergn/hobbit.mov";
 
-   /////////////////////////////////////////////////////////////////////////////
-   // libVLC2 needs the file prefix if we want to play a recorded file!
-   /////////////////////////////////////////////////////////////////////////////
-   if (!sMrl.contains("://") && (libVlcVersionEnum() > libVlc::V_1))
-   {
-      mInfo(tr("Adding file protocol prefix to MRL."));
-      sMrl = QString("file://%1").arg(sMrl);
-   }
-
    // are there mrl options ... ?
    if (sCmdLine.contains(";;"))
    {
@@ -582,10 +574,23 @@ int CPlayer::playMedia(const QString &sCmdLine)
       // clear media list ...
       clearMediaList();
 
-      mInfo(tr("Use following URL:\n  --> %1").arg(sMrl));
-
-      if ((p_md = libvlc_media_new_location(pVlcInstance, sMrl.toUtf8().constData())) != NULL)
+      // check for local file ...
+      if (!sMrl.contains("://"))
       {
+         // local file to play ...
+         bLocal = true;
+
+         // add file prefix ...
+         sMrl   = QString("file:///%1").arg(sMrl);
+
+         // replace all backslashes with slashes ...
+         sMrl.replace('\\', '/');
+      }
+
+      if ((p_md = libvlc_media_new_location(pVlcInstance, QUrl::toPercentEncoding(sMrl, "/:?&=%"))) != NULL)
+      {
+         mInfo(tr("Media successfully created from MRL:\n --> %1").arg(sMrl));
+
          // do we use GPU acceleration ... ?
          if (pSettings->useGpuAcc())
          {
@@ -593,40 +598,44 @@ int CPlayer::playMedia(const QString &sCmdLine)
             libvlc_media_add_option(p_md, GPU_ACC_TOKEN);
          }
 
-         ///////////////////////////////////////////////////////////////////////////
-         // set proxy server ...
-         ///////////////////////////////////////////////////////////////////////////
-         if (pSettings->UseProxy())
+         // proxy and timeshift are only needed when we play a remote file ...
+         if (!bLocal)
          {
-            sMrl = ":http_proxy=http://";
-
-            if (pSettings->GetProxyUser() != "")
+            ///////////////////////////////////////////////////////////////////////////
+            // set proxy server ...
+            ///////////////////////////////////////////////////////////////////////////
+            if (pSettings->UseProxy())
             {
-               sMrl += QString("%1@").arg(pSettings->GetProxyUser());
+               sMrl = ":http_proxy=http://";
+
+               if (pSettings->GetProxyUser() != "")
+               {
+                  sMrl += QString("%1@").arg(pSettings->GetProxyUser());
+               }
+
+               sMrl += QString("%1:%2/").arg(pSettings->GetProxyHost()).arg(pSettings->GetProxyPort());
+               mInfo(tr("Add MRL Option: %1").arg(sMrl));
+               libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+               if ((pSettings->GetProxyPasswd() != "") && (pSettings->GetProxyUser() != ""))
+               {
+                  sMrl = QString(":http_proxy_pwd=%1").arg(pSettings->GetProxyPasswd());
+                  mInfo(tr("Add MRL Option: :http_proxy_pwd=******"));
+                  libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+               }
             }
 
-            sMrl += QString("%1:%2/").arg(pSettings->GetProxyHost()).arg(pSettings->GetProxyPort());
+            ///////////////////////////////////////////////////////////////////////////
+            // timeshift stuff ...
+            ///////////////////////////////////////////////////////////////////////////
+            sMrl = QString(":input-timeshift-path=%1").arg(QDir::tempPath());
             mInfo(tr("Add MRL Option: %1").arg(sMrl));
             libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
 
-            if ((pSettings->GetProxyPasswd() != "") && (pSettings->GetProxyUser() != ""))
-            {
-               sMrl = QString(":http_proxy_pwd=%1").arg(pSettings->GetProxyPasswd());
-               mInfo(tr("Add MRL Option: :http_proxy_pwd=******"));
-               libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
-            }
+            sMrl = QString(":input-timeshift-granularity=%1").arg((int)(1.5 * 1024.0 * 1024.0 * 1024.0)); // 1.5GB
+            mInfo(tr("Add MRL Option: %1").arg(sMrl));
+            libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
          }
-
-         ///////////////////////////////////////////////////////////////////////////
-         // timeshift stuff ...
-         ///////////////////////////////////////////////////////////////////////////
-         sMrl = QString(":input-timeshift-path=%1").arg(QDir::tempPath());
-         mInfo(tr("Add MRL Option: %1").arg(sMrl));
-         libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
-
-         sMrl = QString(":input-timeshift-granularity=%1").arg((int)(1.5 * 1024.0 * 1024.0 * 1024.0)); // 1.5GB
-         mInfo(tr("Add MRL Option: %1").arg(sMrl));
-         libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
 
          ///////////////////////////////////////////////////////////////////////////
          // screensaver stuff ...
@@ -1691,36 +1700,6 @@ int CPlayer::clearMediaList()
 ulong CPlayer::libvlcVersion()
 {
    return ulLibvlcVersion;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: libVlcVersionEnum
-|  Begin: 14.08.2012
-|  Author: Jo2003
-|  Description: return libVlcVersion as enum
-|
-|  Parameters: --
-|
-|  Returns: libVlc::Version enum
-\----------------------------------------------------------------- */
-libVlc::Version CPlayer::libVlcVersionEnum()
-{
-   libVlc::Version ver;
-
-   switch (ulLibvlcVersion & 0xFF000000)
-   {
-   case (1 << 24):
-      ver = libVlc::V_1;
-      break;
-   case (2 << 24):
-      ver = libVlc::V_2;
-      break;
-   default:
-      ver = libVlc::V_Unknown;
-      break;
-   }
-
-   return ver;
 }
 
 /************************* History ***************************\

@@ -10,6 +10,7 @@
 | $Id$
 \*************************************************************/
 #include "clogfile.h"
+#include "defdef.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CLogFile / constructor
@@ -47,6 +48,11 @@ CLogFile::~CLogFile()
    {
       fclose(stderr);
    }
+
+   if (fLogFile.isOpen())
+   {
+      fLogFile.close();
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -66,8 +72,25 @@ void CLogFile::TouchLogFile ()
    {
       if (!bInit)
       {
-         QString file = QString("%1/%2").arg(sDirName).arg(sFileName);
-         bInit        = freopen(file.toUtf8().constData(), "w", stderr) ? true : false;
+         // create own output file for libVlc ...
+         QString fileName = QString("%1/%2").arg(sDirName).arg(LIBVLC_LOG_FILE);
+         freopen(fileName.toUtf8().constData(), "w", stderr);
+
+         // normal logfile ...
+         fileName = QString("%1/%2").arg(sDirName).arg(sFileName);
+
+         if (fLogFile.isOpen())
+         {
+            fLogFile.close();
+         }
+
+         fLogFile.setFileName(fileName);
+
+         if ((bInit = fLogFile.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate)) == true)
+         {
+            logStream.setDevice(&fLogFile);
+            logStream.setCodec("UTF-8");
+         }
       }
    }
 }
@@ -121,9 +144,7 @@ void CLogFile::WriteLog(const QString &str)
    if (bInit)
    {
       mutex.lock();
-      QTextStream stream(stderr);
-      stream.setCodec("UTF-8");
-      stream << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss.zzz") << ": " << str << endl;
+      logStream << QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss.zzz") << ": " << str << endl;
       mutex.unlock();
    }
 }

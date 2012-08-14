@@ -41,6 +41,7 @@
 
 #define APP_LOG_FILE      BIN_NAME ".log"
 #define PLAYER_LOG_FILE   "player.log"
+#define LIBVLC_LOG_FILE   "libvlc.log"
 #define MOD_DIR           "modules"
 #define LANG_DIR          "language"
 #define LANG_DIR_QT       "translations"
