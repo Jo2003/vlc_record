@@ -72,12 +72,8 @@ void CLogFile::TouchLogFile ()
    {
       if (!bInit)
       {
-         // create own output file for libVlc ...
-         QString fileName = QString("%1/%2").arg(sDirName).arg(LIBVLC_LOG_FILE);
-         freopen(fileName.toUtf8().constData(), "w", stderr);
-
          // normal logfile ...
-         fileName = QString("%1/%2").arg(sDirName).arg(sFileName);
+         QString fileName = QString("%1/%2").arg(sDirName).arg(sFileName);
 
          if (fLogFile.isOpen())
          {
@@ -90,6 +86,14 @@ void CLogFile::TouchLogFile ()
          {
             logStream.setDevice(&fLogFile);
             logStream.setCodec("UTF-8");
+
+            // create own output file for libVlc ...
+            fileName = QString("%1/%2").arg(sDirName).arg(LIBVLC_LOG_FILE);
+
+            if (!freopen(fileName.toUtf8().constData(), "w", stderr))
+            {
+               WriteLog("Can't create logfile for libVLC!");
+            }
          }
       }
    }
