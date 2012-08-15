@@ -114,6 +114,8 @@ private slots:
    void slotToggleFullscreen();
    void slotEventPoll();
 
+   void on_btnSaveAspectCrop_clicked();
+
 public slots:
    int  playMedia (const QString &sCmdLine);
    int  play();

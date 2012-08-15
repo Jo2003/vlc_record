@@ -41,6 +41,7 @@ public:
    ~CVlcRecDB();
    int aspect (int iCid, QString &sAspect, QString &sCrop);
    int addAspect (int iCid, const QString &sAspect, const QString &sCrop);
+   int delAspect (int iCid);
    QString sqlError();
 
    /* -----------------------------------------------------------------\

@@ -48,6 +48,8 @@
         <file alias="sound_on">resources/sound.png</file>
         <file alias="sound_off">resources/sound_muted.png</file>
         <file alias="fullscreen">resources/view-fullscreen.png</file>
+        <file alias="crop">resources/crop.png</file>
+        <file alias="aspect">resources/aspect_ratio.png</file>
     </qresource>
     <qresource prefix="/vod">
         <file alias="is_fav">resources/heart_red.png</file>

@@ -215,6 +215,32 @@ int CVlcRecDB::addAspect(int iCid, const QString &sAspect, const QString &sCrop)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: delAspect
+|  Begin: 15.08.2012
+|  Author: Jo2003
+|  Description: delete one aspect entry
+|
+|  Parameters: channel id
+|
+|  Returns: 0 --> ok
+|          -1 --> error
+\----------------------------------------------------------------- */
+int CVlcRecDB::delAspect(int iCid)
+{
+   int       iRV = 0;
+   QSqlQuery query;
+   query.prepare("DELETE FROM aspect WHERE cid=?");
+   query.addBindValue(iCid);
+
+   if (!query.exec())
+   {
+      iRV = -1;
+   }
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: sqlError
 |  Begin: 13.06.2010 / 16:17:51
 |  Author: Jo2003

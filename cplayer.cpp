@@ -101,7 +101,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // set aspect shot timer to single shot ...
    tAspectShot.setSingleShot (true);
-   tAspectShot.setInterval (800);
+   tAspectShot.setInterval (5000);
 
    // poll for state change events with 250ms interval ...
    tEventPoll.setInterval(250);
@@ -120,9 +120,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // connect aspect shot timer with aspect change function ...
    connect(&tAspectShot, SIGNAL(timeout()), this, SLOT(slotStoredAspectCrop()));
-
-   // connect aspect trigger signal with timer start ...
-   connect(this, SIGNAL(sigTriggerAspectChg()), &tAspectShot, SLOT(start()));
 
    // connect slider click'n'Go ...
    connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
@@ -480,6 +477,9 @@ int CPlayer::stop()
    }
 
    stopPlayTimer();
+
+   // make sure stop signal comes in time ...
+   emit sigPlayState((int)IncPlay::PS_STOP);
 
    return iRV;
 }
@@ -923,7 +923,7 @@ void CPlayer::slotEventPoll()
       case libvlc_MediaPlayerPlaying:
          mInfo("libvlc_MediaPlayerPlaying ...");
          emit sigPlayState((int)IncPlay::PS_PLAY);
-         emit sigTriggerAspectChg ();
+         tAspectShot.start();
          startPlayTimer();
          initSlider();
          break;
@@ -968,24 +968,16 @@ void CPlayer::slotEventPoll()
 \----------------------------------------------------------------- */
 void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
 {
-   if (pMediaPlayer)
+   if (pMedialistPlayer)
    {
-      QString sAspect, sCrop;
-
-      // set new aspect ratio ...
-      libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(str).toUtf8().constData());
-
-      // save aspect if changed ...
-      pDb->aspect(showInfo.channelId(), sAspect, sCrop);
-
-      if (sAspect != str)
+      if (libvlc_media_list_player_is_playing (pMedialistPlayer))
       {
-         // save to database ...
-         pDb->addAspect(showInfo.channelId(), str, ui->cbxCrop->currentText());
-      }
+         // set new aspect ratio ...
+         libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(str).toAscii().constData());
 
-      mInfo(tr("Aspect ratio: %1")
-            .arg(libvlc_video_get_aspect_ratio(pMediaPlayer)));
+         mInfo(tr("Aspect ratio: %1")
+               .arg(libvlc_video_get_aspect_ratio(pMediaPlayer)));
+      }
    }
 }
 
@@ -1001,24 +993,41 @@ void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
 \----------------------------------------------------------------- */
 void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
 {
-   if (pMediaPlayer)
+   if (pMedialistPlayer)
    {
-      QString sAspect, sCrop;
-
-      // set new aspect ratio ...
-      libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(str).toUtf8().constData());
-
-      // save crop if changed ...
-      pDb->aspect(showInfo.channelId(), sAspect, sCrop);
-
-      if (sCrop != str)
+      if (libvlc_media_list_player_is_playing (pMedialistPlayer))
       {
-         // save to database ...
-         pDb->addAspect(showInfo.channelId(), ui->cbxAspect->currentText(), str);
-      }
+         // set new aspect ratio ...
+         libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(str).toAscii().constData());
 
-      mInfo(tr("Crop ratio: %1")
-            .arg(libvlc_video_get_crop_geometry(pMediaPlayer)));
+         mInfo(tr("Crop ratio: %1")
+               .arg(libvlc_video_get_crop_geometry(pMediaPlayer)));
+      }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: on_btnSaveAspectCrop_clicked [slot]
+|  Begin: 15.08.2012
+|  Author: Jo2003
+|  Description: save video format as set in cbx aspect + crop
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::on_btnSaveAspectCrop_clicked()
+{
+   if ((ui->cbxAspect->currentText() == "std") && (ui->cbxCrop->currentText() == "std"))
+   {
+      // default values --> delete from DB ...
+      pDb->delAspect(showInfo.channelId());
+   }
+   else
+   {
+      pDb->addAspect(showInfo.channelId(),
+                     ui->cbxAspect->currentText(),
+                     ui->cbxCrop->currentText());
    }
 }
 
@@ -1229,48 +1238,84 @@ void CPlayer::on_btnFullScreen_clicked()
 \----------------------------------------------------------------- */
 void CPlayer::slotStoredAspectCrop ()
 {
-   QString sAspect, sCrop;
-
-   // enable spooling again ...
-   bSpoolPending = false;
-   enableDisablePlayControl (true);
-
-   if(!pDb->aspect(showInfo.channelId(), sAspect, sCrop))
+   if (pMedialistPlayer)
    {
-      int iIdxOld, iIdxNew;
-
-      // change combo box value for aspect ratio ...
-      iIdxOld = ui->cbxAspect->currentIndex();
-      iIdxNew = ui->cbxAspect->findText(sAspect);
-
-      if (iIdxOld != iIdxNew)
+      if (libvlc_media_list_player_is_playing (pMedialistPlayer))
       {
-         // updating combobox' actual value will also
-         // trigger the libVLC call ...
-         ui->cbxAspect->setCurrentIndex (iIdxNew);
-      }
-      else
-      {
-         // since values don't differ, updating combobox will not
-         // trigger format change. So set it directly to libVLC ...
-         libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(sAspect).toUtf8().constData());
-      }
+         QString sAspect, sCrop;
+         int     iIdxOld, iIdxNew;
+         bool    bErr = false;
 
-      // change combo box value for crop ratio ...
-      iIdxOld = ui->cbxCrop->currentIndex();
-      iIdxNew = ui->cbxCrop->findText(sCrop);
+         // enable spooling again ...
+         bSpoolPending = false;
+         enableDisablePlayControl (true);
 
-      if (iIdxOld != iIdxNew)
-      {
-         // updating combobox' actual value will also
-         // trigger the libVLC call ...
-         ui->cbxCrop->setCurrentIndex (iIdxNew);
-      }
-      else
-      {
-         // since values don't differ, updating combobox will not
-         // trigger format change. So set it directly to libVLC ...
-         libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(sCrop).toUtf8().constData());
+         if(!pDb->aspect(showInfo.channelId(), sAspect, sCrop))
+         {
+            // change combo box value for aspect ratio ...
+            iIdxOld      = ui->cbxAspect->currentIndex();
+            if ((iIdxNew = ui->cbxAspect->findText(sAspect)) != -1)
+            {
+               if (iIdxOld != iIdxNew)
+               {
+                  // updating combobox' actual value will also
+                  // trigger the libVLC call ...
+                  ui->cbxAspect->setCurrentIndex (iIdxNew);
+               }
+               else
+               {
+                  // since values don't differ, updating combobox will not
+                  // trigger format change. So set it directly to libVLC ...
+                  if (mAspect.contains(sAspect))
+                  {
+                     libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(sAspect).toAscii().constData());
+                  }
+                  else
+                  {
+                     bErr = true;
+                  }
+               }
+            }
+            else
+            {
+               bErr = true;
+            }
+
+            // change combo box value for crop ratio ...
+            iIdxOld      = ui->cbxCrop->currentIndex();
+            if ((iIdxNew = ui->cbxCrop->findText(sCrop)) != -1)
+            {
+               if (iIdxOld != iIdxNew)
+               {
+                  // updating combobox' actual value will also
+                  // trigger the libVLC call ...
+                  ui->cbxCrop->setCurrentIndex (iIdxNew);
+               }
+               else
+               {
+                  // since values don't differ, updating combobox will not
+                  // trigger format change. So set it directly to libVLC ...
+                  if (mCrop.contains(sCrop))
+                  {
+                     libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(sCrop).toAscii().constData());
+                  }
+                  else
+                  {
+                     bErr = true;
+                  }
+               }
+            }
+            else
+            {
+               bErr = true;
+            }
+
+            if (bErr)
+            {
+               // delete entry in error case ...
+               pDb->delAspect(showInfo.channelId());
+            }
+         }
       }
    }
 }
@@ -1705,4 +1750,3 @@ ulong CPlayer::libvlcVersion()
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-

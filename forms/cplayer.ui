@@ -25,25 +25,114 @@
    </property>
    <item>
     <layout class="QHBoxLayout" name="hlTop">
+     <property name="leftMargin">
+      <number>6</number>
+     </property>
+     <property name="rightMargin">
+      <number>6</number>
+     </property>
      <item>
       <widget class="QLabel" name="label_2">
+       <property name="maximumSize">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Aspect:</string>
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../common.qrc">:/player/aspect</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxAspect"/>
+      <widget class="QComboBox" name="cbxAspect">
+       <property name="toolTip">
+        <string>Aspect</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <widget class="QLabel" name="label">
+       <property name="maximumSize">
+        <size>
+         <width>18</width>
+         <height>18</height>
+        </size>
+       </property>
        <property name="text">
-        <string>Crop: </string>
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../common.qrc">:/player/crop</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxCrop"/>
+      <widget class="QComboBox" name="cbxCrop">
+       <property name="toolTip">
+        <string>Crop</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSaveAspectCrop">
+       <property name="minimumSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Save Video Format</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../common.qrc">
+         <normaloff>:/app/save</normaloff>:/app/save</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
@@ -57,6 +146,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLabel" name="labSound">
