@@ -741,7 +741,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1722"/>
+        <location filename="cplayer.cpp" line="1720"/>
         <source>Error: Can&apos;t delete media item from media list!</source>
         <translation></translation>
     </message>
@@ -767,17 +767,17 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1003"/>
+        <location filename="cplayer.cpp" line="1002"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1353"/>
+        <location filename="cplayer.cpp" line="1351"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1441"/>
+        <location filename="cplayer.cpp" line="1439"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>

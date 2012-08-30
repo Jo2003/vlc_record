@@ -975,8 +975,7 @@ void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
          // set new aspect ratio ...
          libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(str).toAscii().constData());
 
-         mInfo(tr("Aspect ratio: %1")
-               .arg(libvlc_video_get_aspect_ratio(pMediaPlayer)));
+         mInfo(tr("Aspect ratio: %1").arg(mAspect.value(str)));
       }
    }
 }
@@ -1000,8 +999,7 @@ void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
          // set new aspect ratio ...
          libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(str).toAscii().constData());
 
-         mInfo(tr("Crop ratio: %1")
-               .arg(libvlc_video_get_crop_geometry(pMediaPlayer)));
+         mInfo(tr("Crop ratio: %1").arg(mCrop.value(str)));
       }
    }
 }
