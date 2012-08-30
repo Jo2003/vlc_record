@@ -36,7 +36,7 @@
        <property name="maximumSize">
         <size>
          <width>40</width>
-         <height>20</height>
+         <height>23</height>
         </size>
        </property>
        <property name="text">
@@ -77,8 +77,8 @@
       <widget class="QLabel" name="label">
        <property name="maximumSize">
         <size>
-         <width>18</width>
-         <height>18</height>
+         <width>23</width>
+         <height>23</height>
         </size>
        </property>
        <property name="text">

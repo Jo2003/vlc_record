@@ -680,6 +680,8 @@ void Recorder::on_pushRecord_clicked()
          uint    gmt = ui->player->getSilderPos ();
          QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
 
+         ui->player->stop();
+
          showInfo.setPlayState(IncPlay::PS_RECORD);
 
          TouchPlayCtrlBtns(false);
