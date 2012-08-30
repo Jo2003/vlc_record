@@ -799,27 +799,27 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Размер кадра:</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="56"/>
+        <location filename="forms/cplayer.ui" line="59"/>
         <source>Aspect</source>
         <translation>Формат изображения</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="98"/>
+        <location filename="forms/cplayer.ui" line="104"/>
         <source>Crop</source>
         <translation>Размер кадра</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="117"/>
+        <location filename="forms/cplayer.ui" line="123"/>
         <source>Save Video Format</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="233"/>
+        <location filename="forms/cplayer.ui" line="232"/>
         <source>Switch to Fullscreen</source>
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="366"/>
+        <location filename="forms/cplayer.ui" line="365"/>
         <source> 0:00:00</source>
         <oldsource>0:00:00</oldsource>
         <translation></translation>

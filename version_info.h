@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "57"
-#define BETA_EXT      "B8"
+#define BETA_EXT      "B10"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__

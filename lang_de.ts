@@ -795,27 +795,27 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Zuschneiden: </translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="56"/>
+        <location filename="forms/cplayer.ui" line="59"/>
         <source>Aspect</source>
         <translation>Seitenverhältnis</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="98"/>
+        <location filename="forms/cplayer.ui" line="104"/>
         <source>Crop</source>
         <translation>Zuschneiden</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="117"/>
+        <location filename="forms/cplayer.ui" line="123"/>
         <source>Save Video Format</source>
         <translation>Videoformat speichern</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="233"/>
+        <location filename="forms/cplayer.ui" line="232"/>
         <source>Switch to Fullscreen</source>
         <translation>Fullscreen</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="366"/>
+        <location filename="forms/cplayer.ui" line="365"/>
         <source> 0:00:00</source>
         <oldsource>0:00:00</oldsource>
         <translation></translation>

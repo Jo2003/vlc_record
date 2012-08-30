@@ -537,17 +537,17 @@ p, li { white-space: pre-wrap; }
         <translation>Format</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="56"/>
+        <location filename="forms/cplayer.ui" line="59"/>
         <source>Aspect</source>
         <translation>Wygląd</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="98"/>
+        <location filename="forms/cplayer.ui" line="104"/>
         <source>Crop</source>
         <translation>Kadr</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="117"/>
+        <location filename="forms/cplayer.ui" line="123"/>
         <source>Save Video Format</source>
         <translation>Zapisz</translation>
     </message>
@@ -556,7 +556,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Wygląd:</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="366"/>
+        <location filename="forms/cplayer.ui" line="365"/>
         <source> 0:00:00</source>
         <translation></translation>
     </message>
@@ -565,7 +565,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Kadr:</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="233"/>
+        <location filename="forms/cplayer.ui" line="232"/>
         <source>Switch to Fullscreen</source>
         <translation>Przejdź to trybu pełnoekranowego</translation>
     </message>
