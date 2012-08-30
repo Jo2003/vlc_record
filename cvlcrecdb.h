@@ -24,6 +24,7 @@
 #include "cdirstuff.h"
 
 #define VLC_REC_DB "vlcrec.db.sqlite"
+#define REC_DB_VER  1
 
 /********************************************************************\
 |  Class: CVlcRecDB
@@ -42,6 +43,7 @@ public:
    int aspect (int iCid, QString &sAspect, QString &sCrop);
    int addAspect (int iCid, const QString &sAspect, const QString &sCrop);
    int delAspect (int iCid);
+   int updateDB ();
    QString sqlError();
 
    /* -----------------------------------------------------------------\

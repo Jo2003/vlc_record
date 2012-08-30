@@ -87,6 +87,9 @@ int CVlcRecDB::checkDb()
    if (!lAllTabs.contains("settings"))
    {
       iRV |= query.exec(TAB_SETTINGS) ? 0 : -1;
+
+      // store current data base version ...
+      setValue("db_version", REC_DB_VER);
    }
 
    if (!lAllTabs.contains("timerrec"))
@@ -97,6 +100,71 @@ int CVlcRecDB::checkDb()
    if (!lAllTabs.contains("shortcuts"))
    {
       iRV |= query.exec(TAB_SHORTCUTS) ? 0 : -1;
+   }
+
+   // db update ...
+   iRV |= updateDB();
+
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: updateDB
+|  Begin: 30.08.2012
+|  Author: Jo2003
+|  Description: check if db needs update, update if needed
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> error
+\----------------------------------------------------------------- */
+int CVlcRecDB::updateDB()
+{
+   int       iRV      = 0;
+   int       iVer     = intValue("db_version");
+   bool      bUpdVer  = (iVer != REC_DB_VER) ? true : false;
+
+   QSqlQuery query;
+
+   if (iVer > REC_DB_VER)
+   {
+      // Downgrade --> delete all settings!
+      QStringList lAllTabs = db.tables();
+
+      for (int i = 0; i < lAllTabs.count(); i++)
+      {
+         query.prepare("DELETE from ?");
+         query.addBindValue(lAllTabs.at(i));
+         iRV |= query.exec() ? 0 : -1;
+      }
+   }
+
+   while (iVer++ < REC_DB_VER)
+   {
+      // Upgrade ...
+      switch (iVer)
+      {
+      // version change 0 ... 1
+      case 1:
+         // clear aspect table since there may be
+         // many unwanted values ...
+         iRV |= query.exec("DELETE FROM aspect") ? 0 : -1;
+         break;
+
+      // Add any changes needed for version update here.
+      // E.g. 'case 2:' for changes from 1 ... 2
+      // ...
+
+      // per default nothing to do ...
+      default:
+         break;
+      }
+   }
+
+   if (bUpdVer)
+   {
+      iRV |= setValue("db_version", REC_DB_VER);
    }
 
    return iRV;
