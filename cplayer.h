@@ -101,6 +101,7 @@ private:
    QMap<QString, QString>       mAspect;
    QMap<QString, QString>       mCrop;
    ulong                        ulLibvlcVersion;
+   bool                         bOmitNextEvent;
 
 private slots:
    void on_posSlider_valueChanged(int value);
@@ -120,6 +121,7 @@ public slots:
    int  playMedia (const QString &sCmdLine);
    int  play();
    int  stop();
+   int  silentStop();
    int  pause();
    int  slotToggleAspectRatio ();
    int  slotToggleCropGeometry ();

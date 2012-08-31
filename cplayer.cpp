@@ -52,6 +52,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pTrigger         = NULL;
    bCtrlStream      = false;
    bSpoolPending    = true;
+   bOmitNextEvent   = false;
    uiDuration       = (uint)-1;
    ulLibvlcVersion  = 0;
    lastEvent        = libvlc_MediaPlayerStopped;
@@ -478,8 +479,33 @@ int CPlayer::stop()
 
    stopPlayTimer();
 
-   // make sure stop signal comes in time ...
-   emit sigPlayState((int)IncPlay::PS_STOP);
+   return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: silentStop
+|  Begin: 31.08.2012
+|  Author: Jo2003
+|  Description: stop playing, omit next event
+|
+|  Parameters: --
+|
+|  Returns: 0 --> ok
+|          -1 --> any error
+\----------------------------------------------------------------- */
+int CPlayer::silentStop()
+{
+   int iRV = 0;
+
+   if (pMedialistPlayer)
+   {
+      if (isPlaying())
+      {
+         // don't emit next event ...
+         bOmitNextEvent = true;
+         iRV            = stop();
+      }
+   }
 
    return iRV;
 }
@@ -767,7 +793,7 @@ void CPlayer::slotUpdateSlider()
       if (libvlc_media_player_is_playing(pMediaPlayer))
       {
          uint pos;
-         if (isPositionable())
+         if (isPositionable() && !showInfo.streamLoader())
          {
             pos = libvlc_media_player_get_time (pMediaPlayer) / 1000;
 
@@ -903,55 +929,62 @@ void CPlayer::slotEventPoll()
       // accept event ...
       lastEvent = _actEvent;
 
-      // what happened ?
-      switch (lastEvent)
+      if (!bOmitNextEvent)
       {
-      // error ...
-      case libvlc_MediaPlayerEncounteredError:
-         mInfo("libvlc_MediaPlayerEncounteredError ...");
-         emit sigPlayState((int)IncPlay::PS_ERROR);
-         stopPlayTimer();
-         break;
+         // what happened ?
+         switch (lastEvent)
+         {
+         // error ...
+         case libvlc_MediaPlayerEncounteredError:
+            mInfo("libvlc_MediaPlayerEncounteredError ...");
+            emit sigPlayState((int)IncPlay::PS_ERROR);
+            stopPlayTimer();
+            break;
 
-      // opening media ...
-      case libvlc_MediaPlayerOpening:
-         mInfo("libvlc_MediaPlayerOpening ...");
-         emit sigPlayState((int)IncPlay::PS_OPEN);
-         break;
+         // opening media ...
+         case libvlc_MediaPlayerOpening:
+            mInfo("libvlc_MediaPlayerOpening ...");
+            emit sigPlayState((int)IncPlay::PS_OPEN);
+            break;
 
-      // playing media ...
-      case libvlc_MediaPlayerPlaying:
-         mInfo("libvlc_MediaPlayerPlaying ...");
-         emit sigPlayState((int)IncPlay::PS_PLAY);
-         tAspectShot.start();
-         startPlayTimer();
-         initSlider();
-         break;
+         // playing media ...
+         case libvlc_MediaPlayerPlaying:
+            mInfo("libvlc_MediaPlayerPlaying ...");
+            emit sigPlayState((int)IncPlay::PS_PLAY);
+            tAspectShot.start();
+            startPlayTimer();
+            initSlider();
+            break;
 
-      // player paused ...
-      case libvlc_MediaPlayerPaused:
-         mInfo("libvlc_MediaPlayerPaused ...");
-         emit sigPlayState((int)IncPlay::PS_PAUSE);
-         pausePlayTimer();
-         break;
+         // player paused ...
+         case libvlc_MediaPlayerPaused:
+            mInfo("libvlc_MediaPlayerPaused ...");
+            emit sigPlayState((int)IncPlay::PS_PAUSE);
+            pausePlayTimer();
+            break;
 
-      // player stopped ...
-      case libvlc_MediaPlayerStopped:
-         mInfo("libvlc_MediaPlayerStopped ...");
-         emit sigPlayState((int)IncPlay::PS_STOP);
-         stopPlayTimer();
-         break;
+         // player stopped ...
+         case libvlc_MediaPlayerStopped:
+            mInfo("libvlc_MediaPlayerStopped ...");
+            emit sigPlayState((int)IncPlay::PS_STOP);
+            stopPlayTimer();
+            break;
 
-      // end of media reached ...
-      case libvlc_MediaPlayerEndReached:
-         mInfo("libvlc_MediaPlayerEndReached ...");
-         emit sigPlayState((int)IncPlay::PS_END);
-         stopPlayTimer();
-         break;
+         // end of media reached ...
+         case libvlc_MediaPlayerEndReached:
+            mInfo("libvlc_MediaPlayerEndReached ...");
+            emit sigPlayState((int)IncPlay::PS_END);
+            stopPlayTimer();
+            break;
 
-      default:
-         mInfo(tr("Unknown Event No. %1 received ...").arg(_actEvent));
-         break;
+         default:
+            mInfo(tr("Unknown Event No. %1 received ...").arg(_actEvent));
+            break;
+         }
+      } // !bOmitNextEvent
+      else
+      {
+         bOmitNextEvent = false;
       }
    }
 }
@@ -1438,7 +1471,7 @@ void CPlayer::initSlider()
    uiDuration = libvlc_media_player_get_length(pMediaPlayer);
    mInfo(tr("Film length: %1ms.").arg(uiDuration));
 
-   if (isPositionable())
+   if (isPositionable() && !showInfo.streamLoader())
    {
       // VOD stuff ...
       ui->posSlider->setRange(0, (int)(uiDuration / 1000));

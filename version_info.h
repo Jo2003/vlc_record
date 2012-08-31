@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "57"
-#define BETA_EXT      "B10"
+#define BETA_EXT      "B11"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT VERSION_APPENDIX " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,17 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - pre-translit filename also if asking for file name
+| - can omit player events
+| - fix slider issue when using 9-th player modul
+|
+| 2012-08-30: Version 2.57B10
+| - use icons for crop and aspect, this way the player window
+|   can be smaller
+| - add recDB version so we can defined update some stuff
+| - add update functionality in recDB
+| - downgrade will remove all database entries (settings)
+|
 | 2012-08-13: Version 2.57B8
 | - use class own libvlc_media_list_t to avoid crashes on Mac
 |

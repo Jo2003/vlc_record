@@ -41,18 +41,19 @@ CShowInfo::CShowInfo(QObject *parent) : QObject(parent)
 \----------------------------------------------------------------- */
 void CShowInfo::cleanShowInfo()
 {
-   sShowName  = "";
-   sChanName  = "";
-   sDescr     = "";
-   sAdUrl     = "";
-   sPCode     = "";
-   iChannelId = -1;
-   iVodId     = -1;
-   ePlayState = IncPlay::PS_STOP;
-   eShowType  = ShowInfo::Live;
-   uiStart    = 0;
-   uiEnd      = 0;
-   uiJumpTime = 0;
+   sShowName     = "";
+   sChanName     = "";
+   sDescr        = "";
+   sAdUrl        = "";
+   sPCode        = "";
+   iChannelId    = -1;
+   iVodId        = -1;
+   ePlayState    = IncPlay::PS_STOP;
+   eShowType     = ShowInfo::Live;
+   uiStart       = 0;
+   uiEnd         = 0;
+   uiJumpTime    = 0;
+   bStreamLoader = false;
    epgMap.clear();
 }
 
@@ -249,6 +250,36 @@ void CShowInfo::setPCode(const QString &code)
 void CShowInfo::setEpgMap(const t_EpgMap &map)
 {
    epgMap = map;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: useStreamLoader
+|  Begin: 31.08.2012
+|  Author: Jo2003
+|  Description: do we use the streamloader?
+|
+|  Parameters: true or false
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::useStreamLoader(bool bUse)
+{
+   bStreamLoader = bUse;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: streamLoader
+|  Begin: 31.08.2012
+|  Author: Jo2003
+|  Description: get streamloader flag
+|
+|  Parameters: --
+|
+|  Returns: true or false
+\----------------------------------------------------------------- */
+bool CShowInfo::streamLoader()
+{
+   return bStreamLoader;
 }
 
 /* -----------------------------------------------------------------\

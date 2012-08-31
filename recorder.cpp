@@ -680,8 +680,6 @@ void Recorder::on_pushRecord_clicked()
          uint    gmt = ui->player->getSilderPos ();
          QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
 
-         ui->player->stop();
-
          showInfo.setPlayState(IncPlay::PS_RECORD);
 
          TouchPlayCtrlBtns(false);
@@ -2080,6 +2078,18 @@ void Recorder::slotArchivURL(const QString &str)
          }
          else
          {
+#ifdef INCLUDE_LIBVLC
+            if (vlcCtrl.withLibVLC())
+            {
+               ui->player->silentStop();
+            }
+            else
+#endif
+            if (vlcCtrl.IsRunning())
+            {
+               vlcCtrl.stop();
+            }
+            showInfo.useStreamLoader(true);
             StartStreamDownload(sUrl, CleanShowName(showInfo.showName()));
          }
 

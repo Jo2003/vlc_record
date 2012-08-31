@@ -67,6 +67,7 @@ public:
    void setPCode (const QString &code);
    void setVodId (int id);
    void setEpgMap(const t_EpgMap &map);
+   void useStreamLoader (bool bUse);
 
    // get values ...
    const QString &showName();
@@ -81,6 +82,7 @@ public:
    const IncPlay::ePlayStates &playState();
    const ShowInfo::eProgType &showType();
    bool  canCtrlStream();
+   bool  streamLoader();
    const int& vodId();
 
    int autoUpdate(uint uiTime);
@@ -100,6 +102,7 @@ private:
    QString              sPCode;
    int                  iVodId;
    t_EpgMap             epgMap;
+   bool                 bStreamLoader;
 };
 
 #endif // __150610_CSHOWINFO_H
