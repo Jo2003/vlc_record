@@ -4225,7 +4225,8 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
       // yes! Create file save dialog ...
       QString   sFilter;
       QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                          .arg(sName).arg(now.toString("yyyy-MM-dd__hh-mm"));
+                          .arg(vlcCtrl.doTranslit() ? translit.CyrToLat(sName, true) : sName)
+                          .arg(now.toString("yyyy-MM-dd__hh-mm"));
 
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
                  sTarget, QString("Transport Stream (*.ts);;MPEG 4 Video (*.m4v)"),

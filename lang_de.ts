@@ -1975,7 +1975,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="obsolete">Der VLC Mediaplayer läuft noch.&lt;br /&gt;&lt;b&gt;Wenn Du vlc-record jetzt schließt, wird auch der VLC Player geschlossen.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Bist Du sicher, dass Du das willst?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4404"/>
+        <location filename="recorder.cpp" line="4405"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
@@ -2003,7 +2003,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4400"/>
+        <location filename="recorder.cpp" line="4401"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Aufnahme läuft.&lt;br /&gt; &lt;br /&gt;Sind Sie sicher, dass Sie die Aufnahme abbrechen wollen?</translation>
@@ -2300,7 +2300,7 @@ dataDir: %1
         <translation>%1 &amp;wiederherstellen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4829"/>
+        <location filename="recorder.cpp" line="4830"/>
         <source>WindowState change: 
  --&gt; %1 &lt;--&gt; %2</source>
         <translation></translation>
@@ -2331,13 +2331,13 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="4076"/>
-        <location filename="recorder.cpp" line="4230"/>
+        <location filename="recorder.cpp" line="4231"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4469"/>
-        <location filename="recorder.cpp" line="4675"/>
+        <location filename="recorder.cpp" line="4470"/>
+        <location filename="recorder.cpp" line="4676"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Favorit %1</translation>
