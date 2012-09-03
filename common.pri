@@ -143,8 +143,6 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    win32:LIBS += -Llib
 
    mac {
-      HEADERS += CocoaInitializer.h
-      OBJECTIVE_SOURCES += CocoaInitializer.mm
       OTHER_FILES += create_mac_bundle.sh \
                      release/create_dmg.sh
       INCLUDEPATH += mac/include
@@ -159,7 +157,7 @@ contains(DEFINES,INCLUDE_LIBVLC) {
       CONFIG(release,debug|release):appcleanhook.target = Makefile.Release
       QMAKE_EXTRA_TARGETS += appcleanhook
 
-      LIBS += -L./mac/lib -F/System/Library/Frameworks -framework AppKit -framework Foundation
+      LIBS += -L./mac/lib
       QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
    }
    else {
