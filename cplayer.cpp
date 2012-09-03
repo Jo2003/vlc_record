@@ -28,6 +28,8 @@ extern CShowInfo showInfo;
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
 
 libvlc_event_type_t CPlayer::_actEvent  = libvlc_MediaPlayerStopped;
+const char*         CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
+const char*         CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
 
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
@@ -56,10 +58,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    uiDuration       = (uint)-1;
    ulLibvlcVersion  = 0;
    lastEvent        = libvlc_MediaPlayerStopped;
-   mAspect.clear();
-   mCrop.clear();
-   QStringList slKey, slVal;
-   int i;
+   QStringList slKey;
+   uint i;
 
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
@@ -74,12 +74,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    }
 
    // aspect ratio ...
-   slKey << "std" << "1:1" << "4:3" << "16:9" << "16:10" << "2.21:1"  << "5:4";
-   slVal << ""    << "1:1" << "4:3" << "16:9" << "16:10" << "221:100" << "5:4";
-
-   for (i = 0; i < slKey.size(); i++)
+   for (i = 0; i < (sizeof(_pAspect) / sizeof (_pAspect[0])); i++)
    {
-      mAspect.insert(slKey.value(i), slVal.value(i));
+      slKey.append(aspectCropToString(_pAspect[i]));
    }
 
    ui->cbxAspect->clear();
@@ -87,14 +84,10 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // crop geometry ...
    slKey.clear();
-   slVal.clear();
 
-   slKey << "std" << "1:1" << "4:3" << "16:9" << "16:10" << "1.85:1"  << "2.21:1"  << "2.35:1"  << "2.39:1"  << "5:4";
-   slVal << ""    << "1:1" << "4:3" << "16:9" << "16:10" << "185:100" << "221:100" << "235:100" << "239:100" << "5:4";
-
-   for (i = 0; i < slKey.size(); i++)
+   for (i = 0; i < (sizeof(_pCrop) / sizeof (_pCrop[0])); i++)
    {
-      mCrop.insert(slKey.value(i), slVal.value(i));
+      slKey.append(aspectCropToString(_pCrop[i]));
    }
 
    ui->cbxCrop->clear();
@@ -842,9 +835,9 @@ bool CPlayer::isPlaying()
 {
    bool bRV = false;
 
-   if (pMedialistPlayer)
+   if (pMediaPlayer)
    {
-      libvlc_state_t playState = libvlc_media_list_player_get_state (pMedialistPlayer);
+      libvlc_state_t playState = libvlc_media_player_get_state (pMediaPlayer);
 
       switch (playState)
       {
@@ -999,16 +992,16 @@ void CPlayer::slotEventPoll()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
+void CPlayer::on_cbxAspect_currentIndexChanged(int idx)
 {
-   if (pMedialistPlayer)
+   if (pMediaPlayer)
    {
-      if (libvlc_media_list_player_is_playing (pMedialistPlayer))
+      if (libvlc_media_player_is_playing (pMediaPlayer))
       {
          // set new aspect ratio ...
-         libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(str).toAscii().constData());
+         libvlc_video_set_aspect_ratio(pMediaPlayer, _pAspect[idx]);
 
-         mInfo(tr("Aspect ratio: %1").arg(mAspect.value(str)));
+         mInfo(tr("Aspect ratio: %1").arg(aspectCropToString(_pAspect[idx])));
       }
    }
 }
@@ -1023,16 +1016,16 @@ void CPlayer::on_cbxAspect_currentIndexChanged(QString str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::on_cbxCrop_currentIndexChanged(QString str)
+void CPlayer::on_cbxCrop_currentIndexChanged(int idx)
 {
-   if (pMedialistPlayer)
+   if (pMediaPlayer)
    {
-      if (libvlc_media_list_player_is_playing (pMedialistPlayer))
+      if (libvlc_media_player_is_playing (pMediaPlayer))
       {
          // set new aspect ratio ...
-         libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(str).toAscii().constData());
+         libvlc_video_set_crop_geometry(pMediaPlayer, _pCrop[idx]);
 
-         mInfo(tr("Crop ratio: %1").arg(mCrop.value(str)));
+         mInfo(tr("Crop ratio: %1").arg(aspectCropToString(_pCrop[idx])));
       }
    }
 }
@@ -1269,9 +1262,9 @@ void CPlayer::on_btnFullScreen_clicked()
 \----------------------------------------------------------------- */
 void CPlayer::slotStoredAspectCrop ()
 {
-   if (pMedialistPlayer)
+   if (pMediaPlayer)
    {
-      if (libvlc_media_list_player_is_playing (pMedialistPlayer))
+      if (libvlc_media_player_is_playing (pMediaPlayer))
       {
          QString sAspect, sCrop;
          int     iIdxOld, iIdxNew;
@@ -1297,14 +1290,7 @@ void CPlayer::slotStoredAspectCrop ()
                {
                   // since values don't differ, updating combobox will not
                   // trigger format change. So set it directly to libVLC ...
-                  if (mAspect.contains(sAspect))
-                  {
-                     libvlc_video_set_aspect_ratio(pMediaPlayer, mAspect.value(sAspect).toAscii().constData());
-                  }
-                  else
-                  {
-                     bErr = true;
-                  }
+                  libvlc_video_set_aspect_ratio(pMediaPlayer, _pAspect[iIdxNew]);
                }
             }
             else
@@ -1326,14 +1312,7 @@ void CPlayer::slotStoredAspectCrop ()
                {
                   // since values don't differ, updating combobox will not
                   // trigger format change. So set it directly to libVLC ...
-                  if (mCrop.contains(sCrop))
-                  {
-                     libvlc_video_set_crop_geometry(pMediaPlayer, mCrop.value(sCrop).toAscii().constData());
-                  }
-                  else
-                  {
-                     bErr = true;
-                  }
+                  libvlc_video_set_crop_geometry(pMediaPlayer, _pCrop[iIdxNew]);
                }
             }
             else
@@ -1776,6 +1755,40 @@ int CPlayer::clearMediaList()
 ulong CPlayer::libvlcVersion()
 {
    return ulLibvlcVersion;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: aspectCropToString
+|  Begin: 03.09.2012
+|  Author: Jo2003
+|  Description: format aspect / crop value into string
+|
+|  Parameters: pointer to aspect / crop
+|
+|  Returns: formatted string
+\----------------------------------------------------------------- */
+QString CPlayer::aspectCropToString (const char *pFormat)
+{
+   QString format = pFormat;
+   QString divident, divisor;
+   QRegExp rx("^([^:]*):(.*)$");
+
+   if (format == "")
+   {
+      format = "std";
+   }
+   else if (rx.indexIn(format) > -1)
+   {
+      divident = rx.cap(1);
+      divisor  = rx.cap(2);
+
+      if (divisor.toUInt() == 100)
+      {
+         format = QString("%1:1").arg((double)(divident.toUInt() / 100.0));
+      }
+   }
+
+   return format;
 }
 
 /************************* History ***************************\

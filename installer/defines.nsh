@@ -5,7 +5,7 @@
 
 ;------------------------------
 ; define versions ...
-!define VER_MINOR   "57B11"
+!define VER_MINOR   "57B12"
 
 ;------------------------------
 ; path defines ...

@@ -1689,6 +1689,18 @@ void Recorder::slotStreamURL(const QString &str)
          }
          else
          {
+#ifdef INCLUDE_LIBVLC
+            if (vlcCtrl.withLibVLC())
+            {
+               ui->player->silentStop();
+            }
+            else
+#endif
+            if (vlcCtrl.IsRunning())
+            {
+               vlcCtrl.stop();
+            }
+            showInfo.useStreamLoader(true);
             StartStreamDownload(sUrl, sShow);
          }
       }
@@ -2807,6 +2819,18 @@ void Recorder::slotVodURL(const QString &str)
          }
          else
          {
+#ifdef INCLUDE_LIBVLC
+            if (vlcCtrl.withLibVLC())
+            {
+               ui->player->silentStop();
+            }
+            else
+#endif
+            if (vlcCtrl.IsRunning())
+            {
+               vlcCtrl.stop();
+            }
+
             // stream loader doesn't support adds so far ... ;-)
             StartStreamDownload(sUrls[0], CleanShowName(showInfo.showName()), "m4v");
          }

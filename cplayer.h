@@ -20,7 +20,6 @@
 #include <QEvent>
 #include <QTime>
 #include <QDesktopWidget>
-#include <QMap>
 
 #include <vlc/vlc.h>
 
@@ -73,6 +72,8 @@ public:
    ulong libvlcVersion();
 
    static libvlc_event_type_t _actEvent;
+   static const char*         _pAspect[];
+   static const char*         _pCrop[];
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -80,6 +81,7 @@ protected:
    void connectToVideoWidget ();
    int  addAd ();
    int  clearMediaList();
+   QString aspectCropToString (const char *pFormat);
 
 private:
    Ui::CPlayer                 *ui;
@@ -98,16 +100,14 @@ private:
    CWaitTrigger                *pTrigger;
    bool                         bSpoolPending;
    uint                         uiDuration;
-   QMap<QString, QString>       mAspect;
-   QMap<QString, QString>       mCrop;
    ulong                        ulLibvlcVersion;
    bool                         bOmitNextEvent;
 
 private slots:
    void on_posSlider_valueChanged(int value);
    void on_btnFullScreen_clicked();
-   void on_cbxAspect_currentIndexChanged(QString str);
-   void on_cbxCrop_currentIndexChanged(QString str);
+   void on_cbxAspect_currentIndexChanged(int idx);
+   void on_cbxCrop_currentIndexChanged(int idx);
    void slotChangeVolume(int newVolume);
    void slotUpdateSlider ();
    void slotChangeVolumeDelta (const bool up);
