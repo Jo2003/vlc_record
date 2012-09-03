@@ -95,7 +95,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // set aspect shot timer to single shot ...
    tAspectShot.setSingleShot (true);
-   tAspectShot.setInterval (5000);
+   tAspectShot.setInterval (2500);
 
    // poll for state change events with 250ms interval ...
    tEventPoll.setInterval(250);
