@@ -154,13 +154,12 @@ void CStreamLoader::slotStreamDataAvailable()
 {
    // Make sure downloaded part of video is "big" enough
    // so libVLC will not reach the end when reading it.
-   // We assume worst case here: HD.
-   // FullHD stream will have about 6Mbit/s.
+   // Assume a good value up to 720p (HD Ready).
 
-   // 6Mbit/s -> 750kB/s
+   // 4.5Mbit/s -> 562.5kB/s
 
    // wait until file is filled with cache size ...
-   int iSize = (iCache / 1000) * 750000;
+   int iSize = (iCache / 1000) * 562500;
 
    iSize = (iSize < MIN_CACHE_SIZE) ? MIN_CACHE_SIZE : iSize;
 

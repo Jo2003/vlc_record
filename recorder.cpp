@@ -1596,6 +1596,7 @@ void Recorder::slotKartinaErr (const QString &str, int req, int err)
    case Kartina::ERR_MULTIPLE_ACCOUNT_USE:
       // if someone else uses this account
       // we have to stop the player ...
+#ifdef INCLUDE_LIBVLC
       if (vlcCtrl.withLibVLC())
       {
          // stop internal player ...
@@ -1605,6 +1606,8 @@ void Recorder::slotKartinaErr (const QString &str, int req, int err)
          }
       }
       else
+#endif
+      if (vlcCtrl.IsRunning())
       {
          // stop external player if under control ...
          if (!Settings.DetachPlayer())
@@ -1612,6 +1615,21 @@ void Recorder::slotKartinaErr (const QString &str, int req, int err)
             vlcCtrl.stop();
          }
       }
+
+      // || Fall through here ||
+      // VV                   VV
+
+      // Handle errors which lead to
+      // cookie removal ... !
+   case Kartina::ERR_WRONG_LOGIN_DATA:
+   case Kartina::ERR_ACCESS_DENIED:
+   case Kartina::ERR_LOGIN_INCORRECT:
+   case Kartina::ERR_CONTRACT_INACTIVE:
+   case Kartina::ERR_CONTRACT_PAUSED:
+   case Kartina::ERR_AUTHENTICATION:
+
+      // and delete the cookie ...
+      KartinaTv.SetCookie("");
       break;
 
    default:
