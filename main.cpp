@@ -25,10 +25,6 @@ Q_IMPORT_PLUGIN(qsqlite)
    #include <X11/Xlib.h>
 #endif
 
-#ifdef Q_OS_MAC
-   #include "CocoaInitializer.h"
-#endif
-
 // make logging class available everywhere ...
 CLogFile VlcLog;
 
@@ -54,11 +50,6 @@ CShowInfo showInfo;
 \----------------------------------------------------------------- */
 int main(int argc, char *argv[])
 {
-#ifdef Q_OS_MAC
-   // in case we need an autoreleasepool ...
-   CocoaInitializer *pCocoaInit = new CocoaInitializer();
-#endif
-
    // bugfix for crash on exit on *nix ...
 #if ((defined Q_WS_X11) && (defined INCLUDE_LIBVLC))
    XInitThreads();
@@ -100,14 +91,6 @@ int main(int argc, char *argv[])
 
       delete pFolders;
    }
-
-#ifdef Q_OS_MAC
-   if (pCocoaInit != NULL)
-   {
-      delete pCocoaInit;
-      pCocoaInit = NULL;
-   }
-#endif
 
    return iRV;
 }
