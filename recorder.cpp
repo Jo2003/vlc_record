@@ -2822,17 +2822,17 @@ void Recorder::slotVodURL(const QString &str)
 
    if (!XMLParser.parseVodUrls(str, sUrls))
    {
+      // show ads if there ...
+      if (sUrls.count() > 1)
+      {
+         showInfo.setAdUrl(sUrls[1]);
+      }
+
       if (ePlayState == IncPlay::PS_RECORD)
       {
          // use own downloader ... ?
          if (!vlcCtrl.ownDwnld())
          {
-            // normal libvlc usage -> show adds!
-            if (sUrls.count() > 1)
-            {
-               showInfo.setAdUrl(sUrls[1]);
-            }
-
             StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
          }
          else
@@ -2850,6 +2850,7 @@ void Recorder::slotVodURL(const QString &str)
             }
 
             // stream loader doesn't support adds so far ... ;-)
+            showInfo.setAdUrl("");
             StartStreamDownload(sUrls[0], CleanShowName(showInfo.showName()), "m4v");
          }
 
