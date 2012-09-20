@@ -721,23 +721,22 @@ p, li { white-space: pre-wrap; }
         <location filename="cplayer.cpp" line="616"/>
         <location filename="cplayer.cpp" line="636"/>
         <location filename="cplayer.cpp" line="651"/>
-        <location filename="cplayer.cpp" line="655"/>
-        <location filename="cplayer.cpp" line="663"/>
-        <location filename="cplayer.cpp" line="671"/>
+        <location filename="cplayer.cpp" line="659"/>
+        <location filename="cplayer.cpp" line="667"/>
+        <location filename="cplayer.cpp" line="722"/>
         <location filename="cplayer.cpp" line="726"/>
-        <location filename="cplayer.cpp" line="730"/>
-        <location filename="cplayer.cpp" line="746"/>
+        <location filename="cplayer.cpp" line="742"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="642"/>
-        <location filename="cplayer.cpp" line="752"/>
+        <location filename="cplayer.cpp" line="748"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="722"/>
+        <location filename="cplayer.cpp" line="718"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -745,12 +744,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1732"/>
+        <location filename="cplayer.cpp" line="1728"/>
         <source>Error: Can&apos;t delete media item from media list!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="688"/>
+        <location filename="cplayer.cpp" line="684"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
@@ -761,27 +760,27 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="974"/>
+        <location filename="cplayer.cpp" line="970"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1004"/>
+        <location filename="cplayer.cpp" line="1000"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1028"/>
+        <location filename="cplayer.cpp" line="1024"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1363"/>
+        <location filename="cplayer.cpp" line="1359"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1451"/>
+        <location filename="cplayer.cpp" line="1447"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>

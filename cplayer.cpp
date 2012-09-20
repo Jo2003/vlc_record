@@ -647,11 +647,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
             ///////////////////////////////////////////////////////////////////////////
             // timeshift stuff ...
             ///////////////////////////////////////////////////////////////////////////
-            sMrl = QString(":input-timeshift-path=%1").arg(QDir::tempPath());
-            mInfo(tr("Add MRL Option: %1").arg(sMrl));
-            libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
-
-            sMrl = QString(":input-timeshift-granularity=%1").arg((int)(1.5 * 1024.0 * 1024.0 * 1024.0)); // 1.5GB
+            sMrl = QString(":input-timeshift-granularity=%1").arg(0x7FFFFFFF); // max. positive integer value (about 2047MB)  ...
             mInfo(tr("Add MRL Option: %1").arg(sMrl));
             libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
          }
