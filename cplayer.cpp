@@ -650,6 +650,10 @@ int CPlayer::playMedia(const QString &sCmdLine)
             sMrl = QString(":input-timeshift-granularity=%1").arg(0x7FFFFFFF); // max. positive integer value (about 2047MB)  ...
             mInfo(tr("Add MRL Option: %1").arg(sMrl));
             libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+            sMrl = QString(":ipv4-timeout=%1").arg(10 * 1000); // 10 sec. timeout for ipv4 connections
+            mInfo(tr("Add MRL Option: %1").arg(sMrl));
+            libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
          }
 
          ///////////////////////////////////////////////////////////////////////////
