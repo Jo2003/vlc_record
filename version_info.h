@@ -42,6 +42,7 @@
 | - bugfix release for changed caching option in libVLC
 |   (from http-caching --> network-caching)
 |   Changes only in mod files!
+| - take care of Qt transfer from Nokia to Digia
 |
 | 2012-09-11: Version 2.58
 | - use newest Qt version

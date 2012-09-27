@@ -112,7 +112,7 @@ void CAboutDialog::FillInfo(QString sExpires)
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>").arg(tr("Author:")) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='http://vlc-record.coujo.de'>vlc-record.coujo.de</a></td></tr>").arg(tr("Project Site:")) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>").arg(tr("Inspired by:")) << endl
-         << QString("<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.nokia.com'>Nokia</a></td></tr>").arg(qVersion()) << endl
+         << QString("<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.digia.com'>Digia</a></td></tr>").arg(qVersion()) << endl
          << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Account expires:")).arg(sExpires) << endl
          << "<tr><td><b>Most icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>" << endl
          << "</table><br /> <br />" << endl
