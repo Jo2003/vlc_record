@@ -29,7 +29,7 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "58"
+#define VERSION_MINOR "59"
 #define BETA_EXT      ""
 
 #define __MY__VERSION__ \
@@ -38,8 +38,16 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-09-27: Version 2.59
+| - bugfix release for changed caching option in libVLC
+|   (from http-caching --> network-caching)
+|   Changes only in mod files!
 |
 | 2012-09-11: Version 2.58
+| - use newest Qt version
+| - cleanup libVLC modules
+| - fix for not showing ads
+| - increase ipv4 timeout to 10 seconds
 | - delete cookie on cases a logout would fail
 | - use libVLC 2.0.1 on Mac (2.0.3 crashes)
 | - use static const char* for aspect and crop formats
