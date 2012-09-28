@@ -1501,27 +1501,27 @@ int CKartinaXMLParser::parseSetting(const QString& sResp, const QString &sName, 
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
 {
-   QRegExp rx("<url>([^ ]*).*");
+   QRegExp rx("<url>([^<]*).*");
 
    int     iRV = 0;
 
    sUrl = "";
 
-   // lock parser ...
-   mutex.lock();
-
    // use reg. expressions instead of xml stream parser ...
    if (rx.indexIn(sResp) > -1)
    {
       sUrl = rx.cap(1);
+
+      // ignore given mrl options ...
+      if (sUrl.contains(QChar(' ')))
+      {
+         sUrl = sUrl.left(sUrl.indexOf(QChar(' ')));
+      }
    }
    else
    {
       iRV = -1;
    }
-
-   // unlock parser ...
-   mutex.unlock();
 
    return iRV;
 }
