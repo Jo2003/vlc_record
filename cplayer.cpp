@@ -588,6 +588,9 @@ int CPlayer::playMedia(const QString &sCmdLine)
        stop();
    }
 
+   // set aspect and crop to std ...
+   slotResetVideoFormat();
+
    if (!iRV)
    {
       // clear media list ...
@@ -1789,6 +1792,22 @@ QString CPlayer::aspectCropToString (const char *pFormat)
    }
 
    return format;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotResetVideoFormat [slot]
+|  Begin: 04.10.2012
+|  Author: Jo2003
+|  Description: reset aspect / crop to std
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotResetVideoFormat()
+{
+   ui->cbxAspect->setCurrentIndex(0);
+   ui->cbxCrop->setCurrentIndex(0);
 }
 
 /************************* History ***************************\

@@ -132,6 +132,7 @@ public slots:
    void slotMute();
    void slotShowInfoUpdated();
    void slotFsToggled (int on);
+   void slotResetVideoFormat();
 
 signals:
    void sigPlayState (int ps);
