@@ -718,25 +718,26 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="616"/>
-        <location filename="cplayer.cpp" line="636"/>
-        <location filename="cplayer.cpp" line="651"/>
-        <location filename="cplayer.cpp" line="659"/>
-        <location filename="cplayer.cpp" line="667"/>
-        <location filename="cplayer.cpp" line="722"/>
-        <location filename="cplayer.cpp" line="726"/>
-        <location filename="cplayer.cpp" line="742"/>
+        <location filename="cplayer.cpp" line="619"/>
+        <location filename="cplayer.cpp" line="639"/>
+        <location filename="cplayer.cpp" line="654"/>
+        <location filename="cplayer.cpp" line="658"/>
+        <location filename="cplayer.cpp" line="666"/>
+        <location filename="cplayer.cpp" line="674"/>
+        <location filename="cplayer.cpp" line="729"/>
+        <location filename="cplayer.cpp" line="733"/>
+        <location filename="cplayer.cpp" line="749"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="642"/>
-        <location filename="cplayer.cpp" line="748"/>
+        <location filename="cplayer.cpp" line="645"/>
+        <location filename="cplayer.cpp" line="755"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="718"/>
+        <location filename="cplayer.cpp" line="725"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -744,43 +745,43 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1728"/>
+        <location filename="cplayer.cpp" line="1735"/>
         <source>Error: Can&apos;t delete media item from media list!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="684"/>
+        <location filename="cplayer.cpp" line="691"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="611"/>
+        <location filename="cplayer.cpp" line="614"/>
         <source>Media successfully created from MRL:
  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="970"/>
+        <location filename="cplayer.cpp" line="977"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1000"/>
+        <location filename="cplayer.cpp" line="1007"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1024"/>
+        <location filename="cplayer.cpp" line="1031"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1359"/>
+        <location filename="cplayer.cpp" line="1366"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1447"/>
+        <location filename="cplayer.cpp" line="1454"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -1875,6 +1876,79 @@ or start time is later than end time!</source>
     </message>
 </context>
 <context>
+    <name>QOverlayedControl</name>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="14"/>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="154"/>
+        <source> 0:00:00</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="174"/>
+        <source>Play selected Channel</source>
+        <translation>Просмотр передачи</translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="206"/>
+        <source>Record selected Channel</source>
+        <translation>Запись выбранной передачи</translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="247"/>
+        <source>Stop Player</source>
+        <translation>Остановить плеер</translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="289"/>
+        <source>Jump Backward</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="318"/>
+        <source>Time Jump Value in minutes</source>
+        <translation>Длинна временного шага</translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="322"/>
+        <source>1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="327"/>
+        <source>2</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="332"/>
+        <source>3</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="337"/>
+        <source>4</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="342"/>
+        <source>5</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="347"/>
+        <source>10</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="364"/>
+        <source>Jump Forward</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>QSecCodeDlg</name>
     <message>
         <location filename="forms/qseccodedlg.ui" line="14"/>
@@ -1895,7 +1969,7 @@ or start time is later than end time!</source>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="301"/>
+        <location filename="qvlcvideowidget.cpp" line="311"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>

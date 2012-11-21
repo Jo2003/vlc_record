@@ -19,9 +19,11 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QKeyEvent>
+#include <QVBoxLayout>
 
 #include "clogfile.h"
 #include "cshortcutex.h"
+#include "qoverlayedcontrol.h"
 
 
 //---------------------------------------------------------------------------
@@ -56,6 +58,7 @@ private:
    QTimer                 *_mouseHide;
    QVector<CShortcutEx *> *_shortcuts;
    bool                    _extFullScreen;
+   QOverlayedControl      *_ctrlPanel;
 
 signals:
    void fullScreen();

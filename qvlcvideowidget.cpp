@@ -1,4 +1,4 @@
-/*------------------------------ Infor mation ---------------------------*//**
+/*------------------------------ Information ---------------------------*//**
  *
  *  $HeadURL$
  *
@@ -12,8 +12,8 @@
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qvlcvideowidget.h"
-#include <QVBoxLayout>
 #include <QApplication>
+#include <QDesktopWidget>
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -34,7 +34,8 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _render(0),
    _mouseHide(0),
    _shortcuts(0),
-   _extFullScreen(false)
+   _extFullScreen(false),
+   _ctrlPanel(0)
 {
    setMouseTracking(true);
 
@@ -52,6 +53,13 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    pLayout->setMargin(0);
    pLayout->addWidget(_render);
    setLayout(pLayout);
+
+   // create player control panel ...
+   _ctrlPanel = new QOverlayedControl(_render, Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+
+   // hide panel initially ...
+   _ctrlPanel->hide();
+
 
    connect (_mouseHide, SIGNAL(timeout()), this, SLOT(hideMouse()));
 }
@@ -87,7 +95,7 @@ QVlcVideoWidget::~QVlcVideoWidget()
 //---------------------------------------------------------------------------
 WId QVlcVideoWidget::widgetId()
 {
-   return _render ? _render->winId() : (WId)0;
+   return (_render) ? _render->winId() : (WId)0;
 }
 
 //---------------------------------------------------------------------------
@@ -127,7 +135,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
    {
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
-      _mouseHide->start(1000);
+      _ctrlPanel->show();
+      _mouseHide->start(3000);
    }
 }
 
@@ -229,6 +238,7 @@ void QVlcVideoWidget::hideMouse()
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
       _mouseHide->stop();
+      _ctrlPanel->hide();
       emit mouseHide();
    }
 }
@@ -398,12 +408,23 @@ void QVlcVideoWidget::fullScreenToggled(int on)
    {
       _extFullScreen = true;
 
+      // position player control panel correctly ...
+      QDesktopWidget *pDesc = QApplication::desktop();
+      QRect            rect = pDesc->screenGeometry(_render);
+
+      int x = rect.width() / 2 - _ctrlPanel->width() / 2;
+      int y = rect.height() - (_ctrlPanel->height() * 2);
+
+      _ctrlPanel->setGeometry(x, y, _ctrlPanel->width(), _ctrlPanel->height());
+
       // start mouse hiding ...
       _mouseHide->start(1000);
    }
    else
    {
       _extFullScreen = false;
+
+      _ctrlPanel->hide();
 
       // restore visible cursor ...
       QApplication::restoreOverrideCursor();
