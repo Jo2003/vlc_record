@@ -18,6 +18,11 @@
    #include "ui_recorder_inc.h"
 #endif
 
+#include "qfusioncontrol.h"
+
+// fusion control ...
+extern QFusionControl missionControl;
+
 // for logging ...
 extern CLogFile VlcLog;
 
@@ -68,6 +73,14 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    iDwnReqId      = -1;
    ulStartFlags   =  0;
    tNoIdlePing.setInterval(20000); // 20 secs.
+
+   // feed mission control ...
+   missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
+   missionControl.addButton(ui->pushStop,   QFusionControl::BTN_STOP);
+   missionControl.addButton(ui->pushRecord, QFusionControl::BTN_REC);
+   missionControl.addButton(ui->pushFwd,    QFusionControl::BTN_FWD);
+   missionControl.addButton(ui->pushBwd,    QFusionControl::BTN_BWD);
+   missionControl.addJumpBox(ui->cbxTimeJumpVal);
 
    // init account info ...
    accountInfo.bHasArchive = false;
@@ -235,6 +248,12 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 #endif /* INCLUDE_LIBVLC */
 
    // connect signals and slots ...
+   connect (&missionControl, SIGNAL(sigPlay()), this, SLOT(slotPlay()));
+   connect (&missionControl, SIGNAL(sigStop()), this, SLOT(slotStop()));
+   connect (&missionControl, SIGNAL(sigRec()), this, SLOT(slotRecord()));
+   connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
+   connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
+
    connect (&streamLoader, SIGNAL(sigStreamRequested(int)), this, SLOT(slotDownStreamRequested(int)));
    connect (&streamLoader, SIGNAL(sigBufferPercent(int)), ui->labState, SLOT(bufferPercent(int)));
    connect (&tNoIdlePing,  SIGNAL(timeout()), this, SLOT(slotNoIdlePing()));
@@ -313,7 +332,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 \----------------------------------------------------------------- */
 Recorder::~Recorder()
 {
-   delete ui;
+   // clean our mission control ...
+   missionControl.disconnectCtrls();
 
    // pHelp isn't owned by Recorder --> delete separatly ...
    if (pHelp != NULL)
@@ -321,6 +341,8 @@ Recorder::~Recorder()
       delete pHelp;
       pHelp = NULL;
    }
+
+   delete ui;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -657,158 +679,6 @@ void Recorder::on_pushSettings_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_pushRecord_clicked
-|  Begin: 19.01.2010 / 16:11:52
-|  Author: Jo2003
-|  Description: request stream url for record
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::on_pushRecord_clicked()
-{
-#ifdef INCLUDE_LIBVLC
-
-   // is archive play active ...
-   if ((showInfo.showType() == ShowInfo::Archive)
-      && (showInfo.playState () == IncPlay::PS_PLAY))
-   {
-      if (AllowAction(IncPlay::PS_RECORD))
-      {
-         // archive play active ...
-         uint    gmt = ui->player->getSilderPos ();
-         QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
-
-         showInfo.setPlayState(IncPlay::PS_RECORD);
-
-         TouchPlayCtrlBtns(false);
-         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
-      }
-   }
-   else
-   {
-
-#endif // INCLUDE_LIBVLC
-      int cid = getCurrentCid();
-
-      if (chanMap.contains(cid))
-      {
-         if (AllowAction(IncPlay::PS_RECORD))
-         {
-            cparser::SChan chan = chanMap[cid];
-
-            if (grantAdultAccess(chan.bIsProtected))
-            {
-               // new own downloader ...
-               if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
-               {
-                  streamLoader.stopDownload (iDwnReqId);
-                  iDwnReqId = -1;
-               }
-
-               showInfo.cleanShowInfo();
-               showInfo.setChanId(cid);
-               showInfo.setChanName(chan.sName);
-               showInfo.setShowType(ShowInfo::Live);
-               showInfo.setShowName(chan.sProgramm);
-               showInfo.setStartTime(chan.uiStart);
-               showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-               showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setPlayState(IncPlay::PS_RECORD);
-               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                      .arg("rgb(255, 254, 212)")
-                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
-
-               TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
-            }
-         }
-      }
-
-#ifdef INCLUDE_LIBVLC
-   }
-#endif // INCLUDE_LIBVLC
-}
-
-/* -----------------------------------------------------------------\
-|  Method: on_pushPlay_clicked
-|  Begin: 19.01.2010 / 16:12:20
-|  Author: Jo2003
-|  Description: request stream url for play
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::on_pushPlay_clicked()
-{
-#ifdef INCLUDE_LIBVLC
-   // play or pause functionality ...
-   if ((showInfo.playState() == IncPlay::PS_PLAY)
-      && showInfo.canCtrlStream())
-   {
-      // we're playing ... we want pause ...
-      ui->player->pause();
-
-      // update showInfo ...
-      showInfo.setPlayState(IncPlay::PS_PAUSE);
-
-      // update buttons ...
-      TouchPlayCtrlBtns(true);
-   }
-   else if ((showInfo.playState() == IncPlay::PS_PAUSE)
-      && showInfo.canCtrlStream())
-   {
-      // we're pausing ... want to play ...
-      ui->player->play();
-
-      // update showInfo ...
-      showInfo.setPlayState(IncPlay::PS_PLAY);
-
-      // update buttons ...
-      TouchPlayCtrlBtns(true);
-   }
-   else
-   {
-#endif // INCLUDE_LIBVLC
-      int cid  = getCurrentCid();
-
-      if (chanMap.contains(cid))
-      {
-         if (AllowAction(IncPlay::PS_PLAY))
-         {
-            cparser::SChan chan = chanMap[cid];
-
-            if (grantAdultAccess(chan.bIsProtected))
-            {
-               showInfo.cleanShowInfo();
-               showInfo.setChanId(cid);
-               showInfo.setChanName(chan.sName);
-               showInfo.setShowType(ShowInfo::Live);
-               showInfo.setShowName(chan.sProgramm);
-               showInfo.setStartTime(chan.uiStart);
-               showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-               showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                      .arg("rgb(255, 254, 212)")
-                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
-
-               TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
-            }
-         }
-      }
-
-#ifdef INCLUDE_LIBVLC
-   }
-#endif // INCLUDE_LIBVLC
-}
-
-/* -----------------------------------------------------------------\
 |  Method: on_cbxChannelGroup_activated
 |  Begin: 19.01.2010 / 16:14:40
 |  Author: Jo2003
@@ -949,37 +819,6 @@ void Recorder::on_pushTimerRec_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_pushStop_clicked
-|  Begin: 30.01.2010 / 13:58:25
-|  Author: Jo2003
-|  Description: stop button was pressed, stop vlc after request
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::on_pushStop_clicked()
-{
-   if (AllowAction(IncPlay::PS_STOP))
-   {
-      ui->labState->setHeader("");
-      ui->labState->setFooter("");
-
-      // new own downloader ...
-      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
-      {
-         streamLoader.stopDownload (iDwnReqId);
-         iDwnReqId = -1;
-      }
-
-      vlcCtrl.stop();
-
-      showInfo.setPlayState(IncPlay::PS_STOP);
-      TouchPlayCtrlBtns(true);
-   }
-}
-
-/* -----------------------------------------------------------------\
 |  Method: on_btnFontSmaller_clicked
 |  Begin: 02.02.2010 / 15:05:00
 |  Author: Jo2003
@@ -1034,46 +873,6 @@ void Recorder::on_btnFontLarger_clicked()
 
    iFontSzChg ++;
 }
-
-#ifdef INCLUDE_LIBVLC
-/* -----------------------------------------------------------------\
-|  Method: on_btnBwd_clicked
-|  Begin: 23.06.2010 / 12:32:12
-|  Author: Jo2003
-|  Description: jump backward
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::on_pushBwd_clicked()
-{
-   // we have minutes but need seconds --> x 60!!!
-   int iJmpVal = ui->cbxTimeJumpVal->currentText().toInt() * 60;
-
-   // jump ...
-   ui->player->slotTimeJumpRelative(-iJmpVal);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: on_btnFwd_clicked
-|  Begin: 23.06.2010 / 12:32:12
-|  Author: Jo2003
-|  Description: jump forward
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::on_pushFwd_clicked()
-{
-   // we have minutes but need seconds --> x 60!!!
-   int iJmpVal = ui->cbxTimeJumpVal->currentText().toInt() * 60;
-
-   // jump ...
-   ui->player->slotTimeJumpRelative(iJmpVal);
-}
-#endif /* INCLUDE_LIBVLC */
 
 /* -----------------------------------------------------------------\
 |  Method: on_cbxGenre_activated [slot]
@@ -1404,6 +1203,229 @@ void Recorder::on_pushHelp_clicked()
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
+
+/* -----------------------------------------------------------------\
+|  Method: slotPlay [slot]
+|  Begin: 19.01.2010 / 16:12:20
+|  Author: Jo2003
+|  Description: request stream url for play
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotPlay()
+{
+#ifdef INCLUDE_LIBVLC
+   // play or pause functionality ...
+   if ((showInfo.playState() == IncPlay::PS_PLAY)
+      && showInfo.canCtrlStream())
+   {
+      // we're playing ... we want pause ...
+      ui->player->pause();
+
+      // update showInfo ...
+      showInfo.setPlayState(IncPlay::PS_PAUSE);
+
+      // update buttons ...
+      TouchPlayCtrlBtns(true);
+   }
+   else if ((showInfo.playState() == IncPlay::PS_PAUSE)
+      && showInfo.canCtrlStream())
+   {
+      // we're pausing ... want to play ...
+      ui->player->play();
+
+      // update showInfo ...
+      showInfo.setPlayState(IncPlay::PS_PLAY);
+
+      // update buttons ...
+      TouchPlayCtrlBtns(true);
+   }
+   else
+   {
+#endif // INCLUDE_LIBVLC
+      int cid  = getCurrentCid();
+
+      if (chanMap.contains(cid))
+      {
+         if (AllowAction(IncPlay::PS_PLAY))
+         {
+            cparser::SChan chan = chanMap[cid];
+
+            if (grantAdultAccess(chan.bIsProtected))
+            {
+               showInfo.cleanShowInfo();
+               showInfo.setChanId(cid);
+               showInfo.setChanName(chan.sName);
+               showInfo.setShowType(ShowInfo::Live);
+               showInfo.setShowName(chan.sProgramm);
+               showInfo.setStartTime(chan.uiStart);
+               showInfo.setEndTime(chan.uiEnd);
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setPlayState(IncPlay::PS_PLAY);
+               showInfo.setPCode(secCodeDlg.passWd());
+               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                      .arg("rgb(255, 254, 212)")
+                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+            }
+         }
+      }
+
+#ifdef INCLUDE_LIBVLC
+   }
+#endif // INCLUDE_LIBVLC
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotStop [slot]
+|  Begin: 30.01.2010 / 13:58:25
+|  Author: Jo2003
+|  Description: stop button was pressed, stop vlc after request
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotStop()
+{
+   if (AllowAction(IncPlay::PS_STOP))
+   {
+      ui->labState->setHeader("");
+      ui->labState->setFooter("");
+
+      // new own downloader ...
+      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+      {
+         streamLoader.stopDownload (iDwnReqId);
+         iDwnReqId = -1;
+      }
+
+      vlcCtrl.stop();
+
+      showInfo.setPlayState(IncPlay::PS_STOP);
+      TouchPlayCtrlBtns(true);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotRecord [slot]
+|  Begin: 19.01.2010 / 16:11:52
+|  Author: Jo2003
+|  Description: request stream url for record
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotRecord()
+{
+#ifdef INCLUDE_LIBVLC
+
+   // is archive play active ...
+   if ((showInfo.showType() == ShowInfo::Archive)
+      && (showInfo.playState () == IncPlay::PS_PLAY))
+   {
+      if (AllowAction(IncPlay::PS_RECORD))
+      {
+         // archive play active ...
+         uint    gmt = ui->player->getSilderPos ();
+         QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
+
+         showInfo.setPlayState(IncPlay::PS_RECORD);
+
+         TouchPlayCtrlBtns(false);
+         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
+      }
+   }
+   else
+   {
+
+#endif // INCLUDE_LIBVLC
+      int cid = getCurrentCid();
+
+      if (chanMap.contains(cid))
+      {
+         if (AllowAction(IncPlay::PS_RECORD))
+         {
+            cparser::SChan chan = chanMap[cid];
+
+            if (grantAdultAccess(chan.bIsProtected))
+            {
+               // new own downloader ...
+               if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+               {
+                  streamLoader.stopDownload (iDwnReqId);
+                  iDwnReqId = -1;
+               }
+
+               showInfo.cleanShowInfo();
+               showInfo.setChanId(cid);
+               showInfo.setChanName(chan.sName);
+               showInfo.setShowType(ShowInfo::Live);
+               showInfo.setShowName(chan.sProgramm);
+               showInfo.setStartTime(chan.uiStart);
+               showInfo.setEndTime(chan.uiEnd);
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setPCode(secCodeDlg.passWd());
+               showInfo.setPlayState(IncPlay::PS_RECORD);
+               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                      .arg("rgb(255, 254, 212)")
+                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+
+               TouchPlayCtrlBtns(false);
+               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+            }
+         }
+      }
+
+#ifdef INCLUDE_LIBVLC
+   }
+#endif // INCLUDE_LIBVLC
+}
+
+#ifdef INCLUDE_LIBVLC
+/* -----------------------------------------------------------------\
+|  Method: slotBwd [slot]
+|  Begin: 23.06.2010 / 12:32:12
+|  Author: Jo2003
+|  Description: jump backward
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotBwd()
+{
+   // we have minutes but need seconds --> x 60!!!
+   int iJmpVal = missionControl.getJumpValue() * 60;
+
+   // jump ...
+   ui->player->slotTimeJumpRelative(-iJmpVal);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotFwd [slot]
+|  Begin: 23.06.2010 / 12:32:12
+|  Author: Jo2003
+|  Description: jump forward
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotFwd()
+{
+   // we have minutes but need seconds --> x 60!!!
+   int iJmpVal = missionControl.getJumpValue() * 60;
+
+   // jump ...
+   ui->player->slotTimeJumpRelative(iJmpVal);
+}
+#endif /* INCLUDE_LIBVLC */
 
 /* -----------------------------------------------------------------\
 |  Method: show [slot]
@@ -3054,7 +3076,7 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
 void Recorder::slotPlayNextChannel()
 {
    slotChannelDown();
-   on_pushPlay_clicked();
+   slotPlay();
 }
 
 /* -----------------------------------------------------------------\
@@ -3070,7 +3092,7 @@ void Recorder::slotPlayNextChannel()
 void Recorder::slotPlayPreviousChannel()
 {
    slotChannelUp();
-   on_pushPlay_clicked();
+   slotPlay();
 }
 
 /* -----------------------------------------------------------------\
@@ -3395,9 +3417,9 @@ void Recorder::fillShortCutTab()
       //  |                        |           |                                  default Shortcut
       //  |                        |           |                                  |
       //  V                        V           V                                  V
-      {tr("Play / Pause"),         this,       SLOT(on_pushPlay_clicked()),       "ALT+P"},
-      {tr("Stop"),                 this,       SLOT(on_pushStop_clicked()),       "ALT+S"},
-      {tr("Record"),               this,       SLOT(on_pushRecord_clicked()),     "ALT+R"},
+      {tr("Play / Pause"),         this,       SLOT(slotPlay()),                  "ALT+P"},
+      {tr("Stop"),                 this,       SLOT(slotStop()),                  "ALT+S"},
+      {tr("Record"),               this,       SLOT(slotRecord()),                "ALT+R"},
       {tr("Timer Record"),         this,       SLOT(on_pushTimerRec_clicked()),   "ALT+T"},
       {tr("Settings"),             this,       SLOT(on_pushSettings_clicked()),   "ALT+O"},
       {tr("About"),                this,       SLOT(on_pushAbout_clicked()),      "ALT+I"},
@@ -3413,8 +3435,8 @@ void Recorder::fillShortCutTab()
       {tr("Volume +"),             ui->player, SLOT(slotMoreLoudly()),            "+"},
       {tr("Volume -"),             ui->player, SLOT(slotMoreQuietly()),           "-"},
       {tr("Toggle Mute"),          ui->player, SLOT(slotMute()),                  "M"},
-      {tr("Jump Forward"),         this,       SLOT(on_pushFwd_clicked()),        "CTRL+ALT+F"},
-      {tr("Jump Backward"),        this,       SLOT(on_pushBwd_clicked()),        "CTRL+ALT+B"},
+      {tr("Jump Forward"),         this,       SLOT(slotFwd()),                   "CTRL+ALT+F"},
+      {tr("Jump Backward"),        this,       SLOT(slotBwd()),                   "CTRL+ALT+B"},
 #endif // INCLUDE_LIBVLC
 
       {tr("Next Channel"),         this,       SLOT(slotChannelDown()),           "CTRL+N"},
@@ -4330,56 +4352,56 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
          && showInfo.canCtrlStream()
          && bEnable)
       {
-         ui->pushBwd->setEnabled(true);
-         ui->pushFwd->setEnabled(true);
-         ui->cbxTimeJumpVal->setEnabled(true);
-         ui->pushPlay->setIcon(QIcon(":/app/pause"));
+         missionControl.enableBtn(true, QFusionControl::BTN_BWD);
+         missionControl.enableBtn(true, QFusionControl::BTN_FWD);
+         missionControl.enableJumpBox(true);
+         missionControl.btnSetIcon(QIcon(":/app/pause"), QFusionControl::BTN_PLAY);
       }
       else
       {
-         ui->pushBwd->setEnabled(false);
-         ui->pushFwd->setEnabled(false);
-         ui->cbxTimeJumpVal->setEnabled(false);
-         ui->pushPlay->setIcon(QIcon(":/app/play"));
+         missionControl.enableBtn(false, QFusionControl::BTN_BWD);
+         missionControl.enableBtn(false, QFusionControl::BTN_FWD);
+         missionControl.enableJumpBox(false);
+         missionControl.btnSetIcon(QIcon(":/app/play"), QFusionControl::BTN_PLAY);
       }
    }
    else
    {
-      ui->pushBwd->setEnabled(false);
-      ui->pushFwd->setEnabled(false);
-      ui->cbxTimeJumpVal->setEnabled(false);
+      missionControl.enableBtn(false, QFusionControl::BTN_BWD);
+      missionControl.enableBtn(false, QFusionControl::BTN_FWD);
+      missionControl.enableJumpBox(false);
    }
 #endif /* INCLUDE_LIBVLC */
 
    switch (ePlayState)
    {
    case IncPlay::PS_PLAY:
-      ui->pushPlay->setEnabled(bEnable);
-      ui->pushRecord->setEnabled(bEnable);
-      ui->pushStop->setEnabled(bEnable);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_PLAY);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_REC);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_STOP);
       ui->pushLive->setEnabled(bEnable);
       break;
 
    case IncPlay::PS_RECORD:
-      ui->pushPlay->setEnabled(false);
-      ui->pushRecord->setEnabled(bEnable);
-      ui->pushStop->setEnabled(bEnable);
+      missionControl.enableBtn(false, QFusionControl::BTN_PLAY);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_REC);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_STOP);
       ui->pushLive->setEnabled(false);
       break;
 
    case IncPlay::PS_TIMER_RECORD:
    case IncPlay::PS_TIMER_STBY:
-      ui->pushPlay->setEnabled(false);
-      ui->pushRecord->setEnabled(false);
+      missionControl.enableBtn(false, QFusionControl::BTN_PLAY);
+      missionControl.enableBtn(false, QFusionControl::BTN_REC);
       ui->pushLive->setEnabled(false);
-      ui->pushStop->setEnabled(bEnable);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_STOP);
       break;
 
    default:
-      ui->pushPlay->setEnabled(bEnable);
-      ui->pushRecord->setEnabled(bEnable);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_PLAY);
+      missionControl.enableBtn(bEnable, QFusionControl::BTN_REC);
       ui->pushLive->setEnabled(bEnable);
-      ui->pushStop->setEnabled(false);
+      missionControl.enableBtn(false, QFusionControl::BTN_STOP);
       break;
    }
 

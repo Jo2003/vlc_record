@@ -55,7 +55,8 @@ SOURCES += main.cpp \
     qseccodedlg.cpp \
     qfavframe.cpp \
     qhelpdialog.cpp \
-    qoverlayedcontrol.cpp
+    qoverlayedcontrol.cpp \
+    qfusioncontrol.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
@@ -90,7 +91,8 @@ HEADERS += recorder.h \
     qseccodedlg.h \
     qfavframe.h \
     qhelpdialog.h \
-    qoverlayedcontrol.h
+    qoverlayedcontrol.h \
+    qfusioncontrol.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

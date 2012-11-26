@@ -14,6 +14,11 @@
 
 #include "ui_cplayer.h"
 
+#include "qfusioncontrol.h"
+
+// fusion control ...
+extern QFusionControl missionControl;
+
 // log file functions ...
 extern CLogFile VlcLog;
 
@@ -61,6 +66,11 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    QStringList slKey;
    uint i;
 
+   // feed mission control ...
+   missionControl.addCngSlider(ui->posSlider);
+   missionControl.addTimeLab(ui->labPos);
+   missionControl.addVolSlider(ui->volSlider);
+
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
    QString s = libvlc_get_version();
@@ -101,7 +111,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    tEventPoll.setInterval(250);
 
    // connect volume slider with volume change function ...
-   connect(ui->volSlider, SIGNAL(sliderMoved(int)), this, SLOT(slotChangeVolume(int)));
+   connect(&missionControl, SIGNAL(sigVolSliderMoved(int)), this, SLOT(slotChangeVolume(int)));
 
    // connect double click signal from videoframe with fullscreen toggle ...
    connect(ui->videoWidget, SIGNAL(fullScreen()), this, SLOT(slotToggleFullscreen()));
@@ -116,8 +126,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(&tAspectShot, SIGNAL(timeout()), this, SLOT(slotStoredAspectCrop()));
 
    // connect slider click'n'Go ...
-   connect(ui->posSlider, SIGNAL(sigClickNGo(int)), this, SLOT(slotSliderPosChanged()));
-   connect(ui->posSlider, SIGNAL(sliderReleased()), this, SLOT(slotSliderPosChanged()));
+   connect(&missionControl, SIGNAL(sigPosClickNGo(int)), this, SLOT(slotSliderPosChanged()));
+   connect(&missionControl, SIGNAL(sigPosSliderReleased()), this, SLOT(slotSliderPosChanged()));
+   connect(&missionControl, SIGNAL(sigPosSliderValueChanged(int)), this, SLOT(slotPositionChanged(int)));
 
    // event poll ...
    connect(&tEventPoll, SIGNAL(timeout()), this, SLOT(slotEventPoll()));
@@ -315,7 +326,7 @@ int CPlayer::initPlayer()
          connectToVideoWidget();
 
          // get volume ...
-         ui->volSlider->setSliderPosition(libvlc_audio_get_volume (pMediaPlayer));
+         missionControl.setVolSliderPosition(libvlc_audio_get_volume (pMediaPlayer));
 
          // switch off handling of hotkeys ...
          libvlc_video_set_key_input(pMediaPlayer, 0);
@@ -419,9 +430,9 @@ void CPlayer::slotChangeVolumeDelta(const bool up)
 #endif
       iVol     = (iVol > 100) ? 100 : ((iVol < 0) ? 0 : iVol);
 
-      if (iVol != ui->volSlider->value())
+      if (iVol != missionControl.getVolume())
       {
-         ui->volSlider->setValue(iVol);
+         missionControl.setVolume(iVol);
          slotChangeVolume(iVol);
       }
    }
@@ -793,30 +804,30 @@ void CPlayer::slotUpdateSlider()
          {
             pos = libvlc_media_player_get_time (pMediaPlayer) / 1000;
 
-            if (!ui->posSlider->isSliderDown())
+            if (!missionControl.isPosSliderDown())
             {
-               ui->posSlider->setValue(pos);
-               ui->labPos->setTime(pos);
+               missionControl.setPosValue(pos);
+               missionControl.setTime(pos);
             }
          }
          else
          {
             pos = timer.gmtPosition();
 
-            if (!ui->posSlider->isSliderDown())
+            if (!missionControl.isPosSliderDown())
             {
                // reaching the end of this show ... ?
-               if (pos > mToGmt(ui->posSlider->maximum()))
+               if (pos > mToGmt(missionControl.posMaximum()))
                {
                   // check archive program ...
                   emit sigCheckArchProg(pos);
                }
 
-               ui->posSlider->setValue(mFromGmt(pos));
+               missionControl.setPosValue(mFromGmt(pos));
 
                pos -= showInfo.starts();
 
-               ui->labPos->setTime(pos);
+               missionControl.setTime(pos);
             }
          }
       }
@@ -1159,7 +1170,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 
          libvlc_media_player_set_time(pMediaPlayer, pos);
 
-         ui->posSlider->setValue((int)(pos / 1000));
+         missionControl.setPosValue((int)(pos / 1000));
       }
       else
       {
@@ -1181,8 +1192,8 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
 
          // do we reach another show?
-         if ((pos < mToGmt(ui->posSlider->minimum()))
-             || (pos > mToGmt(ui->posSlider->maximum())))
+         if ((pos < mToGmt(missionControl.posMinimum()))
+             || (pos > mToGmt(missionControl.posMaximum())))
          {
             // yes --> update show info ...
             emit sigCheckArchProg(pos);
@@ -1350,7 +1361,7 @@ void CPlayer::slotSliderPosChanged()
       // stop slider update timer ...
       sliderTimer.stop();
 
-      uint position = (uint)ui->posSlider->value();
+      uint position = (uint)missionControl.posValue();
 
       if (isPositionable())
       {
@@ -1391,7 +1402,7 @@ void CPlayer::slotSliderPosChanged()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_posSlider_valueChanged
+|  Method: slotPositionChanged [slot]
 |  Begin: 23.06.2010 / 09:10:10
 |  Author: Jo2003
 |  Description: update position label to relect
@@ -1400,7 +1411,7 @@ void CPlayer::slotSliderPosChanged()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::on_posSlider_valueChanged(int value)
+void CPlayer::slotPositionChanged(int value)
 {
    if (isPlaying() && bCtrlStream)
    {
@@ -1410,7 +1421,7 @@ void CPlayer::on_posSlider_valueChanged(int value)
          value -= showInfo.starts();
       }
 
-      ui->labPos->setTime(value);
+      missionControl.setTime(value);
    }
 }
 
@@ -1428,11 +1439,11 @@ void CPlayer::enableDisablePlayControl (bool bEnable)
 {
    if (bEnable && bCtrlStream)
    {
-      ui->posSlider->setEnabled (true);
+      missionControl.enablePosSlider(true);
    }
    else
    {
-      ui->posSlider->setEnabled (false);
+      missionControl.enablePosSlider(false);
    }
 }
 
@@ -1456,26 +1467,26 @@ void CPlayer::initSlider()
    if (isPositionable() && !showInfo.streamLoader())
    {
       // VOD stuff ...
-      ui->posSlider->setRange(0, (int)(uiDuration / 1000));
+      missionControl.setPosRange(0, (int)(uiDuration / 1000));
 
-      ui->labPos->setTime(0);
+      missionControl.setTime(0);
    }
    else
    {
       // set slider range to seconds ...
-      ui->posSlider->setRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
+      missionControl.setPosRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
 
       if (showInfo.lastJump())
       {
-         ui->posSlider->setValue(mFromGmt(showInfo.lastJump()));
+         missionControl.setPosValue(mFromGmt(showInfo.lastJump()));
 
-         ui->labPos->setTime(showInfo.lastJump() - showInfo.starts());
+         missionControl.setTime(showInfo.lastJump() - showInfo.starts());
       }
       else
       {
-         ui->posSlider->setValue(mFromGmt(showInfo.starts()));
+         missionControl.setPosValue(mFromGmt(showInfo.starts()));
 
-         ui->labPos->setTime(0);
+         missionControl.setTime(0);
       }
    }
 }
@@ -1492,7 +1503,7 @@ void CPlayer::initSlider()
 \----------------------------------------------------------------- */
 uint CPlayer::getSilderPos ()
 {
-   return mToGmt(ui->posSlider->value());
+   return mToGmt(missionControl.posValue());
 }
 
 /* -----------------------------------------------------------------\
@@ -1511,15 +1522,15 @@ void CPlayer::slotMoreLoudly()
    {
       int newVolume = libvlc_audio_get_volume (pMediaPlayer) + 5;
 
-      if (newVolume > ui->volSlider->maximum())
+      if (newVolume > missionControl.volMaximum())
       {
-         newVolume = ui->volSlider->maximum();
+         newVolume = missionControl.volMaximum();
       }
 
       if(!libvlc_audio_set_volume (pMediaPlayer, newVolume))
       {
          ui->labSound->setPixmap(QPixmap(":/player/sound_on"));
-         ui->volSlider->setValue(newVolume);
+         missionControl.setVolume(newVolume);
       }
    }
 }
@@ -1551,7 +1562,7 @@ void CPlayer::slotMoreQuietly()
          {
             ui->labSound->setPixmap(QPixmap(":/player/sound_off"));
          }
-         ui->volSlider->setValue(newVolume);
+         missionControl.setVolume(newVolume);
       }
    }
 }
@@ -1606,7 +1617,7 @@ void CPlayer::slotShowInfoUpdated()
    timer.start();
 
    // set slider range to seconds ...
-   ui->posSlider->setRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
+   missionControl.setPosRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
 }
 
 /* -----------------------------------------------------------------\

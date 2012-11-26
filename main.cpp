@@ -15,6 +15,7 @@
 #include "cvlcrecdb.h"
 #include "cshowinfo.h"
 #include "qftsettings.h"
+#include "qfusioncontrol.h"
 
 #ifdef DINCLUDEPLUGS
 #include <QtPlugin>
@@ -36,6 +37,9 @@ CVlcRecDB *pDb;
 
 // make show info global available ...
 CShowInfo showInfo;
+
+// fusion control ...
+QFusionControl missionControl;
 
 /* -----------------------------------------------------------------\
 |  Method: main / program entry

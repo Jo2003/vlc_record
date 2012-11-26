@@ -104,7 +104,7 @@ private:
    bool                         bOmitNextEvent;
 
 private slots:
-   void on_posSlider_valueChanged(int value);
+   void slotPositionChanged(int value);
    void on_btnFullScreen_clicked();
    void on_cbxAspect_currentIndexChanged(int idx);
    void on_cbxCrop_currentIndexChanged(int idx);

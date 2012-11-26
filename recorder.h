@@ -63,6 +63,8 @@
    #include "qvlcvideowidget.h"
 #endif
 
+#define CHANGE
+
 //------------------------------------------------------------------
 /// \name definition of start flags
 //------------------------------------------------------------------
@@ -211,8 +213,8 @@ protected:
 
 private slots:
 #ifdef INCLUDE_LIBVLC
-    void on_pushBwd_clicked();
-    void on_pushFwd_clicked();
+CHANGE    void slotBwd();
+CHANGE    void slotFwd();
     void slotToggleFullscreen();
 #endif /* INCLUDE_LIBVLC */
     void on_btnVodSearch_clicked();
@@ -220,7 +222,7 @@ private slots:
     void on_cbxLastOrBest_activated(int index);
     void on_btnFontSmaller_clicked();
     void on_btnFontLarger_clicked();
-    void on_pushStop_clicked();
+CHANGE    void slotStop();
     void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
     void on_btnSearch_clicked();
@@ -229,8 +231,8 @@ private slots:
     void slotbtnBack_clicked();
     void on_pushAbout_clicked();
     void on_cbxChannelGroup_activated(int index);
-    void on_pushPlay_clicked();
-    void on_pushRecord_clicked();
+CHANGE    void slotPlay();
+CHANGE    void slotRecord();
     void on_pushSettings_clicked();
     void on_cbxSites_activated (int index);
     void on_btnPrevSite_clicked();
