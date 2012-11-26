@@ -285,7 +285,7 @@ void QFusionControl::btnSetIcon(const QIcon &icon, eBtnRol rol)
 
    if (pVector)
    {
-      for (int i = 0; i < pVector->size(); i++)
+      for (int i = 0; i < pVector->count(); i++)
       {
          pVector->at(i)->setIcon(icon);
       }
@@ -415,7 +415,7 @@ void QFusionControl::enableBtn (bool enable, eBtnRol rol)
 
    if (pVector)
    {
-      for (int i = 0; i < pVector->size(); i++)
+      for (int i = 0; i < pVector->count(); i++)
       {
          pVector->at(i)->setEnabled(enable);
       }
@@ -542,12 +542,8 @@ void QFusionControl::setVolume(int vol)
 //---------------------------------------------------------------------------
 int QFusionControl::getVolume()
 {
-   if (_volSliderVector.size())
-   {
-      // slider are in sync ...
-      return _volSliderVector.at(0)->value();
-   }
-   return -1;
+   // sliders are in sync ...
+   return _volSliderVector.isEmpty() ? -1 : _volSliderVector.at(0)->value();
 }
 
 //---------------------------------------------------------------------------
@@ -563,12 +559,8 @@ int QFusionControl::getVolume()
 //---------------------------------------------------------------------------
 int  QFusionControl::volMinimum ()
 {
-   if (_volSliderVector.size())
-   {
-      // values are synchronized ...
-      return _volSliderVector.at(0)->minimum();
-   }
-   return -1;
+   // values are synchronized ...
+   return _volSliderVector.isEmpty() ? -1 : _volSliderVector.at(0)->minimum();
 }
 
 //---------------------------------------------------------------------------
@@ -584,12 +576,8 @@ int  QFusionControl::volMinimum ()
 //---------------------------------------------------------------------------
 int  QFusionControl::volMaximum ()
 {
-   if (_volSliderVector.size())
-   {
-      // values are synchronized ...
-      return _volSliderVector.at(0)->maximum();
-   }
-   return -1;
+   // values are synchronized ...
+   return _volSliderVector.isEmpty() ? -1 : _volSliderVector.at(0)->maximum();
 }
 
 //---------------------------------------------------------------------------
@@ -605,7 +593,7 @@ int  QFusionControl::volMaximum ()
 //---------------------------------------------------------------------------
 void QFusionControl::disconnectVol()
 {
-   disconnect(this, SLOT(slotVolChanged(int)));
+   disconnect(this, SLOT(slotVolSliderMoved(int)));
    _volSliderVector.clear();
 }
 
@@ -643,7 +631,7 @@ void QFusionControl::addJumpBox (QComboBox *pBox)
 //---------------------------------------------------------------------------
 void QFusionControl::slotJumpValChanged(int idx)
 {
-   for (int i = 0; i < _jumpCbxVector.size(); i ++)
+   for (int i = 0; i < _jumpCbxVector.count(); i ++)
    {
       _jumpCbxVector.at(i)->setCurrentIndex(idx);
    }
@@ -665,7 +653,7 @@ int QFusionControl::getJumpValue()
    bool ok  = false;
    int  iRV = -1;
 
-   if (_jumpCbxVector.size())
+   if (!_jumpCbxVector.isEmpty())
    {
       // all jump boxes should be synchronized ...
       iRV = _jumpCbxVector.at(0)->currentText().toInt(&ok);
@@ -687,7 +675,7 @@ int QFusionControl::getJumpValue()
 //---------------------------------------------------------------------------
 void QFusionControl::enableJumpBox(bool enable)
 {
-   for (int i = 0; i < _jumpCbxVector.size(); i ++)
+   for (int i = 0; i < _jumpCbxVector.count(); i ++)
    {
       _jumpCbxVector.at(i)->setEnabled(enable);
    }
@@ -797,7 +785,8 @@ void QFusionControl::slotPosSliderReleased ()
 bool QFusionControl::isPosSliderDown ()
 {
    bool bIsDown = false;
-   for (int i = 0; ((i < _cngSliderVector.size()) && !bIsDown); i++)
+
+   for (int i = 0; ((i < _cngSliderVector.count()) && !bIsDown); i++)
    {
       bIsDown = _cngSliderVector.at(i)->isSliderDown();
    }
@@ -818,7 +807,7 @@ bool QFusionControl::isPosSliderDown ()
 //---------------------------------------------------------------------------
 void QFusionControl::setPosValue (int pos)
 {
-   for (int i = 0; i < _cngSliderVector.size(); i++)
+   for (int i = 0; i < _cngSliderVector.count(); i++)
    {
       _cngSliderVector.at(i)->setValue(pos);
    }
@@ -837,12 +826,8 @@ void QFusionControl::setPosValue (int pos)
 //---------------------------------------------------------------------------
 int  QFusionControl::posMinimum ()
 {
-   if (_cngSliderVector.size())
-   {
-      // values are synchronized ...
-      return _cngSliderVector.at(0)->minimum();
-   }
-   return -1;
+   // values are synchronized ...
+   return _cngSliderVector.isEmpty() ? -1 : _cngSliderVector.at(0)->minimum();
 }
 
 //---------------------------------------------------------------------------
@@ -858,12 +843,8 @@ int  QFusionControl::posMinimum ()
 //---------------------------------------------------------------------------
 int  QFusionControl::posMaximum ()
 {
-   if (_cngSliderVector.size())
-   {
-      // values are synchronized ...
-      return _cngSliderVector.at(0)->maximum();
-   }
-   return -1;
+   // values are synchronized ...
+   return _cngSliderVector.isEmpty() ? -1 : _cngSliderVector.at(0)->maximum();
 }
 
 //---------------------------------------------------------------------------
@@ -879,7 +860,7 @@ int  QFusionControl::posMaximum ()
 //---------------------------------------------------------------------------
 void QFusionControl::enablePosSlider(bool enable)
 {
-   for (int i = 0; i < _cngSliderVector.size(); i++)
+   for (int i = 0; i < _cngSliderVector.count(); i++)
    {
       _cngSliderVector.at(i)->setEnabled(enable);
    }
@@ -899,7 +880,7 @@ void QFusionControl::enablePosSlider(bool enable)
 //---------------------------------------------------------------------------
 void QFusionControl::setPosRange (int min, int max)
 {
-   for (int i = 0; i < _cngSliderVector.size(); i++)
+   for (int i = 0; i < _cngSliderVector.count(); i++)
    {
       _cngSliderVector.at(i)->setRange(min, max);
    }
@@ -918,12 +899,8 @@ void QFusionControl::setPosRange (int min, int max)
 //---------------------------------------------------------------------------
 int  QFusionControl::posValue ()
 {
-   if (_cngSliderVector.size())
-   {
-      // values are synchronized ...
-      return _cngSliderVector.at(0)->value();
-   }
-   return -1;
+   // values are synchronized ...
+   return _cngSliderVector.isEmpty() ? -1 : _cngSliderVector.at(0)->value();
 }
 
 //---------------------------------------------------------------------------
@@ -939,7 +916,7 @@ int  QFusionControl::posValue ()
 //---------------------------------------------------------------------------
 void QFusionControl::disconnectCng()
 {
-   disconnect(this, SLOT(slotClickNGo()));
+   disconnect(this, SLOT(slotClickNGo(int)));
    disconnect(this, SLOT(slotPosSliderReleased()));
    disconnect(this, SLOT(slotPosSliderValueChanged(int)));
    _cngSliderVector.clear();
@@ -978,7 +955,7 @@ void QFusionControl::addTimeLab (QTimeLabel *pLab)
 //---------------------------------------------------------------------------
 void QFusionControl::setTime(quint64 time)
 {
-   for (int i = 0; _timeLabVector.size(); i++)
+   for (int i = 0; i < _timeLabVector.count(); i++)
    {
       _timeLabVector.at(i)->setTime(time);
    }
