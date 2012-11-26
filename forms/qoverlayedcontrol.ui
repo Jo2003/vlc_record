@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>380</width>
-    <height>92</height>
+    <height>96</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,11 +29,11 @@ background-color: transparent;
     <widget class="QFrame" name="styleFrame">
      <property name="styleSheet">
       <string notr="true">QFrame#styleFrame {
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #101020,
-stop:0.7 #202030,
-stop:1 #101020);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #303060,
+stop:0.3 #101020,
+stop:1 #202040);
 border-radius: 10px;
-border: 1px solid #888;
+border: 2px solid #888;
 };</string>
      </property>
      <property name="frameShape">
