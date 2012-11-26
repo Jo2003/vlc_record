@@ -44,6 +44,7 @@ public:
       BTN_STOP,      ///< stop
       BTN_FWD,       ///< forward
       BTN_BWD,       ///< backward
+      BTN_FS,        ///< fullscreen
       BTN_ANY = 255  ///< undefined button
    };
 
@@ -82,6 +83,7 @@ signals:
    void sigRec ();
    void sigFwd ();
    void sigBwd ();
+   void sigFullScreen ();
    void sigPosClickNGo (int pos);
    void sigPosSliderReleased ();
    void sigPosSliderValueChanged (int pos);
@@ -101,6 +103,7 @@ private slots:
    void slotStop ();
    void slotFwd ();
    void slotBwd ();
+   void slotFs ();
    void slotVolSliderMoved (int vol);
    void slotJumpValChanged (int idx);
    void slotClickNGo(int pos);
@@ -117,6 +120,7 @@ private:
    QVector<QPushButton *>        _stopBtnVector;
    QVector<QPushButton *>        _fwdBtnVector;
    QVector<QPushButton *>        _bwdBtnVector;
+   QVector<QPushButton *>        _fsBtnVector;
 
    // time jump combobox ...
    QVector<QComboBox *>          _jumpCbxVector;

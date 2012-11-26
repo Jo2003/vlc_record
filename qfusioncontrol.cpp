@@ -126,6 +126,18 @@
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
+//! \fn      sigFullScreen [signal]
+//! \brief   fullscreen button clicked
+//
+//! \author  Jo2003
+//! \date    26.11.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
 //
 //! \brief   constructs QFusionControl object
 //
@@ -237,6 +249,15 @@ void QFusionControl::addButton (QPushButton *pBtn, eBtnRol rol)
       _bwdBtnVector.append(pBtn);
       break;
 
+   case BTN_FS:
+      // connect signal --> slots ...
+      connect (pBtn, SIGNAL(clicked()), this, SLOT(slotFs()));
+
+      // add to vector ...
+      _fsBtnVector.append(pBtn);
+      break;
+
+
    default:
       break;
    }
@@ -277,6 +298,10 @@ void QFusionControl::btnSetIcon(const QIcon &icon, eBtnRol rol)
 
    case BTN_BWD:
       pVector = &_bwdBtnVector;
+      break;
+
+   case BTN_FS:
+      pVector = &_fsBtnVector;
       break;
 
    default:
@@ -374,6 +399,22 @@ void QFusionControl::slotBwd ()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   one fullscreen buttons was pressed, emit fullscreen signal
+//
+//! \author  Jo2003
+//! \date    26.11.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::slotFs ()
+{
+   emit sigFullScreen();
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   enable / disable buttons with given rol
 //
 //! \author  Jo2003
@@ -407,6 +448,10 @@ void QFusionControl::enableBtn (bool enable, eBtnRol rol)
 
    case BTN_BWD:
       pVector = &_bwdBtnVector;
+      break;
+
+   case BTN_FS:
+      pVector = &_fsBtnVector;
       break;
 
    default:
@@ -449,6 +494,9 @@ void QFusionControl::disconnectBtn()
 
    disconnect(this, SLOT(slotBwd()));
    _bwdBtnVector.clear();
+
+   disconnect(this, SLOT(slotFs()));
+   _fsBtnVector.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////

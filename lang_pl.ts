@@ -1757,6 +1757,11 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <source>Jump Forward</source>
         <translation>Do przodu</translation>
     </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="463"/>
+        <source>Switch to Fullscreen</source>
+        <translation type="unfinished">Przejdź to trybu pełnoekranowego</translation>
+    </message>
 </context>
 <context>
     <name>QSecCodeDlg</name>

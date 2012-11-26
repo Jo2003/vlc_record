@@ -1962,6 +1962,11 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <source>Jump Forward</source>
         <translation>springe vorwärts</translation>
     </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="463"/>
+        <source>Switch to Fullscreen</source>
+        <translation type="unfinished">Fullscreen</translation>
+    </message>
 </context>
 <context>
     <name>QSecCodeDlg</name>
