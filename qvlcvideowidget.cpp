@@ -55,7 +55,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    setLayout(pLayout);
 
    // create player control panel ...
-   _ctrlPanel = new QOverlayedControl(_render, Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint);
+   _ctrlPanel = new QOverlayedControl(_render, Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
 
    // hide panel initially ...
    _ctrlPanel->hide();
