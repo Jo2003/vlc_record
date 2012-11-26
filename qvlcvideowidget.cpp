@@ -35,13 +35,15 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _mouseHide(0),
    _shortcuts(0),
    _extFullScreen(false),
-   _ctrlPanel(0)
+   _ctrlPanel(0),
+   _mouseOnPanel(0)
 {
    setMouseTracking(true);
 
    QVBoxLayout *pLayout = new QVBoxLayout();
    _render              = new QWidget(this);
    _mouseHide           = new QTimer(this);
+   _mouseHide->setSingleShot(true);
    _render->setMouseTracking(true);
    _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
@@ -60,8 +62,9 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    // hide panel initially ...
    _ctrlPanel->hide();
 
-
    connect (_mouseHide, SIGNAL(timeout()), this, SLOT(hideMouse()));
+   connect (_ctrlPanel, SIGNAL(sigMouseAboveOverlay()), this, SLOT(slotMouseEntersPanel()));
+   connect (_ctrlPanel, SIGNAL(sigMouseLeavesOverlay()), this, SLOT(slotMouseLeavesPanel()));
 }
 
 //---------------------------------------------------------------------------
@@ -137,7 +140,15 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       QApplication::restoreOverrideCursor();
       _ctrlPanel->show();
       _ctrlPanel->raise();
-      _mouseHide->start(3000);
+
+      if (!_mouseOnPanel)
+      {
+         _mouseHide->start(3000);
+      }
+      else
+      {
+         _mouseHide->stop();
+      }
    }
 }
 
@@ -238,7 +249,6 @@ void QVlcVideoWidget::hideMouse()
    if(isFullScreen() || _extFullScreen)
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
-      _mouseHide->stop();
       _ctrlPanel->hide();
       emit mouseHide();
    }
@@ -430,4 +440,32 @@ void QVlcVideoWidget::fullScreenToggled(int on)
       // restore visible cursor ...
       QApplication::restoreOverrideCursor();
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   mouse enters control panel [slot]
+//
+//! \author  Jo2003
+//! \date    26.11.2012
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotMouseEntersPanel()
+{
+   _mouseOnPanel = true;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   mouse leaves control panel [slot]
+//
+//! \author  Jo2003
+//! \date    26.11.2012
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotMouseLeavesPanel()
+{
+   _mouseOnPanel = false;
 }

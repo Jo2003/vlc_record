@@ -59,6 +59,7 @@ private:
    QVector<CShortcutEx *> *_shortcuts;
    bool                    _extFullScreen;
    QOverlayedControl      *_ctrlPanel;
+   bool                    _mouseOnPanel;
 
 signals:
    void fullScreen();
@@ -71,6 +72,8 @@ public slots:
    void toggleFullScreen ();
    void hideMouse ();
    void fullScreenToggled(int on);
+   void slotMouseEntersPanel ();
+   void slotMouseLeavesPanel ();
 };
 
 #endif // __20120208_QVLCVIDEOWIDGET_H

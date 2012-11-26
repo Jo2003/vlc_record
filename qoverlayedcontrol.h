@@ -15,9 +15,10 @@
    #define __20121109_QOVERLAYEDCONTROL_H
 
 #include <QWidget>
+#include <QEvent>
 
 namespace Ui {
-   class QOverlayedControl;
+  class QOverlayedControl;
 }
 
 //---------------------------------------------------------------------------
@@ -28,14 +29,22 @@ namespace Ui {
 //---------------------------------------------------------------------------
 class QOverlayedControl : public QWidget
 {
-   Q_OBJECT
-   
+  Q_OBJECT
+
 public:
-   QOverlayedControl(QWidget *parent = 0, Qt::WindowFlags f = 0);
-   virtual ~QOverlayedControl();
-   
+  QOverlayedControl(QWidget *parent = 0, Qt::WindowFlags f = 0);
+  virtual ~QOverlayedControl();
+
+protected:
+  virtual void enterEvent(QEvent *e);
+  virtual void leaveEvent(QEvent *e);
+
+signals:
+  void sigMouseAboveOverlay ();
+  void sigMouseLeavesOverlay ();
+
 private:
-   Ui::QOverlayedControl *ui;
+  Ui::QOverlayedControl *ui;
 };
 
 #endif // __20121109_QOVERLAYEDCONTROL_H

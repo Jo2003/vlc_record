@@ -1989,7 +1989,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="312"/>
+        <location filename="qvlcvideowidget.cpp" line="322"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>

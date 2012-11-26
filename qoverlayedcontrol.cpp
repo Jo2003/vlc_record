@@ -68,3 +68,37 @@ QOverlayedControl::~QOverlayedControl()
 {
    delete ui;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   mouse enters widget -> emit signal
+//
+//! \author  Jo2003
+//! \date    26.11.2012
+//
+//! \param   e pointer to QEvent
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::enterEvent(QEvent *e)
+{
+   e->ignore();
+   emit sigMouseAboveOverlay();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   mouse leaves widget -> emit signal
+//
+//! \author  Jo2003
+//! \date    26.11.2012
+//
+//! \param   e pointer to QEvent
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::leaveEvent(QEvent *e)
+{
+   e->ignore();
+   emit sigMouseLeavesOverlay();
+}
