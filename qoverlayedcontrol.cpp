@@ -40,11 +40,12 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    setAttribute(Qt::WA_TranslucentBackground);
 
    // feed mission control with control items ...
-   missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
-   missionControl.addButton(ui->pushStop,   QFusionControl::BTN_STOP);
-   missionControl.addButton(ui->pushRecord, QFusionControl::BTN_REC);
-   missionControl.addButton(ui->pushFwd,    QFusionControl::BTN_FWD);
-   missionControl.addButton(ui->pushBwd,    QFusionControl::BTN_BWD);
+   missionControl.addButton(ui->pushPlay,      QFusionControl::BTN_PLAY);
+   missionControl.addButton(ui->pushStop,      QFusionControl::BTN_STOP);
+   missionControl.addButton(ui->pushRecord,    QFusionControl::BTN_REC);
+   missionControl.addButton(ui->pushFwd,       QFusionControl::BTN_FWD);
+   missionControl.addButton(ui->pushBwd,       QFusionControl::BTN_BWD);
+   missionControl.addButton(ui->btnFullScreen, QFusionControl::BTN_FS);
 
    missionControl.addCngSlider(ui->posSlider_2);
    missionControl.addJumpBox(ui->cbxTimeJumpVal);

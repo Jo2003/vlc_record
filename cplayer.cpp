@@ -70,6 +70,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.addCngSlider(ui->posSlider);
    missionControl.addTimeLab(ui->labPos);
    missionControl.addVolSlider(ui->volSlider);
+   missionControl.addButton(ui->btnFullScreen, QFusionControl::BTN_FS);
 
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
@@ -1247,21 +1248,6 @@ void CPlayer::pausePlayTimer()
 void CPlayer::stopPlayTimer()
 {
    timer.reset();
-}
-
-/* -----------------------------------------------------------------\
-|  Method: on_btnFullScreen_clicked
-|  Begin: 27.05.2010 / 11:10:10
-|  Author: Jo2003
-|  Description: change to full screen
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::on_btnFullScreen_clicked()
-{
-   emit sigToggleFullscreen();
 }
 
 /* -----------------------------------------------------------------\

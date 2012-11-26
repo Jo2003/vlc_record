@@ -136,6 +136,7 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
       _ctrlPanel->show();
+      _ctrlPanel->raise();
       _mouseHide->start(3000);
    }
 }

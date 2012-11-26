@@ -230,9 +230,11 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&vlcCtrl, SIGNAL(sigLibVlcStop()), ui->player, SLOT(stop()));
 
    // aspect ratio, crop and full screen ...
+   /*
    connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(on_btnFullScreen_clicked()));
    connect (this, SIGNAL(sigToggleAspectRatio()), ui->player, SLOT(slotToggleAspectRatio()));
    connect (this, SIGNAL(sigToggleCropGeometry()), ui->player, SLOT(slotToggleCropGeometry()));
+   */
 
    // get state if libVLC player to change player state display ...
    connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
@@ -242,6 +244,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (this, SIGNAL(sigShowInfoUpdated()), ui->player, SLOT(slotShowInfoUpdated()));
 
    connect (ui->player, SIGNAL(sigToggleFullscreen()), this, SLOT(slotToggleFullscreen()));
+   connect (&missionControl, SIGNAL(sigFullScreen()), this, SLOT(slotToggleFullscreen()));
    connect (this, SIGNAL(sigFullScreenToggled(int)), ui->player, SLOT(slotFsToggled(int)));
 
 
@@ -3431,7 +3434,7 @@ void Recorder::fillShortCutTab()
 #ifdef INCLUDE_LIBVLC
       {tr("Toggle Aspect Ratio"),  ui->player, SLOT(slotToggleAspectRatio()),     "ALT+A"},
       {tr("Toggle Crop Geometry"), ui->player, SLOT(slotToggleCropGeometry()),    "ALT+C"},
-      {tr("Toggle Fullscreen"),    ui->player, SLOT(on_btnFullScreen_clicked()),  "ALT+F"},
+      {tr("Toggle Fullscreen"),    this,       SLOT(slotToggleFullscreen()),      "ALT+F"},
       {tr("Volume +"),             ui->player, SLOT(slotMoreLoudly()),            "+"},
       {tr("Volume -"),             ui->player, SLOT(slotMoreQuietly()),           "-"},
       {tr("Toggle Mute"),          ui->player, SLOT(slotMute()),                  "M"},

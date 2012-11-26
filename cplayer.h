@@ -105,7 +105,6 @@ private:
 
 private slots:
    void slotPositionChanged(int value);
-   void on_btnFullScreen_clicked();
    void on_cbxAspect_currentIndexChanged(int idx);
    void on_cbxCrop_currentIndexChanged(int idx);
    void slotChangeVolume(int newVolume);
