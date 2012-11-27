@@ -41,6 +41,7 @@
 | 2012-11-27: Version 2.60B2
 | - many small fixes
 | - take care for mouse over
+| - add a little eye candy: fade out overlay panel
 |
 | 2012-11-26: Version 2.60B1
 | - add overlay control for fullscreen
