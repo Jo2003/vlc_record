@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "60"
-#define BETA_EXT      "B1"
+#define BETA_EXT      "B2"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-11-27: Version 2.60B2
+| - many small fixes
+| - take care for mouse over
+|
 | 2012-11-26: Version 2.60B1
 | - add overlay control for fullscreen
 | - add fusion control class to have all control elements
