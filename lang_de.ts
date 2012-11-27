@@ -1964,8 +1964,9 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="463"/>
-        <source>Switch to Fullscreen</source>
-        <translation type="unfinished">Fullscreen</translation>
+        <source>Toggle Fullscreen</source>
+        <oldsource>Leave Fullscreen</oldsource>
+        <translation>Fullscreen verlassen</translation>
     </message>
 </context>
 <context>

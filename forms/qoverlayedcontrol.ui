@@ -460,14 +460,14 @@ color: #aaa;
            </size>
           </property>
           <property name="toolTip">
-           <string>Switch to Fullscreen</string>
+           <string>Toggle Fullscreen</string>
           </property>
           <property name="text">
            <string/>
           </property>
           <property name="icon">
            <iconset resource="../common.qrc">
-            <normaloff>:/player/fullscreen</normaloff>:/player/fullscreen</iconset>
+            <normaloff>:/player/leave-fullscreen</normaloff>:/player/leave-fullscreen</iconset>
           </property>
           <property name="iconSize">
            <size>
