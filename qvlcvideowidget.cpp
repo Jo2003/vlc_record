@@ -43,7 +43,6 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    QVBoxLayout *pLayout = new QVBoxLayout();
    _render              = new QWidget(this);
    _mouseHide           = new QTimer(this);
-   _mouseHide->setSingleShot(true);
    _render->setMouseTracking(true);
    _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
@@ -140,15 +139,7 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       QApplication::restoreOverrideCursor();
       _ctrlPanel->show();
       _ctrlPanel->raise();
-
-      if (!_mouseOnPanel)
-      {
-         _mouseHide->start(3000);
-      }
-      else
-      {
-         _mouseHide->stop();
-      }
+      _mouseHide->start(3000);
    }
 }
 
@@ -246,10 +237,11 @@ void QVlcVideoWidget::toggleFullScreen()
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::hideMouse()
 {
-   if(isFullScreen() || _extFullScreen)
+   if((isFullScreen() || _extFullScreen) && !_mouseOnPanel)
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
       _ctrlPanel->hide();
+      _mouseHide->stop();
       emit mouseHide();
    }
 }
