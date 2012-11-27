@@ -16,6 +16,8 @@
 
 #include <QWidget>
 #include <QEvent>
+#include <QShowEvent>
+#include <QTimer>
 
 namespace Ui {
   class QOverlayedControl;
@@ -34,17 +36,24 @@ class QOverlayedControl : public QWidget
 public:
   QOverlayedControl(QWidget *parent = 0, Qt::WindowFlags f = 0);
   virtual ~QOverlayedControl();
+  void fadeOut();
 
 protected:
   virtual void enterEvent(QEvent *e);
   virtual void leaveEvent(QEvent *e);
+  virtual void showEvent(QShowEvent *e);
 
 signals:
   void sigMouseAboveOverlay ();
   void sigMouseLeavesOverlay ();
 
+private slots:
+  void slotFadeMore ();
+
 private:
   Ui::QOverlayedControl *ui;
+  qreal  _fOpaque;
+  QTimer _tFade;
 };
 
 #endif // __20121109_QOVERLAYEDCONTROL_H

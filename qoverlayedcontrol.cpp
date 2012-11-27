@@ -32,7 +32,8 @@ extern QFusionControl missionControl;
 //---------------------------------------------------------------------------
 QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    QWidget(parent, f),
-   ui(new Ui::QOverlayedControl)
+   ui(new Ui::QOverlayedControl),
+   _fOpaque(0.0)
 {
    ui->setupUi(this);
 
@@ -51,6 +52,8 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addTimeLab(ui->labPos_2);
+
+   connect (&_tFade, SIGNAL(timeout()), this, SLOT(slotFadeMore()));
 }
 
 //---------------------------------------------------------------------------
@@ -71,6 +74,31 @@ QOverlayedControl::~QOverlayedControl()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   widget is about to be shown
+//
+//! \author  Jo2003
+//! \date    27.11.2012
+//
+//! \param   e pointer to QShowEvent
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::showEvent(QShowEvent *e)
+{
+   // stop fader timer ...
+   _tFade.stop();
+
+   // reset opaque value to default (slightly transparent) ...
+   _fOpaque = 0.75;
+
+   // set transparancy to control panel ...
+   setWindowOpacity(_fOpaque);
+
+   QWidget::showEvent(e);
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   mouse enters widget -> emit signal
 //
 //! \author  Jo2003
@@ -82,8 +110,8 @@ QOverlayedControl::~QOverlayedControl()
 //---------------------------------------------------------------------------
 void QOverlayedControl::enterEvent(QEvent *e)
 {
-   e->ignore();
    emit sigMouseAboveOverlay();
+   QWidget::enterEvent(e);
 }
 
 //---------------------------------------------------------------------------
@@ -99,6 +127,49 @@ void QOverlayedControl::enterEvent(QEvent *e)
 //---------------------------------------------------------------------------
 void QOverlayedControl::leaveEvent(QEvent *e)
 {
-   e->ignore();
    emit sigMouseLeavesOverlay();
+   QWidget::leaveEvent(e);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   start fade out
+//
+//! \author  Jo2003
+//! \date    27.11.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::fadeOut()
+{
+   // fade a step every 10 msec ...
+   _tFade.start(10);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   fade out more and finally hide widget
+//
+//! \author  Jo2003
+//! \date    27.11.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::slotFadeMore()
+{
+   _fOpaque -= 0.03;
+
+   if (_fOpaque <= 0.0)
+   {
+      _tFade.stop();
+      hide();
+   }
+   else
+   {
+      setWindowOpacity(_fOpaque);
+   }
 }
