@@ -139,7 +139,7 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       QApplication::restoreOverrideCursor();
       _ctrlPanel->show();
       _ctrlPanel->raise();
-      _mouseHide->start(3000);
+      _mouseHide->start(1500);
    }
 
    if (!_mouseOnPanel)
