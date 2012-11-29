@@ -700,7 +700,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="317"/>
+        <location filename="cplayer.cpp" line="318"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -709,31 +709,31 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="374"/>
+        <location filename="cplayer.cpp" line="375"/>
         <source>Error: Can&apos;t create media list!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="631"/>
-        <location filename="cplayer.cpp" line="651"/>
-        <location filename="cplayer.cpp" line="666"/>
-        <location filename="cplayer.cpp" line="670"/>
-        <location filename="cplayer.cpp" line="678"/>
-        <location filename="cplayer.cpp" line="686"/>
-        <location filename="cplayer.cpp" line="741"/>
-        <location filename="cplayer.cpp" line="745"/>
-        <location filename="cplayer.cpp" line="761"/>
+        <location filename="cplayer.cpp" line="632"/>
+        <location filename="cplayer.cpp" line="652"/>
+        <location filename="cplayer.cpp" line="667"/>
+        <location filename="cplayer.cpp" line="671"/>
+        <location filename="cplayer.cpp" line="679"/>
+        <location filename="cplayer.cpp" line="687"/>
+        <location filename="cplayer.cpp" line="742"/>
+        <location filename="cplayer.cpp" line="746"/>
+        <location filename="cplayer.cpp" line="762"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="657"/>
-        <location filename="cplayer.cpp" line="767"/>
+        <location filename="cplayer.cpp" line="658"/>
+        <location filename="cplayer.cpp" line="768"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="737"/>
+        <location filename="cplayer.cpp" line="738"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -741,43 +741,43 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1732"/>
+        <location filename="cplayer.cpp" line="1733"/>
         <source>Error: Can&apos;t delete media item from media list!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="703"/>
+        <location filename="cplayer.cpp" line="704"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="626"/>
+        <location filename="cplayer.cpp" line="627"/>
         <source>Media successfully created from MRL:
  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="989"/>
+        <location filename="cplayer.cpp" line="990"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1019"/>
+        <location filename="cplayer.cpp" line="1020"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1043"/>
+        <location filename="cplayer.cpp" line="1044"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1363"/>
+        <location filename="cplayer.cpp" line="1364"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1451"/>
+        <location filename="cplayer.cpp" line="1452"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
@@ -1898,72 +1898,72 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="215"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="218"/>
         <source> 0:00:00</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="235"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="238"/>
         <source>Play selected Channel</source>
         <translation>Zeige markierten Sender</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="267"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="270"/>
         <source>Record selected Channel</source>
         <translation>Nehme markierten Sender auf</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="308"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="311"/>
         <source>Stop Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="350"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="353"/>
         <source>Jump Backward</source>
         <translation>springe zurück</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="379"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="382"/>
         <source>Time Jump Value in minutes</source>
         <translation>Sprungwert in Minuten</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="383"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="386"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="388"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="391"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="393"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="396"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="398"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="401"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="403"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="406"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="408"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="411"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="425"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="428"/>
         <source>Jump Forward</source>
         <translation>springe vorwärts</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="524"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="537"/>
         <source>Toggle Fullscreen</source>
         <oldsource>Leave Fullscreen</oldsource>
         <translation>Fullscreen verlassen</translation>
@@ -1990,7 +1990,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="314"/>
+        <location filename="qvlcvideowidget.cpp" line="320"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>

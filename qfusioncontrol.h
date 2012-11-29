@@ -57,6 +57,7 @@ public:
    void addJumpBox (QComboBox *pBox);
    void addCngSlider (QClickAndGoSlider *pSli);
    void addTimeLab (QTimeLabel *pLab);
+   void addMuteLab (QLabel *pLab);
    void enableBtn (bool enable, eBtnRol rol);
    void setVolSliderPosition (int vol);
    void setVolume (int vol);
@@ -75,6 +76,7 @@ public:
    int  posValue ();
    void setTime (quint64 time);
    void btnSetIcon (const QIcon &icon, eBtnRol rol);
+   void setMutePixmap (const QPixmap &pix);
    
 signals:
    void sigVolSliderMoved (int vol);
@@ -130,6 +132,9 @@ private:
 
    // timer label ...
    QVector<QTimeLabel *>         _timeLabVector;
+
+   // mute label ...
+   QVector<QLabel *>             _muteLabel;
 };
 
 #endif // __20121123_QFUSIONCONTROL_H

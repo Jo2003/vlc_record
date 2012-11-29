@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
-    <height>108</height>
+    <width>466</width>
+    <height>95</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,7 +44,10 @@ border: 2px solid #888;
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>4</number>
+       <number>3</number>
+      </property>
+      <property name="topMargin">
+       <number>2</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -68,14 +71,14 @@ border: 2px solid #888;
          <widget class="QMoveHandle" name="labMoveHandle">
           <property name="minimumSize">
            <size>
-            <width>50</width>
-            <height>12</height>
+            <width>37</width>
+            <height>10</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>50</width>
-            <height>12</height>
+            <width>37</width>
+            <height>10</height>
            </size>
           </property>
           <property name="text">
@@ -123,7 +126,7 @@ border: 2px solid #888;
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>26</height>
+            <height>24</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -454,6 +457,16 @@ color: #aaa;
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="labSound">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../common.qrc">:/player/sound_on</pixmap>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QSlider" name="volSlider">

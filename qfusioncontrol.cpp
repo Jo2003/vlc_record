@@ -1023,5 +1023,40 @@ void QFusionControl::setTime(quint64 time)
 void QFusionControl::disconnectLab()
 {
    _timeLabVector.clear();
+   _muteLabel.clear();
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   put mute label under control
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   pLab pointer to QLabel
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::addMuteLab(QLabel *pLab)
+{
+   _muteLabel.append(pLab);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set pixmap to all mute labels
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   pix new pixmap to set
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::setMutePixmap(const QPixmap &pix)
+{
+   for (int i = 0; i < _muteLabel.count(); i++)
+   {
+      _muteLabel.at(i)->setPixmap(pix);
+   }
+}

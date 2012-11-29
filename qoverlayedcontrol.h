@@ -41,6 +41,7 @@ public:
   void fadeOut();
 
 protected:
+  virtual void changeEvent(QEvent *e);
   virtual void enterEvent(QEvent *e);
   virtual void leaveEvent(QEvent *e);
   virtual void showEvent(QShowEvent *e);

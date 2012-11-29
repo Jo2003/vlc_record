@@ -141,6 +141,12 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       _ctrlPanel->raise();
       _mouseHide->start(3000);
    }
+
+   if (!_mouseOnPanel)
+   {
+      activateWindow();
+      setFocus(Qt::OtherFocusReason);
+   }
 }
 
 //---------------------------------------------------------------------------
@@ -422,6 +428,10 @@ void QVlcVideoWidget::fullScreenToggled(int on)
 
       // start mouse hiding ...
       _mouseHide->start(1000);
+
+      // make sure we have the focus ...
+      activateWindow();
+      setFocus(Qt::OtherFocusReason);
    }
    else
    {

@@ -71,6 +71,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.addTimeLab(ui->labPos);
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addButton(ui->btnFullScreen, QFusionControl::BTN_FS);
+   missionControl.addMuteLab(ui->labSound);
 
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
@@ -395,11 +396,11 @@ void CPlayer::slotChangeVolume(int newVolume)
 {
    if (!newVolume)
    {
-      ui->labSound->setPixmap(QPixmap(":/player/sound_off"));
+      missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
    }
    else
    {
-      ui->labSound->setPixmap(QPixmap(":/player/sound_on"));
+      missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
    }
 
    if (pMediaPlayer)
@@ -1515,7 +1516,7 @@ void CPlayer::slotMoreLoudly()
 
       if(!libvlc_audio_set_volume (pMediaPlayer, newVolume))
       {
-         ui->labSound->setPixmap(QPixmap(":/player/sound_on"));
+         missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
          missionControl.setVolume(newVolume);
       }
    }
@@ -1546,7 +1547,7 @@ void CPlayer::slotMoreQuietly()
       {
          if (!newVolume)
          {
-            ui->labSound->setPixmap(QPixmap(":/player/sound_off"));
+            missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
          }
          missionControl.setVolume(newVolume);
       }
@@ -1571,11 +1572,11 @@ void CPlayer::slotMute()
 
       if (mute)
       {
-         ui->labSound->setPixmap(QPixmap(":/player/sound_off"));
+         missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
       }
       else
       {
-         ui->labSound->setPixmap(QPixmap(":/player/sound_on"));
+         missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
       }
 
       libvlc_audio_set_mute(pMediaPlayer, mute);

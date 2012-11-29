@@ -54,6 +54,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addTimeLab(ui->labPos_2);
+   missionControl.addMuteLab(ui->labSound);
 
    connect (&_tFade, SIGNAL(timeout()), this, SLOT(slotFadeMore()));
    connect (ui->labMoveHandle, SIGNAL(mouseEnters()), this, SLOT(slotMouseEntersMoveHandle()));
@@ -74,6 +75,27 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
 QOverlayedControl::~QOverlayedControl()
 {
    delete ui;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   make sure GUI is translated as needed
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   e pointer to event
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::changeEvent(QEvent *e)
+{
+   if (e->type() == QEvent::LanguageChange)
+   {
+      ui->retranslateUi(this);
+   }
+
+   QWidget::changeEvent(e);
 }
 
 //---------------------------------------------------------------------------
