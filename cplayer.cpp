@@ -1568,18 +1568,18 @@ void CPlayer::slotMute()
 {
    if (pMediaPlayer)
    {
-      int mute = (libvlc_audio_get_mute(pMediaPlayer)) ? 0 : 1;
-
-      if (mute)
+      if (libvlc_audio_get_mute(pMediaPlayer))
       {
-         missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
+         // muted --> unmute ...
+         missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
+         libvlc_audio_set_mute(pMediaPlayer, 0);
       }
       else
       {
-         missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
+         // unmuted --> mute ...
+         missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
+         libvlc_audio_set_mute(pMediaPlayer, 1);
       }
-
-      libvlc_audio_set_mute(pMediaPlayer, mute);
    }
 }
 
