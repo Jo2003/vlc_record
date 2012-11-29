@@ -33,7 +33,9 @@ extern QFusionControl missionControl;
 QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    QWidget(parent, f),
    ui(new Ui::QOverlayedControl),
-   _fOpaque(0.0)
+   _fOpaque(0.0),
+   _offset(0, 0),
+   _mouseOverMoveHandle(false)
 {
    ui->setupUi(this);
 
@@ -54,6 +56,8 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addTimeLab(ui->labPos_2);
 
    connect (&_tFade, SIGNAL(timeout()), this, SLOT(slotFadeMore()));
+   connect (ui->labMoveHandle, SIGNAL(mouseEnters()), this, SLOT(slotMouseEntersMoveHandle()));
+   connect (ui->labMoveHandle, SIGNAL(mouseLeabes()), this, SLOT(slotMouseLeavesMoveHandle()));
 }
 
 //---------------------------------------------------------------------------
@@ -70,6 +74,82 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
 QOverlayedControl::~QOverlayedControl()
 {
    delete ui;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   store widget coordinates when mouse is above move handle
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   e pointer to mouse event
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::mousePressEvent(QMouseEvent* e)
+{
+   if (_mouseOverMoveHandle)
+   {
+      if (isWindow())
+      {
+         _offset = e->globalPos() - pos();
+      }
+      else
+      {
+         _offset = e->pos();
+      }
+   }
+
+   QWidget::mousePressEvent(e);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   move widget when mouse button is pressed and above move handle
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   e pointer to mouse event
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::mouseMoveEvent(QMouseEvent* e)
+{
+   if (_mouseOverMoveHandle)
+   {
+      if (isWindow())
+      {
+         move(e->globalPos() - _offset);
+      }
+      else
+      {
+         move(mapToParent(e->pos() - _offset));
+      }
+   }
+
+   QWidget::mouseMoveEvent(e);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   reset offset value when mouse button released and above move hdl
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   e pointer to mouse event
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::mouseReleaseEvent(QMouseEvent* e)
+{
+   if (_mouseOverMoveHandle)
+   {
+      _offset = QPoint();
+   }
+   QWidget::mouseReleaseEvent(e) ;
 }
 
 //---------------------------------------------------------------------------
@@ -172,4 +252,38 @@ void QOverlayedControl::slotFadeMore()
    {
       setWindowOpacity(_fOpaque);
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   mouse entered move handle, change mouse cursor
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::slotMouseEntersMoveHandle()
+{
+   QApplication::setOverrideCursor(Qt::OpenHandCursor);
+   _mouseOverMoveHandle = true;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   mouse leave move handle, change mouse cursor
+//
+//! \author  Jo2003
+//! \date    29.11.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::slotMouseLeavesMoveHandle()
+{
+   QApplication::restoreOverrideCursor();
+   _mouseOverMoveHandle = false;
 }

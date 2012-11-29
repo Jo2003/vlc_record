@@ -92,7 +92,8 @@ HEADERS += recorder.h \
     qfavframe.h \
     qhelpdialog.h \
     qoverlayedcontrol.h \
-    qfusioncontrol.h
+    qfusioncontrol.h \
+    qmovehandle.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

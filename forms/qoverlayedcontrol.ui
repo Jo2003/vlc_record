@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>98</height>
+    <height>108</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,6 +43,67 @@ border: 2px solid #888;
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>10</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QMoveHandle" name="labMoveHandle">
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>12</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>12</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../common.qrc">:/player/move-handle</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>10</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="10,0,0">
         <property name="spacing">
@@ -62,7 +123,7 @@ border: 2px solid #888;
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>32</height>
+            <height>26</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -497,6 +558,11 @@ color: #aaa;
    <class>QTimeLabel</class>
    <extends>QLabel</extends>
    <header>qtimelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QMoveHandle</class>
+   <extends>QLabel</extends>
+   <header>qmovehandle.h</header>
   </customwidget>
  </customwidgets>
  <resources>

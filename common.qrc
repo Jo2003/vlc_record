@@ -51,6 +51,7 @@
         <file alias="crop">resources/crop.png</file>
         <file alias="aspect">resources/aspect_ratio.png</file>
         <file alias="leave-fullscreen">resources/leave-fullscreen.png</file>
+        <file alias="move-handle">resources/move-handle.png</file>
     </qresource>
     <qresource prefix="/vod">
         <file alias="is_fav">resources/heart_red.png</file>

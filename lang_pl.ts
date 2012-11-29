@@ -1693,72 +1693,72 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation>Format</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="154"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="215"/>
         <source> 0:00:00</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="174"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="235"/>
         <source>Play selected Channel</source>
         <translation>Odtwarzaj wybrany kanał</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="206"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="267"/>
         <source>Record selected Channel</source>
         <translation>Nagrywaj wybrany kanał</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="247"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="308"/>
         <source>Stop Player</source>
         <translation>Zatrzymaj Odtwarzacz</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="289"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="350"/>
         <source>Jump Backward</source>
         <translation>Do tyłu</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="318"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="379"/>
         <source>Time Jump Value in minutes</source>
         <translation>Czas przewijania w minutach</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="322"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="383"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="327"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="388"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="332"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="393"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="337"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="398"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="342"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="403"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="347"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="408"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="364"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="425"/>
         <source>Jump Forward</source>
         <translation>Do przodu</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="463"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="524"/>
         <source>Toggle Fullscreen</source>
         <oldsource>Leave Fullscreen</oldsource>
         <translation>Przejdź to trybu pełnoekranowego</translation>
