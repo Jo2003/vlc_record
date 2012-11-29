@@ -32,9 +32,9 @@ extern CShowInfo showInfo;
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
 
-libvlc_event_type_t CPlayer::_actEvent  = libvlc_MediaPlayerStopped;
-const char*         CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
-const char*         CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
+QVector<libvlc_event_type_t> CPlayer::_eventQueue;
+const char*                  CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
+const char*                  CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
 
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
@@ -57,12 +57,10 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pEMPlay          = NULL;
    pSettings        = NULL;
    pTrigger         = NULL;
-   bCtrlStream      = false;
    bSpoolPending    = true;
    bOmitNextEvent   = false;
    uiDuration       = (uint)-1;
    ulLibvlcVersion  = 0;
-   lastEvent        = libvlc_MediaPlayerStopped;
    QStringList slKey;
    uint i;
 
@@ -531,7 +529,7 @@ int CPlayer::pause()
 {
    int iRV = 0;
 
-   if (pMedialistPlayer && bCtrlStream)
+   if (pMedialistPlayer && showInfo.canCtrlStream())
    {
       libvlc_media_list_player_pause(pMedialistPlayer);
    }
@@ -557,17 +555,6 @@ int CPlayer::playMedia(const QString &sCmdLine)
    QStringList                 lArgs;
    QStringList::const_iterator cit;
    bool                        bLocal = false;
-
-   // do we can control the stream ... ?
-   if ((showInfo.playState() == IncPlay::PS_PLAY)
-      && showInfo.canCtrlStream())
-   {
-      bCtrlStream = true;
-   }
-   else
-   {
-      bCtrlStream = false;
-   }
 
    // reset play timer stuff ...
    timer.reset();
@@ -918,7 +905,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
    /////////////////////////////////////////////////////////////////
 
    // store event type so the event poller can handle it...
-   CPlayer::_actEvent = ev->type;
+   CPlayer::_eventQueue.append(ev->type);
 }
 
 /* -----------------------------------------------------------------\
@@ -933,10 +920,15 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
 \----------------------------------------------------------------- */
 void CPlayer::slotEventPoll()
 {
-   if (_actEvent != lastEvent)
+   libvlc_event_type_t lastEvent;
+
+   if (!_eventQueue.isEmpty())
    {
-      // accept event ...
-      lastEvent = _actEvent;
+      // get next event ...
+      lastEvent = _eventQueue.at(0);
+
+      // delete event from queue ...
+      _eventQueue.remove(0);
 
       if (!bOmitNextEvent)
       {
@@ -987,7 +979,7 @@ void CPlayer::slotEventPoll()
             break;
 
          default:
-            mInfo(tr("Unknown Event No. %1 received ...").arg(_actEvent));
+            mInfo(tr("Unknown Event No. %1 received ...").arg(lastEvent));
             break;
          }
       } // !bOmitNextEvent
@@ -1152,7 +1144,7 @@ int CPlayer::slotToggleCropGeometry()
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
-   if (isPlaying() && bCtrlStream &&!bSpoolPending)
+   if (isPlaying() && showInfo.canCtrlStream() &&!bSpoolPending)
    {
       uint pos;
 
@@ -1343,7 +1335,7 @@ void CPlayer::slotStoredAspectCrop ()
 \----------------------------------------------------------------- */
 void CPlayer::slotSliderPosChanged()
 {
-   if (isPlaying() && bCtrlStream && !bSpoolPending)
+   if (isPlaying() && showInfo.canCtrlStream() && !bSpoolPending)
    {
       // stop slider update timer ...
       sliderTimer.stop();
@@ -1400,7 +1392,7 @@ void CPlayer::slotSliderPosChanged()
 \----------------------------------------------------------------- */
 void CPlayer::slotPositionChanged(int value)
 {
-   if (isPlaying() && bCtrlStream)
+   if (isPlaying() && showInfo.canCtrlStream())
    {
       if (!isPositionable())
       {
@@ -1424,7 +1416,7 @@ void CPlayer::slotPositionChanged(int value)
 \----------------------------------------------------------------- */
 void CPlayer::enableDisablePlayControl (bool bEnable)
 {
-   if (bEnable && bCtrlStream)
+   if (bEnable && showInfo.canCtrlStream())
    {
       missionControl.enablePosSlider(true);
    }

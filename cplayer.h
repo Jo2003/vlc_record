@@ -71,9 +71,9 @@ public:
    void  addAndEmbedVideoWidget();
    ulong libvlcVersion();
 
-   static libvlc_event_type_t _actEvent;
-   static const char*         _pAspect[];
-   static const char*         _pCrop[];
+   static QVector<libvlc_event_type_t> _eventQueue;
+   static const char*                  _pAspect[];
+   static const char*                  _pCrop[];
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -94,8 +94,6 @@ private:
    libvlc_event_manager_t      *pEMPlay;
    libvlc_media_list_player_t  *pMedialistPlayer;
    libvlc_media_list_t         *pMediaList;
-   libvlc_event_type_t          lastEvent;
-   bool                         bCtrlStream;
    CSettingsDlg                *pSettings;
    CWaitTrigger                *pTrigger;
    bool                         bSpoolPending;

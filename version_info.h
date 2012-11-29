@@ -42,6 +42,8 @@
 | - overlay control is moveable
 | - take care that videowidget gets focus so shortcuts work
 | - add mute label to overlay control
+| - queue libvlc events in QVector so we don't lose
+|   any event
 |
 | 2012-11-27: Version 2.60B2
 | - many small fixes

@@ -72,7 +72,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    iFontSzChg     =  0;
    iDwnReqId      = -1;
    ulStartFlags   =  0;
-   tNoIdlePing.setInterval(20000); // 20 secs.
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
@@ -259,7 +258,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    connect (&streamLoader, SIGNAL(sigStreamRequested(int)), this, SLOT(slotDownStreamRequested(int)));
    connect (&streamLoader, SIGNAL(sigBufferPercent(int)), ui->labState, SLOT(bufferPercent(int)));
-   connect (&tNoIdlePing,  SIGNAL(timeout()), this, SLOT(slotNoIdlePing()));
    connect (ui->hFrameFav, SIGNAL(sigAddFav(int)), this, SLOT(slotAddFav(int)));
    connect (&pixCache,     SIGNAL(allDone()), this, SLOT(slotRefreshChanLogos()));
    connect (&KartinaTv,    SIGNAL(sigHttpResponse(QString,int)), this, SLOT(slotKartinaResponse(QString,int)));
@@ -2569,21 +2567,17 @@ void Recorder::slotIncPlayState(int iState)
       // might be play, record, timer record -->
       // therefore use internal state ...
       emit sigLCDStateChange ((int)ePlayState);
-      // NoIdlePing.start();
       break;
 
    case IncPlay::PS_END:
    case IncPlay::PS_STOP:
       // display "stop" in case of "end" ...
       emit sigLCDStateChange ((int)IncPlay::PS_STOP);
-      // tNoIdlePing.stop();
       break;
 
    case IncPlay::PS_ERROR:
       // note about the error also in showInfo class ...
       showInfo.setPlayState((IncPlay::ePlayStates)iState);
-
-      // tNoIdlePing.stop();
 
       // new own downloader ...
       if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
@@ -3301,26 +3295,6 @@ void Recorder::slotRestoreMinimized()
 {
    setWindowState(windowState() & ~(Qt::WindowMinimized | Qt::WindowActive));
    show();
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotNoIdlePing
-|  Begin: 09.08.2012
-|  Author: Jo2003
-|  Description: emulate mouse event to avoid idle
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotNoIdlePing()
-{
-   QMouseEvent event(QEvent::MouseButtonPress, pos(),
-                     Qt::NoButton, Qt::NoButton, Qt::NoModifier);
-
-   QCoreApplication::sendEvent(this, &event);
-
-   mInfo("* No-idle-ping *");
 }
 
 /* -----------------------------------------------------------------\
@@ -4846,66 +4820,6 @@ void Recorder::toggleFullscreen()
 {
     setWindowState(windowState() ^ Qt::WindowFullScreen);
     show();
-}
-
-void Recorder::printStateChange(const Qt::WindowStates &old)
-{
-   Qt::WindowStates cur = windowState();
-   QStringList sOld, sNew;
-
-   if (old.testFlag(Qt::WindowNoState))
-   {
-      sOld << "Qt::WindowNoState";
-   }
-
-   if (old.testFlag(Qt::WindowMinimized))
-   {
-      sOld << "Qt::WindowMinimized";
-   }
-
-   if (old.testFlag(Qt::WindowMaximized))
-   {
-      sOld << "Qt::WindowMaximized";
-   }
-
-   if (old.testFlag(Qt::WindowFullScreen))
-   {
-      sOld << "Qt::WindowFullScreen";
-   }
-
-   if (old.testFlag(Qt::WindowActive))
-   {
-      sOld << "Qt::WindowActive";
-   }
-
-   //////////
-
-   if (cur.testFlag(Qt::WindowNoState))
-   {
-      sNew << "Qt::WindowNoState";
-   }
-
-   if (cur.testFlag(Qt::WindowMinimized))
-   {
-      sNew << "Qt::WindowMinimized";
-   }
-
-   if (cur.testFlag(Qt::WindowMaximized))
-   {
-      sNew << "Qt::WindowMaximized";
-   }
-
-   if (cur.testFlag(Qt::WindowFullScreen))
-   {
-      sNew << "Qt::WindowFullScreen";
-   }
-
-   if (cur.testFlag(Qt::WindowActive))
-   {
-      sNew << "Qt::WindowActive";
-   }
-
-   mInfo(tr("WindowState change: \n --> %1 <--> %2").arg(sOld.join("|")).arg(sNew.join("|")));
 }
 
 /************************* History ***************************\

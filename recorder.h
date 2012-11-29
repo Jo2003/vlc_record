@@ -63,8 +63,6 @@
    #include "qvlcvideowidget.h"
 #endif
 
-#define CHANGE
-
 //------------------------------------------------------------------
 /// \name definition of start flags
 //------------------------------------------------------------------
@@ -142,7 +140,6 @@ private:
     CStreamLoader                   streamLoader;
     QTranslator                    *pTranslator;
     QTimer                          Refresh;
-    QTimer                          tNoIdlePing;
     CPixLoader                      pixCache;
     int                             iEpgOffset;
     QTabBar                        *pEpgNavbar;
@@ -213,8 +210,8 @@ protected:
 
 private slots:
 #ifdef INCLUDE_LIBVLC
-CHANGE    void slotBwd();
-CHANGE    void slotFwd();
+    void slotBwd();
+    void slotFwd();
     void slotToggleFullscreen();
 #endif /* INCLUDE_LIBVLC */
     void on_btnVodSearch_clicked();
@@ -222,7 +219,7 @@ CHANGE    void slotFwd();
     void on_cbxLastOrBest_activated(int index);
     void on_btnFontSmaller_clicked();
     void on_btnFontLarger_clicked();
-CHANGE    void slotStop();
+    void slotStop();
     void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
     void on_btnSearch_clicked();
@@ -231,8 +228,8 @@ CHANGE    void slotStop();
     void slotbtnBack_clicked();
     void on_pushAbout_clicked();
     void on_cbxChannelGroup_activated(int index);
-CHANGE    void slotPlay();
-CHANGE    void slotRecord();
+    void slotPlay();
+    void slotRecord();
     void on_pushSettings_clicked();
     void on_cbxSites_activated (int index);
     void on_btnPrevSite_clicked();
@@ -278,17 +275,13 @@ CHANGE    void slotRecord();
     void slotStartConnectionChain();
     void slotUpdateAnswer (QNetworkReply* pRes);
     void slotCheckArchProg(ulong ulArcGmt);
-
     void slotKartinaErr (const QString &str, int req, int err);
     void slotKartinaResponse(const QString& resp, int req);
-
     void slotUnused(const QString &str);
     void slotRefreshChanLogos ();
     void slotPCodeChangeResp (const QString &str);
     void slotAddFav(int cid);
     void on_pushHelp_clicked();
-    void printStateChange(const Qt::WindowStates &old);
-    void slotNoIdlePing();
     void slotDownStreamRequested (int id);
 
 signals:
