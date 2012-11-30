@@ -1781,7 +1781,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="320"/>
+        <location filename="qvlcvideowidget.cpp" line="321"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>

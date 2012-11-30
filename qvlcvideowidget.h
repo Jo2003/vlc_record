@@ -60,6 +60,7 @@ private:
    bool                    _extFullScreen;
    QOverlayedControl      *_ctrlPanel;
    bool                    _mouseOnPanel;
+   bool                    _panelPositioned;
 
 signals:
    void fullScreen();

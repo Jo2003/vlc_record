@@ -31,12 +31,13 @@ extern CLogFile VlcLog;
 //---------------------------------------------------------------------------
 QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    QWidget(parent),
-   _render(0),
+   _render(NULL),
    _mouseHide(0),
    _shortcuts(0),
    _extFullScreen(false),
-   _ctrlPanel(0),
-   _mouseOnPanel(0)
+   _ctrlPanel(NULL),
+   _mouseOnPanel(false),
+   _panelPositioned(false)
 {
    setMouseTracking(true);
 
@@ -417,14 +418,20 @@ void QVlcVideoWidget::fullScreenToggled(int on)
    {
       _extFullScreen = true;
 
-      // position player control panel correctly ...
-      QDesktopWidget *pDesc = QApplication::desktop();
-      QRect            rect = pDesc->screenGeometry(_render);
+      if (!_panelPositioned)
+      {
+         // position player control panel correctly ...
+         QDesktopWidget *pDesc = QApplication::desktop();
+         QRect            rect = pDesc->screenGeometry(_render);
 
-      int x = rect.width() / 2 - _ctrlPanel->width() / 2;
-      int y = rect.height() - (_ctrlPanel->height() * 2);
+         int x = rect.width() / 2 - _ctrlPanel->width() / 2;
+         int y = rect.height() - (_ctrlPanel->height() * 2);
 
-      _ctrlPanel->setGeometry(x, y, _ctrlPanel->width(), _ctrlPanel->height());
+         _ctrlPanel->setGeometry(x, y, _ctrlPanel->width(), _ctrlPanel->height());
+
+         // mark as positioned ...
+         _panelPositioned = true;
+      }
 
       // start mouse hiding ...
       _mouseHide->start(1000);
