@@ -69,7 +69,10 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.addTimeLab(ui->labPos);
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addButton(ui->btnFullScreen, QFusionControl::BTN_FS);
+   missionControl.addButton(ui->btnSaveAspectCrop, QFusionControl::BTN_FRMT);
    missionControl.addMuteLab(ui->labSound);
+   missionControl.addVidFormCbx(ui->cbxAspect, QFusionControl::CBX_ASPECT);
+   missionControl.addVidFormCbx(ui->cbxCrop, QFusionControl::CBX_CROP);
 
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
@@ -89,8 +92,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
       slKey.append(aspectCropToString(_pAspect[i]));
    }
 
-   ui->cbxAspect->clear();
-   ui->cbxAspect->insertItems(0, slKey);
+   missionControl.vidFormCbxClear(QFusionControl::CBX_ASPECT);
+   missionControl.vidFormCbxInsertValues(0, slKey, QFusionControl::CBX_ASPECT);
 
    // crop geometry ...
    slKey.clear();
@@ -100,8 +103,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
       slKey.append(aspectCropToString(_pCrop[i]));
    }
 
-   ui->cbxCrop->clear();
-   ui->cbxCrop->insertItems(0, slKey);
+   missionControl.vidFormCbxClear(QFusionControl::CBX_CROP);
+   missionControl.vidFormCbxInsertValues(0, slKey, QFusionControl::CBX_CROP);
 
    // set aspect shot timer to single shot ...
    tAspectShot.setSingleShot (true);
@@ -109,6 +112,13 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // poll for state change events with 250ms interval ...
    tEventPoll.setInterval(250);
+
+   // aspect and crop ...
+   connect(&missionControl, SIGNAL(sigAspectCurrentIndexChanged(int)), this, SLOT(slotCbxAspectCurrentIndexChanged(int)));
+   connect(&missionControl, SIGNAL(sigCropCurrentIndexChanged(int)), this, SLOT(slotCbxCropCurrentIndexChanged(int)));
+
+   // save aspect ...
+   connect(&missionControl, SIGNAL(sigSaveVideoFormat()), this, SLOT(slotBtnSaveAspectCropClicked()));
 
    // connect volume slider with volume change function ...
    connect(&missionControl, SIGNAL(sigVolSliderMoved(int)), this, SLOT(slotChangeVolume(int)));
@@ -287,8 +297,8 @@ int CPlayer::initPlayer()
 
    // reset crop and aspect cbx ... because it should show the state
    // as used ...
-   ui->cbxAspect->setCurrentIndex(0);
-   ui->cbxCrop->setCurrentIndex(0);
+   missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_ASPECT);
+   missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_CROP);
 
    // create a new libvlc instance ...
    const char *vlc_args[] = {
@@ -991,7 +1001,7 @@ void CPlayer::slotEventPoll()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxAspect_currentIndexChanged
+|  Method: slotCbxAspectCurrentIndexChanged
 |  Begin: 08.03.2010 / 09:55:10
 |  Author: Jo2003
 |  Description: set new aspect ration ...
@@ -1000,7 +1010,7 @@ void CPlayer::slotEventPoll()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::on_cbxAspect_currentIndexChanged(int idx)
+void CPlayer::slotCbxAspectCurrentIndexChanged(int idx)
 {
    if (pMediaPlayer)
    {
@@ -1015,7 +1025,7 @@ void CPlayer::on_cbxAspect_currentIndexChanged(int idx)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxCrop_currentIndexChanged
+|  Method: slotCbxCropCurrentIndexChanged
 |  Begin: 23.03.2010 / 09:55:10
 |  Author: Jo2003
 |  Description: set new crop geometry ...
@@ -1024,7 +1034,7 @@ void CPlayer::on_cbxAspect_currentIndexChanged(int idx)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::on_cbxCrop_currentIndexChanged(int idx)
+void CPlayer::slotCbxCropCurrentIndexChanged(int idx)
 {
    if (pMediaPlayer)
    {
@@ -1039,7 +1049,7 @@ void CPlayer::on_cbxCrop_currentIndexChanged(int idx)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnSaveAspectCrop_clicked [slot]
+|  Method: slotBtnSaveAspectCropClicked [slot]
 |  Begin: 15.08.2012
 |  Author: Jo2003
 |  Description: save video format as set in cbx aspect + crop
@@ -1048,9 +1058,10 @@ void CPlayer::on_cbxCrop_currentIndexChanged(int idx)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::on_btnSaveAspectCrop_clicked()
+void CPlayer::slotBtnSaveAspectCropClicked()
 {
-   if ((ui->cbxAspect->currentText() == "std") && (ui->cbxCrop->currentText() == "std"))
+   if ((missionControl.vidFormCbxCurrentText(QFusionControl::CBX_ASPECT) == "std")
+       && (missionControl.vidFormCbxCurrentText(QFusionControl::CBX_CROP) == "std"))
    {
       // default values --> delete from DB ...
       pDb->delAspect(showInfo.channelId());
@@ -1058,8 +1069,8 @@ void CPlayer::on_btnSaveAspectCrop_clicked()
    else
    {
       pDb->addAspect(showInfo.channelId(),
-                     ui->cbxAspect->currentText(),
-                     ui->cbxCrop->currentText());
+                     missionControl.vidFormCbxCurrentText(QFusionControl::CBX_ASPECT),
+                     missionControl.vidFormCbxCurrentText(QFusionControl::CBX_CROP));
    }
 }
 
@@ -1079,17 +1090,17 @@ int CPlayer::slotToggleAspectRatio()
    int iRV = -1;
    if (pMediaPlayer)
    {
-      int idx = ui->cbxAspect->currentIndex();
+      int idx = missionControl.vidFormCbxCurrentIndex(QFusionControl::CBX_ASPECT);
       idx ++;
 
       // if end reached, start with index 0 ...
-      if (idx >= ui->cbxAspect->count())
+      if (idx >= missionControl.vidFormCbxCount(QFusionControl::CBX_ASPECT))
       {
          idx = 0;
       }
 
       // set new aspect ratio ...
-      ui->cbxAspect->setCurrentIndex(idx);
+      missionControl.vidFormCbxSetCurrentIndex(idx, QFusionControl::CBX_ASPECT);
 
       iRV = 0;
    }
@@ -1113,17 +1124,17 @@ int CPlayer::slotToggleCropGeometry()
    int iRV = -1;
    if (pMediaPlayer)
    {
-      int idx = ui->cbxCrop->currentIndex();
+      int idx = missionControl.vidFormCbxCurrentIndex(QFusionControl::CBX_CROP);
       idx ++;
 
       // if end reached, start with index 0 ...
-      if (idx >= ui->cbxCrop->count())
+      if (idx >= missionControl.vidFormCbxCount(QFusionControl::CBX_CROP))
       {
          idx = 0;
       }
 
-      // set new aspect ratio ...
-      ui->cbxCrop->setCurrentIndex(idx);
+      // set new crop ratio ...
+      missionControl.vidFormCbxSetCurrentIndex(idx, QFusionControl::CBX_CROP);
 
       iRV = 0;
    }
@@ -1270,14 +1281,14 @@ void CPlayer::slotStoredAspectCrop ()
          if(!pDb->aspect(showInfo.channelId(), sAspect, sCrop))
          {
             // change combo box value for aspect ratio ...
-            iIdxOld      = ui->cbxAspect->currentIndex();
-            if ((iIdxNew = ui->cbxAspect->findText(sAspect)) != -1)
+            iIdxOld      = missionControl.vidFormCbxCurrentIndex(QFusionControl::CBX_ASPECT);
+            if ((iIdxNew = missionControl.vidFormCbxFindText(sAspect, QFusionControl::CBX_ASPECT)) != -1)
             {
                if (iIdxOld != iIdxNew)
                {
                   // updating combobox' actual value will also
                   // trigger the libVLC call ...
-                  ui->cbxAspect->setCurrentIndex (iIdxNew);
+                  missionControl.vidFormCbxSetCurrentIndex(iIdxNew, QFusionControl::CBX_ASPECT);
                }
                else
                {
@@ -1292,14 +1303,14 @@ void CPlayer::slotStoredAspectCrop ()
             }
 
             // change combo box value for crop ratio ...
-            iIdxOld      = ui->cbxCrop->currentIndex();
-            if ((iIdxNew = ui->cbxCrop->findText(sCrop)) != -1)
+            iIdxOld      = missionControl.vidFormCbxCurrentIndex(QFusionControl::CBX_CROP);
+            if ((iIdxNew = missionControl.vidFormCbxFindText(sCrop, QFusionControl::CBX_CROP)) != -1)
             {
                if (iIdxOld != iIdxNew)
                {
                   // updating combobox' actual value will also
                   // trigger the libVLC call ...
-                  ui->cbxCrop->setCurrentIndex (iIdxNew);
+                  missionControl.vidFormCbxSetCurrentIndex(iIdxNew, QFusionControl::CBX_CROP);
                }
                else
                {
@@ -1796,8 +1807,8 @@ QString CPlayer::aspectCropToString (const char *pFormat)
 \----------------------------------------------------------------- */
 void CPlayer::slotResetVideoFormat()
 {
-   ui->cbxAspect->setCurrentIndex(0);
-   ui->cbxCrop->setCurrentIndex(0);
+   missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_ASPECT);
+   missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_CROP);
 }
 
 /************************* History ***************************\

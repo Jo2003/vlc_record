@@ -12,6 +12,9 @@
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qfusioncontrol.h"
+#include "clogfile.h"
+
+extern CLogFile VlcLog;
 
 /////////////////////////////////////////////////////////////////////////////
 /// signal docu
@@ -138,6 +141,46 @@
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
+//! \fn      sigSaveVideoFormat [signal]
+//! \brief   save video format button clicked
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+//! \fn      sigAspectCurrentIndexChanged [signal]
+//! \brief   curent index of aspect cbx changed
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   pos(int) new index
+//
+//! \return  --
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+//! \fn      sigCropCurrentIndexChanged [signal]
+//! \brief   curent index of crop cbx changed
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   pos(int) new index
+//
+//! \return  --
+//---------------------------------------------------------------------------
+
+/////////////////////////////////////////////////////////////////////////////
+/// functions docu
+/////////////////////////////////////////////////////////////////////////////
+
+//---------------------------------------------------------------------------
 //
 //! \brief   constructs QFusionControl object
 //
@@ -149,7 +192,7 @@
 //! \return  --
 //---------------------------------------------------------------------------
 QFusionControl::QFusionControl(QObject *parent) :
-   QObject(parent)
+   QObject(parent), _iPopup(0)
 {
 }
 
@@ -184,9 +227,9 @@ void QFusionControl::disconnectCtrls()
 {
    disconnectBtn();
    disconnectVol();
-   disconnectJmp();
    disconnectCng();
    disconnectLab();
+   disconnectCbx();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -201,13 +244,13 @@ void QFusionControl::disconnectCtrls()
 //! \date    26.11.2012
 //
 //! \param   pBtn pointer to pushbutton
-//! \param   rol rol for button (start, stop, rec, ...)
+//! \param   role role for button (start, stop, rec, ...)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QFusionControl::addButton (QPushButton *pBtn, eBtnRol rol)
+void QFusionControl::addButton (QPushButton *pBtn, eBtnRole role)
 {
-   switch (rol)
+   switch (role)
    {
    case BTN_PLAY:
       // connect signal --> slots ...
@@ -257,6 +300,14 @@ void QFusionControl::addButton (QPushButton *pBtn, eBtnRol rol)
       _fsBtnVector.append(pBtn);
       break;
 
+   case BTN_FRMT:
+      // connect signal --> slots ...
+      connect (pBtn, SIGNAL(clicked()), this, SLOT(slotSaveVideoFormat()));
+
+      // add to vector ...
+      _frmtBtnVector.append(pBtn);
+      break;
+
 
    default:
       break;
@@ -271,14 +322,14 @@ void QFusionControl::addButton (QPushButton *pBtn, eBtnRol rol)
 //! \date    26.11.2012
 //
 //! \param   icon new icon to set
-//! \param   rol rol of button (start, stop, rec, ...)
+//! \param   role role of button (start, stop, rec, ...)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QFusionControl::btnSetIcon(const QIcon &icon, eBtnRol rol)
+void QFusionControl::btnSetIcon(const QIcon &icon, eBtnRole role)
 {
    QVector<QPushButton *> *pVector = NULL;
-   switch (rol)
+   switch (role)
    {
    case BTN_PLAY:
       pVector = &_playBtnVector;
@@ -302,6 +353,10 @@ void QFusionControl::btnSetIcon(const QIcon &icon, eBtnRol rol)
 
    case BTN_FS:
       pVector = &_fsBtnVector;
+      break;
+
+   case BTN_FRMT:
+      pVector = &_frmtBtnVector;
       break;
 
    default:
@@ -415,20 +470,36 @@ void QFusionControl::slotFs ()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   enable / disable buttons with given rol
+//! \brief   save video format button was pressed, emit signal
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::slotSaveVideoFormat()
+{
+   emit sigSaveVideoFormat();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   enable / disable buttons with given role
 //
 //! \author  Jo2003
 //! \date    26.11.2012
 //
 //! \param   enable enable / disable flag
-//! \param   rol button rol
+//! \param   role button role
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QFusionControl::enableBtn (bool enable, eBtnRol rol)
+void QFusionControl::enableBtn (bool enable, eBtnRole role)
 {
    QVector<QPushButton *> *pVector = NULL;
-   switch (rol)
+   switch (role)
    {
    case BTN_PLAY:
       pVector = &_playBtnVector;
@@ -452,6 +523,10 @@ void QFusionControl::enableBtn (bool enable, eBtnRol rol)
 
    case BTN_FS:
       pVector = &_fsBtnVector;
+      break;
+
+   case BTN_FRMT:
+      pVector = &_frmtBtnVector;
       break;
 
    default:
@@ -497,6 +572,9 @@ void QFusionControl::disconnectBtn()
 
    disconnect(this, SLOT(slotFs()));
    _fsBtnVector.clear();
+
+   disconnect(this, SLOT(slotSaveVideoFormat()));
+   _frmtBtnVector.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -660,9 +738,11 @@ void QFusionControl::disconnectVol()
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QFusionControl::addJumpBox (QComboBox *pBox)
+void QFusionControl::addJumpBox (QComboBoxEx *pBox)
 {
    connect (pBox, SIGNAL(currentIndexChanged(int)), this, SLOT(slotJumpValChanged(int)));
+   connect (pBox, SIGNAL(sigShownPopup()), this, SLOT(slotAddPopup()));
+   connect (pBox, SIGNAL(sigHidePopup()), this, SLOT(slotRemPopup()));
    _jumpCbxVector.append(pBox);
 }
 
@@ -727,23 +807,6 @@ void QFusionControl::enableJumpBox(bool enable)
    {
       _jumpCbxVector.at(i)->setEnabled(enable);
    }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   release jump box connections, delete object pointer
-//
-//! \author  Jo2003
-//! \date    26.11.2012
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::disconnectJmp()
-{
-   disconnect(this, SLOT(slotJumpValChanged(int)));
-   _jumpCbxVector.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -971,7 +1034,7 @@ void QFusionControl::disconnectCng()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-/// time label region ...
+/// label region (mute, time) ...
 /////////////////////////////////////////////////////////////////////////////
 
 //---------------------------------------------------------------------------
@@ -1059,4 +1122,433 @@ void QFusionControl::setMutePixmap(const QPixmap &pix)
    {
       _muteLabel.at(i)->setPixmap(pix);
    }
+}
+
+/////////////////////////////////////////////////////////////////////////////
+/// Video display format comboboxes region ...
+/////////////////////////////////////////////////////////////////////////////
+
+//---------------------------------------------------------------------------
+//
+//! \brief   put one of the video display format comboboxes under control
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   cbx pointer to combobox to add
+//! \param   role role of this combobox (aspect or crop)
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::addVidFormCbx(QComboBoxEx *cbx, eVidForCbxRole role)
+{
+   switch (role)
+   {
+   case CBX_ASPECT:
+      connect (cbx, SIGNAL(currentIndexChanged(int)), this, SLOT(slotAspectCurrentIndexChanged(int)));
+      connect (cbx, SIGNAL(sigShownPopup()), this, SLOT(slotAddPopup()));
+      connect (cbx, SIGNAL(sigHidePopup()), this, SLOT(slotRemPopup()));
+      _aspectCbxVector.append(cbx);
+      break;
+   case CBX_CROP:
+      connect (cbx, SIGNAL(currentIndexChanged(int)), this, SLOT(slotCropCurrentIndexChanged(int)));
+      connect (cbx, SIGNAL(sigShownPopup()), this, SLOT(slotAddPopup()));
+      connect (cbx, SIGNAL(sigHidePopup()), this, SLOT(slotRemPopup()));
+      _cropCbxVector.append(cbx);
+      break;
+   default:
+      break;
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   release signal -> slot connections, remove cbx pointer
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::disconnectCbx()
+{
+   disconnect(this, SLOT(slotCropCurrentIndexChanged(int)));
+   disconnect(this, SLOT(slotAspectCurrentIndexChanged(int)));
+   disconnect(this, SLOT(slotAddPopup()));
+   disconnect(this, SLOT(slotRemPopup()));
+   disconnect(this, SLOT(slotJumpValChanged(int)));
+   _jumpCbxVector.clear();
+   _aspectCbxVector.clear();
+   _cropCbxVector.clear();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   clear combobox content
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   role combobox role (aspect or crop)
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::vidFormCbxClear (eVidForCbxRole role)
+{
+   QVector<QComboBoxEx *> *pVector = NULL;
+
+   switch (role)
+   {
+   case CBX_ASPECT:
+      pVector = &_aspectCbxVector;
+      break;
+   case CBX_CROP:
+      pVector = &_cropCbxVector;
+      break;
+   default:
+      break;
+   }
+
+   if (pVector)
+   {
+      for (int i = 0; i < pVector->count(); i++)
+      {
+         pVector->at(i)->clear();
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   fill comboboxes with content
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   idx(int) index to start with
+//! \param   items stringlist with items to add
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::vidFormCbxInsertValues (int idx, const QStringList &items, eVidForCbxRole role)
+{
+   QVector<QComboBoxEx *> *pVector = NULL;
+
+   switch (role)
+   {
+   case CBX_ASPECT:
+      pVector = &_aspectCbxVector;
+      break;
+   case CBX_CROP:
+      pVector = &_cropCbxVector;
+      break;
+   default:
+      break;
+   }
+
+   if (pVector)
+   {
+      for (int i = 0; i < pVector->count(); i++)
+      {
+         pVector->at(i)->insertItems(idx, items);
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set new current index on comboboxes
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   idx(int) new current index to set
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::vidFormCbxSetCurrentIndex (int idx, eVidForCbxRole role)
+{
+   QVector<QComboBoxEx *> *pVector = NULL;
+
+   switch (role)
+   {
+   case CBX_ASPECT:
+      pVector = &_aspectCbxVector;
+      break;
+   case CBX_CROP:
+      pVector = &_cropCbxVector;
+      break;
+   default:
+      break;
+   }
+
+   if (pVector)
+   {
+      for (int i = 0; i < pVector->count(); i++)
+      {
+         pVector->at(i)->setCurrentIndex(idx);
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get current text from combobox, please note that all comboboxes
+//!          with equal role are synchronized
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  current text as QString
+//---------------------------------------------------------------------------
+QString QFusionControl::vidFormCbxCurrentText (eVidForCbxRole role)
+{
+   QVector<QComboBoxEx *> *pVector = NULL;
+   QString                 sRV;
+
+   switch (role)
+   {
+   case CBX_ASPECT:
+      pVector = &_aspectCbxVector;
+      break;
+   case CBX_CROP:
+      pVector = &_cropCbxVector;
+      break;
+   default:
+      break;
+   }
+
+   if (pVector)
+   {
+      // please note: values are synchronized ...
+      if(!pVector->isEmpty())
+      {
+         sRV = pVector->at(0)->currentText();
+      }
+   }
+
+   return sRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get current index from combobox, please note that all comboboxes
+//!          with equal role are synchronized
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  current index (int)
+//---------------------------------------------------------------------------
+int QFusionControl::vidFormCbxCurrentIndex (eVidForCbxRole role)
+{
+   QVector<QComboBoxEx *> *pVector = NULL;
+   int                     iRV     = -1;
+
+   switch (role)
+   {
+   case CBX_ASPECT:
+      pVector = &_aspectCbxVector;
+      break;
+   case CBX_CROP:
+      pVector = &_cropCbxVector;
+      break;
+   default:
+      break;
+   }
+
+   if (pVector)
+   {
+      // please note: values are synchronized ...
+      if(!pVector->isEmpty())
+      {
+         iRV = pVector->at(0)->currentIndex();
+      }
+   }
+
+   return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get item count from combobox, please note that all comboboxes
+//!          with equal role are synchronized
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  item count (int)
+//---------------------------------------------------------------------------
+int QFusionControl::vidFormCbxCount(eVidForCbxRole role)
+{
+   QVector<QComboBoxEx *> *pVector = NULL;
+   int                     iRV     = -1;
+
+   switch (role)
+   {
+   case CBX_ASPECT:
+      pVector = &_aspectCbxVector;
+      break;
+   case CBX_CROP:
+      pVector = &_cropCbxVector;
+      break;
+   default:
+      break;
+   }
+
+   if (pVector)
+   {
+      // please note: values are synchronized ...
+      if(!pVector->isEmpty())
+      {
+         iRV = pVector->at(0)->count();
+      }
+   }
+
+   return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get position of text in combobox, please note
+//!          that all comboboxes with equal role are synchronized
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   str string to find
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  -1 -> not found; else index of entry in cbx
+//---------------------------------------------------------------------------
+int QFusionControl::vidFormCbxFindText(const QString &str, eVidForCbxRole role)
+{
+   QVector<QComboBoxEx *> *pVector = NULL;
+   int                     iRV     = -1;
+
+   switch (role)
+   {
+   case CBX_ASPECT:
+      pVector = &_aspectCbxVector;
+      break;
+   case CBX_CROP:
+      pVector = &_cropCbxVector;
+      break;
+   default:
+      break;
+   }
+
+   if (pVector)
+   {
+      // please note: values are synchronized ...
+      if(!pVector->isEmpty())
+      {
+         iRV = pVector->at(0)->findText(str);
+      }
+   }
+
+   return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   aspect ratio on one aspect CBX changed, emit signal,
+//!          synchronize with comboboxes with equal role
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   str string to find
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  -1 -> not found; else index of entry in cbx
+//---------------------------------------------------------------------------
+void QFusionControl::slotAspectCurrentIndexChanged (int pos)
+{
+   vidFormCbxSetCurrentIndex(pos, CBX_ASPECT);
+   emit sigAspectCurrentIndexChanged(pos);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   crop ratio on one crop CBX changed, emit signal,
+//!          synchronize with comboboxes with equal role
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   str string to find
+//! \param   role combobox role (aspect o crop)
+//
+//! \return  -1 -> not found; else index of entry in cbx
+//---------------------------------------------------------------------------
+void QFusionControl::slotCropCurrentIndexChanged (int pos)
+{
+   vidFormCbxSetCurrentIndex(pos, CBX_CROP);
+   emit sigCropCurrentIndexChanged(pos);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   combobox shows popup
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::slotAddPopup ()
+{
+   _mPopup.lock();
+   _iPopup ++;
+   _mPopup.unlock();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   combobox hides popup
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::slotRemPopup ()
+{
+   _mPopup.lock();
+   if (_iPopup > 0)
+   {
+      _iPopup --;
+   }
+   _mPopup.unlock();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   is a popup from any combobox active ?
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   --
+//
+//! \return  true -> active, false -> not active
+//---------------------------------------------------------------------------
+bool QFusionControl::isPopupActive()
+{
+   return !!_iPopup;
 }

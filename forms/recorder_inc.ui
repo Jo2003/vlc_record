@@ -1145,7 +1145,7 @@ border-top: 0px;
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBox" name="cbxTimeJumpVal">
+                  <widget class="QComboBoxEx" name="cbxTimeJumpVal">
                    <property name="minimumSize">
                     <size>
                      <width>50</width>
@@ -1552,6 +1552,11 @@ border-top: 0px;
    <extends>QFrame</extends>
    <header>qfavframe.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QComboBoxEx</class>
+   <extends>QComboBox</extends>
+   <header>qcomboboxex.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

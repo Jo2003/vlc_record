@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
-    <height>95</height>
+    <width>460</width>
+    <height>138</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,9 @@
    <string notr="true">QWidget#QOverlayControl {
 background-color: transparent;
 }</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -44,16 +47,247 @@ border: 2px solid #888;
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>3</number>
+       <number>0</number>
       </property>
-      <property name="topMargin">
+      <property name="margin">
        <number>2</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="hLayoutCaption">
         <property name="spacing">
-         <number>0</number>
+         <number>4</number>
         </property>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>4</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QPushButton" name="pushHide">
+          <property name="minimumSize">
+           <size>
+            <width>14</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>14</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../common.qrc">
+            <normaloff>:/player/move-handle</normaloff>:/player/move-handle</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>6</width>
+            <height>6</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QMoveHandle" name="labMoveHandle">
+          <property name="styleSheet">
+           <string notr="true">QLabel {
+color: white;
+font-weight: bold;
+border-radius: 3px;
+border: 1px solid gray;
+}</string>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnFullScreen">
+          <property name="minimumSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Toggle Fullscreen</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../common.qrc">
+            <normaloff>:/player/leave-fullscreen</normaloff>:/player/leave-fullscreen</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="hLayoutExtControl">
+        <property name="spacing">
+         <number>9</number>
+        </property>
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="labAspect">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../common.qrc">:/player/white_aspect</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBoxEx" name="cbxAspect">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Aspect</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labCrop">
+          <property name="minimumSize">
+           <size>
+            <width>14</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>14</width>
+            <height>14</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../common.qrc">:/player/white_crop</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBoxEx" name="cbxCrop">
+          <property name="font">
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Crop</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnSaveAspectCrop">
+          <property name="minimumSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>22</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Save Video Format</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../common.qrc">
+            <normaloff>:/app/save</normaloff>:/app/save</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
@@ -62,58 +296,87 @@ border: 2px solid #888;
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>10</height>
+            <height>20</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="QMoveHandle" name="labMoveHandle">
-          <property name="minimumSize">
-           <size>
-            <width>37</width>
-            <height>10</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>37</width>
-            <height>10</height>
-           </size>
-          </property>
+         <widget class="QLabel" name="labSound">
           <property name="text">
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="../common.qrc">:/player/move-handle</pixmap>
-          </property>
-          <property name="scaledContents">
-           <bool>true</bool>
+           <pixmap resource="../common.qrc">:/player/sound_on</pixmap>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_4">
+         <widget class="QSlider" name="volSlider">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QSlider::groove:horizontal {
+   border: 1px solid #999999;
+   height: 5px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(48, 144, 22, 255), stop:0.490566 rgba(255, 242, 53, 255), stop:1 rgba(255, 0, 0, 255));
+   margin: 2px 0;
+}
+
+ QSlider::handle:horizontal {
+     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.7 grey, stop:1 #dedede);
+     border: 1px solid #5c5c5c;
+     width: 4px;
+     margin: -5px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+     border-radius: 2px;
+ }
+</string>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="pageStep">
+           <number>0</number>
+          </property>
+          <property name="sliderPosition">
+           <number>50</number>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>10</height>
-           </size>
+          <property name="invertedControls">
+           <bool>false</bool>
           </property>
-         </spacer>
+          <property name="tickPosition">
+           <enum>QSlider::NoTicks</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="10,0,0">
+       <layout class="QHBoxLayout" name="hLayoutPosSlider" stretch="10,0,0">
         <property name="spacing">
          <number>2</number>
         </property>
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
         <item>
-         <widget class="QClickAndGoSlider" name="posSlider_2">
+         <widget class="QClickAndGoSlider" name="posSlider">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -196,7 +459,7 @@ QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
          </spacer>
         </item>
         <item>
-         <widget class="QTimeLabel" name="labPos_2">
+         <widget class="QTimeLabel" name="labTime">
           <property name="enabled">
            <bool>true</bool>
           </property>
@@ -225,7 +488,16 @@ color: #aaa;
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="hLayoutMainControl">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="rightMargin">
+         <number>9</number>
+        </property>
+        <property name="bottomMargin">
+         <number>9</number>
+        </property>
         <item>
          <widget class="QPushButton" name="pushPlay">
           <property name="maximumSize">
@@ -332,11 +604,17 @@ color: #aaa;
          </widget>
         </item>
         <item>
-         <widget class="Line" name="line">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
         <item>
          <widget class="QPushButton" name="pushBwd">
@@ -371,7 +649,7 @@ color: #aaa;
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="cbxTimeJumpVal">
+         <widget class="QComboBoxEx" name="cbxTimeJumpVal">
           <property name="minimumSize">
            <size>
             <width>50</width>
@@ -445,115 +723,6 @@ color: #aaa;
           </property>
          </widget>
         </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="labSound">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="pixmap">
-           <pixmap resource="../common.qrc">:/player/sound_on</pixmap>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="volSlider">
-          <property name="minimumSize">
-           <size>
-            <width>80</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QSlider::groove:horizontal {
-   border: 1px solid #999999;
-   height: 5px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(48, 144, 22, 255), stop:0.490566 rgba(255, 242, 53, 255), stop:1 rgba(255, 0, 0, 255));
-   margin: 2px 0;
-}
-
- QSlider::handle:horizontal {
-     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.7 grey, stop:1 #dedede);
-     border: 1px solid #5c5c5c;
-     width: 4px;
-     margin: -5px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
-     border-radius: 2px;
- }
-</string>
-          </property>
-          <property name="maximum">
-           <number>100</number>
-          </property>
-          <property name="pageStep">
-           <number>0</number>
-          </property>
-          <property name="sliderPosition">
-           <number>50</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="invertedControls">
-           <bool>false</bool>
-          </property>
-          <property name="tickPosition">
-           <enum>QSlider::NoTicks</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="btnFullScreen">
-          <property name="minimumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>24</width>
-            <height>24</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Toggle Fullscreen</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../common.qrc">
-            <normaloff>:/player/leave-fullscreen</normaloff>:/player/leave-fullscreen</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>18</width>
-            <height>18</height>
-           </size>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
      </layout>
@@ -576,6 +745,11 @@ color: #aaa;
    <class>QMoveHandle</class>
    <extends>QLabel</extends>
    <header>qmovehandle.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QComboBoxEx</class>
+   <extends>QComboBox</extends>
+   <header>qcomboboxex.h</header>
   </customwidget>
  </customwidgets>
  <resources>

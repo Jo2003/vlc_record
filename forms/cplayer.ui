@@ -54,7 +54,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxAspect">
+      <widget class="QComboBoxEx" name="cbxAspect">
        <property name="toolTip">
         <string>Aspect</string>
        </property>
@@ -99,7 +99,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxCrop">
+      <widget class="QComboBoxEx" name="cbxCrop">
        <property name="toolTip">
         <string>Crop</string>
        </property>
@@ -375,12 +375,6 @@ color: white;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QVlcVideoWidget</class>
-   <extends>QWidget</extends>
-   <header>qvlcvideowidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>QClickAndGoSlider</class>
    <extends>QSlider</extends>
    <header>qclickandgoslider.h</header>
@@ -389,6 +383,17 @@ color: white;
    <class>QTimeLabel</class>
    <extends>QLabel</extends>
    <header>qtimelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QComboBoxEx</class>
+   <extends>QComboBox</extends>
+   <header>qcomboboxex.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QVlcVideoWidget</class>
+   <extends>QWidget</extends>
+   <header>qvlcvideowidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

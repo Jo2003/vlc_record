@@ -103,8 +103,8 @@ private:
 
 private slots:
    void slotPositionChanged(int value);
-   void on_cbxAspect_currentIndexChanged(int idx);
-   void on_cbxCrop_currentIndexChanged(int idx);
+   void slotCbxAspectCurrentIndexChanged(int idx);
+   void slotCbxCropCurrentIndexChanged(int idx);
    void slotChangeVolume(int newVolume);
    void slotUpdateSlider ();
    void slotChangeVolumeDelta (const bool up);
@@ -112,7 +112,7 @@ private slots:
    void slotToggleFullscreen();
    void slotEventPoll();
 
-   void on_btnSaveAspectCrop_clicked();
+   void slotBtnSaveAspectCropClicked();
 
 public slots:
    int  playMedia (const QString &sCmdLine);

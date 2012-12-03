@@ -58,6 +58,8 @@ private slots:
   void slotMouseEntersMoveHandle ();
   void slotMouseLeavesMoveHandle ();
 
+  void on_pushHide_clicked();
+
 private:
   Ui::QOverlayedControl *ui;
   qreal  _fOpaque;

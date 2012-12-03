@@ -15,6 +15,11 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
+#include "qfusioncontrol.h"
+
+// fusion control ...
+extern QFusionControl missionControl;
+
 // log file functions ...
 extern CLogFile VlcLog;
 
@@ -244,7 +249,9 @@ void QVlcVideoWidget::toggleFullScreen()
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::hideMouse()
 {
-   if((isFullScreen() || _extFullScreen) && !_mouseOnPanel)
+   if((isFullScreen() || _extFullScreen)
+         && !_mouseOnPanel
+         && !missionControl.isPopupActive())
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
       _ctrlPanel->fadeOut();

@@ -18,11 +18,12 @@
 #include <QVector>
 #include <QSlider>
 #include <QPushButton>
-#include <QComboBox>
 #include <QLabel>
+#include <QMutex>
 
 #include "qclickandgoslider.h"
 #include "qtimelabel.h"
+#include "qcomboboxex.h"
 
 
 //---------------------------------------------------------------------------
@@ -36,8 +37,8 @@ class QFusionControl : public QObject
    Q_OBJECT
 
 public:
-   /// Button rol
-   enum eBtnRol
+   /// Button role
+   enum eBtnRole
    {
       BTN_PLAY,      ///< play
       BTN_REC,       ///< record
@@ -45,20 +46,29 @@ public:
       BTN_FWD,       ///< forward
       BTN_BWD,       ///< backward
       BTN_FS,        ///< fullscreen
+      BTN_FRMT,      ///< save video format
       BTN_ANY = 255  ///< undefined button
+   };
+
+   /// combobox role
+   enum eVidForCbxRole
+   {
+      CBX_ASPECT,    ///< aspct ratio combobax
+      CBX_CROP,      ///< crop ratio combobox
+      CBX_ANY = 255  ///< undefined combobox
    };
 
    QFusionControl(QObject *parent = 0);
    virtual ~QFusionControl();
 
    // add control elements to its vector ...
-   void addButton (QPushButton *pBtn, eBtnRol rol);
+   void addButton (QPushButton *pBtn, eBtnRole role);
    void addVolSlider (QSlider *pSli);
-   void addJumpBox (QComboBox *pBox);
+   void addJumpBox (QComboBoxEx *pBox);
    void addCngSlider (QClickAndGoSlider *pSli);
    void addTimeLab (QTimeLabel *pLab);
    void addMuteLab (QLabel *pLab);
-   void enableBtn (bool enable, eBtnRol rol);
+   void enableBtn (bool enable, eBtnRole role);
    void setVolSliderPosition (int vol);
    void setVolume (int vol);
    void disconnectCtrls ();
@@ -75,8 +85,20 @@ public:
    void setPosRange (int min, int max);
    int  posValue ();
    void setTime (quint64 time);
-   void btnSetIcon (const QIcon &icon, eBtnRol rol);
+   void btnSetIcon (const QIcon &icon, eBtnRole role);
    void setMutePixmap (const QPixmap &pix);
+
+   // video display format comboboxes ...
+   void addVidFormCbx (QComboBoxEx *cbx, eVidForCbxRole role);
+   void vidFormCbxClear (eVidForCbxRole role);
+   void vidFormCbxInsertValues (int idx, const QStringList &items, eVidForCbxRole role);
+   void vidFormCbxSetCurrentIndex (int idx, eVidForCbxRole role);
+   QString vidFormCbxCurrentText (eVidForCbxRole role);
+   int  vidFormCbxCurrentIndex (eVidForCbxRole role);
+   int  vidFormCbxCount (eVidForCbxRole role);
+   int  vidFormCbxFindText(const QString &str, eVidForCbxRole role);
+   bool isPopupActive ();
+
    
 signals:
    void sigVolSliderMoved (int vol);
@@ -85,15 +107,18 @@ signals:
    void sigRec ();
    void sigFwd ();
    void sigBwd ();
+   void sigSaveVideoFormat ();
    void sigFullScreen ();
    void sigPosClickNGo (int pos);
    void sigPosSliderReleased ();
    void sigPosSliderValueChanged (int pos);
+   void sigAspectCurrentIndexChanged (int pos);
+   void sigCropCurrentIndexChanged (int pos);
 
 protected:
    void disconnectBtn ();
    void disconnectVol ();
-   void disconnectJmp ();
+   void disconnectCbx ();
    void disconnectCng ();
    void disconnectLab ();
    
@@ -111,6 +136,11 @@ private slots:
    void slotClickNGo(int pos);
    void slotPosSliderReleased ();
    void slotPosSliderValueChanged (int pos);
+   void slotAspectCurrentIndexChanged (int pos);
+   void slotCropCurrentIndexChanged (int pos);
+   void slotAddPopup ();
+   void slotRemPopup ();
+   void slotSaveVideoFormat ();
 
 private:
    // volume slider ...
@@ -123,9 +153,10 @@ private:
    QVector<QPushButton *>        _fwdBtnVector;
    QVector<QPushButton *>        _bwdBtnVector;
    QVector<QPushButton *>        _fsBtnVector;
+   QVector<QPushButton *>        _frmtBtnVector;
 
    // time jump combobox ...
-   QVector<QComboBox *>          _jumpCbxVector;
+   QVector<QComboBoxEx *>          _jumpCbxVector;
 
    // click'n'go slider ...
    QVector<QClickAndGoSlider *>  _cngSliderVector;
@@ -135,6 +166,14 @@ private:
 
    // mute label ...
    QVector<QLabel *>             _muteLabel;
+
+   // video display format comboboxes ...
+   QVector<QComboBoxEx *>          _aspectCbxVector;
+   QVector<QComboBoxEx *>          _cropCbxVector;
+
+   // how many popups are open ... ?
+   int                             _iPopup;
+   QMutex                          _mPopup;
 };
 
 #endif // __20121123_QFUSIONCONTROL_H

@@ -14,6 +14,7 @@
 #include "qoverlayedcontrol.h"
 #include "ui_qoverlayedcontrol.h"
 #include "qfusioncontrol.h"
+#include "defdef.h"
 
 // fusion control ...
 extern QFusionControl missionControl;
@@ -43,18 +44,22 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    setAttribute(Qt::WA_TranslucentBackground);
 
    // feed mission control with control items ...
-   missionControl.addButton(ui->pushPlay,      QFusionControl::BTN_PLAY);
-   missionControl.addButton(ui->pushStop,      QFusionControl::BTN_STOP);
-   missionControl.addButton(ui->pushRecord,    QFusionControl::BTN_REC);
-   missionControl.addButton(ui->pushFwd,       QFusionControl::BTN_FWD);
-   missionControl.addButton(ui->pushBwd,       QFusionControl::BTN_BWD);
-   missionControl.addButton(ui->btnFullScreen, QFusionControl::BTN_FS);
+   missionControl.addButton(ui->pushPlay,          QFusionControl::BTN_PLAY);
+   missionControl.addButton(ui->pushStop,          QFusionControl::BTN_STOP);
+   missionControl.addButton(ui->pushRecord,        QFusionControl::BTN_REC);
+   missionControl.addButton(ui->pushFwd,           QFusionControl::BTN_FWD);
+   missionControl.addButton(ui->pushBwd,           QFusionControl::BTN_BWD);
+   missionControl.addButton(ui->btnFullScreen,     QFusionControl::BTN_FS);
+   missionControl.addButton(ui->btnSaveAspectCrop, QFusionControl::BTN_FRMT);
 
-   missionControl.addCngSlider(ui->posSlider_2);
+   missionControl.addCngSlider(ui->posSlider);
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
    missionControl.addVolSlider(ui->volSlider);
-   missionControl.addTimeLab(ui->labPos_2);
+   missionControl.addTimeLab(ui->labTime);
    missionControl.addMuteLab(ui->labSound);
+
+   missionControl.addVidFormCbx(ui->cbxAspect, QFusionControl::CBX_ASPECT);
+   missionControl.addVidFormCbx(ui->cbxCrop, QFusionControl::CBX_CROP);
 
    connect (&_tFade, SIGNAL(timeout()), this, SLOT(slotFadeMore()));
    connect (ui->labMoveHandle, SIGNAL(mouseEnters()), this, SLOT(slotMouseEntersMoveHandle()));
@@ -196,6 +201,9 @@ void QOverlayedControl::showEvent(QShowEvent *e)
    // set transparancy to control panel ...
    setWindowOpacity(_fOpaque);
 
+   // set pseudo caption ...
+   ui->labMoveHandle->setText(APP_NAME);
+
    QWidget::showEvent(e);
 }
 
@@ -308,4 +316,20 @@ void QOverlayedControl::slotMouseLeavesMoveHandle()
 {
    QApplication::restoreOverrideCursor();
    _mouseOverMoveHandle = false;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   force fade out
+//
+//! \author  Jo2003
+//! \date    03.12.2012
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::on_pushHide_clicked()
+{
+   fadeOut();
 }
