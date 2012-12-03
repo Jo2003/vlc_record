@@ -16,6 +16,12 @@
 
 #include <QComboBox>
 
+//---------------------------------------------------------------------------
+//! \class   QComboBoxEx
+//! \date    03.12.2012
+//! \author  Jo2003
+//! \brief   an extended QComboBox class which tells about popup state
+//---------------------------------------------------------------------------
 class QComboBoxEx : public QComboBox
 {
    Q_OBJECT
