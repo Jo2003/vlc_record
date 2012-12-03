@@ -464,7 +464,7 @@ QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
            <bool>true</bool>
           </property>
           <property name="styleSheet">
-           <string notr="true">QLabel#labPos_2 {
+           <string notr="true">QLabel#labTime {
 color: #aaa;
 }</string>
           </property>
