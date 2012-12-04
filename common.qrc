@@ -54,6 +54,8 @@
         <file alias="move-handle">resources/move-handle.png</file>
         <file alias="white_crop">resources/white_crop.png</file>
         <file alias="white_aspect">resources/white_aspect.png</file>
+        <file alias="down_arrow">resources/down_arrow.png</file>
+        <file alias="down_arrow_disabled">resources/down_arrow_disabled.png</file>
     </qresource>
     <qresource prefix="/vod">
         <file alias="is_fav">resources/heart_red.png</file>
