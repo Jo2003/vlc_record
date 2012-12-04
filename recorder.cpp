@@ -1496,6 +1496,10 @@ void Recorder::slotKartinaResponse(const QString& resp, int req)
    mkCase(Kartina::REQ_EPG, slotEPG(resp));
 
    ///////////////////////////////////////////////
+   // create EPG map and add it to showInfo
+   mkCase(Kartina::REQ_UPDEPG, slotUpdEPG(resp));
+
+   ///////////////////////////////////////////////
    // Indicates that a new timeshift value was set.
    // Triggers reload of channel list.
    mkCase(Kartina::REQ_TIMESHIFT, slotTimeShift(resp));
@@ -1931,6 +1935,47 @@ void Recorder::slotEPG(const QString &str)
             Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
          }
       }
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotUpdEPG
+|  Begin: 19.01.2010 / 16:10:49
+|  Author: Jo2003
+|  Description: silently update epg info
+|
+|  Parameters: epg (xml)
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotUpdEPG(const QString &str)
+{
+   QVector<cparser::SEpg> vEpg;
+   QMap<uint, epg::SShow> mEpg;
+   epg::SShow             sShow;
+
+   if (!XMLParser.parseEpg(str, vEpg))
+   {
+      for (int i = 0; i < vEpg.count(); i++)
+      {
+         sShow.uiStart    = vEpg.at(i).uiGmt;
+         sShow.uiEnd      = (vEpg.count() > (i + 1)) ? vEpg.at(i + 1).uiGmt : 0;
+         sShow.sShowName  = vEpg.at(i).sName;
+         sShow.sShowDescr = vEpg.at(i).sDescr;
+
+         mEpg.insert(sShow.uiStart, sShow);
+      }
+   }
+
+   if (!mEpg.isEmpty())
+   {
+      showInfo.setEpgMap(mEpg);
+      showInfo.setEpgUpdPending(0);
+   }
+   else
+   {
+      // error updating epg ...
+      showInfo.setEpgUpdPending(-1);
    }
 }
 
@@ -3170,19 +3215,33 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
    if (!CSmallHelpers::inBetween(showInfo.starts(), showInfo.ends(), (uint)ulArcGmt))
    {
       // search in archiv program map for matching entry ...
-      if (!showInfo.autoUpdate(ulArcGmt))
+      if (!showInfo.epgUpdPending())
       {
-         // add additional info to LCD ...
-         int     iTime = showInfo.ends() ? (int)((showInfo.ends() - showInfo.starts()) / 60) : 60;
-         QString sTime = tr("Length: %1 min.").arg(iTime);
-         ui->labState->setFooter(sTime);
-         ui->labState->updateState(showInfo.playState());
+         if (!showInfo.autoUpdate(ulArcGmt))
+         {
+            // add additional info to LCD ...
+            int     iTime = showInfo.ends() ? (int)((showInfo.ends() - showInfo.starts()) / 60) : 60;
+            QString sTime = tr("Length: %1 min.").arg(iTime);
+            ui->labState->setFooter(sTime);
+            ui->labState->updateState(showInfo.playState());
 
-         // set short epg info ...
-         ui->textEpgShort->setHtml(showInfo.htmlDescr());
+            // set short epg info ...
+            ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
-         // done ...
-         emit sigShowInfoUpdated();
+            // done ...
+            emit sigShowInfoUpdated();
+         }
+         else
+         {
+            if (showInfo.showType() == ShowInfo::Live)
+            {
+               // pending epg request ...
+               showInfo.setEpgUpdPending(1);
+
+               // get EPG for this channel ...
+               Trigger.TriggerRequest(Kartina::REQ_UPDEPG, showInfo.channelId());
+            }
+         }
       }
    }
 }

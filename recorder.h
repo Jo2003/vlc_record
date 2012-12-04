@@ -238,6 +238,7 @@ private slots:
     void on_channelList_clicked(QModelIndex index);
     void slotChanList (const QString &str);
     void slotEPG(const QString &str);
+    void slotUpdEPG(const QString &str);
     void slotStreamURL (const QString &str);
     void slotArchivURL (const QString &str);
     void slotCookie (const QString &str);

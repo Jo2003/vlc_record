@@ -41,19 +41,20 @@ CShowInfo::CShowInfo(QObject *parent) : QObject(parent)
 \----------------------------------------------------------------- */
 void CShowInfo::cleanShowInfo()
 {
-   sShowName     = "";
-   sChanName     = "";
-   sDescr        = "";
-   sAdUrl        = "";
-   sPCode        = "";
-   iChannelId    = -1;
-   iVodId        = -1;
-   ePlayState    = IncPlay::PS_STOP;
-   eShowType     = ShowInfo::Live;
-   uiStart       = 0;
-   uiEnd         = 0;
-   uiJumpTime    = 0;
-   bStreamLoader = false;
+   sShowName      = "";
+   sChanName      = "";
+   sDescr         = "";
+   sAdUrl         = "";
+   sPCode         = "";
+   iChannelId     = -1;
+   iVodId         = -1;
+   ePlayState     = IncPlay::PS_STOP;
+   eShowType      = ShowInfo::Live;
+   uiStart        = 0;
+   uiEnd          = 0;
+   uiJumpTime     = 0;
+   bStreamLoader  = false;
+   iEpgUpdPending = 0;
    epgMap.clear();
 }
 
@@ -265,6 +266,36 @@ void CShowInfo::setEpgMap(const t_EpgMap &map)
 void CShowInfo::useStreamLoader(bool bUse)
 {
    bStreamLoader = bUse;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setEpgUpdPending
+|  Begin: 04.12.2012
+|  Author: Jo2003
+|  Description: set epg update state
+|
+|  Parameters: i (0 -> no, 1 -> yes, -1 -> error)
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::setEpgUpdPending(int i)
+{
+   iEpgUpdPending = i;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: epgUpdPending
+|  Begin: 04.12.2012
+|  Author: Jo2003
+|  Description: is silent epg update pending?
+|
+|  Parameters: --
+|
+|  Returns: 0 -> no, 1 -> yes, -1 -> error
+\----------------------------------------------------------------- */
+int CShowInfo::epgUpdPending()
+{
+   return iEpgUpdPending;
 }
 
 /* -----------------------------------------------------------------\
@@ -499,22 +530,32 @@ const QString& CShowInfo::pCode()
 \----------------------------------------------------------------- */
 int CShowInfo::autoUpdate(uint uiTime)
 {
-   int iRV = -1;
+   int     iRV = -1;
+   QString sChanNameTmpl;
    t_EpgMap::const_iterator cit;
 
    for (cit = epgMap.constBegin(); cit != epgMap.constEnd(); cit++)
    {
       if (CSmallHelpers::inBetween((*cit).uiStart, (*cit).uiEnd, uiTime))
       {
+         if (eShowType == ShowInfo::Archive)
+         {
+            sChanNameTmpl = tr("%1 (Archive)").arg(sChanName);
+         }
+         else
+         {
+            sChanNameTmpl = sChanName;
+         }
+
          sShowName  = (*cit).sShowName;
          uiStart    = (*cit).uiStart;
          uiEnd      = (*cit).uiEnd;
          uiJumpTime = (uiTime > (*cit).uiStart) ? uiTime : 0; // take care of relative time jumps!
          sDescr     = QString(TMPL_BACKCOLOR)
                          .arg("rgb(255, 254, 212)")
-                         .arg(createTooltip(tr("%1 (Archive)").arg(sChanName),
-                                 QString("%1 %2").arg((*cit).sShowName).arg((*cit).sShowDescr),
-                                 uiStart, uiEnd));
+                         .arg(createTooltip(sChanNameTmpl,
+                                            QString("%1 %2").arg((*cit).sShowName).arg((*cit).sShowDescr),
+                                            uiStart, uiEnd));
          iRV = 0;
          break;
       }

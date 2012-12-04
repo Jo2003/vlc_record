@@ -68,6 +68,7 @@ public:
    void setVodId (int id);
    void setEpgMap(const t_EpgMap &map);
    void useStreamLoader (bool bUse);
+   void setEpgUpdPending (int i);
 
    // get values ...
    const QString &showName();
@@ -84,6 +85,7 @@ public:
    bool  canCtrlStream();
    bool  streamLoader();
    const int& vodId();
+   int   epgUpdPending();
 
    int autoUpdate(uint uiTime);
    static QString createTooltip (const QString & name, const QString & prog, uint start, uint end);
@@ -103,6 +105,7 @@ private:
    int                  iVodId;
    t_EpgMap             epgMap;
    bool                 bStreamLoader;
+   int                  iEpgUpdPending;
 };
 
 #endif // __150610_CSHOWINFO_H

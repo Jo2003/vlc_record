@@ -794,6 +794,30 @@ void CKartinaClnt::setParentCode(const QString &oldCode, const QString &newCode)
 }
 
 /*-----------------------------------------------------------------------------\
+| Function:    GetEPG
+|
+| Author:      Jo2003
+|
+| Begin:       Monday, January 04, 2010 16:14:52
+|
+| Description: request todays EPG for given channel id
+|
+| Parameters:  channel index
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::updEpg(int iChanID)
+{
+   mInfo(tr("Silently update EPG for Channel %1 ...").arg(iChanID));
+
+   QDate now = QDate::currentDate();
+
+   GetRequest(Kartina::REQ_UPDEPG,
+              QString("%1epg?cid=%2&day=%3").arg(KARTINA_API_PATH)
+              .arg(iChanID).arg(now.toString("ddMMyy")));
+}
+
+/*-----------------------------------------------------------------------------\
 | Function:    handleEndRequest (slot)
 |
 | Author:      Jo2003
