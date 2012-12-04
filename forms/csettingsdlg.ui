@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>543</width>
-    <height>458</height>
+    <width>628</width>
+    <height>493</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -474,6 +474,9 @@ color: red;
           <string>Advanced Settings</string>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::FieldsStayAtSizeHint</enum>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="lanApiServer">
             <property name="text">
@@ -560,95 +563,55 @@ color: red;
            <widget class="QLineEdit" name="lineShutdown"/>
           </item>
           <item row="4" column="0">
-           <widget class="QCheckBox" name="checkRefresh">
-            <property name="text">
-             <string>Refresh EPG every:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QComboBox" name="cbxInterval">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>5</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>10</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>15</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>Minute(s)</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="5" column="0">
            <widget class="QCheckBox" name="checkAskForName">
             <property name="text">
              <string>Ask for Record Filename</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="4" column="1">
            <widget class="QCheckBox" name="checkHideToSystray">
             <property name="text">
              <string>Minimize to Systray</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="checkDetach">
             <property name="text">
              <string>Detach Player at startup</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="5" column="1">
            <widget class="QCheckBox" name="checkTranslit">
             <property name="text">
              <string>Translit Record Filename</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="6" column="0">
            <widget class="QCheckBox" name="checkUpdate">
             <property name="text">
              <string>Check for updates</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="6" column="1">
            <widget class="QCheckBox" name="checkGPUAcc">
             <property name="text">
              <string>Use GPU for video decoding</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
+          <item row="7" column="0">
            <widget class="QCheckBox" name="check2ClicksToPlay">
             <property name="text">
              <string>Doubleclick on channel list starts play</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="7" column="1">
            <widget class="QCheckBox" name="checkAds">
             <property name="enabled">
              <bool>false</bool>
@@ -816,8 +779,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>240</width>
-                     <height>175</height>
+                     <width>98</width>
+                     <height>28</height>
                     </rect>
                    </property>
                   </widget>
@@ -968,8 +931,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>227</width>
-                     <height>121</height>
+                     <width>98</width>
+                     <height>468</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1156,8 +1119,6 @@ color: red;
   <tabstop>cbxLogLevel</tabstop>
   <tabstop>lineVlcVerbose</tabstop>
   <tabstop>lineShutdown</tabstop>
-  <tabstop>checkRefresh</tabstop>
-  <tabstop>cbxInterval</tabstop>
   <tabstop>checkAskForName</tabstop>
   <tabstop>checkHideToSystray</tabstop>
   <tabstop>checkDetach</tabstop>
@@ -1278,22 +1239,6 @@ color: red;
     <hint type="destinationlabel">
      <x>119</x>
      <y>78</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkRefresh</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>cbxInterval</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>78</x>
-     <y>87</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>119</x>
-     <y>87</y>
     </hint>
    </hints>
   </connection>

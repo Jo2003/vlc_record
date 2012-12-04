@@ -69,7 +69,6 @@ public:
     bool UseProxy ();
     bool AllowEros ();
     bool FixTime ();
-    bool DoRefresh ();
     bool HideToSystray ();
     bool AskForRecFile ();
     bool TranslitRecFile ();
@@ -81,7 +80,6 @@ public:
     bool useGpuAcc();
     bool showAds();
 
-    int GetRefrInt ();
     int GetProxyPort ();
     int GetBufferTime ();
     vlclog::eLogLevel GetLogLevel ();

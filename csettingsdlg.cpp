@@ -232,7 +232,6 @@ void CSettingsDlg::readSettings()
    m_ui->useProxy->setCheckState((Qt::CheckState)pDb->intValue("UseProxy"));
    m_ui->checkAdult->setCheckState((Qt::CheckState)pDb->intValue("AllowAdult"));
    m_ui->checkFixTime->setCheckState((Qt::CheckState)pDb->intValue("FixTime"));
-   m_ui->checkRefresh->setCheckState((Qt::CheckState)pDb->intValue("Refresh"));
    m_ui->checkHideToSystray->setCheckState((Qt::CheckState)pDb->intValue("TrayHide"));
    m_ui->checkAskForName->setCheckState((Qt::CheckState)pDb->intValue("AskRecFile"));
    m_ui->checkTranslit->setCheckState((Qt::CheckState)pDb->intValue("TranslitRecFile"));
@@ -309,9 +308,6 @@ void CSettingsDlg::readSettings()
    iIdx = m_ui->cbxBufferSeconds->findData(pDb->intValue("HttpCache"));
    m_ui->cbxBufferSeconds->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
-   iIdx = m_ui->cbxInterval->findText(pDb->stringValue("RefIntv"));
-   m_ui->cbxInterval->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
-
    m_ui->cbxLogLevel->setCurrentIndex((int)pDb->intValue("LogLevel"));
 
    if ((s = pDb->stringValue("PlayerModule")) == "")
@@ -363,7 +359,6 @@ void CSettingsDlg::changeEvent(QEvent *e)
           int iLogIdx = m_ui->cbxLogLevel->currentIndex();
           int iBufIdx = m_ui->cbxBufferSeconds->currentIndex();
           int iModIdx = m_ui->cbxPlayerMod->currentIndex();
-          int iIntIdx = m_ui->cbxInterval->currentIndex();
 
           m_ui->retranslateUi(this);
 
@@ -372,7 +367,6 @@ void CSettingsDlg::changeEvent(QEvent *e)
           m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
           m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
           m_ui->cbxPlayerMod->setCurrentIndex(iModIdx);
-          m_ui->cbxInterval->setCurrentIndex(iIntIdx);
 
           // set company name ...
           QString s = m_ui->groupAccount->title();
@@ -534,7 +528,6 @@ void CSettingsDlg::on_pushSave_clicked()
    // check boxes ...
    pDb->setValue("UseProxy", (int)m_ui->useProxy->checkState());
    pDb->setValue("FixTime", (int)m_ui->checkFixTime->checkState());
-   pDb->setValue("Refresh", (int)m_ui->checkRefresh->checkState());
    pDb->setValue("TrayHide", (int)m_ui->checkHideToSystray->checkState());
    pDb->setValue("AskRecFile", (int)m_ui->checkAskForName->checkState());
    pDb->setValue("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
@@ -551,7 +544,6 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt());
    pDb->setValue("LogLevel", m_ui->cbxLogLevel->currentIndex());
    pDb->setValue("PlayerModule", m_ui->cbxPlayerMod->currentText());
-   pDb->setValue("RefIntv", m_ui->cbxInterval->currentText());
 
    // short cuts ...
    CShortCutGrabber *pGrab;
@@ -1102,11 +1094,6 @@ bool CSettingsDlg::FixTime()
    return m_ui->checkFixTime->isChecked();
 }
 
-bool CSettingsDlg::DoRefresh()
-{
-   return m_ui->checkRefresh->isChecked();
-}
-
 bool CSettingsDlg::HideToSystray()
 {
    return m_ui->checkHideToSystray->isChecked();
@@ -1130,11 +1117,6 @@ bool CSettingsDlg::DetachPlayer()
 int CSettingsDlg::GetProxyPort ()
 {
    return m_ui->lineProxyPort->text().toInt();
-}
-
-int CSettingsDlg::GetRefrInt()
-{
-   return m_ui->cbxInterval->currentText().toInt();;
 }
 
 vlclog::eLogLevel CSettingsDlg::GetLogLevel()

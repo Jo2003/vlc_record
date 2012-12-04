@@ -685,12 +685,12 @@ p, li { white-space: pre-wrap; }
         <translation>Hasło: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="957"/>
+        <location filename="forms/csettingsdlg.ui" line="920"/>
         <source>Allow Adult Channels</source>
         <translation>Zezwól na kanały dla dorosłych</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="995"/>
+        <location filename="forms/csettingsdlg.ui" line="958"/>
         <source>Parent Code: </source>
         <translation>Kod kontroli rodzicielskiej: </translation>
     </message>
@@ -833,303 +833,286 @@ p, li { white-space: pre-wrap; }
         <translation>Zaawansowane ustawienia</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="480"/>
+        <location filename="forms/csettingsdlg.ui" line="483"/>
         <source>API Server: </source>
         <translation>Serwer API:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="494"/>
+        <location filename="forms/csettingsdlg.ui" line="497"/>
         <source>Player Module:</source>
         <translation>Moduł odtwarzacza:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="504"/>
+        <location filename="forms/csettingsdlg.ui" line="507"/>
         <source>Log Level:</source>
         <translation>Poziom logowania:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="657"/>
+        <location filename="forms/csettingsdlg.ui" line="620"/>
         <source>Show Ads</source>
         <translation>Pokaż pomoc</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="517"/>
+        <location filename="forms/csettingsdlg.ui" line="520"/>
         <source>Log disabled</source>
         <translation>Logowanie wyłączone</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="522"/>
+        <location filename="forms/csettingsdlg.ui" line="525"/>
         <source>Log Errors only</source>
         <translation>Tylko błędy logowania</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="527"/>
+        <location filename="forms/csettingsdlg.ui" line="530"/>
         <source>Log Errors and Warnings</source>
         <translation>Błędy logowania i ostrzeżenia</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="532"/>
+        <location filename="forms/csettingsdlg.ui" line="535"/>
         <source>Log everything</source>
         <translation>Zaloguj wszystko</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="765"/>
+        <location filename="forms/csettingsdlg.ui" line="728"/>
         <source>Select Channels to hide:</source>
         <translation>Wybierz kanały do ukrycia:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="791"/>
+        <location filename="forms/csettingsdlg.ui" line="754"/>
         <source> VOD Manager </source>
         <oldsource>VOD Manager</oldsource>
         <translation>Ustawienia wideoteki </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1037"/>
+        <location filename="forms/csettingsdlg.ui" line="1000"/>
         <source>Save and E&amp;xit</source>
         <oldsource>Save and &amp;Exit</oldsource>
         <translation>&amp;Zapisz i wyjdź</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="555"/>
+        <location filename="forms/csettingsdlg.ui" line="558"/>
         <source>Shutdown Command:</source>
         <translation>Polecenie wyłączenia:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="565"/>
         <source>Refresh EPG every:</source>
-        <translation>Odśwież Przewodnik TV co:</translation>
+        <translation type="obsolete">Odśwież Przewodnik TV co:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="578"/>
-        <source>5</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/csettingsdlg.ui" line="583"/>
-        <source>10</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/csettingsdlg.ui" line="588"/>
-        <source>15</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="forms/csettingsdlg.ui" line="596"/>
         <source>Minute(s)</source>
-        <translation>minut</translation>
+        <translation type="obsolete">minut</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="605"/>
+        <location filename="forms/csettingsdlg.ui" line="568"/>
         <source>Ask for Record Filename</source>
         <translation>Zapytaj o nazwę pliku nagrania</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="612"/>
+        <location filename="forms/csettingsdlg.ui" line="575"/>
         <source>Minimize to Systray</source>
         <translation>Minimalizuj do Systray</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="619"/>
+        <location filename="forms/csettingsdlg.ui" line="582"/>
         <source>Detach Player at startup</source>
         <translation>Odłącz odtwarzacz podczas uruchamiania</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="626"/>
+        <location filename="forms/csettingsdlg.ui" line="589"/>
         <source>Translit Record Filename</source>
         <translation>Transliteracja nazwy pliku nagrania</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="647"/>
+        <location filename="forms/csettingsdlg.ui" line="610"/>
         <source>Doubleclick on channel list starts play</source>
         <translation>Kliknij dwukrotnie na początek odtwarzania listy kanałów</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="633"/>
+        <location filename="forms/csettingsdlg.ui" line="596"/>
         <source>Check for updates</source>
         <translation>Sprawdź aktualizacje</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="640"/>
+        <location filename="forms/csettingsdlg.ui" line="603"/>
         <source>Use GPU for video decoding</source>
         <translation>Użyj GPU do dekodowania wideo</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="675"/>
+        <location filename="forms/csettingsdlg.ui" line="638"/>
         <source>Parental &amp;Manager</source>
         <oldsource>Parental Manager</oldsource>
         <translation>&amp;Ustawienia kontroli rodzicielskiej</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="694"/>
+        <location filename="forms/csettingsdlg.ui" line="657"/>
         <source>Please enter your parent code:</source>
         <oldsource>Please enter security code:</oldsource>
         <translation>Wpisz kod blokady rodzicielskiej:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="710"/>
+        <location filename="forms/csettingsdlg.ui" line="673"/>
         <source>&amp;Enter Site</source>
         <oldsource>Enter Site</oldsource>
         <translation>&amp;Wpisz stronę</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="747"/>
+        <location filename="forms/csettingsdlg.ui" line="710"/>
         <source> Channel Manager </source>
         <oldsource>Channel Manager</oldsource>
         <translation>Ustawienia kanałów </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="836"/>
+        <location filename="forms/csettingsdlg.ui" line="799"/>
         <source>Parent Code</source>
         <oldsource>Parental Code</oldsource>
         <translation>Kod blokady rodzicielskiej</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="845"/>
+        <location filename="forms/csettingsdlg.ui" line="808"/>
         <source>Old Code:</source>
         <translation>Dotychczasowy kod:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="852"/>
-        <location filename="forms/csettingsdlg.ui" line="869"/>
-        <location filename="forms/csettingsdlg.ui" line="886"/>
+        <location filename="forms/csettingsdlg.ui" line="815"/>
+        <location filename="forms/csettingsdlg.ui" line="832"/>
+        <location filename="forms/csettingsdlg.ui" line="849"/>
         <source>Number only (0 ... 9)!</source>
         <translation>Tylko cyfry (0...9)!</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="862"/>
+        <location filename="forms/csettingsdlg.ui" line="825"/>
         <source>New Code:</source>
         <translation>Nowy kod:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="879"/>
+        <location filename="forms/csettingsdlg.ui" line="842"/>
         <source>Confirm Code:</source>
         <translation>Potwierdź kod:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="911"/>
+        <location filename="forms/csettingsdlg.ui" line="874"/>
         <source>Chan&amp;ge</source>
         <oldsource>&amp;Change</oldsource>
         <translation>&amp;Zmień</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="936"/>
+        <location filename="forms/csettingsdlg.ui" line="899"/>
         <source>Adult Channels</source>
         <translation>Kanały dla dorosłych</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="979"/>
+        <location filename="forms/csettingsdlg.ui" line="942"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Please Note:&lt;/span&gt;&lt;br/&gt;If you insert the parental code below you&apos;re able to watch any adult channel without the need to insert the parent code. &lt;/p&gt;&lt;p&gt;Leaving this field blank you&apos;ll have to enter the parent code each time you want to watch an adult channel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Proszę pamiętać:&lt;/span&gt;&lt;br/&gt;Jeżeli wpiszesz kod kontroli rodzicielskiej poniżej będziesz mógł oglądać wszystkie kanały dla dorosłych bez konieczności wpisywania kodu kontroli rodzicielskiej. &lt;/p&gt;&lt;p&gt;Pozostawiając to pole puste będziesz musiał wpisywać kod kontroli rodzicielskiej za każdym razem kiedy będziesz chciał obejrzeć kanał dla dorosłych.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1082"/>
+        <location filename="forms/csettingsdlg.ui" line="1045"/>
         <source>&amp;Save</source>
         <translation>&amp;Zapisz</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1102"/>
+        <location filename="forms/csettingsdlg.ui" line="1065"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Anuluj</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="457"/>
+        <location filename="csettingsdlg.cpp" line="451"/>
         <source>Executables (*.exe)</source>
         <translation>Pliki wykonywalne (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="459"/>
+        <location filename="csettingsdlg.cpp" line="453"/>
         <source>Executables (*)</source>
         <translation>Pliki wykonywalne (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="462"/>
+        <location filename="csettingsdlg.cpp" line="456"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="502"/>
+        <location filename="csettingsdlg.cpp" line="496"/>
         <source>Target Folder</source>
         <translation>Folder docelowy</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="687"/>
+        <location filename="csettingsdlg.cpp" line="679"/>
         <source>Mobile</source>
         <translation>Przenośny</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="691"/>
+        <location filename="csettingsdlg.cpp" line="683"/>
         <source>Eco</source>
         <translation>Eko</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="695"/>
+        <location filename="csettingsdlg.cpp" line="687"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="699"/>
+        <location filename="csettingsdlg.cpp" line="691"/>
         <source>Premium</source>
         <translation>Wysokiej jakości</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="703"/>
+        <location filename="csettingsdlg.cpp" line="695"/>
         <source>%1 Kbit/s</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1415"/>
+        <location filename="csettingsdlg.cpp" line="1397"/>
         <source>blood</source>
         <translation>krwawy</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1416"/>
+        <location filename="csettingsdlg.cpp" line="1398"/>
         <source>violence</source>
         <translation>przemoc</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1419"/>
+        <location filename="csettingsdlg.cpp" line="1401"/>
         <source>porn</source>
         <translation>porno</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1420"/>
+        <location filename="csettingsdlg.cpp" line="1402"/>
         <source>horror</source>
         <translation>horror</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1417"/>
-        <location filename="csettingsdlg.cpp" line="1418"/>
+        <location filename="csettingsdlg.cpp" line="1399"/>
+        <location filename="csettingsdlg.cpp" line="1400"/>
         <source>obscene</source>
         <translation>nieprzyzwoity</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1452"/>
+        <location filename="csettingsdlg.cpp" line="1434"/>
         <source>hide</source>
         <translation>ukryj</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1453"/>
+        <location filename="csettingsdlg.cpp" line="1435"/>
         <source>show</source>
         <translation>pokaż</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1454"/>
+        <location filename="csettingsdlg.cpp" line="1436"/>
         <source>password protected</source>
         <translation>zabezpieczony hasłem</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1646"/>
+        <location filename="csettingsdlg.cpp" line="1628"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1722"/>
+        <location filename="csettingsdlg.cpp" line="1704"/>
         <source>Error!</source>
         <translation>Błąd!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1723"/>
+        <location filename="csettingsdlg.cpp" line="1705"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1161,13 +1144,13 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1774"/>
+        <location filename="csettingsdlg.cpp" line="1756"/>
         <source>Information</source>
         <translation>Informacje</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1774"/>
-        <location filename="csettingsdlg.cpp" line="1775"/>
+        <location filename="csettingsdlg.cpp" line="1756"/>
+        <location filename="csettingsdlg.cpp" line="1757"/>
         <source>Parent Code successfully changed.</source>
         <translation>Kod kontroli rodzicielskiej został pomyślnie zmieniony.</translation>
     </message>
