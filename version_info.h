@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "60"
-#define BETA_EXT      "B4"
+#define BETA_EXT      "B5"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-12-04: Version 2.60B5
+| - style comboboxes in overlay control panel
+| - add show info update also for live stream
+| - reload channel list only if needed
+|
 | 2012-12-03: Version 2.60B4
 | - add aspect and crop combobox to overlay control
 | - therefore a huge graphical redesign was needed

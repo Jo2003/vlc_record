@@ -38,6 +38,7 @@
 #include <QStandardItemModel>
 #include <QNetworkAccessManager>
 #include <QScrollBar>
+#include <QMutex>
 
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
@@ -152,6 +153,7 @@ private:
     QToolButton                    *pFavBtn[MAX_NO_FAVOURITES];
     CFavAction                     *pFavAct[MAX_NO_FAVOURITES];
     QChanMap                        chanMap;
+    QMutex                          mutexChanMap;
     QMenu                           favContext;
     CFavAction                     *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates            ePlayState;
@@ -201,6 +203,7 @@ protected:
     void correctEpgOffset();
     int  grantAdultAccess (bool bProtected);
     void toggleFullscreen();
+    int  getChanEntry (int cid, cparser::SChan &entry);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
@@ -284,6 +287,7 @@ private slots:
     void slotAddFav(int cid);
     void on_pushHelp_clicked();
     void slotDownStreamRequested (int id);
+    void slotUpdateChannelList ();
 
 signals:
     void sigShow ();
