@@ -203,7 +203,7 @@ protected:
     void correctEpgOffset();
     int  grantAdultAccess (bool bProtected);
     void toggleFullscreen();
-    int  getChanEntry (int cid, cparser::SChan &entry);
+    int  getChanEntry (int cid, cparser::SChan &entry, bool doLock = true);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);

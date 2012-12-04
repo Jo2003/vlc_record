@@ -1842,8 +1842,11 @@ void Recorder::slotChanList (const QString &str)
       FillChanMap(chanList);
       mutexChanMap.unlock();
 
-      if (pModel->rowCount() == 0)
+      // Can we make an update or do we need to
+      // rebuild the channel list?
+      if (pModel->rowCount() != chanList.count())
       {
+         // rebuild ...
          FillChannelList (chanList);
       }
       else
@@ -4941,16 +4944,21 @@ void Recorder::toggleFullscreen()
 |  Author: Jo2003
 |  Description: get entry from channel map, with lock / unlock
 |
-|  Parameters: cid channel id
-|  Parameters: entry reference of entry to save value
+|  Parameters: - cid channel id
+|              - entry reference of entry to save value
+|              - optional lock flag
 |
 |  Returns: 0 -> found, -1 -> not found
 \----------------------------------------------------------------- */
-int Recorder::getChanEntry (int cid ,cparser::SChan &entry)
+int Recorder::getChanEntry (int cid ,cparser::SChan &entry, bool doLock)
 {
    int iRV = 0;
 
-   mutexChanMap.lock();
+   if (doLock)
+   {
+      mutexChanMap.lock();
+   }
+
    if (chanMap.contains(cid))
    {
       entry = chanMap.value(cid);
@@ -4959,7 +4967,11 @@ int Recorder::getChanEntry (int cid ,cparser::SChan &entry)
    {
       iRV = -1;
    }
-   mutexChanMap.unlock();
+
+   if (doLock)
+   {
+      mutexChanMap.unlock();
+   }
 
    return iRV;
 }

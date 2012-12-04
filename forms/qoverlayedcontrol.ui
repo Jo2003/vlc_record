@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>460</width>
-    <height>139</height>
+    <height>140</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -557,6 +557,9 @@ color: #aaa;
       </item>
       <item>
        <layout class="QHBoxLayout" name="hLayoutMainControl">
+        <property name="spacing">
+         <number>6</number>
+        </property>
         <property name="leftMargin">
          <number>9</number>
         </property>
