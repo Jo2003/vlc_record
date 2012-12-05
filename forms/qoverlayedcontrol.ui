@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
+    <width>490</width>
     <height>140</height>
    </rect>
   </property>
@@ -166,7 +166,6 @@ border: 2px solid #888;
           <property name="styleSheet">
            <string notr="true">QLabel {
 color: white;
-font-weight: bold;
 border-radius: 3px;
 border: 1px solid gray;
 }</string>
@@ -556,7 +555,7 @@ color: #aaa;
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="hLayoutMainControl">
+       <layout class="QHBoxLayout" name="hLayoutMainControl" stretch="0,0,0,0,0,0,0">
         <property name="spacing">
          <number>6</number>
         </property>

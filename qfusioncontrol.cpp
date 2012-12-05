@@ -1087,6 +1087,7 @@ void QFusionControl::disconnectLab()
 {
    _timeLabVector.clear();
    _muteLabel.clear();
+   _infoLabel.clear();
 }
 
 //---------------------------------------------------------------------------
@@ -1551,4 +1552,39 @@ void QFusionControl::slotRemPopup ()
 bool QFusionControl::isPopupActive()
 {
    return !!_iPopup;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   put video label under control
+//
+//! \author  Jo2003
+//! \date    05.12.2012
+//
+//! \param   pLab pointer to QLabel to control
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::addInfoLab (QMoveHandle *pLab)
+{
+   _infoLabel.append(pLab);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set video info to all info labels
+//
+//! \author  Jo2003
+//! \date    05.12.2012
+//
+//! \param   str text to set
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::setVideoInfo(const QString &str)
+{
+   for (int i = 0; i < _infoLabel.count(); i++)
+   {
+      _infoLabel.at(i)->setText(str);
+   }
 }

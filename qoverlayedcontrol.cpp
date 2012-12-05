@@ -57,6 +57,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addTimeLab(ui->labTime);
    missionControl.addMuteLab(ui->labSound);
+   missionControl.addInfoLab(ui->labMoveHandle);
 
    missionControl.addVidFormCbx(ui->cbxAspect, QFusionControl::CBX_ASPECT);
    missionControl.addVidFormCbx(ui->cbxCrop, QFusionControl::CBX_CROP);
@@ -202,7 +203,7 @@ void QOverlayedControl::showEvent(QShowEvent *e)
    setWindowOpacity(_fOpaque);
 
    // set pseudo caption ...
-   ui->labMoveHandle->setText(APP_NAME);
+   // ui->labMoveHandle->setText(APP_NAME);
 
    QWidget::showEvent(e);
 }

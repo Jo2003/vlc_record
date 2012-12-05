@@ -3234,6 +3234,9 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
             // set short epg info ...
             ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
+            // update show info in overlay display ...
+            missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+
             // done ...
             emit sigShowInfoUpdated();
          }
@@ -4287,6 +4290,17 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel)
       if (sCmdLine != "")
       {
          ui->textEpgShort->setHtml(showInfo.htmlDescr());
+
+         // update show info in overlay display ...
+         if (showInfo.showType() == ShowInfo::VOD)
+         {
+             missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
+         }
+         else
+         {
+            missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+         }
+
          vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
       }
 
@@ -4343,6 +4357,17 @@ int Recorder::StartVlcPlay (const QString &sURL)
    if (sCmdLine != "")
    {
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
+
+      // update show info in overlay display ...
+      if (showInfo.showType() == ShowInfo::VOD)
+      {
+          missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
+      }
+      else
+      {
+         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+      }
+
       vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
    }
 
@@ -4409,6 +4434,16 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
    if (fileName != "")
    {
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
+
+      // update show info in overlay display ...
+      if (showInfo.showType() == ShowInfo::VOD)
+      {
+          missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
+      }
+      else
+      {
+         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+      }
 
       streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sExt),
                                    Settings.GetBufferTime ());

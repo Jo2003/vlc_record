@@ -42,6 +42,11 @@
 | - style comboboxes in overlay control panel
 | - add show info update also for live stream
 | - reload channel list only if needed
+| - don't send API requests if not logged in or not
+|   want to login
+| - remove extended channel list settings
+| - remove channel list refresh settings
+| - add simple showinfo in overlay control panel
 |
 | 2012-12-03: Version 2.60B4
 | - add aspect and crop combobox to overlay control

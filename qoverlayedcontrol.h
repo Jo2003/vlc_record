@@ -57,8 +57,9 @@ private slots:
   void slotFadeMore ();
   void slotMouseEntersMoveHandle ();
   void slotMouseLeavesMoveHandle ();
-
   void on_pushHide_clicked();
+
+public slots:
 
 private:
   Ui::QOverlayedControl *ui;
