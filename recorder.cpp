@@ -4183,18 +4183,9 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem->setData(chanlist[i].iId, channellist::cidRole);
             pItem->setData(sLine, channellist::nameRole);
             pItem->setData(QIcon(icon), channellist::iconRole);
-
-            if(Settings.extChanList())
-            {
-               pItem->setData(chanlist[i].sProgramm, channellist::progRole);
-               pItem->setData(chanlist[i].uiStart, channellist::startRole);
-               pItem->setData(chanlist[i].uiEnd, channellist::endRole);
-            }
-            else
-            {
-               pItem->setToolTip(CShowInfo::createTooltip(chanlist[i].sName, chanlist[i].sProgramm,
-                                               chanlist[i].uiStart, chanlist[i].uiEnd));
-            }
+            pItem->setData(chanlist[i].sProgramm, channellist::progRole);
+            pItem->setData(chanlist[i].uiStart, channellist::startRole);
+            pItem->setData(chanlist[i].uiEnd, channellist::endRole);
          }
 
          pModel->appendRow(pItem);

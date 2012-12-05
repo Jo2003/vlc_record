@@ -236,7 +236,6 @@ void CSettingsDlg::readSettings()
    m_ui->checkAskForName->setCheckState((Qt::CheckState)pDb->intValue("AskRecFile"));
    m_ui->checkTranslit->setCheckState((Qt::CheckState)pDb->intValue("TranslitRecFile"));
    m_ui->checkDetach->setCheckState((Qt::CheckState)pDb->intValue("DetachPlayer"));
-   m_ui->checkExtChanInfo->setCheckState((Qt::CheckState)pDb->intValue("ExtChanList"));
    m_ui->checkAdvanced->setCheckState((Qt::CheckState)pDb->intValue("AdvSet"));
    m_ui->checkGPUAcc->setCheckState((Qt::CheckState)pDb->intValue("GPUAcc"));
    m_ui->checkAds->setCheckState((Qt::CheckState)pDb->intValue("AdsEnabled", &iErr));
@@ -532,7 +531,6 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("AskRecFile", (int)m_ui->checkAskForName->checkState());
    pDb->setValue("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
    pDb->setValue("DetachPlayer", (int)m_ui->checkDetach->checkState());
-   pDb->setValue("ExtChanList", (int)m_ui->checkExtChanInfo->checkState());
    pDb->setValue("AdvSet", (int)m_ui->checkAdvanced->checkState());
    pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
    pDb->setValue("UpdateCheck", (int)m_ui->checkUpdate->checkState());
@@ -1147,11 +1145,6 @@ int  CSettingsDlg::GetBitRate()
 QString CSettingsDlg::GetAPIServer()
 {
    return m_ui->lineApiServer->text();
-}
-
-bool CSettingsDlg::extChanList()
-{
-   return m_ui->checkExtChanInfo->isChecked();
 }
 
 bool CSettingsDlg::checkForUpdate()

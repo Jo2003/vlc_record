@@ -73,7 +73,6 @@ public:
     bool AskForRecFile ();
     bool TranslitRecFile ();
     bool DetachPlayer ();
-    bool extChanList();
     bool checkForUpdate();
     int  getTimeShift();
     bool doubleClickToPlay();

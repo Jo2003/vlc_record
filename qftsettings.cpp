@@ -167,7 +167,6 @@ void QFTSettings::saveFTSettings()
    pDb->setValue("TargetDir",    tr("%1/Videos").arg(QDir::homePath()));
 #endif
    pDb->setValue("FixTime",      (int)Qt::Checked);  // fix time
-   pDb->setValue("ExtChanList",  (int)Qt::Checked);  // show extended channel list
    pDb->setValue("PlayerModule", "5_libvlc.mod");    // default player module
    pDb->setValue("HttpCache",    8000);              // 8 sec. cache
    pDb->setValue("UpdateCheck",  (int)Qt::Checked);  // check for updates

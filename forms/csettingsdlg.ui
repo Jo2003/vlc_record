@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>628</width>
-    <height>493</height>
+    <width>572</width>
+    <height>499</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -254,13 +254,6 @@
              <widget class="QCheckBox" name="checkFixTime">
               <property name="text">
                <string>Try to fix time offset</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="checkExtChanInfo">
-              <property name="text">
-               <string>Extended Channel List</string>
               </property>
              </widget>
             </item>
@@ -779,8 +772,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>98</width>
-                     <height>28</height>
+                     <width>250</width>
+                     <height>177</height>
                     </rect>
                    </property>
                   </widget>
@@ -931,8 +924,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>98</width>
-                     <height>468</height>
+                     <width>241</width>
+                     <height>158</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1105,7 +1098,6 @@ color: red;
   <tabstop>cbxLanguage</tabstop>
   <tabstop>pushDelLogos</tabstop>
   <tabstop>checkFixTime</tabstop>
-  <tabstop>checkExtChanInfo</tabstop>
   <tabstop>checkAdvanced</tabstop>
   <tabstop>tableShortCuts</tabstop>
   <tabstop>btnResetShortcuts</tabstop>

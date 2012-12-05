@@ -166,29 +166,33 @@ void CKartinaClnt::PostRequest (Kartina::EReq req,
                                 const QString &content,
                                 const QString &sBrowser)
 {
-   eReq = req;
-   QHttpRequestHeader header("POST", path.toAscii());
-   header.addValue("Host", sHost);
-   header.setContentType("application/x-www-form-urlencoded");
-   header.addValue("User-Agent", sBrowser);
-   header.addValue("Connection", "close");
-   if (sCookie != "")
+   // only send request if we're logged in or wont login ...
+   if ((sCookie != "") || (req == Kartina::REQ_COOKIE))
    {
-      header.addValue("Cookie", sCookie);
-   }
-   header.setContentLength(content.toAscii().size());
+      eReq = req;
+      QHttpRequestHeader header("POST", path.toAscii());
+      header.addValue("Host", sHost);
+      header.setContentType("application/x-www-form-urlencoded");
+      header.addValue("User-Agent", sBrowser);
+      header.addValue("Connection", "close");
+      if (sCookie != "")
+      {
+         header.addValue("Cookie", sCookie);
+      }
+      header.setContentLength(content.toAscii().size());
 
-   // open and clean data buffer ...
-   bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
+      // open and clean data buffer ...
+      bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
 
-   // post request ...
-   iReq = request(header, content.toAscii(), &bufReq);
+      // post request ...
+      iReq = request(header, content.toAscii(), &bufReq);
 
 #ifdef QT_NO_DEBUG
-   mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
+      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
 #else
-   mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (QString("%1?%2").arg(path).arg(content)));
+      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (QString("%1?%2").arg(path).arg(content)));
 #endif
+   }
 }
 
 /*-----------------------------------------------------------------------------\
@@ -208,29 +212,33 @@ void CKartinaClnt::GetRequest (Kartina::EReq req,
                                const QString &sRequest,
                                const QString &sBrowser)
 {
-   eReq = req;
-   QHttpRequestHeader header("GET", sRequest.toAscii());
-   header.addValue("Host", sHost);
-   header.setContentType("application/x-www-form-urlencoded");
-   header.addValue("User-Agent", sBrowser);
-   header.addValue("Connection", "close");
-   if (sCookie != "")
+   // only send request if we're logged in or wont login ...
+   if ((sCookie != "") || (req == Kartina::REQ_COOKIE))
    {
-      header.addValue("Cookie", sCookie);
-   }
-   header.setContentLength(0);
+      eReq = req;
+      QHttpRequestHeader header("GET", sRequest.toAscii());
+      header.addValue("Host", sHost);
+      header.setContentType("application/x-www-form-urlencoded");
+      header.addValue("User-Agent", sBrowser);
+      header.addValue("Connection", "close");
+      if (sCookie != "")
+      {
+         header.addValue("Cookie", sCookie);
+      }
+      header.setContentLength(0);
 
-   // open and clean data buffer ...
-   bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
+      // open and clean data buffer ...
+      bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
 
-   // post request ...
-   iReq = request(header, QByteArray(), &bufReq);
+      // post request ...
+      iReq = request(header, QByteArray(), &bufReq);
 
 #ifdef QT_NO_DEBUG
-   mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
+      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
 #else
-   mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (sRequest));
+      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (sRequest));
 #endif
+   }
 }
 
 /*-----------------------------------------------------------------------------\
