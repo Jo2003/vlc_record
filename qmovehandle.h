@@ -16,6 +16,7 @@
 
 #include <QLabel>
 #include <QEvent>
+#include <QMouseEvent>
 
 //---------------------------------------------------------------------------
 //! \class   QMoveHandle
@@ -80,6 +81,54 @@ protected:
    {
       emit mouseLeabes();
       QLabel::leaveEvent(e);
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   ignore mouse move event to propagate it to its parent widget
+   //
+   //! \author  Jo2003
+   //! \date    05.12.2012
+   //
+   //! \param   ev pointer to mouse event
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   virtual void mouseMoveEvent(QMouseEvent *ev)
+   {
+      ev->ignore();
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   ignore mouse release event to propagate it to its parent widget
+   //
+   //! \author  Jo2003
+   //! \date    05.12.2012
+   //
+   //! \param   ev pointer to mouse event
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   virtual void mouseReleaseEvent(QMouseEvent *ev)
+   {
+      ev->ignore();
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   ignore mouse press event to propagate it to its parent widget
+   //
+   //! \author  Jo2003
+   //! \date    05.12.2012
+   //
+   //! \param   ev pointer to mouse event
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   virtual void mousePressEvent(QMouseEvent *ev)
+   {
+      ev->ignore();
    }
 
 signals:
