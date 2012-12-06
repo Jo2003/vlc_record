@@ -10,6 +10,7 @@
 | $Id$
 \*************************************************************/
 #include "qchanlistdelegate.h"
+#include "small_helpers.h"
 
 /* -----------------------------------------------------------------\
 |  Method: QChanListDelegate / constructor
@@ -116,7 +117,7 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
       }
 
       // width ...
-      cutProgString(sProg, fmProg, option.rect.width() - (2 + iconsize.width() + 4 + 2));
+      CSmallHelpers::cutProgString(sProg, fmProg, option.rect.width() - (2 + iconsize.width() + 4 + 2));
       iTextWidth[0] = fmChan.size(Qt::TextSingleLine, sChan).width();
       iTextWidth[1] = fmProg.size(Qt::TextSingleLine, sProg).width();
       iTextWidth[2] = fmProg.size(Qt::TextSingleLine, fromTo).width();
@@ -153,7 +154,7 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    painter->save();
 
    /////////////////////////////////////////////////////////////////////////////
-   int     iPos;
+   int     iPos     = qvariant_cast<int>(index.data(channellist::posRole));
    int     iCid     = qvariant_cast<int>(index.data(channellist::cidRole));
    uint    uiStart  = qvariant_cast<uint>(index.data(channellist::startRole));
    uint    uiEnd    = qvariant_cast<uint>(index.data(channellist::endRole));
@@ -222,7 +223,7 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
       y = bounting.bottom();
       QRect progRect(x, y, rightWidth, fmProg.height());
 
-      cutProgString(sProg, fmProg, rightWidth);
+      CSmallHelpers::cutProgString(sProg, fmProg, rightWidth);
       painter->setFont(progFont);
       painter->drawText(progRect, Qt::TextSingleLine, sProg.section('\n', 0, 0), &bounting);
 
@@ -232,16 +233,16 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
       painter->drawText(timesRect, Qt::TextSingleLine, fromTo, &bounting);
 
       // progress bar ...
-      y    = bounting.bottom() + 2;
-      iPos = (int)(QDateTime::currentDateTime().toTime_t() - uiStart);
+      y = bounting.bottom() + 2;
       QRect progressRect(x, y, rightWidth, 5);
+      iPos = (iPos > (int)(uiEnd - uiStart)) ? (int)(uiEnd - uiStart) : iPos;
 
 #ifndef Q_OS_MAC
       QStyleOptionProgressBar progressBar;
       progressBar.rect        = progressRect;
       progressBar.minimum     = 0;
       progressBar.maximum     = (int)(uiEnd - uiStart);
-      progressBar.progress    = (iPos > progressBar.maximum) ? progressBar.maximum : iPos;
+      progressBar.progress    = iPos;
       progressBar.textVisible = false;
 
       QApplication::style()->drawControl(QStyle::CE_ProgressBar,
@@ -278,33 +279,4 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    }
 
    painter->restore();
-}
-
-/* -----------------------------------------------------------------\
-|  Method: cutProgString
-|  Begin:  23.03.2011 / 08:55
-|  Author: Jo2003
-|  Description: cut program string so it fits to our list item
-|
-|  Parameters: program string, font metric of used font,
-|              width to check
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void QChanListDelegate::cutProgString (QString &str, const QFontMetrics &fm, int width) const
-{
-   str = str.section('\n', 0, 0);
-   int iLength = str.length();
-
-   // check that text width matches ...
-   while (fm.size(Qt::TextSingleLine, str).width() > width)
-   {
-      // to wide --> shrink ...
-      str = str.left(str.length() - 1);
-   }
-
-   if (str.length() != iLength)
-   {
-      str = str.left(str.length() - 3) + QString("...");
-   }
 }

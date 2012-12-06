@@ -15,6 +15,8 @@
    #define __20120229_SMALL_HELPERS_H
 
 #include <QString>
+#include <QFont>
+#include <QFontMetrics>
 
 #define __VLCRECORD_KEY "O20J03N05+v205+n1907#80730108"
 
@@ -164,6 +166,37 @@ public:
       }
 
       return strDecrypted;
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   cut string so it fits a length
+   //
+   //! \author  Jo2003
+   //! \date    23.03.2011
+   //
+   //! \param   str string to cut
+   //! \param   fm font metrics to be used in widget
+   //! \param   width width string should fit in
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   static void cutProgString (QString &str, const QFontMetrics &fm, int width)
+   {
+      str = str.section('\n', 0, 0);
+      int iLength = str.length();
+
+      // check that text width matches ...
+      while (fm.size(Qt::TextSingleLine, str).width() > width)
+      {
+         // to wide --> shrink ...
+         str = str.left(str.length() - 1);
+      }
+
+      if (str.length() != iLength)
+      {
+         str = str.left(str.length() - 3) + QString("...");
+      }
    }
 };
 

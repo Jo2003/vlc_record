@@ -78,6 +78,7 @@ public:
       REQ_GET_VOD_FAV,
       REQ_SET_PCODE,
       REQ_UPDEPG,
+      REQ_EPG_CURRENT,
       REQ_UNKNOWN = 255
    };
 
@@ -217,6 +218,7 @@ public:
    int  checkResponse (const QString &sResp);
    void fillErrorMap();
    void updEpg(int iChanID);
+   void epgCurrent(const QString &cids);
 
 protected:
    void PostRequest (Kartina::EReq req, const QString &path, const QString &content,

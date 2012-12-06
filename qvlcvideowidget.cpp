@@ -251,7 +251,8 @@ void QVlcVideoWidget::hideMouse()
 {
    if((isFullScreen() || _extFullScreen)
          && !_mouseOnPanel
-         && !missionControl.isPopupActive())
+         && !missionControl.isPopupActive()
+         && (hasFocus() || _ctrlPanel->hasFocus() || _render->hasFocus()))
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
       _ctrlPanel->fadeOut();

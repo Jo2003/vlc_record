@@ -145,7 +145,7 @@ void CKartinaClnt::Logout ()
 {
    mInfo(tr("Logout ..."));
 
-   GetRequest(Kartina::REQ_LOGOUT, KARTINA_API_PATH "logout");
+   GetRequest(Kartina::REQ_LOGOUT, KARTINA_API_XML_PATH "logout");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -258,7 +258,7 @@ void CKartinaClnt::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   PostRequest(Kartina::REQ_COOKIE, KARTINA_API_PATH "login",
+   PostRequest(Kartina::REQ_COOKIE, KARTINA_API_XML_PATH "login",
                QString("login=%1&pass=%2&settings=all").arg(sUsr).arg(sPw));
 }
 
@@ -288,7 +288,7 @@ void CKartinaClnt::GetChannelList (const QString &secCode)
 
    // request channel list or channel list for settings ...
    PostRequest((secCode == "") ? Kartina::REQ_CHANNELLIST : Kartina::REQ_CHANLIST_ALL,
-               KARTINA_API_PATH "channel_list", req);
+               KARTINA_API_XML_PATH "channel_list", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -308,7 +308,7 @@ void CKartinaClnt::GetServer()
 {
    mInfo(tr("Request Stream Server List ..."));
 
-   GetRequest(Kartina::REQ_GET_SERVER, KARTINA_API_PATH "settings?var=stream_server");
+   GetRequest(Kartina::REQ_GET_SERVER, KARTINA_API_XML_PATH "settings?var=stream_server");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -328,7 +328,7 @@ void CKartinaClnt::GetTimeShift()
 {
    mInfo(tr("Request Time Shift ..."));
 
-   GetRequest(Kartina::REQ_GETTIMESHIFT, KARTINA_API_PATH "settings?var=timeshift");
+   GetRequest(Kartina::REQ_GETTIMESHIFT, KARTINA_API_XML_PATH "settings?var=timeshift");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -348,7 +348,7 @@ void CKartinaClnt::SetTimeShift (int iHours)
 {
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
-   PostRequest(Kartina::REQ_TIMESHIFT, KARTINA_API_PATH "settings_set",
+   PostRequest(Kartina::REQ_TIMESHIFT, KARTINA_API_XML_PATH "settings_set",
                QString("var=timeshift&val=%1").arg(iHours));
 }
 
@@ -369,7 +369,7 @@ void CKartinaClnt::GetBitRate()
 {
    mInfo(tr("Request Bit Rate ..."));
 
-   GetRequest(Kartina::REQ_GETBITRATE, KARTINA_API_PATH "settings?var=bitrate");
+   GetRequest(Kartina::REQ_GETBITRATE, KARTINA_API_XML_PATH "settings?var=bitrate");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -389,7 +389,7 @@ void CKartinaClnt::SetBitRate(int iRate)
 {
    mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
 
-   PostRequest(Kartina::REQ_SETBITRATE, KARTINA_API_PATH "settings_set",
+   PostRequest(Kartina::REQ_SETBITRATE, KARTINA_API_XML_PATH "settings_set",
                QString("var=bitrate&val=%1").arg(iRate));
 }
 
@@ -418,7 +418,7 @@ void CKartinaClnt::GetStreamURL(int iChanID, const QString &secCode, bool bTimer
    }
 
    PostRequest((bTimerRec) ? Kartina::REQ_TIMERREC : Kartina::REQ_STREAM,
-               KARTINA_API_PATH "get_url", req);
+               KARTINA_API_XML_PATH "get_url", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -438,7 +438,7 @@ void CKartinaClnt::SetServer (const QString &sIp)
 {
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
-   PostRequest(Kartina::REQ_SERVER, KARTINA_API_PATH "settings_set",
+   PostRequest(Kartina::REQ_SERVER, KARTINA_API_XML_PATH "settings_set",
                QString("var=stream_server&val=%1").arg(sIp));
 }
 
@@ -459,7 +459,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 {
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
-   PostRequest(Kartina::REQ_HTTPBUFF, KARTINA_API_PATH "settings_set",
+   PostRequest(Kartina::REQ_HTTPBUFF, KARTINA_API_XML_PATH "settings_set",
                QString("var=http_caching&val=%1").arg(iTime));
 }
 
@@ -483,7 +483,7 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
    QDate now = QDate::currentDate().addDays(iOffset);
 
    GetRequest(Kartina::REQ_EPG,
-              QString("%1epg?cid=%2&day=%3").arg(KARTINA_API_PATH)
+              QString("%1epg?cid=%2&day=%3").arg(KARTINA_API_XML_PATH)
               .arg(iChanID).arg(now.toString("ddMMyy")));
 }
 
@@ -511,7 +511,7 @@ void CKartinaClnt::GetArchivURL (const QString &prepared, const QString &secCode
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   PostRequest(Kartina::REQ_ARCHIV, KARTINA_API_PATH "get_url", req);
+   PostRequest(Kartina::REQ_ARCHIV, KARTINA_API_XML_PATH "get_url", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -531,7 +531,7 @@ void CKartinaClnt::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   GetRequest(Kartina::REQ_GETVODGENRES, KARTINA_API_PATH "vod_genres");
+   GetRequest(Kartina::REQ_GETVODGENRES, KARTINA_API_XML_PATH "vod_genres");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -552,7 +552,7 @@ void CKartinaClnt::GetVideos(const QString &sPrepared)
    mInfo(tr("Request Videos ..."));
 
    QString sReq = QString("%1vod_list?%2")
-         .arg(KARTINA_API_PATH).arg(sPrepared);
+         .arg(KARTINA_API_XML_PATH).arg(sPrepared);
 
    GetRequest(Kartina::REQ_GETVIDEOS, sReq);
 }
@@ -574,7 +574,7 @@ void CKartinaClnt::GetVideoInfo(int iVodID, const QString &secCode)
 {
    mInfo(tr("Request Video info for video %1...").arg(iVodID));
 
-   QString req = QString("%1vod_info?id=%2").arg(KARTINA_API_PATH).arg(iVodID);
+   QString req = QString("%1vod_info?id=%2").arg(KARTINA_API_XML_PATH).arg(iVodID);
 
    if (secCode != "")
    {
@@ -602,7 +602,7 @@ void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
    mInfo(tr("Request Video Url for video %1...").arg(iVidId));
 
    QString req = QString("%1vod_geturl?fileid=%2&ad=1")
-         .arg(KARTINA_API_PATH)
+         .arg(KARTINA_API_XML_PATH)
          .arg(iVidId);
 
    if (secCode != "")
@@ -633,7 +633,7 @@ void CKartinaClnt::setChanHide(const QString &cids, const QString &secCode)
    QString req = QString("cmd=hide_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   PostRequest(Kartina::REQ_SETCHAN_HIDE, KARTINA_API_PATH "rule", req);
+   PostRequest(Kartina::REQ_SETCHAN_HIDE, KARTINA_API_XML_PATH "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -656,7 +656,7 @@ void CKartinaClnt::setChanShow(const QString &cids, const QString &secCode)
    QString req = QString("cmd=show_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   PostRequest(Kartina::REQ_SETCHAN_SHOW, KARTINA_API_PATH "rule", req);
+   PostRequest(Kartina::REQ_SETCHAN_SHOW, KARTINA_API_XML_PATH "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -679,7 +679,7 @@ void CKartinaClnt::getVodManager(const QString &secCode)
    QString req = QString("cmd=get_user_rates&protect_code=%1")
            .arg(secCode);
 
-   PostRequest(Kartina::REQ_GET_VOD_MANAGER, KARTINA_API_PATH "vod_manage", req);
+   PostRequest(Kartina::REQ_GET_VOD_MANAGER, KARTINA_API_XML_PATH "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -702,7 +702,7 @@ void CKartinaClnt::setVodManager(const QString &rules, const QString &secCode)
    QString req = QString("cmd=set_user_rates%1&protect_code=%2")
            .arg(rules).arg(secCode);
 
-   PostRequest(Kartina::REQ_SET_VOD_MANAGER, KARTINA_API_PATH "vod_manage", req);
+   PostRequest(Kartina::REQ_SET_VOD_MANAGER, KARTINA_API_XML_PATH "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -729,7 +729,7 @@ void CKartinaClnt::addVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   PostRequest(Kartina::REQ_ADD_VOD_FAV, KARTINA_API_PATH "vod_favadd", req);
+   PostRequest(Kartina::REQ_ADD_VOD_FAV, KARTINA_API_XML_PATH "vod_favadd", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -756,7 +756,7 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   PostRequest(Kartina::REQ_REM_VOD_FAV, KARTINA_API_PATH "vod_favsub", req);
+   PostRequest(Kartina::REQ_REM_VOD_FAV, KARTINA_API_XML_PATH "vod_favsub", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -775,7 +775,7 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
 void CKartinaClnt::getVodFav()
 {
    mInfo(tr("Get VOD favourites (%1) ..."));
-   GetRequest(Kartina::REQ_GET_VOD_FAV, KARTINA_API_PATH "vod_favlist");
+   GetRequest(Kartina::REQ_GET_VOD_FAV, KARTINA_API_XML_PATH "vod_favlist");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -798,17 +798,17 @@ void CKartinaClnt::setParentCode(const QString &oldCode, const QString &newCode)
    QString req = QString("var=pcode&old_code=%1&new_code=%2&confirm_code=%2")
          .arg(oldCode).arg(newCode);
 
-   PostRequest(Kartina::REQ_SET_PCODE, KARTINA_API_PATH "settings_set", req);
+   PostRequest(Kartina::REQ_SET_PCODE, KARTINA_API_XML_PATH "settings_set", req);
 }
 
 /*-----------------------------------------------------------------------------\
-| Function:    GetEPG
+| Function:    updEpg
 |
 | Author:      Jo2003
 |
-| Begin:       Monday, January 04, 2010 16:14:52
+| Begin:       05.12.2012
 |
-| Description: request todays EPG for given channel id
+| Description: request EPG for given channel id
 |
 | Parameters:  channel index
 |
@@ -821,8 +821,30 @@ void CKartinaClnt::updEpg(int iChanID)
    QDate now = QDate::currentDate();
 
    GetRequest(Kartina::REQ_UPDEPG,
-              QString("%1epg?cid=%2&day=%3").arg(KARTINA_API_PATH)
+              QString("%1epg?cid=%2&day=%3").arg(KARTINA_API_XML_PATH)
               .arg(iChanID).arg(now.toString("ddMMyy")));
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    epgCurrent
+|
+| Author:      Jo2003
+|
+| Begin:       06.12.2012
+|
+| Description: request current epg for given channels
+|
+| Parameters:  comma separated list of channel ids
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::epgCurrent(const QString &cids)
+{
+   mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
+
+   GetRequest(Kartina::REQ_EPG_CURRENT,
+              QString("%1epg_current?cids=%2&epg=3").arg(KARTINA_API_XML_PATH)
+              .arg(cids));
 }
 
 /*-----------------------------------------------------------------------------\

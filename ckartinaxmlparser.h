@@ -130,10 +130,17 @@ namespace cparser
       QString sGenre;
       QString sAccess;
    };
+
+   struct SEpgCurrent
+   {
+      uint    uiStart;
+      QString sShow;
+   };
 }
 
 // make life easier ...
-typedef QMap<int, cparser::SChan> QChanMap;
+typedef QMap<int, cparser::SChan>                 QChanMap;
+typedef QMap<int, QVector<cparser::SEpgCurrent> > QCurrentMap;
 
 
 /********************************************************************\
@@ -168,6 +175,7 @@ public:
    int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
    int parseVodManager (const QString& sResp, QVector<cparser::SVodRate>& vRates);
    int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
+   int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
 
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);

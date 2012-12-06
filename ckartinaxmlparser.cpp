@@ -885,6 +885,90 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
    return iRV;
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   parse current epg anser
+//
+//! \author  Jo2003
+//! \date    30.05.2012
+//
+//! \param   parent pointer to parent widget
+//
+//! \return  --
+//---------------------------------------------------------------------------
+int CKartinaXMLParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
+{
+   int                           iRV =  0;
+   int                           cid = -1;
+   QStringList                   slNeeded;
+   QMap<QString, QString>        mResults;
+   cparser::SEpgCurrent          entry;
+   QVector<cparser::SEpgCurrent> chanEntries;
+
+   currentEpg.clear();
+
+   slNeeded << "progname" << "ts";
+
+   // lock parser ...
+   mutex.lock();
+
+   xmlSr.clear();
+   xmlSr.addData(sResp);
+
+   while(!xmlSr.atEnd() && !xmlSr.hasError())
+   {
+      switch (xmlSr.readNext())
+      {
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xmlSr.name() == "cid")
+         {
+            // read cid ...
+            if (xmlSr.readNext() == QXmlStreamReader::Characters)
+            {
+               cid = xmlSr.text().toString().toInt();
+            }
+         }
+         else if((xmlSr.name() == "item") && (cid != -1))
+         {
+            // read epg entry ...
+            oneLevelParser("item", slNeeded, mResults);
+
+            entry.sShow   = mResults.value("progname");
+            entry.uiStart = mResults.value("ts").toUInt();
+
+            chanEntries.append(entry);
+         }
+         break;
+
+      case QXmlStreamReader::EndElement:
+         if ((xmlSr.name() == "epg") && (cid != -1))
+         {
+            currentEpg.insert(cid, chanEntries);
+            cid = -1;
+            chanEntries.clear();
+         }
+         break;
+      default:
+         break;
+      }
+   }
+
+   // check for xml errors ...
+   if(xmlSr.hasError())
+   {
+      QMessageBox::critical(NULL, tr("Error in %1").arg(__FUNCTION__),
+                            tr("XML Error String: %1").arg(xmlSr.errorString()));
+
+      iRV = -1;
+   }
+
+   // unlock parser ...
+   mutex.unlock();
+
+   return iRV;
+}
+
 /* -----------------------------------------------------------------\
 |  Method: parseVodManager
 |  Begin: 23.05.2012

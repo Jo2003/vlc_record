@@ -320,7 +320,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    touchLastOrBestCbx();
 
    // start refresh timer, if needed ...
-   Refresh.start(120000); // update chan list every 2 minutes ...
+   Refresh.start(60000); // update chan list every minute ...
 }
 
 /* -----------------------------------------------------------------\
@@ -1464,6 +1464,10 @@ void Recorder::slotKartinaResponse(const QString& resp, int req)
    mkCase(Kartina::REQ_UPDEPG, slotUpdEPG(resp));
 
    ///////////////////////////////////////////////
+   // update channel map with following info
+   mkCase(Kartina::REQ_EPG_CURRENT, slotEPGCurrent (resp));
+
+   ///////////////////////////////////////////////
    // Indicates that a new timeshift value was set.
    // Triggers reload of channel list.
    mkCase(Kartina::REQ_TIMESHIFT, slotTimeShift(resp));
@@ -1922,7 +1926,7 @@ void Recorder::slotEPG(const QString &str)
 
 /* -----------------------------------------------------------------\
 |  Method: slotUpdEPG
-|  Begin: 19.01.2010 / 16:10:49
+|  Begin: 05.12.2012
 |  Author: Jo2003
 |  Description: silently update epg info
 |
@@ -1958,6 +1962,72 @@ void Recorder::slotUpdEPG(const QString &str)
    {
       // error updating epg ...
       showInfo.setEpgUpdPending(-1);
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotEPGCurrent
+|  Begin: 06.12.2012
+|  Author: Jo2003
+|  Description: update shows for different channels
+|
+|  Parameters: str (xml)
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotEPGCurrent (const QString &str)
+{
+   QCurrentMap                   currentEpg;
+   QVector<cparser::SEpgCurrent> chanEntries;
+   cparser::SChan                chanMapEntry;
+   int i, j;
+
+   if (!XMLParser.parseEpgCurrent(str, currentEpg))
+   {
+      QList<int> keyList = currentEpg.keys();
+
+      for (i = 0; i < keyList.count(); i++)
+      {
+         chanEntries = currentEpg.value(keyList.at(i));
+         mutexChanMap.lock();
+         chanMapEntry = chanMap.value(keyList.at(i));
+         mutexChanMap.unlock();
+
+         for (j = 0; j < chanEntries.count(); j++)
+         {
+            if (chanEntries.at(j).uiStart > chanMapEntry.uiStart)
+            {
+               chanMapEntry.uiStart   = chanEntries.at(j).uiStart;
+               chanMapEntry.uiEnd     = ((j + 1) < chanEntries.count()) ? chanEntries.at(j + 1).uiStart : 0;
+               chanMapEntry.sProgramm = chanEntries.at(j).sShow;
+
+               mutexChanMap.lock();
+               chanMap[keyList.at(i)] = chanMapEntry;
+               mutexChanMap.unlock();
+
+               // leave this for loop ...
+               break;
+            }
+         }
+
+
+         // update EPG browser if needed ...
+         if ((keyList.at(i) == ui->textEpg->GetCid()) && !iEpgOffset)
+         {
+            if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < QDateTime::currentDateTime().date())
+            {
+               // update EPG ...
+               Trigger.TriggerRequest(Kartina::REQ_EPG, keyList.at(i));
+            }
+            else
+            {
+               // reload EPG ...
+               ui->textEpg->recreateEpg();
+            }
+         }
+      }
+
+      slotUpdateChannelList(keyList);
    }
 }
 
@@ -3442,42 +3512,58 @@ void Recorder::slotToggleFullscreen()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotUpdateChannelList ()
+void Recorder::slotUpdateChannelList (const QList<int> &cidList)
 {
-   QStandardItem      *pItem;
-   int                 cid, i;
-   bool                bReloadChanList = false;
-   cparser::SChan      chanEntry;
+   QStandardItem  *pItem;
+   int             cid, i, iPos;
+   cparser::SChan  chanEntry;
+   QStringList     updChannels;
+   uint            now = QDateTime::currentDateTime().toTime_t();
 
    for (i = 0; i < pModel->rowCount(); i++)
    {
       pItem = pModel->item(i);
       cid   = pItem->data(channellist::cidRole).toInt();
 
-      if (cid != -1) // no group ...
+      // is this a channel entry ?
+      if (cid != -1)
       {
          // update chan list item ...
          if (!getChanEntry(cid, chanEntry))
          {
-            // update item data ...
-            pItem->setData(chanEntry.sName,     channellist::nameRole);
-            pItem->setData(chanEntry.uiStart,   channellist::startRole);
-            pItem->setData(chanEntry.uiEnd,     channellist::endRole);
-            pItem->setData(chanEntry.sProgramm, channellist::progRole);
-
-            // check if update of channel list is needed ...
-            if ((chanEntry.uiEnd > 0) && (QDateTime::currentDateTime().toTime_t() > chanEntry.uiEnd))
+            if (cidList.isEmpty())
             {
-               mInfo(tr("Request new channel list due to program change of '%1'").arg(chanEntry.sName));
-               bReloadChanList = true;
+               // no new shows, simply update progress position ...
+               iPos = (int)(now - chanEntry.uiStart);
+
+               // update progress ...
+               pItem->setData(iPos, channellist::posRole);
+
+               // check if this channel needs an update ...
+               if ((chanEntry.uiEnd > 0) && (now > chanEntry.uiEnd))
+               {
+                  updChannels << QString::number(cid);
+               }
+            }
+            else if (cidList.contains(cid))
+            {
+               // no new shows, simply update progress position ...
+               iPos = (int)(now - chanEntry.uiStart);
+
+               // whole entry ...
+               pItem->setData(iPos,                channellist::posRole);
+               pItem->setData(chanEntry.uiStart,   channellist::startRole);
+               pItem->setData(chanEntry.uiEnd,     channellist::endRole);
+               pItem->setData(chanEntry.sProgramm, channellist::progRole);
+               pItem->setData(chanEntry.sName,     channellist::nameRole);
             }
          }
       }
    }
 
-   if (bReloadChanList)
+   if (!updChannels.isEmpty())
    {
-      Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+      Trigger.TriggerRequest(Kartina::REQ_EPG_CURRENT, updChannels.join(","));
    }
 }
 
@@ -4091,6 +4177,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    QPixmap   icon;
    int       iChanCount =  0;
    int       iLastChan  = -1;
+   int       iPos;
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
    iRow      = ui->channelList->currentIndex().row();
@@ -4183,12 +4270,17 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
                }
             }
 
+            // progress position ...
+            iPos = (int)(QDateTime::currentDateTime().toTime_t() - chanlist[i].uiStart);
+
+            // insert data ...
             pItem->setData(chanlist[i].iId, channellist::cidRole);
             pItem->setData(sLine, channellist::nameRole);
             pItem->setData(QIcon(icon), channellist::iconRole);
             pItem->setData(chanlist[i].sProgramm, channellist::progRole);
             pItem->setData(chanlist[i].uiStart, channellist::startRole);
             pItem->setData(chanlist[i].uiEnd, channellist::endRole);
+            pItem->setData(iPos, channellist::posRole);
          }
 
          pModel->appendRow(pItem);

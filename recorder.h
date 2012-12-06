@@ -242,6 +242,7 @@ private slots:
     void slotChanList (const QString &str);
     void slotEPG(const QString &str);
     void slotUpdEPG(const QString &str);
+    void slotEPGCurrent (const QString &str);
     void slotStreamURL (const QString &str);
     void slotArchivURL (const QString &str);
     void slotCookie (const QString &str);
@@ -287,7 +288,7 @@ private slots:
     void slotAddFav(int cid);
     void on_pushHelp_clicked();
     void slotDownStreamRequested (int id);
-    void slotUpdateChannelList ();
+    void slotUpdateChannelList (const QList<int> &cidList = QList<int>());
 
 signals:
     void sigShow ();

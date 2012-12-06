@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "60"
-#define BETA_EXT      "B5"
+#define BETA_EXT      "B6"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-12-06: Version 2.60B6
+| - don't request whole channel list from API when some channels
+|   need to be updated, but use /epg_current?cids=1,2,3&epg=3
+| - bugfix: hide mouse in fullscreen only if video- or
+|           control widget has focus
+| - bugfix: pause in archiv doesn't work -> fixed
+| - bugfix: cut show info to fit into info label
+|
 | 2012-12-04: Version 2.60B5
 | - style comboboxes in overlay control panel
 | - add show info update also for live stream

@@ -48,7 +48,8 @@
 #define LOGO_DIR          "logos"
 #define VOD_DIR           "vod"
 #define DOC_DIR           "doc"
-#define KARTINA_API_PATH  "/api/xml/"
+#define KARTINA_API_XML_PATH   "/api/xml/"
+#define KARTINA_API_JSON_PATH  "/api/json/"
 #define LOGO_URL          "/img/ico/24"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"
 #define DEF_TZ_STEP       1800            // time zone step is min. 30 minutes (1800 sec.) ...

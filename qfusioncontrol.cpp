@@ -13,6 +13,7 @@
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qfusioncontrol.h"
 #include "clogfile.h"
+#include "small_helpers.h"
 
 extern CLogFile VlcLog;
 
@@ -1583,8 +1584,22 @@ void QFusionControl::addInfoLab (QMoveHandle *pLab)
 //---------------------------------------------------------------------------
 void QFusionControl::setVideoInfo(const QString &str)
 {
+   // cut string ...
+   QString info;
+   QFont   labFont;
+
    for (int i = 0; i < _infoLabel.count(); i++)
    {
-      _infoLabel.at(i)->setText(str);
+      info    = str;
+      labFont = _infoLabel.at(i)->font();
+
+      labFont.setBold(true);
+      labFont.setPointSize(labFont.pointSize() + 1);
+
+      QFontMetrics fmLab(labFont);
+
+      // the 400 comes from the width of the overlay control widget!
+      CSmallHelpers::cutProgString(info, fmLab, 400);
+      _infoLabel.at(i)->setText(info);
    }
 }

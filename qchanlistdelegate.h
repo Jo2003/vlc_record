@@ -30,6 +30,7 @@ namespace channellist
       startRole    = Qt::UserRole + 105,
       endRole      = Qt::UserRole + 106,
       bgcolorRole  = Qt::UserRole + 107,
+      posRole      = Qt::UserRole + 108,
       noRole
    };
 }
@@ -52,7 +53,6 @@ public:
    virtual QSize	sizeHint (const QStyleOptionViewItem & option, const QModelIndex & index) const;
 
 protected:
-   void cutProgString (QString & str, const QFontMetrics & fm, int width) const;
 };
 
 #endif // __032211_QCHANLISTDELEGATE_H
