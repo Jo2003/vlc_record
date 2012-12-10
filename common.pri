@@ -56,7 +56,8 @@ SOURCES += main.cpp \
     qfavframe.cpp \
     qhelpdialog.cpp \
     qoverlayedcontrol.cpp \
-    qfusioncontrol.cpp
+    qfusioncontrol.cpp \
+    qrecordtimerwidget.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
@@ -94,14 +95,16 @@ HEADERS += recorder.h \
     qoverlayedcontrol.h \
     qfusioncontrol.h \
     qmovehandle.h \
-    qcomboboxex.h
+    qcomboboxex.h \
+    qrecordtimerwidget.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
     forms/qftsettings.ui \
     forms/qseccodedlg.ui \
     forms/qhelpdialog.ui \
-    forms/qoverlayedcontrol.ui
+    forms/qoverlayedcontrol.ui \
+    forms/qrecordtimerwidget.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "60"
-#define BETA_EXT      "B6"
+#define BETA_EXT      "B7"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-12-10: Version 2.60B7
+| - add record timer
+|
 | 2012-12-06: Version 2.60B6
 | - don't request whole channel list from API when some channels
 |   need to be updated, but use /epg_current?cids=1,2,3&epg=3

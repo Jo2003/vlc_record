@@ -59,6 +59,7 @@
 #include "cepgbrowser.h"
 #include "qseccodedlg.h"
 #include "qhelpdialog.h"
+#include "qrecordtimerwidget.h"
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
    #include "qvlcvideowidget.h"
@@ -169,6 +170,7 @@ private:
     Ui::SVodSite                    lastVodSite;
     Ui::STabWidget                  vodTabWidget;
     Kartina                         metaKartina;
+    QRecordTimerWidget              timerWidget;
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
@@ -289,6 +291,7 @@ private slots:
     void on_pushHelp_clicked();
     void slotDownStreamRequested (int id);
     void slotUpdateChannelList (const QList<int> &cidList = QList<int>());
+    void slotRecordTimerEnded ();
 
 signals:
     void sigShow ();

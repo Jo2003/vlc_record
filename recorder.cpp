@@ -130,6 +130,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    trayIcon.setParent(this);
    vlcCtrl.setParent(this);
    favContext.setParent(this, Qt::Popup);
+   timerWidget.setParent(this, Qt::Dialog);
 
    // help dialog class (non modal) ...
    pHelp = new QHelpDialog(NULL);
@@ -261,6 +262,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
 
+   connect (&timerWidget,  SIGNAL(timeOut()), this, SLOT(slotRecordTimerEnded()));
    connect (&streamLoader, SIGNAL(sigStreamRequested(int)), this, SLOT(slotDownStreamRequested(int)));
    connect (&streamLoader, SIGNAL(sigBufferPercent(int)), ui->labState, SLOT(bufferPercent(int)));
    connect (ui->hFrameFav, SIGNAL(sigAddFav(int)), this, SLOT(slotAddFav(int)));
@@ -1288,68 +1290,77 @@ void Recorder::slotStop()
 \----------------------------------------------------------------- */
 void Recorder::slotRecord()
 {
-#ifdef INCLUDE_LIBVLC
-
-   // is archive play active ...
-   if ((showInfo.showType() == ShowInfo::Archive)
-      && (showInfo.playState () == IncPlay::PS_PLAY))
+   // when record is active already we display the
+   // record timer dialog ...
+   if ((showInfo.playState () == IncPlay::PS_RECORD) && (showInfo.showType() != ShowInfo::VOD))
    {
-      if (AllowAction(IncPlay::PS_RECORD))
-      {
-         // archive play active ...
-         uint    gmt = ui->player->getSilderPos ();
-         QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
-
-         showInfo.setPlayState(IncPlay::PS_RECORD);
-
-         TouchPlayCtrlBtns(false);
-         Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
-      }
+      timerWidget.exec();
    }
    else
    {
+#ifdef INCLUDE_LIBVLC
 
-#endif // INCLUDE_LIBVLC
-      int cid = getCurrentCid();
-
-      cparser::SChan chan;
-
-      if (!getChanEntry(cid, chan))
+      // is archive play active ...
+      if ((showInfo.showType() == ShowInfo::Archive)
+         && (showInfo.playState () == IncPlay::PS_PLAY))
       {
          if (AllowAction(IncPlay::PS_RECORD))
          {
-            if (grantAdultAccess(chan.bIsProtected))
-            {
-               // new own downloader ...
-               if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
-               {
-                  streamLoader.stopDownload (iDwnReqId);
-                  iDwnReqId = -1;
-               }
+            // archive play active ...
+            uint    gmt = ui->player->getSilderPos ();
+            QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
 
-               showInfo.cleanShowInfo();
-               showInfo.setChanId(cid);
-               showInfo.setChanName(chan.sName);
-               showInfo.setShowType(ShowInfo::Live);
-               showInfo.setShowName(chan.sProgramm);
-               showInfo.setStartTime(chan.uiStart);
-               showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-               showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setPlayState(IncPlay::PS_RECORD);
-               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                      .arg("rgb(255, 254, 212)")
-                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+            showInfo.setPlayState(IncPlay::PS_RECORD);
 
-               TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
-            }
+            TouchPlayCtrlBtns(false);
+            Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
+      else
+      {
+
+#endif // INCLUDE_LIBVLC
+         int cid = getCurrentCid();
+
+         cparser::SChan chan;
+
+         if (!getChanEntry(cid, chan))
+         {
+            if (AllowAction(IncPlay::PS_RECORD))
+            {
+               if (grantAdultAccess(chan.bIsProtected))
+               {
+                  // new own downloader ...
+                  if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+                  {
+                     streamLoader.stopDownload (iDwnReqId);
+                     iDwnReqId = -1;
+                  }
+
+                  showInfo.cleanShowInfo();
+                  showInfo.setChanId(cid);
+                  showInfo.setChanName(chan.sName);
+                  showInfo.setShowType(ShowInfo::Live);
+                  showInfo.setShowName(chan.sProgramm);
+                  showInfo.setStartTime(chan.uiStart);
+                  showInfo.setEndTime(chan.uiEnd);
+                  showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+                  showInfo.setPCode(secCodeDlg.passWd());
+                  showInfo.setPlayState(IncPlay::PS_RECORD);
+                  showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                         .arg("rgb(255, 254, 212)")
+                                         .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+
+                  TouchPlayCtrlBtns(false);
+                  Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               }
+            }
+         }
 
 #ifdef INCLUDE_LIBVLC
-   }
+      }
 #endif // INCLUDE_LIBVLC
+   }
 }
 
 #ifdef INCLUDE_LIBVLC
@@ -3567,6 +3578,39 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
    }
 }
 
+/* -----------------------------------------------------------------\
+|  Method: slotRecordTimerEnded [slot]
+|  Begin: 10.12.2012
+|  Author: Jo2003
+|  Description: stop record without asking questions
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotRecordTimerEnded()
+{
+   // end pending record ...
+   if ((showInfo.playState () == IncPlay::PS_RECORD) && (showInfo.showType() != ShowInfo::VOD))
+   {
+      mInfo(tr("Record timer timed out ... end pending record!"));
+      ui->labState->setHeader("");
+      ui->labState->setFooter("");
+
+      // new own downloader ...
+      if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+      {
+         streamLoader.stopDownload (iDwnReqId);
+         iDwnReqId = -1;
+      }
+
+      vlcCtrl.stop();
+
+      showInfo.setPlayState(IncPlay::PS_STOP);
+      TouchPlayCtrlBtns(true);
+   }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
 ////////////////////////////////////////////////////////////////////////////////
@@ -4582,6 +4626,16 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
    }
 #endif /* INCLUDE_LIBVLC */
 
+   // switch icon of record button to make visible record timer stuff ...
+   if ((showInfo.playState() == IncPlay::PS_RECORD) && (showInfo.showType() != ShowInfo::VOD))
+   {
+      missionControl.btnSetIcon(QIcon(":/app/record_timer"), QFusionControl::BTN_REC);
+   }
+   else
+   {
+      missionControl.btnSetIcon(QIcon(":/app/record"), QFusionControl::BTN_REC);
+   }
+
    switch (ePlayState)
    {
    case IncPlay::PS_PLAY:
@@ -4835,8 +4889,12 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
 
                // set new state ...
                ePlayState = newState;
+
+               // stop record timer ...
+               timerWidget.stop();
             }
             break;
+
          default:
             // all other actions permitted ...
             break;

@@ -21,6 +21,8 @@
         <file alias="pause">resources/pause.png</file>
         <file alias="help">resources/help.png</file>
         <file alias="restore">resources/restore.png</file>
+        <file alias="record_timer">resources/record_timer.png</file>
+        <file alias="set">resources/button_ok.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
