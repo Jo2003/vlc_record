@@ -1785,12 +1785,11 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation>Timer nagrywania</translation>
     </message>
     <message>
-        <location filename="forms/qrecordtimerwidget.ui" line="29"/>
         <source>&amp;Enable Record Timer</source>
-        <translation>Włączanie timera &amp;nagrywania</translation>
+        <translation type="obsolete">Włączanie timera &amp;nagrywania</translation>
     </message>
     <message>
-        <location filename="forms/qrecordtimerwidget.ui" line="51"/>
+        <location filename="forms/qrecordtimerwidget.ui" line="44"/>
         <source>0:00:00</source>
         <translation></translation>
     </message>

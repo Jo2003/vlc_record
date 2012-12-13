@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>199</width>
-    <height>137</height>
+    <width>196</width>
+    <height>118</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,13 +24,6 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QCheckBox" name="checkBox">
-     <property name="text">
-      <string>&amp;Enable Record Timer</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
     <widget class="QTimeLabel" name="timeLabel">
      <property name="styleSheet">
       <string notr="true">QLabel {
@@ -55,26 +48,26 @@ border: 1px solid white;
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QSpinBox" name="spinHours">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QSpinBox" name="spinMinutes">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushStart">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="minimumSize">
         <size>
@@ -100,9 +93,41 @@ border: 1px solid white;
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushCancel">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>26</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>26</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../common.qrc">
+         <normaloff>:/app/del</normaloff>:/app/del</iconset>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Close</set>
@@ -121,54 +146,5 @@ border: 1px solid white;
  <resources>
   <include location="../common.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>spinHours</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>129</x>
-     <y>16</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>76</x>
-     <y>62</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>spinMinutes</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>181</x>
-     <y>27</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>62</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>pushStart</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>181</x>
-     <y>29</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>180</x>
-     <y>62</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

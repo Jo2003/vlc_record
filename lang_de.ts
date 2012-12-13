@@ -1986,13 +1986,12 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qrecordtimerwidget.ui" line="29"/>
         <source>&amp;Enable Record Timer</source>
         <translatorcomment> </translatorcomment>
-        <translation>Record Timer &amp;einschalten</translation>
+        <translation type="obsolete">Record Timer &amp;einschalten</translation>
     </message>
     <message>
-        <location filename="forms/qrecordtimerwidget.ui" line="51"/>
+        <location filename="forms/qrecordtimerwidget.ui" line="44"/>
         <source>0:00:00</source>
         <translation></translation>
     </message>

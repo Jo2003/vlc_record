@@ -138,6 +138,9 @@ void QRecordTimerWidget::on_pushStart_clicked()
 
       // start tick counter ...
       _tick.start();
+
+      // activate cancel button ...
+      ui->pushCancel->setEnabled(true);
    }
 }
 
@@ -175,21 +178,18 @@ void QRecordTimerWidget::slotCheckTime()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   enable disable record timer
+//! \brief   disable record timer
 //
 //! \author  Jo2003
 //! \date    09.12.2012
 //
-//! \param   checked bool enable disable flag
+//! \param   --
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QRecordTimerWidget::on_checkBox_clicked(bool checked)
+void QRecordTimerWidget::on_pushCancel_clicked()
 {
-   if (!checked)
-   {
-      stop();
-   }
+   stop();
 }
 
 //---------------------------------------------------------------------------
@@ -226,11 +226,8 @@ void QRecordTimerWidget::on_buttonBox_clicked (QAbstractButton *button)
 void QRecordTimerWidget::stop()
 {
    _tick.stop();
-   ui->checkBox->setChecked(false);
+   ui->pushCancel->setEnabled(false);
    ui->spinHours->setValue(0);
-   ui->spinHours->setEnabled(false);
    ui->spinMinutes->setValue(0);
-   ui->spinMinutes->setEnabled(false);
-   ui->pushStart->setEnabled(false);
    ui->timeLabel->setTime(0);
 }

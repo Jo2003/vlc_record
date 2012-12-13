@@ -130,7 +130,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    trayIcon.setParent(this);
    vlcCtrl.setParent(this);
    favContext.setParent(this, Qt::Popup);
-   timerWidget.setParent(this, Qt::Dialog);
+   timerWidget.setParent(this, Qt::Tool);
 
    // help dialog class (non modal) ...
    pHelp = new QHelpDialog(NULL);

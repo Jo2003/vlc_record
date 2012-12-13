@@ -53,7 +53,7 @@ signals:
 private slots:
    void on_pushStart_clicked();
    void slotCheckTime ();
-   void on_checkBox_clicked(bool checked);
+   void on_pushCancel_clicked();
    void on_buttonBox_clicked(QAbstractButton *button);
 
 private:

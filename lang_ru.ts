@@ -1975,12 +1975,11 @@ or start time is later than end time!</source>
         <translation>Таймер записи</translation>
     </message>
     <message>
-        <location filename="forms/qrecordtimerwidget.ui" line="29"/>
         <source>&amp;Enable Record Timer</source>
-        <translation>&amp;Вкл. таймер записи</translation>
+        <translation type="obsolete">&amp;Вкл. таймер записи</translation>
     </message>
     <message>
-        <location filename="forms/qrecordtimerwidget.ui" line="51"/>
+        <location filename="forms/qrecordtimerwidget.ui" line="44"/>
         <source>0:00:00</source>
         <translation></translation>
     </message>
