@@ -54,7 +54,6 @@ private slots:
    void on_pushStart_clicked();
    void slotCheckTime ();
    void on_pushCancel_clicked();
-   void on_buttonBox_clicked(QAbstractButton *button);
 
 private:
    Ui::QRecordTimerWidget *ui;

@@ -194,26 +194,6 @@ void QRecordTimerWidget::on_pushCancel_clicked()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   close button pressed
-//
-//! \author  Jo2003
-//! \date    10.12.2012
-//
-//! \param   button pressed button
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QRecordTimerWidget::on_buttonBox_clicked (QAbstractButton *button)
-{
-   // close button has reject role ...
-   if (ui->buttonBox->buttonRole(button) == QDialogButtonBox::RejectRole)
-   {
-      QDialog::reject();
-   }
-}
-
-//---------------------------------------------------------------------------
-//
 //! \brief   stop timer, reset gui
 //
 //! \author  Jo2003

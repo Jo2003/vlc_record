@@ -1789,7 +1789,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation type="obsolete">Włączanie timera &amp;nagrywania</translation>
     </message>
     <message>
-        <location filename="forms/qrecordtimerwidget.ui" line="44"/>
+        <location filename="forms/qrecordtimerwidget.ui" line="50"/>
         <source>0:00:00</source>
         <translation></translation>
     </message>
