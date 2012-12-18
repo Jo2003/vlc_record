@@ -77,7 +77,7 @@ HEADERS += recorder.h \
     cshortcutex.h \
     clcddisplay.h \
     playstates.h \
-    ctimerex.h \
+    qtimerex.h \
     cshowinfo.h \
     cvlcrecdb.h \
     tables.h \

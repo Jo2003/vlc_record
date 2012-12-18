@@ -27,7 +27,7 @@
 #include "clogfile.h"
 #include "playstates.h"
 #include "defdef.h"
-#include "ctimerex.h"
+#include "qtimerex.h"
 #include "cshowinfo.h"
 #include "csettingsdlg.h"
 #include "cwaittrigger.h"
@@ -88,7 +88,7 @@ private:
    QTimer                       sliderTimer;
    QTimer                       tAspectShot;
    QTimer                       tEventPoll;
-   CTimerEx                     timer;
+   QTimerEx                     timer;
    libvlc_instance_t           *pVlcInstance;
    libvlc_media_player_t       *pMediaPlayer;
    libvlc_event_manager_t      *pEMPlay;

@@ -568,7 +568,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
 
    // reset play timer stuff ...
    timer.reset();
-   timer.setStartGmt(showInfo.lastJump() ? showInfo.lastJump() : showInfo.starts());
+   timer.setOffset(showInfo.lastJump() ? showInfo.lastJump() : showInfo.starts());
    uiDuration = (uint)-1;
 
    // while not showing video, disable spooling ...
@@ -811,7 +811,7 @@ void CPlayer::slotUpdateSlider()
          }
          else
          {
-            pos = timer.gmtPosition();
+            pos = timer.pos();
 
             if (!missionControl.isPosSliderDown())
             {
@@ -1180,7 +1180,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
       else
       {
          // get new gmt value ...
-         pos = timer.gmtPosition() + iSeconds;
+         pos = timer.pos() + iSeconds;
 
          // trigger request for the new stream position ...
          QString req = QString("cid=%1&gmt=%2")
@@ -1362,7 +1362,7 @@ void CPlayer::slotSliderPosChanged()
          position = mToGmt(position);
 
          // check if slider position is in 10 sec. limit ...
-         if (abs(position - timer.gmtPosition()) <= 10)
+         if (abs(position - timer.pos()) <= 10)
          {
             mInfo(tr("Ignore slightly slider position change..."));
          }
@@ -1601,9 +1601,9 @@ void CPlayer::slotShowInfoUpdated()
    // we have to do the following:
    // - Reset Timer
    // - Reset Slider
-   ulong gmt = timer.gmtPosition();
+   ulong gmt = timer.pos();
    timer.reset();
-   timer.setStartGmt(gmt);
+   timer.setOffset(gmt);
    timer.start();
 
    // set slider range to seconds ...
