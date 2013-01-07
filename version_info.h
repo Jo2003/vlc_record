@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2012-12-19: Version 2.60
+| - replace CTimerEx (QTime based) with QTimerEx (QTimer based)
+|
 | 2012-12-17: Version 2.60RC1
 | - will be final if all works well
 |
