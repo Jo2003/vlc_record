@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - bugfix: avoid to update EPG to often
+|   (use epg_current instead)
+|
 | 2012-12-19: Version 2.60
 | - replace CTimerEx (QTime based) with QTimerEx (QTimer based)
 |

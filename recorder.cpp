@@ -1471,10 +1471,6 @@ void Recorder::slotKartinaResponse(const QString& resp, int req)
    mkCase(Kartina::REQ_EPG, slotEPG(resp));
 
    ///////////////////////////////////////////////
-   // create EPG map and add it to showInfo
-   mkCase(Kartina::REQ_UPDEPG, slotUpdEPG(resp));
-
-   ///////////////////////////////////////////////
    // update channel map with following info
    mkCase(Kartina::REQ_EPG_CURRENT, slotEPGCurrent (resp));
 
@@ -1932,47 +1928,6 @@ void Recorder::slotEPG(const QString &str)
             }
          }
       }
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: slotUpdEPG
-|  Begin: 05.12.2012
-|  Author: Jo2003
-|  Description: silently update epg info
-|
-|  Parameters: epg (xml)
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::slotUpdEPG(const QString &str)
-{
-   QVector<cparser::SEpg> vEpg;
-   QMap<uint, epg::SShow> mEpg;
-   epg::SShow             sShow;
-
-   if (!XMLParser.parseEpg(str, vEpg))
-   {
-      for (int i = 0; i < vEpg.count(); i++)
-      {
-         sShow.uiStart    = vEpg.at(i).uiGmt;
-         sShow.uiEnd      = (vEpg.count() > (i + 1)) ? vEpg.at(i + 1).uiGmt : 0;
-         sShow.sShowName  = vEpg.at(i).sName;
-         sShow.sShowDescr = vEpg.at(i).sDescr;
-
-         mEpg.insert(sShow.uiStart, sShow);
-      }
-   }
-
-   if (!mEpg.isEmpty())
-   {
-      showInfo.setEpgMap(mEpg);
-      showInfo.setEpgUpdPending(0);
-   }
-   else
-   {
-      // error updating epg ...
-      showInfo.setEpgUpdPending(-1);
    }
 }
 
@@ -3298,41 +3253,75 @@ void Recorder::slotUpdateAnswer (QNetworkReply* pRes)
 \----------------------------------------------------------------- */
 void Recorder::slotCheckArchProg(ulong ulArcGmt)
 {
+   bool updDone = false;
+
    // is actual showinfo still actual ?
    if (!CSmallHelpers::inBetween(showInfo.starts(), showInfo.ends(), (uint)ulArcGmt))
    {
-      // search in archiv program map for matching entry ...
-      if (!showInfo.epgUpdPending())
+      if (showInfo.showType() == ShowInfo::Archive)
       {
          if (!showInfo.autoUpdate(ulArcGmt))
          {
-            // add additional info to LCD ...
-            int     iTime = showInfo.ends() ? (int)((showInfo.ends() - showInfo.starts()) / 60) : 60;
-            QString sTime = tr("Length: %1 min.").arg(iTime);
-            ui->labState->setFooter(sTime);
-            ui->labState->updateState(showInfo.playState());
-
-            // set short epg info ...
-            ui->textEpgShort->setHtml(showInfo.htmlDescr());
-
-            // update show info in overlay display ...
-            missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
-
-            // done ...
-            emit sigShowInfoUpdated();
+            // update done ...
+            updDone = true;
          }
-         else
+      }
+      else if (showInfo.showType() == ShowInfo::Live)
+      {
+         // does this channel have EPG ... ?
+         if (showInfo.starts() && showInfo.ends())
          {
-            if (showInfo.showType() == ShowInfo::Live)
-            {
-               // pending epg request ...
-               showInfo.setEpgUpdPending(1);
+            cparser::SChan chanEntry;
 
-               // get EPG for this channel ...
-               Trigger.TriggerRequest(Kartina::REQ_UPDEPG, showInfo.channelId());
+            // get channel entry from channel map ...
+            if (!getChanEntry(showInfo.channelId(), chanEntry))
+            {
+               // has chan entry already updated data ... ?
+               if (CSmallHelpers::inBetween(chanEntry.uiStart, chanEntry.uiEnd, (uint)ulArcGmt))
+               {
+                  // channel map is updated already -> take these data to update show info ...
+                  showInfo.updWithChanEntry(ulArcGmt, chanEntry);
+
+                  // update done ...
+                  updDone = true;
+               }
+               else
+               {
+                  // channel map wasn't updated so far -> request update ...
+                  if ((showInfo.epgUpdTime() + 120) < QDateTime::currentDateTime().toTime_t())
+                  {
+                     // set timestamp ...
+                     showInfo.setEpgUpdTime(QDateTime::currentDateTime().toTime_t());
+
+                     // make sure that next channel list update doesn't come to quick ...
+                     Refresh.start(60000);
+
+                     // update channel list ...
+                     slotUpdateChannelList();
+                  }
+               }
             }
          }
       }
+   }
+
+   // update done ... ?
+   if (updDone)
+   {
+      // add additional info to LCD ...
+      int     iTime = showInfo.ends() ? (int)((showInfo.ends() - showInfo.starts()) / 60) : 60;
+      QString sTime = tr("Length: %1 min.").arg(iTime);
+      ui->labState->setFooter(sTime);
+      ui->labState->updateState(showInfo.playState());
+
+      // set short epg info ...
+      ui->textEpgShort->setHtml(showInfo.htmlDescr());
+
+      // update show info in overlay display ...
+      missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+
+      // done ...
+      emit sigShowInfoUpdated();
    }
 }
 

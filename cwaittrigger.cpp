@@ -206,9 +206,6 @@ void CWaitTrigger::run()
             case Kartina::REQ_SET_PCODE:
                pClient->setParentCode(cmd.sOptArg1, cmd.sOptArg2);
                break;
-            case Kartina::REQ_UPDEPG:
-               pClient->updEpg(cmd.iOptArg1);
-               break;
             case Kartina::REQ_EPG_CURRENT:
                pClient->epgCurrent(cmd.sOptArg1);
                break;

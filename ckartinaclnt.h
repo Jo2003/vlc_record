@@ -77,7 +77,6 @@ public:
       REQ_REM_VOD_FAV,
       REQ_GET_VOD_FAV,
       REQ_SET_PCODE,
-      REQ_UPDEPG,
       REQ_EPG_CURRENT,
       REQ_UNKNOWN = 255
    };
@@ -217,7 +216,6 @@ public:
    void setParentCode (const QString& oldCode, const QString& newCode);
    int  checkResponse (const QString &sResp);
    void fillErrorMap();
-   void updEpg(int iChanID);
    void epgCurrent(const QString &cids);
 
 protected:

@@ -54,7 +54,7 @@ void CShowInfo::cleanShowInfo()
    uiEnd          = 0;
    uiJumpTime     = 0;
    bStreamLoader  = false;
-   iEpgUpdPending = 0;
+   ulLastEpgUpd   = 0;
    epgMap.clear();
 }
 
@@ -269,33 +269,33 @@ void CShowInfo::useStreamLoader(bool bUse)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setEpgUpdPending
+|  Method: setEpgUpdTime
 |  Begin: 04.12.2012
 |  Author: Jo2003
-|  Description: set epg update state
+|  Description: set last epg update timestamp
 |
-|  Parameters: i (0 -> no, 1 -> yes, -1 -> error)
+|  Parameters: unix timestamp
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CShowInfo::setEpgUpdPending(int i)
+void CShowInfo::setEpgUpdTime(ulong ts)
 {
-   iEpgUpdPending = i;
+   ulLastEpgUpd = ts;
 }
 
 /* -----------------------------------------------------------------\
-|  Method: epgUpdPending
+|  Method: epgUpdTime
 |  Begin: 04.12.2012
 |  Author: Jo2003
-|  Description: is silent epg update pending?
+|  Description: get last epg update timestamp
 |
 |  Parameters: --
 |
-|  Returns: 0 -> no, 1 -> yes, -1 -> error
+|  Returns: unix timestamp
 \----------------------------------------------------------------- */
-int CShowInfo::epgUpdPending()
+ulong CShowInfo::epgUpdTime()
 {
-   return iEpgUpdPending;
+   return ulLastEpgUpd;
 }
 
 /* -----------------------------------------------------------------\
@@ -562,6 +562,39 @@ int CShowInfo::autoUpdate(uint uiTime)
    }
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: updWithChanEntry
+|  Begin: 30.01.2013
+|  Author: Jo2003
+|  Description: update show info with channel entry
+|
+|  Parameters:  time to update, channel entry
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::updWithChanEntry (ulong ulTime, const cparser::SChan &entry)
+{
+   QString sChanNameTmpl;
+
+   if (eShowType == ShowInfo::Archive)
+   {
+      sChanNameTmpl = tr("%1 (Archive)").arg(sChanName);
+   }
+   else
+   {
+      sChanNameTmpl = sChanName;
+   }
+
+   sShowName    = entry.sProgramm;
+   uiStart      = entry.uiStart;
+   uiEnd        = entry.uiEnd;
+   uiJumpTime   = (ulTime > entry.uiStart) ? ulTime : 0; // take care of relative time jumps!
+   ulLastEpgUpd = 0; // updated show info -> be open for new updates ...
+   sDescr       = QString(TMPL_BACKCOLOR)
+                    .arg("rgb(255, 254, 212)")
+                    .arg(createTooltip(sChanNameTmpl, entry.sProgramm, entry.uiStart, entry.uiEnd));
 }
 
 /* -----------------------------------------------------------------\
