@@ -17,6 +17,9 @@ case ${NAME} in
    afrobox)
       OFFNAME="AfroBox"
       ;;
+   moidom_tv)
+      OFFNAME="Moi-Dom.TV"
+      ;;
    *)
       OFFNAME=${NAME}
       ;;

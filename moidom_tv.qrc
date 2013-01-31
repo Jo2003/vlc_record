@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/app">
+        <file alias="kartina">resources/moidom_tv.png</file>
+        <file alias="live">resources/moidom_tv-live.png</file>
+    </qresource>
+</RCC>
