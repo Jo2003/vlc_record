@@ -9,6 +9,9 @@ fi
 
 # create official name ...
 case $APPNAME in
+    moidom_tv)
+        OFFNAME="Moi-Dom.TV"
+        ;;
     kartina_tv)
         OFFNAME="Kartina.TV"
         ;;
