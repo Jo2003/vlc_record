@@ -438,7 +438,7 @@ void CPlayer::slotChangeVolumeDelta(const bool up)
 #else
       iVol    += up ? 5 : -5;
 #endif
-      iVol     = (iVol > 100) ? 100 : ((iVol < 0) ? 0 : iVol);
+      iVol     = (iVol > 200) ? 200 : ((iVol < 0) ? 0 : iVol);
 
       if (iVol != missionControl.getVolume())
       {

@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "60"
-#define BETA_EXT      "B1"
+#define VERSION_MINOR "61"
+#define BETA_EXT      "B2"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-02-14: Version 2.61B2
+| - volume now has a maximum value of 200%
+|
+| 2013-02-02: Version 2.61B1
 | - bugfix: avoid to update EPG to often
 |   (use epg_current instead)
 |

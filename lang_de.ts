@@ -818,12 +818,12 @@ p, li { white-space: pre-wrap; }
         <translation>Videoformat speichern</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="232"/>
+        <location filename="forms/cplayer.ui" line="235"/>
         <source>Switch to Fullscreen</source>
         <translation>Fullscreen</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="365"/>
+        <location filename="forms/cplayer.ui" line="368"/>
         <source> 0:00:00</source>
         <oldsource>0:00:00</oldsource>
         <translation></translation>
@@ -1889,7 +1889,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="548"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="551"/>
         <source> 0:00:00</source>
         <translation></translation>
     </message>
@@ -1909,62 +1909,62 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Videoformat speichern</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="580"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="583"/>
         <source>Play selected Channel</source>
         <translation>Zeige markierten Sender</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="612"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="615"/>
         <source>Record selected Channel</source>
         <translation>Nehme markierten Sender auf</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="653"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="656"/>
         <source>Stop Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="701"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="704"/>
         <source>Jump Backward</source>
         <translation>springe zurück</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="730"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="733"/>
         <source>Time Jump Value in minutes</source>
         <translation>Sprungwert in Minuten</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="734"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="737"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="739"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="742"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="744"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="747"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="749"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="752"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="754"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="757"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="759"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="762"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="776"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="779"/>
         <source>Jump Forward</source>
         <translation>springe vorwärts</translation>
     </message>

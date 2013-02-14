@@ -410,13 +410,16 @@ border: 1px solid gray;
 </string>
           </property>
           <property name="maximum">
-           <number>100</number>
+           <number>200</number>
           </property>
           <property name="pageStep">
            <number>0</number>
           </property>
+          <property name="value">
+           <number>100</number>
+          </property>
           <property name="sliderPosition">
-           <number>50</number>
+           <number>100</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -812,14 +815,14 @@ color: #aaa;
    <header>qtimelabel.h</header>
   </customwidget>
   <customwidget>
-   <class>QMoveHandle</class>
-   <extends>QLabel</extends>
-   <header>qmovehandle.h</header>
-  </customwidget>
-  <customwidget>
    <class>QComboBoxEx</class>
    <extends>QComboBox</extends>
    <header>qcomboboxex.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QMoveHandle</class>
+   <extends>QLabel</extends>
+   <header>qmovehandle.h</header>
   </customwidget>
  </customwidgets>
  <resources>
