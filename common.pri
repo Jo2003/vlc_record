@@ -34,7 +34,6 @@ SOURCES += main.cpp \
     csettingsdlg.cpp \
     ckartinaclnt.cpp \
     ckartinaxmlparser.cpp \
-    cwaittrigger.cpp \
     cepgbrowser.cpp \
     caboutdialog.cpp \
     clogfile.cpp \
@@ -62,7 +61,6 @@ HEADERS += recorder.h \
     csettingsdlg.h \
     ckartinaclnt.h \
     ckartinaxmlparser.h \
-    cwaittrigger.h \
     templates.h \
     cepgbrowser.h \
     caboutdialog.h \

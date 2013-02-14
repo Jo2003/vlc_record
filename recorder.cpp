@@ -124,7 +124,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    Settings.setParent(this, Qt::Dialog);
    secCodeDlg.setParent(this, Qt::Dialog);
    Settings.setXmlParser(&XMLParser);
-   Settings.setWaitTrigger(&Trigger);
+   Settings.setApiClient(&KartinaTv);
    Settings.setAccountInfo(&accountInfo);
    timeRec.setParent(this, Qt::Dialog);
    trayIcon.setParent(this);
@@ -188,17 +188,13 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       pUpdateChecker->setProxy(proxy);
    }
 
-   // configure trigger and start it ...
-   Trigger.SetKartinaClient(&KartinaTv);
-   Trigger.start();
-
    // give vlcCtrl needed infos ...
    vlcCtrl.SetTranslitPointer(&translit);
    vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
 
    // give timerRec all needed infos ...
    timeRec.SetXmlParser(&XMLParser);
-   timeRec.SetKartinaTrigger(&Trigger);
+   timeRec.setApiClient(&KartinaTv);
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
    timeRec.SetStreamLoader(&streamLoader);
@@ -227,7 +223,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // give player settings and wait trigger access ...
    ui->player->setSettings(&Settings);
-   ui->player->setTrigger(&Trigger);
+   ui->player->setApiClient(&KartinaTv);
 
    // connect vlc control with libvlc player ...
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
@@ -470,13 +466,13 @@ void Recorder::closeEvent(QCloseEvent *event)
       CleanContextMenu();
 
       // cancel any running kartina request ...
-      Trigger.TriggerRequest (Kartina::REQ_ABORT);
+      KartinaTv.queueRequest(Kartina::REQ_ABORT);
 
       // are we authenticated ... ?
       if (KartinaTv.cookieSet())
       {
          // logout from kartina ...
-         Trigger.TriggerRequest (Kartina::REQ_LOGOUT);
+         KartinaTv.queueRequest (Kartina::REQ_LOGOUT);
 
          // ignore event here ...
          // we'll close app in logout slot ...
@@ -626,7 +622,7 @@ void Recorder::on_pushSettings_clicked()
       TouchPlayCtrlBtns(false);
 
       // authenticate ...
-      Trigger.TriggerRequest(Kartina::REQ_COOKIE);
+      KartinaTv.queueRequest(Kartina::REQ_COOKIE);
    }
 
    // lock parental manager ...
@@ -728,7 +724,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                                       .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
             }
          }
       }
@@ -880,7 +876,7 @@ void Recorder::on_cbxGenre_activated(int index)
       url.addQueryItem("genre", QString::number(iGid));
    }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -899,7 +895,7 @@ void Recorder::on_cbxLastOrBest_activated(int index)
 
    if (sType == "vodfav")
    {
-      Trigger.TriggerRequest(Kartina::REQ_GET_VOD_FAV);
+      KartinaTv.queueRequest(Kartina::REQ_GET_VOD_FAV);
    }
    else
    {
@@ -913,7 +909,7 @@ void Recorder::on_cbxLastOrBest_activated(int index)
          url.addQueryItem("genre", QString::number(iGid));
       }
 
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
    }
 }
 
@@ -969,7 +965,7 @@ void Recorder::on_btnVodSearch_clicked()
       }
    }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -999,7 +995,7 @@ void Recorder::on_cbxSites_activated(int index)
          url.addQueryItem("genre", QString::number(iGenre));
       }
 
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
    }
 }
 
@@ -1028,7 +1024,7 @@ void Recorder::on_btnPrevSite_clicked()
       url.addQueryItem("genre", QString::number(iGenre));
    }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -1056,7 +1052,7 @@ void Recorder::on_btnNextSite_clicked()
       url.addQueryItem("genre", QString::number(iGenre));
    }
 
-   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -1078,7 +1074,7 @@ void Recorder::on_pushLive_clicked()
    {
       // set EPG offset to 0 ...
       iEpgOffset = 0;
-      Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+      KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
 
       // fake play button press ...
       if (AllowAction(IncPlay::PS_PLAY))
@@ -1100,7 +1096,7 @@ void Recorder::on_pushLive_clicked()
                                    .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+            KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
          }
       }
    }
@@ -1145,7 +1141,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                                       .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
             }
          }
       }
@@ -1237,7 +1233,7 @@ void Recorder::slotPlay()
                                       .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                TouchPlayCtrlBtns(false);
-               Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
             }
          }
       }
@@ -1313,7 +1309,7 @@ void Recorder::slotRecord()
             showInfo.setPlayState(IncPlay::PS_RECORD);
 
             TouchPlayCtrlBtns(false);
-            Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
+            KartinaTv.queueRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
       else
@@ -1352,7 +1348,7 @@ void Recorder::slotRecord()
                                          .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                   TouchPlayCtrlBtns(false);
-                  Trigger.TriggerRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+                  KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
                }
             }
          }
@@ -1813,7 +1809,7 @@ void Recorder::slotCookie (const QString &str)
       }
 
       // request channel list ...
-      Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+      KartinaTv.queueRequest(Kartina::REQ_CHANNELLIST);
    }
 }
 
@@ -1830,7 +1826,7 @@ void Recorder::slotCookie (const QString &str)
 void Recorder::slotTimeShift (const QString &str)
 {
    Q_UNUSED(str)
-   Trigger.TriggerRequest(Kartina::REQ_CHANNELLIST);
+   KartinaTv.queueRequest(Kartina::REQ_CHANNELLIST);
 }
 
 /* -----------------------------------------------------------------\
@@ -1924,7 +1920,7 @@ void Recorder::slotEPG(const QString &str)
          {
             if (ui->cbxGenre->count() == 0)
             {
-               Trigger.TriggerRequest(Kartina::REQ_GETVODGENRES);
+               KartinaTv.queueRequest(Kartina::REQ_GETVODGENRES);
             }
          }
       }
@@ -1983,7 +1979,7 @@ void Recorder::slotEPGCurrent (const QString &str)
             if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < QDateTime::currentDateTime().date())
             {
                // update EPG ...
-               Trigger.TriggerRequest(Kartina::REQ_EPG, keyList.at(i));
+               KartinaTv.queueRequest(Kartina::REQ_EPG, keyList.at(i));
             }
             else
             {
@@ -2085,7 +2081,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
             ui->labState->setFooter(sTime);
 
-            Trigger.TriggerRequest(Kartina::REQ_ARCHIV, req, secCodeDlg.passWd());
+            KartinaTv.queueRequest(Kartina::REQ_ARCHIV, req, secCodeDlg.passWd());
          }
       }
    }
@@ -2145,7 +2141,7 @@ void Recorder::slotbtnBack_clicked()
 
       if (iOffBack != iEpgOffset)
       {
-         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
       }
    }
 }
@@ -2180,7 +2176,7 @@ void Recorder::slotbtnNext_clicked()
 
       if (iOffBack != iEpgOffset)
       {
-         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
       }
    }
 }
@@ -2279,7 +2275,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 
          if(iOffBack != iEpgOffset)
          {
-            Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+            KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
          }
          else
          {
@@ -2302,7 +2298,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 \----------------------------------------------------------------- */
 void Recorder::slotSetSServer(QString sIp)
 {
-   Trigger.TriggerRequest(Kartina::REQ_SERVER, sIp);
+   KartinaTv.queueRequest(Kartina::REQ_SERVER, sIp);
 }
 
 /* -----------------------------------------------------------------\
@@ -2317,7 +2313,7 @@ void Recorder::slotSetSServer(QString sIp)
 \----------------------------------------------------------------- */
 void Recorder::slotSetBitrate(int iRate)
 {
-   Trigger.TriggerRequest(Kartina::REQ_SETBITRATE, iRate);
+   KartinaTv.queueRequest(Kartina::REQ_SETBITRATE, iRate);
 }
 
 /* -----------------------------------------------------------------\
@@ -2338,7 +2334,7 @@ void Recorder::slotSetTimeShift(int iShift)
    ui->textEpg->SetTimeShift(iShift);
    timeRec.SetTimeShift(iShift);
 
-   Trigger.TriggerRequest(Kartina::REQ_TIMESHIFT, iShift);
+   KartinaTv.queueRequest(Kartina::REQ_TIMESHIFT, iShift);
 }
 
 /* -----------------------------------------------------------------\
@@ -2766,7 +2762,7 @@ void Recorder::slotGotVodGenres(const QString &str)
    QUrl url;
    url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
    url.addQueryItem("nums", "20");
-   Trigger.TriggerRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -2831,7 +2827,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
 
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
    else if (action == "backtolist")
    {
@@ -2856,14 +2852,14 @@ void Recorder::slotVodAnchor(const QUrl &link)
    else if (action == "add_fav")
    {
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
-      Trigger.TriggerRequest(Kartina::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+      KartinaTv.queueRequest(Kartina::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
+      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
    else if (action == "del_fav")
    {
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
-      Trigger.TriggerRequest(Kartina::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
-      Trigger.TriggerRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+      KartinaTv.queueRequest(Kartina::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
+      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
 
    if (ok)
@@ -2889,7 +2885,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
 
-      Trigger.TriggerRequest(Kartina::REQ_GETVODURL, id, secCodeDlg.passWd());
+      KartinaTv.queueRequest(Kartina::REQ_GETVODURL, id, secCodeDlg.passWd());
    }
 }
 
@@ -3134,14 +3130,14 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
       if (cid != ui->textEpg->GetCid())
       {
          // load epg ...
-         Trigger.TriggerRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
       }
       else // same channel ...
       {
          // refresh epg only, if we view current day in epg ...
          if (iEpgOffset == 0) // 0 means today!
          {
-            Trigger.TriggerRequest(Kartina::REQ_EPG, cid);
+            KartinaTv.queueRequest(Kartina::REQ_EPG, cid);
          }
       }
    }
@@ -3191,7 +3187,7 @@ void Recorder::slotPlayPreviousChannel()
 \----------------------------------------------------------------- */
 void Recorder::slotStartConnectionChain()
 {
-   Trigger.TriggerRequest(Kartina::REQ_COOKIE);
+   KartinaTv.queueRequest(Kartina::REQ_COOKIE);
 }
 
 /* -----------------------------------------------------------------\
@@ -3563,7 +3559,7 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
 
    if (!updChannels.isEmpty())
    {
-      Trigger.TriggerRequest(Kartina::REQ_EPG_CURRENT, updChannels.join(","));
+      KartinaTv.queueRequest(Kartina::REQ_EPG_CURRENT, updChannels.join(","));
    }
 }
 

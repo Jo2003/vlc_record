@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "61"
-#define BETA_EXT      "B2"
+#define BETA_EXT      "B3"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,12 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-02-14: Version 2.61B3
+| - intergrate wait trigger into kartina api client
+| - remove waittrigger
+| - make logout more stable
+| - don't abort running http requests
+|
 | 2013-02-14: Version 2.61B2
 | - volume now has a maximum value of 200%
 |

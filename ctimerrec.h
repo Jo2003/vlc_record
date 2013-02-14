@@ -23,7 +23,7 @@
 #include "defdef.h"
 #include "templates.h"
 #include "ckartinaxmlparser.h"
-#include "cwaittrigger.h"
+#include "ckartinaclnt.h"
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
 #include "cdirstuff.h"
@@ -87,7 +87,7 @@ public:
    void SetChanList  (const QVector<cparser::SChan> &chanList);
    void SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &name = QString());
    void SetXmlParser (CKartinaXMLParser *pParser);
-   void SetKartinaTrigger (CWaitTrigger *pTrig);
+   void setApiClient (CKartinaClnt *pClient);
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
    void SetStreamLoader (CStreamLoader *pLoader);
@@ -116,7 +116,7 @@ private:
    uint    uiEdtId;
    QTimer  recTimer;
    CKartinaXMLParser *pXmlParser;
-   CWaitTrigger      *pTrigger;
+   CKartinaClnt      *pApiClient;
    CSettingsDlg      *pSettings;
    CVlcCtrl          *pVlcCtrl;
    CStreamLoader     *pStreamLoader;

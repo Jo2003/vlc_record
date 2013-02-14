@@ -43,7 +43,6 @@
 #include "csettingsdlg.h"
 #include "ckartinaclnt.h"
 #include "ckartinaxmlparser.h"
-#include "cwaittrigger.h"
 #include "templates.h"
 #include "caboutdialog.h"
 #include "cpixloader.h"
@@ -138,7 +137,6 @@ private:
     QSecCodeDlg                     secCodeDlg;
     CKartinaClnt                    KartinaTv;
     CKartinaXMLParser               XMLParser;
-    CWaitTrigger                    Trigger;
     CStreamLoader                   streamLoader;
     QTranslator                    *pTranslator;
     QTimer                          Refresh;

@@ -30,7 +30,7 @@
 #include "qtimerex.h"
 #include "cshowinfo.h"
 #include "csettingsdlg.h"
-#include "cwaittrigger.h"
+#include "ckartinaclnt.h"
 #include "qvlcvideowidget.h"
 
 //===================================================================
@@ -62,7 +62,7 @@ public:
    void pausePlayTimer ();
    void stopPlayTimer ();
    void setSettings (CSettingsDlg *pDlg);
-   void setTrigger (CWaitTrigger *pTrig);
+   void setApiClient (CKartinaClnt *pClient);
    static void eventCallback (const libvlc_event_t *ev, void *userdata);
    bool isPositionable();
    void initSlider ();
@@ -95,7 +95,7 @@ private:
    libvlc_media_list_player_t  *pMedialistPlayer;
    libvlc_media_list_t         *pMediaList;
    CSettingsDlg                *pSettings;
-   CWaitTrigger                *pTrigger;
+   CKartinaClnt                *pApiClient;
    bool                         bSpoolPending;
    uint                         uiDuration;
    ulong                        ulLibvlcVersion;

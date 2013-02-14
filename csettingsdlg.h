@@ -27,7 +27,7 @@
 #include "ckartinaxmlparser.h"
 #include "cshortcutex.h"
 #include "cshortcutgrabber.h"
-#include "cwaittrigger.h"
+#include "ckartinaclnt.h"
 
 //===================================================================
 // namespace
@@ -106,7 +106,7 @@ public:
     void saveEpgDay(const QString &dateString);
     QString lastEpgDay();
     uint libVlcVerboseLevel();
-    void setWaitTrigger (CWaitTrigger *pTrigger);
+    void setApiClient (CKartinaClnt *pClient);
     void setXmlParser (CKartinaXMLParser *parser);
     void setAccountInfo(const cparser::SAccountInfo *pInfo);
     void setGeometry(const QByteArray &ba);
@@ -121,7 +121,7 @@ private:
     CShortcutEx       *pShortApiServer;
     CShortcutEx       *pShortVerbLevel;
     QVector<float>     vBuffs;
-    CWaitTrigger      *pCmdQueue;
+    CKartinaClnt      *pApiClient;
     CKartinaXMLParser *pParser;
     QVector<cparser::SChan>      channelVector;
     QVector<cparser::SVodRate>   vodRatesVector;

@@ -35,6 +35,7 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr,
    iReq           = -1;
    sCookie        = "";
    sHost          = host;
+   bPendingReq    = false;
    eReq           = Kartina::REQ_UNKNOWN;
    fillErrorMap();
 
@@ -62,6 +63,7 @@ CKartinaClnt::CKartinaClnt() :QHttp()
    iReq           = -1;
    sCookie        = "";
    sHost          = "";
+   bPendingReq    = false;
    eReq           = Kartina::REQ_UNKNOWN;
    fillErrorMap();
 
@@ -86,6 +88,256 @@ CKartinaClnt::~CKartinaClnt()
 {
    abort();
 }
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/* -----------------------------------------------------------------\
+|  Method: queueRequest
+|  Begin: 19.01.2010 / 15:55:06
+|  Author: Jo2003
+|  Description: request kartina action
+|
+|  Parameters: action, action params
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaClnt::queueRequest(Kartina::EReq req, int iArg1, int iArg2)
+{
+   Kartina::SRequest cmd;
+
+   cmd.req      = req;
+   cmd.iOptArg1 = iArg1;
+   cmd.iOptArg2 = iArg2;
+   cmd.sOptArg1 = "";
+   cmd.sOptArg2 = "";
+   queueIn(cmd);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: queueRequest
+|  Begin: 19.01.2010 / 15:55:06
+|  Author: Jo2003
+|  Description: request kartina action
+|
+|  Parameters: action, action params
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaClnt::queueRequest (Kartina::EReq req, const QString &sReq1, const QString &sReq2)
+{
+   Kartina::SRequest cmd;
+
+   cmd.req      = req;
+   cmd.iOptArg1 = -1;
+   cmd.iOptArg2 = -1;
+   cmd.sOptArg1 = sReq1;
+   cmd.sOptArg2 = sReq2;
+   queueIn(cmd);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: queueRequest
+|  Begin: 30.05.2012
+|  Author: Jo2003
+|  Description: request kartina action
+|
+|  Parameters: action, action params
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaClnt::queueRequest (Kartina::EReq req, int iArg1, const QString &sArg1)
+{
+   Kartina::SRequest cmd;
+
+   cmd.req      = req;
+   cmd.iOptArg1 = iArg1;
+   cmd.iOptArg2 = -1;
+   cmd.sOptArg1 = sArg1;
+   cmd.sOptArg2 = "";
+   queueIn(cmd);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: queueIn
+|  Begin: 28.09.2011
+|  Author: Jo2003
+|  Description: queue in new command, check for cookie and abort
+|
+|  Parameters: ref. to command
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaClnt::queueIn(const Kartina::SRequest &req)
+{
+   // lock command queue ...
+   mtxQueue.lock();
+
+   switch (req.req)
+   {
+   // abort means delete all pending requests ...
+   case Kartina::REQ_ABORT:
+      vReqQueue.clear ();
+      break;
+
+   // cookie means all pending requests are unusable ...
+   case Kartina::REQ_COOKIE:
+   // logout means we want to close programm ...
+   case Kartina::REQ_LOGOUT:
+
+      vReqQueue.clear ();
+      // fall thru here ...
+      //  V    V    V
+
+   default:
+      // queue in request ...
+      vReqQueue.append (req);
+      break;
+   }
+
+   // unlock command queue ...
+   mtxQueue.unlock();
+
+   if (!bPendingReq && !vReqQueue.isEmpty())
+   {
+      workOffQueue();
+   }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: workOffQueue
+|  Begin: 19.01.2010 / 15:54:11
+|  Author: Jo2003
+|  Description: get next request from request queue and
+|               send it to API server
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CKartinaClnt::workOffQueue()
+{
+   Kartina::SRequest req;
+   bool              bSent = true;
+
+   // are there requests in queue ... ?
+   if (!vReqQueue.isEmpty())
+   {
+      // lock queue ...
+      mtxQueue.lock();
+
+      // get 1st request ...
+      req = vReqQueue.first();
+
+      // remove 1st request from queue ...
+      vReqQueue.remove(0);
+
+      // unlock queue ...
+      mtxQueue.unlock();
+
+      // handle request ...
+      switch (req.req)
+      {
+      case Kartina::REQ_CHANNELLIST:
+         GetChannelList();
+         break;
+      case Kartina::REQ_COOKIE:
+         GetCookie();
+         break;
+      case Kartina::REQ_EPG:
+         GetEPG(req.iOptArg1, req.iOptArg2);
+         break;
+      case Kartina::REQ_SERVER:
+         SetServer(req.sOptArg1);
+         break;
+      case Kartina::REQ_HTTPBUFF:
+         SetHttpBuffer(req.iOptArg1);
+         break;
+      case Kartina::REQ_STREAM:
+         GetStreamURL(req.iOptArg1, req.sOptArg1);
+         break;
+      case Kartina::REQ_TIMERREC:
+         GetStreamURL(req.iOptArg1, req.sOptArg1, true);
+         break;
+      case Kartina::REQ_ARCHIV:
+         GetArchivURL(req.sOptArg1, req.sOptArg2);
+         break;
+      case Kartina::REQ_TIMESHIFT:
+         SetTimeShift(req.iOptArg1);
+         break;
+      case Kartina::REQ_GETTIMESHIFT:
+         GetTimeShift();
+         break;
+      case Kartina::REQ_GET_SERVER:
+         GetServer();
+         break;
+      case Kartina::REQ_LOGOUT:
+         Logout();
+         break;
+      case Kartina::REQ_GETVODGENRES:
+         GetVodGenres();
+         break;
+      case Kartina::REQ_GETVIDEOS:
+         GetVideos(req.sOptArg1);
+         break;
+      case Kartina::REQ_GETVIDEOINFO:
+         GetVideoInfo(req.iOptArg1, req.sOptArg1);
+         break;
+      case Kartina::REQ_GETVODURL:
+         GetVodUrl(req.iOptArg1, req.sOptArg1);
+         break;
+      case Kartina::REQ_GETBITRATE:
+         GetBitRate();
+         break;
+      case Kartina::REQ_SETBITRATE:
+         SetBitRate(req.iOptArg1);
+         break;
+      case Kartina::REQ_SETCHAN_HIDE:
+         setChanHide(req.sOptArg1, req.sOptArg2);
+         break;
+      case Kartina::REQ_SETCHAN_SHOW:
+         setChanShow(req.sOptArg1, req.sOptArg2);
+         break;
+      case Kartina::REQ_CHANLIST_ALL:
+         GetChannelList(req.sOptArg1);
+         break;
+      case Kartina::REQ_GET_VOD_MANAGER:
+         getVodManager(req.sOptArg1);
+         break;
+      case Kartina::REQ_SET_VOD_MANAGER:
+         setVodManager(req.sOptArg1, req.sOptArg2);
+         break;
+      case Kartina::REQ_ADD_VOD_FAV:
+         addVodFav(req.iOptArg1, req.sOptArg1);
+         break;
+      case Kartina::REQ_REM_VOD_FAV:
+         remVodFav(req.iOptArg1, req.sOptArg1);
+         break;
+      case Kartina::REQ_GET_VOD_FAV:
+         getVodFav();
+         break;
+      case Kartina::REQ_SET_PCODE:
+         setParentCode(req.sOptArg1, req.sOptArg2);
+         break;
+      case Kartina::REQ_EPG_CURRENT:
+         epgCurrent(req.sOptArg1);
+         break;
+      default:
+         bSent = false;
+         break;
+      }
+
+      if (bSent)
+      {
+         // work in progress ...
+         bPendingReq = true;
+      }
+   }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 /*-----------------------------------------------------------------------------\
 | Function:    SetData
@@ -838,6 +1090,9 @@ void CKartinaClnt::epgCurrent(const QString &cids)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::handleEndRequest(int id, bool err)
 {
+   bool bByPass = false;
+   bool bNext;
+
    // is this our request ... ?
    if (id == iReq)
    {
@@ -851,74 +1106,63 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
       // close buffer device ...
       bufReq.close();
 
-      if (!err)
+      /// \brief Logout Handling
+      /// Logout means we want to close the program.
+      /// It doesn't matter here if logout was successful.
+      /// In any case response (error or no error) means
+      /// we're done!
+      if (eReq == Kartina::REQ_LOGOUT)
       {
-         mInfo(tr("Request #%1 (%2) done!").arg(id).arg(eReq));
+          sCookie = "";
 
-         // unset cookie on logout ...
-         if (eReq == Kartina::REQ_LOGOUT)
-         {
-             sCookie = "";
-         }
+          // send response ...
+          emit sigHttpResponse ("", (int)eReq);
 
-         // check response ...
-         int iErr;
-         if ((iErr = checkResponse(QString::fromUtf8(baPageContent.constData()))) != 0)
+          bByPass = true;
+      }
+
+      if (!bByPass)
+      {
+         if (!err)
          {
-            emit sigError(sCleanResp, (int)eReq, iErr);
+            int iErr;
+
+            mInfo(tr("Request #%1 (%2) done!").arg(id).arg(eReq));
+
+            // check response ...
+            if ((iErr = checkResponse(QString::fromUtf8(baPageContent.constData()))) != 0)
+            {
+               emit sigError(sCleanResp, (int)eReq, iErr);
+            }
+            else
+            {
+               // send response ...
+               emit sigHttpResponse (sCleanResp, (int)eReq);
+            }
          }
          else
          {
-            // send response ...
-            emit sigHttpResponse (sCleanResp, (int)eReq);
+            // send error signal ...
+            emit sigError(errorString(), (int)eReq, -1);
          }
       }
-      else
-      {
-         // send error signal ...
-         emit sigError(errorString(), (int)eReq, -1);
-      }
-
-      // mark request as ended so the API is "free for use" again ...
-      eReq = Kartina::REQ_UNKNOWN;
    }
-}
 
-/* -----------------------------------------------------------------\
-|  Method: busy
-|  Begin: 18.01.2010 / 16:32:33
-|  Author: Jo2003
-|  Description: is api busy ?
-|
-|  Parameters: --
-|
-|  Returns: true ==> busy
-|          false ==> available
-\----------------------------------------------------------------- */
-bool CKartinaClnt::busy ()
-{
-   bool bRV;
+   // reset request ...
+   eReq = Kartina::REQ_UNKNOWN;
 
-   switch (state())
+   // request handled (anyhow) ...
+   bPendingReq = false;
+
+   mtxQueue.lock();
+   bNext = !vReqQueue.isEmpty();
+   mtxQueue.unlock();
+
+   if (bNext)
    {
-   case QHttp::Unconnected:
-   case QHttp::Connected:
-      bRV = false;
-      break;
-
-   case QHttp::HostLookup:
-   case QHttp::Connecting:
-   case QHttp::Sending:
-   case QHttp::Reading:
-   case QHttp::Closing:
-   default:
-      bRV = true;
-      break;
+      workOffQueue();
    }
-
-   return (!bRV && (eReq == Kartina::REQ_UNKNOWN)) ? false : true;
 }
-
 
 /* -----------------------------------------------------------------\
 |  Method: cookieSet

@@ -38,7 +38,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 {
    m_ui->setupUi(this);
    pParser         = NULL;
-   pCmdQueue       = NULL;
+   pApiClient       = NULL;
    pAccountInfo    = NULL;
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
@@ -122,18 +122,18 @@ void CSettingsDlg::setAccountInfo(const cparser::SAccountInfo *pInfo)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setWaitTrigger
+|  Method: setApiClient
 |  Begin: 14.05.2012
 |  Author: Jo2003
-|  Description: set wait trigger (command queue) to send requests
+|  Description: set API client
 |
-|  Parameters: pointer to trigger
+|  Parameters: pointer to API client
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::setWaitTrigger(CWaitTrigger *pTrigger)
+void CSettingsDlg::setApiClient (CKartinaClnt *pClient)
 {
-   pCmdQueue = pTrigger;
+   pApiClient = pClient;
 }
 
 /* -----------------------------------------------------------------\
@@ -1352,7 +1352,7 @@ void CSettingsDlg::slotBuildChanManager(const QString &str)
       if (pAccountInfo->bHasVOD)
       {
          // request vod manager data ...
-         pCmdQueue->TriggerRequest(Kartina::REQ_GET_VOD_MANAGER, sTempPasswd);
+         pApiClient->queueRequest(Kartina::REQ_GET_VOD_MANAGER, sTempPasswd);
       }
       else
       {
@@ -1545,7 +1545,7 @@ void CSettingsDlg::on_btnSaveExitManager_clicked()
       {
          ids << QString::number(toHide[i]);
       }
-      pCmdQueue->TriggerRequest(Kartina::REQ_SETCHAN_HIDE, ids.join(","), sTempPasswd);
+      pApiClient->queueRequest(Kartina::REQ_SETCHAN_HIDE, ids.join(","), sTempPasswd);
    }
 
    ids.clear();
@@ -1555,13 +1555,13 @@ void CSettingsDlg::on_btnSaveExitManager_clicked()
       {
          ids << QString::number(toShow[i]);
       }
-      pCmdQueue->TriggerRequest(Kartina::REQ_SETCHAN_SHOW, ids.join(","), sTempPasswd);
+      pApiClient->queueRequest(Kartina::REQ_SETCHAN_SHOW, ids.join(","), sTempPasswd);
    }
 
    if (toHide.count() || toShow.count())
    {
       // request new channel list ...
-      pCmdQueue->TriggerRequest(Kartina::REQ_CHANNELLIST);
+      pApiClient->queueRequest(Kartina::REQ_CHANNELLIST);
    }
 
    //////////////////////////////////////////////////
@@ -1619,7 +1619,7 @@ void CSettingsDlg::on_btnSaveExitManager_clicked()
       if (sRules != "")
       {
          mInfo(tr("Changed VOD Rate: %1").arg(sRules));
-         pCmdQueue->TriggerRequest(Kartina::REQ_SET_VOD_MANAGER, sRules, sTempPasswd);
+         pApiClient->queueRequest(Kartina::REQ_SET_VOD_MANAGER, sRules, sTempPasswd);
       }
    }
 
@@ -1640,7 +1640,7 @@ void CSettingsDlg::on_btnEnterManager_clicked()
 {
    sTempPasswd = m_ui->linePasswd->text();
    m_ui->linePasswd->clear();
-   pCmdQueue->TriggerRequest(Kartina::REQ_CHANLIST_ALL, sTempPasswd);
+   pApiClient->queueRequest(Kartina::REQ_CHANLIST_ALL, sTempPasswd);
 }
 
 /* -----------------------------------------------------------------\
@@ -1690,7 +1690,7 @@ void CSettingsDlg::on_btnChgPCode_clicked()
       m_ui->lineConfirmPCode->setDisabled(true);
       m_ui->btnChgPCode->setDisabled(true);
 
-      pCmdQueue->TriggerRequest(Kartina::REQ_SET_PCODE, sOldPCode, sNewPCode);
+      pApiClient->queueRequest(Kartina::REQ_SET_PCODE, sOldPCode, sNewPCode);
    }
    else
    {

@@ -56,7 +56,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pMediaList       = NULL;
    pEMPlay          = NULL;
    pSettings        = NULL;
-   pTrigger         = NULL;
+   pApiClient        = NULL;
    bSpoolPending    = true;
    bOmitNextEvent   = false;
    uiDuration       = (uint)-1;
@@ -255,9 +255,9 @@ void CPlayer::setSettings(CSettingsDlg *pDlg)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::setTrigger(CWaitTrigger *pTrig)
+void CPlayer::setApiClient(CKartinaClnt *pClient)
 {
-   pTrigger = pTrig;
+   pApiClient = pClient;
 }
 
 /* -----------------------------------------------------------------\
@@ -1194,7 +1194,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          // save jump time ...
          showInfo.setLastJumpTime(pos);
 
-         pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
+         pApiClient->queueRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
 
          // do we reach another show?
          if ((pos < mToGmt(missionControl.posMinimum()))
@@ -1382,7 +1382,7 @@ void CPlayer::slotSliderPosChanged()
             showInfo.setLastJumpTime(position);
 
             // trigger stream request ...
-            pTrigger->TriggerRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
+            pApiClient->queueRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
 

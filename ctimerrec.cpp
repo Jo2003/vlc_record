@@ -41,7 +41,7 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
    iReqId        = -1;
    uiActId       = 0;
    uiEdtId       = INVALID_ID;
-   pTrigger      = NULL;
+   pApiClient    = NULL;
    pXmlParser    = NULL;
    pSettings     = NULL;
    itActJob      = NULL;
@@ -158,7 +158,7 @@ void CTimerRec::SetXmlParser(CKartinaXMLParser *pParser)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SetKartinaTrigger
+|  Method: setApiClient
 |  Begin: 26.01.2010 / 16:05:00
 |  Author: Jo2003
 |  Description: set wait trigger
@@ -167,9 +167,9 @@ void CTimerRec::SetXmlParser(CKartinaXMLParser *pParser)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CTimerRec::SetKartinaTrigger(CWaitTrigger *pTrig)
+void CTimerRec::setApiClient(CKartinaClnt *pClient)
 {
-   pTrigger = pTrig;
+   pApiClient = pClient;
 }
 
 /* -----------------------------------------------------------------\
@@ -812,7 +812,7 @@ void CTimerRec::on_btnDel_clicked()
 \----------------------------------------------------------------- */
 void CTimerRec::slotRecTimer()
 {
-   if (pTrigger)
+   if (pApiClient)
    {
       if (JobList.isEmpty())
       {
@@ -894,7 +894,7 @@ void CTimerRec::slotRecTimer()
                   mInfo(tr("Record #%1 (%2) starts soon. Set timer to standby!").arg((*it).id).arg((*it).sName));
 
                   // set timeshift ...
-                  pTrigger->TriggerRequest(Kartina::REQ_TIMESHIFT, (*it).iTimeShift);
+                  pApiClient->queueRequest(Kartina::REQ_TIMESHIFT, (*it).iTimeShift);
                }
                else if ((start <= now) && ((*it).eState == rec::REC_STBY))
                {
@@ -913,7 +913,7 @@ void CTimerRec::slotRecTimer()
                   showInfo.setPlayState(IncPlay::PS_TIMER_RECORD);
                   showInfo.setChanName(ChanList[(*it).cid].Name);
 
-                  pTrigger->TriggerRequest(Kartina::REQ_TIMERREC, (*it).cid);
+                  pApiClient->queueRequest(Kartina::REQ_TIMERREC, (*it).cid);
                }
 
                it++;

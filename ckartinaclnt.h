@@ -25,6 +25,8 @@
 #include <QTimer>
 #include <QMap>
 #include <QRegExp>
+#include <QVector>
+#include <QMutex>
 
 #include "clogfile.h"
 #include "defdef.h"
@@ -128,6 +130,18 @@ public:
    };
 
    //---------------------------------------------------------------------------
+   //! kartina request
+   //---------------------------------------------------------------------------
+   struct SRequest
+   {
+      EReq          req;
+      QString       sOptArg1;
+      QString       sOptArg2;
+      int           iOptArg1;
+      int           iOptArg2;
+   };
+
+   //---------------------------------------------------------------------------
    //
    //! \brief   get ascii text for enum value
    //
@@ -186,6 +200,18 @@ public:
 
    void SetData(const QString &host, const QString &usr, const QString &pw);
 
+   void queueRequest (Kartina::EReq req, int iArg1 = 0, int iArg2 = 0);
+   void queueRequest (Kartina::EReq req, const QString &sReq1, const QString &sReq2 = QString());
+   void queueRequest (Kartina::EReq req, int iArg1, const QString &sArg1);
+
+   void fillErrorMap();
+   bool cookieSet();
+   void SetCookie (const QString &cookie);
+
+
+protected:
+   void queueIn(const Kartina::SRequest &req);
+   void workOffQueue ();
    void GetCookie ();
    void Logout ();
    void GetChannelList (const QString &secCode = QString());
@@ -203,9 +229,6 @@ public:
    void GetEPG (int iChanID, int iOffset = 0);
    void GetVideos (const QString &sPrepared);
    void GetVideoInfo (int iVodID, const QString &secCode = QString());
-   void SetCookie (const QString &cookie);
-   bool busy ();
-   bool cookieSet();
    void setChanHide (const QString &cids, const QString &secCode);
    void setChanShow (const QString &cids, const QString &secCode);
    void getVodManager (const QString &secCode);
@@ -215,26 +238,29 @@ public:
    void getVodFav ();
    void setParentCode (const QString& oldCode, const QString& newCode);
    int  checkResponse (const QString &sResp);
-   void fillErrorMap();
+
    void epgCurrent(const QString &cids);
 
-protected:
    void PostRequest (Kartina::EReq req, const QString &path, const QString &content,
                      const QString &sBrowser = APP_NAME " " __MY__VERSION__);
+
    void GetRequest (Kartina::EReq req, const QString &sRequest,
                     const QString &sBrowser = APP_NAME " " __MY__VERSION__);
 
 private:
-   Kartina::EReq eReq;
-   QString       sUsr;
-   QString       sPw;
-   QString       sHost;
-   QString       sCookie;
-   QByteArray    baPageContent;
-   QBuffer       bufReq;
-   int           iReq;
-   QErrorMap     errMap;
-   QString       sCleanResp;
+   Kartina::EReq              eReq;
+   QString                    sUsr;
+   QString                    sPw;
+   QString                    sHost;
+   QString                    sCookie;
+   QByteArray                 baPageContent;
+   QBuffer                    bufReq;
+   int                        iReq;
+   QErrorMap                  errMap;
+   QString                    sCleanResp;
+   bool                       bPendingReq;
+   QMutex                     mtxQueue;
+   QVector<Kartina::SRequest> vReqQueue;
 
 private slots:
    void handleEndRequest (int id, bool err);
