@@ -465,9 +465,6 @@ void Recorder::closeEvent(QCloseEvent *event)
       // delete context menu stuff ...
       CleanContextMenu();
 
-      // cancel any running kartina request ...
-      KartinaTv.queueRequest(Kartina::REQ_ABORT);
-
       // are we authenticated ... ?
       if (KartinaTv.cookieSet())
       {

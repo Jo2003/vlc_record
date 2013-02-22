@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "61"
-#define BETA_EXT      "B3"
+#define BETA_EXT      "B4"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-02-22: Version 2.61B4
+| - fix a bug where connection chain breaks due to
+|   problems in API client (occurs on save settings)
+|
 | 2013-02-14: Version 2.61B3
 | - intergrate wait trigger into kartina api client
 | - remove waittrigger

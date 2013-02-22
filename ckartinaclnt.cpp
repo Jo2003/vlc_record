@@ -42,6 +42,8 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr,
    bufReq.open(QIODevice::WriteOnly);
 
    connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
+
+   queueRequest(Kartina::REQ_SETHOST);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -173,27 +175,13 @@ void CKartinaClnt::queueIn(const Kartina::SRequest &req)
    // lock command queue ...
    mtxQueue.lock();
 
-   switch (req.req)
+   if ((req.req == Kartina::REQ_COOKIE) || (req.req == Kartina::REQ_LOGOUT))
    {
-   // abort means delete all pending requests ...
-   case Kartina::REQ_ABORT:
       vReqQueue.clear ();
-      break;
-
-   // cookie means all pending requests are unusable ...
-   case Kartina::REQ_COOKIE:
-   // logout means we want to close programm ...
-   case Kartina::REQ_LOGOUT:
-
-      vReqQueue.clear ();
-      // fall thru here ...
-      //  V    V    V
-
-   default:
-      // queue in request ...
-      vReqQueue.append (req);
-      break;
    }
+
+   // queue in request ...
+   vReqQueue.append (req);
 
    // unlock command queue ...
    mtxQueue.unlock();
@@ -321,6 +309,9 @@ void CKartinaClnt::workOffQueue()
       case Kartina::REQ_EPG_CURRENT:
          epgCurrent(req.sOptArg1);
          break;
+      case Kartina::REQ_SETHOST:
+         SetHost();
+         break;
       default:
          bSent = false;
          break;
@@ -358,9 +349,8 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
    sPw            = pw;
    sHost          = host;
    sCookie        = "";
-   eReq           = Kartina::REQ_UNKNOWN;
 
-   setHost(host);
+   queueRequest(Kartina::REQ_SETHOST);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -379,6 +369,25 @@ void CKartinaClnt::SetCookie(const QString &cookie)
 {
    mInfo(tr("We've got following Cookie: %1").arg(cookie));
    sCookie      = cookie;
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    SetHost
+|
+| Author:      Jo2003
+|
+| Begin:       22.02.2013
+|
+| Description: set host
+|
+| Parameters:  --
+|
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::SetHost()
+{
+   eReq = Kartina::REQ_SETHOST;
+   iReq = setHost(sHost);
+   mInfo(tr("Request #%1 - Set Host to %2 ...").arg(iReq).arg(sHost));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1129,15 +1138,18 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 
             mInfo(tr("Request #%1 (%2) done!").arg(id).arg(eReq));
 
-            // check response ...
-            if ((iErr = checkResponse(QString::fromUtf8(baPageContent.constData()))) != 0)
+            if (eReq != Kartina::REQ_SETHOST)
             {
-               emit sigError(sCleanResp, (int)eReq, iErr);
-            }
-            else
-            {
-               // send response ...
-               emit sigHttpResponse (sCleanResp, (int)eReq);
+               // check response ...
+               if ((iErr = checkResponse(QString::fromUtf8(baPageContent.constData()))) != 0)
+               {
+                  emit sigError(sCleanResp, (int)eReq, iErr);
+               }
+               else
+               {
+                  // send response ...
+                  emit sigHttpResponse (sCleanResp, (int)eReq);
+               }
             }
          }
          else
@@ -1147,9 +1159,6 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
          }
       }
    }
-
-   // reset request ...
-   eReq = Kartina::REQ_UNKNOWN;
 
    // request handled (anyhow) ...
    bPendingReq = false;

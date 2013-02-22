@@ -2,23 +2,29 @@
 
 NAME=${1}
 OFFNAME=""
+SSERVER=""
 
 # create official name ...
 case ${NAME} in
    vlc-record)
       OFFNAME="VLC-Record"
+      SSERVER="Kartina.TV"
       ;;
    kartina_tv)
       OFFNAME="Kartina.TV"
+      SSERVER=$OFFNAME
       ;;
    polsky_tv)
       OFFNAME="Polsky.TV"
+      SSERVER=$OFFNAME
       ;;
    afrobox)
       OFFNAME="AfroBox"
+      SSERVER=$OFFNAME
       ;;
    moidom_tv)
       OFFNAME="Moi-Dom.TV"
+      SSERVER=$OFFNAME
       ;;
    *)
       OFFNAME=${NAME}
@@ -66,6 +72,9 @@ PKGSRC=--pkgsource "https://code.google.com/p/vlc-record"
 
 all: debnew
 
+descr:
+	echo "A tool to watch / record IPTV streams from $SSERVER" > description-pak
+
 instclassic: install_base
 
 instnew: install_libvlc
@@ -98,10 +107,10 @@ install_libvlc: install_base
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/9_libvlc_odl.mod
 	\${INSTALL} -m 644 -t \${TARGET}/share/\${PROGFOLDER}/modules modules/11_libvlc-mp4.mod
 
-debnew:
-	\${CHKINST} \${PKGNAMENW} \${PKGGRP} \${PKGVERNW} \${MAINT} \${REQUIRES} \${PKGSRC} \${MAKE} TARGET=\${TARGETNW} PROG=\${PROGNEW} -f install.mak instnew
+debnew: descr
+	\${CHKINST} -y \${PKGNAMENW} \${PKGGRP} \${PKGVERNW} \${MAINT} \${REQUIRES} \${PKGSRC} \${MAKE} TARGET=\${TARGETNW} PROG=\${PROGNEW} -f install.mak instnew
 
-debclc: rename
-	\${CHKINST} \${PKGNAMECL} \${PKGGRP} \${PKGVERCL} \${MAINT} \${REQUIRESCLC} \${PKGSRC} \${MAKE} TARGET=\${TARGETCL} PROG=\${PROGCLC} -f install.mak instclassic
+debclc: descr rename
+	\${CHKINST} -y \${PKGNAMECL} \${PKGGRP} \${PKGVERCL} \${MAINT} \${REQUIRESCLC} \${PKGSRC} \${MAKE} TARGET=\${TARGETCL} PROG=\${PROGCLC} -f install.mak instclassic
 
 EOF

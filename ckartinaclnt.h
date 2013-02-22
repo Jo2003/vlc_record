@@ -67,7 +67,7 @@ public:
       REQ_GETVIDEOS,
       REQ_GETVIDEOINFO,
       REQ_GETVODURL,
-      REQ_ABORT,
+      REQ_SETHOST,
       REQ_GETBITRATE,
       REQ_SETBITRATE,
       REQ_CHANLIST_ALL,
@@ -197,7 +197,6 @@ public:
 
    CKartinaClnt();
    ~CKartinaClnt();
-
    void SetData(const QString &host, const QString &usr, const QString &pw);
 
    void queueRequest (Kartina::EReq req, int iArg1 = 0, int iArg2 = 0);
@@ -246,6 +245,8 @@ protected:
 
    void GetRequest (Kartina::EReq req, const QString &sRequest,
                     const QString &sBrowser = APP_NAME " " __MY__VERSION__);
+
+   void SetHost();
 
 private:
    Kartina::EReq              eReq;
