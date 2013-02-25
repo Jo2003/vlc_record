@@ -31,6 +31,7 @@ namespace channellist
       endRole      = Qt::UserRole + 106,
       bgcolorRole  = Qt::UserRole + 107,
       posRole      = Qt::UserRole + 108,
+      lastEpgUpd   = Qt::UserRole + 109,
       noRole
    };
 }

@@ -944,7 +944,11 @@ int CKartinaXMLParser::parseEpgCurrent (const QString& sResp, QCurrentMap &curre
       case QXmlStreamReader::EndElement:
          if ((xmlSr.name() == "epg") && (cid != -1))
          {
-            currentEpg.insert(cid, chanEntries);
+            if (!chanEntries.isEmpty())
+            {
+               currentEpg.insert(cid, chanEntries);
+            }
+
             cid = -1;
             chanEntries.clear();
          }

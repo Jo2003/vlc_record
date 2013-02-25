@@ -68,6 +68,7 @@
 #define TIME_OFFSET       (35 * 365 * 24 * 3600) // make the slider handle gmt
 #define VIDEOS_PER_SITE   20              // number of videos / site
 #define GPU_ACC_TOKEN     ":ffmpeg-hw"    // mrl option to use GPU acceleration
+#define EPG_UPD_TMOUT     120             // make sure epg update comes not to much
 
 // a namespace for translators ...
 namespace Translators

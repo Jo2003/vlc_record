@@ -1969,7 +1969,6 @@ void Recorder::slotEPGCurrent (const QString &str)
             }
          }
 
-
          // update EPG browser if needed ...
          if ((keyList.at(i) == ui->textEpg->GetCid()) && !iEpgOffset)
          {
@@ -1986,7 +1985,10 @@ void Recorder::slotEPGCurrent (const QString &str)
          }
       }
 
-      slotUpdateChannelList(keyList);
+      if (!keyList.isEmpty())
+      {
+         slotUpdateChannelList(keyList);
+      }
    }
 }
 
@@ -3281,7 +3283,7 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
                else
                {
                   // channel map wasn't updated so far -> request update ...
-                  if ((showInfo.epgUpdTime() + 120) < QDateTime::currentDateTime().toTime_t())
+                  if ((showInfo.epgUpdTime() + EPG_UPD_TMOUT) < QDateTime::currentDateTime().toTime_t())
                   {
                      // set timestamp ...
                      showInfo.setEpgUpdTime(QDateTime::currentDateTime().toTime_t());
@@ -3535,7 +3537,15 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
                // check if this channel needs an update ...
                if ((chanEntry.uiEnd > 0) && (now > chanEntry.uiEnd))
                {
-                  updChannels << QString::number(cid);
+                  // when we lately tried to update EPG for this ... ?
+                  if ((pItem->data(channellist::lastEpgUpd).toUInt() + EPG_UPD_TMOUT) < now)
+                  {
+                     // longer than 120 seconds ago ...
+                     updChannels << QString::number(cid);
+
+                     // set last epg update request time ...
+                     pItem->setData(now, channellist::lastEpgUpd);
+                  }
                }
             }
             else if (cidList.contains(cid))
@@ -4204,6 +4214,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    int       iChanCount =  0;
    int       iLastChan  = -1;
    int       iPos;
+   uint      now = QDateTime::currentDateTime().toTime_t();
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
    iRow      = ui->channelList->currentIndex().row();
@@ -4307,6 +4318,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem->setData(chanlist[i].uiStart, channellist::startRole);
             pItem->setData(chanlist[i].uiEnd, channellist::endRole);
             pItem->setData(iPos, channellist::posRole);
+            pItem->setData(now, channellist::lastEpgUpd);
          }
 
          pModel->appendRow(pItem);
