@@ -15,6 +15,9 @@
 // log file functions ...
 extern CLogFile VlcLog;
 
+// to enable API trace make sure __TRACE is defined ...
+// #define __TRACE
+
 /*-----------------------------------------------------------------------------\
 | Function:    CKartinaClnt / constructor
 |
@@ -448,7 +451,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req,
       // post request ...
       iReq = request(header, content.toAscii(), &bufReq);
 
-#ifdef QT_NO_DEBUG
+#ifndef __TRACE
       mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
 #else
       mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (QString("%1?%2").arg(path).arg(content)));
@@ -494,7 +497,7 @@ void CKartinaClnt::GetRequest (Kartina::EReq req,
       // post request ...
       iReq = request(header, QByteArray(), &bufReq);
 
-#ifdef QT_NO_DEBUG
+#ifndef __TRACE
       mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
 #else
       mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (sRequest));
@@ -1099,7 +1102,6 @@ void CKartinaClnt::epgCurrent(const QString &cids)
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::handleEndRequest(int id, bool err)
 {
-   bool bByPass = false;
    bool bNext;
 
    // is this our request ... ?
@@ -1115,6 +1117,11 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
       // close buffer device ...
       bufReq.close();
 
+#ifdef __TRACE
+      mInfo(tr("Response #%1 for request %2:\n ==8<==8<==8<==\n%3\n ==>8==>8==>8==")
+            .arg(id).arg(eReq).arg(QString::fromUtf8(baPageContent.constData())));
+#endif // __TRACE
+
       /// \brief Logout Handling
       /// Logout means we want to close the program.
       /// It doesn't matter here if logout was successful.
@@ -1126,11 +1133,8 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 
           // send response ...
           emit sigHttpResponse ("", (int)eReq);
-
-          bByPass = true;
       }
-
-      if (!bByPass)
+      else
       {
          if (!err)
          {
