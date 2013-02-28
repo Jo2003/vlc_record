@@ -266,33 +266,33 @@ void CPlayer::setApiClient(CKartinaClnt *pClient)
 |  Author: Jo2003
 |  Description: init player with arguments
 |
-|  Parameters: --
+|  Parameters: additions options for libVLC
 |
 |  Returns: 0 --> ok
 |          -1 --> any error
 \----------------------------------------------------------------- */
-int CPlayer::initPlayer()
+int CPlayer::initPlayer(const QString &sOpts)
 {
    int          iRV     = -1;
    int          i;
    int          iEventCount;
    int          argc    = 0;
-   const char **argv    = NULL;
-   const char  *pVerbose;
    QStringList  slOpts;
+
+   vArgs.clear();
 
    // set verbose mode ...
    if (pSettings->libVlcVerboseLevel() <= 0)
    {
-      pVerbose = "--quiet";
+      vArgs.append("--quiet");
    }
    else if (pSettings->libVlcVerboseLevel() >= 2)
    {
-      pVerbose = "--verbose=2";
+      vArgs.append("--verbose=2");
    }
    else
    {
-      pVerbose = "--verbose=1";
+      vArgs.append("--verbose=1");
    }
 
    // reset crop and aspect cbx ... because it should show the state
@@ -300,32 +300,50 @@ int CPlayer::initPlayer()
    missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_ASPECT);
    missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_CROP);
 
-   // create a new libvlc instance ...
-   const char *vlc_args[] = {
-      "--ignore-config",
-      "--intf=dummy",
-      "--no-media-library",
-      "--no-osd",
-      "--no-stats",
-      "--no-video-title-show",
-   #ifdef Q_WS_MAC
-      // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
-      "--vout=macosx",
-   #endif
-      pVerbose
-   };
+   vArgs.append("--ignore-config");
+   vArgs.append("--intf=dummy");
+   vArgs.append("--no-media-library");
+   vArgs.append("--no-osd");
+   vArgs.append("--no-stats");
+   vArgs.append("--no-video-title-show");
 
-   argc = sizeof(vlc_args) / sizeof(vlc_args[0]);
-   argv = vlc_args;
+#ifdef Q_WS_MAC
+   // vout as well as opengl-provider MIGHT be "minimal_macosx" ...
+   vArgs.append("--vout=macosx");
+#endif
 
-   for (i = 0; i < argc; i++)
+   // do we have to add additional options from mod file?
+   if (!sOpts.isEmpty())
    {
-      slOpts.append(argv[i]);
+      slOpts = sOpts.split(" ", QString::SkipEmptyParts);
+
+      for (i = 0; i < slOpts.count(); i++)
+      {
+         vArgs.append(slOpts[i].toUtf8().constData());
+      }
+
+      slOpts.clear();
+   }
+
+   // fill vlcArgs array - up to MAX_LVLC_ARGS options
+   // are supported ...
+   for (i = 0; i < MAX_LVLC_ARGS; i++)
+   {
+      if (i < vArgs.count())
+      {
+         vlcArgs[i] = vArgs[i].constData();
+         slOpts << vlcArgs[i];
+      }
+      else
+      {
+         vlcArgs[i] = NULL;
+      }
    }
 
    mInfo(tr("Create libVLC with following global options:\n %1").arg(slOpts.join(" ")));
 
-   pVlcInstance = libvlc_new(argc, argv);
+   argc         = (vArgs.count() > MAX_LVLC_ARGS) ? MAX_LVLC_ARGS : vArgs.count();
+   pVlcInstance = libvlc_new(argc, vlcArgs);
 
    if (pVlcInstance)
    {
@@ -553,12 +571,12 @@ int CPlayer::pause()
 |  Author: Jo2003
 |  Description: init player, set media, start play
 |
-|  Parameters: complete command line
+|  Parameters: complete command line, additional libVLC options
 |
 |  Returns: 0 --> ok
 |          -1 --> any error
 \----------------------------------------------------------------- */
-int CPlayer::playMedia(const QString &sCmdLine)
+int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
 {
    int                         iRV    = 0;
    libvlc_media_t             *p_md   = NULL;
@@ -589,7 +607,7 @@ int CPlayer::playMedia(const QString &sCmdLine)
 
    if (!pVlcInstance)
    {
-      iRV = initPlayer();
+      iRV = initPlayer(sOpts);
    }
 
    // make sure we stop the player - needed since playlist support ...

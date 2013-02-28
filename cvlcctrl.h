@@ -87,6 +87,7 @@ private:
    QString    sArchRec;
    QString    sLiveSilentRec;
    QString    sArchSilentRec;
+   QString    sAddVlcOpts;
    bool       bForcedTranslit;
    bool       bTranslit;
    CTranslit *pTranslit;
@@ -106,7 +107,7 @@ public slots:
 signals:
    void sigVlcEnds (int iState);
    void sigVlcStarts (int iState);
-   void sigLibVlcPlayMedia (const QString &str);
+   void sigLibVlcPlayMedia (const QString &str, const QString &opts);
    void sigLibVlcStop ();
 
 public slots:

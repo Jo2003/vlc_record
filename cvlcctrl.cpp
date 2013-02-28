@@ -153,6 +153,7 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
          bForcedTranslit = false;
          sFrcMx          = "no";
          bOwnDownloader  = false;
+         sAddVlcOpts     = "";
 
          QTextStream str(&fModule);
          QString     sLine;
@@ -201,6 +202,10 @@ int CVlcCtrl::LoadPlayerModule(const QString &sPath)
                else if (rx.cap(1) == DOWN_FIRST) // don't use VLC downloader
                {                                 // but our own ...
                   bOwnDownloader = (rx.cap(2).toLower() == "yes") ? true : false;
+               }
+               else if (rx.cap(1) == ADD_LVLC_OPTS) // additional libVLC options
+               {
+                  sAddVlcOpts = rx.cap(2);
                }
             }
          } while (!str.atEnd());
@@ -256,7 +261,7 @@ Q_PID CVlcCtrl::start(const QString &sCmdLine, int iRunTime, bool bDetach, IncPl
       bDetach = false;
 
       // play media ...
-      emit sigLibVlcPlayMedia(sCmdLine);
+      emit sigLibVlcPlayMedia(sCmdLine, sAddVlcOpts);
 
       // assume that all is well ...
       vlcPid = (Q_PID)99; // anything but 0 ...

@@ -16,6 +16,7 @@
 #  - ARCH_SIL_REC: silent record from rtsp source                              #
 #  - TRANSLIT:     translit save file name                                     #
 #  - FORCE_MUX:    force mux to this format                                    #
+#  - LVLC_OPTS:    additional options for libVLC at creation time              #
 # Also there are some placeholders which will be replaced with file names and  #
 # options:                                                                     #
 # {[%PLAYER%]} - full path to the player program                               #
@@ -42,6 +43,14 @@ TRANSLIT     = <<no>>
 ; Options: no, mp4, avi, ts, ...
 ;-------------------------------------------------------------------------------
 FORCE_MUX    = <<mp4>>
+
+;-------------------------------------------------------------------------------
+; Here you can add options for libVLC which will be passed at creation time.
+; You can e.g. force the usage of winGDI video output.
+; The options must by separated by spaces!
+; e.g. <<--vout=wingdi --aout=directx>>
+;-------------------------------------------------------------------------------
+; LVLC_OPTS    = <<--vout=wingdi>>
 
 ;-------------------------------------------------------------------------------
 ; Note the special cut separator ";;"!

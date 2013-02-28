@@ -227,7 +227,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // connect vlc control with libvlc player ...
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
-   connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString)), ui->player, SLOT(playMedia(QString)));
+   connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString, QString)), ui->player, SLOT(playMedia(QString, QString)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcStop()), ui->player, SLOT(stop()));
 
    // aspect ratio, crop and full screen ...

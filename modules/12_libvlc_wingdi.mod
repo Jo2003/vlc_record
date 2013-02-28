@@ -42,7 +42,7 @@ TRANSLIT     = <<no>>
 ; force output format no matter what is given as settings
 ; Options: no, mp4, avi, ts, ...
 ;-------------------------------------------------------------------------------
-FORCE_MUX    = <<avi>>
+FORCE_MUX    = <<no>>
 
 ;-------------------------------------------------------------------------------
 ; Here you can add options for libVLC which will be passed at creation time.
@@ -50,7 +50,7 @@ FORCE_MUX    = <<avi>>
 ; The options must by separated by spaces!
 ; e.g. <<--vout=wingdi --aout=directx>>
 ;-------------------------------------------------------------------------------
-; LVLC_OPTS    = <<--vout=wingdi>>
+LVLC_OPTS    = <<--vout=wingdi>>
 
 ;-------------------------------------------------------------------------------
 ; Note the special cut separator ";;"!
@@ -63,7 +63,7 @@ FORCE_MUX    = <<avi>>
 ;-------------------------------------------------------------------------------
 LIVE_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:network-caching={[%CACHE%]}>>
 ARCH_PLAY    = <<{[%URL%]};;:no-http-reconnect;;:run-time=36000;;:network-caching={[%CACHE%]}>>
-LIVE_REC     = <<{[%URL%]};;:no-http-reconnect;;:network-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}>>
-ARCH_REC     = <<{[%URL%]};;:no-http-reconnect;;:run-time=36000;;:network-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:duplicate{dst=display,dst=std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}}>>
-LIVE_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:network-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}>>
-ARCH_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:run-time=36000;;:network-caching={[%CACHE%]};;:sout=#transcode{vcodec=xvid,vb=3750,threads=2,acodec=mp3,ab=192,channels=2,samplerate=48000,audio-sync,venc=ffmpeg{keyint=50,hurry-up,hw,vt=1500},aenc=ffmpeg}:std{access=file,mux=ffmpeg{mux={[%MUX%]}},dst='{[%DST%]}.{[%MUX%]}'}>>
+LIVE_REC     = <<{[%URL%]};;:no-http-reconnect;;:network-caching={[%CACHE%]};;:sout=#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
+ARCH_REC     = <<{[%URL%]};;:no-http-reconnect;;:run-time=36000;;:network-caching={[%CACHE%]};;:sout=#duplicate{dst=display,dst=std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}}>>
+LIVE_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:network-caching={[%CACHE%]};;:sout=#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}>>
+ARCH_SIL_REC = <<{[%URL%]};;:no-http-reconnect;;:run-time=36000;;:network-caching={[%CACHE%]};;:sout=#std{access=file,mux={[%MUX%]},dst='{[%DST%]}.{[%MUX%]}'}>>

@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "61"
-#define BETA_EXT      "B5"
+#define BETA_EXT      "B6"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-02-28: Version 2.61B6
+| - support additional parameters for libVLC create
+|   given in mod file (keyword: LVLC_OPTS)
+|
 | 2013-02-25: Version 2.61B5
 | - make sure to request epg_current not to much
 |   (workaround for channels with missing epg entries)

@@ -94,6 +94,7 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\modules\9_libvlc_odl.mod"
   File "${SRCDIR}\modules\10_vlc-player_odl.mod"
   File "${SRCDIR}\modules\11_libvlc-mp4.mod"
+  File "${SRCDIR}\modules\12_libvlc_wingdi.mod"
 
   SetOutPath "$INSTDIR\doc"
   File /r "${SRCDIR}\qhc\${APPNAME}\*.qhc"
@@ -272,6 +273,7 @@ Section "un.Program"
   Delete "$INSTDIR\modules\9_libvlc_odl.mod"
   Delete "$INSTDIR\modules\10_vlc-player_odl.mod"
   Delete "$INSTDIR\modules\11_libvlc-mp4.mod"
+  Delete "$INSTDIR\modules\12_libvlc_wingdi.mod"
 
   ; delete directories ...
   RMDir  "$INSTDIR\modules"

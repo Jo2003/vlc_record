@@ -31,6 +31,7 @@
 #define FLAG_TRANSLIT    "TRANSLIT"
 #define FORCE_MUX        "FORCE_MUX"
 #define DOWN_FIRST       "DOWN_FIRST"
+#define ADD_LVLC_OPTS    "LVLC_OPTS"
 
 /**********************************************************/
 /*                      HTML templates                    */

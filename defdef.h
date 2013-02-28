@@ -69,6 +69,7 @@
 #define VIDEOS_PER_SITE   20              // number of videos / site
 #define GPU_ACC_TOKEN     ":ffmpeg-hw"    // mrl option to use GPU acceleration
 #define EPG_UPD_TMOUT     120             // make sure epg update comes not to much
+#define MAX_LVLC_ARGS     16              // max arguments to give to libVLC at creation
 
 // a namespace for translators ...
 namespace Translators

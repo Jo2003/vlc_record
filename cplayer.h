@@ -55,7 +55,7 @@ class CPlayer : public QWidget
 public:
    CPlayer(QWidget *parent = 0);
    ~CPlayer();
-   int  initPlayer ();
+   int  initPlayer (const QString &sOpts);
    bool isPlaying ();
    void setShortCuts (QVector<CShortcutEx *> *pvSc);
    void startPlayTimer ();
@@ -100,6 +100,8 @@ private:
    uint                         uiDuration;
    ulong                        ulLibvlcVersion;
    bool                         bOmitNextEvent;
+   const char*                  vlcArgs[MAX_LVLC_ARGS];
+   QVector<QByteArray>          vArgs;
 
 private slots:
    void slotPositionChanged(int value);
@@ -115,7 +117,7 @@ private slots:
    void slotBtnSaveAspectCropClicked();
 
 public slots:
-   int  playMedia (const QString &sCmdLine);
+   int  playMedia (const QString &sCmdLine, const QString &sOpts);
    int  play();
    int  stop();
    int  silentStop();
