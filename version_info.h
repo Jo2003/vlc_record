@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "61"
-#define BETA_EXT      "B6"
+#define VERSION_MINOR "62"
+#define BETA_EXT      ""
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-03-08: Version 2.62
+| - no changes since last beta
+|
 | 2013-02-28: Version 2.61B6
 | - support additional parameters for libVLC create
 |   given in mod file (keyword: LVLC_OPTS)
