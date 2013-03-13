@@ -454,7 +454,7 @@ void CKartinaClnt::PostRequest (Kartina::EReq req,
 #ifndef __TRACE
       mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
 #else
-      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (QString("%1?%2").arg(path).arg(content)));
+      mInfo(tr("Request #%1: %2 sent ...").arg(iReq).arg (QString("Path: '%1', Query: '%2'").arg(path).arg(content)));
 #endif
    }
 }
@@ -1104,24 +1104,27 @@ void CKartinaClnt::handleEndRequest(int id, bool err)
 {
    bool bNext;
 
+   // close buffer device and open for read only...
+   bufReq.close();
+   bufReq.open(QIODevice::ReadOnly);
+
+   // read all content ...
+   baPageContent = bufReq.readAll();
+
+   // close buffer device ...
+   bufReq.close();
+
+#ifdef __TRACE
+   mInfo(tr("%4esponse #%1 for request %2:\n ==8<==8<==8<==\n%3\n ==>8==>8==>8==")
+         .arg(id)
+         .arg(eReq)
+         .arg(QString::fromUtf8(baPageContent.constData()))
+         .arg((id == iReq) ? "R" : "Unknown(= ignored) r"));
+#endif // __TRACE
+
    // is this our request ... ?
    if (id == iReq)
    {
-      // close buffer device and open for read only...
-      bufReq.close();
-      bufReq.open(QIODevice::ReadOnly);
-
-      // read all content ...
-      baPageContent = bufReq.readAll();
-
-      // close buffer device ...
-      bufReq.close();
-
-#ifdef __TRACE
-      mInfo(tr("Response #%1 for request %2:\n ==8<==8<==8<==\n%3\n ==>8==>8==>8==")
-            .arg(id).arg(eReq).arg(QString::fromUtf8(baPageContent.constData())));
-#endif // __TRACE
-
       /// \brief Logout Handling
       /// Logout means we want to close the program.
       /// It doesn't matter here if logout was successful.
