@@ -15,40 +15,6 @@
 // log file functions ...
 extern CLogFile VlcLog;
 
-// to enable API trace make sure __TRACE is defined ...
-// #define __TRACE
-
-/*-----------------------------------------------------------------------------\
-| Function:    CKartinaClnt / constructor
-|
-| Author:      Jo2003
-|
-| Begin:       Monday, January 04, 2010 16:14:52
-|
-| Description: constructs a CKartinaClnt object to communicate with
-|              kartina.tv
-| Parameters:  host, username, password
-|
-\-----------------------------------------------------------------------------*/
-CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr,
-                           const QString &pw) :QHttp(host)
-{
-   sUsr           = usr;
-   sPw            = pw;
-   iReq           = -1;
-   sCookie        = "";
-   sHost          = host;
-   bPendingReq    = false;
-   eReq           = Kartina::REQ_UNKNOWN;
-   fillErrorMap();
-
-   bufReq.open(QIODevice::WriteOnly);
-
-   connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
-
-   queueRequest(Kartina::REQ_SETHOST);
-}
-
 /*-----------------------------------------------------------------------------\
 | Function:    CKartinaClnt / constructor
 |
@@ -61,20 +27,17 @@ CKartinaClnt::CKartinaClnt(const QString &host, const QString &usr,
 | Parameters:  --
 |
 \-----------------------------------------------------------------------------*/
-CKartinaClnt::CKartinaClnt() :QHttp()
+CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
 {
    sUsr           = "";
    sPw            = "";
-   iReq           = -1;
    sCookie        = "";
-   sHost          = "";
-   bPendingReq    = false;
-   eReq           = Kartina::REQ_UNKNOWN;
+   sApiUrl        = "";
    fillErrorMap();
 
-   bufReq.open(QIODevice::WriteOnly);
-
-   connect(this, SIGNAL(requestFinished(int, bool)), this, SLOT(handleEndRequest(int, bool)));
+   connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
+   connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
+   connect(this, SIGNAL(sigErr(QString,int)), this, SLOT(slotErr(QString,int)));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -91,12 +54,87 @@ CKartinaClnt::CKartinaClnt() :QHttp()
 \-----------------------------------------------------------------------------*/
 CKartinaClnt::~CKartinaClnt()
 {
-   abort();
+   // abort();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle string response from API server
+//
+//! \author  Jo2003
+//! \date    15.03.2013
+//
+//! \param   reqId (int) request identifier
+//! \param   strResp (QString) response string
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CKartinaClnt::slotStringResponse (int reqId, QString strResp)
+{
+   int     iErr = 0;
+   QString sCleanResp;
+
+   if (reqId == (int)Kartina::REQ_LOGOUT)
+   {
+       sCookie = "";
+
+       // send response ...
+       emit sigHttpResponse ("", reqId);
+   }
+   else
+   {
+      mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((Kartina::EReq)reqId)));
+
+      // check response ...
+      if ((iErr = checkResponse(strResp, sCleanResp)) != 0)
+      {
+         emit sigError(sCleanResp, reqId, iErr);
+      }
+      else
+      {
+         // send response ...
+         emit sigHttpResponse (sCleanResp, reqId);
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle binary response from API server (maybe icons?)
+//
+//! \author  Jo2003
+//! \date    15.03.2013
+//
+//! \param   reqId (int) request identifier
+//! \param   binResp (QByteArray) binary data
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CKartinaClnt::slotBinResponse (int reqId, QByteArray binResp)
+{
+   Q_UNUSED(reqId)
+   Q_UNUSED(binResp)
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle error from API server
+//
+//! \author  Jo2003
+//! \date    15.03.2013
+//
+//! \param   sErr (QString) error string
+//! \param   iErr (int) error code
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CKartinaClnt::slotErr (QString sErr, int iErr)
+{
+   emit sigError(sErr, (int)Kartina::REQ_UNKNOWN, iErr);
 }
 
 /////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
+
 /* -----------------------------------------------------------------\
 |  Method: queueRequest
 |  Begin: 19.01.2010 / 15:55:06
@@ -175,162 +213,98 @@ void CKartinaClnt::queueRequest (Kartina::EReq req, int iArg1, const QString &sA
 \----------------------------------------------------------------- */
 void CKartinaClnt::queueIn(const Kartina::SRequest &req)
 {
-   // lock command queue ...
-   mtxQueue.lock();
-
-   if ((req.req == Kartina::REQ_COOKIE) || (req.req == Kartina::REQ_LOGOUT))
+   // handle request ...
+   switch (req.req)
    {
-      vReqQueue.clear ();
-   }
-
-   // queue in request ...
-   vReqQueue.append (req);
-
-   // unlock command queue ...
-   mtxQueue.unlock();
-
-   if (!bPendingReq && !vReqQueue.isEmpty())
-   {
-      workOffQueue();
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: workOffQueue
-|  Begin: 19.01.2010 / 15:54:11
-|  Author: Jo2003
-|  Description: get next request from request queue and
-|               send it to API server
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CKartinaClnt::workOffQueue()
-{
-   Kartina::SRequest req;
-   bool              bSent = true;
-
-   // are there requests in queue ... ?
-   if (!vReqQueue.isEmpty())
-   {
-      // lock queue ...
-      mtxQueue.lock();
-
-      // get 1st request ...
-      req = vReqQueue.first();
-
-      // remove 1st request from queue ...
-      vReqQueue.remove(0);
-
-      // unlock queue ...
-      mtxQueue.unlock();
-
-      // handle request ...
-      switch (req.req)
-      {
-      case Kartina::REQ_CHANNELLIST:
-         GetChannelList();
-         break;
-      case Kartina::REQ_COOKIE:
-         GetCookie();
-         break;
-      case Kartina::REQ_EPG:
-         GetEPG(req.iOptArg1, req.iOptArg2);
-         break;
-      case Kartina::REQ_SERVER:
-         SetServer(req.sOptArg1);
-         break;
-      case Kartina::REQ_HTTPBUFF:
-         SetHttpBuffer(req.iOptArg1);
-         break;
-      case Kartina::REQ_STREAM:
-         GetStreamURL(req.iOptArg1, req.sOptArg1);
-         break;
-      case Kartina::REQ_TIMERREC:
-         GetStreamURL(req.iOptArg1, req.sOptArg1, true);
-         break;
-      case Kartina::REQ_ARCHIV:
-         GetArchivURL(req.sOptArg1, req.sOptArg2);
-         break;
-      case Kartina::REQ_TIMESHIFT:
-         SetTimeShift(req.iOptArg1);
-         break;
-      case Kartina::REQ_GETTIMESHIFT:
-         GetTimeShift();
-         break;
-      case Kartina::REQ_GET_SERVER:
-         GetServer();
-         break;
-      case Kartina::REQ_LOGOUT:
-         Logout();
-         break;
-      case Kartina::REQ_GETVODGENRES:
-         GetVodGenres();
-         break;
-      case Kartina::REQ_GETVIDEOS:
-         GetVideos(req.sOptArg1);
-         break;
-      case Kartina::REQ_GETVIDEOINFO:
-         GetVideoInfo(req.iOptArg1, req.sOptArg1);
-         break;
-      case Kartina::REQ_GETVODURL:
-         GetVodUrl(req.iOptArg1, req.sOptArg1);
-         break;
-      case Kartina::REQ_GETBITRATE:
-         GetBitRate();
-         break;
-      case Kartina::REQ_SETBITRATE:
-         SetBitRate(req.iOptArg1);
-         break;
-      case Kartina::REQ_SETCHAN_HIDE:
-         setChanHide(req.sOptArg1, req.sOptArg2);
-         break;
-      case Kartina::REQ_SETCHAN_SHOW:
-         setChanShow(req.sOptArg1, req.sOptArg2);
-         break;
-      case Kartina::REQ_CHANLIST_ALL:
-         GetChannelList(req.sOptArg1);
-         break;
-      case Kartina::REQ_GET_VOD_MANAGER:
-         getVodManager(req.sOptArg1);
-         break;
-      case Kartina::REQ_SET_VOD_MANAGER:
-         setVodManager(req.sOptArg1, req.sOptArg2);
-         break;
-      case Kartina::REQ_ADD_VOD_FAV:
-         addVodFav(req.iOptArg1, req.sOptArg1);
-         break;
-      case Kartina::REQ_REM_VOD_FAV:
-         remVodFav(req.iOptArg1, req.sOptArg1);
-         break;
-      case Kartina::REQ_GET_VOD_FAV:
-         getVodFav();
-         break;
-      case Kartina::REQ_SET_PCODE:
-         setParentCode(req.sOptArg1, req.sOptArg2);
-         break;
-      case Kartina::REQ_EPG_CURRENT:
-         epgCurrent(req.sOptArg1);
-         break;
-      case Kartina::REQ_SETHOST:
-         SetHost();
-         break;
-      default:
-         bSent = false;
-         break;
-      }
-
-      if (bSent)
-      {
-         // work in progress ...
-         bPendingReq = true;
-      }
+   case Kartina::REQ_CHANNELLIST:
+      GetChannelList();
+      break;
+   case Kartina::REQ_COOKIE:
+      GetCookie();
+      break;
+   case Kartina::REQ_EPG:
+      GetEPG(req.iOptArg1, req.iOptArg2);
+      break;
+   case Kartina::REQ_SERVER:
+      SetServer(req.sOptArg1);
+      break;
+   case Kartina::REQ_HTTPBUFF:
+      SetHttpBuffer(req.iOptArg1);
+      break;
+   case Kartina::REQ_STREAM:
+      GetStreamURL(req.iOptArg1, req.sOptArg1);
+      break;
+   case Kartina::REQ_TIMERREC:
+      GetStreamURL(req.iOptArg1, req.sOptArg1, true);
+      break;
+   case Kartina::REQ_ARCHIV:
+      GetArchivURL(req.sOptArg1, req.sOptArg2);
+      break;
+   case Kartina::REQ_TIMESHIFT:
+      SetTimeShift(req.iOptArg1);
+      break;
+   case Kartina::REQ_GETTIMESHIFT:
+      GetTimeShift();
+      break;
+   case Kartina::REQ_GET_SERVER:
+      GetServer();
+      break;
+   case Kartina::REQ_LOGOUT:
+      Logout();
+      break;
+   case Kartina::REQ_GETVODGENRES:
+      GetVodGenres();
+      break;
+   case Kartina::REQ_GETVIDEOS:
+      GetVideos(req.sOptArg1);
+      break;
+   case Kartina::REQ_GETVIDEOINFO:
+      GetVideoInfo(req.iOptArg1, req.sOptArg1);
+      break;
+   case Kartina::REQ_GETVODURL:
+      GetVodUrl(req.iOptArg1, req.sOptArg1);
+      break;
+   case Kartina::REQ_GETBITRATE:
+      GetBitRate();
+      break;
+   case Kartina::REQ_SETBITRATE:
+      SetBitRate(req.iOptArg1);
+      break;
+   case Kartina::REQ_SETCHAN_HIDE:
+      setChanHide(req.sOptArg1, req.sOptArg2);
+      break;
+   case Kartina::REQ_SETCHAN_SHOW:
+      setChanShow(req.sOptArg1, req.sOptArg2);
+      break;
+   case Kartina::REQ_CHANLIST_ALL:
+      GetChannelList(req.sOptArg1);
+      break;
+   case Kartina::REQ_GET_VOD_MANAGER:
+      getVodManager(req.sOptArg1);
+      break;
+   case Kartina::REQ_SET_VOD_MANAGER:
+      setVodManager(req.sOptArg1, req.sOptArg2);
+      break;
+   case Kartina::REQ_ADD_VOD_FAV:
+      addVodFav(req.iOptArg1, req.sOptArg1);
+      break;
+   case Kartina::REQ_REM_VOD_FAV:
+      remVodFav(req.iOptArg1, req.sOptArg1);
+      break;
+   case Kartina::REQ_GET_VOD_FAV:
+      getVodFav();
+      break;
+   case Kartina::REQ_SET_PCODE:
+      setParentCode(req.sOptArg1, req.sOptArg2);
+      break;
+   case Kartina::REQ_EPG_CURRENT:
+      epgCurrent(req.sOptArg1);
+      break;
+   default:
+      break;
    }
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////
 
 /*-----------------------------------------------------------------------------\
@@ -350,10 +324,8 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
 {
    sUsr           = usr;
    sPw            = pw;
-   sHost          = host;
+   sApiUrl        = QString("http://%1%2").arg(host).arg(KARTINA_API_XML_PATH);
    sCookie        = "";
-
-   queueRequest(Kartina::REQ_SETHOST);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -371,26 +343,7 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
 void CKartinaClnt::SetCookie(const QString &cookie)
 {
    mInfo(tr("We've got following Cookie: %1").arg(cookie));
-   sCookie      = cookie;
-}
-
-/*-----------------------------------------------------------------------------\
-| Function:    SetHost
-|
-| Author:      Jo2003
-|
-| Begin:       22.02.2013
-|
-| Description: set host
-|
-| Parameters:  --
-|
-\-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetHost()
-{
-   eReq = Kartina::REQ_SETHOST;
-   iReq = setHost(sHost);
-   mInfo(tr("Request #%1 - Set Host to %2 ...").arg(iReq).arg(sHost));
+   sCookie = cookie;
 }
 
 /*-----------------------------------------------------------------------------\
@@ -408,101 +361,7 @@ void CKartinaClnt::SetHost()
 void CKartinaClnt::Logout ()
 {
    mInfo(tr("Logout ..."));
-
-   GetRequest(Kartina::REQ_LOGOUT, KARTINA_API_XML_PATH "logout");
-}
-
-/*-----------------------------------------------------------------------------\
-| Function:    PostRequest
-|
-| Author:      Jo2003
-|
-| Begin:       Monday, January 04, 2010 16:14:52
-|
-| Description: send a post request to kartina.tv
-|
-| Parameters:  request type, path on server, request string
-|
-| Returns:     --
-\-----------------------------------------------------------------------------*/
-void CKartinaClnt::PostRequest (Kartina::EReq req,
-                                const QString &path,
-                                const QString &content,
-                                const QString &sBrowser)
-{
-   // only send request if we're logged in or wont login ...
-   if ((sCookie != "") || (req == Kartina::REQ_COOKIE))
-   {
-      eReq = req;
-      QHttpRequestHeader header("POST", path.toAscii());
-      header.addValue("Host", sHost);
-      header.setContentType("application/x-www-form-urlencoded");
-      header.addValue("User-Agent", sBrowser);
-      header.addValue("Connection", "close");
-      if (sCookie != "")
-      {
-         header.addValue("Cookie", sCookie);
-      }
-      header.setContentLength(content.toAscii().size());
-
-      // open and clean data buffer ...
-      bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
-
-      // post request ...
-      iReq = request(header, content.toAscii(), &bufReq);
-
-#ifndef __TRACE
-      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
-#else
-      mInfo(tr("Request #%1: %2 sent ...").arg(iReq).arg (QString("Path: '%1', Query: '%2'").arg(path).arg(content)));
-#endif
-   }
-}
-
-/*-----------------------------------------------------------------------------\
-| Function:    GetRequest
-|
-| Author:      Jo2003
-|
-| Begin:       28.07.2010 / 16:14:52
-|
-| Description: send a get request to kartina.tv
-|
-| Parameters:  request type, request
-|
-| Returns:     --
-\-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetRequest (Kartina::EReq req,
-                               const QString &sRequest,
-                               const QString &sBrowser)
-{
-   // only send request if we're logged in or wont login ...
-   if ((sCookie != "") || (req == Kartina::REQ_COOKIE))
-   {
-      eReq = req;
-      QHttpRequestHeader header("GET", sRequest.toAscii());
-      header.addValue("Host", sHost);
-      header.setContentType("application/x-www-form-urlencoded");
-      header.addValue("User-Agent", sBrowser);
-      header.addValue("Connection", "close");
-      if (sCookie != "")
-      {
-         header.addValue("Cookie", sCookie);
-      }
-      header.setContentLength(0);
-
-      // open and clean data buffer ...
-      bufReq.open(QIODevice::WriteOnly | QIODevice::Truncate);
-
-      // post request ...
-      iReq = request(header, QByteArray(), &bufReq);
-
-#ifndef __TRACE
-      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (eReq));
-#else
-      mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg (sRequest));
-#endif
-   }
+   get((int)Kartina::REQ_LOGOUT, sApiUrl + "logout");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -522,8 +381,8 @@ void CKartinaClnt::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   PostRequest(Kartina::REQ_COOKIE, KARTINA_API_XML_PATH "login",
-               QString("login=%1&pass=%2&settings=all").arg(sUsr).arg(sPw));
+   post((int)Kartina::REQ_COOKIE, sApiUrl + "login",
+        QString("login=%1&pass=%2&settings=all").arg(sUsr).arg(sPw));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -551,8 +410,8 @@ void CKartinaClnt::GetChannelList (const QString &secCode)
    }
 
    // request channel list or channel list for settings ...
-   PostRequest((secCode == "") ? Kartina::REQ_CHANNELLIST : Kartina::REQ_CHANLIST_ALL,
-               KARTINA_API_XML_PATH "channel_list", req);
+   post((secCode == "") ? (int)Kartina::REQ_CHANNELLIST : (int)Kartina::REQ_CHANLIST_ALL,
+        sApiUrl + "channel_list", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -572,7 +431,7 @@ void CKartinaClnt::GetServer()
 {
    mInfo(tr("Request Stream Server List ..."));
 
-   GetRequest(Kartina::REQ_GET_SERVER, KARTINA_API_XML_PATH "settings?var=stream_server");
+   get((int)Kartina::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -592,7 +451,7 @@ void CKartinaClnt::GetTimeShift()
 {
    mInfo(tr("Request Time Shift ..."));
 
-   GetRequest(Kartina::REQ_GETTIMESHIFT, KARTINA_API_XML_PATH "settings?var=timeshift");
+   get((int)Kartina::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -612,7 +471,7 @@ void CKartinaClnt::SetTimeShift (int iHours)
 {
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
-   PostRequest(Kartina::REQ_TIMESHIFT, KARTINA_API_XML_PATH "settings_set",
+   post((int)Kartina::REQ_TIMESHIFT, sApiUrl + "settings_set",
                QString("var=timeshift&val=%1").arg(iHours));
 }
 
@@ -633,7 +492,7 @@ void CKartinaClnt::GetBitRate()
 {
    mInfo(tr("Request Bit Rate ..."));
 
-   GetRequest(Kartina::REQ_GETBITRATE, KARTINA_API_XML_PATH "settings?var=bitrate");
+   get((int)Kartina::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -653,7 +512,7 @@ void CKartinaClnt::SetBitRate(int iRate)
 {
    mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
 
-   PostRequest(Kartina::REQ_SETBITRATE, KARTINA_API_XML_PATH "settings_set",
+   post((int)Kartina::REQ_SETBITRATE, sApiUrl + "settings_set",
                QString("var=bitrate&val=%1").arg(iRate));
 }
 
@@ -681,8 +540,8 @@ void CKartinaClnt::GetStreamURL(int iChanID, const QString &secCode, bool bTimer
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   PostRequest((bTimerRec) ? Kartina::REQ_TIMERREC : Kartina::REQ_STREAM,
-               KARTINA_API_XML_PATH "get_url", req);
+   post((bTimerRec) ? (int)Kartina::REQ_TIMERREC : (int)Kartina::REQ_STREAM,
+               sApiUrl + "get_url", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -702,7 +561,7 @@ void CKartinaClnt::SetServer (const QString &sIp)
 {
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
-   PostRequest(Kartina::REQ_SERVER, KARTINA_API_XML_PATH "settings_set",
+   post((int)Kartina::REQ_SERVER, sApiUrl + "settings_set",
                QString("var=stream_server&val=%1").arg(sIp));
 }
 
@@ -723,7 +582,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 {
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
-   PostRequest(Kartina::REQ_HTTPBUFF, KARTINA_API_XML_PATH "settings_set",
+   post((int)Kartina::REQ_HTTPBUFF, sApiUrl + "settings_set",
                QString("var=http_caching&val=%1").arg(iTime));
 }
 
@@ -746,9 +605,8 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 
    QDate now = QDate::currentDate().addDays(iOffset);
 
-   GetRequest(Kartina::REQ_EPG,
-              QString("%1epg?cid=%2&day=%3").arg(KARTINA_API_XML_PATH)
-              .arg(iChanID).arg(now.toString("ddMMyy")));
+   get((int)Kartina::REQ_EPG, sApiUrl + QString("epg?cid=%1&day=%2")
+       .arg(iChanID).arg(now.toString("ddMMyy")));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -775,7 +633,7 @@ void CKartinaClnt::GetArchivURL (const QString &prepared, const QString &secCode
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   PostRequest(Kartina::REQ_ARCHIV, KARTINA_API_XML_PATH "get_url", req);
+   post((int)Kartina::REQ_ARCHIV, sApiUrl + "get_url", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -795,7 +653,7 @@ void CKartinaClnt::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   GetRequest(Kartina::REQ_GETVODGENRES, KARTINA_API_XML_PATH "vod_genres");
+   get((int)Kartina::REQ_GETVODGENRES, sApiUrl + "vod_genres");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -815,10 +673,7 @@ void CKartinaClnt::GetVideos(const QString &sPrepared)
 {
    mInfo(tr("Request Videos ..."));
 
-   QString sReq = QString("%1vod_list?%2")
-         .arg(KARTINA_API_XML_PATH).arg(sPrepared);
-
-   GetRequest(Kartina::REQ_GETVIDEOS, sReq);
+   get((int)Kartina::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -838,14 +693,14 @@ void CKartinaClnt::GetVideoInfo(int iVodID, const QString &secCode)
 {
    mInfo(tr("Request Video info for video %1...").arg(iVodID));
 
-   QString req = QString("%1vod_info?id=%2").arg(KARTINA_API_XML_PATH).arg(iVodID);
+   QString req = QString("vod_info?id=%1").arg(iVodID);
 
    if (secCode != "")
    {
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   GetRequest(Kartina::REQ_GETVIDEOINFO, req);
+   get((int)Kartina::REQ_GETVIDEOINFO, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -865,8 +720,7 @@ void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
 {
    mInfo(tr("Request Video Url for video %1...").arg(iVidId));
 
-   QString req = QString("%1vod_geturl?fileid=%2&ad=1")
-         .arg(KARTINA_API_XML_PATH)
+   QString req = QString("vod_geturl?fileid=%1&ad=1")
          .arg(iVidId);
 
    if (secCode != "")
@@ -874,7 +728,7 @@ void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   GetRequest(Kartina::REQ_GETVODURL, req);
+   get((int)Kartina::REQ_GETVODURL, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -897,7 +751,7 @@ void CKartinaClnt::setChanHide(const QString &cids, const QString &secCode)
    QString req = QString("cmd=hide_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   PostRequest(Kartina::REQ_SETCHAN_HIDE, KARTINA_API_XML_PATH "rule", req);
+   post((int)Kartina::REQ_SETCHAN_HIDE, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -920,7 +774,7 @@ void CKartinaClnt::setChanShow(const QString &cids, const QString &secCode)
    QString req = QString("cmd=show_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   PostRequest(Kartina::REQ_SETCHAN_SHOW, KARTINA_API_XML_PATH "rule", req);
+   post((int)Kartina::REQ_SETCHAN_SHOW, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -943,7 +797,7 @@ void CKartinaClnt::getVodManager(const QString &secCode)
    QString req = QString("cmd=get_user_rates&protect_code=%1")
            .arg(secCode);
 
-   PostRequest(Kartina::REQ_GET_VOD_MANAGER, KARTINA_API_XML_PATH "vod_manage", req);
+   post((int)Kartina::REQ_GET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -966,7 +820,7 @@ void CKartinaClnt::setVodManager(const QString &rules, const QString &secCode)
    QString req = QString("cmd=set_user_rates%1&protect_code=%2")
            .arg(rules).arg(secCode);
 
-   PostRequest(Kartina::REQ_SET_VOD_MANAGER, KARTINA_API_XML_PATH "vod_manage", req);
+   post((int)Kartina::REQ_SET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -993,7 +847,7 @@ void CKartinaClnt::addVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   PostRequest(Kartina::REQ_ADD_VOD_FAV, KARTINA_API_XML_PATH "vod_favadd", req);
+   post((int)Kartina::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1020,7 +874,7 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   PostRequest(Kartina::REQ_REM_VOD_FAV, KARTINA_API_XML_PATH "vod_favsub", req);
+   post((int)Kartina::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1039,7 +893,7 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
 void CKartinaClnt::getVodFav()
 {
    mInfo(tr("Get VOD favourites (%1) ..."));
-   GetRequest(Kartina::REQ_GET_VOD_FAV, KARTINA_API_XML_PATH "vod_favlist");
+   get((int)Kartina::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1062,7 +916,7 @@ void CKartinaClnt::setParentCode(const QString &oldCode, const QString &newCode)
    QString req = QString("var=pcode&old_code=%1&new_code=%2&confirm_code=%2")
          .arg(oldCode).arg(newCode);
 
-   PostRequest(Kartina::REQ_SET_PCODE, KARTINA_API_XML_PATH "settings_set", req);
+   post((int)Kartina::REQ_SET_PCODE, sApiUrl + "settings_set", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1082,102 +936,8 @@ void CKartinaClnt::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   GetRequest(Kartina::REQ_EPG_CURRENT,
-              QString("%1epg_current?cids=%2&epg=3").arg(KARTINA_API_XML_PATH)
-              .arg(cids));
-}
-
-/*-----------------------------------------------------------------------------\
-| Function:    handleEndRequest (slot)
-|
-| Author:      Jo2003
-|
-| Begin:       Monday, January 04, 2010 16:14:52
-|
-| Description: sends messages if a request has finished ...
-|
-| Parameters:  request id (unused), error inidicator
-|
-| Returns:     --
-\-----------------------------------------------------------------------------*/
-void CKartinaClnt::handleEndRequest(int id, bool err)
-{
-   bool bNext;
-
-   // close buffer device and open for read only...
-   bufReq.close();
-   bufReq.open(QIODevice::ReadOnly);
-
-   // read all content ...
-   baPageContent = bufReq.readAll();
-
-   // close buffer device ...
-   bufReq.close();
-
-#ifdef __TRACE
-   mInfo(tr("%4esponse #%1 for request %2:\n ==8<==8<==8<==\n%3\n ==>8==>8==>8==")
-         .arg(id)
-         .arg(eReq)
-         .arg(QString::fromUtf8(baPageContent.constData()))
-         .arg((id == iReq) ? "R" : "Unknown(= ignored) r"));
-#endif // __TRACE
-
-   // is this our request ... ?
-   if (id == iReq)
-   {
-      /// \brief Logout Handling
-      /// Logout means we want to close the program.
-      /// It doesn't matter here if logout was successful.
-      /// In any case response (error or no error) means
-      /// we're done!
-      if (eReq == Kartina::REQ_LOGOUT)
-      {
-          sCookie = "";
-
-          // send response ...
-          emit sigHttpResponse ("", (int)eReq);
-      }
-      else
-      {
-         if (!err)
-         {
-            int iErr;
-
-            mInfo(tr("Request #%1 (%2) done!").arg(id).arg(eReq));
-
-            if (eReq != Kartina::REQ_SETHOST)
-            {
-               // check response ...
-               if ((iErr = checkResponse(QString::fromUtf8(baPageContent.constData()))) != 0)
-               {
-                  emit sigError(sCleanResp, (int)eReq, iErr);
-               }
-               else
-               {
-                  // send response ...
-                  emit sigHttpResponse (sCleanResp, (int)eReq);
-               }
-            }
-         }
-         else
-         {
-            // send error signal ...
-            emit sigError(errorString(), (int)eReq, -1);
-         }
-      }
-   }
-
-   // request handled (anyhow) ...
-   bPendingReq = false;
-
-   mtxQueue.lock();
-   bNext = !vReqQueue.isEmpty();
-   mtxQueue.unlock();
-
-   if (bNext)
-   {
-      workOffQueue();
-   }
+   get((int)Kartina::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3")
+       .arg(cids));
 }
 
 /* -----------------------------------------------------------------\
@@ -1202,11 +962,12 @@ bool CKartinaClnt::cookieSet()
 |  Author: Jo2003
 |  Description: format kartina error string
 |
-|  Parameters: --
+|  Parameters: sResp -> string to heck
+|              sCleanReasp -> cleaned response
 |
 |  Returns: error code
 \----------------------------------------------------------------- */
-int CKartinaClnt::checkResponse (const QString &sResp)
+int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 {
    int iRV = 0;
 

@@ -279,8 +279,8 @@ private slots:
     void slotStartConnectionChain();
     void slotUpdateAnswer (QNetworkReply* pRes);
     void slotCheckArchProg(ulong ulArcGmt);
-    void slotKartinaErr (const QString &str, int req, int err);
-    void slotKartinaResponse(const QString& resp, int req);
+    void slotKartinaErr (QString str, int req, int err);
+    void slotKartinaResponse(QString resp, int req);
     void slotUnused(const QString &str);
     void slotRefreshChanLogos ();
     void slotPCodeChangeResp (const QString &str);

@@ -578,7 +578,7 @@ void Recorder::on_pushSettings_clicked()
       VlcLog.SetLogLevel(Settings.GetLogLevel());
 
       pModel->clear();
-      KartinaTv.abort();
+      // KartinaTv.abort();
 
       // update connection data ...
       KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
@@ -1434,7 +1434,7 @@ void Recorder::show()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotKartinaResponse(const QString& resp, int req)
+void Recorder::slotKartinaResponse(QString resp, int req)
 {
    // helper macro to have a nice info printout ...
 #define mkCase(__x__, __y__) \
@@ -1568,7 +1568,7 @@ void Recorder::slotUnused(const QString &str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotKartinaErr (const QString &str, int req, int err)
+void Recorder::slotKartinaErr (QString str, int req, int err)
 {
    // special error handling for special requests ...
    switch ((Kartina::EReq)req)

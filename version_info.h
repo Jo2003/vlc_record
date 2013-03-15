@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "62"
-#define BETA_EXT      ""
+#define VERSION_MINOR "63"
+#define BETA_EXT      "B1"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-03-15: Version 2.63B1
+| - add QIptvCtrlClient class based an QNetworkAccessManager
+|   to handle API requests (QHttp was removed for API stuff)
+| - todo: check behavior on error (logout, multi login)
+|
 | 2013-03-08: Version 2.62
 | - no changes since last beta
 |

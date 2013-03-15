@@ -13,24 +13,14 @@
 #ifndef __201004161114_CKARTINACLNT_H
    #define __201004161114_CKARTINACLNT_H
 
-#include <QHttp>
-#include <QHttpRequestHeader>
-#include <QHttpResponseHeader>
-#include <QBuffer>
 #include <QString>
-#include <QMessageBox>
-#include <QtNetwork>
 #include <QDate>
-#include <QFile>
-#include <QTimer>
-#include <QMap>
 #include <QRegExp>
-#include <QVector>
-#include <QMutex>
+#include <QMetaEnum>
 
+#include "qiptvctrlclient.h"
 #include "clogfile.h"
 #include "defdef.h"
-#include "version_info.h"
 
 //---------------------------------------------------------------------------
 //! \class   Kartina
@@ -67,7 +57,6 @@ public:
       REQ_GETVIDEOS,
       REQ_GETVIDEOINFO,
       REQ_GETVODURL,
-      REQ_SETHOST,
       REQ_GETBITRATE,
       REQ_SETBITRATE,
       REQ_CHANLIST_ALL,
@@ -188,15 +177,14 @@ typedef QMap<Kartina::EErr, QString> QErrorMap;
 | Description: a class to communicate with kartina.tv services
 |
 \=============================================================================*/
-class CKartinaClnt : public QHttp
+class CKartinaClnt : public QIptvCtrlClient
 {
    Q_OBJECT
 
 public:
-   CKartinaClnt(const QString &host, const QString &usr, const QString &pw);
-
-   CKartinaClnt();
+   explicit CKartinaClnt(QObject *parent = 0);
    ~CKartinaClnt();
+
    void SetData(const QString &host, const QString &usr, const QString &pw);
 
    void queueRequest (Kartina::EReq req, int iArg1 = 0, int iArg2 = 0);
@@ -210,7 +198,6 @@ public:
 
 protected:
    void queueIn(const Kartina::SRequest &req);
-   void workOffQueue ();
    void GetCookie ();
    void Logout ();
    void GetChannelList (const QString &secCode = QString());
@@ -236,39 +223,26 @@ protected:
    void remVodFav (int iVidID, const QString &secCode);
    void getVodFav ();
    void setParentCode (const QString& oldCode, const QString& newCode);
-   int  checkResponse (const QString &sResp);
+   int  checkResponse (const QString &sResp, QString& sCleanResp);
 
    void epgCurrent(const QString &cids);
 
-   void PostRequest (Kartina::EReq req, const QString &path, const QString &content,
-                     const QString &sBrowser = APP_NAME " " __MY__VERSION__);
-
-   void GetRequest (Kartina::EReq req, const QString &sRequest,
-                    const QString &sBrowser = APP_NAME " " __MY__VERSION__);
-
-   void SetHost();
-
 private:
-   Kartina::EReq              eReq;
-   QString                    sUsr;
-   QString                    sPw;
-   QString                    sHost;
-   QString                    sCookie;
-   QByteArray                 baPageContent;
-   QBuffer                    bufReq;
-   int                        iReq;
-   QErrorMap                  errMap;
-   QString                    sCleanResp;
-   bool                       bPendingReq;
-   QMutex                     mtxQueue;
-   QVector<Kartina::SRequest> vReqQueue;
+   QString   sUsr;
+   QString   sPw;
+   QString   sApiUrl;
+   QString   sCookie;
+   QErrorMap errMap;
+   Kartina   karTrace;
 
 private slots:
-   void handleEndRequest (int id, bool err);
+   void slotStringResponse (int reqId, QString strResp);
+   void slotBinResponse (int reqId, QByteArray binResp);
+   void slotErr (QString sErr, int iErr);
 
 signals:
-   void sigError (const QString &str, int req, int err);
-   void sigHttpResponse(const QString &str, int req);
+   void sigError (QString str, int req, int err);
+   void sigHttpResponse(QString str, int req);
 };
 
 #endif /* __201004161114_CKARTINACLNT_H */
