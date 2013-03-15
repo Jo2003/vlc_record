@@ -74,6 +74,12 @@ void CKartinaClnt::slotStringResponse (int reqId, QString strResp)
    int     iErr = 0;
    QString sCleanResp;
 
+#ifdef __TRACE
+   mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
+         .arg(karTrace.reqValToKey((Kartina::EReq)reqId))
+         .arg(strResp));
+#endif // __TRACE
+
    if (reqId == (int)Kartina::REQ_LOGOUT)
    {
        sCookie = "";
