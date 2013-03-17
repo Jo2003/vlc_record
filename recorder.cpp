@@ -226,13 +226,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString, QString)), ui->player, SLOT(playMedia(QString, QString)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcStop()), ui->player, SLOT(stop()));
 
-   // aspect ratio, crop and full screen ...
-   /*
-   connect (this, SIGNAL(sigToggleFullscreen()), ui->player, SLOT(on_btnFullScreen_clicked()));
-   connect (this, SIGNAL(sigToggleAspectRatio()), ui->player, SLOT(slotToggleAspectRatio()));
-   connect (this, SIGNAL(sigToggleCropGeometry()), ui->player, SLOT(slotToggleCropGeometry()));
-   */
-
    // get state if libVLC player to change player state display ...
    connect (ui->player, SIGNAL(sigPlayState(int)), this, SLOT(slotIncPlayState(int)));
 
@@ -254,6 +247,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
 
+   connect (&XMLParser,    SIGNAL(sigError(int,QString,QString)), this, SLOT(slotGlobalError(int,QString,QString)));
    connect (&timerWidget,  SIGNAL(timeOut()), this, SLOT(slotRecordTimerEnded()));
    connect (&streamLoader, SIGNAL(sigStreamRequested(int)), this, SLOT(slotDownStreamRequested(int)));
    connect (&streamLoader, SIGNAL(sigBufferPercent(int)), ui->labState, SLOT(bufferPercent(int)));
@@ -3229,6 +3223,10 @@ void Recorder::slotUpdateAnswer (const QString &str)
 
          QMessageBox::information(this, tr("Update available"), s);
       }
+      else
+      {
+         mInfo(tr("Program up to date!"));
+      }
    }
 }
 
@@ -3598,6 +3596,38 @@ void Recorder::slotRecordTimerEnded()
       TouchPlayCtrlBtns(true);
    }
 }
+
+/* -----------------------------------------------------------------\
+|  Method: slotGlobalError [slot]
+|  Begin: 17.03.2013
+|  Author: Jo2003
+|  Description: show a message box with info
+|
+|  Parameters: iType -> type of message
+|              sCaption -> title of message box
+|              sDescr -> text in message box
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotGlobalError (int iType, const QString& sCaption, const QString& sDescr)
+{
+   switch ((Msg::eMsgType)iType)
+   {
+   case Msg::Info:
+      QMessageBox::information(this, sCaption, sDescr);
+      break;
+   case Msg::Warning:
+      QMessageBox::warning(this, sCaption, sDescr);
+      break;
+   case Msg::Error:
+      QMessageBox::critical(this, sCaption, sDescr);
+      break;
+   default:
+      mInfo(tr("Unknown Message: %1").arg(sDescr));
+      break;
+   }
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //

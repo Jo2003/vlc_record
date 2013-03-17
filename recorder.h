@@ -287,6 +287,7 @@ private slots:
     void slotDownStreamRequested (int id);
     void slotUpdateChannelList (const QList<int> &cidList = QList<int>());
     void slotRecordTimerEnded ();
+    void slotGlobalError (int iType, const QString& sCaption, const QString& sDescr);
 
 signals:
     void sigShow ();

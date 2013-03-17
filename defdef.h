@@ -82,6 +82,17 @@ namespace Translators
    };
 }
 
+namespace Msg
+{
+   enum eMsgType
+   {
+      Info,
+      Warning,
+      Error,
+      Unknown
+   };
+}
+
 #endif /* __011810__DEFDEF_H */
 /************************* History ***************************\
 | $Log$

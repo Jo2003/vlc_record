@@ -158,7 +158,7 @@ int CKartinaClnt::queueRequest(Kartina::EReq req, const QVariant& par_1, const Q
    // handle special cases ...
    if (sCookie == "")
    {
-      // not ccokie set, only some rqueste allowed ...
+      // no ccokie set, only some requests allowed ...
       switch (req)
       {
       case Kartina::REQ_COOKIE:
@@ -959,9 +959,8 @@ int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 
    // clean response ... (delete content which may come
    // after / before the xml code ...
-   QString sEndTag = "</response>";
-   int iStartPos   = sResp.indexOf("<?xml");
-   int iEndPos     = sResp.indexOf(sEndTag) + sEndTag.length();
+   int iStartPos   = sResp.indexOf("<?xml");       // xml start tag
+   int iEndPos     = sResp.lastIndexOf('>') + 1;   // end of last tag
 
    // store clean string in private variable ...
    sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);

@@ -38,6 +38,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - bugfix in channel list delegate (div / 0) on Mac
+| - allow only requests when logged in, ignore anything else
+| - add more request types so later iptv ctrl client can
+|   the whole network access
+|
 | 2013-03-15: Version 2.63B1
 | - add QIptvCtrlClient class based an QNetworkAccessManager
 |   to handle API requests (QHttp was removed for API stuff)

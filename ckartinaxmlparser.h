@@ -184,19 +184,16 @@ protected:
    int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
-   int oneLevelParser (const QString &sEndElement, const QStringList& slNeeded, QMap<QString, QString>& mResults);
-   int ignoreUntil(const QString &sEndElement);
+   int oneLevelParser (QXmlStreamReader &xml, const QString &sEndElement, const QStringList& slNeeded, QMap<QString, QString>& mResults);
+   int ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement);
 
 
 private:
    int iOffset;
-   QString sErr;
-   QXmlStreamReader   xmlSr;
-   QMap<int, QString> mapError;
-   QMutex             mutex;
 
 signals:
    void sigWrongPass();
+   void sigError(int iType, const QString& cap, const QString& descr);
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */
