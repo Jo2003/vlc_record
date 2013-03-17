@@ -37,7 +37,7 @@ CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
 
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
-   connect(this, SIGNAL(sigErr(QString,int)), this, SLOT(slotErr(QString,int)));
+   connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -134,181 +134,142 @@ void CKartinaClnt::slotBinResponse (int reqId, QByteArray binResp)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CKartinaClnt::slotErr (QString sErr, int iErr)
+void CKartinaClnt::slotErr (int iReqId, QString sErr, int iErr)
 {
-   emit sigError(sErr, (int)Kartina::REQ_UNKNOWN, iErr);
+   emit sigError(sErr, iReqId, iErr);
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 
 /* -----------------------------------------------------------------\
 |  Method: queueRequest
-|  Begin: 19.01.2010 / 15:55:06
+|  Begin: 17.03.2013
 |  Author: Jo2003
-|  Description: request kartina action
+|  Description: queue in new request, check for cookie and abort
 |
-|  Parameters: action, action params
+|  Parameters: req id, param1, param2
 |
-|  Returns: --
+|  Returns: 0 -> ok, -1 -> unknown request
 \----------------------------------------------------------------- */
-void CKartinaClnt::queueRequest(Kartina::EReq req, int iArg1, int iArg2)
+int CKartinaClnt::queueRequest(Kartina::EReq req, const QVariant& par_1, const QVariant& par_2)
 {
-   Kartina::SRequest cmd;
+   int iRet = 0;
 
-   cmd.req      = req;
-   cmd.iOptArg1 = iArg1;
-   cmd.iOptArg2 = iArg2;
-   cmd.sOptArg1 = "";
-   cmd.sOptArg2 = "";
-   queueIn(cmd);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: queueRequest
-|  Begin: 19.01.2010 / 15:55:06
-|  Author: Jo2003
-|  Description: request kartina action
-|
-|  Parameters: action, action params
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CKartinaClnt::queueRequest (Kartina::EReq req, const QString &sReq1, const QString &sReq2)
-{
-   Kartina::SRequest cmd;
-
-   cmd.req      = req;
-   cmd.iOptArg1 = -1;
-   cmd.iOptArg2 = -1;
-   cmd.sOptArg1 = sReq1;
-   cmd.sOptArg2 = sReq2;
-   queueIn(cmd);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: queueRequest
-|  Begin: 30.05.2012
-|  Author: Jo2003
-|  Description: request kartina action
-|
-|  Parameters: action, action params
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CKartinaClnt::queueRequest (Kartina::EReq req, int iArg1, const QString &sArg1)
-{
-   Kartina::SRequest cmd;
-
-   cmd.req      = req;
-   cmd.iOptArg1 = iArg1;
-   cmd.iOptArg2 = -1;
-   cmd.sOptArg1 = sArg1;
-   cmd.sOptArg2 = "";
-   queueIn(cmd);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: queueIn
-|  Begin: 28.09.2011
-|  Author: Jo2003
-|  Description: queue in new command, check for cookie and abort
-|
-|  Parameters: ref. to command
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CKartinaClnt::queueIn(const Kartina::SRequest &req)
-{
-   // handle request ...
-   switch (req.req)
+   // handle special cases ...
+   if (sCookie == "")
    {
-   case Kartina::REQ_CHANNELLIST:
-      GetChannelList();
-      break;
-   case Kartina::REQ_COOKIE:
-      GetCookie();
-      break;
-   case Kartina::REQ_EPG:
-      GetEPG(req.iOptArg1, req.iOptArg2);
-      break;
-   case Kartina::REQ_SERVER:
-      SetServer(req.sOptArg1);
-      break;
-   case Kartina::REQ_HTTPBUFF:
-      SetHttpBuffer(req.iOptArg1);
-      break;
-   case Kartina::REQ_STREAM:
-      GetStreamURL(req.iOptArg1, req.sOptArg1);
-      break;
-   case Kartina::REQ_TIMERREC:
-      GetStreamURL(req.iOptArg1, req.sOptArg1, true);
-      break;
-   case Kartina::REQ_ARCHIV:
-      GetArchivURL(req.sOptArg1, req.sOptArg2);
-      break;
-   case Kartina::REQ_TIMESHIFT:
-      SetTimeShift(req.iOptArg1);
-      break;
-   case Kartina::REQ_GETTIMESHIFT:
-      GetTimeShift();
-      break;
-   case Kartina::REQ_GET_SERVER:
-      GetServer();
-      break;
-   case Kartina::REQ_LOGOUT:
-      Logout();
-      break;
-   case Kartina::REQ_GETVODGENRES:
-      GetVodGenres();
-      break;
-   case Kartina::REQ_GETVIDEOS:
-      GetVideos(req.sOptArg1);
-      break;
-   case Kartina::REQ_GETVIDEOINFO:
-      GetVideoInfo(req.iOptArg1, req.sOptArg1);
-      break;
-   case Kartina::REQ_GETVODURL:
-      GetVodUrl(req.iOptArg1, req.sOptArg1);
-      break;
-   case Kartina::REQ_GETBITRATE:
-      GetBitRate();
-      break;
-   case Kartina::REQ_SETBITRATE:
-      SetBitRate(req.iOptArg1);
-      break;
-   case Kartina::REQ_SETCHAN_HIDE:
-      setChanHide(req.sOptArg1, req.sOptArg2);
-      break;
-   case Kartina::REQ_SETCHAN_SHOW:
-      setChanShow(req.sOptArg1, req.sOptArg2);
-      break;
-   case Kartina::REQ_CHANLIST_ALL:
-      GetChannelList(req.sOptArg1);
-      break;
-   case Kartina::REQ_GET_VOD_MANAGER:
-      getVodManager(req.sOptArg1);
-      break;
-   case Kartina::REQ_SET_VOD_MANAGER:
-      setVodManager(req.sOptArg1, req.sOptArg2);
-      break;
-   case Kartina::REQ_ADD_VOD_FAV:
-      addVodFav(req.iOptArg1, req.sOptArg1);
-      break;
-   case Kartina::REQ_REM_VOD_FAV:
-      remVodFav(req.iOptArg1, req.sOptArg1);
-      break;
-   case Kartina::REQ_GET_VOD_FAV:
-      getVodFav();
-      break;
-   case Kartina::REQ_SET_PCODE:
-      setParentCode(req.sOptArg1, req.sOptArg2);
-      break;
-   case Kartina::REQ_EPG_CURRENT:
-      epgCurrent(req.sOptArg1);
-      break;
-   default:
-      break;
+      // not ccokie set, only some rqueste allowed ...
+      switch (req)
+      {
+      case Kartina::REQ_COOKIE:
+      case Kartina::REQ_LOGOUT:
+      case Kartina::REQ_UPDATE_CHECK:
+         break;
+      default:
+         iRet = -1;
+         break;
+      }
    }
+
+   if (iRet > -1)
+   {
+      // handle request ...
+      switch (req)
+      {
+      case Kartina::REQ_CHANNELLIST:
+         GetChannelList();
+         break;
+      case Kartina::REQ_COOKIE:
+         GetCookie();
+         break;
+      case Kartina::REQ_EPG:
+         GetEPG(par_1.toInt(), par_2.toInt());
+         break;
+      case Kartina::REQ_SERVER:
+         SetServer(par_1.toString());
+         break;
+      case Kartina::REQ_HTTPBUFF:
+         SetHttpBuffer(par_1.toInt());
+         break;
+      case Kartina::REQ_STREAM:
+         GetStreamURL(par_1.toInt(), par_2.toString());
+         break;
+      case Kartina::REQ_TIMERREC:
+         GetStreamURL(par_1.toInt(), par_2.toString(), true);
+         break;
+      case Kartina::REQ_ARCHIV:
+         GetArchivURL(par_1.toString(), par_2.toString());
+         break;
+      case Kartina::REQ_TIMESHIFT:
+         SetTimeShift(par_1.toInt());
+         break;
+      case Kartina::REQ_GETTIMESHIFT:
+         GetTimeShift();
+         break;
+      case Kartina::REQ_GET_SERVER:
+         GetServer();
+         break;
+      case Kartina::REQ_LOGOUT:
+         Logout();
+         break;
+      case Kartina::REQ_GETVODGENRES:
+         GetVodGenres();
+         break;
+      case Kartina::REQ_GETVIDEOS:
+         GetVideos(par_1.toString());
+         break;
+      case Kartina::REQ_GETVIDEOINFO:
+         GetVideoInfo(par_1.toInt(), par_2.toString());
+         break;
+      case Kartina::REQ_GETVODURL:
+         GetVodUrl(par_1.toInt(), par_2.toString());
+         break;
+      case Kartina::REQ_GETBITRATE:
+         GetBitRate();
+         break;
+      case Kartina::REQ_SETBITRATE:
+         SetBitRate(par_1.toInt());
+         break;
+      case Kartina::REQ_SETCHAN_HIDE:
+         setChanHide(par_1.toString(), par_2.toString());
+         break;
+      case Kartina::REQ_SETCHAN_SHOW:
+         setChanShow(par_1.toString(), par_2.toString());
+         break;
+      case Kartina::REQ_CHANLIST_ALL:
+         GetChannelList(par_1.toString());
+         break;
+      case Kartina::REQ_GET_VOD_MANAGER:
+         getVodManager(par_1.toString());
+         break;
+      case Kartina::REQ_SET_VOD_MANAGER:
+         setVodManager(par_1.toString(), par_2.toString());
+         break;
+      case Kartina::REQ_ADD_VOD_FAV:
+         addVodFav(par_1.toInt(), par_2.toString());
+         break;
+      case Kartina::REQ_REM_VOD_FAV:
+         remVodFav(par_1.toInt(), par_2.toString());
+         break;
+      case Kartina::REQ_GET_VOD_FAV:
+         getVodFav();
+         break;
+      case Kartina::REQ_SET_PCODE:
+         setParentCode(par_1.toString(), par_2.toString());
+         break;
+      case Kartina::REQ_EPG_CURRENT:
+         epgCurrent(par_1.toString());
+         break;
+      case Kartina::REQ_UPDATE_CHECK:
+         updInfo(par_1.toString());
+         break;
+      default:
+         iRet = -1;
+         break;
+      }
+   }
+
+   return iRet;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -945,6 +906,25 @@ void CKartinaClnt::epgCurrent(const QString &cids)
    get((int)Kartina::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3")
        .arg(cids));
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   check for program updates
+//
+//! \author  Jo2003
+//! \date    17.03.2013
+//
+//! \param   url (QString) url with update information
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CKartinaClnt::updInfo (const QString& url)
+{
+   mInfo(tr("Check for available updates ..."));
+
+   get((int)Kartina::REQ_UPDATE_CHECK, url, Iptv::StringNoCookie);
+}
+
 
 /* -----------------------------------------------------------------\
 |  Method: cookieSet

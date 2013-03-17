@@ -36,7 +36,6 @@
 #include <QWindowStateChangeEvent>
 #include <QMap>
 #include <QStandardItemModel>
-#include <QNetworkAccessManager>
 #include <QScrollBar>
 #include <QMutex>
 
@@ -164,7 +163,6 @@ private:
     cparser::SAccountInfo           accountInfo;
     cparser::SGenreInfo             genreInfo;
     ulong                           ulStartFlags;
-    QNetworkAccessManager          *pUpdateChecker;
     Ui::SVodSite                    lastVodSite;
     Ui::STabWidget                  vodTabWidget;
     Kartina                         metaKartina;
@@ -277,7 +275,7 @@ private slots:
     void slotPlayNextChannel();
     void slotPlayPreviousChannel();
     void slotStartConnectionChain();
-    void slotUpdateAnswer (QNetworkReply* pRes);
+    void slotUpdateAnswer (const QString& str);
     void slotCheckArchProg(ulong ulArcGmt);
     void slotKartinaErr (QString str, int req, int err);
     void slotKartinaResponse(QString resp, int req);

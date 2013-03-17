@@ -69,6 +69,7 @@ public:
       REQ_GET_VOD_FAV,
       REQ_SET_PCODE,
       REQ_EPG_CURRENT,
+      REQ_UPDATE_CHECK,
       REQ_UNKNOWN = 255
    };
 
@@ -116,18 +117,6 @@ public:
       ERR_MANAGE_BAD_VALUE,
       ERR_MANAGE_FILM_NOT_FOUND,
       ERR_MANAGE_ALREADY_ADDED
-   };
-
-   //---------------------------------------------------------------------------
-   //! kartina request
-   //---------------------------------------------------------------------------
-   struct SRequest
-   {
-      EReq          req;
-      QString       sOptArg1;
-      QString       sOptArg2;
-      int           iOptArg1;
-      int           iOptArg2;
    };
 
    //---------------------------------------------------------------------------
@@ -187,9 +176,7 @@ public:
 
    void SetData(const QString &host, const QString &usr, const QString &pw);
 
-   void queueRequest (Kartina::EReq req, int iArg1 = 0, int iArg2 = 0);
-   void queueRequest (Kartina::EReq req, const QString &sReq1, const QString &sReq2 = QString());
-   void queueRequest (Kartina::EReq req, int iArg1, const QString &sArg1);
+   int  queueRequest(Kartina::EReq req, const QVariant& par_1 = QVariant(), const QVariant& par_2 = QVariant());
 
    void fillErrorMap();
    bool cookieSet();
@@ -197,7 +184,6 @@ public:
 
 
 protected:
-   void queueIn(const Kartina::SRequest &req);
    void GetCookie ();
    void Logout ();
    void GetChannelList (const QString &secCode = QString());
@@ -223,9 +209,10 @@ protected:
    void remVodFav (int iVidID, const QString &secCode);
    void getVodFav ();
    void setParentCode (const QString& oldCode, const QString& newCode);
-   int  checkResponse (const QString &sResp, QString& sCleanResp);
-
    void epgCurrent(const QString &cids);
+   void updInfo (const QString& url);
+
+   int  checkResponse (const QString &sResp, QString& sCleanResp);
 
 private:
    QString   sUsr;
@@ -238,7 +225,7 @@ private:
 private slots:
    void slotStringResponse (int reqId, QString strResp);
    void slotBinResponse (int reqId, QByteArray binResp);
-   void slotErr (QString sErr, int iErr);
+   void slotErr (int iReqId, QString sErr, int iErr);
 
 signals:
    void sigError (QString str, int req, int err);
