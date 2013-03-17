@@ -267,7 +267,7 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
       // compute size of inner rect (take care of border) ...
       x = progressRect.width()  - pen.width();
       y = progressRect.height() - pen.width();
-      x = (x * iPos) / (int)(uiEnd - uiStart);
+      x = (uiEnd - uiStart) ? ((x * iPos) / (int)(uiEnd - uiStart)) : 0; ///< avoid division with 0 !!!
 
       // inner rectangle (progess) ...
       QRect macRect(progressRect.x() + pen.width(), progressRect.y() + pen.width(), x, y);
