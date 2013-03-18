@@ -132,9 +132,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // help dialog class (non modal) ...
    pHelp = new QHelpDialog(NULL);
 
-   // set host for pix cache ...
-   pixCache.setHost(Settings.GetAPIServer());
-
    // set settings for vod browser ...
    ui->vodBrowser->setSettings(&Settings);
 
@@ -180,7 +177,6 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
       KartinaTv.setProxy(proxy);
-      pixCache.setProxy(proxy);
       streamLoader.setProxy(proxy);
    }
 
@@ -246,6 +242,9 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&missionControl, SIGNAL(sigRec()), this, SLOT(slotRecord()));
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
+
+   connect (&pixCache,     SIGNAL(sigLoadImage(QString)), &KartinaTv, SLOT(slotDownImg(QString)));
+   connect (&KartinaTv,    SIGNAL(sigImage(QByteArray)), &pixCache, SLOT(slotImage(QByteArray)));
 
    connect (&XMLParser,    SIGNAL(sigError(int,QString,QString)), this, SLOT(slotGlobalError(int,QString,QString)));
    connect (&timerWidget,  SIGNAL(timeOut()), this, SLOT(slotRecordTimerEnded()));
@@ -580,7 +579,6 @@ void Recorder::on_pushSettings_clicked()
                              Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
          KartinaTv.setProxy(proxy);
-         pixCache.setProxy(proxy);
          streamLoader.setProxy(proxy);
       }
 
@@ -1570,6 +1568,13 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    case Kartina::REQ_SET_PCODE:
       Settings.slotEnablePCodeForm();
       break;
+
+   // in case of not exsting images send empty byte array
+   // to trigger next download
+   case Kartina::REQ_DOWN_IMG:
+      pixCache.slotImage(QByteArray());
+      // fall through here
+      //  V      V     V
    case Kartina::REQ_UPDATE_CHECK:
       bSilent = true;
       break;

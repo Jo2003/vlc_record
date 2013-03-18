@@ -37,11 +37,11 @@ class Iptv : public QObject
 public:
 
    enum eReqType {
+      Login,   // always a string
+      Logout,  // always a string
       String,
       Binary,
       Stream,
-      StringNoCookie,
-      BinNoCookie,
       Unknown
    };
 
@@ -85,6 +85,7 @@ public:
 
 private:
    QVariant cookies;
+   bool     bCSet;
 #ifdef __TRACE
    Iptv     iptv;
 #endif

@@ -118,8 +118,15 @@ void CKartinaClnt::slotStringResponse (int reqId, QString strResp)
 //---------------------------------------------------------------------------
 void CKartinaClnt::slotBinResponse (int reqId, QByteArray binResp)
 {
-   Q_UNUSED(reqId)
-   Q_UNUSED(binResp)
+   switch((Kartina::EReq)reqId)
+   {
+   case Kartina::REQ_DOWN_IMG:
+      emit sigImage(binResp);
+      break;
+
+   default:
+      break;
+   }
 }
 
 //---------------------------------------------------------------------------
@@ -328,7 +335,7 @@ void CKartinaClnt::SetCookie(const QString &cookie)
 void CKartinaClnt::Logout ()
 {
    mInfo(tr("Logout ..."));
-   get((int)Kartina::REQ_LOGOUT, sApiUrl + "logout");
+   get((int)Kartina::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -349,7 +356,8 @@ void CKartinaClnt::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    post((int)Kartina::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&settings=all").arg(sUsr).arg(sPw));
+        QString("login=%1&pass=%2&settings=all").arg(sUsr).arg(sPw),
+        Iptv::Login);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -922,9 +930,26 @@ void CKartinaClnt::updInfo (const QString& url)
 {
    mInfo(tr("Check for available updates ..."));
 
-   get((int)Kartina::REQ_UPDATE_CHECK, url, Iptv::StringNoCookie);
+   get((int)Kartina::REQ_UPDATE_CHECK, url);
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   download image given by url
+//
+//! \author  Jo2003
+//! \date    17.03.2013
+//
+//! \param   url (QString) url image data
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CKartinaClnt::slotDownImg(const QString &url)
+{
+   mInfo(tr("Download image ..."));
+
+   get((int)Kartina::REQ_DOWN_IMG, url, Iptv::Binary);
+}
 
 /* -----------------------------------------------------------------\
 |  Method: cookieSet

@@ -32,6 +32,7 @@ extern CLogFile VlcLog;
 QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
    QNetworkAccessManager(parent)
 {
+   bCSet = false;
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
 }
 
@@ -64,9 +65,8 @@ QIptvCtrlClient::~QIptvCtrlClient()
 //---------------------------------------------------------------------------
 void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
 {
-   bool bGrabCookie = false;
-   int iReqId       = reply->property(PROP_ID).toInt();
-   int iReqType     = reply->property(PROP_TYPE).toInt();
+   int iReqId   = reply->property(PROP_ID).toInt();
+   int iReqType = reply->property(PROP_TYPE).toInt();
    QByteArray ba;
 
    // check for error ...
@@ -83,32 +83,37 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
       // What kind of reply is this?
       switch((Iptv::eReqType)iReqType)
       {
+      case Iptv::Login:
+      case Iptv::Logout:
       case Iptv::String:
-         bGrabCookie = true;
-         // fall through here ...
-         //   V     V     V
-      case Iptv::StringNoCookie:
+
+         // decide if we want to clear or set session cookie ...
+         if ((Iptv::eReqType)iReqType == Iptv::Login)
+         {
+            bCSet   = true;
+            cookies = reply->header(QNetworkRequest::SetCookieHeader);
+         }
+         else if ((Iptv::eReqType)iReqType == Iptv::Logout)
+         {
+            bCSet   = false;
+            cookies = QVariant();
+         }
+
          emit sigStringResponse(iReqId, QString::fromUtf8(ba.constData()));
          break;
 
       case Iptv::Binary:
-         bGrabCookie = true;
-         // fall through here ...
-         //   V     V     V
-      case Iptv::BinNoCookie:
          emit sigBinResponse(iReqId, ba);
+         break;
+
+      case Iptv::Stream:
+         // nothing to do here ...
          break;
 
       default:
          emit sigErr(iReqId, tr("Error, unknown reqest type: %1!")
                      .arg(iReqType), -1);
          break;
-      }
-
-      if (bGrabCookie)
-      {
-         // no error ...
-         cookies = reply->header(QNetworkRequest::SetCookieHeader);
       }
    }
    else
@@ -137,10 +142,15 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
 {
    req.setUrl(QUrl(url));
    req.setRawHeader("User-Agent", APP_NAME " " __MY__VERSION__);
+
    // ...
    // Here is the possibility to add more header data as well ...
    // ...
-   req.setHeader(QNetworkRequest::CookieHeader, cookies);
+
+   if (bCSet)
+   {
+      req.setHeader(QNetworkRequest::CookieHeader, cookies);
+   }
 
    return req;
 }

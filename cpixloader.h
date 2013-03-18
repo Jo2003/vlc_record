@@ -12,10 +12,6 @@
 #ifndef __011810__PIXLOADER_H
    #define __011810__PIXLOADER_H
 
-#include <QHttp>
-#include <QHttpRequestHeader>
-#include <QHttpResponseHeader>
-#include <QBuffer>
 #include <QFileInfo>
 #include <QVector>
 #include <QMutex>
@@ -37,12 +33,12 @@ typedef QVector<PixCache::SPixDesc> PixVector;
 |  Description: helper class to download pictures
 |
 \********************************************************************/
-class CPixLoader : public QHttp
+class CPixLoader : public QObject
 {
    Q_OBJECT
 
 public:
-   CPixLoader();
+   explicit CPixLoader(QObject* parent = 0);
    virtual ~CPixLoader();
    void enqueuePic (const QString& sRemote, const QString &sLocal);
    bool busy();
@@ -52,17 +48,15 @@ protected:
 
 signals:
    void allDone();
+   void sigLoadImage(const QString& url);
+
+public slots:
+   void slotImage(const QByteArray& ba);
 
 private:
    QMutex      mtxCacheQueue;
    PixVector   cacheQueue;
-   QBuffer     dataBuffer;
    bool        bRun;
-   bool        bIsAnswer;
-   int         iReq;
-
-private slots:
-   void slotCheckResp (int iReqID, bool err);
 };
 
 #endif // __011810__PIXLOADER_H

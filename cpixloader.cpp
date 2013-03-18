@@ -10,6 +10,7 @@
 | $Id$
 \*************************************************************/
 #include "cpixloader.h"
+#include "defdef.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CPixLoader / constructor
@@ -17,16 +18,13 @@
 |  Author: Jo2003
 |  Description: init values
 |
-|  Parameters: --
+|  Parameters: pointer to parent object
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CPixLoader::CPixLoader()
+CPixLoader::CPixLoader(QObject *parent) : QObject(parent)
 {
    bRun  = false;
-   iReq  = -1;
-
-   connect(this, SIGNAL(requestFinished(int,bool)), this, SLOT(slotCheckResp(int,bool)));
 }
 
 /* -----------------------------------------------------------------\
@@ -41,7 +39,6 @@ CPixLoader::CPixLoader()
 \----------------------------------------------------------------- */
 CPixLoader::~CPixLoader()
 {
-   abort();
 }
 
 /* -----------------------------------------------------------------\
@@ -56,77 +53,87 @@ CPixLoader::~CPixLoader()
 \----------------------------------------------------------------- */
 void CPixLoader::startDownLoad()
 {
-   QFileInfo info(cacheQueue[0].sRemote);
+   int iCount = 0;
+   PixCache::SPixDesc desc;
 
-   if (!QFile::exists(QString("%1/%2").arg(cacheQueue[0].sLocal).arg(info.fileName())))
+   // get first most entry ...
+   mtxCacheQueue.lock();
+   desc = cacheQueue[0];
+   mtxCacheQueue.unlock();
+
+   QFileInfo info(desc.sRemote);
+
+   if (!QFile::exists(QString("%1/%2").arg(desc.sLocal).arg(info.fileName())))
    {
-      dataBuffer.open(QIODevice::WriteOnly | QIODevice::Truncate);
-      iReq = get(cacheQueue[0].sRemote, &dataBuffer);
+      // request download ...
+      emit sigLoadImage(QString("http://%1%2").arg(KARTINA_HOST).arg(desc.sRemote));
    }
    else
    {
-      // file exists -> trigger next request ...
-      iReq = -1;
-      emit requestFinished (iReq, true);
+      // file exists, remove requested item
+      // and download next ...
+      mtxCacheQueue.lock();
+      cacheQueue.remove(0);
+      iCount = cacheQueue.count();
+      mtxCacheQueue.unlock();
+
+      if (iCount > 0)
+      {
+         // recursive call ...
+         startDownLoad();
+      }
    }
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotCheckResp (slot)
-|  Begin: 18.01.2010 / 16:19:35
+|  Method: slotImage (slot)
+|  Begin: 18.03.2013
 |  Author: Jo2003
 |  Description: check http response (answer)
 |
-|  Parameters: request id, error flag
+|  Parameters: image as byte array
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPixLoader::slotCheckResp(int iReqID, bool err)
+void CPixLoader::slotImage(const QByteArray &ba)
 {
-   // is this requested response ... ?
-   if (iReqID == iReq)
+   int iCount = 0;
+   PixCache::SPixDesc desc;
+
+   // is this a gif file ... ?
+   if (ba.size() > 0)
    {
-      QByteArray ba;
-      dataBuffer.close();
-
-      // copy response into local buffer ...
-      if ((iReqID > -1) && !err)
-      {
-         dataBuffer.open(QIODevice::ReadOnly);
-         ba = dataBuffer.data();
-         dataBuffer.close();
-
-         // is this a gif file ... ?
-         if (ba.size() > 0)
-         {
-            QFileInfo info(cacheQueue[0].sRemote);
-            QFile     pic(QString("%1/%2").arg(cacheQueue[0].sLocal).arg(info.fileName()));
-
-            if (pic.open(QIODevice::WriteOnly))
-            {
-               // write content ...
-               pic.write(ba);
-               pic.close();
-            }
-         }
-      }
-
-      // remove requested item ...
       mtxCacheQueue.lock();
-      cacheQueue.remove(0);
+      desc = cacheQueue[0];
       mtxCacheQueue.unlock();
 
-      if (cacheQueue.count() > 0)
+      QFileInfo info(desc.sRemote);
+      QFile     pic(QString("%1/%2").arg(desc.sLocal).arg(info.fileName()));
+
+      if (pic.open(QIODevice::WriteOnly))
       {
-         // download next ...
-         startDownLoad();
+         // write content ...
+         pic.write(ba);
+         pic.close();
       }
-      else
-      {
-         // last item ... download finished ...
-         bRun = false;
-         emit allDone();
-      }
+   }
+
+   // remove requested item ...
+   mtxCacheQueue.lock();
+   cacheQueue.remove(0);
+   iCount = cacheQueue.count();
+   mtxCacheQueue.unlock();
+
+   if (iCount > 0)
+   {
+      // download next ...
+      startDownLoad();
+   }
+   else
+   {
+      // last item ... download finished ...
+      bRun = false;
+      emit allDone();
    }
 }
 
@@ -176,4 +183,3 @@ bool CPixLoader::busy()
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-

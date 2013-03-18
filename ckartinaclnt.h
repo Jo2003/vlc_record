@@ -70,6 +70,7 @@ public:
       REQ_SET_PCODE,
       REQ_EPG_CURRENT,
       REQ_UPDATE_CHECK,
+      REQ_DOWN_IMG,
       REQ_UNKNOWN = 255
    };
 
@@ -222,6 +223,9 @@ private:
    QErrorMap errMap;
    Kartina   karTrace;
 
+public slots:
+   void slotDownImg(const QString& url);
+
 private slots:
    void slotStringResponse (int reqId, QString strResp);
    void slotBinResponse (int reqId, QByteArray binResp);
@@ -230,6 +234,7 @@ private slots:
 signals:
    void sigError (QString str, int req, int err);
    void sigHttpResponse(QString str, int req);
+   void sigImage(QByteArray ba);
 };
 
 #endif /* __201004161114_CKARTINACLNT_H */
