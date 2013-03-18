@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "63"
-#define BETA_EXT      "B1"
+#define BETA_EXT      "B2"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2013-03-18: Version 2.63B2
+| - pixCache downloads are now done by network access manager
+| - adapt header data to fix a problem on Linux
 | - bugfix in channel list delegate (div / 0) on Mac
 | - allow only requests when logged in, ignore anything else
 | - add more request types so later iptv ctrl client can

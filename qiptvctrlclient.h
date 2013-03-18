@@ -19,6 +19,7 @@
 #include <QNetworkRequest>
 #include <QVariant>
 #include <QMetaEnum>
+#include <QUrl>
 
 #include "clogfile.h"
 
@@ -91,7 +92,7 @@ private:
 #endif
 
 protected:
-   QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url);
+   QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
    QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
 
 signals:

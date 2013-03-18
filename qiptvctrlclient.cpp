@@ -65,18 +65,18 @@ QIptvCtrlClient::~QIptvCtrlClient()
 //---------------------------------------------------------------------------
 void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
 {
+   // get id and type from reply ...
    int iReqId   = reply->property(PROP_ID).toInt();
    int iReqType = reply->property(PROP_TYPE).toInt();
-   QByteArray ba;
 
    // check for error ...
    if (reply->error() == QNetworkReply::NoError)
    {
       // get data ...
-      ba = reply->readAll();
+      QByteArray ba = reply->readAll();
 
 #ifdef __TRACE
-      mInfo(tr("iReqID=%1, ReqType='%2', DataSize=%3B")
+      mInfo(tr("id=%1, type='%2', size=%3 bytes")
          .arg(iReqId).arg(iptv.reqName((Iptv::eReqType)iReqType)).arg(ba.size()));
 #endif // __TRACE
 
@@ -111,7 +111,7 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
          break;
 
       default:
-         emit sigErr(iReqId, tr("Error, unknown reqest type: %1!")
+         emit sigErr(iReqId, tr("Error, unknown request type: %1!")
                      .arg(iReqType), -1);
          break;
       }
@@ -134,19 +134,34 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
 //
 //! \param   req (QNetworkRequest&) ref. to request
 //! \param   url (const QString&) url used for the post request
+//! \param   iSize (int) optional, content size in bytes (when using post)
 //
 //! \return  ref. to QNetworkRequest as given as param
 //---------------------------------------------------------------------------
 QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
-                                                 const QString& url)
+                                                 const QString& url,
+                                                 int iSize)
 {
+   // set request url ...
    req.setUrl(QUrl(url));
-   req.setRawHeader("User-Agent", APP_NAME " " __MY__VERSION__);
+
+   // set user agent (name + version of this app) ...
+   req.setRawHeader("User-Agent"  , APP_NAME " " __MY__VERSION__);
+
+   // set content type ...
+   req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
+   // set content length if given (used on post requests only) ...
+   if (iSize != -1)
+   {
+      req.setHeader(QNetworkRequest::ContentLengthHeader, iSize);
+   }
 
    // ...
-   // Here is the possibility to add more header data as well ...
+   // Here is the place to add more header data ...
    // ...
 
+   // set cookie if already catched ...
    if (bCSet)
    {
       req.setHeader(QNetworkRequest::CookieHeader, cookies);
@@ -195,14 +210,16 @@ QNetworkReply* QIptvCtrlClient::post(int iReqId, const QString& url,
 {
    QNetworkReply*  pReply;
    QNetworkRequest req;
-   prepareRequest(req, url);
+   QUrl            data(content);
+
+   prepareRequest(req, url, data.toEncoded().size());
 
 #ifdef __TRACE
-   mInfo(tr("iReqID=%1, ReqType='%2', Url='%3', Content='%4'")
+   mInfo(tr("id=%1, type='%2', url='%3', data='%4'")
          .arg(iReqId).arg(iptv.reqName(t_req)).arg(url).arg(content));
 #endif // __TRACE
 
-   if ((pReply = QNetworkAccessManager::post(req, content.toAscii())) != NULL)
+   if ((pReply = QNetworkAccessManager::post(req, data.toEncoded())) != NULL)
    {
       prepareReply(pReply, iReqId, t_req);
    }
@@ -228,10 +245,11 @@ QNetworkReply* QIptvCtrlClient::get(int iReqId, const QString& url,
 {
    QNetworkReply*  pReply;
    QNetworkRequest req;
+
    prepareRequest(req, url);
 
 #ifdef __TRACE
-   mInfo(tr("iReqID=%1, ReqType='%2', Url='%3'")
+   mInfo(tr("id=%1, type='%2', url='%3'")
          .arg(iReqId).arg(iptv.reqName(t_req)).arg(url));
 #endif // __TRACE
 
