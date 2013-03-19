@@ -198,6 +198,22 @@ public:
          str = str.left(str.length() - 3) + QString("...");
       }
    }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   create a md5 hash from a string (ascii only)
+   //
+   //! \author  Jo2003
+   //! \date    19.03.2013
+   //
+   //! \param   str (const QString&) ref. to string to hash
+   //
+   //! \return  hash code as string
+   //---------------------------------------------------------------------------
+   static QString md5(const QString& str)
+   {
+      return QString(QCryptographicHash::hash(str.toAscii(), QCryptographicHash::Md5).toHex());
+   }
 };
 
 
