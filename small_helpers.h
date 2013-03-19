@@ -17,6 +17,7 @@
 #include <QString>
 #include <QFont>
 #include <QFontMetrics>
+#include <QCryptographicHash>
 
 #define __VLCRECORD_KEY "O20J03N05+v205+n1907#80730108"
 
