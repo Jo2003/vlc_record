@@ -25,7 +25,7 @@
 #define BIN_NAME             "iptv-record"
 #define KARTINA_HOST         "file-teleport.com"
 
-#define COMPANY_NAME "Jo2003"
+#define COMPANY_NAME "Iptv-Provider"
 #define COMPANY_LINK "<a href='http://vlc-record.coujo.de'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
