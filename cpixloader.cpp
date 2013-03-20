@@ -66,7 +66,15 @@ void CPixLoader::startDownLoad()
    if (!QFile::exists(QString("%1/%2").arg(desc.sLocal).arg(info.fileName())))
    {
       // request download ...
-      emit sigLoadImage(QString("http://%1%2").arg(KARTINA_HOST).arg(desc.sRemote));
+      if (desc.sRemote.contains("http"))
+      {
+         // full url ...
+         emit sigLoadImage(desc.sRemote);
+      }
+      else
+      {
+         emit sigLoadImage(QString("http://%1%2").arg(KARTINA_HOST).arg(desc.sRemote));
+      }
    }
    else
    {
@@ -81,6 +89,12 @@ void CPixLoader::startDownLoad()
       {
          // recursive call ...
          startDownLoad();
+      }
+      else
+      {
+         // empty queue ...
+         bRun = false;
+         emit allDone();
       }
    }
 }

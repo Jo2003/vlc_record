@@ -11,6 +11,7 @@
 \*************************************************************/
 #include "ctimerrec.h"
 #include "ui_ctimerrec.h"
+#include <QFileInfo>
 
 // logging stuff ...
 extern CLogFile VlcLog;
@@ -279,6 +280,7 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
 void CTimerRec::SetChanList(const QVector<cparser::SChan> &chanList)
 {
    rec::SChanEntry entry;
+   QFileInfo       fInfo;
 
    ChanList.clear();
    r_ui->cbxChannel->clear();
@@ -292,8 +294,10 @@ void CTimerRec::SetChanList(const QVector<cparser::SChan> &chanList)
          entry.cid  = chanList[i].iId;
          entry.Name = chanList[i].sName;
 
+         fInfo.setFile(chanList[i].sIcon);
+
          r_ui->cbxChannel->insertItem(i,
-                                    QIcon(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(entry.cid)),
+                                    QIcon(QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName())),
                                     QString("%1. %2").arg(iCount).arg(entry.Name),
                                     QVariant(entry.cid));
 

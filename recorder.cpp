@@ -1964,7 +1964,13 @@ void Recorder::slotEPGCurrent (const QString &str)
             if (chanEntries.at(j).uiStart > chanMapEntry.uiStart)
             {
                chanMapEntry.uiStart   = chanEntries.at(j).uiStart;
+
+#ifdef _TASTE_IPTV_RECORD
+               chanMapEntry.uiEnd     = chanEntries.at(j).uiEnd;
+#else
                chanMapEntry.uiEnd     = ((j + 1) < chanEntries.count()) ? chanEntries.at(j + 1).uiStart : 0;
+#endif // _TASTE_IPTV_RECORD
+
                chanMapEntry.sProgramm = chanEntries.at(j).sShow;
 
                mutexChanMap.lock();
@@ -2454,18 +2460,18 @@ void Recorder::slotShutdown()
 \----------------------------------------------------------------- */
 void Recorder::slotChanListContext(const QPoint &pt)
 {
-   int cid = getCurrentCid();
+   int            cid = getCurrentCid();
+   cparser::SChan entry;
+   QFileInfo      fInfo;
 
-   mutexChanMap.lock();
-   bool bContains = chanMap.contains(cid);
-   mutexChanMap.unlock();
-
-   if (bContains) // real channel ...
+   if (!getChanEntry(cid, entry))
    {
       // create context menu ...
       CleanContextMenu();
       pContextAct[0] = new CFavAction (&favContext);
-      QString    sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid);
+
+      fInfo.setFile(entry.sIcon);
+      QString sLogoFile = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
 
       // is channel already in favourites ... ?
       if (lFavourites.contains(cid))
@@ -2596,6 +2602,7 @@ void Recorder::slotHandleFavAction(QAction *pAct)
 void Recorder::slotFavBtnContext(const QPoint &pt)
 {
    QString     sLogoFile;
+   QFileInfo   fInfo;
 
    CleanContextMenu();
 
@@ -2606,9 +2613,10 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
 
       if (pContextAct[i])
       {
-         sLogoFile = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(lFavourites[i]);
+         fInfo.setFile(chanMap.value(lFavourites[i]).sIcon);
+         sLogoFile = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
          pContextAct[i]->setIcon(QIcon(sLogoFile));
-         pContextAct[i]->setText(tr("Remove \"%1\" from favourites").arg(chanMap[lFavourites[i]].sName));
+         pContextAct[i]->setText(tr("Remove \"%1\" from favourites").arg(chanMap.value(lFavourites[i]).sName));
          pContextAct[i]->setFavData(lFavourites[i], kartinafav::FAV_DEL);
          favContext.addAction(pContextAct[i]);
       }
@@ -3345,16 +3353,19 @@ void Recorder::slotRefreshChanLogos()
       {
          pItem = pModel->item(i);
          cid   = pItem->data(channellist::cidRole).toInt();
-         fLogo = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(cid);
 
-         if (icon.load(fLogo, "image/gif"))
+         // is there a logo file ... ?
+         if ((fLogo = pItem->data(channellist::logoFileRole).toString()) != "")
          {
-            pItem->setData(QIcon(icon), channellist::iconRole);
-
-            // update channel icon on EPG browser ...
-            if (cid == curCid)
+            if (icon.load(fLogo, "image/gif"))
             {
-               ui->labChanIcon->setPixmap(QIcon(icon).pixmap(24, 24));
+               pItem->setData(QIcon(icon), channellist::iconRole);
+
+               // update channel icon on EPG browser ...
+               if (cid == curCid)
+               {
+                  ui->labChanIcon->setPixmap(QIcon(icon).pixmap(24, 24));
+               }
             }
          }
       }
@@ -4348,6 +4359,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem->setData(chanlist[i].sProgramm, channellist::progRole);
             pItem->setData(chanlist[i].uiStart, channellist::startRole);
             pItem->setData(chanlist[i].uiEnd, channellist::endRole);
+            pItem->setData(sLogoFile, channellist::logoFileRole);
             pItem->setData(iPos, channellist::posRole);
             pItem->setData(now, channellist::lastEpgUpd);
          }
@@ -4788,9 +4800,11 @@ bool Recorder::WantToStopRec()
 \----------------------------------------------------------------- */
 void Recorder::HandleFavourites()
 {
-   int i;
-   QPixmap pic;
-   QString sObj;
+   int            i;
+   QPixmap        pic;
+   QString        sObj;
+   cparser::SChan entry;
+   QFileInfo      fInfo;
 
    // remove all favourite buttons ...
    for (i = 0; i < MAX_NO_FAVOURITES; i++)
@@ -4820,9 +4834,11 @@ void Recorder::HandleFavourites()
          // -------------------------
          // init action ...
          // -------------------------
+         getChanEntry(lFavourites[i], entry);
+         fInfo.setFile(entry.sIcon);
 
          // add logo ...
-         pic.load(QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(lFavourites[i]));
+         pic.load(QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName()));
          pFavAct[i]->setIcon(QIcon(pic.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
 
          // store channel id in action ...

@@ -66,6 +66,11 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->checkAds->setEnabled(true);
 #endif // ENABLE_AD_SWITCH
 
+#ifdef _TASTE_IPTV_RECORD
+   m_ui->cbxBitRate->setDisabled(true);
+   m_ui->listHide->setDisabled(true);
+#endif
+
    // fill in values ...
    readSettings();
 }
@@ -1323,6 +1328,7 @@ void CSettingsDlg::slotBuildChanManager(const QString &str)
 {
    QString          sLogo;
    QListWidgetItem *pItem;
+   QFileInfo        fInfo;
 
    channelVector.clear();
 
@@ -1334,7 +1340,8 @@ void CSettingsDlg::slotBuildChanManager(const QString &str)
       {
          if (!channelVector[i].bIsGroup)
          {
-            sLogo = QString("%1/%2.gif").arg(pFolders->getLogoDir()).arg(channelVector[i].iId);
+            fInfo.setFile(channelVector[i].sIcon);
+            sLogo = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
             pItem = new QListWidgetItem (QIcon(sLogo), channelVector[i].sName);
 
             // save channel id in list item ...

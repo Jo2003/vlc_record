@@ -24,10 +24,16 @@
 #include "clogfile.h"
 #include "defdef.h"
 #include "cdirstuff.h"
-#include "ckartinaxmlparser.h"
 #include "cshortcutex.h"
 #include "cshortcutgrabber.h"
-#include "ckartinaclnt.h"
+
+#ifndef _TASTE_IPTV_RECORD
+   #include "ckartinaclnt.h"
+   #include "ckartinaxmlparser.h"
+#else
+   #include "crodnoeclient.h"
+   #include "crodnoeparser.h"
+#endif // _TASTE_IPTV_RECORD
 
 //===================================================================
 // namespace

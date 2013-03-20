@@ -56,7 +56,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pMediaList       = NULL;
    pEMPlay          = NULL;
    pSettings        = NULL;
-   pApiClient        = NULL;
+   pApiClient       = NULL;
    bSpoolPending    = true;
    bOmitNextEvent   = false;
    uiDuration       = (uint)-1;

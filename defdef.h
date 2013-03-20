@@ -22,6 +22,8 @@
    #include <defines_afrobox.h>
 #elif defined _TASTE_MOIDOM_TV
    #include <defines_moidom_tv.h>
+#elif defined _TASTE_IPTV_RECORD
+   #include <defines_iptv_record.h>
 #else
    #include <defines_vlc_record.h>
 #endif // _TASTE_XXX
@@ -41,6 +43,14 @@
    #define __UNUSED
 #endif
 
+// define API path if not already defined ...
+#ifndef KARTINA_API_XML_PATH
+   #define KARTINA_API_XML_PATH   "/api/xml/"
+#endif
+#ifndef KARTINA_API_JSON_PATH
+   #define KARTINA_API_JSON_PATH  "/api/json/"
+#endif
+
 #define APP_LOG_FILE      BIN_NAME ".log"
 #define PLAYER_LOG_FILE   "player.log"
 #define LIBVLC_LOG_FILE   "libvlc.log"
@@ -50,8 +60,6 @@
 #define LOGO_DIR          "logos"
 #define VOD_DIR           "vod"
 #define DOC_DIR           "doc"
-#define KARTINA_API_XML_PATH   "/api/xml/"
-#define KARTINA_API_JSON_PATH  "/api/json/"
 #define LOGO_URL          "/img/ico/24"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"
 #define DEF_TZ_STEP       1800            // time zone step is min. 30 minutes (1800 sec.) ...

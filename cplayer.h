@@ -30,8 +30,13 @@
 #include "qtimerex.h"
 #include "cshowinfo.h"
 #include "csettingsdlg.h"
-#include "ckartinaclnt.h"
 #include "qvlcvideowidget.h"
+
+#ifndef _TASTE_IPTV_RECORD
+   #include "ckartinaclnt.h"
+#else
+   #include "crodnoeclient.h"
+#endif // _TASTE_IPTV_RECORD
 
 //===================================================================
 // namespace

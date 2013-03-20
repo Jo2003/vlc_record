@@ -18,6 +18,7 @@
 #include <QFont>
 #include <QFontMetrics>
 #include <QCryptographicHash>
+#include <QDateTime>
 
 #define __VLCRECORD_KEY "O20J03N05+v205+n1907#80730108"
 
@@ -214,6 +215,30 @@ public:
    static QString md5(const QString& str)
    {
       return QString(QCryptographicHash::hash(str.toAscii(), QCryptographicHash::Md5).toHex());
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   create random number between low and high
+   //
+   //! \author  Jo2003
+   //! \date    19.03.2013
+   //
+   //! \param   low (int) low value
+   //! \param   high (int) high value
+   //
+   //! \return  random int
+   //---------------------------------------------------------------------------
+   static int randInt(int low, int high)
+   {
+
+      QDateTime now = QDateTime::currentDateTime();
+
+      // random seed ...
+      qsrand(now.toTime_t() + now.time().msec());
+
+      // Random number between low and high
+      return qrand() % ((high + 1) - low) + low;
    }
 };
 

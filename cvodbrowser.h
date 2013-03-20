@@ -18,14 +18,18 @@
 #include <QString>
 #include <QFileInfo>
 #include <QRegExp>
-
 #include "clogfile.h"
-#include "ckartinaxmlparser.h"
 #include "templates.h"
 #include "defdef.h"
 #include "cdirstuff.h"
 #include "csettingsdlg.h"
 #include "cpixloader.h"
+
+#ifndef _TASTE_IPTV_RECORD
+   #include "ckartinaxmlparser.h"
+#else
+   #include "crodnoeparser.h"
+#endif // _TASTE_IPTV_RECORD
 
 /********************************************************************\
 |  Class: CVodBrowser

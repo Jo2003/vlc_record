@@ -63,7 +63,11 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
       actShow.sShowName  = epglist[i].sName;
       actShow.sShowDescr = epglist[i].sDescr;
       actShow.uiStart    = epglist[i].uiGmt;
+#ifdef _TASTE_IPTV_RECORD
+      actShow.uiEnd      = epglist[i].uiEnd;
+#else
       actShow.uiEnd      = ((i + 1) < epglist.size()) ? epglist[i + 1].uiGmt : 0;
+#endif
 
       // store start time and show info ...
       mProgram.insert(epglist[i].uiGmt, actShow);

@@ -33,8 +33,6 @@ DEFINES += INCLUDE_LIBVLC
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \
-    ckartinaclnt.cpp \
-    ckartinaxmlparser.cpp \
     cepgbrowser.cpp \
     caboutdialog.cpp \
     clogfile.cpp \
@@ -61,8 +59,6 @@ SOURCES += main.cpp \
     qiptvctrlclient.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
-    ckartinaclnt.h \
-    ckartinaxmlparser.h \
     templates.h \
     cepgbrowser.h \
     caboutdialog.h \
@@ -109,6 +105,19 @@ FORMS += forms/csettingsdlg.ui \
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
+
+contains(DEFINES,_TASTE_IPTV_RECORD) {
+    HEADERS += crodnoeclient.h \
+               crodnoeparser.h
+    SOURCES += crodnoeclient.cpp \
+               crodnoeparser.cpp
+}
+else {
+    HEADERS += ckartinaclnt.h \
+               ckartinaxmlparser.h
+    SOURCES += ckartinaclnt.cpp \
+               ckartinaxmlparser.cpp
+}
 
 # for static build ...
 static {

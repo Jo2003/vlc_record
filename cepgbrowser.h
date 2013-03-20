@@ -14,11 +14,15 @@
 
 #include <QTextBrowser>
 #include <QMap>
-#include "ckartinaxmlparser.h"
 #include "templates.h"
-
 #include "clogfile.h"
 #include "defdef.h"
+
+#ifndef _TASTE_IPTV_RECORD
+   #include "ckartinaxmlparser.h"
+#else
+   #include "crodnoeparser.h"
+#endif // _TASTE_IPTV_RECORD
 
 namespace epg
 {

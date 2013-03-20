@@ -26,6 +26,10 @@ case ${NAME} in
       OFFNAME="Moi-Dom.TV"
       SSERVER=$OFFNAME
       ;;
+   iptv-record)
+      OFFNAME="Iptv-Record"
+      SSERVER="some Iptv stations"
+      ;;
    *)
       OFFNAME=${NAME}
       ;;

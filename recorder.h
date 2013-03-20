@@ -40,8 +40,6 @@
 #include <QMutex>
 
 #include "csettingsdlg.h"
-#include "ckartinaclnt.h"
-#include "ckartinaxmlparser.h"
 #include "templates.h"
 #include "caboutdialog.h"
 #include "cpixloader.h"
@@ -58,10 +56,19 @@
 #include "qseccodedlg.h"
 #include "qhelpdialog.h"
 #include "qrecordtimerwidget.h"
+
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
    #include "qvlcvideowidget.h"
-#endif
+#endif // INCLUDE_LIBVLC
+
+#ifndef _TASTE_IPTV_RECORD
+   #include "ckartinaclnt.h"
+   #include "ckartinaxmlparser.h"
+#else
+   #include "crodnoeclient.h"
+   #include "crodnoeparser.h"
+#endif // _TASTE_IPTV_RECORD
 
 //------------------------------------------------------------------
 /// \name definition of start flags

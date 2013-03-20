@@ -22,13 +22,19 @@
 
 #include "defdef.h"
 #include "templates.h"
-#include "ckartinaxmlparser.h"
-#include "ckartinaclnt.h"
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
 #include "cdirstuff.h"
 #include "cshowinfo.h"
 #include "cstreamloader.h"
+
+#ifndef _TASTE_IPTV_RECORD
+   #include "ckartinaclnt.h"
+   #include "ckartinaxmlparser.h"
+#else
+   #include "crodnoeclient.h"
+   #include "crodnoeparser.h"
+#endif // _TASTE_IPTV_RECORD
 
 //===================================================================
 // namespace
