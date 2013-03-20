@@ -1,7 +1,7 @@
 #!/bin/bash
 
 QMAKE=~/Qt/4.8.3/bin/qmake
-CUSTOMS="vlc-record kartina_tv polsky_tv moidom_tv"
+CUSTOMS="vlc-record kartina_tv polsky_tv moidom_tv iptv-record"
 
 for i in $CUSTOMS; do
 	$QMAKE $i.pro

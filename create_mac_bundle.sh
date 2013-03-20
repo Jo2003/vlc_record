@@ -24,6 +24,9 @@ case $APPNAME in
     afrobox)
         OFFNAME="AfroBox"
         ;;
+    iptv-record)
+        OFFNAME="Iptv-Record"
+        ;;
     *)
         OFFNAME=$APPNAME
         ;;
