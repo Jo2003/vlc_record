@@ -187,7 +187,8 @@ public:
 protected:
    void GetCookie ();
    void Logout ();
-   void GetChannelList (const QString &secCode = QString());
+   void GetChannelList ();
+   void GetProtChannelList (const QString &secCode);
    void SetTimeShift (int iHours);
    void GetTimeShift ();
    void GetStreamURL (int iChanID, const QString &secCode, bool bTimerRec = false);

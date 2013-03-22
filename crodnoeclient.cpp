@@ -244,7 +244,7 @@ int CKartinaClnt::queueRequest(Kartina::EReq req, const QVariant& par_1, const Q
          setChanShow(par_1.toString(), par_2.toString());
          break;
       case Kartina::REQ_CHANLIST_ALL:
-         GetChannelList(par_1.toString());
+         GetProtChannelList(par_1.toString());
          break;
       case Kartina::REQ_GET_VOD_MANAGER:
          getVodManager(par_1.toString());
@@ -375,20 +375,37 @@ void CKartinaClnt::GetCookie ()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetChannelList (const QString &secCode)
+void CKartinaClnt::GetChannelList ()
+{
+   mInfo(tr("Request Channel List ..."));
+
+   // request channel list or channel list for settings ...
+   get((int)Kartina::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1");
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    GetProtChannelList
+|
+| Author:      Jo2003
+|
+| Begin:       22.03.2013
+|
+| Description: request channel list
+|
+| Parameters:  protect_code
+|
+| Returns:     --
+\-----------------------------------------------------------------------------*/
+void CKartinaClnt::GetProtChannelList (const QString &secCode)
 {
    mInfo(tr("Request Channel List ..."));
    QString req = "with_epg=1";
 
-   if (secCode != "")
-   {
-      // normal channel list request ...
-      req = QString("&show=all&protect_code=%1").arg(secCode);
-   }
+   // normal channel list request ...
+   req += QString("&show=all&protect_code=%1").arg(secCode);
 
    // request channel list or channel list for settings ...
-   post((secCode == "") ? (int)Kartina::REQ_CHANNELLIST : (int)Kartina::REQ_CHANLIST_ALL,
-        sApiUrl + "get_list_tv", req);
+   post((int)Kartina::REQ_CHANLIST_ALL, sApiUrl + "get_list_tv", req);
 }
 
 /*-----------------------------------------------------------------------------\
