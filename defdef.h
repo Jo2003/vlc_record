@@ -51,6 +51,14 @@
    #define KARTINA_API_JSON_PATH  "/api/json/"
 #endif
 
+// define classes of api client ...
+#ifndef ApiClient
+   #define ApiClient      CKartinaClnt
+#endif
+#ifndef ApiParser
+   #define ApiParser      CKartinaXMLParser
+#endif
+
 #define APP_LOG_FILE      BIN_NAME ".log"
 #define PLAYER_LOG_FILE   "player.log"
 #define LIBVLC_LOG_FILE   "libvlc.log"

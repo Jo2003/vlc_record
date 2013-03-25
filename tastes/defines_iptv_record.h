@@ -32,4 +32,8 @@
 #define KARTINA_API_XML_PATH   "/iptv/api/v1/xml/"
 #define KARTINA_API_JSON_PATH  "/iptv/api/v1/json/"
 
+// define classes of api client ...
+#define ApiClient             CRodnoeClient
+#define ApiParser             CRodnoeParser
+
 #endif // __20130319__DEFINES_IPTV_RECORD_H

@@ -112,8 +112,8 @@ public:
     void saveEpgDay(const QString &dateString);
     QString lastEpgDay();
     uint libVlcVerboseLevel();
-    void setApiClient (CKartinaClnt *pClient);
-    void setXmlParser (CKartinaXMLParser *parser);
+    void setApiClient (ApiClient *pClient);
+    void setXmlParser (ApiParser *parser);
     void setAccountInfo(const cparser::SAccountInfo *pInfo);
     void setGeometry(const QByteArray &ba);
     QByteArray getGeometry();
@@ -127,8 +127,8 @@ private:
     CShortcutEx       *pShortApiServer;
     CShortcutEx       *pShortVerbLevel;
     QVector<float>     vBuffs;
-    CKartinaClnt      *pApiClient;
-    CKartinaXMLParser *pParser;
+    ApiClient         *pApiClient;
+    ApiParser         *pParser;
     QVector<cparser::SChan>      channelVector;
     QVector<cparser::SVodRate>   vodRatesVector;
     const cparser::SAccountInfo *pAccountInfo;

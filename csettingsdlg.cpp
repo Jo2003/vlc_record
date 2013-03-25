@@ -106,7 +106,7 @@ CSettingsDlg::~CSettingsDlg()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::setXmlParser(CKartinaXMLParser *parser)
+void CSettingsDlg::setXmlParser(ApiParser *parser)
 {
    pParser = parser;
 }
@@ -136,7 +136,7 @@ void CSettingsDlg::setAccountInfo(const cparser::SAccountInfo *pInfo)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::setApiClient (CKartinaClnt *pClient)
+void CSettingsDlg::setApiClient (ApiClient *pClient)
 {
    pApiClient = pClient;
 }
@@ -1359,7 +1359,7 @@ void CSettingsDlg::slotBuildChanManager(const QString &str)
       if (pAccountInfo->bHasVOD)
       {
          // request vod manager data ...
-         pApiClient->queueRequest(Kartina::REQ_GET_VOD_MANAGER, sTempPasswd);
+         pApiClient->queueRequest(CIptvDefs::REQ_GET_VOD_MANAGER, sTempPasswd);
       }
       else
       {
@@ -1552,7 +1552,7 @@ void CSettingsDlg::on_btnSaveExitManager_clicked()
       {
          ids << QString::number(toHide[i]);
       }
-      pApiClient->queueRequest(Kartina::REQ_SETCHAN_HIDE, ids.join(","), sTempPasswd);
+      pApiClient->queueRequest(CIptvDefs::REQ_SETCHAN_HIDE, ids.join(","), sTempPasswd);
    }
 
    ids.clear();
@@ -1562,13 +1562,13 @@ void CSettingsDlg::on_btnSaveExitManager_clicked()
       {
          ids << QString::number(toShow[i]);
       }
-      pApiClient->queueRequest(Kartina::REQ_SETCHAN_SHOW, ids.join(","), sTempPasswd);
+      pApiClient->queueRequest(CIptvDefs::REQ_SETCHAN_SHOW, ids.join(","), sTempPasswd);
    }
 
    if (toHide.count() || toShow.count())
    {
       // request new channel list ...
-      pApiClient->queueRequest(Kartina::REQ_CHANNELLIST);
+      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
    }
 
    //////////////////////////////////////////////////
@@ -1626,7 +1626,7 @@ void CSettingsDlg::on_btnSaveExitManager_clicked()
       if (sRules != "")
       {
          mInfo(tr("Changed VOD Rate: %1").arg(sRules));
-         pApiClient->queueRequest(Kartina::REQ_SET_VOD_MANAGER, sRules, sTempPasswd);
+         pApiClient->queueRequest(CIptvDefs::REQ_SET_VOD_MANAGER, sRules, sTempPasswd);
       }
    }
 
@@ -1647,7 +1647,7 @@ void CSettingsDlg::on_btnEnterManager_clicked()
 {
    sTempPasswd = m_ui->linePasswd->text();
    m_ui->linePasswd->clear();
-   pApiClient->queueRequest(Kartina::REQ_CHANLIST_ALL, sTempPasswd);
+   pApiClient->queueRequest(CIptvDefs::REQ_CHANLIST_ALL, sTempPasswd);
 }
 
 /* -----------------------------------------------------------------\
@@ -1697,7 +1697,7 @@ void CSettingsDlg::on_btnChgPCode_clicked()
       m_ui->lineConfirmPCode->setDisabled(true);
       m_ui->btnChgPCode->setDisabled(true);
 
-      pApiClient->queueRequest(Kartina::REQ_SET_PCODE, sOldPCode, sNewPCode);
+      pApiClient->queueRequest(CIptvDefs::REQ_SET_PCODE, sOldPCode, sNewPCode);
    }
    else
    {

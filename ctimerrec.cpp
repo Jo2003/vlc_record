@@ -153,7 +153,7 @@ void CTimerRec::StartTimer()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CTimerRec::SetXmlParser(CKartinaXMLParser *pParser)
+void CTimerRec::SetXmlParser(ApiParser *pParser)
 {
    pXmlParser = pParser;
 }
@@ -168,7 +168,7 @@ void CTimerRec::SetXmlParser(CKartinaXMLParser *pParser)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CTimerRec::setApiClient(CKartinaClnt *pClient)
+void CTimerRec::setApiClient(ApiClient *pClient)
 {
    pApiClient = pClient;
 }
@@ -898,7 +898,7 @@ void CTimerRec::slotRecTimer()
                   mInfo(tr("Record #%1 (%2) starts soon. Set timer to standby!").arg((*it).id).arg((*it).sName));
 
                   // set timeshift ...
-                  pApiClient->queueRequest(Kartina::REQ_TIMESHIFT, (*it).iTimeShift);
+                  pApiClient->queueRequest(CIptvDefs::REQ_TIMESHIFT, (*it).iTimeShift);
                }
                else if ((start <= now) && ((*it).eState == rec::REC_STBY))
                {
@@ -917,7 +917,7 @@ void CTimerRec::slotRecTimer()
                   showInfo.setPlayState(IncPlay::PS_TIMER_RECORD);
                   showInfo.setChanName(ChanList[(*it).cid].Name);
 
-                  pApiClient->queueRequest(Kartina::REQ_TIMERREC, (*it).cid);
+                  pApiClient->queueRequest(CIptvDefs::REQ_TIMERREC, (*it).cid);
                }
 
                it++;

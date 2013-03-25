@@ -255,7 +255,7 @@ void CPlayer::setSettings(CSettingsDlg *pDlg)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::setApiClient(CKartinaClnt *pClient)
+void CPlayer::setApiClient(ApiClient *pClient)
 {
    pApiClient = pClient;
 }
@@ -1212,7 +1212,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          // save jump time ...
          showInfo.setLastJumpTime(pos);
 
-         pApiClient->queueRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
+         pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
 
          // do we reach another show?
          if ((pos < mToGmt(missionControl.posMinimum()))
@@ -1400,7 +1400,7 @@ void CPlayer::slotSliderPosChanged()
             showInfo.setLastJumpTime(position);
 
             // trigger stream request ...
-            pApiClient->queueRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
+            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
 

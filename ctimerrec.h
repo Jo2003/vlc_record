@@ -92,8 +92,8 @@ public:
    void SetTimeShift (int iTs);
    void SetChanList  (const QVector<cparser::SChan> &chanList);
    void SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &name = QString());
-   void SetXmlParser (CKartinaXMLParser *pParser);
-   void setApiClient (CKartinaClnt *pClient);
+   void SetXmlParser (ApiParser *pParser);
+   void setApiClient (ApiClient *pClient);
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
    void SetStreamLoader (CStreamLoader *pLoader);
@@ -121,8 +121,8 @@ private:
    uint    uiActId;
    uint    uiEdtId;
    QTimer  recTimer;
-   CKartinaXMLParser *pXmlParser;
-   CKartinaClnt      *pApiClient;
+   ApiParser         *pXmlParser;
+   ApiClient         *pApiClient;
    CSettingsDlg      *pSettings;
    CVlcCtrl          *pVlcCtrl;
    CStreamLoader     *pStreamLoader;

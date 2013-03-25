@@ -67,7 +67,7 @@ public:
    void pausePlayTimer ();
    void stopPlayTimer ();
    void setSettings (CSettingsDlg *pDlg);
-   void setApiClient (CKartinaClnt *pClient);
+   void setApiClient (ApiClient *pClient);
    static void eventCallback (const libvlc_event_t *ev, void *userdata);
    bool isPositionable();
    void initSlider ();
@@ -100,7 +100,7 @@ private:
    libvlc_media_list_player_t  *pMedialistPlayer;
    libvlc_media_list_t         *pMediaList;
    CSettingsDlg                *pSettings;
-   CKartinaClnt                *pApiClient;
+   ApiClient                   *pApiClient;
    bool                         bSpoolPending;
    uint                         uiDuration;
    ulong                        ulLibvlcVersion;

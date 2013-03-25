@@ -17,18 +17,18 @@
 extern CLogFile VlcLog;
 
 /*-----------------------------------------------------------------------------\
-| Function:    CKartinaClnt / constructor
+| Function:    CRodnoeClient / constructor
 |
 | Author:      Jo2003
 |
 | Begin:       Monday, January 04, 2010 16:14:52
 |
-| Description: constructs a CKartinaClnt object to communicate with
-|              kartina.tv
+| Description: constructs a CRodnoeClient object to communicate with
+|              iptv sender
 | Parameters:  --
 |
 \-----------------------------------------------------------------------------*/
-CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
+CRodnoeClient::CRodnoeClient(QObject *parent) :QIptvCtrlClient(parent)
 {
    sUsr           = "";
    sPw            = "";
@@ -41,7 +41,7 @@ CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
 }
 
 /*-----------------------------------------------------------------------------\
-| Function:    ~CKartinaClnt / destructor
+| Function:    ~CRodnoeClient / destructor
 |
 | Author:      Jo2003
 |
@@ -52,7 +52,7 @@ CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
 | Parameters:  --
 |
 \-----------------------------------------------------------------------------*/
-CKartinaClnt::~CKartinaClnt()
+CRodnoeClient::~CRodnoeClient()
 {
    // abort();
 }
@@ -69,18 +69,18 @@ CKartinaClnt::~CKartinaClnt()
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CKartinaClnt::slotStringResponse (int reqId, QString strResp)
+void CRodnoeClient::slotStringResponse (int reqId, QString strResp)
 {
    int     iErr = 0;
    QString sCleanResp;
 
 #ifdef __TRACE
    mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
-         .arg(karTrace.reqValToKey((Kartina::EReq)reqId))
+         .arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId))
          .arg(strResp));
 #endif // __TRACE
 
-   if (reqId == (int)Kartina::REQ_LOGOUT)
+   if (reqId == (int)CIptvDefs::REQ_LOGOUT)
    {
        sCookie = "";
 
@@ -89,7 +89,7 @@ void CKartinaClnt::slotStringResponse (int reqId, QString strResp)
    }
    else
    {
-      mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((Kartina::EReq)reqId)));
+      mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId)));
 
       // check response ...
       if ((iErr = checkResponse(strResp, sCleanResp)) != 0)
@@ -98,8 +98,31 @@ void CKartinaClnt::slotStringResponse (int reqId, QString strResp)
       }
       else
       {
-         // send response ...
-         emit sigHttpResponse (sCleanResp, reqId);
+         switch ((CIptvDefs::EReq)reqId)
+         {
+         // radio stream is a normal stream ...
+         case CIptvDefs::REQ_RADIO_STREAM:
+            reqId = (int)CIptvDefs::REQ_STREAM;
+            emit sigHttpResponse (sCleanResp, reqId);
+            break;
+
+         // special handling to concat TV channels with radio channels ...
+         case CIptvDefs::REQ_CHANNELLIST:
+            sChanListBuffer = sCleanResp;
+            getRadioList();
+            break;
+
+         case CIptvDefs::REQ_CHANLIST_RADIO:
+            sCleanResp = combinChannelLists(sCleanResp);
+            reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
+
+            // fall through here ...
+            //  V      V     V
+         default:
+            // send response ...
+            emit sigHttpResponse (sCleanResp, reqId);
+            break;
+         }
       }
    }
 }
@@ -116,11 +139,11 @@ void CKartinaClnt::slotStringResponse (int reqId, QString strResp)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CKartinaClnt::slotBinResponse (int reqId, QByteArray binResp)
+void CRodnoeClient::slotBinResponse (int reqId, QByteArray binResp)
 {
-   switch((Kartina::EReq)reqId)
+   switch((CIptvDefs::EReq)reqId)
    {
-   case Kartina::REQ_DOWN_IMG:
+   case CIptvDefs::REQ_DOWN_IMG:
       emit sigImage(binResp);
       break;
 
@@ -141,9 +164,73 @@ void CKartinaClnt::slotBinResponse (int reqId, QByteArray binResp)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CKartinaClnt::slotErr (int iReqId, QString sErr, int iErr)
+void CRodnoeClient::slotErr (int iReqId, QString sErr, int iErr)
 {
    emit sigError(sErr, iReqId, iErr);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   combine tv and radio channel list
+//
+//! \author  Jo2003
+//! \date    25.03.2013
+//
+//! \param   resp (QString) radio channel list
+//
+//! \return  ref. to combined string
+//---------------------------------------------------------------------------
+QString CRodnoeClient::combinChannelLists(const QString& resp)
+{
+   QRegExp rx;
+   int     iInsPos;
+   QString groupTmpl = QString("<item><id>2899</id><name>%1</name><color>#000000</color><channels>[%CHANNELS%]</channels></item>").arg(tr("Radio"));
+   QString iconsTmpl = "<tv>[%%TV%%]</tv><radio>[%%RADIO%%]</radio>";
+
+   // create new icon section ...
+   rx.setPattern("<default>(.*)</default>");
+
+   if (rx.indexIn(sChanListBuffer) > -1)
+   {
+      iconsTmpl.replace("[%%TV%%]", rx.cap(1));
+   }
+
+   if (rx.indexIn(resp) > -1)
+   {
+      iconsTmpl.replace("[%%RADIO%%]", rx.cap(1));
+   }
+
+   // remove contents of icons section ...
+   rx.setPattern("<default>.*</w40h30>");
+   sChanListBuffer.remove(rx);
+
+   // insert new icon section ...
+   if ((iInsPos = sChanListBuffer.lastIndexOf("</icons>")) > -1)
+   {
+      sChanListBuffer.insert(iInsPos, iconsTmpl);
+   }
+
+   // grab radio channels ...
+   rx.setPattern("<channels>(.*)</channels>");
+
+   if (rx.indexIn(resp) > -1)
+   {
+      // create new group section ...
+      groupTmpl.replace("[%CHANNELS%]", rx.cap(1));
+
+      // insert radio channels as last entry into group section ...
+      if ((iInsPos = sChanListBuffer.lastIndexOf("</groups>")) > -1)
+      {
+         sChanListBuffer.insert(iInsPos, groupTmpl);
+      }
+   }
+
+#ifdef __TRACE
+   mInfo(tr("Patched channel list:\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
+         .arg(sChanListBuffer));
+#endif // __TRACE
+
+   return sChanListBuffer;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -158,7 +245,7 @@ void CKartinaClnt::slotErr (int iReqId, QString sErr, int iErr)
 |
 |  Returns: 0 -> ok, -1 -> unknown request
 \----------------------------------------------------------------- */
-int CKartinaClnt::queueRequest(Kartina::EReq req, const QVariant& par_1, const QVariant& par_2)
+int CRodnoeClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const QVariant& par_2)
 {
    int iRet = 0;
 
@@ -168,9 +255,9 @@ int CKartinaClnt::queueRequest(Kartina::EReq req, const QVariant& par_1, const Q
       // no ccokie set, only some requests allowed ...
       switch (req)
       {
-      case Kartina::REQ_COOKIE:
-      case Kartina::REQ_LOGOUT:
-      case Kartina::REQ_UPDATE_CHECK:
+      case CIptvDefs::REQ_COOKIE:
+      case CIptvDefs::REQ_LOGOUT:
+      case CIptvDefs::REQ_UPDATE_CHECK:
          break;
       default:
          iRet = -1;
@@ -183,92 +270,95 @@ int CKartinaClnt::queueRequest(Kartina::EReq req, const QVariant& par_1, const Q
       // handle request ...
       switch (req)
       {
-      case Kartina::REQ_CHANNELLIST:
+      case CIptvDefs::REQ_CHANNELLIST:
          GetChannelList();
          break;
-      case Kartina::REQ_COOKIE:
+      case CIptvDefs::REQ_COOKIE:
          GetCookie();
          break;
-      case Kartina::REQ_EPG:
+      case CIptvDefs::REQ_EPG:
          GetEPG(par_1.toInt(), par_2.toInt());
          break;
-      case Kartina::REQ_SERVER:
+      case CIptvDefs::REQ_SERVER:
          SetServer(par_1.toString());
          break;
-      case Kartina::REQ_HTTPBUFF:
+      case CIptvDefs::REQ_HTTPBUFF:
          SetHttpBuffer(par_1.toInt());
          break;
-      case Kartina::REQ_STREAM:
+      case CIptvDefs::REQ_STREAM:
          GetStreamURL(par_1.toInt(), par_2.toString());
          break;
-      case Kartina::REQ_TIMERREC:
+      case CIptvDefs::REQ_TIMERREC:
          GetStreamURL(par_1.toInt(), par_2.toString(), true);
          break;
-      case Kartina::REQ_ARCHIV:
+      case CIptvDefs::REQ_ARCHIV:
          GetArchivURL(par_1.toString(), par_2.toString());
          break;
-      case Kartina::REQ_TIMESHIFT:
+      case CIptvDefs::REQ_TIMESHIFT:
          SetTimeShift(par_1.toInt());
          break;
-      case Kartina::REQ_GETTIMESHIFT:
+      case CIptvDefs::REQ_GETTIMESHIFT:
          GetTimeShift();
          break;
-      case Kartina::REQ_GET_SERVER:
+      case CIptvDefs::REQ_GET_SERVER:
          GetServer();
          break;
-      case Kartina::REQ_LOGOUT:
+      case CIptvDefs::REQ_LOGOUT:
          Logout();
          break;
-      case Kartina::REQ_GETVODGENRES:
+      case CIptvDefs::REQ_GETVODGENRES:
          GetVodGenres();
          break;
-      case Kartina::REQ_GETVIDEOS:
+      case CIptvDefs::REQ_GETVIDEOS:
          GetVideos(par_1.toString());
          break;
-      case Kartina::REQ_GETVIDEOINFO:
+      case CIptvDefs::REQ_GETVIDEOINFO:
          GetVideoInfo(par_1.toInt(), par_2.toString());
          break;
-      case Kartina::REQ_GETVODURL:
+      case CIptvDefs::REQ_GETVODURL:
          GetVodUrl(par_1.toInt(), par_2.toString());
          break;
-      case Kartina::REQ_GETBITRATE:
+      case CIptvDefs::REQ_GETBITRATE:
          GetBitRate();
          break;
-      case Kartina::REQ_SETBITRATE:
+      case CIptvDefs::REQ_SETBITRATE:
          SetBitRate(par_1.toInt());
          break;
-      case Kartina::REQ_SETCHAN_HIDE:
+      case CIptvDefs::REQ_SETCHAN_HIDE:
          setChanHide(par_1.toString(), par_2.toString());
          break;
-      case Kartina::REQ_SETCHAN_SHOW:
+      case CIptvDefs::REQ_SETCHAN_SHOW:
          setChanShow(par_1.toString(), par_2.toString());
          break;
-      case Kartina::REQ_CHANLIST_ALL:
+      case CIptvDefs::REQ_CHANLIST_ALL:
          GetProtChannelList(par_1.toString());
          break;
-      case Kartina::REQ_GET_VOD_MANAGER:
+      case CIptvDefs::REQ_GET_VOD_MANAGER:
          getVodManager(par_1.toString());
          break;
-      case Kartina::REQ_SET_VOD_MANAGER:
+      case CIptvDefs::REQ_SET_VOD_MANAGER:
          setVodManager(par_1.toString(), par_2.toString());
          break;
-      case Kartina::REQ_ADD_VOD_FAV:
+      case CIptvDefs::REQ_ADD_VOD_FAV:
          addVodFav(par_1.toInt(), par_2.toString());
          break;
-      case Kartina::REQ_REM_VOD_FAV:
+      case CIptvDefs::REQ_REM_VOD_FAV:
          remVodFav(par_1.toInt(), par_2.toString());
          break;
-      case Kartina::REQ_GET_VOD_FAV:
+      case CIptvDefs::REQ_GET_VOD_FAV:
          getVodFav();
          break;
-      case Kartina::REQ_SET_PCODE:
+      case CIptvDefs::REQ_SET_PCODE:
          setParentCode(par_1.toString(), par_2.toString());
          break;
-      case Kartina::REQ_EPG_CURRENT:
+      case CIptvDefs::REQ_EPG_CURRENT:
          epgCurrent(par_1.toString());
          break;
-      case Kartina::REQ_UPDATE_CHECK:
+      case CIptvDefs::REQ_UPDATE_CHECK:
          updInfo(par_1.toString());
+         break;
+      case CIptvDefs::REQ_RADIO_STREAM:
+         getRadioStream(par_1.toInt());
          break;
       default:
          iRet = -1;
@@ -293,7 +383,7 @@ int CKartinaClnt::queueRequest(Kartina::EReq req, const QVariant& par_1, const Q
 | Parameters:  host, username, password
 |
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetData(const QString &host, const QString &usr,
+void CRodnoeClient::SetData(const QString &host, const QString &usr,
                            const QString &pw)
 {
    sUsr           = usr;
@@ -314,7 +404,7 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
 | Parameters:  ref. cookie string
 |
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetCookie(const QString &cookie)
+void CRodnoeClient::SetCookie(const QString &cookie)
 {
    mInfo(tr("We've got following Cookie: %1").arg(cookie));
    sCookie = cookie;
@@ -332,10 +422,10 @@ void CKartinaClnt::SetCookie(const QString &cookie)
 | Parameters:  --
 |
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::Logout ()
+void CRodnoeClient::Logout ()
 {
    mInfo(tr("Logout ..."));
-   get((int)Kartina::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
+   get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -351,11 +441,11 @@ void CKartinaClnt::Logout ()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetCookie ()
+void CRodnoeClient::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   post((int)Kartina::REQ_COOKIE, sApiUrl + "login",
+   post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
         QString("login=%1&pass=%2&with_acc=1&with_cfg=1")
         .arg(sUsr)
         .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw))),
@@ -375,12 +465,12 @@ void CKartinaClnt::GetCookie ()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetChannelList ()
+void CRodnoeClient::GetChannelList ()
 {
    mInfo(tr("Request Channel List ..."));
 
    // request channel list or channel list for settings ...
-   get((int)Kartina::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1");
+   get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -396,7 +486,7 @@ void CKartinaClnt::GetChannelList ()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetProtChannelList (const QString &secCode)
+void CRodnoeClient::GetProtChannelList (const QString &secCode)
 {
    mInfo(tr("Request Channel List ..."));
    QString req = "with_epg=1";
@@ -405,7 +495,7 @@ void CKartinaClnt::GetProtChannelList (const QString &secCode)
    req += QString("&show=all&protect_code=%1").arg(secCode);
 
    // request channel list or channel list for settings ...
-   post((int)Kartina::REQ_CHANLIST_ALL, sApiUrl + "get_list_tv", req);
+   post((int)CIptvDefs::REQ_CHANLIST_ALL, sApiUrl + "get_list_tv", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -421,11 +511,11 @@ void CKartinaClnt::GetProtChannelList (const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetServer()
+void CRodnoeClient::GetServer()
 {
    mInfo(tr("Request Stream Server List ..."));
 
-   get((int)Kartina::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
+   get((int)CIptvDefs::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -441,11 +531,11 @@ void CKartinaClnt::GetServer()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetTimeShift()
+void CRodnoeClient::GetTimeShift()
 {
    mInfo(tr("Request Time Shift ..."));
 
-   get((int)Kartina::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
+   get((int)CIptvDefs::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -461,11 +551,11 @@ void CKartinaClnt::GetTimeShift()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetTimeShift (int iHours)
+void CRodnoeClient::SetTimeShift (int iHours)
 {
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
-   post((int)Kartina::REQ_TIMESHIFT, sApiUrl + "set",
+   post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "set",
                QString("var=time_shift&val=%1").arg(iHours));
 }
 
@@ -482,11 +572,11 @@ void CKartinaClnt::SetTimeShift (int iHours)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetBitRate()
+void CRodnoeClient::GetBitRate()
 {
    mInfo(tr("Request Bit Rate ..."));
 
-   get((int)Kartina::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
+   get((int)CIptvDefs::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -502,11 +592,11 @@ void CKartinaClnt::GetBitRate()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetBitRate(int iRate)
+void CRodnoeClient::SetBitRate(int iRate)
 {
    mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
 
-   post((int)Kartina::REQ_SETBITRATE, sApiUrl + "settings_set",
+   post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
                QString("var=bitrate&val=%1").arg(iRate));
 }
 
@@ -523,7 +613,7 @@ void CKartinaClnt::SetBitRate(int iRate)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetStreamURL(int iChanID, const QString &secCode, bool bTimerRec)
+void CRodnoeClient::GetStreamURL(int iChanID, const QString &secCode, bool bTimerRec)
 {
    mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
@@ -534,7 +624,7 @@ void CKartinaClnt::GetStreamURL(int iChanID, const QString &secCode, bool bTimer
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((bTimerRec) ? (int)Kartina::REQ_TIMERREC : (int)Kartina::REQ_STREAM,
+   post((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
                sApiUrl + "get_url_tv", req);
 }
 
@@ -551,11 +641,11 @@ void CKartinaClnt::GetStreamURL(int iChanID, const QString &secCode, bool bTimer
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetServer (const QString &sIp)
+void CRodnoeClient::SetServer (const QString &sIp)
 {
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
-   post((int)Kartina::REQ_SERVER, sApiUrl + "set",
+   post((int)CIptvDefs::REQ_SERVER, sApiUrl + "set",
                QString("var=media_server_id&val=%1").arg(sIp));
 }
 
@@ -572,11 +662,11 @@ void CKartinaClnt::SetServer (const QString &sIp)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetHttpBuffer(int iTime)
+void CRodnoeClient::SetHttpBuffer(int iTime)
 {
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
-   post((int)Kartina::REQ_HTTPBUFF, sApiUrl + "settings_set",
+   post((int)CIptvDefs::REQ_HTTPBUFF, sApiUrl + "settings_set",
                QString("var=http_caching&val=%1").arg(iTime));
 }
 
@@ -593,13 +683,13 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetEPG(int iChanID, int iOffset)
+void CRodnoeClient::GetEPG(int iChanID, int iOffset)
 {
    mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
 
    QDateTime dt(QDate::currentDate().addDays(iOffset));
 
-   post((int)Kartina::REQ_EPG, sApiUrl + "get_epg",
+   post((int)CIptvDefs::REQ_EPG, sApiUrl + "get_epg",
         QString("cid=%1&from_uts=%2&hours=24").arg(iChanID).arg(dt.toTime_t()));
 }
 
@@ -616,7 +706,7 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetArchivURL (const QString &prepared, const QString &secCode)
+void CRodnoeClient::GetArchivURL (const QString &prepared, const QString &secCode)
 {
    mInfo(tr("Request Archiv URL ..."));
 
@@ -630,7 +720,7 @@ void CKartinaClnt::GetArchivURL (const QString &prepared, const QString &secCode
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)Kartina::REQ_ARCHIV, sApiUrl + "get_url_tv", req);
+   post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url_tv", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -646,11 +736,11 @@ void CKartinaClnt::GetArchivURL (const QString &prepared, const QString &secCode
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetVodGenres()
+void CRodnoeClient::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   get((int)Kartina::REQ_GETVODGENRES, sApiUrl + "vod_genres");
+   get((int)CIptvDefs::REQ_GETVODGENRES, sApiUrl + "vod_genres");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -666,11 +756,11 @@ void CKartinaClnt::GetVodGenres()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetVideos(const QString &sPrepared)
+void CRodnoeClient::GetVideos(const QString &sPrepared)
 {
    mInfo(tr("Request Videos ..."));
 
-   get((int)Kartina::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
+   get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -686,7 +776,7 @@ void CKartinaClnt::GetVideos(const QString &sPrepared)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetVideoInfo(int iVodID, const QString &secCode)
+void CRodnoeClient::GetVideoInfo(int iVodID, const QString &secCode)
 {
    mInfo(tr("Request Video info for video %1...").arg(iVodID));
 
@@ -697,7 +787,7 @@ void CKartinaClnt::GetVideoInfo(int iVodID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   get((int)Kartina::REQ_GETVIDEOINFO, sApiUrl + req);
+   get((int)CIptvDefs::REQ_GETVIDEOINFO, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -713,7 +803,7 @@ void CKartinaClnt::GetVideoInfo(int iVodID, const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
+void CRodnoeClient::GetVodUrl(int iVidId, const QString &secCode)
 {
    mInfo(tr("Request Video Url for video %1...").arg(iVidId));
 
@@ -725,7 +815,7 @@ void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   get((int)Kartina::REQ_GETVODURL, sApiUrl + req);
+   get((int)CIptvDefs::REQ_GETVODURL, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -741,14 +831,14 @@ void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::setChanHide(const QString &cids, const QString &secCode)
+void CRodnoeClient::setChanHide(const QString &cids, const QString &secCode)
 {
    mInfo(tr("Hide channel(s) %1 from channel list ...").arg(cids));
 
    QString req = QString("cmd=hide_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   post((int)Kartina::REQ_SETCHAN_HIDE, sApiUrl + "rule", req);
+   post((int)CIptvDefs::REQ_SETCHAN_HIDE, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -764,14 +854,14 @@ void CKartinaClnt::setChanHide(const QString &cids, const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::setChanShow(const QString &cids, const QString &secCode)
+void CRodnoeClient::setChanShow(const QString &cids, const QString &secCode)
 {
    mInfo(tr("Show channel(s) %1 in channel list ...").arg(cids));
 
    QString req = QString("cmd=show_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   post((int)Kartina::REQ_SETCHAN_SHOW, sApiUrl + "rule", req);
+   post((int)CIptvDefs::REQ_SETCHAN_SHOW, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -787,14 +877,14 @@ void CKartinaClnt::setChanShow(const QString &cids, const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::getVodManager(const QString &secCode)
+void CRodnoeClient::getVodManager(const QString &secCode)
 {
    mInfo(tr("Request VOD manager data ..."));
 
    QString req = QString("cmd=get_user_rates&protect_code=%1")
            .arg(secCode);
 
-   post((int)Kartina::REQ_GET_VOD_MANAGER, sApiUrl + "vod_manage", req);
+   post((int)CIptvDefs::REQ_GET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -810,14 +900,14 @@ void CKartinaClnt::getVodManager(const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::setVodManager(const QString &rules, const QString &secCode)
+void CRodnoeClient::setVodManager(const QString &rules, const QString &secCode)
 {
    mInfo(tr("Set VOD manager data (%1) ...").arg(rules));
 
    QString req = QString("cmd=set_user_rates%1&protect_code=%2")
            .arg(rules).arg(secCode);
 
-   post((int)Kartina::REQ_SET_VOD_MANAGER, sApiUrl + "vod_manage", req);
+   post((int)CIptvDefs::REQ_SET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -833,7 +923,7 @@ void CKartinaClnt::setVodManager(const QString &rules, const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::addVodFav(int iVidID, const QString &secCode)
+void CRodnoeClient::addVodFav(int iVidID, const QString &secCode)
 {
    mInfo(tr("Add VOD favourite (%1) ...").arg(iVidID));
 
@@ -844,7 +934,7 @@ void CKartinaClnt::addVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)Kartina::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
+   post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -860,7 +950,7 @@ void CKartinaClnt::addVodFav(int iVidID, const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
+void CRodnoeClient::remVodFav(int iVidID, const QString &secCode)
 {
    mInfo(tr("Remove VOD favourite (%1) ...").arg(iVidID));
 
@@ -871,7 +961,7 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)Kartina::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
+   post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -887,10 +977,10 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::getVodFav()
+void CRodnoeClient::getVodFav()
 {
    mInfo(tr("Get VOD favourites (%1) ..."));
-   get((int)Kartina::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
+   get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -906,14 +996,14 @@ void CKartinaClnt::getVodFav()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::setParentCode(const QString &oldCode, const QString &newCode)
+void CRodnoeClient::setParentCode(const QString &oldCode, const QString &newCode)
 {
    mInfo(tr("Change parent code ..."));
 
    QString req = QString("var=parental_pass&val=%1&protect_code=%2")
          .arg(newCode).arg(oldCode);
 
-   post((int)Kartina::REQ_SET_PCODE, sApiUrl + "set", req);
+   post((int)CIptvDefs::REQ_SET_PCODE, sApiUrl + "set", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -929,11 +1019,11 @@ void CKartinaClnt::setParentCode(const QString &oldCode, const QString &newCode)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::epgCurrent(const QString &cids)
+void CRodnoeClient::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   post((int)Kartina::REQ_EPG_CURRENT, sApiUrl + "get_epg_current", QString("cid=%1").arg(cids));
+   post((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + "get_epg_current", QString("cid=%1").arg(cids));
 }
 
 //---------------------------------------------------------------------------
@@ -947,11 +1037,11 @@ void CKartinaClnt::epgCurrent(const QString &cids)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CKartinaClnt::updInfo (const QString& url)
+void CRodnoeClient::updInfo (const QString& url)
 {
    mInfo(tr("Check for available updates ..."));
 
-   get((int)Kartina::REQ_UPDATE_CHECK, url);
+   get((int)CIptvDefs::REQ_UPDATE_CHECK, url);
 }
 
 //---------------------------------------------------------------------------
@@ -965,11 +1055,46 @@ void CKartinaClnt::updInfo (const QString& url)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CKartinaClnt::slotDownImg(const QString &url)
+void CRodnoeClient::slotDownImg(const QString &url)
 {
    mInfo(tr("Download image ..."));
 
-   get((int)Kartina::REQ_DOWN_IMG, url, Iptv::Binary);
+   get((int)CIptvDefs::REQ_DOWN_IMG, url, Iptv::Binary);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get channel list for radio
+//
+//! \author  Jo2003
+//! \date    25.03.2013
+//
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CRodnoeClient::getRadioList()
+{
+   mInfo(tr("Download radio list ..."));
+
+   get((int)CIptvDefs::REQ_CHANLIST_RADIO, sApiUrl + "get_list_radio");
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get stream url for radio
+//
+//! \author  Jo2003
+//! \date    25.03.2013
+//
+//! \param   cid (int) channel id
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CRodnoeClient::getRadioStream(int cid)
+{
+   mInfo(tr("Get radio stream Url ..."));
+
+   post((int)CIptvDefs::REQ_RADIO_STREAM, sApiUrl + "get_url_radio", QString("cid=%1").arg(cid));
 }
 
 /* -----------------------------------------------------------------\
@@ -983,7 +1108,7 @@ void CKartinaClnt::slotDownImg(const QString &url)
 |  Returns: true ==> set
 |          false ==> not set
 \----------------------------------------------------------------- */
-bool CKartinaClnt::cookieSet()
+bool CRodnoeClient::cookieSet()
 {
    return (sCookie != "") ? true : false;
 }
@@ -999,7 +1124,7 @@ bool CKartinaClnt::cookieSet()
 |
 |  Returns: error code
 \----------------------------------------------------------------- */
-int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
+int CRodnoeClient::checkResponse (const QString &sResp, QString &sCleanResp)
 {
    int iRV = 0;
 
@@ -1047,46 +1172,46 @@ int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CKartinaClnt::fillErrorMap()
+void CRodnoeClient::fillErrorMap()
 {
    errMap.clear();
-   errMap.insert(Kartina::ERR_UNKNOWN,                 tr("Unknown error"));
-   errMap.insert(Kartina::ERR_INCORRECT_REQUEST,       tr("Incorrect request"));
-   errMap.insert(Kartina::ERR_WRONG_LOGIN_DATA,        tr("Wrong login or password"));
-   errMap.insert(Kartina::ERR_ACCESS_DENIED,           tr("Access denied"));
-   errMap.insert(Kartina::ERR_LOGIN_INCORRECT,         tr("Login incorrect"));
-   errMap.insert(Kartina::ERR_CONTRACT_INACTIVE,       tr("Your contract is inactive"));
-   errMap.insert(Kartina::ERR_CONTRACT_PAUSED,         tr("Your contract is paused"));
-   errMap.insert(Kartina::ERR_CHANNEL_NOT_FOUND,       tr("Channel not found or not allowed"));
-   errMap.insert(Kartina::ERR_BAD_PARAM,               tr("Error in request: Bad parameters"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_DAY,       tr("Missing parameter (day) in format <DDMMYY>"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_CID,       tr("Missing parameter (cid)"));
-   errMap.insert(Kartina::ERR_MULTIPLE_ACCOUNT_USE,    tr("Another client with your data logged in"));
-   errMap.insert(Kartina::ERR_AUTHENTICATION,          tr("Authentication error"));
-   errMap.insert(Kartina::ERR_PACKAGE_EXPIRED,         tr("Your package expired"));
-   errMap.insert(Kartina::ERR_UNKNOWN_API_FUNCTION,    tr("Unknown API function"));
-   errMap.insert(Kartina::ERR_ARCHIVE_NOT_AVAIL,       tr("Archive not available"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_PLACE,     tr("Missing parameter (place)"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_NAME,      tr("Missing parameter (name)"));
-   errMap.insert(Kartina::ERR_CONFIRMATION_CODE,       tr("Incorrect confirmation code"));
-   errMap.insert(Kartina::ERR_WRONG_PCODE,             tr("Current code is wrong"));
-   errMap.insert(Kartina::ERR_NEW_CODE,                tr("New code is wrong"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_VAL,       tr("Missing parameter (val)"));
-   errMap.insert(Kartina::ERR_VALUE_NOT_ALLOWED,       tr("Value not allowed"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM,           tr("Missing parameter"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_ID,        tr("Missing parameter (id)"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_FILEID,    tr("Missing parameter (fileid)"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_TYPE,      tr("Missing parameter (type)"));
-   errMap.insert(Kartina::ERR_MISSING_PARAM_QUERY,     tr("Missing parameter (query)"));
-   errMap.insert(Kartina::ERR_BITRATE_NOT_AVAIL,       tr("Bitrate not available"));
-   errMap.insert(Kartina::ERR_SERVICE_NOT_AVAIL,       tr("Service not available"));
-   errMap.insert(Kartina::ERR_QUERY_LIMIT_EXCEEDED,    tr("Query limit exceeded"));
-   errMap.insert(Kartina::ERR_RULE_ALREADY_EXISTS,     tr("Rule already exists"));
-   errMap.insert(Kartina::ERR_RULE_NEED_CMD,           tr("Missing parameter (cmd)"));
-   errMap.insert(Kartina::ERR_MANAGE_NEED_CMD,         tr("Missing parameter (cmd)"));
-   errMap.insert(Kartina::ERR_MANAGE_BAD_VALUE,        tr("Bad value (rate)"));
-   errMap.insert(Kartina::ERR_MANAGE_FILM_NOT_FOUND,   tr("Can't find film"));
-   errMap.insert(Kartina::ERR_MANAGE_ALREADY_ADDED,    tr("Film already added"));
+   errMap.insert(CIptvDefs::ERR_UNKNOWN,                 tr("Unknown error"));
+   errMap.insert(CIptvDefs::ERR_INCORRECT_REQUEST,       tr("Incorrect request"));
+   errMap.insert(CIptvDefs::ERR_WRONG_LOGIN_DATA,        tr("Wrong login or password"));
+   errMap.insert(CIptvDefs::ERR_ACCESS_DENIED,           tr("Access denied"));
+   errMap.insert(CIptvDefs::ERR_LOGIN_INCORRECT,         tr("Login incorrect"));
+   errMap.insert(CIptvDefs::ERR_CONTRACT_INACTIVE,       tr("Your contract is inactive"));
+   errMap.insert(CIptvDefs::ERR_CONTRACT_PAUSED,         tr("Your contract is paused"));
+   errMap.insert(CIptvDefs::ERR_CHANNEL_NOT_FOUND,       tr("Channel not found or not allowed"));
+   errMap.insert(CIptvDefs::ERR_BAD_PARAM,               tr("Error in request: Bad parameters"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_DAY,       tr("Missing parameter (day) in format <DDMMYY>"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_CID,       tr("Missing parameter (cid)"));
+   errMap.insert(CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE,    tr("Another client with your data logged in"));
+   errMap.insert(CIptvDefs::ERR_AUTHENTICATION,          tr("Authentication error"));
+   errMap.insert(CIptvDefs::ERR_PACKAGE_EXPIRED,         tr("Your package expired"));
+   errMap.insert(CIptvDefs::ERR_UNKNOWN_API_FUNCTION,    tr("Unknown API function"));
+   errMap.insert(CIptvDefs::ERR_ARCHIVE_NOT_AVAIL,       tr("Archive not available"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_PLACE,     tr("Missing parameter (place)"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_NAME,      tr("Missing parameter (name)"));
+   errMap.insert(CIptvDefs::ERR_CONFIRMATION_CODE,       tr("Incorrect confirmation code"));
+   errMap.insert(CIptvDefs::ERR_WRONG_PCODE,             tr("Current code is wrong"));
+   errMap.insert(CIptvDefs::ERR_NEW_CODE,                tr("New code is wrong"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_VAL,       tr("Missing parameter (val)"));
+   errMap.insert(CIptvDefs::ERR_VALUE_NOT_ALLOWED,       tr("Value not allowed"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM,           tr("Missing parameter"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_ID,        tr("Missing parameter (id)"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_FILEID,    tr("Missing parameter (fileid)"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_TYPE,      tr("Missing parameter (type)"));
+   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_QUERY,     tr("Missing parameter (query)"));
+   errMap.insert(CIptvDefs::ERR_BITRATE_NOT_AVAIL,       tr("Bitrate not available"));
+   errMap.insert(CIptvDefs::ERR_SERVICE_NOT_AVAIL,       tr("Service not available"));
+   errMap.insert(CIptvDefs::ERR_QUERY_LIMIT_EXCEEDED,    tr("Query limit exceeded"));
+   errMap.insert(CIptvDefs::ERR_RULE_ALREADY_EXISTS,     tr("Rule already exists"));
+   errMap.insert(CIptvDefs::ERR_RULE_NEED_CMD,           tr("Missing parameter (cmd)"));
+   errMap.insert(CIptvDefs::ERR_MANAGE_NEED_CMD,         tr("Missing parameter (cmd)"));
+   errMap.insert(CIptvDefs::ERR_MANAGE_BAD_VALUE,        tr("Bad value (rate)"));
+   errMap.insert(CIptvDefs::ERR_MANAGE_FILM_NOT_FOUND,   tr("Can't find film"));
+   errMap.insert(CIptvDefs::ERR_MANAGE_ALREADY_ADDED,    tr("Film already added"));
 }
 
 /*=============================================================================\

@@ -141,8 +141,8 @@ private:
     CSettingsDlg                    Settings;
     QHelpDialog                    *pHelp;
     QSecCodeDlg                     secCodeDlg;
-    CKartinaClnt                    KartinaTv;
-    CKartinaXMLParser               XMLParser;
+    ApiClient                       apiClient;
+    ApiParser                       apiParser;
     CStreamLoader                   streamLoader;
     QTranslator                    *pTranslator;
     QTimer                          Refresh;
@@ -172,7 +172,7 @@ private:
     ulong                           ulStartFlags;
     Ui::SVodSite                    lastVodSite;
     Ui::STabWidget                  vodTabWidget;
-    Kartina                         metaKartina;
+    CIptvDefs                       metaKartina;
     QRecordTimerWidget              timerWidget;
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;

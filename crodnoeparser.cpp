@@ -17,7 +17,7 @@
 extern CLogFile VlcLog;
 
 /* -----------------------------------------------------------------\
-|  Method: CKartinaXMLParser / constructor
+|  Method: CRodnoeParser / constructor
 |  Begin: 19.01.2010 / 15:27:01
 |  Author: Jo2003
 |  Description: construct object and init values
@@ -26,7 +26,7 @@ extern CLogFile VlcLog;
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : QObject(parent)
+CRodnoeParser::CRodnoeParser(QObject * parent) : QObject(parent)
 {
    iOffset    = 0;
 
@@ -48,7 +48,7 @@ CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : QObject(parent)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CKartinaXMLParser::checkTimeOffSet (const uint &uiSrvTime)
+void CRodnoeParser::checkTimeOffSet (const uint &uiSrvTime)
 {
    /*
      This function is a little tricky ...
@@ -91,7 +91,7 @@ void CKartinaXMLParser::checkTimeOffSet (const uint &uiSrvTime)
 |  Returns: 0 ==> not touched
 |           1 ==> fixed
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::fixTime (uint &uiTime)
+int CRodnoeParser::fixTime (uint &uiTime)
 {
    if (iOffset)
    {
@@ -115,7 +115,7 @@ int CKartinaXMLParser::fixTime (uint &uiTime)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CKartinaXMLParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
+void CRodnoeParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
 {
    // new item starts --> init chan struct ...
    entry.bHasArchive  = false;
@@ -143,7 +143,7 @@ void CKartinaXMLParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseChannelList (const QString &sResp,
+int CRodnoeParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
                                          bool bFixTime)
 {
@@ -153,7 +153,8 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
    // clear channel list ...
    chanList.clear();
 
-   sImgTmpl = xmlElementToValue(sResp, "default");
+   sImgTmplTv    = xmlElementToValue(sResp, "tv");
+   sImgTmplRadio = xmlElementToValue(sResp, "radio");
 
    xml.addData(sResp);
 
@@ -199,7 +200,7 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
                                     bool bFixTime)
 {
    QString        sUnknown;
@@ -291,7 +292,7 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
                                      bool bFixTime)
 {
    QString                sUnknown;
@@ -349,7 +350,7 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
          {
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
-               chanEntry.sIcon = sImgTmpl;
+               chanEntry.sIcon = chanEntry.bIsVideo ? sImgTmplTv : sImgTmplRadio;
                chanEntry.sIcon.replace("%ICON%", xml.text().toString());
             }
          }
@@ -429,7 +430,7 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs)
+int CRodnoeParser::parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs)
 {
    QString             sUnknown;
    cparser::STimeShift sTs;
@@ -509,7 +510,7 @@ int CKartinaXMLParser::parseStreamParams (QXmlStreamReader &xml, QVector<cparser
 |  Returns: 0 ==> ok
 |        else ==> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv> &vSrv,
+int CRodnoeParser::parseSServers(const QString &sResp, QVector<cparser::SSrv> &vSrv,
                                      QString &sActIp)
 {
    cparser::SSrv    srv;
@@ -601,7 +602,7 @@ int CKartinaXMLParser::parseSServers(const QString &sResp, QVector<cparser::SSrv
 |  Returns: 0 ==> ok
 |        else ==> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
+int CRodnoeParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
                                      QString &sActIp)
 {
    cparser::SSrv    srv;
@@ -703,7 +704,7 @@ int CKartinaXMLParser::parseSServersLogin(const QString &sResp, QVector<cparser:
 |  Returns: 0 ==> ok
 |        else ==> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf)
+int CRodnoeParser::parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf)
 {
    int                    iRV = 0;
    QXmlStreamReader       xml;
@@ -818,7 +819,7 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie, cpar
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
+int CRodnoeParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
 {
    int              iRV = 0;
    QXmlStreamReader xml;
@@ -884,7 +885,7 @@ int CKartinaXMLParser::parseGenres (const QString& sResp, QVector<cparser::SGenr
 //
 //! \return  --
 //---------------------------------------------------------------------------
-int CKartinaXMLParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
+int CRodnoeParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
 {
    int                           iRV =  0;
    QXmlStreamReader              xml;
@@ -978,7 +979,7 @@ int CKartinaXMLParser::parseEpgCurrent (const QString& sResp, QCurrentMap &curre
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseVodManager (const QString &sResp, QVector<cparser::SVodRate> &vRates)
+int CRodnoeParser::parseVodManager (const QString &sResp, QVector<cparser::SVodRate> &vRates)
 {
    int               iRV = 0;
    QXmlStreamReader  xml;
@@ -1065,7 +1066,7 @@ int CKartinaXMLParser::parseVodManager (const QString &sResp, QVector<cparser::S
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList, cparser::SGenreInfo &gInfo)
+int CRodnoeParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList, cparser::SGenreInfo &gInfo)
 {
    int                    iRV = 0;
    QXmlStreamReader       xml;
@@ -1159,7 +1160,7 @@ int CKartinaXMLParser::parseVodList(const QString &sResp, QVector<cparser::SVodV
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
+int CRodnoeParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
 {
    int                    iRV = 0;
    QXmlStreamReader       xml;
@@ -1293,7 +1294,7 @@ int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
+int CRodnoeParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
 {
    QXmlStreamReader       xml;
    QRegExp                rx("([^\n]*)[\n]*(.*)");
@@ -1387,7 +1388,7 @@ int CKartinaXMLParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &e
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValues,
+int CRodnoeParser::parseSettings (const QString &sResp, QVector<int> &vValues,
                                       int &iActVal, QString &sName)
 {
    int              iRV = 0;
@@ -1467,7 +1468,7 @@ int CKartinaXMLParser::parseSettings (const QString &sResp, QVector<int> &vValue
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal)
+int CRodnoeParser::parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal)
 {
    int              iRV      = 0;
    QXmlStreamReader xml;
@@ -1567,7 +1568,7 @@ int CKartinaXMLParser::parseSetting(const QString& sResp, const QString &sName, 
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
+int CRodnoeParser::parseUrl(const QString &sResp, QString &sUrl)
 {
    QRegExp rx("<url>([^<]*).*");
 
@@ -1606,7 +1607,7 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
+int CRodnoeParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
 {
    int              iRV = 0;
    QXmlStreamReader xml;
@@ -1689,7 +1690,7 @@ int CKartinaXMLParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
 |
 |  Returns: value string
 \----------------------------------------------------------------- */
-QString CKartinaXMLParser::xmlElementToValue(const QString &sElement, const QString &sName)
+QString CRodnoeParser::xmlElementToValue(const QString &sElement, const QString &sName)
 {
    QString sValue;
    QString sRegEx = QString("<%1>([^<]+)</%1>").arg(sName);
@@ -1717,7 +1718,7 @@ QString CKartinaXMLParser::xmlElementToValue(const QString &sElement, const QStr
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::oneLevelParser(QXmlStreamReader &xml, const QString &sEndElement, const QStringList &slNeeded, QMap<QString, QString> &mResults)
+int CRodnoeParser::oneLevelParser(QXmlStreamReader &xml, const QString &sEndElement, const QStringList &slNeeded, QMap<QString, QString> &mResults)
 {
    QString sUnknown, sKey, sVal;
    bool    bEndMain = false;
@@ -1792,7 +1793,7 @@ int CKartinaXMLParser::oneLevelParser(QXmlStreamReader &xml, const QString &sEnd
 |  Returns: 0 --> ok (ignored 'til end element)
 |          -1 --> end element not found or error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement)
+int CRodnoeParser::ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement)
 {
    while(!xml.atEnd() && !xml.hasError())
    {
@@ -1818,7 +1819,7 @@ int CKartinaXMLParser::ignoreUntil(QXmlStreamReader &xml, const QString &sEndEle
 |  Returns: 0 --> ok
 |          -1 --> any error
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseUpdInfo(const QString &sResp, cparser::SUpdInfo &updInfo)
+int CRodnoeParser::parseUpdInfo(const QString &sResp, cparser::SUpdInfo &updInfo)
 {
    int                    iRV = 0;
    QStringList            slNeeded;

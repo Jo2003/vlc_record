@@ -29,7 +29,7 @@ CONFIG += shared
 # included player or without?
 # -------------------------------------
 DEFINES += INCLUDE_LIBVLC
-# DEFINES += __TRACE
+DEFINES += __TRACE
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \
@@ -93,7 +93,9 @@ HEADERS += recorder.h \
     qmovehandle.h \
     qcomboboxex.h \
     qrecordtimerwidget.h \
-    qiptvctrlclient.h
+    qiptvctrlclient.h \
+    ciptvdefs.h \
+    cparser.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

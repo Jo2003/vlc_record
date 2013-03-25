@@ -120,8 +120,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
    secCodeDlg.setParent(this, Qt::Dialog);
-   Settings.setXmlParser(&XMLParser);
-   Settings.setApiClient(&KartinaTv);
+   Settings.setXmlParser(&apiParser);
+   Settings.setApiClient(&apiClient);
    Settings.setAccountInfo(&accountInfo);
    timeRec.setParent(this, Qt::Dialog);
    trayIcon.setParent(this);
@@ -166,7 +166,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    pHelp->setHelpFile(sHlp);
 
    // set connection data ...
-   KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
+   apiClient.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
 
 
    // set proxy stuff ...
@@ -176,7 +176,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
                           Settings.GetProxyHost(), Settings.GetProxyPort(),
                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
-      KartinaTv.setProxy(proxy);
+      apiClient.setProxy(proxy);
       streamLoader.setProxy(proxy);
    }
 
@@ -185,8 +185,8 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
 
    // give timerRec all needed infos ...
-   timeRec.SetXmlParser(&XMLParser);
-   timeRec.setApiClient(&KartinaTv);
+   timeRec.SetXmlParser(&apiParser);
+   timeRec.setApiClient(&apiClient);
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
    timeRec.SetStreamLoader(&streamLoader);
@@ -215,7 +215,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 
    // give player settings and wait trigger access ...
    ui->player->setSettings(&Settings);
-   ui->player->setApiClient(&KartinaTv);
+   ui->player->setApiClient(&apiClient);
 
    // connect vlc control with libvlc player ...
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
@@ -243,17 +243,17 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
 
-   connect (&pixCache,     SIGNAL(sigLoadImage(QString)), &KartinaTv, SLOT(slotDownImg(QString)));
-   connect (&KartinaTv,    SIGNAL(sigImage(QByteArray)), &pixCache, SLOT(slotImage(QByteArray)));
+   connect (&pixCache,     SIGNAL(sigLoadImage(QString)), &apiClient, SLOT(slotDownImg(QString)));
+   connect (&apiClient,    SIGNAL(sigImage(QByteArray)), &pixCache, SLOT(slotImage(QByteArray)));
 
-   connect (&XMLParser,    SIGNAL(sigError(int,QString,QString)), this, SLOT(slotGlobalError(int,QString,QString)));
+   connect (&apiParser,    SIGNAL(sigError(int,QString,QString)), this, SLOT(slotGlobalError(int,QString,QString)));
    connect (&timerWidget,  SIGNAL(timeOut()), this, SLOT(slotRecordTimerEnded()));
    connect (&streamLoader, SIGNAL(sigStreamRequested(int)), this, SLOT(slotDownStreamRequested(int)));
    connect (&streamLoader, SIGNAL(sigBufferPercent(int)), ui->labState, SLOT(bufferPercent(int)));
    connect (ui->hFrameFav, SIGNAL(sigAddFav(int)), this, SLOT(slotAddFav(int)));
    connect (&pixCache,     SIGNAL(allDone()), this, SLOT(slotRefreshChanLogos()));
-   connect (&KartinaTv,    SIGNAL(sigHttpResponse(QString,int)), this, SLOT(slotKartinaResponse(QString,int)));
-   connect (&KartinaTv,    SIGNAL(sigError(QString,int,int)), this, SLOT(slotKartinaErr(QString,int,int)));
+   connect (&apiClient,    SIGNAL(sigHttpResponse(QString,int)), this, SLOT(slotKartinaResponse(QString,int)));
+   connect (&apiClient,    SIGNAL(sigError(QString,int,int)), this, SLOT(slotKartinaErr(QString,int,int)));
    connect (&streamLoader, SIGNAL(sigStreamDownload(int,QString)), this, SLOT(slotDownloadStarted(int,QString)));
    connect (&Refresh,      SIGNAL(timeout()), this, SLOT(slotUpdateChannelList()));
    connect (ui->textEpg,   SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
@@ -390,7 +390,7 @@ void Recorder::changeEvent(QEvent *e)
       retranslateShortcutTable();
 
       // translate error strings ...
-      KartinaTv.fillErrorMap();
+      apiClient.fillErrorMap();
       break;
 
    default:
@@ -454,10 +454,10 @@ void Recorder::closeEvent(QCloseEvent *event)
       CleanContextMenu();
 
       // are we authenticated ... ?
-      if (KartinaTv.cookieSet())
+      if (apiClient.cookieSet())
       {
          // logout from kartina ...
-         KartinaTv.queueRequest (Kartina::REQ_LOGOUT);
+         apiClient.queueRequest (CIptvDefs::REQ_LOGOUT);
 
          // ignore event here ...
          // we'll close app in logout slot ...
@@ -566,10 +566,10 @@ void Recorder::on_pushSettings_clicked()
       VlcLog.SetLogLevel(Settings.GetLogLevel());
 
       pModel->clear();
-      // KartinaTv.abort();
+      // apiClient.abort();
 
       // update connection data ...
-      KartinaTv.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
+      apiClient.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
 
       // set proxy ...
       if (Settings.UseProxy())
@@ -578,7 +578,7 @@ void Recorder::on_pushSettings_clicked()
                              Settings.GetProxyHost(), Settings.GetProxyPort(),
                              Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
-         KartinaTv.setProxy(proxy);
+         apiClient.setProxy(proxy);
          streamLoader.setProxy(proxy);
       }
 
@@ -605,7 +605,7 @@ void Recorder::on_pushSettings_clicked()
       TouchPlayCtrlBtns(false);
 
       // authenticate ...
-      KartinaTv.queueRequest(Kartina::REQ_COOKIE);
+      apiClient.queueRequest(CIptvDefs::REQ_COOKIE);
    }
 
    // lock parental manager ...
@@ -707,7 +707,8 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                                       .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                TouchPlayCtrlBtns(false);
-               KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               apiClient.queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
+                                      cid, secCodeDlg.passWd());
             }
          }
       }
@@ -859,7 +860,7 @@ void Recorder::on_cbxGenre_activated(int index)
       url.addQueryItem("genre", QString::number(iGid));
    }
 
-   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -878,7 +879,7 @@ void Recorder::on_cbxLastOrBest_activated(int index)
 
    if (sType == "vodfav")
    {
-      KartinaTv.queueRequest(Kartina::REQ_GET_VOD_FAV);
+      apiClient.queueRequest(CIptvDefs::REQ_GET_VOD_FAV);
    }
    else
    {
@@ -892,7 +893,7 @@ void Recorder::on_cbxLastOrBest_activated(int index)
          url.addQueryItem("genre", QString::number(iGid));
       }
 
-      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
    }
 }
 
@@ -948,7 +949,7 @@ void Recorder::on_btnVodSearch_clicked()
       }
    }
 
-   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -978,7 +979,7 @@ void Recorder::on_cbxSites_activated(int index)
          url.addQueryItem("genre", QString::number(iGenre));
       }
 
-      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
    }
 }
 
@@ -1007,7 +1008,7 @@ void Recorder::on_btnPrevSite_clicked()
       url.addQueryItem("genre", QString::number(iGenre));
    }
 
-   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -1035,7 +1036,7 @@ void Recorder::on_btnNextSite_clicked()
       url.addQueryItem("genre", QString::number(iGenre));
    }
 
-   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -1057,7 +1058,7 @@ void Recorder::on_pushLive_clicked()
    {
       // set EPG offset to 0 ...
       iEpgOffset = 0;
-      KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+      apiClient.queueRequest(CIptvDefs::REQ_EPG, cid, iEpgOffset);
 
       // fake play button press ...
       if (AllowAction(IncPlay::PS_PLAY))
@@ -1079,7 +1080,8 @@ void Recorder::on_pushLive_clicked()
                                    .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
             TouchPlayCtrlBtns(false);
-            KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+            apiClient.queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
+                                   cid, secCodeDlg.passWd());
          }
       }
    }
@@ -1124,7 +1126,8 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                                       .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                TouchPlayCtrlBtns(false);
-               KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               apiClient.queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
+                                      cid, secCodeDlg.passWd());
             }
          }
       }
@@ -1216,7 +1219,8 @@ void Recorder::slotPlay()
                                       .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                TouchPlayCtrlBtns(false);
-               KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+               apiClient.queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
+                                      cid, secCodeDlg.passWd());
             }
          }
       }
@@ -1292,7 +1296,7 @@ void Recorder::slotRecord()
             showInfo.setPlayState(IncPlay::PS_RECORD);
 
             TouchPlayCtrlBtns(false);
-            KartinaTv.queueRequest(Kartina::REQ_ARCHIV, req, showInfo.pCode());
+            apiClient.queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
       else
@@ -1331,7 +1335,8 @@ void Recorder::slotRecord()
                                          .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
 
                   TouchPlayCtrlBtns(false);
-                  KartinaTv.queueRequest(Kartina::REQ_STREAM, cid, secCodeDlg.passWd());
+                  apiClient.queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
+                                         cid, secCodeDlg.passWd());
                }
             }
          }
@@ -1429,104 +1434,104 @@ void Recorder::slotKartinaResponse(QString resp, int req)
          __y__; \
          break
 
-   switch ((Kartina::EReq)req)
+   switch ((CIptvDefs::EReq)req)
    {
    ///////////////////////////////////////////////
    // This function also grabs all settings
    // from response. After that channel list
    // will be requested.
-   mkCase(Kartina::REQ_COOKIE, slotCookie(resp));
+   mkCase(CIptvDefs::REQ_COOKIE, slotCookie(resp));
 
    ///////////////////////////////////////////////
    // Fills channel list as well as channel map.
    // Due to changing actual channel entry
    // slotCurrentChannelChanged() will be called
    // which requests the EPG ...
-   mkCase(Kartina::REQ_CHANNELLIST, slotChanList(resp));
+   mkCase(CIptvDefs::REQ_CHANNELLIST, slotChanList(resp));
 
    ///////////////////////////////////////////////
    // Fills EPG browser and triggers the load
    // of VOD genres (if there in account info).
-   mkCase(Kartina::REQ_EPG, slotEPG(resp));
+   mkCase(CIptvDefs::REQ_EPG, slotEPG(resp));
 
    ///////////////////////////////////////////////
    // update channel map with following info
-   mkCase(Kartina::REQ_EPG_CURRENT, slotEPGCurrent (resp));
+   mkCase(CIptvDefs::REQ_EPG_CURRENT, slotEPGCurrent (resp));
 
    ///////////////////////////////////////////////
    // Indicates that a new timeshift value was set.
    // Triggers reload of channel list.
-   mkCase(Kartina::REQ_TIMESHIFT, slotTimeShift(resp));
+   mkCase(CIptvDefs::REQ_TIMESHIFT, slotTimeShift(resp));
 
    ///////////////////////////////////////////////
    // Got Stream URL, start play or record
-   mkCase(Kartina::REQ_STREAM, slotStreamURL(resp));
+   mkCase(CIptvDefs::REQ_STREAM, slotStreamURL(resp));
 
    ///////////////////////////////////////////////
    // Got requested stream url for timer record
-   mkCase(Kartina::REQ_TIMERREC, timeRec.slotTimerStreamUrl(resp));
+   mkCase(CIptvDefs::REQ_TIMERREC, timeRec.slotTimerStreamUrl(resp));
 
    ///////////////////////////////////////////////
    // got requested archiv url
-   mkCase(Kartina::REQ_ARCHIV, slotArchivURL(resp));
+   mkCase(CIptvDefs::REQ_ARCHIV, slotArchivURL(resp));
 
    ///////////////////////////////////////////////
    // logout done
-   mkCase(Kartina::REQ_LOGOUT, slotLogout(resp));
+   mkCase(CIptvDefs::REQ_LOGOUT, slotLogout(resp));
 
    ///////////////////////////////////////////////
    // got requested VOD genres
-   mkCase(Kartina::REQ_GETVODGENRES, slotGotVodGenres(resp));
+   mkCase(CIptvDefs::REQ_GETVODGENRES, slotGotVodGenres(resp));
 
    ///////////////////////////////////////////////
    // got requested videos
-   mkCase(Kartina::REQ_GETVIDEOS, slotGotVideos(resp));
+   mkCase(CIptvDefs::REQ_GETVIDEOS, slotGotVideos(resp));
 
    ///////////////////////////////////////////////
    // got requested video details
-   mkCase(Kartina::REQ_GETVIDEOINFO, slotGotVideoInfo(resp));
+   mkCase(CIptvDefs::REQ_GETVIDEOINFO, slotGotVideoInfo(resp));
 
    ///////////////////////////////////////////////
    // got requested vod url
-   mkCase(Kartina::REQ_GETVODURL, slotVodURL(resp));
+   mkCase(CIptvDefs::REQ_GETVODURL, slotVodURL(resp));
 
    ///////////////////////////////////////////////
    // got complete channel list
    // (used in settings dialog)
-   mkCase(Kartina::REQ_CHANLIST_ALL, Settings.slotBuildChanManager(resp));
+   mkCase(CIptvDefs::REQ_CHANLIST_ALL, Settings.slotBuildChanManager(resp));
 
    ///////////////////////////////////////////////
    // got requested VOD management data
    // (used in settings dialog)
-   mkCase(Kartina::REQ_GET_VOD_MANAGER, Settings.slotBuildVodManager(resp));
+   mkCase(CIptvDefs::REQ_GET_VOD_MANAGER, Settings.slotBuildVodManager(resp));
 
    ///////////////////////////////////////////////
    // handle vod favourites like vod genre to display
    // all videos in favourites
-   mkCase(Kartina::REQ_GET_VOD_FAV, slotGotVideos(resp, true));
+   mkCase(CIptvDefs::REQ_GET_VOD_FAV, slotGotVideos(resp, true));
 
    ///////////////////////////////////////////////
    // response after trying to change parent code
-   mkCase(Kartina::REQ_SET_PCODE, slotPCodeChangeResp(resp));
+   mkCase(CIptvDefs::REQ_SET_PCODE, slotPCodeChangeResp(resp));
 
    ///////////////////////////////////////////////
    // response for update check ...
-   mkCase(Kartina::REQ_UPDATE_CHECK, slotUpdateAnswer(resp));
+   mkCase(CIptvDefs::REQ_UPDATE_CHECK, slotUpdateAnswer(resp));
 
    ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
-   mkCase(Kartina::REQ_ADD_VOD_FAV, slotUnused(resp));
-   mkCase(Kartina::REQ_REM_VOD_FAV, slotUnused(resp));
-   mkCase(Kartina::REQ_SET_VOD_MANAGER, slotUnused(resp));
-   mkCase(Kartina::REQ_SETCHAN_SHOW, slotUnused(resp));
-   mkCase(Kartina::REQ_SETCHAN_HIDE, slotUnused(resp));
-   mkCase(Kartina::REQ_SETBITRATE, slotUnused(resp));
-   mkCase(Kartina::REQ_GETBITRATE, slotUnused(resp));
-   mkCase(Kartina::REQ_GETTIMESHIFT, slotUnused(resp));
-   mkCase(Kartina::REQ_GET_SERVER, slotUnused(resp));
-   mkCase(Kartina::REQ_SERVER, slotUnused(resp));
-   mkCase(Kartina::REQ_HTTPBUFF, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_REM_VOD_FAV, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_SET_VOD_MANAGER, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_SETCHAN_SHOW, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_SETCHAN_HIDE, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_SETBITRATE, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_GETBITRATE, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_GETTIMESHIFT, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_GET_SERVER, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_HTTPBUFF, slotUnused(resp));
    default:
       break;
    }
@@ -1563,19 +1568,19 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    bool bSilent = false;
 
    // special error handling for special requests ...
-   switch ((Kartina::EReq)req)
+   switch ((CIptvDefs::EReq)req)
    {
-   case Kartina::REQ_SET_PCODE:
+   case CIptvDefs::REQ_SET_PCODE:
       Settings.slotEnablePCodeForm();
       break;
 
    // in case of not exsting images send empty byte array
    // to trigger next download
-   case Kartina::REQ_DOWN_IMG:
+   case CIptvDefs::REQ_DOWN_IMG:
       pixCache.slotImage(QByteArray());
       // fall through here
       //  V      V     V
-   case Kartina::REQ_UPDATE_CHECK:
+   case CIptvDefs::REQ_UPDATE_CHECK:
       bSilent = true;
       break;
    default:
@@ -1583,14 +1588,14 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    }
 
    // special error handling for special errors ...
-   switch ((Kartina::EErr)err)
+   switch ((CIptvDefs::EErr)err)
    {
-   case Kartina::ERR_WRONG_PCODE:
+   case CIptvDefs::ERR_WRONG_PCODE:
       showInfo.setPCode("");
       secCodeDlg.slotClearPasswd();
       break;
 
-   case Kartina::ERR_MULTIPLE_ACCOUNT_USE:
+   case CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE:
       // if someone else uses this account
       // we have to stop the player ...
 #ifdef INCLUDE_LIBVLC
@@ -1618,15 +1623,15 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
 
       // Handle errors which lead to
       // cookie removal ... !
-   case Kartina::ERR_WRONG_LOGIN_DATA:
-   case Kartina::ERR_ACCESS_DENIED:
-   case Kartina::ERR_LOGIN_INCORRECT:
-   case Kartina::ERR_CONTRACT_INACTIVE:
-   case Kartina::ERR_CONTRACT_PAUSED:
-   case Kartina::ERR_AUTHENTICATION:
+   case CIptvDefs::ERR_WRONG_LOGIN_DATA:
+   case CIptvDefs::ERR_ACCESS_DENIED:
+   case CIptvDefs::ERR_LOGIN_INCORRECT:
+   case CIptvDefs::ERR_CONTRACT_INACTIVE:
+   case CIptvDefs::ERR_CONTRACT_PAUSED:
+   case CIptvDefs::ERR_AUTHENTICATION:
 
       // and delete the cookie ...
-      KartinaTv.SetCookie("");
+      apiClient.SetCookie("");
       break;
 
    default:
@@ -1635,8 +1640,8 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
 
    mErr(tr("Error %1 (%2) in request '%3': %4")
         .arg(err)
-        .arg(metaKartina.errValToKey((Kartina::EErr)err))
-        .arg(metaKartina.reqValToKey((Kartina::EReq)req))
+        .arg(metaKartina.errValToKey((CIptvDefs::EErr)err))
+        .arg(metaKartina.reqValToKey((CIptvDefs::EReq)req))
         .arg(str));
 
    if (!bSilent)
@@ -1683,7 +1688,7 @@ void Recorder::slotStreamURL(const QString &str)
 {
    QString sChan, sShow, sUrl, sTime;
 
-   if (!XMLParser.parseUrl(str, sUrl))
+   if (!apiParser.parseUrl(str, sUrl))
    {
       sShow = CleanShowName (showInfo.showName());
       sChan = showInfo.chanName();
@@ -1748,9 +1753,9 @@ void Recorder::slotCookie (const QString &str)
    QString sCookie;
 
    // parse cookie ...
-   if (!XMLParser.parseCookie(str, sCookie, accountInfo))
+   if (!apiParser.parseCookie(str, sCookie, accountInfo))
    {
-      KartinaTv.SetCookie(sCookie);
+      apiClient.SetCookie(sCookie);
 
       // decide if we should enable / disable VOD stuff ...
       if (accountInfo.bHasVOD)
@@ -1784,7 +1789,7 @@ void Recorder::slotCookie (const QString &str)
       // timeshift
       QVector<int> values;
       int          actVal = -1;
-      if (!XMLParser.parseSetting(str, "timeshift", values, actVal))
+      if (!apiParser.parseSetting(str, "timeshift", values, actVal))
       {
          Settings.fillTimeShiftCbx(values, actVal);
 
@@ -1797,7 +1802,7 @@ void Recorder::slotCookie (const QString &str)
       // bitrate
       values.clear();
       actVal = -1;
-      if (!XMLParser.parseSetting(str, "bitrate", values, actVal))
+      if (!apiParser.parseSetting(str, "bitrate", values, actVal))
       {
          Settings.SetBitrateCbx(values, actVal);
          mInfo (tr("Using Bitrate %1 kbit/s ...").arg(actVal));
@@ -1806,14 +1811,14 @@ void Recorder::slotCookie (const QString &str)
       // stream server
       QVector<cparser::SSrv> vSrv;
       QString sActIp;
-      if (!XMLParser.parseSServersLogin(str, vSrv, sActIp))
+      if (!apiParser.parseSServersLogin(str, vSrv, sActIp))
       {
          Settings.SetStreamServerCbx(vSrv, sActIp);
          mInfo(tr("Active stream server is %1").arg(sActIp));
       }
 
       // request channel list ...
-      KartinaTv.queueRequest(Kartina::REQ_CHANNELLIST);
+      apiClient.queueRequest(CIptvDefs::REQ_CHANNELLIST);
    }
 }
 
@@ -1830,7 +1835,7 @@ void Recorder::slotCookie (const QString &str)
 void Recorder::slotTimeShift (const QString &str)
 {
    Q_UNUSED(str)
-   KartinaTv.queueRequest(Kartina::REQ_CHANNELLIST);
+   apiClient.queueRequest(CIptvDefs::REQ_CHANNELLIST);
 }
 
 /* -----------------------------------------------------------------\
@@ -1847,7 +1852,7 @@ void Recorder::slotChanList (const QString &str)
 {
    QVector<cparser::SChan> chanList;
 
-   if (!XMLParser.parseChannelList(str, chanList, Settings.FixTime()))
+   if (!apiParser.parseChannelList(str, chanList, Settings.FixTime()))
    {
       mutexChanMap.lock();
       FillChanMap(chanList);
@@ -1898,7 +1903,7 @@ void Recorder::slotEPG(const QString &str)
    int         cid     = qvariant_cast<int>(idx.data(channellist::cidRole));
    QIcon       icon;
 
-   if (!XMLParser.parseEpg(str, epg))
+   if (!apiParser.parseEpg(str, epg))
    {
       cparser::SChan chan;
 
@@ -1924,7 +1929,7 @@ void Recorder::slotEPG(const QString &str)
          {
             if (ui->cbxGenre->count() == 0)
             {
-               KartinaTv.queueRequest(Kartina::REQ_GETVODGENRES);
+               apiClient.queueRequest(CIptvDefs::REQ_GETVODGENRES);
             }
          }
       }
@@ -1948,7 +1953,7 @@ void Recorder::slotEPGCurrent (const QString &str)
    cparser::SChan                chanMapEntry;
    int i, j;
 
-   if (!XMLParser.parseEpgCurrent(str, currentEpg))
+   if (!apiParser.parseEpgCurrent(str, currentEpg))
    {
       QList<int> keyList = currentEpg.keys();
 
@@ -1988,7 +1993,7 @@ void Recorder::slotEPGCurrent (const QString &str)
             if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < QDateTime::currentDateTime().date())
             {
                // update EPG ...
-               KartinaTv.queueRequest(Kartina::REQ_EPG, keyList.at(i));
+               apiClient.queueRequest(CIptvDefs::REQ_EPG, keyList.at(i));
             }
             else
             {
@@ -2093,7 +2098,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
             ui->labState->setFooter(sTime);
 
-            KartinaTv.queueRequest(Kartina::REQ_ARCHIV, req, secCodeDlg.passWd());
+            apiClient.queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
          }
       }
    }
@@ -2153,7 +2158,7 @@ void Recorder::slotbtnBack_clicked()
 
       if (iOffBack != iEpgOffset)
       {
-         KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         apiClient.queueRequest(CIptvDefs::REQ_EPG, cid, iEpgOffset);
       }
    }
 }
@@ -2188,7 +2193,7 @@ void Recorder::slotbtnNext_clicked()
 
       if (iOffBack != iEpgOffset)
       {
-         KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         apiClient.queueRequest(CIptvDefs::REQ_EPG, cid, iEpgOffset);
       }
    }
 }
@@ -2207,7 +2212,7 @@ void Recorder::slotArchivURL(const QString &str)
 {
    QString sUrl;
 
-   if (!XMLParser.parseUrl(str, sUrl))
+   if (!apiParser.parseUrl(str, sUrl))
    {
       if (ePlayState == IncPlay::PS_RECORD)
       {
@@ -2287,7 +2292,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 
          if(iOffBack != iEpgOffset)
          {
-            KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+            apiClient.queueRequest(CIptvDefs::REQ_EPG, cid, iEpgOffset);
          }
          else
          {
@@ -2310,7 +2315,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 \----------------------------------------------------------------- */
 void Recorder::slotSetSServer(QString sIp)
 {
-   KartinaTv.queueRequest(Kartina::REQ_SERVER, sIp);
+   apiClient.queueRequest(CIptvDefs::REQ_SERVER, sIp);
 }
 
 /* -----------------------------------------------------------------\
@@ -2325,7 +2330,7 @@ void Recorder::slotSetSServer(QString sIp)
 \----------------------------------------------------------------- */
 void Recorder::slotSetBitrate(int iRate)
 {
-   KartinaTv.queueRequest(Kartina::REQ_SETBITRATE, iRate);
+   apiClient.queueRequest(CIptvDefs::REQ_SETBITRATE, iRate);
 }
 
 /* -----------------------------------------------------------------\
@@ -2346,7 +2351,7 @@ void Recorder::slotSetTimeShift(int iShift)
    ui->textEpg->SetTimeShift(iShift);
    timeRec.SetTimeShift(iShift);
 
-   KartinaTv.queueRequest(Kartina::REQ_TIMESHIFT, iShift);
+   apiClient.queueRequest(CIptvDefs::REQ_TIMESHIFT, iShift);
 }
 
 /* -----------------------------------------------------------------\
@@ -2756,7 +2761,7 @@ void Recorder::slotGotVodGenres(const QString &str)
    // delete content ...
    ui->cbxGenre->clear();
 
-   if (!XMLParser.parseGenres(str, vGenres))
+   if (!apiParser.parseGenres(str, vGenres))
    {
       // fill genres combo box ...
       ui->cbxGenre->addItem(tr("All"), QVariant((int)-1));
@@ -2776,7 +2781,7 @@ void Recorder::slotGotVodGenres(const QString &str)
    QUrl url;
    url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
    url.addQueryItem("nums", "20");
-   KartinaTv.queueRequest(Kartina::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -2794,7 +2799,7 @@ void Recorder::slotGotVideos(const QString &str, bool bVodFavs)
    QVector<cparser::SVodVideo> vVodList;
    cparser::SGenreInfo gInfo;
 
-   if (!XMLParser.parseVodList(str, vVodList, gInfo))
+   if (!apiParser.parseVodList(str, vVodList, gInfo))
    {
       QString sGenre = bVodFavs ? ui->cbxLastOrBest->currentText() : ui->cbxGenre->currentText();
       genreInfo      = gInfo;
@@ -2841,7 +2846,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
 
-      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+      apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
    else if (action == "backtolist")
    {
@@ -2866,14 +2871,14 @@ void Recorder::slotVodAnchor(const QUrl &link)
    else if (action == "add_fav")
    {
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
-      KartinaTv.queueRequest(Kartina::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
-      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+      apiClient.queueRequest(CIptvDefs::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
+      apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
    else if (action == "del_fav")
    {
       id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
-      KartinaTv.queueRequest(Kartina::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
-      KartinaTv.queueRequest(Kartina::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+      apiClient.queueRequest(CIptvDefs::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
+      apiClient.queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
 
    if (ok)
@@ -2899,7 +2904,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
 
-      KartinaTv.queueRequest(Kartina::REQ_GETVODURL, id, secCodeDlg.passWd());
+      apiClient.queueRequest(CIptvDefs::REQ_GETVODURL, id, secCodeDlg.passWd());
    }
 }
 
@@ -2916,7 +2921,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
 void Recorder::slotGotVideoInfo(const QString &str)
 {
    cparser::SVodVideo vodInfo;
-   if (!XMLParser.parseVideoInfo(str, vodInfo))
+   if (!apiParser.parseVideoInfo(str, vodInfo))
    {
       ui->vodBrowser->displayVideoDetails(vodInfo);
    }
@@ -2936,7 +2941,7 @@ void Recorder::slotVodURL(const QString &str)
 {
    QStringList sUrls;
 
-   if (!XMLParser.parseVodUrls(str, sUrls))
+   if (!apiParser.parseVodUrls(str, sUrls))
    {
       // show ads if there ...
       if (sUrls.count() > 1)
@@ -3144,14 +3149,14 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
       if (cid != ui->textEpg->GetCid())
       {
          // load epg ...
-         KartinaTv.queueRequest(Kartina::REQ_EPG, cid, iEpgOffset);
+         apiClient.queueRequest(CIptvDefs::REQ_EPG, cid, iEpgOffset);
       }
       else // same channel ...
       {
          // refresh epg only, if we view current day in epg ...
          if (iEpgOffset == 0) // 0 means today!
          {
-            KartinaTv.queueRequest(Kartina::REQ_EPG, cid);
+            apiClient.queueRequest(CIptvDefs::REQ_EPG, cid);
          }
       }
    }
@@ -3201,7 +3206,7 @@ void Recorder::slotPlayPreviousChannel()
 \----------------------------------------------------------------- */
 void Recorder::slotStartConnectionChain()
 {
-   KartinaTv.queueRequest(Kartina::REQ_COOKIE);
+   apiClient.queueRequest(CIptvDefs::REQ_COOKIE);
 }
 
 /* -----------------------------------------------------------------\
@@ -3219,7 +3224,7 @@ void Recorder::slotUpdateAnswer (const QString &str)
    // got update info ...
    cparser::SUpdInfo updInfo;
 
-   if (!XMLParser.parseUpdInfo(str, updInfo))
+   if (!apiParser.parseUpdInfo(str, updInfo))
    {
       // compare version ...
       if ((updInfo.iMinor > atoi(VERSION_MINOR))
@@ -3576,7 +3581,7 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
 
    if (!updChannels.isEmpty())
    {
-      KartinaTv.queueRequest(Kartina::REQ_EPG_CURRENT, updChannels.join(","));
+      apiClient.queueRequest(CIptvDefs::REQ_EPG_CURRENT, updChannels.join(","));
    }
 }
 
@@ -3836,7 +3841,7 @@ void Recorder::initDialog ()
    // check for program updates ...
    if (Settings.checkForUpdate())
    {
-      KartinaTv.queueRequest(Kartina::REQ_UPDATE_CHECK, UPD_CHECK_URL);
+      apiClient.queueRequest(CIptvDefs::REQ_UPDATE_CHECK, UPD_CHECK_URL);
    }
 }
 
