@@ -203,6 +203,7 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          GetStreamURL(par_1.toInt(), par_2.toString());
          break;
       case CIptvDefs::REQ_TIMERREC:
+      case CIptvDefs::REQ_RADIO_TIMERREC:
          GetStreamURL(par_1.toInt(), par_2.toString(), true);
          break;
       case CIptvDefs::REQ_ARCHIV:

@@ -916,8 +916,11 @@ void CTimerRec::slotRecTimer()
                   showInfo.setEndTime((*it).uiEnd);
                   showInfo.setPlayState(IncPlay::PS_TIMER_RECORD);
                   showInfo.setChanName(ChanList[(*it).cid].Name);
-
+#ifdef RADIO_OFFSET
+                  pApiClient->queueRequest(((*it).cid < RADIO_OFFSET) ? CIptvDefs::REQ_TIMERREC : CIptvDefs::REQ_RADIO_TIMERREC, (*it).cid);
+#else
                   pApiClient->queueRequest(CIptvDefs::REQ_TIMERREC, (*it).cid);
+#endif
                }
 
                it++;

@@ -73,6 +73,7 @@ void CRodnoeClient::slotStringResponse (int reqId, QString strResp)
 {
    int     iErr = 0;
    QString sCleanResp;
+   bool    bSendResp = true;
 
 #ifdef __TRACE
    mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
@@ -98,30 +99,39 @@ void CRodnoeClient::slotStringResponse (int reqId, QString strResp)
       }
       else
       {
+         // modify response as well as id if needed ...
          switch ((CIptvDefs::EReq)reqId)
          {
          // radio stream is a normal stream ...
          case CIptvDefs::REQ_RADIO_STREAM:
             reqId = (int)CIptvDefs::REQ_STREAM;
-            emit sigHttpResponse (sCleanResp, reqId);
+            break;
+
+         // radio timer record should be handled as timer record ...
+         case CIptvDefs::REQ_RADIO_TIMERREC:
+            reqId = (int)CIptvDefs::REQ_TIMERREC;
             break;
 
          // special handling to concat TV channels with radio channels ...
          case CIptvDefs::REQ_CHANNELLIST:
             sChanListBuffer = sCleanResp;
             getRadioList();
+            bSendResp = false;
             break;
 
          case CIptvDefs::REQ_CHANLIST_RADIO:
-            sCleanResp = combinChannelLists(sCleanResp);
+            sCleanResp = combineChannelLists(sCleanResp);
             reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
-
-            // fall through here ...
-            //  V      V     V
-         default:
-            // send response ...
-            emit sigHttpResponse (sCleanResp, reqId);
             break;
+
+         default:
+            break;
+         }
+
+         // send response ... ?
+         if (bSendResp)
+         {
+            emit sigHttpResponse (sCleanResp, reqId);
          }
       }
    }
@@ -180,7 +190,7 @@ void CRodnoeClient::slotErr (int iReqId, QString sErr, int iErr)
 //
 //! \return  ref. to combined string
 //---------------------------------------------------------------------------
-QString CRodnoeClient::combinChannelLists(const QString& resp)
+QString CRodnoeClient::combineChannelLists(const QString& resp)
 {
    QRegExp rx;
    int     iInsPos;
@@ -359,6 +369,9 @@ int CRodnoeClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
          break;
       case CIptvDefs::REQ_RADIO_STREAM:
          getRadioStream(par_1.toInt());
+         break;
+      case CIptvDefs::REQ_RADIO_TIMERREC:
+         getRadioStream(par_1.toInt(), true);
          break;
       default:
          iRet = -1;
@@ -1087,14 +1100,16 @@ void CRodnoeClient::getRadioList()
 //! \date    25.03.2013
 //
 //! \param   cid (int) channel id
+//! \param   bTimerRec (bool) timer record flag
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CRodnoeClient::getRadioStream(int cid)
+void CRodnoeClient::getRadioStream(int cid, bool bTimerRec)
 {
    mInfo(tr("Get radio stream Url ..."));
 
-   post((int)CIptvDefs::REQ_RADIO_STREAM, sApiUrl + "get_url_radio", QString("cid=%1").arg(cid));
+   post(bTimerRec ? (int)CIptvDefs::REQ_RADIO_TIMERREC : (int)CIptvDefs::REQ_RADIO_STREAM,
+        sApiUrl + "get_url_radio", QString("cid=%1").arg(cid & ~RADIO_OFFSET));
 }
 
 /* -----------------------------------------------------------------\

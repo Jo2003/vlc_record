@@ -36,4 +36,7 @@
 #define ApiClient             CRodnoeClient
 #define ApiParser             CRodnoeParser
 
+// define an offset to make radio cid unique!
+#define RADIO_OFFSET          0x0ff00000
+
 #endif // __20130319__DEFINES_IPTV_RECORD_H

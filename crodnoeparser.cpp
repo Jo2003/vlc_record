@@ -330,6 +330,12 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.bIsVideo = (xml.text().toString().toInt() == 1) ? true : false;
+
+               if (!chanEntry.bIsVideo)
+               {
+                  // make radio cid unique  ...
+                  chanEntry.iId |= RADIO_OFFSET;
+               }
             }
          }
          else if (xml.name() == "has_archive")

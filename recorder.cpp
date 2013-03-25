@@ -3556,10 +3556,15 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
                   if ((pItem->data(channellist::lastEpgUpd).toUInt() + EPG_UPD_TMOUT) < now)
                   {
                      // longer than 120 seconds ago ...
-                     updChannels << QString::number(cid);
+#ifdef RADIO_OFFSET
+                     if(cid < RADIO_OFFSET)  // never update radio channels ...
+#endif
+                     {
+                        updChannels << QString::number(cid);
 
-                     // set last epg update request time ...
-                     pItem->setData(now, channellist::lastEpgUpd);
+                        // set last epg update request time ...
+                        pItem->setData(now, channellist::lastEpgUpd);
+                     }
                   }
                }
             }

@@ -67,6 +67,7 @@ public:
       REQ_DOWN_IMG,
       REQ_CHANLIST_RADIO,
       REQ_RADIO_STREAM,
+      REQ_RADIO_TIMERREC,
       REQ_UNKNOWN = 255
    };
 

@@ -79,8 +79,8 @@ protected:
    void epgCurrent(const QString &cids);
    void updInfo (const QString& url);
    void getRadioList();
-   void getRadioStream(int cid);
-   QString combinChannelLists(const QString& resp);
+   void getRadioStream(int cid, bool bTimerRec = false);
+   QString combineChannelLists(const QString& resp);
 
    int  checkResponse (const QString &sResp, QString& sCleanResp);
 
