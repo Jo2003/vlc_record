@@ -40,7 +40,7 @@ public:
    explicit CKartinaClnt(QObject *parent = 0);
    ~CKartinaClnt();
 
-   void SetData(const QString &host, const QString &usr, const QString &pw);
+   void SetData(const QString &host, const QString &usr, const QString &pw, const QString& lang = "");
 
    int  queueRequest(CIptvDefs::EReq req, const QVariant& par_1 = QVariant(), const QVariant& par_2 = QVariant());
 

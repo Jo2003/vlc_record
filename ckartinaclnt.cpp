@@ -296,8 +296,9 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
 |
 \-----------------------------------------------------------------------------*/
 void CKartinaClnt::SetData(const QString &host, const QString &usr,
-                           const QString &pw)
+                           const QString &pw, const QString &lang)
 {
+   Q_UNUSED(lang)
    sUsr           = usr;
    sPw            = pw;
    sApiUrl        = QString("http://%1%2").arg(host).arg(KARTINA_API_XML_PATH);

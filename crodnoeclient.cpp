@@ -34,6 +34,7 @@ CRodnoeClient::CRodnoeClient(QObject *parent) :QIptvCtrlClient(parent)
    sPw            = "";
    sCookie        = "";
    sApiUrl        = "";
+   sLang          = "";
 
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
@@ -397,10 +398,11 @@ int CRodnoeClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
 |
 \-----------------------------------------------------------------------------*/
 void CRodnoeClient::SetData(const QString &host, const QString &usr,
-                           const QString &pw)
+                           const QString &pw, const QString &lang)
 {
    sUsr           = usr;
    sPw            = pw;
+   sLang          = lang;
    sApiUrl        = QString("http://%1%2").arg(host).arg(KARTINA_API_XML_PATH);
    sCookie        = "";
 }
@@ -459,9 +461,10 @@ void CRodnoeClient::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&with_acc=1&with_cfg=1")
+        QString("login=%1&pass=%2&with_acc=1&with_cfg=1&lng=%3")
         .arg(sUsr)
-        .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw))),
+        .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw)))
+        .arg(sLang),
         Iptv::Login);
 }
 

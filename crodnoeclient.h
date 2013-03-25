@@ -40,7 +40,7 @@ public:
    explicit CRodnoeClient(QObject *parent = 0);
    ~CRodnoeClient();
 
-   void SetData(const QString &host, const QString &usr, const QString &pw);
+   void SetData(const QString &host, const QString &usr, const QString &pw, const QString& lang = "");
 
    int  queueRequest(CIptvDefs::EReq req, const QVariant& par_1 = QVariant(), const QVariant& par_2 = QVariant());
 
@@ -89,6 +89,7 @@ private:
    QString   sPw;
    QString   sApiUrl;
    QString   sCookie;
+   QString   sLang;
    QErrorMap errMap;
    CIptvDefs karTrace;
    QString   sChanListBuffer;

@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "63"
-#define BETA_EXT      "B2"
+#define BETA_EXT      "B3"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2013-03-25: Version 2.63B3
+| - make defines for api classes
+| - make sure radio works on OEM
 |
 | 2013-03-18: Version 2.63B2
 | - pixCache downloads are now done by network access manager

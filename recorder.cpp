@@ -166,7 +166,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    pHelp->setHelpFile(sHlp);
 
    // set connection data ...
-   apiClient.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
+   apiClient.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
 
 
    // set proxy stuff ...
@@ -569,7 +569,7 @@ void Recorder::on_pushSettings_clicked()
       // apiClient.abort();
 
       // update connection data ...
-      apiClient.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd());
+      apiClient.SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
 
       // set proxy ...
       if (Settings.UseProxy())
