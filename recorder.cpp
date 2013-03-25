@@ -437,7 +437,10 @@ void Recorder::closeEvent(QCloseEvent *event)
 
       // We want to close program, store all needed values ...
       // Note: putting this function in destructor doesn't work!
-      savePositions();
+      if (!isFullScreen())
+      {
+         savePositions();
+      }
 
       // save channel and epg position ...
       Settings.saveChannel(getCurrentCid());
