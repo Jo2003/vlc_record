@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>branding:kartina</normaloff>branding:kartina</iconset>
+    <normaloff>branding:main/icon</normaloff>branding:main/icon</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QDialog#CTimerRec {

@@ -54,7 +54,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _render->setObjectName("renderView");
    _render->setStyleSheet("QWidget#renderView {"
                           "background-color: black;"
-                          "background-image: url(branding:kartina);"
+                          "background-image: url(branding:video/logo);"
                           "background-repeat: no-repeat;"
                           "background-position: center middle;}");
    pLayout->setMargin(0);
