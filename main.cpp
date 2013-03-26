@@ -16,6 +16,7 @@
 #include "cshowinfo.h"
 #include "qftsettings.h"
 #include "qfusioncontrol.h"
+#include "qcustparser.h"
 
 #ifdef DINCLUDEPLUGS
 #include <QtPlugin>
@@ -41,6 +42,9 @@ CShowInfo showInfo;
 // fusion control ...
 QFusionControl missionControl;
 
+// customization ...
+QCustParser *pCustomization;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -65,31 +69,49 @@ int main(int argc, char *argv[])
    QApplication::installTranslator (&trans[Translators::TRANS_QT]);
    QApplication::installTranslator (&trans[Translators::TRANS_OWN]);
 
+   Recorder    *pRec;
+   QFTSettings *pFTSet;
+
    pFolders = new CDirStuff();
 
    if (pFolders)
    {
       if (pFolders->isInitialized ())
       {
-         pDb = new CVlcRecDB();
-
-         if (pDb)
+         if ((pCustomization = new QCustParser()) != NULL)
          {
-            // check if needed settings are there ...
-            if ((pDb->stringValue("User") == "")
-               && (pDb->stringValue("PasswdEnc") == ""))
+            pCustomization->parseCust();
+
+            pFolders->setAppName(pCustomization->strVal("APP_NAME"));
+
+            pDb = new CVlcRecDB();
+
+            if (pDb)
             {
-               QFTSettings ftSet(NULL, trans);
-               ftSet.exec();
+               // check if needed settings are there ...
+               if ((pDb->stringValue("User") == "")
+                  && (pDb->stringValue("PasswdEnc") == ""))
+               {
+                  if ((pFTSet = new QFTSettings(NULL, trans)) != NULL)
+                  {
+                     pFTSet->exec();
+                     delete pFTSet;
+                     pFTSet = NULL;
+                  }
+               }
+
+               if ((pRec = new Recorder(trans)) != NULL)
+               {
+                  pRec->show();
+                  iRV = app.exec ();
+                  delete pRec;
+                  pRec = NULL;
+               }
+
+               delete pDb;
             }
 
-            Recorder rec(trans);
-
-            rec.show ();
-
-            iRV = app.exec ();
-
-            delete pDb;
+            delete pCustomization;
          }
       }
 

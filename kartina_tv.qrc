@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/app">
+    <qresource prefix="/unbranded">
         <file alias="kartina">resources/kartina_tv.png</file>
         <file alias="live">resources/kartina_live_128x128.png</file>
     </qresource>

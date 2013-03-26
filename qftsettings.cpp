@@ -13,6 +13,10 @@
  *///------------------------- (c) 2011 by Jo2003  --------------------------
 #include "qftsettings.h"
 #include "ui_qftsettings.h"
+#include "qcustparser.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
 
 // for folders ...
 extern CDirStuff *pFolders;
@@ -40,10 +44,10 @@ QFTSettings::QFTSettings(QWidget *parent, QTranslator *pTrans) :
 
     // set company name ...
     QString s = ui->groupAccount->title();
-    ui->groupAccount->setTitle(s.arg(COMPANY_NAME));
+    ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
 
     s = windowTitle();
-    setWindowTitle(s.arg(COMPANY_NAME));
+    setWindowTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
 
     // fill language box ...
     QDir        folder(pFolders->getLangDir());
@@ -110,10 +114,10 @@ void QFTSettings::changeEvent(QEvent *e)
 
          // set company name ...
          QString s = ui->groupAccount->title();
-         ui->groupAccount->setTitle(s.arg(COMPANY_NAME));
+         ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
 
          s = windowTitle();
-         setWindowTitle(s.arg(COMPANY_NAME));
+         setWindowTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
       }
       break;
 

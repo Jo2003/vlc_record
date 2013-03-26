@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "63"
-#define BETA_EXT      "B3"
+#define BETA_EXT      "B4"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-03-26: Version 2.63B4
+| - add support of external customization (first steps)
+|   (search for *.cust file in resources folder)
 |
 | 2013-03-25: Version 2.63B3
 | - make defines for api classes

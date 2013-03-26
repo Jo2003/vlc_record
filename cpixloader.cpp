@@ -11,6 +11,10 @@
 \*************************************************************/
 #include "cpixloader.h"
 #include "defdef.h"
+#include "qcustparser.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
 
 /* -----------------------------------------------------------------\
 |  Method: CPixLoader / constructor
@@ -73,7 +77,7 @@ void CPixLoader::startDownLoad()
       }
       else
       {
-         emit sigLoadImage(QString("http://%1%2").arg(KARTINA_HOST).arg(desc.sRemote));
+         emit sigLoadImage(QString("http://%1%2").arg(pCustomization->strVal("KARTINA_HOST")).arg(desc.sRemote));
       }
    }
    else

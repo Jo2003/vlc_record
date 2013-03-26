@@ -14,6 +14,10 @@
 #include "qiptvctrlclient.h"
 #include "version_info.h"
 #include "defdef.h"
+#include "qcustparser.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -146,7 +150,7 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
    req.setUrl(QUrl(url));
 
    // set user agent (name + version of this app) ...
-   req.setRawHeader("User-Agent"  , APP_NAME " " __MY__VERSION__);
+   req.setRawHeader("User-Agent", QString("%1 %2").arg(pCustomization->strVal("APP_NAME")).arg(__MY__VERSION__).toUtf8());
 
    // set content type ...
    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");

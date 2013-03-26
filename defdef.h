@@ -59,7 +59,6 @@
    #define ApiParser      CKartinaXMLParser
 #endif
 
-#define APP_LOG_FILE      BIN_NAME ".log"
 #define PLAYER_LOG_FILE   "player.log"
 #define LIBVLC_LOG_FILE   "libvlc.log"
 #define MOD_DIR           "modules"
@@ -68,6 +67,7 @@
 #define LOGO_DIR          "logos"
 #define VOD_DIR           "vod"
 #define DOC_DIR           "doc"
+#define RES_DIR           "resources"
 #define LOGO_URL          "/img/ico/24"
 #define DEF_TIME_FORMAT   "MMM dd, yyyy hh:mm:ss"
 #define DEF_TZ_STEP       1800            // time zone step is min. 30 minutes (1800 sec.) ...

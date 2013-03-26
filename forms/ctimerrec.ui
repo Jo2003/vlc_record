@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Timer Record</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>branding:kartina</normaloff>branding:kartina</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QDialog#CTimerRec {
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.2 #555, stop:0.7 grey, stop:1 #dedede);
@@ -412,6 +416,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
   <tabstop>pushOK</tabstop>
  </tabstops>
  <resources>
+  <include location="../iptv-record.qrc"/>
   <include location="../common.qrc"/>
  </resources>
  <connections>

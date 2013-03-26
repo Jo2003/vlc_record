@@ -7,11 +7,15 @@
     <x>0</x>
     <y>0</y>
     <width>572</width>
-    <height>499</height>
+    <height>503</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Settings Dialog</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>branding:kartina</normaloff>branding:kartina</iconset>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -772,8 +776,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>250</width>
-                     <height>177</height>
+                     <width>96</width>
+                     <height>26</height>
                     </rect>
                    </property>
                   </widget>
@@ -924,8 +928,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>241</width>
-                     <height>158</height>
+                     <width>96</width>
+                     <height>398</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1135,6 +1139,7 @@ color: red;
   <tabstop>pushCancel</tabstop>
  </tabstops>
  <resources>
+  <include location="../iptv-record.qrc"/>
   <include location="../common.qrc"/>
  </resources>
  <connections>

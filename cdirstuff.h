@@ -36,6 +36,7 @@ public:
    CDirStuff();
    ~CDirStuff ();
    const QString& getDataDir ();
+   const QString& getResDir ();
    const QString& getLogoDir ();
    const QString& getVodPixDir ();
    const QString& getLangDir ();
@@ -43,10 +44,12 @@ public:
    const QString& getModDir ();
    const QString& getAppDir ();
    const QString& getDocDir ();
+   const QString& getBinName ();
    bool  isInitialized ();
+   void  setAppName(const QString& name);
 
 protected:
-   int initDirectories ();
+   int initDirectories (bool bCreate);
    int fillSysEnvMap ();
 
 private:
@@ -58,6 +61,9 @@ private:
    QString                sQtLangDir;
    QString                sModDir;
    QString                sAppDir;
+   QString                sResDir;
+   QString                sBinName;
+   QString                sAppName;
    QMap<QString, QString> mSysEnv;
    int                    iInitState;
 };

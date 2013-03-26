@@ -19,6 +19,10 @@
 #endif
 
 #include "qfusioncontrol.h"
+#include "qcustparser.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
 
 // fusion control ...
 extern QFusionControl missionControl;
@@ -69,7 +73,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
 #endif // INCLUDE_LIBVLC
 
    // set (customized) windows title ...
-   setWindowTitle(APP_NAME);
+   setWindowTitle(pCustomization->strVal("APP_NAME"));
 
    ePlayState     =  IncPlay::PS_WTF;
    pTranslator    =  trans;
@@ -108,7 +112,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
       pContextAct[i] = NULL;
    }
 
-   VlcLog.SetLogFile(pFolders->getDataDir(), APP_LOG_FILE);
+   VlcLog.SetLogFile(pFolders->getDataDir(), QString("%1.log").arg(pFolders->getBinName()));
 
    // set channel list model and delegate ...
    pModel    = new QStandardItemModel(this);
@@ -141,7 +145,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    // set log level ...
    VlcLog.SetLogLevel(Settings.GetLogLevel());
 
-   mLog(tr("Starting: %1 / Version: %2").arg(APP_NAME).arg(__MY__VERSION__));
+   mLog(tr("Starting: %1 / Version: %2").arg(pCustomization->strVal("APP_NAME")).arg(__MY__VERSION__));
 
 #ifdef INCLUDE_LIBVLC
    mLog(tr("Using libVLC 0x%1").arg(ui->player->libvlcVersion(), 8, 16, QChar('0')));
@@ -1650,7 +1654,7 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    if (!bSilent)
    {
       QMessageBox::critical(this, tr("Error"), tr("%1 Client API Error:\n%2 (#%3)")
-                            .arg(COMPANY_NAME)
+                            .arg(pCustomization->strVal("COMPANY_NAME"))
                             .arg(str)
                             .arg(err));
    }
@@ -3237,7 +3241,7 @@ void Recorder::slotUpdateAnswer (const QString &str)
          QString s       = HTML_SITE;
          QString content = tr("There is the new version %1 of %2 available.<br />Click %3 to download!")
                .arg(updInfo.sVersion)
-               .arg(APP_NAME)
+               .arg(pCustomization->strVal("APP_NAME"))
                .arg(QString("<a href='%1'>%2</a>").arg(updInfo.sUrl).arg(tr("here")));
 
          s.replace(TMPL_CONT, content);
@@ -3849,7 +3853,7 @@ void Recorder::initDialog ()
    // check for program updates ...
    if (Settings.checkForUpdate())
    {
-      apiClient.queueRequest(CIptvDefs::REQ_UPDATE_CHECK, UPD_CHECK_URL);
+      apiClient.queueRequest(CIptvDefs::REQ_UPDATE_CHECK, pCustomization->strVal("UPD_CHECK_URL"));
    }
 }
 
@@ -3918,13 +3922,13 @@ void Recorder::CleanContextMenu()
 \----------------------------------------------------------------- */
 void Recorder::CreateSystray()
 {
-   trayIcon.setIcon(QIcon(":/app/kartina"));
-   trayIcon.setToolTip(APP_NAME);
+   trayIcon.setIcon(QIcon("branding:kartina"));
+   trayIcon.setToolTip(pCustomization->strVal("APP_NAME"));
 
    // create context menu for tray icon ...
    QMenu *pShowMenu = new QMenu (this);
    pShowMenu->addAction(QIcon(":/app/restore"),
-                        tr("&restore %1").arg(APP_NAME),
+                        tr("&restore %1").arg(pCustomization->strVal("APP_NAME")),
                         this, SLOT(slotRestoreMinimized()));
 
    trayIcon.setContextMenu(pShowMenu);

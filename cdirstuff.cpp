@@ -28,7 +28,7 @@ CDirStuff::CDirStuff()
 
    if(!fillSysEnvMap())
    {
-      iInitState = initDirectories();
+      iInitState = initDirectories(false);
    }
 }
 
@@ -94,42 +94,50 @@ int CDirStuff::fillSysEnvMap()
 |  Author: Jo2003
 |  Description: init / fill all directory variables
 |               dependent on OS
-|  Parameters: --
+|  Parameters: create flag
 |
 |  Returns: 0 ==> ok
 |          -1 ==> ana error
 \----------------------------------------------------------------- */
-int CDirStuff::initDirectories()
+int CDirStuff::initDirectories(bool bCreate)
 {
    int iRV = 0;
    QMap<QString, QString>::const_iterator cit;
-   QDir helpDir;
+   QDir    helpDir;
 
-   cit = mSysEnv.constFind(DATA_DIR_ENV);
+   sBinName   = QFileInfo(QApplication::applicationFilePath()).baseName();
+   cit        = mSysEnv.constFind(DATA_DIR_ENV);
 
    if (cit != mSysEnv.constEnd())
    {
-      sDataDir   = QString("%1/%2").arg(*cit).arg(DATA_DIR);
+#ifdef Q_OS_WIN32
+      sDataDir   = QString("%1/%2").arg(*cit).arg((sAppName == "" ) ? sBinName : sAppName);
+#else
+      sDataDir   = QString("%1/%2").arg(*cit).arg("." + ((sAppName == "" ) ? sBinName : sAppName));
+#endif
       sLogoDir   = QString("%1/%2").arg(sDataDir).arg(LOGO_DIR);
       sVodPixDir = QString("%1/%2").arg(sDataDir).arg(VOD_DIR);
 
-      // check, if dir exists ...
-      helpDir.setPath(sDataDir);
-      if (!helpDir.exists())
+      if (bCreate)
       {
-         helpDir.mkpath(sDataDir);
-      }
+         // check, if dir exists ...
+         helpDir.setPath(sDataDir);
+         if (!helpDir.exists())
+         {
+            helpDir.mkpath(sDataDir);
+         }
 
-      helpDir.setPath(sLogoDir);
-      if (!helpDir.exists())
-      {
-         helpDir.mkpath(sLogoDir);
-      }
+         helpDir.setPath(sLogoDir);
+         if (!helpDir.exists())
+         {
+            helpDir.mkpath(sLogoDir);
+         }
 
-      helpDir.setPath(sVodPixDir);
-      if (!helpDir.exists())
-      {
-         helpDir.mkpath(sVodPixDir);
+         helpDir.setPath(sVodPixDir);
+         if (!helpDir.exists())
+         {
+            helpDir.mkpath(sVodPixDir);
+         }
       }
    }
    else
@@ -156,6 +164,7 @@ int CDirStuff::initDirectories()
    sModDir    = QString("%1/%2").arg(sAppDir).arg(MOD_DIR);
    sQtLangDir = QString("%1/%2").arg(sAppDir).arg(LANG_DIR_QT);
    sDocDir    = QString("%1/%2").arg(sAppDir).arg(DOC_DIR);
+   sResDir    = QString("%1/%2").arg(sAppDir).arg(RES_DIR);
 
 #elif defined Q_OS_MAC
    // -----------------------------------------------------
@@ -186,6 +195,9 @@ int CDirStuff::initDirectories()
       // language path ...
       sLangDir = QString("%1/Resources/%2").arg(rx.cap(1)).arg(LANG_DIR);
 
+      // resources path ...
+      sResDir  = QString("%1/Resources").arg(rx.cap(1));
+
       // modules path ...
       sModDir  = QString("%1/PlugIns/%2").arg(rx.cap(1)).arg(MOD_DIR);
 
@@ -209,6 +221,7 @@ int CDirStuff::initDirectories()
    //   \__bin/vlc-record (binary)
    //   \__share/vlc-record/modules/*.mod (player modules)
    //   \__share/vlc-record/language/*.qm (language files)
+   //   \__share/vlc-record/resources/*.cust (language files)
    //   \__share/vlc-record/*.png         (logo)
 
    // find out prefix ...
@@ -218,13 +231,16 @@ int CDirStuff::initDirectories()
       // found bin section --> create path names ...
 
       // language path ...
-      sLangDir   = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(LANG_DIR);
+      sLangDir   = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(sBinName).arg(LANG_DIR);
 
       // modules path ...
-      sModDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(MOD_DIR);
+      sModDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(sBinName).arg(MOD_DIR);
 
       // docu folder ...
-      sDocDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(BIN_NAME).arg(DOC_DIR);
+      sDocDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(sBinName).arg(DOC_DIR);
+
+      // resources folder ...
+      sResDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(sBinName).arg(RES_DIR);
    }
    else
    {
@@ -240,10 +256,27 @@ int CDirStuff::initDirectories()
       sLangDir = rx.cap(1);
       sModDir  = QString("%1/%2").arg(rx.cap(1)).arg(MOD_DIR);
       sDocDir  = sLangDir + "/documentation";
+      sResDir  = sLangDir;
    }
 #endif // QT_NO_DEBUG
 
    return iRV;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: setAppName
+|  Begin: 11.09.2012
+|  Author: Jo2003
+|  Description: set application name (got from customization)
+|
+|  Parameters: ref. to app name
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CDirStuff::setAppName(const QString &name)
+{
+   sAppName = name;
+   iInitState = initDirectories(true);
 }
 
 /* -----------------------------------------------------------------\
@@ -274,6 +307,21 @@ const QString& CDirStuff::getAppDir()
 const QString& CDirStuff::getDataDir()
 {
    return sDataDir;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getBinName
+|  Begin: 11.09.2012
+|  Author: Jo2003
+|  Description: get bin name
+|
+|  Parameters: --
+|
+|  Returns: ref. to bin name string
+\----------------------------------------------------------------- */
+const QString& CDirStuff::getBinName ()
+{
+   return sBinName;
 }
 
 /* -----------------------------------------------------------------\
@@ -319,6 +367,21 @@ const QString& CDirStuff::getLangDir()
 const QString& CDirStuff::getQtLangDir()
 {
    return sQtLangDir;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getResDir
+|  Begin: 11.09.2012
+|  Author: Jo2003
+|  Description: get resources directory
+|
+|  Parameters: --
+|
+|  Returns: ref. to resources dir string
+\----------------------------------------------------------------- */
+const QString& CDirStuff::getResDir()
+{
+   return sResDir;
 }
 
 /* -----------------------------------------------------------------\

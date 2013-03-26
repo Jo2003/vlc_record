@@ -56,7 +56,8 @@ SOURCES += main.cpp \
     qoverlayedcontrol.cpp \
     qfusioncontrol.cpp \
     qrecordtimerwidget.cpp \
-    qiptvctrlclient.cpp
+    qiptvctrlclient.cpp \
+    qcustparser.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -95,7 +96,8 @@ HEADERS += recorder.h \
     qrecordtimerwidget.h \
     qiptvctrlclient.h \
     ciptvdefs.h \
-    cparser.h
+    cparser.h \
+    qcustparser.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

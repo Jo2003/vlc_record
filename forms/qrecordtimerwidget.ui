@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Record Timer</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>branding:kartina</normaloff>branding:kartina</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">QDialog {
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.3 grey, stop:1 #dedede);
