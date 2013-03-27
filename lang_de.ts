@@ -147,34 +147,34 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaClnt</name>
     <message>
-        <location filename="ckartinaclnt.cpp" line="340"/>
+        <location filename="ckartinaclnt.cpp" line="344"/>
         <source>Logout ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="322"/>
+        <location filename="ckartinaclnt.cpp" line="326"/>
         <source>We&apos;ve got following Cookie: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="92"/>
+        <location filename="ckartinaclnt.cpp" line="96"/>
         <source>Request &apos;%2&apos; done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="410"/>
+        <location filename="ckartinaclnt.cpp" line="414"/>
         <source>Request Stream Server List ...</source>
         <oldsource>Request #%1 - Set Host to %2 ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="359"/>
+        <location filename="ckartinaclnt.cpp" line="363"/>
         <source>Request Authentication ...</source>
         <oldsource>%1 / %2():%3 Request Authentication</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="78"/>
+        <location filename="ckartinaclnt.cpp" line="82"/>
         <source>Response for request &apos;%1&apos;:
  ==8&lt;==8&lt;==8&lt;==
 %2
@@ -182,123 +182,123 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="381"/>
+        <location filename="ckartinaclnt.cpp" line="385"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="430"/>
+        <location filename="ckartinaclnt.cpp" line="434"/>
         <source>Request Time Shift ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="450"/>
+        <location filename="ckartinaclnt.cpp" line="454"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="471"/>
+        <location filename="ckartinaclnt.cpp" line="475"/>
         <source>Request Bit Rate ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="491"/>
+        <location filename="ckartinaclnt.cpp" line="495"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="512"/>
+        <location filename="ckartinaclnt.cpp" line="516"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="540"/>
+        <location filename="ckartinaclnt.cpp" line="544"/>
         <source>Set Streaming Server to %1 ...</source>
         <oldsource>Set Streaming Server to No %1 ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="561"/>
+        <location filename="ckartinaclnt.cpp" line="565"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="582"/>
+        <location filename="ckartinaclnt.cpp" line="586"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="605"/>
+        <location filename="ckartinaclnt.cpp" line="609"/>
         <source>Request Archiv URL ...</source>
         <oldsource>Request Archiv URL:
   --&gt; %1</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="632"/>
+        <location filename="ckartinaclnt.cpp" line="636"/>
         <source>Request VOD Genres ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="652"/>
+        <location filename="ckartinaclnt.cpp" line="656"/>
         <source>Request Videos ...</source>
         <oldsource>Request Videos for Genres %1...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="672"/>
+        <location filename="ckartinaclnt.cpp" line="676"/>
         <source>Request Video info for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="699"/>
+        <location filename="ckartinaclnt.cpp" line="703"/>
         <source>Request Video Url for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="727"/>
+        <location filename="ckartinaclnt.cpp" line="731"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <oldsource>Hide channel %1 from channel list ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="750"/>
+        <location filename="ckartinaclnt.cpp" line="754"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <oldsource>Show channel %1 in channel list ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="773"/>
+        <location filename="ckartinaclnt.cpp" line="777"/>
         <source>Request VOD manager data ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="796"/>
+        <location filename="ckartinaclnt.cpp" line="800"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="819"/>
+        <location filename="ckartinaclnt.cpp" line="823"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="846"/>
+        <location filename="ckartinaclnt.cpp" line="850"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="873"/>
+        <location filename="ckartinaclnt.cpp" line="877"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="892"/>
+        <location filename="ckartinaclnt.cpp" line="896"/>
         <source>Change parent code ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="915"/>
+        <location filename="ckartinaclnt.cpp" line="919"/>
         <source>EPG current for Channels: %1 ...</source>
         <oldsource>Silently update EPG for Channel %1 ...</oldsource>
         <translation></translation>
@@ -308,193 +308,193 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fehler #%1: %2!</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="934"/>
+        <location filename="ckartinaclnt.cpp" line="938"/>
         <source>Check for available updates ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="952"/>
+        <location filename="ckartinaclnt.cpp" line="956"/>
         <source>Download image ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1026"/>
+        <location filename="ckartinaclnt.cpp" line="1030"/>
         <source>Unknown error</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1027"/>
+        <location filename="ckartinaclnt.cpp" line="1031"/>
         <source>Incorrect request</source>
         <translation>Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1028"/>
+        <location filename="ckartinaclnt.cpp" line="1032"/>
         <source>Wrong login or password</source>
         <translation>Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1029"/>
+        <location filename="ckartinaclnt.cpp" line="1033"/>
         <source>Access denied</source>
         <translation>Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1030"/>
+        <location filename="ckartinaclnt.cpp" line="1034"/>
         <source>Login incorrect</source>
         <translation>Falscher Login</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1031"/>
+        <location filename="ckartinaclnt.cpp" line="1035"/>
         <source>Your contract is inactive</source>
         <translation>Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1032"/>
+        <location filename="ckartinaclnt.cpp" line="1036"/>
         <source>Your contract is paused</source>
         <translation>Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1033"/>
+        <location filename="ckartinaclnt.cpp" line="1037"/>
         <source>Channel not found or not allowed</source>
         <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1034"/>
+        <location filename="ckartinaclnt.cpp" line="1038"/>
         <source>Error in request: Bad parameters</source>
         <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1035"/>
+        <location filename="ckartinaclnt.cpp" line="1039"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1036"/>
+        <location filename="ckartinaclnt.cpp" line="1040"/>
         <source>Missing parameter (cid)</source>
         <translation>Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1037"/>
+        <location filename="ckartinaclnt.cpp" line="1041"/>
         <source>Another client with your data logged in</source>
         <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1038"/>
+        <location filename="ckartinaclnt.cpp" line="1042"/>
         <source>Authentication error</source>
         <translation>Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1039"/>
+        <location filename="ckartinaclnt.cpp" line="1043"/>
         <source>Your package expired</source>
         <translation>Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1040"/>
+        <location filename="ckartinaclnt.cpp" line="1044"/>
         <source>Unknown API function</source>
         <translation>Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1041"/>
+        <location filename="ckartinaclnt.cpp" line="1045"/>
         <source>Archive not available</source>
         <translation>Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1042"/>
+        <location filename="ckartinaclnt.cpp" line="1046"/>
         <source>Missing parameter (place)</source>
         <translation>Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1043"/>
+        <location filename="ckartinaclnt.cpp" line="1047"/>
         <source>Missing parameter (name)</source>
         <translation>Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1044"/>
+        <location filename="ckartinaclnt.cpp" line="1048"/>
         <source>Incorrect confirmation code</source>
         <translation>Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1045"/>
+        <location filename="ckartinaclnt.cpp" line="1049"/>
         <source>Current code is wrong</source>
         <translation>Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1046"/>
+        <location filename="ckartinaclnt.cpp" line="1050"/>
         <source>New code is wrong</source>
         <translation>Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1047"/>
+        <location filename="ckartinaclnt.cpp" line="1051"/>
         <source>Missing parameter (val)</source>
         <translation>Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1048"/>
+        <location filename="ckartinaclnt.cpp" line="1052"/>
         <source>Value not allowed</source>
         <translation>Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1049"/>
+        <location filename="ckartinaclnt.cpp" line="1053"/>
         <source>Missing parameter</source>
         <translation>Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1050"/>
+        <location filename="ckartinaclnt.cpp" line="1054"/>
         <source>Missing parameter (id)</source>
         <translation>Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1051"/>
+        <location filename="ckartinaclnt.cpp" line="1055"/>
         <source>Missing parameter (fileid)</source>
         <translation>Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1052"/>
+        <location filename="ckartinaclnt.cpp" line="1056"/>
         <source>Missing parameter (type)</source>
         <translation>Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1053"/>
+        <location filename="ckartinaclnt.cpp" line="1057"/>
         <source>Missing parameter (query)</source>
         <translation>Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1054"/>
+        <location filename="ckartinaclnt.cpp" line="1058"/>
         <source>Bitrate not available</source>
         <translation>Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1055"/>
+        <location filename="ckartinaclnt.cpp" line="1059"/>
         <source>Service not available</source>
         <translation>Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1056"/>
+        <location filename="ckartinaclnt.cpp" line="1060"/>
         <source>Query limit exceeded</source>
         <translation>Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1057"/>
+        <location filename="ckartinaclnt.cpp" line="1061"/>
         <source>Rule already exists</source>
         <translation>Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1058"/>
-        <location filename="ckartinaclnt.cpp" line="1059"/>
+        <location filename="ckartinaclnt.cpp" line="1062"/>
+        <location filename="ckartinaclnt.cpp" line="1063"/>
         <source>Missing parameter (cmd)</source>
         <translation>Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1060"/>
+        <location filename="ckartinaclnt.cpp" line="1064"/>
         <source>Bad value (rate)</source>
         <translation>Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1061"/>
+        <location filename="ckartinaclnt.cpp" line="1065"/>
         <source>Can&apos;t find film</source>
         <translation>Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1062"/>
+        <location filename="ckartinaclnt.cpp" line="1066"/>
         <source>Film already added</source>
         <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
@@ -849,7 +849,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CRodnoeClient</name>
     <message>
-        <location filename="crodnoeclient.cpp" line="80"/>
+        <location filename="crodnoeclient.cpp" line="84"/>
         <source>Response for request &apos;%1&apos;:
  ==8&lt;==8&lt;==8&lt;==
 %2
@@ -857,17 +857,17 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="94"/>
+        <location filename="crodnoeclient.cpp" line="98"/>
         <source>Request &apos;%2&apos; done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="198"/>
+        <location filename="crodnoeclient.cpp" line="202"/>
         <source>Radio</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="240"/>
+        <location filename="crodnoeclient.cpp" line="244"/>
         <source>Patched channel list:
  ==8&lt;==8&lt;==8&lt;==
 %2
@@ -875,339 +875,339 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="424"/>
+        <location filename="crodnoeclient.cpp" line="428"/>
         <source>We&apos;ve got following Cookie: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="442"/>
+        <location filename="crodnoeclient.cpp" line="446"/>
         <source>Logout ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="461"/>
+        <location filename="crodnoeclient.cpp" line="465"/>
         <source>Request Authentication ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="486"/>
-        <location filename="crodnoeclient.cpp" line="507"/>
+        <location filename="crodnoeclient.cpp" line="490"/>
+        <location filename="crodnoeclient.cpp" line="511"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="532"/>
+        <location filename="crodnoeclient.cpp" line="536"/>
         <source>Request Stream Server List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="552"/>
+        <location filename="crodnoeclient.cpp" line="556"/>
         <source>Request Time Shift ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="572"/>
+        <location filename="crodnoeclient.cpp" line="576"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="593"/>
+        <location filename="crodnoeclient.cpp" line="597"/>
         <source>Request Bit Rate ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="613"/>
+        <location filename="crodnoeclient.cpp" line="617"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="634"/>
+        <location filename="crodnoeclient.cpp" line="638"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="662"/>
+        <location filename="crodnoeclient.cpp" line="666"/>
         <source>Set Streaming Server to %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="683"/>
+        <location filename="crodnoeclient.cpp" line="687"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="704"/>
+        <location filename="crodnoeclient.cpp" line="708"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="727"/>
+        <location filename="crodnoeclient.cpp" line="731"/>
         <source>Request Archiv URL ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="757"/>
+        <location filename="crodnoeclient.cpp" line="761"/>
         <source>Request VOD Genres ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="777"/>
+        <location filename="crodnoeclient.cpp" line="781"/>
         <source>Request Videos ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="797"/>
+        <location filename="crodnoeclient.cpp" line="801"/>
         <source>Request Video info for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="824"/>
+        <location filename="crodnoeclient.cpp" line="828"/>
         <source>Request Video Url for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="852"/>
+        <location filename="crodnoeclient.cpp" line="856"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="875"/>
+        <location filename="crodnoeclient.cpp" line="879"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="898"/>
+        <location filename="crodnoeclient.cpp" line="902"/>
         <source>Request VOD manager data ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="921"/>
+        <location filename="crodnoeclient.cpp" line="925"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="944"/>
+        <location filename="crodnoeclient.cpp" line="948"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="971"/>
+        <location filename="crodnoeclient.cpp" line="975"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="998"/>
+        <location filename="crodnoeclient.cpp" line="1002"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1017"/>
+        <location filename="crodnoeclient.cpp" line="1021"/>
         <source>Change parent code ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1040"/>
+        <location filename="crodnoeclient.cpp" line="1044"/>
         <source>EPG current for Channels: %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1058"/>
+        <location filename="crodnoeclient.cpp" line="1062"/>
         <source>Check for available updates ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1076"/>
+        <location filename="crodnoeclient.cpp" line="1080"/>
         <source>Download image ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1093"/>
+        <location filename="crodnoeclient.cpp" line="1097"/>
         <source>Download radio list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1112"/>
+        <location filename="crodnoeclient.cpp" line="1116"/>
         <source>Get radio stream Url ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1196"/>
+        <location filename="crodnoeclient.cpp" line="1200"/>
         <source>Unknown error</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1197"/>
+        <location filename="crodnoeclient.cpp" line="1201"/>
         <source>Incorrect request</source>
         <translation>Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1198"/>
+        <location filename="crodnoeclient.cpp" line="1202"/>
         <source>Wrong login or password</source>
         <translation>Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1199"/>
+        <location filename="crodnoeclient.cpp" line="1203"/>
         <source>Access denied</source>
         <translation>Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1200"/>
+        <location filename="crodnoeclient.cpp" line="1204"/>
         <source>Login incorrect</source>
         <translation>Falscher Login</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1201"/>
+        <location filename="crodnoeclient.cpp" line="1205"/>
         <source>Your contract is inactive</source>
         <translation>Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1202"/>
+        <location filename="crodnoeclient.cpp" line="1206"/>
         <source>Your contract is paused</source>
         <translation>Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1203"/>
+        <location filename="crodnoeclient.cpp" line="1207"/>
         <source>Channel not found or not allowed</source>
         <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1204"/>
+        <location filename="crodnoeclient.cpp" line="1208"/>
         <source>Error in request: Bad parameters</source>
         <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1205"/>
+        <location filename="crodnoeclient.cpp" line="1209"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1206"/>
+        <location filename="crodnoeclient.cpp" line="1210"/>
         <source>Missing parameter (cid)</source>
         <translation>Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1207"/>
+        <location filename="crodnoeclient.cpp" line="1211"/>
         <source>Another client with your data logged in</source>
         <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1208"/>
+        <location filename="crodnoeclient.cpp" line="1212"/>
         <source>Authentication error</source>
         <translation>Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1209"/>
+        <location filename="crodnoeclient.cpp" line="1213"/>
         <source>Your package expired</source>
         <translation>Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1210"/>
+        <location filename="crodnoeclient.cpp" line="1214"/>
         <source>Unknown API function</source>
         <translation>Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1211"/>
+        <location filename="crodnoeclient.cpp" line="1215"/>
         <source>Archive not available</source>
         <translation>Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1212"/>
+        <location filename="crodnoeclient.cpp" line="1216"/>
         <source>Missing parameter (place)</source>
         <translation>Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1213"/>
+        <location filename="crodnoeclient.cpp" line="1217"/>
         <source>Missing parameter (name)</source>
         <translation>Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1214"/>
+        <location filename="crodnoeclient.cpp" line="1218"/>
         <source>Incorrect confirmation code</source>
         <translation>Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1215"/>
+        <location filename="crodnoeclient.cpp" line="1219"/>
         <source>Current code is wrong</source>
         <translation>Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1216"/>
+        <location filename="crodnoeclient.cpp" line="1220"/>
         <source>New code is wrong</source>
         <translation>Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1217"/>
+        <location filename="crodnoeclient.cpp" line="1221"/>
         <source>Missing parameter (val)</source>
         <translation>Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1218"/>
+        <location filename="crodnoeclient.cpp" line="1222"/>
         <source>Value not allowed</source>
         <translation>Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1219"/>
+        <location filename="crodnoeclient.cpp" line="1223"/>
         <source>Missing parameter</source>
         <translation>Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1220"/>
+        <location filename="crodnoeclient.cpp" line="1224"/>
         <source>Missing parameter (id)</source>
         <translation>Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1221"/>
+        <location filename="crodnoeclient.cpp" line="1225"/>
         <source>Missing parameter (fileid)</source>
         <translation>Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1222"/>
+        <location filename="crodnoeclient.cpp" line="1226"/>
         <source>Missing parameter (type)</source>
         <translation>Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1223"/>
+        <location filename="crodnoeclient.cpp" line="1227"/>
         <source>Missing parameter (query)</source>
         <translation>Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1224"/>
+        <location filename="crodnoeclient.cpp" line="1228"/>
         <source>Bitrate not available</source>
         <translation>Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1225"/>
+        <location filename="crodnoeclient.cpp" line="1229"/>
         <source>Service not available</source>
         <translation>Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1226"/>
+        <location filename="crodnoeclient.cpp" line="1230"/>
         <source>Query limit exceeded</source>
         <translation>Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1227"/>
+        <location filename="crodnoeclient.cpp" line="1231"/>
         <source>Rule already exists</source>
         <translation>Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1228"/>
-        <location filename="crodnoeclient.cpp" line="1229"/>
+        <location filename="crodnoeclient.cpp" line="1232"/>
+        <location filename="crodnoeclient.cpp" line="1233"/>
         <source>Missing parameter (cmd)</source>
         <translation>Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1230"/>
+        <location filename="crodnoeclient.cpp" line="1234"/>
         <source>Bad value (rate)</source>
         <translation>Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1231"/>
+        <location filename="crodnoeclient.cpp" line="1235"/>
         <source>Can&apos;t find film</source>
         <translation>Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1232"/>
+        <location filename="crodnoeclient.cpp" line="1236"/>
         <source>Film already added</source>
         <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
@@ -1220,57 +1220,57 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="184"/>
-        <location filename="crodnoeparser.cpp" line="591"/>
-        <location filename="crodnoeparser.cpp" line="693"/>
-        <location filename="crodnoeparser.cpp" line="808"/>
-        <location filename="crodnoeparser.cpp" line="874"/>
-        <location filename="crodnoeparser.cpp" line="968"/>
-        <location filename="crodnoeparser.cpp" line="1054"/>
-        <location filename="crodnoeparser.cpp" line="1149"/>
-        <location filename="crodnoeparser.cpp" line="1283"/>
-        <location filename="crodnoeparser.cpp" line="1376"/>
-        <location filename="crodnoeparser.cpp" line="1456"/>
-        <location filename="crodnoeparser.cpp" line="1557"/>
-        <location filename="crodnoeparser.cpp" line="1680"/>
-        <location filename="crodnoeparser.cpp" line="1882"/>
+        <location filename="crodnoeparser.cpp" line="190"/>
+        <location filename="crodnoeparser.cpp" line="597"/>
+        <location filename="crodnoeparser.cpp" line="699"/>
+        <location filename="crodnoeparser.cpp" line="814"/>
+        <location filename="crodnoeparser.cpp" line="880"/>
+        <location filename="crodnoeparser.cpp" line="974"/>
+        <location filename="crodnoeparser.cpp" line="1060"/>
+        <location filename="crodnoeparser.cpp" line="1155"/>
+        <location filename="crodnoeparser.cpp" line="1289"/>
+        <location filename="crodnoeparser.cpp" line="1382"/>
+        <location filename="crodnoeparser.cpp" line="1462"/>
+        <location filename="crodnoeparser.cpp" line="1563"/>
+        <location filename="crodnoeparser.cpp" line="1686"/>
+        <location filename="crodnoeparser.cpp" line="1888"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="185"/>
-        <location filename="crodnoeparser.cpp" line="592"/>
-        <location filename="crodnoeparser.cpp" line="694"/>
-        <location filename="crodnoeparser.cpp" line="809"/>
-        <location filename="crodnoeparser.cpp" line="875"/>
-        <location filename="crodnoeparser.cpp" line="969"/>
-        <location filename="crodnoeparser.cpp" line="1055"/>
-        <location filename="crodnoeparser.cpp" line="1150"/>
-        <location filename="crodnoeparser.cpp" line="1284"/>
-        <location filename="crodnoeparser.cpp" line="1377"/>
-        <location filename="crodnoeparser.cpp" line="1457"/>
-        <location filename="crodnoeparser.cpp" line="1558"/>
-        <location filename="crodnoeparser.cpp" line="1681"/>
-        <location filename="crodnoeparser.cpp" line="1883"/>
+        <location filename="crodnoeparser.cpp" line="191"/>
+        <location filename="crodnoeparser.cpp" line="598"/>
+        <location filename="crodnoeparser.cpp" line="700"/>
+        <location filename="crodnoeparser.cpp" line="815"/>
+        <location filename="crodnoeparser.cpp" line="881"/>
+        <location filename="crodnoeparser.cpp" line="975"/>
+        <location filename="crodnoeparser.cpp" line="1061"/>
+        <location filename="crodnoeparser.cpp" line="1156"/>
+        <location filename="crodnoeparser.cpp" line="1290"/>
+        <location filename="crodnoeparser.cpp" line="1383"/>
+        <location filename="crodnoeparser.cpp" line="1463"/>
+        <location filename="crodnoeparser.cpp" line="1564"/>
+        <location filename="crodnoeparser.cpp" line="1687"/>
+        <location filename="crodnoeparser.cpp" line="1889"/>
         <source>XML Error String: %1</source>
         <translation>XML Fehler String: %1</translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="268"/>
-        <location filename="crodnoeparser.cpp" line="404"/>
-        <location filename="crodnoeparser.cpp" line="480"/>
-        <location filename="crodnoeparser.cpp" line="1768"/>
+        <location filename="crodnoeparser.cpp" line="274"/>
+        <location filename="crodnoeparser.cpp" line="410"/>
+        <location filename="crodnoeparser.cpp" line="486"/>
+        <location filename="crodnoeparser.cpp" line="1774"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="274"/>
-        <location filename="crodnoeparser.cpp" line="410"/>
+        <location filename="crodnoeparser.cpp" line="280"/>
+        <location filename="crodnoeparser.cpp" line="416"/>
         <source>Found unused child %1: %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="1109"/>
+        <location filename="crodnoeparser.cpp" line="1115"/>
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <translation></translation>
     </message>

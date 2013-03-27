@@ -23,7 +23,7 @@
 #endif // INCLUDE_LIBVLC
 
 #define BIN_NAME             "polsky_tv"
-#define KARTINA_HOST         "iptv.polsky.tv"
+#define API_SERVER           "iptv.polsky.tv"
 
 #define COMPANY_NAME "Polsky.TV"
 #define COMPANY_LINK "<a href='http://www.polsky.tv'>" COMPANY_NAME "</a>"

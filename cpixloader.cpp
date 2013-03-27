@@ -77,7 +77,7 @@ void CPixLoader::startDownLoad()
       }
       else
       {
-         emit sigLoadImage(QString("http://%1%2").arg(pCustomization->strVal("KARTINA_HOST")).arg(desc.sRemote));
+         emit sigLoadImage(QString("http://%1%2").arg(pCustomization->strVal("API_SERVER")).arg(desc.sRemote));
       }
    }
    else

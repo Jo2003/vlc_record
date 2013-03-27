@@ -23,7 +23,7 @@
 #endif // INCLUDE_LIBVLC
 
 #define BIN_NAME             "moidom_tv"
-#define KARTINA_HOST         "iptv.moi-dom.tv"
+#define API_SERVER           "iptv.moi-dom.tv"
 
 #define COMPANY_NAME "Moi-Dom.TV"
 #define COMPANY_LINK "<a href='http://www.moi-dom.tv'>" COMPANY_NAME "</a>"

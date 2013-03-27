@@ -156,6 +156,12 @@ int CRodnoeParser::parseChannelList (const QString &sResp,
    sImgTmplTv    = xmlElementToValue(sResp, "tv");
    sImgTmplRadio = xmlElementToValue(sResp, "radio");
 
+   // fall back variant ...
+   if (sImgTmplTv == "")
+   {
+      sImgTmplTv    = xmlElementToValue(sResp, "default");
+   }
+
    xml.addData(sResp);
 
    while(!xml.atEnd() && !xml.hasError())

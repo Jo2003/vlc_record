@@ -23,7 +23,7 @@
 #endif // INCLUDE_LIBVLC
 
 #define BIN_NAME             "vlc-record"
-#define KARTINA_HOST         "iptv.kartina.tv"
+#define API_SERVER           "iptv.kartina.tv"
 
 #define COMPANY_NAME "Kartina.TV"
 #define COMPANY_LINK "<a href='http://www.kartina.tv'>" COMPANY_NAME "</a>"

@@ -23,14 +23,14 @@
 #endif // INCLUDE_LIBVLC
 
 #define BIN_NAME             "iptv-record"
-#define KARTINA_HOST         "file-teleport.com"
+#define API_SERVER           "file-teleport.com"
 
 #define COMPANY_NAME "Iptv-Provider"
 #define COMPANY_LINK "<a href='http://vlc-record.coujo.de'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
-#define KARTINA_API_XML_PATH   "/iptv/api/v1/xml/"
-#define KARTINA_API_JSON_PATH  "/iptv/api/v1/json/"
+#define API_XML_PATH   "/iptv/api/v1/xml/"
+#define API_JSON_PATH  "/iptv/api/v1/json/"
 
 // define classes of api client ...
 #define ApiClient             CRodnoeClient

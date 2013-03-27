@@ -11,6 +11,10 @@
 |
 \=============================================================================*/
 #include "ckartinaclnt.h"
+#include "qcustparser.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -301,7 +305,7 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
    Q_UNUSED(lang)
    sUsr           = usr;
    sPw            = pw;
-   sApiUrl        = QString("http://%1%2").arg(host).arg(KARTINA_API_XML_PATH);
+   sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_XML_PATH"));
    sCookie        = "";
 }
 

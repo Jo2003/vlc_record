@@ -44,11 +44,11 @@
 #endif
 
 // define API path if not already defined ...
-#ifndef KARTINA_API_XML_PATH
-   #define KARTINA_API_XML_PATH   "/api/xml/"
+#ifndef API_XML_PATH
+   #define API_XML_PATH   "/api/xml/"
 #endif
-#ifndef KARTINA_API_JSON_PATH
-   #define KARTINA_API_JSON_PATH  "/api/json/"
+#ifndef API_JSON_PATH
+   #define API_JSON_PATH  "/api/json/"
 #endif
 
 // define classes of api client ...

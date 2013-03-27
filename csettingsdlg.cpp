@@ -224,7 +224,7 @@ void CSettingsDlg::readSettings()
 
    if (m_ui->lineApiServer->text() == "")
    {
-      m_ui->lineApiServer->setText (pCustomization->strVal("KARTINA_HOST"));
+      m_ui->lineApiServer->setText (pCustomization->strVal("API_SERVER"));
    }
 
    // in case we use customization we should hide the API server name stuff ...
