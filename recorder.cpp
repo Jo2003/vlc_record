@@ -3922,7 +3922,7 @@ void Recorder::CleanContextMenu()
 \----------------------------------------------------------------- */
 void Recorder::CreateSystray()
 {
-   trayIcon.setIcon(QIcon("branding:kartina"));
+   trayIcon.setIcon(QIcon("branding:main/icon"));
    trayIcon.setToolTip(pCustomization->strVal("APP_NAME"));
 
    // create context menu for tray icon ...
