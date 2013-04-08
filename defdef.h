@@ -24,6 +24,8 @@
    #include <defines_moidom_tv.h>
 #elif defined _TASTE_IPTV_RECORD
    #include <defines_iptv_record.h>
+#elif defined _TASTE_OEM
+   #include <defines_oem_record.h>
 #else
    #include <defines_vlc_record.h>
 #endif // _TASTE_XXX
