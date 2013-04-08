@@ -71,7 +71,7 @@ int QCustParser::loadCustResource()
 {
    int  iRet      = -1;
    QDir resDir    = pFolders->getResDir();
-   QStringList sl = resDir.entryList(QStringList() << "*.cust");
+   QStringList sl = resDir.entryList(QStringList() << "*.qcr");
 
    if (!sl.isEmpty())
    {
