@@ -4,5 +4,6 @@ RC_FILE = vlc-record.rc
 TRANSLATIONS = lang_de.ts \
                lang_ru.ts \
                lang_pl.ts
-DEFINES += _TASTE_OEM
+DEFINES += _TASTE_OEM \
+           _IS_OEM
 include (common.pri)
