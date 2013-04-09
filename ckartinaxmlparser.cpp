@@ -1527,6 +1527,7 @@ int CKartinaXMLParser::parseUrl(const QString &sResp, QString &sUrl)
    if (rx.indexIn(sResp) > -1)
    {
       sUrl = rx.cap(1);
+      sUrl.replace("&amp;", "&");
 
       // ignore given mrl options ...
       if (sUrl.contains(QChar(' ')))
