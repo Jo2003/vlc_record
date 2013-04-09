@@ -48,7 +48,7 @@ p, li { white-space: pre-wrap; }
         <translation>Автор:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="118"/>
+        <location filename="caboutdialog.cpp" line="119"/>
         <source>Project Site:</source>
         <translation>Сайт проекта:</translation>
     </message>
@@ -57,17 +57,17 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Домашняя страница:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="119"/>
+        <location filename="caboutdialog.cpp" line="121"/>
         <source>Inspired by:</source>
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="121"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>Account expires:</source>
         <translation>Пакет истекает:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="127"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
@@ -101,13 +101,13 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Следите за обновлениями и новостями на моей интернет-странице %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="124"/>
+        <location filename="caboutdialog.cpp" line="126"/>
         <source>&lt;b&gt;This program is free software!&lt;/b&gt;</source>
         <oldsource>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</oldsource>
         <translation>&lt;b&gt;Эта программа является бесплатной!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="125"/>
+        <location filename="caboutdialog.cpp" line="127"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если Вам понравилась моя программа, вы можете отблагодарить меня: </translation>
     </message>
@@ -120,7 +120,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">поблагодарите через PayPal</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="128"/>
+        <location filename="caboutdialog.cpp" line="130"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
@@ -1302,104 +1302,104 @@ p, li { white-space: pre-wrap; }
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="464"/>
+        <location filename="csettingsdlg.cpp" line="471"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="459"/>
+        <location filename="csettingsdlg.cpp" line="466"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="461"/>
+        <location filename="csettingsdlg.cpp" line="468"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="504"/>
+        <location filename="csettingsdlg.cpp" line="511"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="686"/>
+        <location filename="csettingsdlg.cpp" line="693"/>
         <source>Mobile</source>
         <translation>Мобильный</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="690"/>
+        <location filename="csettingsdlg.cpp" line="697"/>
         <source>Eco</source>
         <translation>Эко</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="694"/>
+        <location filename="csettingsdlg.cpp" line="701"/>
         <source>Standard</source>
         <translation>Стандарт</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="698"/>
+        <location filename="csettingsdlg.cpp" line="705"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="702"/>
+        <location filename="csettingsdlg.cpp" line="709"/>
         <source>%1 Kbit/s</source>
         <oldsource>Bitrate: %1Kbit/s</oldsource>
         <translation>%1 Кбит/с</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1401"/>
+        <location filename="csettingsdlg.cpp" line="1408"/>
         <source>blood</source>
         <translation>кровь</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1402"/>
+        <location filename="csettingsdlg.cpp" line="1409"/>
         <source>violence</source>
         <translation>насилие</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1405"/>
+        <location filename="csettingsdlg.cpp" line="1412"/>
         <source>porn</source>
         <translation>порнография</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1406"/>
+        <location filename="csettingsdlg.cpp" line="1413"/>
         <source>horror</source>
         <translation>ужасы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1403"/>
-        <location filename="csettingsdlg.cpp" line="1404"/>
+        <location filename="csettingsdlg.cpp" line="1410"/>
+        <location filename="csettingsdlg.cpp" line="1411"/>
         <source>obscene</source>
         <translation>непристойности</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1438"/>
+        <location filename="csettingsdlg.cpp" line="1445"/>
         <source>hide</source>
         <translation>скрывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1439"/>
+        <location filename="csettingsdlg.cpp" line="1446"/>
         <source>show</source>
         <translation>показывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1440"/>
+        <location filename="csettingsdlg.cpp" line="1447"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1632"/>
+        <location filename="csettingsdlg.cpp" line="1639"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1708"/>
+        <location filename="csettingsdlg.cpp" line="1715"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1709"/>
+        <location filename="csettingsdlg.cpp" line="1716"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1431,13 +1431,13 @@ To change the parent code make sure:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1760"/>
+        <location filename="csettingsdlg.cpp" line="1767"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1760"/>
-        <location filename="csettingsdlg.cpp" line="1761"/>
+        <location filename="csettingsdlg.cpp" line="1767"/>
+        <location filename="csettingsdlg.cpp" line="1768"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>

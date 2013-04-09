@@ -48,22 +48,22 @@ p, li { white-space: pre-wrap; }
         <translation>Autor:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="118"/>
+        <location filename="caboutdialog.cpp" line="119"/>
         <source>Project Site:</source>
         <translation>Projektseite:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="119"/>
+        <location filename="caboutdialog.cpp" line="121"/>
         <source>Inspired by:</source>
         <translation>Für:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="121"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>Account expires:</source>
         <translation>Abo endet:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="127"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Spende ein paar $ und / oder &amp;euro; bei PayPal für meine Arbeit.</translation>
@@ -97,13 +97,13 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">News und Updates findet Ihr auf meiner Homepage: %1.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="124"/>
+        <location filename="caboutdialog.cpp" line="126"/>
         <source>&lt;b&gt;This program is free software!&lt;/b&gt;</source>
         <oldsource>&lt;b&gt;vlc-record is free software!&lt;/b&gt;</oldsource>
         <translation>&lt;b&gt;Dieses Programm ist Freeware!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="125"/>
+        <location filename="caboutdialog.cpp" line="127"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Aber ... wenn Dir das Programm gefällt, unterstütze mich: </translation>
     </message>
@@ -116,7 +116,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">spende hier per PayPal</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="128"/>
+        <location filename="caboutdialog.cpp" line="130"/>
         <source>Thank you,</source>
         <translation>Danke,</translation>
     </message>
@@ -1298,104 +1298,104 @@ p, li { white-space: pre-wrap; }
         <translation>Logge alles</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="464"/>
+        <location filename="csettingsdlg.cpp" line="471"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="459"/>
+        <location filename="csettingsdlg.cpp" line="466"/>
         <source>Executables (*.exe)</source>
         <translation>ausführbar (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="461"/>
+        <location filename="csettingsdlg.cpp" line="468"/>
         <source>Executables (*)</source>
         <translation>ausführbar (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="504"/>
+        <location filename="csettingsdlg.cpp" line="511"/>
         <source>Target Folder</source>
         <translation>Zielverzeichnis</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="686"/>
+        <location filename="csettingsdlg.cpp" line="693"/>
         <source>Mobile</source>
         <translation>Handy</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="690"/>
+        <location filename="csettingsdlg.cpp" line="697"/>
         <source>Eco</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="694"/>
+        <location filename="csettingsdlg.cpp" line="701"/>
         <source>Standard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="698"/>
+        <location filename="csettingsdlg.cpp" line="705"/>
         <source>Premium</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="702"/>
+        <location filename="csettingsdlg.cpp" line="709"/>
         <source>%1 Kbit/s</source>
         <oldsource>Bitrate: %1Kbit/s</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1401"/>
+        <location filename="csettingsdlg.cpp" line="1408"/>
         <source>blood</source>
         <translation>blut</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1402"/>
+        <location filename="csettingsdlg.cpp" line="1409"/>
         <source>violence</source>
         <translation>gewalt</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1405"/>
+        <location filename="csettingsdlg.cpp" line="1412"/>
         <source>porn</source>
         <translation>porno</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1406"/>
+        <location filename="csettingsdlg.cpp" line="1413"/>
         <source>horror</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1403"/>
-        <location filename="csettingsdlg.cpp" line="1404"/>
+        <location filename="csettingsdlg.cpp" line="1410"/>
+        <location filename="csettingsdlg.cpp" line="1411"/>
         <source>obscene</source>
         <translation>obszönitäten</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1438"/>
+        <location filename="csettingsdlg.cpp" line="1445"/>
         <source>hide</source>
         <translation>verstecken</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1439"/>
+        <location filename="csettingsdlg.cpp" line="1446"/>
         <source>show</source>
         <translation>zeigen</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1440"/>
+        <location filename="csettingsdlg.cpp" line="1447"/>
         <source>password protected</source>
         <translation>passwortgeschützt</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1632"/>
+        <location filename="csettingsdlg.cpp" line="1639"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1708"/>
+        <location filename="csettingsdlg.cpp" line="1715"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1709"/>
+        <location filename="csettingsdlg.cpp" line="1716"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1446,13 +1446,13 @@ Um den Elterncode zu ändern, stellen Sie sicher, dass:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1760"/>
+        <location filename="csettingsdlg.cpp" line="1767"/>
         <source>Information</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1760"/>
-        <location filename="csettingsdlg.cpp" line="1761"/>
+        <location filename="csettingsdlg.cpp" line="1767"/>
+        <location filename="csettingsdlg.cpp" line="1768"/>
         <source>Parent Code successfully changed.</source>
         <translation>Eltern-Code erfolgreich geändert.</translation>
     </message>

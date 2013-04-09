@@ -75,6 +75,13 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->listHide->setDisabled(true);
 #endif
 
+#ifdef _IS_OEM
+   if (m_ui->lineApiServer->isVisible())
+   {
+      m_ui->lineApiServer->setVisible(false);
+   }
+#endif
+
    // fill in values ...
    readSettings();
 }
