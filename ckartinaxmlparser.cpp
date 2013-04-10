@@ -1182,29 +1182,35 @@ int CKartinaXMLParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &
             vidInfo.uiLength  = mResults.value("lenght").toUInt();
             vidInfo.uiVidId   = mResults.value("id").toUInt();
          }
-         else if (xml.name() == "item")
+         else if (xml.name() == "videos")
          {
-            mResults.clear();
             slNeeded.clear();
 
             slNeeded << "id" << "title" << "format" << "url"
                      << "size" << "length" << "codec" << "width"
                      << "height";
 
-            // parse vod parts ...
-            oneLevelParser(xml, "item", slNeeded, mResults);
+            while ((xml.readNext() == QXmlStreamReader::StartElement)
+                && (xml.name() == "item")
+                && !xml.atEnd() && !xml.hasError())
+            {
+               mResults.clear();
 
-            fInfo.iHeight = mResults.value("height").toInt();
-            fInfo.iId     = mResults.value("id").toInt();
-            fInfo.iLength = mResults.value("length").toInt();
-            fInfo.iSize   = mResults.value("size").toInt();
-            fInfo.iWidth  = mResults.value("width").toInt();
-            fInfo.sCodec  = mResults.value("codec");
-            fInfo.sFormat = mResults.value("format");
-            fInfo.sTitle  = mResults.value("title");
-            fInfo.sUrl    = mResults.value("url");
+               // parse vod parts ...
+               oneLevelParser(xml, "item", slNeeded, mResults);
 
-            vidInfo.vVodFiles.push_back(fInfo);
+               fInfo.iHeight = mResults.value("height").toInt();
+               fInfo.iId     = mResults.value("id").toInt();
+               fInfo.iLength = mResults.value("length").toInt();
+               fInfo.iSize   = mResults.value("size").toInt();
+               fInfo.iWidth  = mResults.value("width").toInt();
+               fInfo.sCodec  = mResults.value("codec");
+               fInfo.sFormat = mResults.value("format");
+               fInfo.sTitle  = mResults.value("title");
+               fInfo.sUrl    = mResults.value("url");
+
+               vidInfo.vVodFiles.push_back(fInfo);
+            }
          }
          else if (xml.name() == "genres")
          {
