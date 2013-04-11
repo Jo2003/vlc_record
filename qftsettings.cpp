@@ -172,7 +172,11 @@ void QFTSettings::saveFTSettings()
 #endif
    pDb->setValue("FixTime",      (int)Qt::Checked);  // fix time
    pDb->setValue("PlayerModule", "5_libvlc.mod");    // default player module
+#ifdef _IS_OEM
+   pDb->setValue("HttpCache",    3000);              // 3 sec. cache
+#else
    pDb->setValue("HttpCache",    8000);              // 8 sec. cache
+#endif // _IS_OEM
    pDb->setValue("UpdateCheck",  (int)Qt::Checked);  // check for updates
    pDb->setValue("2ClickPlay",   (int)Qt::Checked);  // double click on channel list starts player
    pDb->setValue("LogLevel",     3);                 // log everything
