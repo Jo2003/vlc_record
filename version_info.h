@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "63"
-#define BETA_EXT      ""
+#define BETA_EXT      "B5"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-04-16: Version 2.63B5
+| - use QJSON parser for VLC-Record
+|
 | 2013-04-08: Version 2.63
 | - internal version used for customization tests
 |
