@@ -1578,14 +1578,16 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    // Note: when using json, error isn't parsed correctly!
    // Parse now!
    int iErr = 0;
-   QString sErr;
+   QString sErr, sTrn;
 
    if (!apiParser.parseError(str, sErr, iErr))
    {
       err = iErr;
 
-      /// \todo: We might to have to translate the error string ...
-      str = sErr;
+      // try to translate string ...
+      sTrn = (pTranslator + Translators::TRANS_OWN)->translate(apiClient.objectName().toUtf8().constData(),
+                                             sErr.toUtf8().constData());
+      str = (sTrn != "") ? sTrn : sErr;
    }
 
 #endif // _USE_QJSON

@@ -43,6 +43,8 @@ CRodnoeClient::CRodnoeClient(QObject *parent) :QIptvCtrlClient(parent)
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
    connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
+
+   setObjectName("CRodnoeClient");
 }
 
 /*-----------------------------------------------------------------------------\
