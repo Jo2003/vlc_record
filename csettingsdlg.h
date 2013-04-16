@@ -26,14 +26,7 @@
 #include "cdirstuff.h"
 #include "cshortcutex.h"
 #include "cshortcutgrabber.h"
-
-#ifndef _TASTE_IPTV_RECORD
-   #include "ckartinaclnt.h"
-   #include "ckartinaxmlparser.h"
-#else
-   #include "crodnoeclient.h"
-   #include "crodnoeparser.h"
-#endif // _TASTE_IPTV_RECORD
+#include "api_inc.h"
 
 //===================================================================
 // namespace

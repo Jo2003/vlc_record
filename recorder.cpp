@@ -1574,6 +1574,22 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
 {
    bool bSilent = false;
 
+#ifdef _USE_QJSON
+   // Note: when using json, error isn't parsed correctly!
+   // Parse now!
+   int iErr = 0;
+   QString sErr;
+
+   if (!apiParser.parseError(str, sErr, iErr))
+   {
+      err = iErr;
+
+      /// \todo: We might to have to translate the error string ...
+      str = sErr;
+   }
+
+#endif // _USE_QJSON
+
    // special error handling for special requests ...
    switch ((CIptvDefs::EReq)req)
    {

@@ -305,7 +305,11 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
    Q_UNUSED(lang)
    sUsr           = usr;
    sPw            = pw;
+#ifdef _USE_QJSON
+   sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_JSON_PATH"));
+#else
    sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_XML_PATH"));
+#endif // _USE_QJSON
    sCookie        = "";
 }
 
@@ -988,7 +992,14 @@ bool CKartinaClnt::cookieSet()
 int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 {
    int iRV = 0;
+#ifdef _USE_QJSON
+   sCleanResp = sResp;
 
+   if (sCleanResp.contains("\"error\""))
+   {
+      iRV = -1;
+   }
+#else
    // clean response ... (delete content which may come
    // after / before the xml code ...
    int iStartPos   = sResp.indexOf("<?xml");       // xml start tag
@@ -1010,7 +1021,7 @@ int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
          sCleanResp = errMap.contains((CIptvDefs::EErr)iRV) ? errMap[(CIptvDefs::EErr)iRV] : rx.cap(1);
       }
    }
-
+#endif // _USE_QJSON
    return iRV;
 }
 

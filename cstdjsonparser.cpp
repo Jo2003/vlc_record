@@ -257,7 +257,7 @@ int CStdJsonParser::parseSServersLogin(const QString &sResp, QVector<cparser::SS
          QVariantMap mSrv = lSrv.toMap();
 
          srv.sIp   = mSrv.value("ip").toString();
-         srv.sName = mSrv.value("desc").toString();
+         srv.sName = mSrv.value("descr").toString();
 
          vSrv.append(srv);
       }
@@ -825,6 +825,48 @@ int CStdJsonParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
       {
          sUrls << sAdUrl;
       }
+   }
+   else
+   {
+      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                    tr("Error QJSON can't parse respone!"));
+
+      iRV = -1;
+   }
+
+   return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse error
+//
+//! \author  Jo2003
+//! \date    16.04.2013
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   sMsg (QString &) ref. to error message
+//! \param   eCode (int&) ref. to error code
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int CStdJsonParser::parseError (const QString& sResp, QString &sMsg, int &eCode)
+{
+   int  iRV = 0;
+   bool bOk = false;
+   QVariantMap   contentMap;
+   QJson::Parser parser;
+
+   // clear error ...
+
+   contentMap = parser.parse(sResp.toUtf8(), &bOk).toMap();
+
+   if (bOk)
+   {
+      contentMap = contentMap.value("error").toMap();
+
+      sMsg       = contentMap.value("message").toString();
+      eCode      = contentMap.value("code").toInt();
    }
    else
    {

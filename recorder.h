@@ -56,19 +56,13 @@
 #include "qseccodedlg.h"
 #include "qhelpdialog.h"
 #include "qrecordtimerwidget.h"
+#include "api_inc.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
    #include "qvlcvideowidget.h"
 #endif // INCLUDE_LIBVLC
 
-#ifndef _TASTE_IPTV_RECORD
-   #include "ckartinaclnt.h"
-   #include "ckartinaxmlparser.h"
-#else
-   #include "crodnoeclient.h"
-   #include "crodnoeparser.h"
-#endif // _TASTE_IPTV_RECORD
 
 //------------------------------------------------------------------
 /// \name definition of start flags

@@ -24,12 +24,7 @@
 #include "cdirstuff.h"
 #include "csettingsdlg.h"
 #include "cpixloader.h"
-
-#ifndef _TASTE_IPTV_RECORD
-   #include "ckartinaxmlparser.h"
-#else
-   #include "crodnoeparser.h"
-#endif // _TASTE_IPTV_RECORD
+#include "api_inc.h"
 
 /********************************************************************\
 |  Class: CVodBrowser

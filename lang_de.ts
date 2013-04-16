@@ -147,12 +147,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaClnt</name>
     <message>
-        <location filename="ckartinaclnt.cpp" line="344"/>
+        <location filename="ckartinaclnt.cpp" line="348"/>
         <source>Logout ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="326"/>
+        <location filename="ckartinaclnt.cpp" line="330"/>
         <source>We&apos;ve got following Cookie: %1</source>
         <translation></translation>
     </message>
@@ -162,13 +162,13 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="414"/>
+        <location filename="ckartinaclnt.cpp" line="418"/>
         <source>Request Stream Server List ...</source>
         <oldsource>Request #%1 - Set Host to %2 ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="363"/>
+        <location filename="ckartinaclnt.cpp" line="367"/>
         <source>Request Authentication ...</source>
         <oldsource>%1 / %2():%3 Request Authentication</oldsource>
         <translation></translation>
@@ -182,123 +182,123 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="385"/>
+        <location filename="ckartinaclnt.cpp" line="389"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="434"/>
+        <location filename="ckartinaclnt.cpp" line="438"/>
         <source>Request Time Shift ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="454"/>
+        <location filename="ckartinaclnt.cpp" line="458"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="475"/>
+        <location filename="ckartinaclnt.cpp" line="479"/>
         <source>Request Bit Rate ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="495"/>
+        <location filename="ckartinaclnt.cpp" line="499"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="516"/>
+        <location filename="ckartinaclnt.cpp" line="520"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="544"/>
+        <location filename="ckartinaclnt.cpp" line="548"/>
         <source>Set Streaming Server to %1 ...</source>
         <oldsource>Set Streaming Server to No %1 ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="565"/>
+        <location filename="ckartinaclnt.cpp" line="569"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="586"/>
+        <location filename="ckartinaclnt.cpp" line="590"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="609"/>
+        <location filename="ckartinaclnt.cpp" line="613"/>
         <source>Request Archiv URL ...</source>
         <oldsource>Request Archiv URL:
   --&gt; %1</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="636"/>
+        <location filename="ckartinaclnt.cpp" line="640"/>
         <source>Request VOD Genres ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="656"/>
+        <location filename="ckartinaclnt.cpp" line="660"/>
         <source>Request Videos ...</source>
         <oldsource>Request Videos for Genres %1...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="676"/>
+        <location filename="ckartinaclnt.cpp" line="680"/>
         <source>Request Video info for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="703"/>
+        <location filename="ckartinaclnt.cpp" line="707"/>
         <source>Request Video Url for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="731"/>
+        <location filename="ckartinaclnt.cpp" line="735"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <oldsource>Hide channel %1 from channel list ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="754"/>
+        <location filename="ckartinaclnt.cpp" line="758"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <oldsource>Show channel %1 in channel list ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="777"/>
+        <location filename="ckartinaclnt.cpp" line="781"/>
         <source>Request VOD manager data ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="800"/>
+        <location filename="ckartinaclnt.cpp" line="804"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="823"/>
+        <location filename="ckartinaclnt.cpp" line="827"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="850"/>
+        <location filename="ckartinaclnt.cpp" line="854"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="877"/>
+        <location filename="ckartinaclnt.cpp" line="881"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="896"/>
+        <location filename="ckartinaclnt.cpp" line="900"/>
         <source>Change parent code ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="919"/>
+        <location filename="ckartinaclnt.cpp" line="923"/>
         <source>EPG current for Channels: %1 ...</source>
         <oldsource>Silently update EPG for Channel %1 ...</oldsource>
         <translation></translation>
@@ -308,193 +308,193 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fehler #%1: %2!</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="938"/>
+        <location filename="ckartinaclnt.cpp" line="942"/>
         <source>Check for available updates ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="956"/>
+        <location filename="ckartinaclnt.cpp" line="960"/>
         <source>Download image ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1030"/>
+        <location filename="ckartinaclnt.cpp" line="1041"/>
         <source>Unknown error</source>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1031"/>
+        <location filename="ckartinaclnt.cpp" line="1042"/>
         <source>Incorrect request</source>
         <translation>Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1032"/>
+        <location filename="ckartinaclnt.cpp" line="1043"/>
         <source>Wrong login or password</source>
         <translation>Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1033"/>
+        <location filename="ckartinaclnt.cpp" line="1044"/>
         <source>Access denied</source>
         <translation>Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1034"/>
+        <location filename="ckartinaclnt.cpp" line="1045"/>
         <source>Login incorrect</source>
         <translation>Falscher Login</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1035"/>
+        <location filename="ckartinaclnt.cpp" line="1046"/>
         <source>Your contract is inactive</source>
         <translation>Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1036"/>
+        <location filename="ckartinaclnt.cpp" line="1047"/>
         <source>Your contract is paused</source>
         <translation>Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1037"/>
+        <location filename="ckartinaclnt.cpp" line="1048"/>
         <source>Channel not found or not allowed</source>
         <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1038"/>
+        <location filename="ckartinaclnt.cpp" line="1049"/>
         <source>Error in request: Bad parameters</source>
         <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1039"/>
+        <location filename="ckartinaclnt.cpp" line="1050"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1040"/>
+        <location filename="ckartinaclnt.cpp" line="1051"/>
         <source>Missing parameter (cid)</source>
         <translation>Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1041"/>
+        <location filename="ckartinaclnt.cpp" line="1052"/>
         <source>Another client with your data logged in</source>
         <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1042"/>
+        <location filename="ckartinaclnt.cpp" line="1053"/>
         <source>Authentication error</source>
         <translation>Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1043"/>
+        <location filename="ckartinaclnt.cpp" line="1054"/>
         <source>Your package expired</source>
         <translation>Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1044"/>
+        <location filename="ckartinaclnt.cpp" line="1055"/>
         <source>Unknown API function</source>
         <translation>Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1045"/>
+        <location filename="ckartinaclnt.cpp" line="1056"/>
         <source>Archive not available</source>
         <translation>Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1046"/>
+        <location filename="ckartinaclnt.cpp" line="1057"/>
         <source>Missing parameter (place)</source>
         <translation>Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1047"/>
+        <location filename="ckartinaclnt.cpp" line="1058"/>
         <source>Missing parameter (name)</source>
         <translation>Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1048"/>
+        <location filename="ckartinaclnt.cpp" line="1059"/>
         <source>Incorrect confirmation code</source>
         <translation>Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1049"/>
+        <location filename="ckartinaclnt.cpp" line="1060"/>
         <source>Current code is wrong</source>
         <translation>Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1050"/>
+        <location filename="ckartinaclnt.cpp" line="1061"/>
         <source>New code is wrong</source>
         <translation>Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1051"/>
+        <location filename="ckartinaclnt.cpp" line="1062"/>
         <source>Missing parameter (val)</source>
         <translation>Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1052"/>
+        <location filename="ckartinaclnt.cpp" line="1063"/>
         <source>Value not allowed</source>
         <translation>Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1053"/>
+        <location filename="ckartinaclnt.cpp" line="1064"/>
         <source>Missing parameter</source>
         <translation>Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1054"/>
+        <location filename="ckartinaclnt.cpp" line="1065"/>
         <source>Missing parameter (id)</source>
         <translation>Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1055"/>
+        <location filename="ckartinaclnt.cpp" line="1066"/>
         <source>Missing parameter (fileid)</source>
         <translation>Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1056"/>
+        <location filename="ckartinaclnt.cpp" line="1067"/>
         <source>Missing parameter (type)</source>
         <translation>Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1057"/>
+        <location filename="ckartinaclnt.cpp" line="1068"/>
         <source>Missing parameter (query)</source>
         <translation>Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1058"/>
+        <location filename="ckartinaclnt.cpp" line="1069"/>
         <source>Bitrate not available</source>
         <translation>Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1059"/>
+        <location filename="ckartinaclnt.cpp" line="1070"/>
         <source>Service not available</source>
         <translation>Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1060"/>
+        <location filename="ckartinaclnt.cpp" line="1071"/>
         <source>Query limit exceeded</source>
         <translation>Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1061"/>
+        <location filename="ckartinaclnt.cpp" line="1072"/>
         <source>Rule already exists</source>
         <translation>Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1062"/>
-        <location filename="ckartinaclnt.cpp" line="1063"/>
+        <location filename="ckartinaclnt.cpp" line="1073"/>
+        <location filename="ckartinaclnt.cpp" line="1074"/>
         <source>Missing parameter (cmd)</source>
         <translation>Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1064"/>
+        <location filename="ckartinaclnt.cpp" line="1075"/>
         <source>Bad value (rate)</source>
         <translation>Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1065"/>
+        <location filename="ckartinaclnt.cpp" line="1076"/>
         <source>Can&apos;t find film</source>
         <translation>Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1066"/>
+        <location filename="ckartinaclnt.cpp" line="1077"/>
         <source>Film already added</source>
         <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
@@ -510,12 +510,12 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="931"/>
         <location filename="ckartinaxmlparser.cpp" line="1017"/>
         <location filename="ckartinaxmlparser.cpp" line="1112"/>
-        <location filename="ckartinaxmlparser.cpp" line="1246"/>
-        <location filename="ckartinaxmlparser.cpp" line="1330"/>
-        <location filename="ckartinaxmlparser.cpp" line="1410"/>
-        <location filename="ckartinaxmlparser.cpp" line="1498"/>
-        <location filename="ckartinaxmlparser.cpp" line="1620"/>
-        <location filename="ckartinaxmlparser.cpp" line="1821"/>
+        <location filename="ckartinaxmlparser.cpp" line="1252"/>
+        <location filename="ckartinaxmlparser.cpp" line="1336"/>
+        <location filename="ckartinaxmlparser.cpp" line="1416"/>
+        <location filename="ckartinaxmlparser.cpp" line="1504"/>
+        <location filename="ckartinaxmlparser.cpp" line="1627"/>
+        <location filename="ckartinaxmlparser.cpp" line="1828"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
@@ -528,12 +528,12 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="932"/>
         <location filename="ckartinaxmlparser.cpp" line="1018"/>
         <location filename="ckartinaxmlparser.cpp" line="1113"/>
-        <location filename="ckartinaxmlparser.cpp" line="1247"/>
-        <location filename="ckartinaxmlparser.cpp" line="1331"/>
-        <location filename="ckartinaxmlparser.cpp" line="1411"/>
-        <location filename="ckartinaxmlparser.cpp" line="1499"/>
-        <location filename="ckartinaxmlparser.cpp" line="1621"/>
-        <location filename="ckartinaxmlparser.cpp" line="1822"/>
+        <location filename="ckartinaxmlparser.cpp" line="1253"/>
+        <location filename="ckartinaxmlparser.cpp" line="1337"/>
+        <location filename="ckartinaxmlparser.cpp" line="1417"/>
+        <location filename="ckartinaxmlparser.cpp" line="1505"/>
+        <location filename="ckartinaxmlparser.cpp" line="1628"/>
+        <location filename="ckartinaxmlparser.cpp" line="1829"/>
         <source>XML Error String: %1</source>
         <translation>XML Fehler String: %1</translation>
     </message>
@@ -541,7 +541,7 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="245"/>
         <location filename="ckartinaxmlparser.cpp" line="380"/>
         <location filename="ckartinaxmlparser.cpp" line="456"/>
-        <location filename="ckartinaxmlparser.cpp" line="1707"/>
+        <location filename="ckartinaxmlparser.cpp" line="1714"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
@@ -1842,6 +1842,57 @@ Um den Elterncode zu ändern, stellen Sie sicher, dass:
     </message>
 </context>
 <context>
+    <name>CStdJsonParser</name>
+    <message>
+        <location filename="cstdjsonparser.cpp" line="72"/>
+        <source>Set time offset to %1 seconds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cstdjsonparser.cpp" line="212"/>
+        <location filename="cstdjsonparser.cpp" line="267"/>
+        <location filename="cstdjsonparser.cpp" line="317"/>
+        <location filename="cstdjsonparser.cpp" line="365"/>
+        <location filename="cstdjsonparser.cpp" line="425"/>
+        <location filename="cstdjsonparser.cpp" line="474"/>
+        <location filename="cstdjsonparser.cpp" line="540"/>
+        <location filename="cstdjsonparser.cpp" line="619"/>
+        <location filename="cstdjsonparser.cpp" line="684"/>
+        <location filename="cstdjsonparser.cpp" line="733"/>
+        <location filename="cstdjsonparser.cpp" line="775"/>
+        <location filename="cstdjsonparser.cpp" line="836"/>
+        <location filename="cstdjsonparser.cpp" line="936"/>
+        <source>Error in %1</source>
+        <translation type="unfinished">Fehler in %1</translation>
+    </message>
+    <message>
+        <location filename="cstdjsonparser.cpp" line="213"/>
+        <location filename="cstdjsonparser.cpp" line="268"/>
+        <location filename="cstdjsonparser.cpp" line="318"/>
+        <location filename="cstdjsonparser.cpp" line="366"/>
+        <location filename="cstdjsonparser.cpp" line="426"/>
+        <location filename="cstdjsonparser.cpp" line="475"/>
+        <location filename="cstdjsonparser.cpp" line="541"/>
+        <location filename="cstdjsonparser.cpp" line="620"/>
+        <location filename="cstdjsonparser.cpp" line="685"/>
+        <location filename="cstdjsonparser.cpp" line="734"/>
+        <location filename="cstdjsonparser.cpp" line="776"/>
+        <location filename="cstdjsonparser.cpp" line="837"/>
+        <source>Error QJSON can&apos;t parse respone!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cstdjsonparser.cpp" line="529"/>
+        <source>id: %1, Name: %2, year: %3, country: %4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cstdjsonparser.cpp" line="937"/>
+        <source>XML Error String: %1</source>
+        <translation type="unfinished">XML Fehler String: %1</translation>
+    </message>
+</context>
+<context>
     <name>CStreamLoader</name>
     <message>
         <location filename="cstreamloader.cpp" line="83"/>
@@ -2341,6 +2392,14 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="qiptvctrlclient.cpp" line="256"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QJson::ParserRunnable</name>
+    <message>
+        <location filename="qjson/parserrunnable.cpp" line="64"/>
+        <source>An error occurred while parsing json: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

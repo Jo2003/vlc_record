@@ -54,6 +54,7 @@ public:
    int parseVodManager (const QString& sResp, QVector<cparser::SVodRate>& vRates);
    int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
    int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
+   int parseError (const QString& sResp, QString& sMsg, int& eCode);
 
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);

@@ -97,7 +97,8 @@ HEADERS += recorder.h \
     qiptvctrlclient.h \
     ciptvdefs.h \
     cparser.h \
-    qcustparser.h
+    qcustparser.h \
+    api_inc.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -110,17 +111,27 @@ RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
 
-contains(DEFINES,_TASTE_IPTV_RECORD) {
+contains(DEFINES, _TASTE_IPTV_RECORD) {
+    message (Using alternative api client ...)
     HEADERS += crodnoeclient.h \
                crodnoeparser.h
     SOURCES += crodnoeclient.cpp \
                crodnoeparser.cpp
+} else {
+    message (Using standard api client ...)
+    HEADERS += ckartinaclnt.h
+    SOURCES += ckartinaclnt.cpp
 }
-else {
-    HEADERS += ckartinaclnt.h \
-               ckartinaxmlparser.h
-    SOURCES += ckartinaclnt.cpp \
-               ckartinaxmlparser.cpp
+
+contains(DEFINES, _USE_QJSON) {
+    message (using QJson parser ...)
+    DEFINES += QJSON_EXPORT=""
+    SOURCES += cstdjsonparser.cpp
+    HEADERS += cstdjsonparser.h
+} else {
+    message (using XML parser ...)
+    SOURCES += ckartinaxmlparser.cpp
+    HEADERS += ckartinaxmlparser.h
 }
 
 # for static build ...
@@ -128,8 +139,6 @@ static {
     DEFINES += DSTATIC
     DEFINES += DINCLUDEPLUGS
     QTPLUGIN += qsqlite
-    # QTPLUGIN += qico qgif qjpeg
-
 }
 
 # where the target should be stored ...
@@ -196,7 +205,4 @@ else:FORMS += forms/recorder.ui
 
 # translation stuff ...
 include (language.pri)
-
-OTHER_FILES += \
-    main.mm
 

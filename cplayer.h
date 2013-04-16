@@ -31,12 +31,7 @@
 #include "cshowinfo.h"
 #include "csettingsdlg.h"
 #include "qvlcvideowidget.h"
-
-#ifndef _TASTE_IPTV_RECORD
-   #include "ckartinaclnt.h"
-#else
-   #include "crodnoeclient.h"
-#endif // _TASTE_IPTV_RECORD
+#include "api_inc.h"
 
 //===================================================================
 // namespace
