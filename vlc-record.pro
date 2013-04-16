@@ -7,9 +7,7 @@ TRANSLATIONS = lang_de.ts \
 DEFINES += ENABLE_AD_SWITCH
 
 # stuff for QJSON ...
-INCLUDEPATH += qjson/include
 DEFINES     += _USE_QJSON
-include (qjson/qjson.pri)
 
 # include common project (must be last) ...
 include (common.pri)

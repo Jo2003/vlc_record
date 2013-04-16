@@ -17,6 +17,8 @@ INCLUDEPATH += .
 # CONFIG += static
 CONFIG += shared
 
+# stuff for QJSON ...
+
 # -------------------------------------
 # customization ...
 # - make a define here and put needed
@@ -125,6 +127,8 @@ contains(DEFINES, _TASTE_IPTV_RECORD) {
 
 contains(DEFINES, _USE_QJSON) {
     message (using QJson parser ...)
+    INCLUDEPATH += qjson/include
+    include (qjson/qjson.pri)
     DEFINES += QJSON_EXPORT=""
     SOURCES += cstdjsonparser.cpp
     HEADERS += cstdjsonparser.h
