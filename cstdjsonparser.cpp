@@ -12,6 +12,8 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "cstdjsonparser.h"
+#include <QColor>
+#include "small_helpers.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -30,6 +32,12 @@ extern CLogFile VlcLog;
 CStdJsonParser::CStdJsonParser(QObject * parent) : QObject(parent)
 {
    iOffset    = 0;
+
+   // as far as there is only black color ...
+   slAltColors << "Aqua"           << "Salmon" << "RosyBrown"
+               << "Gold"           << "Silver" << "Plum"
+               << "LightSteelBlue" << "Lime"   << "GreenYellow"
+               << "SkyBlue"        << "Orange";
 }
 
 //---------------------------------------------------------------------------
@@ -167,6 +175,9 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
          chan.iId       = mGroup.value("id").toInt();
          chan.sName     = mGroup.value("name").toString();
          chan.sProgramm = mGroup.value("color").toString();
+
+         // make sure group color isn't black ...
+         checkColor(chan.sProgramm, chan.iId);
 
          chanList.append(chan);
 
@@ -977,4 +988,33 @@ int CStdJsonParser::parseUpdInfo(const QString &sResp, cparser::SUpdInfo &updInf
    }
 
    return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   check for black color (code) and correct if needed
+//
+//! \author  Jo2003
+//! \date    12.10.2011
+//
+//! \param   ccode (QString &) ref. to color code
+//
+//! \return  true --> black; false --> not black
+//---------------------------------------------------------------------------
+void CStdJsonParser::checkColor(QString& ccode, int id)
+{
+   QColor col(ccode);
+
+   if (!col.isValid() || (col == QColor("black")))
+   {
+      // make sure color isn't black!
+      if (id > slAltColors.size())
+      {
+         ccode = slAltColors.at(CSmallHelpers::randInt(0, slAltColors.count() - 1));
+      }
+      else
+      {
+         ccode = slAltColors.at(id - 1);
+      }
+   }
 }

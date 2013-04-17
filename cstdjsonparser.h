@@ -59,9 +59,11 @@ public:
 protected:
    void checkTimeOffSet (const uint &uiSrvTime);
    void initChanEntry (cparser::SChan &entry, bool bIsChan = true);
+   void checkColor(QString& ccode, int id);
 
 private:
-   int iOffset;
+   int         iOffset;
+   QStringList slAltColors;
 
 signals:
    void sigError(int iType, const QString& cap, const QString& descr);

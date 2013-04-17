@@ -58,7 +58,7 @@
    #define ApiClient      CKartinaClnt
 #endif
 #ifndef ApiParser
-   #define ApiParser      CKartinaXMLParser
+   #define ApiParser      CStdJsonParser
 #endif
 
 #define PLAYER_LOG_FILE   "player.log"

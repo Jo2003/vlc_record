@@ -1829,47 +1829,47 @@ To change the parent code make sure:
 <context>
     <name>CStdJsonParser</name>
     <message>
-        <location filename="cstdjsonparser.cpp" line="72"/>
+        <location filename="cstdjsonparser.cpp" line="80"/>
         <source>Set time offset to %1 seconds!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="212"/>
-        <location filename="cstdjsonparser.cpp" line="267"/>
-        <location filename="cstdjsonparser.cpp" line="318"/>
-        <location filename="cstdjsonparser.cpp" line="366"/>
-        <location filename="cstdjsonparser.cpp" line="426"/>
-        <location filename="cstdjsonparser.cpp" line="475"/>
-        <location filename="cstdjsonparser.cpp" line="535"/>
-        <location filename="cstdjsonparser.cpp" line="614"/>
-        <location filename="cstdjsonparser.cpp" line="679"/>
-        <location filename="cstdjsonparser.cpp" line="728"/>
-        <location filename="cstdjsonparser.cpp" line="770"/>
-        <location filename="cstdjsonparser.cpp" line="831"/>
-        <location filename="cstdjsonparser.cpp" line="873"/>
-        <location filename="cstdjsonparser.cpp" line="973"/>
+        <location filename="cstdjsonparser.cpp" line="223"/>
+        <location filename="cstdjsonparser.cpp" line="278"/>
+        <location filename="cstdjsonparser.cpp" line="329"/>
+        <location filename="cstdjsonparser.cpp" line="377"/>
+        <location filename="cstdjsonparser.cpp" line="437"/>
+        <location filename="cstdjsonparser.cpp" line="486"/>
+        <location filename="cstdjsonparser.cpp" line="546"/>
+        <location filename="cstdjsonparser.cpp" line="625"/>
+        <location filename="cstdjsonparser.cpp" line="690"/>
+        <location filename="cstdjsonparser.cpp" line="739"/>
+        <location filename="cstdjsonparser.cpp" line="781"/>
+        <location filename="cstdjsonparser.cpp" line="842"/>
+        <location filename="cstdjsonparser.cpp" line="884"/>
+        <location filename="cstdjsonparser.cpp" line="984"/>
         <source>Error in %1</source>
         <translation type="unfinished">Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="213"/>
-        <location filename="cstdjsonparser.cpp" line="268"/>
-        <location filename="cstdjsonparser.cpp" line="319"/>
-        <location filename="cstdjsonparser.cpp" line="367"/>
-        <location filename="cstdjsonparser.cpp" line="427"/>
-        <location filename="cstdjsonparser.cpp" line="476"/>
-        <location filename="cstdjsonparser.cpp" line="536"/>
-        <location filename="cstdjsonparser.cpp" line="615"/>
-        <location filename="cstdjsonparser.cpp" line="680"/>
-        <location filename="cstdjsonparser.cpp" line="729"/>
-        <location filename="cstdjsonparser.cpp" line="771"/>
-        <location filename="cstdjsonparser.cpp" line="832"/>
-        <location filename="cstdjsonparser.cpp" line="874"/>
+        <location filename="cstdjsonparser.cpp" line="224"/>
+        <location filename="cstdjsonparser.cpp" line="279"/>
+        <location filename="cstdjsonparser.cpp" line="330"/>
+        <location filename="cstdjsonparser.cpp" line="378"/>
+        <location filename="cstdjsonparser.cpp" line="438"/>
+        <location filename="cstdjsonparser.cpp" line="487"/>
+        <location filename="cstdjsonparser.cpp" line="547"/>
+        <location filename="cstdjsonparser.cpp" line="626"/>
+        <location filename="cstdjsonparser.cpp" line="691"/>
+        <location filename="cstdjsonparser.cpp" line="740"/>
+        <location filename="cstdjsonparser.cpp" line="782"/>
+        <location filename="cstdjsonparser.cpp" line="843"/>
+        <location filename="cstdjsonparser.cpp" line="885"/>
         <source>Error QJSON can&apos;t parse respone!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="974"/>
+        <location filename="cstdjsonparser.cpp" line="985"/>
         <source>XML Error String: %1</source>
         <translation type="unfinished">Ошибка XML строки: %1</translation>
     </message>

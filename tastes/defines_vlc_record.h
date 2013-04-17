@@ -29,7 +29,5 @@
 #define COMPANY_LINK "<a href='http://www.kartina.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
-#define ApiParser      CStdJsonParser
-
 #endif // __012412__DEFINES_VLC_RECORD_H
 
