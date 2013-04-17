@@ -29,5 +29,8 @@
 #define COMPANY_LINK "<a href='http://www.kartina.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
+// use xml parser ...
+#define ApiParser             CKartinaXMLParser
+
 #endif // __012412__DEFINES_OEM_RECORD_H
 

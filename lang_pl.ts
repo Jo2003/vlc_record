@@ -117,6 +117,24 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CApiParser</name>
+    <message>
+        <location filename="capiparser.cpp" line="98"/>
+        <source>Set time offset to %1 seconds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="capiparser.cpp" line="263"/>
+        <source>Error in %1</source>
+        <translation type="unfinished">Błąd w %1</translation>
+    </message>
+    <message>
+        <location filename="capiparser.cpp" line="264"/>
+        <source>XML Error String: %1</source>
+        <translation type="unfinished">Błąd wiersza XML: %1</translation>
+    </message>
+</context>
+<context>
     <name>CEpgBrowser</name>
     <message>
         <location filename="cepgbrowser.cpp" line="173"/>
@@ -488,62 +506,51 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaXMLParser</name>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="71"/>
-        <source>Set time offset to %1 seconds!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="174"/>
-        <location filename="ckartinaxmlparser.cpp" line="567"/>
-        <location filename="ckartinaxmlparser.cpp" line="675"/>
-        <location filename="ckartinaxmlparser.cpp" line="783"/>
-        <location filename="ckartinaxmlparser.cpp" line="849"/>
-        <location filename="ckartinaxmlparser.cpp" line="931"/>
-        <location filename="ckartinaxmlparser.cpp" line="1017"/>
-        <location filename="ckartinaxmlparser.cpp" line="1112"/>
-        <location filename="ckartinaxmlparser.cpp" line="1252"/>
-        <location filename="ckartinaxmlparser.cpp" line="1336"/>
-        <location filename="ckartinaxmlparser.cpp" line="1416"/>
-        <location filename="ckartinaxmlparser.cpp" line="1504"/>
-        <location filename="ckartinaxmlparser.cpp" line="1627"/>
-        <location filename="ckartinaxmlparser.cpp" line="1828"/>
+        <location filename="ckartinaxmlparser.cpp" line="80"/>
+        <location filename="ckartinaxmlparser.cpp" line="497"/>
+        <location filename="ckartinaxmlparser.cpp" line="605"/>
+        <location filename="ckartinaxmlparser.cpp" line="671"/>
+        <location filename="ckartinaxmlparser.cpp" line="753"/>
+        <location filename="ckartinaxmlparser.cpp" line="839"/>
+        <location filename="ckartinaxmlparser.cpp" line="934"/>
+        <location filename="ckartinaxmlparser.cpp" line="1074"/>
+        <location filename="ckartinaxmlparser.cpp" line="1158"/>
+        <location filename="ckartinaxmlparser.cpp" line="1246"/>
+        <location filename="ckartinaxmlparser.cpp" line="1369"/>
         <source>Error in %1</source>
         <translation>Błąd w %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="175"/>
-        <location filename="ckartinaxmlparser.cpp" line="568"/>
-        <location filename="ckartinaxmlparser.cpp" line="676"/>
-        <location filename="ckartinaxmlparser.cpp" line="784"/>
-        <location filename="ckartinaxmlparser.cpp" line="850"/>
-        <location filename="ckartinaxmlparser.cpp" line="932"/>
-        <location filename="ckartinaxmlparser.cpp" line="1018"/>
-        <location filename="ckartinaxmlparser.cpp" line="1113"/>
-        <location filename="ckartinaxmlparser.cpp" line="1253"/>
-        <location filename="ckartinaxmlparser.cpp" line="1337"/>
-        <location filename="ckartinaxmlparser.cpp" line="1417"/>
-        <location filename="ckartinaxmlparser.cpp" line="1505"/>
-        <location filename="ckartinaxmlparser.cpp" line="1628"/>
-        <location filename="ckartinaxmlparser.cpp" line="1829"/>
+        <location filename="ckartinaxmlparser.cpp" line="81"/>
+        <location filename="ckartinaxmlparser.cpp" line="498"/>
+        <location filename="ckartinaxmlparser.cpp" line="606"/>
+        <location filename="ckartinaxmlparser.cpp" line="672"/>
+        <location filename="ckartinaxmlparser.cpp" line="754"/>
+        <location filename="ckartinaxmlparser.cpp" line="840"/>
+        <location filename="ckartinaxmlparser.cpp" line="935"/>
+        <location filename="ckartinaxmlparser.cpp" line="1075"/>
+        <location filename="ckartinaxmlparser.cpp" line="1159"/>
+        <location filename="ckartinaxmlparser.cpp" line="1247"/>
+        <location filename="ckartinaxmlparser.cpp" line="1370"/>
         <source>XML Error String: %1</source>
         <translation>Błąd wiersza XML: %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="245"/>
-        <location filename="ckartinaxmlparser.cpp" line="380"/>
-        <location filename="ckartinaxmlparser.cpp" line="456"/>
-        <location filename="ckartinaxmlparser.cpp" line="1714"/>
+        <location filename="ckartinaxmlparser.cpp" line="159"/>
+        <location filename="ckartinaxmlparser.cpp" line="294"/>
+        <location filename="ckartinaxmlparser.cpp" line="370"/>
+        <location filename="ckartinaxmlparser.cpp" line="1456"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="251"/>
-        <location filename="ckartinaxmlparser.cpp" line="386"/>
+        <location filename="ckartinaxmlparser.cpp" line="165"/>
+        <location filename="ckartinaxmlparser.cpp" line="300"/>
         <source>Found unused child %1: %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1072"/>
+        <location filename="ckartinaxmlparser.cpp" line="894"/>
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <translation></translation>
     </message>
@@ -1642,47 +1649,47 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
 <context>
     <name>CStdJsonParser</name>
     <message>
-        <location filename="cstdjsonparser.cpp" line="72"/>
+        <location filename="cstdjsonparser.cpp" line="82"/>
         <source>Set time offset to %1 seconds!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="212"/>
-        <location filename="cstdjsonparser.cpp" line="267"/>
-        <location filename="cstdjsonparser.cpp" line="318"/>
-        <location filename="cstdjsonparser.cpp" line="366"/>
-        <location filename="cstdjsonparser.cpp" line="426"/>
-        <location filename="cstdjsonparser.cpp" line="475"/>
-        <location filename="cstdjsonparser.cpp" line="535"/>
-        <location filename="cstdjsonparser.cpp" line="614"/>
-        <location filename="cstdjsonparser.cpp" line="679"/>
-        <location filename="cstdjsonparser.cpp" line="728"/>
-        <location filename="cstdjsonparser.cpp" line="770"/>
-        <location filename="cstdjsonparser.cpp" line="831"/>
-        <location filename="cstdjsonparser.cpp" line="873"/>
-        <location filename="cstdjsonparser.cpp" line="973"/>
+        <location filename="cstdjsonparser.cpp" line="226"/>
+        <location filename="cstdjsonparser.cpp" line="281"/>
+        <location filename="cstdjsonparser.cpp" line="332"/>
+        <location filename="cstdjsonparser.cpp" line="380"/>
+        <location filename="cstdjsonparser.cpp" line="440"/>
+        <location filename="cstdjsonparser.cpp" line="489"/>
+        <location filename="cstdjsonparser.cpp" line="549"/>
+        <location filename="cstdjsonparser.cpp" line="628"/>
+        <location filename="cstdjsonparser.cpp" line="693"/>
+        <location filename="cstdjsonparser.cpp" line="742"/>
+        <location filename="cstdjsonparser.cpp" line="784"/>
+        <location filename="cstdjsonparser.cpp" line="845"/>
+        <location filename="cstdjsonparser.cpp" line="887"/>
+        <location filename="cstdjsonparser.cpp" line="987"/>
         <source>Error in %1</source>
         <translation type="unfinished">Błąd w %1</translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="213"/>
-        <location filename="cstdjsonparser.cpp" line="268"/>
-        <location filename="cstdjsonparser.cpp" line="319"/>
-        <location filename="cstdjsonparser.cpp" line="367"/>
-        <location filename="cstdjsonparser.cpp" line="427"/>
-        <location filename="cstdjsonparser.cpp" line="476"/>
-        <location filename="cstdjsonparser.cpp" line="536"/>
-        <location filename="cstdjsonparser.cpp" line="615"/>
-        <location filename="cstdjsonparser.cpp" line="680"/>
-        <location filename="cstdjsonparser.cpp" line="729"/>
-        <location filename="cstdjsonparser.cpp" line="771"/>
-        <location filename="cstdjsonparser.cpp" line="832"/>
-        <location filename="cstdjsonparser.cpp" line="874"/>
+        <location filename="cstdjsonparser.cpp" line="227"/>
+        <location filename="cstdjsonparser.cpp" line="282"/>
+        <location filename="cstdjsonparser.cpp" line="333"/>
+        <location filename="cstdjsonparser.cpp" line="381"/>
+        <location filename="cstdjsonparser.cpp" line="441"/>
+        <location filename="cstdjsonparser.cpp" line="490"/>
+        <location filename="cstdjsonparser.cpp" line="550"/>
+        <location filename="cstdjsonparser.cpp" line="629"/>
+        <location filename="cstdjsonparser.cpp" line="694"/>
+        <location filename="cstdjsonparser.cpp" line="743"/>
+        <location filename="cstdjsonparser.cpp" line="785"/>
+        <location filename="cstdjsonparser.cpp" line="846"/>
+        <location filename="cstdjsonparser.cpp" line="888"/>
         <source>Error QJSON can&apos;t parse respone!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="974"/>
+        <location filename="cstdjsonparser.cpp" line="988"/>
         <source>XML Error String: %1</source>
         <translation type="unfinished">Błąd wiersza XML: %1</translation>
     </message>

@@ -17,8 +17,6 @@ INCLUDEPATH += .
 # CONFIG += static
 CONFIG += shared
 
-# stuff for QJSON ...
-
 # -------------------------------------
 # customization ...
 # - make a define here and put needed
@@ -59,7 +57,8 @@ SOURCES += main.cpp \
     qfusioncontrol.cpp \
     qrecordtimerwidget.cpp \
     qiptvctrlclient.cpp \
-    qcustparser.cpp
+    qcustparser.cpp \
+    capiparser.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -100,7 +99,8 @@ HEADERS += recorder.h \
     ciptvdefs.h \
     cparser.h \
     qcustparser.h \
-    api_inc.h
+    api_inc.h \
+    capiparser.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

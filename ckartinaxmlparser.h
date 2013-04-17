@@ -16,11 +16,11 @@
 #include <QXmlStreamReader>
 #include <QRegExp>
 #include <QDateTime>
-#include <QStringList>
 
 #include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
+#include "capiparser.h"
 
 /********************************************************************\
 |  Class: CKartinaXMLParser
@@ -29,50 +29,35 @@
 |  Description: parser for kartina.tv sent xml content
 |
 \********************************************************************/
-class CKartinaXMLParser : public QObject
+class CKartinaXMLParser : public CApiParser
 {
    Q_OBJECT
 
 public:
    CKartinaXMLParser(QObject * parent = 0);
-   int fixTime (uint &uiTime);
-   int GetFixTime () { return iOffset; }
 
    // new functions for use with API ...
-   int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
-   int parseTimeShift (const QString &sResp, QVector<int> &vValues, int &iShift);
-   int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
-   int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
-   int parseSettings(const QString& sResp, QVector<int>& vValues, int& iActVal, QString &sName);
-   int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
-   int parseSServers (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
-   int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
-   int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
-   int parseUrl (const QString& sResp, QString& sUrl);
-   int parseVodUrls (const QString& sResp, QStringList& sUrls);
-   int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
-   int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
-   int parseVodManager (const QString& sResp, QVector<cparser::SVodRate>& vRates);
-   int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
-   int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
+   virtual int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
+   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
+   virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
+   virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
+   virtual int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
+   virtual int parseUrl (const QString& sResp, QString& sUrl);
+   virtual int parseVodUrls (const QString& sResp, QStringList& sUrls);
+   virtual int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
+   virtual int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
+   virtual int parseVodManager (const QString& sResp, QVector<cparser::SVodRate>& vRates);
+   virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
+   virtual int parseError (const QString& sResp, QString& sMsg, int& eCode);
 
 protected:
-   void checkTimeOffSet (const uint &uiSrvTime);
    QString xmlElementToValue (const QString &sElement, const QString &sName);
-   void initChanEntry (cparser::SChan &entry, bool bIsChan = true);
    int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
    int oneLevelParser (QXmlStreamReader &xml, const QString &sEndElement, const QStringList& slNeeded, QMap<QString, QString>& mResults);
    int ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement);
-
-
-private:
-   int iOffset;
-
-signals:
-   void sigWrongPass();
-   void sigError(int iType, const QString& cap, const QString& descr);
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

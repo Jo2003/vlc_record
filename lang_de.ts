@@ -122,6 +122,24 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CApiParser</name>
+    <message>
+        <location filename="capiparser.cpp" line="98"/>
+        <source>Set time offset to %1 seconds!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="capiparser.cpp" line="263"/>
+        <source>Error in %1</source>
+        <translation type="unfinished">Fehler in %1</translation>
+    </message>
+    <message>
+        <location filename="capiparser.cpp" line="264"/>
+        <source>XML Error String: %1</source>
+        <translation type="unfinished">XML Fehler String: %1</translation>
+    </message>
+</context>
+<context>
     <name>CEpgBrowser</name>
     <message>
         <location filename="cepgbrowser.cpp" line="173"/>
@@ -502,57 +520,51 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaXMLParser</name>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="174"/>
-        <location filename="ckartinaxmlparser.cpp" line="567"/>
-        <location filename="ckartinaxmlparser.cpp" line="675"/>
-        <location filename="ckartinaxmlparser.cpp" line="783"/>
-        <location filename="ckartinaxmlparser.cpp" line="849"/>
-        <location filename="ckartinaxmlparser.cpp" line="931"/>
-        <location filename="ckartinaxmlparser.cpp" line="1017"/>
-        <location filename="ckartinaxmlparser.cpp" line="1112"/>
-        <location filename="ckartinaxmlparser.cpp" line="1252"/>
-        <location filename="ckartinaxmlparser.cpp" line="1336"/>
-        <location filename="ckartinaxmlparser.cpp" line="1416"/>
-        <location filename="ckartinaxmlparser.cpp" line="1504"/>
-        <location filename="ckartinaxmlparser.cpp" line="1627"/>
-        <location filename="ckartinaxmlparser.cpp" line="1828"/>
+        <location filename="ckartinaxmlparser.cpp" line="80"/>
+        <location filename="ckartinaxmlparser.cpp" line="497"/>
+        <location filename="ckartinaxmlparser.cpp" line="605"/>
+        <location filename="ckartinaxmlparser.cpp" line="671"/>
+        <location filename="ckartinaxmlparser.cpp" line="753"/>
+        <location filename="ckartinaxmlparser.cpp" line="839"/>
+        <location filename="ckartinaxmlparser.cpp" line="934"/>
+        <location filename="ckartinaxmlparser.cpp" line="1074"/>
+        <location filename="ckartinaxmlparser.cpp" line="1158"/>
+        <location filename="ckartinaxmlparser.cpp" line="1246"/>
+        <location filename="ckartinaxmlparser.cpp" line="1369"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="175"/>
-        <location filename="ckartinaxmlparser.cpp" line="568"/>
-        <location filename="ckartinaxmlparser.cpp" line="676"/>
-        <location filename="ckartinaxmlparser.cpp" line="784"/>
-        <location filename="ckartinaxmlparser.cpp" line="850"/>
-        <location filename="ckartinaxmlparser.cpp" line="932"/>
-        <location filename="ckartinaxmlparser.cpp" line="1018"/>
-        <location filename="ckartinaxmlparser.cpp" line="1113"/>
-        <location filename="ckartinaxmlparser.cpp" line="1253"/>
-        <location filename="ckartinaxmlparser.cpp" line="1337"/>
-        <location filename="ckartinaxmlparser.cpp" line="1417"/>
-        <location filename="ckartinaxmlparser.cpp" line="1505"/>
-        <location filename="ckartinaxmlparser.cpp" line="1628"/>
-        <location filename="ckartinaxmlparser.cpp" line="1829"/>
+        <location filename="ckartinaxmlparser.cpp" line="81"/>
+        <location filename="ckartinaxmlparser.cpp" line="498"/>
+        <location filename="ckartinaxmlparser.cpp" line="606"/>
+        <location filename="ckartinaxmlparser.cpp" line="672"/>
+        <location filename="ckartinaxmlparser.cpp" line="754"/>
+        <location filename="ckartinaxmlparser.cpp" line="840"/>
+        <location filename="ckartinaxmlparser.cpp" line="935"/>
+        <location filename="ckartinaxmlparser.cpp" line="1075"/>
+        <location filename="ckartinaxmlparser.cpp" line="1159"/>
+        <location filename="ckartinaxmlparser.cpp" line="1247"/>
+        <location filename="ckartinaxmlparser.cpp" line="1370"/>
         <source>XML Error String: %1</source>
         <translation>XML Fehler String: %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="245"/>
-        <location filename="ckartinaxmlparser.cpp" line="380"/>
-        <location filename="ckartinaxmlparser.cpp" line="456"/>
-        <location filename="ckartinaxmlparser.cpp" line="1714"/>
+        <location filename="ckartinaxmlparser.cpp" line="159"/>
+        <location filename="ckartinaxmlparser.cpp" line="294"/>
+        <location filename="ckartinaxmlparser.cpp" line="370"/>
+        <location filename="ckartinaxmlparser.cpp" line="1456"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="251"/>
-        <location filename="ckartinaxmlparser.cpp" line="386"/>
+        <location filename="ckartinaxmlparser.cpp" line="165"/>
+        <location filename="ckartinaxmlparser.cpp" line="300"/>
         <source>Found unused child %1: %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="1072"/>
+        <location filename="ckartinaxmlparser.cpp" line="894"/>
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <oldsource>Got Genre %1, Count %2, Page %3, Total %4</oldsource>
         <translation></translation>
@@ -703,11 +715,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Query limit exceeded</source>
         <translation type="obsolete">Query-Limit überschritten</translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="71"/>
-        <source>Set time offset to %1 seconds!</source>
-        <translation></translation>
     </message>
     <message>
         <source>Error</source>
@@ -1844,49 +1851,42 @@ Um den Elterncode zu ändern, stellen Sie sicher, dass:
 <context>
     <name>CStdJsonParser</name>
     <message>
-        <location filename="cstdjsonparser.cpp" line="80"/>
-        <source>Set time offset to %1 seconds!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cstdjsonparser.cpp" line="223"/>
+        <location filename="cstdjsonparser.cpp" line="124"/>
+        <location filename="cstdjsonparser.cpp" line="179"/>
+        <location filename="cstdjsonparser.cpp" line="230"/>
         <location filename="cstdjsonparser.cpp" line="278"/>
-        <location filename="cstdjsonparser.cpp" line="329"/>
-        <location filename="cstdjsonparser.cpp" line="377"/>
-        <location filename="cstdjsonparser.cpp" line="437"/>
-        <location filename="cstdjsonparser.cpp" line="486"/>
-        <location filename="cstdjsonparser.cpp" line="546"/>
-        <location filename="cstdjsonparser.cpp" line="625"/>
-        <location filename="cstdjsonparser.cpp" line="690"/>
-        <location filename="cstdjsonparser.cpp" line="739"/>
-        <location filename="cstdjsonparser.cpp" line="781"/>
-        <location filename="cstdjsonparser.cpp" line="842"/>
-        <location filename="cstdjsonparser.cpp" line="884"/>
-        <location filename="cstdjsonparser.cpp" line="984"/>
+        <location filename="cstdjsonparser.cpp" line="338"/>
+        <location filename="cstdjsonparser.cpp" line="387"/>
+        <location filename="cstdjsonparser.cpp" line="447"/>
+        <location filename="cstdjsonparser.cpp" line="526"/>
+        <location filename="cstdjsonparser.cpp" line="591"/>
+        <location filename="cstdjsonparser.cpp" line="640"/>
+        <location filename="cstdjsonparser.cpp" line="682"/>
+        <location filename="cstdjsonparser.cpp" line="743"/>
+        <location filename="cstdjsonparser.cpp" line="785"/>
         <source>Error in %1</source>
         <translation type="unfinished">Fehler in %1</translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="224"/>
+        <location filename="cstdjsonparser.cpp" line="125"/>
+        <location filename="cstdjsonparser.cpp" line="180"/>
+        <location filename="cstdjsonparser.cpp" line="231"/>
         <location filename="cstdjsonparser.cpp" line="279"/>
-        <location filename="cstdjsonparser.cpp" line="330"/>
-        <location filename="cstdjsonparser.cpp" line="378"/>
-        <location filename="cstdjsonparser.cpp" line="438"/>
-        <location filename="cstdjsonparser.cpp" line="487"/>
-        <location filename="cstdjsonparser.cpp" line="547"/>
-        <location filename="cstdjsonparser.cpp" line="626"/>
-        <location filename="cstdjsonparser.cpp" line="691"/>
-        <location filename="cstdjsonparser.cpp" line="740"/>
-        <location filename="cstdjsonparser.cpp" line="782"/>
-        <location filename="cstdjsonparser.cpp" line="843"/>
-        <location filename="cstdjsonparser.cpp" line="885"/>
+        <location filename="cstdjsonparser.cpp" line="339"/>
+        <location filename="cstdjsonparser.cpp" line="388"/>
+        <location filename="cstdjsonparser.cpp" line="448"/>
+        <location filename="cstdjsonparser.cpp" line="527"/>
+        <location filename="cstdjsonparser.cpp" line="592"/>
+        <location filename="cstdjsonparser.cpp" line="641"/>
+        <location filename="cstdjsonparser.cpp" line="683"/>
+        <location filename="cstdjsonparser.cpp" line="744"/>
+        <location filename="cstdjsonparser.cpp" line="786"/>
         <source>Error QJSON can&apos;t parse respone!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="985"/>
         <source>XML Error String: %1</source>
-        <translation type="unfinished">XML Fehler String: %1</translation>
+        <translation type="obsolete">XML Fehler String: %1</translation>
     </message>
 </context>
 <context>
