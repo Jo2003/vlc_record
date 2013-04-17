@@ -1863,7 +1863,6 @@ Um den Elterncode zu ändern, stellen Sie sicher, dass:
         <location filename="cstdjsonparser.cpp" line="640"/>
         <location filename="cstdjsonparser.cpp" line="682"/>
         <location filename="cstdjsonparser.cpp" line="743"/>
-        <location filename="cstdjsonparser.cpp" line="785"/>
         <source>Error in %1</source>
         <translation type="unfinished">Fehler in %1</translation>
     </message>
@@ -1880,7 +1879,6 @@ Um den Elterncode zu ändern, stellen Sie sicher, dass:
         <location filename="cstdjsonparser.cpp" line="641"/>
         <location filename="cstdjsonparser.cpp" line="683"/>
         <location filename="cstdjsonparser.cpp" line="744"/>
-        <location filename="cstdjsonparser.cpp" line="786"/>
         <source>Error QJSON can&apos;t parse respone!</source>
         <translation type="unfinished"></translation>
     </message>

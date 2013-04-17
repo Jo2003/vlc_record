@@ -1,4 +1,4 @@
-/*------------------------------ Information ---------------------------*//**
+﻿/*------------------------------ Information ---------------------------*//**
  *
  *  $HeadURL$
  *
@@ -769,8 +769,6 @@ int CStdJsonParser::parseError (const QString& sResp, QString &sMsg, int &eCode)
    QVariantMap   contentMap;
    QJson::Parser parser;
 
-   // clear error ...
-
    contentMap = parser.parse(sResp.toUtf8(), &bOk).toMap();
 
    if (bOk)
@@ -782,9 +780,8 @@ int CStdJsonParser::parseError (const QString& sResp, QString &sMsg, int &eCode)
    }
    else
    {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
-
+      // we shouldn't report any error using sigError when
+      // parsing an error ... !
       iRV = -1;
    }
 

@@ -1649,49 +1649,40 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
 <context>
     <name>CStdJsonParser</name>
     <message>
-        <location filename="cstdjsonparser.cpp" line="82"/>
-        <source>Set time offset to %1 seconds!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cstdjsonparser.cpp" line="226"/>
-        <location filename="cstdjsonparser.cpp" line="281"/>
-        <location filename="cstdjsonparser.cpp" line="332"/>
-        <location filename="cstdjsonparser.cpp" line="380"/>
-        <location filename="cstdjsonparser.cpp" line="440"/>
-        <location filename="cstdjsonparser.cpp" line="489"/>
-        <location filename="cstdjsonparser.cpp" line="549"/>
-        <location filename="cstdjsonparser.cpp" line="628"/>
-        <location filename="cstdjsonparser.cpp" line="693"/>
-        <location filename="cstdjsonparser.cpp" line="742"/>
-        <location filename="cstdjsonparser.cpp" line="784"/>
-        <location filename="cstdjsonparser.cpp" line="845"/>
-        <location filename="cstdjsonparser.cpp" line="887"/>
-        <location filename="cstdjsonparser.cpp" line="987"/>
+        <location filename="cstdjsonparser.cpp" line="124"/>
+        <location filename="cstdjsonparser.cpp" line="179"/>
+        <location filename="cstdjsonparser.cpp" line="230"/>
+        <location filename="cstdjsonparser.cpp" line="278"/>
+        <location filename="cstdjsonparser.cpp" line="338"/>
+        <location filename="cstdjsonparser.cpp" line="387"/>
+        <location filename="cstdjsonparser.cpp" line="447"/>
+        <location filename="cstdjsonparser.cpp" line="526"/>
+        <location filename="cstdjsonparser.cpp" line="591"/>
+        <location filename="cstdjsonparser.cpp" line="640"/>
+        <location filename="cstdjsonparser.cpp" line="682"/>
+        <location filename="cstdjsonparser.cpp" line="743"/>
         <source>Error in %1</source>
         <translation type="unfinished">Błąd w %1</translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="227"/>
-        <location filename="cstdjsonparser.cpp" line="282"/>
-        <location filename="cstdjsonparser.cpp" line="333"/>
-        <location filename="cstdjsonparser.cpp" line="381"/>
-        <location filename="cstdjsonparser.cpp" line="441"/>
-        <location filename="cstdjsonparser.cpp" line="490"/>
-        <location filename="cstdjsonparser.cpp" line="550"/>
-        <location filename="cstdjsonparser.cpp" line="629"/>
-        <location filename="cstdjsonparser.cpp" line="694"/>
-        <location filename="cstdjsonparser.cpp" line="743"/>
-        <location filename="cstdjsonparser.cpp" line="785"/>
-        <location filename="cstdjsonparser.cpp" line="846"/>
-        <location filename="cstdjsonparser.cpp" line="888"/>
+        <location filename="cstdjsonparser.cpp" line="125"/>
+        <location filename="cstdjsonparser.cpp" line="180"/>
+        <location filename="cstdjsonparser.cpp" line="231"/>
+        <location filename="cstdjsonparser.cpp" line="279"/>
+        <location filename="cstdjsonparser.cpp" line="339"/>
+        <location filename="cstdjsonparser.cpp" line="388"/>
+        <location filename="cstdjsonparser.cpp" line="448"/>
+        <location filename="cstdjsonparser.cpp" line="527"/>
+        <location filename="cstdjsonparser.cpp" line="592"/>
+        <location filename="cstdjsonparser.cpp" line="641"/>
+        <location filename="cstdjsonparser.cpp" line="683"/>
+        <location filename="cstdjsonparser.cpp" line="744"/>
         <source>Error QJSON can&apos;t parse respone!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="988"/>
         <source>XML Error String: %1</source>
-        <translation type="unfinished">Błąd wiersza XML: %1</translation>
+        <translation type="obsolete">Błąd wiersza XML: %1</translation>
     </message>
 </context>
 <context>

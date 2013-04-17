@@ -308,7 +308,7 @@ bool CApiParser::ignoreGroup(cparser::SChan& grpEntry)
    // utf-8 hex code for cyrillic "all" ...
    const char cIgnore[] = {0xd0, 0x92, 0xd1, 0x81, 0xd0, 0xb5, 0x00};
 
-   if (grpEntry.sProgramm == QString::fromUtf8(QByteArray(cIgnore)))
+   if (grpEntry.sName == QString::fromUtf8(QByteArray(cIgnore)))
    {
       initChanEntry(grpEntry, false);
       return true;
