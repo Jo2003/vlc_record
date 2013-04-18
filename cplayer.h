@@ -20,6 +20,7 @@
 #include <QEvent>
 #include <QTime>
 #include <QDesktopWidget>
+#include <QMutex>
 
 #include <vlc/vlc.h>
 
@@ -74,6 +75,8 @@ public:
    static QVector<libvlc_event_type_t> _eventQueue;
    static const char*                  _pAspect[];
    static const char*                  _pCrop[];
+   static QMutex                       _mtxEvt;
+   static float                        _flBuffPrt;
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -138,6 +141,7 @@ signals:
    void sigTriggerAspectChg ();
    void sigCheckArchProg(ulong ulArchGmt);
    void sigToggleFullscreen();
+   void sigBuffPercent(float);
 };
 
 #endif /* __022410__CPLAYER_H */

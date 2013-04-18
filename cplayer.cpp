@@ -33,6 +33,8 @@ extern CShowInfo showInfo;
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
 
 QVector<libvlc_event_type_t> CPlayer::_eventQueue;
+QMutex                       CPlayer::_mtxEvt;
+float                        CPlayer::_flBuffPrt = 0.0;
 const char*                  CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
 const char*                  CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
 
@@ -376,7 +378,8 @@ int CPlayer::initPlayer(const QString &sOpts)
                   libvlc_MediaPlayerPlaying,
                   libvlc_MediaPlayerPaused,
                   libvlc_MediaPlayerStopped,
-                  libvlc_MediaPlayerEndReached
+                  libvlc_MediaPlayerEndReached,
+                  libvlc_MediaPlayerBuffering
                };
 
                // so far so good ...
@@ -723,6 +726,11 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
 
    if (!iRV)
    {
+      // reset buffer percent ...
+      _mtxEvt.lock();
+      _flBuffPrt = 0.0;
+      _mtxEvt.unlock();
+
       iRV = play();
    }
 
@@ -933,7 +941,17 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
    /////////////////////////////////////////////////////////////////
 
    // store event type so the event poller can handle it...
-   CPlayer::_eventQueue.append(ev->type);
+   CPlayer::_mtxEvt.lock();
+   if (ev->type != libvlc_MediaPlayerBuffering)
+   {
+      CPlayer::_eventQueue.append(ev->type);
+   }
+   else
+   {
+      // store buffer percents ...
+      CPlayer::_flBuffPrt = ev->u.media_player_buffering.new_cache;
+   }
+   CPlayer::_mtxEvt.unlock();
 }
 
 /* -----------------------------------------------------------------\
@@ -949,15 +967,30 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
 void CPlayer::slotEventPoll()
 {
    libvlc_event_type_t lastEvent;
+   float               buffPercent;
+   bool                bEmpty;
 
-   if (!_eventQueue.isEmpty())
+   // lock event vector ...
+   _mtxEvt.lock();
+
+   // get buffer percent ...
+   buffPercent = _flBuffPrt;
+
+   if (!(bEmpty = _eventQueue.isEmpty()))
    {
       // get next event ...
       lastEvent = _eventQueue.at(0);
 
       // delete event from queue ...
       _eventQueue.remove(0);
+   }
+   _mtxEvt.unlock();
 
+   // signal buffer state ...
+   emit sigBuffPercent(buffPercent);
+
+   if (!bEmpty)
+   {
       if (!bOmitNextEvent)
       {
          // what happened ?

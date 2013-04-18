@@ -29,7 +29,7 @@ CONFIG += shared
 # included player or without?
 # -------------------------------------
 DEFINES += INCLUDE_LIBVLC
-# DEFINES += __TRACE
+DEFINES += __TRACE
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \
