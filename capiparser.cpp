@@ -305,7 +305,7 @@ void CApiParser::checkColor(QString& ccode, int idx)
 //---------------------------------------------------------------------------
 bool CApiParser::ignoreGroup(cparser::SChan& grpEntry)
 {
-   // utf-8 hex code for cyrillic "all" ...
+   // utf-8 hex code for cyrillic "Bce" ...
    const char cIgnore[] = {0xd0, 0x92, 0xd1, 0x81, 0xd0, 0xb5, 0x00};
 
    if (grpEntry.sName == QString::fromUtf8(QByteArray(cIgnore)))
