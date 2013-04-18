@@ -116,9 +116,11 @@ INCLUDEPATH += tastes
 contains(DEFINES, _TASTE_IPTV_RECORD) {
     message (Using alternative api client ...)
     HEADERS += crodnoeclient.h \
-               crodnoeparser.h
+               crodnoeparser.h \
+               capixmlparser.h
     SOURCES += crodnoeclient.cpp \
-               crodnoeparser.cpp
+               crodnoeparser.cpp \
+               capixmlparser.cpp
 } else {
     message (Using standard api client ...)
     HEADERS += ckartinaclnt.h
@@ -134,8 +136,10 @@ contains(DEFINES, _USE_QJSON) {
     HEADERS += cstdjsonparser.h
 } else {
     message (using XML parser ...)
-    SOURCES += ckartinaxmlparser.cpp
-    HEADERS += ckartinaxmlparser.h
+    SOURCES += ckartinaxmlparser.cpp \
+               capixmlparser.cpp
+    HEADERS += ckartinaxmlparser.h \
+               capixmlparser.h
 }
 
 # for static build ...

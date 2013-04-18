@@ -122,7 +122,7 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -177,7 +177,7 @@ int CStdJsonParser::parseSServersLogin(const QString &sResp, QVector<cparser::SS
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -228,7 +228,7 @@ int CStdJsonParser::parseCookie (const QString &sResp, QString &sCookie, cparser
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -276,7 +276,7 @@ int CStdJsonParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>&
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -336,7 +336,7 @@ int CStdJsonParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentE
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -385,7 +385,7 @@ int CStdJsonParser::parseVodManager (const QString &sResp, QVector<cparser::SVod
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -445,7 +445,7 @@ int CStdJsonParser::parseVodList(const QString &sResp, QVector<cparser::SVodVide
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -524,7 +524,7 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -589,7 +589,7 @@ int CStdJsonParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgL
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -638,7 +638,7 @@ int CStdJsonParser::parseSetting(const QString& sResp, const QString &sName, QVe
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -680,7 +680,7 @@ int CStdJsonParser::parseUrl(const QString &sResp, QString &sUrl)
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }
@@ -741,7 +741,7 @@ int CStdJsonParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("Error QJSON can't parse respone!"));
+                    tr("QJSON error: %1").arg(parser.errorString()));
 
       iRV = -1;
    }

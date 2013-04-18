@@ -20,7 +20,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/caboutdialog.ui" line="51"/>
@@ -130,17 +130,25 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="capiparser.cpp" line="98"/>
         <source>Set time offset to %1 seconds!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="capiparser.cpp" line="263"/>
         <source>Error in %1</source>
-        <translation type="unfinished">Ошибка в %1</translation>
+        <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="capiparser.cpp" line="264"/>
         <source>XML Error String: %1</source>
-        <translation type="unfinished">Ошибка XML строки: %1</translation>
+        <translation>Ошибка XML строки: %1</translation>
+    </message>
+</context>
+<context>
+    <name>CApiXmlParser</name>
+    <message>
+        <location filename="capixmlparser.cpp" line="119"/>
+        <source>Found unused element %1 ...</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -524,6 +532,21 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaXMLParser</name>
     <message>
+        <location filename="ckartinaxmlparser.cpp" line="79"/>
+        <location filename="ckartinaxmlparser.cpp" line="496"/>
+        <location filename="ckartinaxmlparser.cpp" line="604"/>
+        <location filename="ckartinaxmlparser.cpp" line="670"/>
+        <location filename="ckartinaxmlparser.cpp" line="752"/>
+        <location filename="ckartinaxmlparser.cpp" line="838"/>
+        <location filename="ckartinaxmlparser.cpp" line="933"/>
+        <location filename="ckartinaxmlparser.cpp" line="1073"/>
+        <location filename="ckartinaxmlparser.cpp" line="1157"/>
+        <location filename="ckartinaxmlparser.cpp" line="1245"/>
+        <location filename="ckartinaxmlparser.cpp" line="1368"/>
+        <source>Error in %1</source>
+        <translation>Ошибка в %1</translation>
+    </message>
+    <message>
         <location filename="ckartinaxmlparser.cpp" line="80"/>
         <location filename="ckartinaxmlparser.cpp" line="497"/>
         <location filename="ckartinaxmlparser.cpp" line="605"/>
@@ -535,40 +558,24 @@ p, li { white-space: pre-wrap; }
         <location filename="ckartinaxmlparser.cpp" line="1158"/>
         <location filename="ckartinaxmlparser.cpp" line="1246"/>
         <location filename="ckartinaxmlparser.cpp" line="1369"/>
-        <source>Error in %1</source>
-        <translation>Ошибка в %1</translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="81"/>
-        <location filename="ckartinaxmlparser.cpp" line="498"/>
-        <location filename="ckartinaxmlparser.cpp" line="606"/>
-        <location filename="ckartinaxmlparser.cpp" line="672"/>
-        <location filename="ckartinaxmlparser.cpp" line="754"/>
-        <location filename="ckartinaxmlparser.cpp" line="840"/>
-        <location filename="ckartinaxmlparser.cpp" line="935"/>
-        <location filename="ckartinaxmlparser.cpp" line="1075"/>
-        <location filename="ckartinaxmlparser.cpp" line="1159"/>
-        <location filename="ckartinaxmlparser.cpp" line="1247"/>
-        <location filename="ckartinaxmlparser.cpp" line="1370"/>
         <source>XML Error String: %1</source>
         <translation>Ошибка XML строки: %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="159"/>
-        <location filename="ckartinaxmlparser.cpp" line="294"/>
-        <location filename="ckartinaxmlparser.cpp" line="370"/>
-        <location filename="ckartinaxmlparser.cpp" line="1456"/>
+        <location filename="ckartinaxmlparser.cpp" line="158"/>
+        <location filename="ckartinaxmlparser.cpp" line="293"/>
+        <location filename="ckartinaxmlparser.cpp" line="369"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="165"/>
-        <location filename="ckartinaxmlparser.cpp" line="300"/>
+        <location filename="ckartinaxmlparser.cpp" line="164"/>
+        <location filename="ckartinaxmlparser.cpp" line="299"/>
         <source>Found unused child %1: %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="894"/>
+        <location filename="ckartinaxmlparser.cpp" line="893"/>
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <oldsource>Got Genre %1, Count %2, Page %3, Total %4</oldsource>
         <translation></translation>
@@ -1226,62 +1233,50 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CRodnoeParser</name>
     <message>
-        <location filename="crodnoeparser.cpp" line="78"/>
-        <source>Set time offset to %1 seconds!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeparser.cpp" line="190"/>
-        <location filename="crodnoeparser.cpp" line="597"/>
-        <location filename="crodnoeparser.cpp" line="699"/>
-        <location filename="crodnoeparser.cpp" line="814"/>
-        <location filename="crodnoeparser.cpp" line="880"/>
-        <location filename="crodnoeparser.cpp" line="974"/>
-        <location filename="crodnoeparser.cpp" line="1060"/>
-        <location filename="crodnoeparser.cpp" line="1155"/>
-        <location filename="crodnoeparser.cpp" line="1289"/>
-        <location filename="crodnoeparser.cpp" line="1382"/>
-        <location filename="crodnoeparser.cpp" line="1462"/>
-        <location filename="crodnoeparser.cpp" line="1563"/>
-        <location filename="crodnoeparser.cpp" line="1686"/>
-        <location filename="crodnoeparser.cpp" line="1888"/>
+        <location filename="crodnoeparser.cpp" line="88"/>
+        <location filename="crodnoeparser.cpp" line="500"/>
+        <location filename="crodnoeparser.cpp" line="615"/>
+        <location filename="crodnoeparser.cpp" line="681"/>
+        <location filename="crodnoeparser.cpp" line="775"/>
+        <location filename="crodnoeparser.cpp" line="861"/>
+        <location filename="crodnoeparser.cpp" line="956"/>
+        <location filename="crodnoeparser.cpp" line="1096"/>
+        <location filename="crodnoeparser.cpp" line="1189"/>
+        <location filename="crodnoeparser.cpp" line="1290"/>
+        <location filename="crodnoeparser.cpp" line="1413"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="191"/>
-        <location filename="crodnoeparser.cpp" line="598"/>
-        <location filename="crodnoeparser.cpp" line="700"/>
-        <location filename="crodnoeparser.cpp" line="815"/>
-        <location filename="crodnoeparser.cpp" line="881"/>
-        <location filename="crodnoeparser.cpp" line="975"/>
-        <location filename="crodnoeparser.cpp" line="1061"/>
-        <location filename="crodnoeparser.cpp" line="1156"/>
-        <location filename="crodnoeparser.cpp" line="1290"/>
-        <location filename="crodnoeparser.cpp" line="1383"/>
-        <location filename="crodnoeparser.cpp" line="1463"/>
-        <location filename="crodnoeparser.cpp" line="1564"/>
-        <location filename="crodnoeparser.cpp" line="1687"/>
-        <location filename="crodnoeparser.cpp" line="1889"/>
+        <location filename="crodnoeparser.cpp" line="89"/>
+        <location filename="crodnoeparser.cpp" line="501"/>
+        <location filename="crodnoeparser.cpp" line="616"/>
+        <location filename="crodnoeparser.cpp" line="682"/>
+        <location filename="crodnoeparser.cpp" line="776"/>
+        <location filename="crodnoeparser.cpp" line="862"/>
+        <location filename="crodnoeparser.cpp" line="957"/>
+        <location filename="crodnoeparser.cpp" line="1097"/>
+        <location filename="crodnoeparser.cpp" line="1190"/>
+        <location filename="crodnoeparser.cpp" line="1291"/>
+        <location filename="crodnoeparser.cpp" line="1414"/>
         <source>XML Error String: %1</source>
         <translation>Ошибка XML строки: %1</translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="274"/>
-        <location filename="crodnoeparser.cpp" line="410"/>
-        <location filename="crodnoeparser.cpp" line="486"/>
-        <location filename="crodnoeparser.cpp" line="1774"/>
+        <location filename="crodnoeparser.cpp" line="167"/>
+        <location filename="crodnoeparser.cpp" line="303"/>
+        <location filename="crodnoeparser.cpp" line="379"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="280"/>
-        <location filename="crodnoeparser.cpp" line="416"/>
+        <location filename="crodnoeparser.cpp" line="173"/>
+        <location filename="crodnoeparser.cpp" line="309"/>
         <source>Found unused child %1: %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="1115"/>
+        <location filename="crodnoeparser.cpp" line="916"/>
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <translation></translation>
     </message>
@@ -1849,7 +1844,7 @@ To change the parent code make sure:
         <location filename="cstdjsonparser.cpp" line="682"/>
         <location filename="cstdjsonparser.cpp" line="743"/>
         <source>Error in %1</source>
-        <translation type="unfinished">Ошибка в %1</translation>
+        <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="cstdjsonparser.cpp" line="125"/>
@@ -1864,8 +1859,13 @@ To change the parent code make sure:
         <location filename="cstdjsonparser.cpp" line="641"/>
         <location filename="cstdjsonparser.cpp" line="683"/>
         <location filename="cstdjsonparser.cpp" line="744"/>
-        <source>Error QJSON can&apos;t parse respone!</source>
-        <translation type="unfinished"></translation>
+        <source>QJSON error: %1</source>
+        <translation>Ошибка QJSON строки: %1</translation>
+    </message>
+    <message>
+        <source>QJSON can&apos;t parse respone!</source>
+        <oldsource>Error QJSON can&apos;t parse respone!</oldsource>
+        <translation type="obsolete">QJSON не может разобрать ответ!</translation>
     </message>
     <message>
         <source>XML Error String: %1</source>
@@ -2367,20 +2367,12 @@ or start time is later than end time!</source>
     <message>
         <location filename="qiptvctrlclient.cpp" line="222"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;, data=&apos;%4&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qiptvctrlclient.cpp" line="256"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QJson::ParserRunnable</name>
-    <message>
-        <location filename="qjson/parserrunnable.cpp" line="64"/>
-        <source>An error occurred while parsing json: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>

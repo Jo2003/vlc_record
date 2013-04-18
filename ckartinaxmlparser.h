@@ -20,7 +20,7 @@
 #include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
-#include "capiparser.h"
+#include "capixmlparser.h"
 
 /********************************************************************\
 |  Class: CKartinaXMLParser
@@ -29,7 +29,7 @@
 |  Description: parser for kartina.tv sent xml content
 |
 \********************************************************************/
-class CKartinaXMLParser : public CApiParser
+class CKartinaXMLParser : public CApiXmlParser
 {
    Q_OBJECT
 
@@ -49,15 +49,11 @@ public:
    virtual int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
    virtual int parseVodManager (const QString& sResp, QVector<cparser::SVodRate>& vRates);
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
-   virtual int parseError (const QString& sResp, QString& sMsg, int& eCode);
 
 protected:
-   QString xmlElementToValue (const QString &sElement, const QString &sName);
    int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
-   int oneLevelParser (QXmlStreamReader &xml, const QString &sEndElement, const QStringList& slNeeded, QMap<QString, QString>& mResults);
-   int ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement);
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

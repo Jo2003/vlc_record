@@ -11,7 +11,6 @@
 |
 \=============================================================================*/
 #include "crodnoeparser.h"
-#include "small_helpers.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -26,110 +25,9 @@ extern CLogFile VlcLog;
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CRodnoeParser::CRodnoeParser(QObject * parent) : QObject(parent)
+CRodnoeParser::CRodnoeParser(QObject * parent) : CApiXmlParser(parent)
 {
-   iOffset    = 0;
-
-   // as far as there is only black color ...
-   slColors << "Aqua"           << "Salmon" << "RosyBrown"
-            << "Gold"           << "Silver" << "Plum"
-            << "LightSteelBlue" << "Lime"   << "GreenYellow"
-            << "SkyBlue"        << "Orange";
-}
-
-/* -----------------------------------------------------------------\
-|  Method: checkTimeOffSet
-|  Begin: 19.01.2010 / 15:32:03
-|  Author: Jo2003
-|  Description: try to get offset between client and
-|               kartina.tv server
-|
-|  Parameters: servertime as unix timestamp
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CRodnoeParser::checkTimeOffSet (const uint &uiSrvTime)
-{
-   /*
-     This function is a little tricky ...
-     Try to find out the real difference between the
-     time kartina.tv assumes for us and the real time
-     running on this machine ...
-     Round offset to full 30 minutes (min. timezone step)
-     */
-
-   // get difference between kartina.tv and our time ...
-   int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t() - uiSrvTime);
-
-   // round offset to full timezone step ...
-   int iHalfHours = qRound ((double)iOffSec / (double)DEF_TZ_STEP);
-
-   if (iHalfHours)
-   {
-      iOffset = iHalfHours * DEF_TZ_STEP;
-   }
-   else
-   {
-      iOffset = 0;
-   }
-
-   if (iOffset)
-   {
-      mInfo(tr("Set time offset to %1 seconds!").arg(iOffset));
-   }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: fixTime
-|  Begin: 19.01.2010 / 15:32:54
-|  Author: Jo2003
-|  Description: fix time sent from kartina.tv as part from
-|               channel list
-|
-|  Parameters: ref. to time stamp
-|
-|  Returns: 0 ==> not touched
-|           1 ==> fixed
-\----------------------------------------------------------------- */
-int CRodnoeParser::fixTime (uint &uiTime)
-{
-   if (iOffset)
-   {
-      // add offset ...
-      // note that offset can be negative ...
-      uiTime += iOffset;
-
-      return 1;
-   }
-
-   return 0;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: initChanEntry
-|  Begin: 13.01.2011 / 16:28:20
-|  Author: Jo2003
-|  Description: init chanEntry struct
-|
-|  Parameters: ref. to entry to init, isChan flag
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CRodnoeParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
-{
-   // new item starts --> init chan struct ...
-   entry.bHasArchive  = false;
-   entry.bIsGroup     = (bIsChan) ? false : true;
-   entry.bIsProtected = false;
-   entry.bIsVideo     = true;
-   entry.iId          = -1;
-   entry.sIcon        = "";
-   entry.sName        = "";
-   entry.sProgramm    = "";
-   entry.uiEnd        = 0;
-   entry.uiStart      = 0;
-   entry.bIsHidden    = false;
-   entry.vTs.clear();
+   // nothing to do here ...
 }
 
 /* -----------------------------------------------------------------\
@@ -211,6 +109,7 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
+   int            idx = 0;
 
    // while not end groups ...
    while (!((xml.readNext() == QXmlStreamReader::EndElement)
@@ -242,28 +141,22 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                groupEntry.sProgramm = xml.text().toString();
-
-               // make sure color isn't black!
-               if (groupEntry.sProgramm == "#000000")
-               {
-                  if ((groupEntry.iId) > slColors.size())
-                  {
-                     groupEntry.sProgramm = slColors.at(CSmallHelpers::randInt(0, slColors.count() - 1));
-                  }
-                  else
-                  {
-                     groupEntry.sProgramm = slColors.at(groupEntry.iId - 1);
-                  }
-               }
             }
          }
          else if (xml.name() == "channels")
          {
-            // store group entry ...
-            chanList.push_back(groupEntry);
+            // ignore group ... ?
+            if (!ignoreGroup(groupEntry))
+            {
+               // make sure color isn't black ...
+               checkColor(groupEntry.sProgramm, idx++);
 
-            // go into next level (channels)
-            parseChannels(xml, chanList, bFixTime);
+               // store group entry ...
+               chanList.push_back(groupEntry);
+
+               // go into next level (channels)
+               parseChannels(xml, chanList, bFixTime);
+            }
          }
          else
          {
@@ -509,98 +402,6 @@ int CRodnoeParser::parseStreamParams (QXmlStreamReader &xml, QVector<cparser::ST
    }
 
    return 0;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: parseSServers
-|  Begin: 29.07.2010 / 15:52:54
-|  Author: Jo2003
-|  Description: parse stream server resp.
-|
-|  Parameters: XML in, ref. to srv vector, ref. to act value
-|
-|  Returns: 0 ==> ok
-|        else ==> any error
-\----------------------------------------------------------------- */
-int CRodnoeParser::parseSServers(const QString &sResp, QVector<cparser::SSrv> &vSrv,
-                                     QString &sActIp)
-{
-   cparser::SSrv    srv;
-   int              iRV = 0;
-   QXmlStreamReader xml;
-
-   // clear epg list ...
-   vSrv.clear();
-
-   xml.addData(sResp);
-
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      switch (xml.readNext())
-      {
-      // we aren't interested in ...
-      case QXmlStreamReader::StartDocument:
-      case QXmlStreamReader::EndDocument:
-         break;
-
-      // any xml element ends ...
-      case QXmlStreamReader::EndElement:
-         if (xml.name() == "item")
-         {
-            vSrv.push_back(srv);
-         }
-         break;
-
-      // any xml element starts ...
-      case QXmlStreamReader::StartElement:
-         if (xml.name() == "item")
-         {
-            srv.sName = "";
-            srv.sIp   = "";
-         }
-         else if (xml.name() == "ip")
-         {
-            // read srv ip address ...
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               srv.sIp = xml.text().toString();
-            }
-         }
-         else if (xml.name() == "descr")
-         {
-            // read srv name ...
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               srv.sName = xml.text().toString();
-            }
-         }
-         else if (xml.name() == "value")
-         {
-            // read actual srv ip ...
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               sActIp = xml.text().toString();
-            }
-         }
-         break;
-
-      default:
-         break;
-
-      } // end switch ...
-
-   } // end while ...
-
-   // check for xml errors ...
-   if(xml.hasError())
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("XML Error String: %1").arg(xml.errorString()));
-
-      iRV = -1;
-   }
-
-   return iRV;
 }
 
 /* -----------------------------------------------------------------\
@@ -1225,29 +1026,35 @@ int CRodnoeParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
             vidInfo.uiLength  = mResults.value("lenght").toUInt();
             vidInfo.uiVidId   = mResults.value("id").toUInt();
          }
-         else if (xml.name() == "item")
+         else if (xml.name() == "videos")
          {
-            mResults.clear();
             slNeeded.clear();
 
             slNeeded << "id" << "title" << "format" << "url"
                      << "size" << "length" << "codec" << "width"
                      << "height";
 
-            // parse vod parts ...
-            oneLevelParser(xml, "item", slNeeded, mResults);
+            while ((xml.readNext() == QXmlStreamReader::StartElement)
+                && (xml.name() == "item")
+                && !xml.atEnd() && !xml.hasError())
+            {
+               mResults.clear();
 
-            fInfo.iHeight = mResults.value("height").toInt();
-            fInfo.iId     = mResults.value("id").toInt();
-            fInfo.iLength = mResults.value("length").toInt();
-            fInfo.iSize   = mResults.value("size").toInt();
-            fInfo.iWidth  = mResults.value("width").toInt();
-            fInfo.sCodec  = mResults.value("codec");
-            fInfo.sFormat = mResults.value("format");
-            fInfo.sTitle  = mResults.value("title");
-            fInfo.sUrl    = mResults.value("url");
+               // parse vod parts ...
+               oneLevelParser(xml, "item", slNeeded, mResults);
 
-            vidInfo.vVodFiles.push_back(fInfo);
+               fInfo.iHeight = mResults.value("height").toInt();
+               fInfo.iId     = mResults.value("id").toInt();
+               fInfo.iLength = mResults.value("length").toInt();
+               fInfo.iSize   = mResults.value("size").toInt();
+               fInfo.iWidth  = mResults.value("width").toInt();
+               fInfo.sCodec  = mResults.value("codec");
+               fInfo.sFormat = mResults.value("format");
+               fInfo.sTitle  = mResults.value("title");
+               fInfo.sUrl    = mResults.value("url");
+
+               vidInfo.vVodFiles.push_back(fInfo);
+            }
          }
          else if (xml.name() == "genres")
          {
@@ -1365,86 +1172,6 @@ int CRodnoeParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgLi
 
                // store element ...
                epgList.push_back(epg);
-            }
-         }
-         break;
-
-      default:
-         break;
-
-      } // end switch ...
-
-   } // end while ...
-
-   // check for xml errors ...
-   if(xml.hasError())
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("XML Error String: %1").arg(xml.errorString()));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: parseSettings
-|  Begin: 29.07.2010 / 11:28:20
-|  Author: Jo2003
-|  Description: parse settings xml response
-|
-|  Parameters: ref. to response, ref. to value vector,
-|              ref. to act. val
-|
-|  Returns: 0 --> ok
-|        else --> any error
-\----------------------------------------------------------------- */
-int CRodnoeParser::parseSettings (const QString &sResp, QVector<int> &vValues,
-                                      int &iActVal, QString &sName)
-{
-   int              iRV = 0;
-   QXmlStreamReader xml;
-
-   // clear epg list ...
-   vValues.clear();
-
-   xml.addData(sResp);
-
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      switch (xml.readNext())
-      {
-      // we aren't interested in ...
-      case QXmlStreamReader::StartDocument:
-      case QXmlStreamReader::EndDocument:
-      case QXmlStreamReader::EndElement:
-         break;
-
-      // any xml element starts ...
-      case QXmlStreamReader::StartElement:
-         if (xml.name() == "item")
-         {
-            // read item ...
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               vValues.push_back(xml.text().toString().toInt());
-            }
-         }
-         else if (xml.name() == "value")
-         {
-            // read actual value ...
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               iActVal = xml.text().toString().toInt();
-            }
-         }
-         else if (xml.name() == "name")
-         {
-            // read actual value ...
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               sName = xml.text().toString();
             }
          }
          break;
@@ -1678,208 +1405,6 @@ int CRodnoeParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
    if (sAdUrl != "")
    {
       sUrls << sAdUrl;
-   }
-
-   // check for xml errors ...
-   if(xml.hasError())
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("XML Error String: %1").arg(xml.errorString()));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: xmlElementToValue
-|  Begin: 22.12.2010 / 11:45
-|  Author: Jo2003
-|  Description: a (very) simple but handy xml element parser
-|
-|  Parameters: ref. to string result, ref to name
-|
-|  Returns: value string
-\----------------------------------------------------------------- */
-QString CRodnoeParser::xmlElementToValue(const QString &sElement, const QString &sName)
-{
-   QString sValue;
-   QString sRegEx = QString("<%1>([^<]+)</%1>").arg(sName);
-
-   QRegExp rx(sRegEx);
-
-   if (rx.indexIn(sElement) > -1)
-   {
-      sValue = rx.cap(1);
-      sValue = sValue.simplified();
-   }
-
-   return sValue;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: oneLevelParser
-|  Begin: 25.01.2011 / 9:50
-|  Author: Jo2003
-|  Description: parse one level xml
-|
-|  Parameters: ref. to xml stream reader,
-|              ref. to stop element. list with needed values,
-|              ref. to result map
-|
-|  Returns: 0
-\----------------------------------------------------------------- */
-int CRodnoeParser::oneLevelParser(QXmlStreamReader &xml, const QString &sEndElement, const QStringList &slNeeded, QMap<QString, QString> &mResults)
-{
-   QString sUnknown, sKey, sVal;
-   bool    bEndMain = false;
-   mResults.clear();
-
-   while(!xml.atEnd() && !xml.hasError() && !bEndMain)
-   {
-      switch (xml.readNext())
-      {
-      // start element ...
-      case QXmlStreamReader::StartElement:
-
-         // needed element ... ?
-         if (slNeeded.contains(xml.name().toString()))
-         {
-            // store key / value in map ...
-            // make sure we add an empty string if there is no text
-            // inside this element.
-            sKey = xml.name().toString();
-            sVal = "";
-
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               sVal = xml.text().toString();
-            }
-
-            mResults.insert(sKey, sVal);
-         }
-         else if (xml.name().toString() == sEndElement)
-         {
-            // maybe end element isn't searched ...
-            // to get the end element we should NOT count it
-            // as unknown ...
-         }
-         else
-         {
-            // starttag unknown element ...
-            sUnknown = xml.name().toString();
-
-#ifndef QT_NO_DEBUG
-            mInfo(tr("Found unused element %1 ...").arg(sUnknown));
-#endif
-
-            // search for endtag of unknown element ...
-            ignoreUntil(xml, sUnknown);
-         }
-         break;
-
-      case QXmlStreamReader::EndElement:
-         if (xml.name().toString() == sEndElement)
-         {
-            bEndMain = true;
-         }
-         break;
-
-      default:
-         break;
-      }
-   }
-
-   return 0;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: ignoreUntil
-|  Begin: 30.05.2012
-|  Author: Jo2003
-|  Description: ignore XML tree 'til we found end element (or error)
-|
-|  Parameters: ref. to xml stream reader, end element
-|
-|  Returns: 0 --> ok (ignored 'til end element)
-|          -1 --> end element not found or error
-\----------------------------------------------------------------- */
-int CRodnoeParser::ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement)
-{
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      if ((xml.readNext() == QXmlStreamReader::EndElement)
-         && (xml.name().toString() == sEndElement))
-      {
-         // found end tag of searched element ...
-         break;
-      }
-   }
-
-   return (xml.atEnd() || xml.hasError()) ? -1 : 0;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: parseUpdInfo
-|  Begin: 12.10.2011
-|  Author: Jo2003
-|  Description: parse update info xml
-|
-|  Parameters: response string, buffer for info
-|
-|  Returns: 0 --> ok
-|          -1 --> any error
-\----------------------------------------------------------------- */
-int CRodnoeParser::parseUpdInfo(const QString &sResp, cparser::SUpdInfo &updInfo)
-{
-   int                    iRV = 0;
-   QStringList            slNeeded;
-   QMap<QString, QString> mResults;
-   QString                sSys = "n.a.";
-   QXmlStreamReader       xml;
-
-#if defined Q_OS_WIN32
-   sSys = "win";
-#elif defined Q_OS_LINUX
-   sSys = "nix";
-#elif defined Q_OS_MAC
-   sSys = "osx";
-#endif
-
-   // clear updInfo struct ...
-   updInfo.iMajor   = 0;
-   updInfo.iMinor   = 0;
-   updInfo.sVersion = "";
-   updInfo.sUrl     = "";
-
-   xml.addData(sResp);
-
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      switch (xml.readNext())
-      {
-      // any xml element starts ...
-      case QXmlStreamReader::StartElement:
-         if (xml.name() == sSys)
-         {
-            mResults.clear();
-            slNeeded.clear();
-
-            slNeeded << "string_version" << "major" << "minor" << "link";
-
-            oneLevelParser(xml, sSys, slNeeded, mResults);
-
-            updInfo.iMajor   = mResults.value("major").toInt();
-            updInfo.iMinor   = mResults.value("minor").toInt();
-            updInfo.sVersion = mResults.value("string_version");
-            updInfo.sUrl     = mResults.value("link");
-         }
-         break;
-
-      default:
-         break;
-      }
    }
 
    // check for xml errors ...

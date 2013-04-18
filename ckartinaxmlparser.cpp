@@ -11,7 +11,6 @@
 |
 \=============================================================================*/
 #include "ckartinaxmlparser.h"
-#include <QColor>
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -26,9 +25,9 @@ extern CLogFile VlcLog;
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : CApiParser(parent)
+CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : CApiXmlParser(parent)
 {
-
+   // nothing to do here ...
 }
 
 /* -----------------------------------------------------------------\
@@ -1373,160 +1372,6 @@ int CKartinaXMLParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
    }
 
    return iRV;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: xmlElementToValue
-|  Begin: 22.12.2010 / 11:45
-|  Author: Jo2003
-|  Description: a (very) simple but handy xml element parser
-|
-|  Parameters: ref. to string result, ref to name
-|
-|  Returns: value string
-\----------------------------------------------------------------- */
-QString CKartinaXMLParser::xmlElementToValue(const QString &sElement, const QString &sName)
-{
-   QString sValue;
-   QString sRegEx = QString("<%1>([^<]+)</%1>").arg(sName);
-
-   QRegExp rx(sRegEx);
-
-   if (rx.indexIn(sElement) > -1)
-   {
-      sValue = rx.cap(1);
-   }
-
-   return sValue;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: oneLevelParser
-|  Begin: 25.01.2011 / 9:50
-|  Author: Jo2003
-|  Description: parse one level xml
-|
-|  Parameters: ref. to xml stream reader,
-|              ref. to stop element. list with needed values,
-|              ref. to result map
-|
-|  Returns: 0
-\----------------------------------------------------------------- */
-int CKartinaXMLParser::oneLevelParser(QXmlStreamReader &xml, const QString &sEndElement, const QStringList &slNeeded, QMap<QString, QString> &mResults)
-{
-   QString sUnknown, sKey, sVal;
-   bool    bEndMain = false;
-   mResults.clear();
-
-   while(!xml.atEnd() && !xml.hasError() && !bEndMain)
-   {
-      switch (xml.readNext())
-      {
-      // start element ...
-      case QXmlStreamReader::StartElement:
-
-         // needed element ... ?
-         if (slNeeded.contains(xml.name().toString()))
-         {
-            // store key / value in map ...
-            // make sure we add an empty string if there is no text
-            // inside this element.
-            sKey = xml.name().toString();
-            sVal = "";
-
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               sVal = xml.text().toString();
-            }
-
-            mResults.insert(sKey, sVal);
-         }
-         else if (xml.name().toString() == sEndElement)
-         {
-            // maybe end element isn't searched ...
-            // to get the end element we should NOT count it
-            // as unknown ...
-         }
-         else
-         {
-            // starttag unknown element ...
-            sUnknown = xml.name().toString();
-
-#ifndef QT_NO_DEBUG
-            mInfo(tr("Found unused element %1 ...").arg(sUnknown));
-#endif
-
-            // search for endtag of unknown element ...
-            ignoreUntil(xml, sUnknown);
-         }
-         break;
-
-      case QXmlStreamReader::EndElement:
-         if (xml.name().toString() == sEndElement)
-         {
-            bEndMain = true;
-         }
-         break;
-
-      default:
-         break;
-      }
-   }
-
-   return 0;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: ignoreUntil
-|  Begin: 30.05.2012
-|  Author: Jo2003
-|  Description: ignore XML tree 'til we found end element (or error)
-|
-|  Parameters: ref. to xml stream reader, end element
-|
-|  Returns: 0 --> ok (ignored 'til end element)
-|          -1 --> end element not found or error
-\----------------------------------------------------------------- */
-int CKartinaXMLParser::ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement)
-{
-   while(!xml.atEnd() && !xml.hasError())
-   {
-      if ((xml.readNext() == QXmlStreamReader::EndElement)
-         && (xml.name().toString() == sEndElement))
-      {
-         // found end tag of searched element ...
-         break;
-      }
-   }
-
-   return (xml.atEnd() || xml.hasError()) ? -1 : 0;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: parseError
-|  Begin: 17.04.2013
-|  Author: Jo2003
-|  Description: parse XML error
-|
-|  Parameters: ref. response, ref. to error msg, ref. to error code
-|
-|  Returns: 0 --> error parsed
-|          -1 --> pattern not found
-\----------------------------------------------------------------- */
-int CKartinaXMLParser::parseError (const QString& sResp, QString& sMsg, int& eCode)
-{
-   int     iRet = 0;
-   QRegExp rx("<message>(.*)</message>[ \t\n\r]*"
-              "<code>(.*)</code>");
-
-   // quick'n'dirty error parser ...
-   if ((iRet = rx.indexIn(sResp)) > -1)
-   {
-      sMsg  = rx.cap(1);
-      eCode = rx.cap(2).toInt();
-   }
-
-   return iRet;
 }
 
 /*=============================================================================\

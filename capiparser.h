@@ -24,9 +24,9 @@
 
 //---------------------------------------------------------------------------
 //! \class   CApiParser
-//! \date    15.04.2013
+//! \date    17.04.2013
 //! \author  Jo2003
-//! \brief   parser for iptv api with json responses
+//! \brief   parent class for all IPTV api parser
 //---------------------------------------------------------------------------
 class CApiParser : public QObject
 {
