@@ -121,9 +121,9 @@ public:
       }
       else if (orientation() == Qt::Vertical)
       {
-         // width should be 10px ...
-         progRect.setWidth(10);
-         progRect.setX(((width() - 10) / 2));
+         // width should be 12px ...
+         progRect.setWidth(12);
+         progRect.setX(((width() - 12) / 2));
 
          // compute size of inner rect (take care of border) ...
          h = -((progRect.height() - pen.width()) * value() / 100);
@@ -133,10 +133,10 @@ public:
       }
 
       // make sure background is white ...
-      painter.fillRect(progRect, QColor(Qt::gray));
+      painter.fillRect(progRect, QColor("#333"));
 
       // draw outline ...
-      painter.drawRect(progRect);
+      painter.drawRoundedRect(progRect, 3, 3);
 
       painter.fillRect(QRect(x, y, w, h), QColor(getPosColor(value())));
    }
