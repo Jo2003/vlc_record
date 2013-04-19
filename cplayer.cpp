@@ -726,11 +726,6 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
 
    if (!iRV)
    {
-      // reset buffer percent ...
-      _mtxEvt.lock();
-      _flBuffPrt = 0.0;
-      _mtxEvt.unlock();
-
       iRV = play();
    }
 
@@ -987,7 +982,7 @@ void CPlayer::slotEventPoll()
    _mtxEvt.unlock();
 
    // signal buffer state ...
-   emit sigBuffPercent(buffPercent);
+   emit sigBuffPercent((int)buffPercent);
 
    if (!bEmpty)
    {
@@ -1029,6 +1024,7 @@ void CPlayer::slotEventPoll()
          case libvlc_MediaPlayerStopped:
             mInfo("libvlc_MediaPlayerStopped ...");
             emit sigPlayState((int)IncPlay::PS_STOP);
+            resetBuffPercent();
             stopPlayTimer();
             break;
 
@@ -1860,6 +1856,23 @@ void CPlayer::slotResetVideoFormat()
 {
    missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_ASPECT);
    missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_CROP);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: resetBuffPercent
+|  Begin: 19.04.2013
+|  Author: Jo2003
+|  Description: rest buffer percent value
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::resetBuffPercent()
+{
+   _mtxEvt.lock();
+   _flBuffPrt = 0;
+   _mtxEvt.unlock();
 }
 
 /************************* History ***************************\

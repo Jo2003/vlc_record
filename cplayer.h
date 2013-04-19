@@ -64,19 +64,20 @@ public:
    void stopPlayTimer ();
    void setSettings (CSettingsDlg *pDlg);
    void setApiClient (ApiClient *pClient);
-   static void eventCallback (const libvlc_event_t *ev, void *userdata);
    bool isPositionable();
    void initSlider ();
    uint getSilderPos();
    QVlcVideoWidget* getAndRemoveVideoWidget();
    void  addAndEmbedVideoWidget();
    ulong libvlcVersion();
+   void resetBuffPercent();
 
    static QVector<libvlc_event_type_t> _eventQueue;
    static const char*                  _pAspect[];
    static const char*                  _pCrop[];
    static QMutex                       _mtxEvt;
    static float                        _flBuffPrt;
+   static void eventCallback (const libvlc_event_t *ev, void *userdata);
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -141,7 +142,7 @@ signals:
    void sigTriggerAspectChg ();
    void sigCheckArchProg(ulong ulArchGmt);
    void sigToggleFullscreen();
-   void sigBuffPercent(float);
+   void sigBuffPercent(int);
 };
 
 #endif /* __022410__CPLAYER_H */

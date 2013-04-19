@@ -29,7 +29,7 @@ CONFIG += shared
 # included player or without?
 # -------------------------------------
 DEFINES += INCLUDE_LIBVLC
-DEFINES += __TRACE
+# DEFINES += __TRACE
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \
@@ -173,7 +173,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    HEADERS += cplayer.h \
         qvlcvideowidget.h \
         qclickandgoslider.h \
-        qtimelabel.h
+        qtimelabel.h \
+        qbufferprogressbar.h
    FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
    SOURCES += qvlcvideowidget.cpp \
