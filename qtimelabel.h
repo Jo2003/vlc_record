@@ -30,13 +30,13 @@ public:
    /////////////////////////////////////////////////////////////////////
    // constructors / destructor without special functionality ...
    QTimeLabel (QWidget * parent = 0, Qt::WindowFlags f = 0)
-      : QLabel (parent, f)
+      : QLabel (parent, f), iPerc(0)
    {
 
    }
 
    QTimeLabel (const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0)
-      : QLabel (text, parent, f)
+      : QLabel (text, parent, f), iPerc(0)
    {
 
    }
@@ -60,21 +60,48 @@ public:
    //---------------------------------------------------------------------------
    void setTime (qint64 iSec)
    {
-      int     h, m, s;
-      QString lab = (iSec < 0) ? "-" : " ";
+      if (iPerc >= 100)
+      {
+         int     h, m, s;
+         QString lab = (iSec < 0) ? "-" : " ";
 
-      iSec = abs(iSec);
+         iSec = abs(iSec);
 
-      h =  iSec / 3600;
-      m = (iSec % 3600) / 60;
-      s =  iSec % 60;
+         h =  iSec / 3600;
+         m = (iSec % 3600) / 60;
+         s =  iSec % 60;
 
-      lab += QString("%1:%2:%3").arg(h, 1, 10, QChar('0'))
-                                .arg(m, 2, 10, QChar('0'))
-                                .arg(s, 2, 10, QChar('0'));
+         lab += QString("%1:%2:%3").arg(h, 1, 10, QChar('0'))
+                                   .arg(m, 2, 10, QChar('0'))
+                                   .arg(s, 2, 10, QChar('0'));
 
-      setText(lab);
+         setText(lab);
+      }
    }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   set formatted time to label
+   //
+   //! \author  Jo2003
+   //! \date    27.02.2012
+   //
+   //! \param   iSec time in seconds
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void setBuffPercent (int iPercent)
+   {
+      if (iPercent < 100)
+      {
+         setText(tr("Buf: %1%").arg(iPercent));
+      }
+
+      iPerc = iPercent;
+   }
+
+private:
+   int iPerc;
 };
 
 #endif // __20120227_QTIMELABEL_H

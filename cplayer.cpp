@@ -982,7 +982,11 @@ void CPlayer::slotEventPoll()
    _mtxEvt.unlock();
 
    // signal buffer state ...
-   emit sigBuffPercent((int)buffPercent);
+   if (isPlaying())
+   {
+      emit sigBuffPercent((int)buffPercent);
+      missionControl.setBuff((int)buffPercent);
+   }
 
    if (!bEmpty)
    {

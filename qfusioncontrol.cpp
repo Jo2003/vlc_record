@@ -1075,6 +1075,25 @@ void QFusionControl::setTime(quint64 time)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   set buffer value
+//
+//! \author  Jo2003
+//! \date    21.04.2013
+//
+//! \param   iPercent new buffer value in percent
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::setBuff(int iPercent)
+{
+   for (int i = 0; i < _timeLabVector.count(); i++)
+   {
+      _timeLabVector.at(i)->setBuffPercent(iPercent);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   remove label pointer
 //
 //! \author  Jo2003

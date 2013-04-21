@@ -173,8 +173,8 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    HEADERS += cplayer.h \
         qvlcvideowidget.h \
         qclickandgoslider.h \
-        qtimelabel.h \
-        qbufferprogressbar.h
+        qtimelabel.h
+        # qbufferprogressbar.h
    FORMS += forms/cplayer.ui \
         forms/recorder_inc.ui
    SOURCES += qvlcvideowidget.cpp \

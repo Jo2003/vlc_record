@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>490</width>
-    <height>140</height>
+    <height>142</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -532,6 +532,12 @@ QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
          <widget class="QTimeLabel" name="labTime">
           <property name="enabled">
            <bool>true</bool>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>66</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="styleSheet">
            <string notr="true">QLabel#labTime {

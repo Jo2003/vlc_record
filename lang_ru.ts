@@ -755,20 +755,20 @@ p, li { white-space: pre-wrap; }
         <location filename="cplayer.cpp" line="689"/>
         <location filename="cplayer.cpp" line="697"/>
         <location filename="cplayer.cpp" line="705"/>
-        <location filename="cplayer.cpp" line="765"/>
-        <location filename="cplayer.cpp" line="769"/>
-        <location filename="cplayer.cpp" line="785"/>
+        <location filename="cplayer.cpp" line="760"/>
+        <location filename="cplayer.cpp" line="764"/>
+        <location filename="cplayer.cpp" line="780"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="676"/>
-        <location filename="cplayer.cpp" line="791"/>
+        <location filename="cplayer.cpp" line="786"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="761"/>
+        <location filename="cplayer.cpp" line="756"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -850,7 +850,7 @@ p, li { white-space: pre-wrap; }
         <translation>Полный экран</translation>
     </message>
     <message>
-        <location filename="forms/cplayer.ui" line="368"/>
+        <location filename="forms/cplayer.ui" line="374"/>
         <source> 0:00:00</source>
         <oldsource>0:00:00</oldsource>
         <translation></translation>
@@ -2383,7 +2383,7 @@ or start time is later than end time!</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="551"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="557"/>
         <source> 0:00:00</source>
         <translation></translation>
     </message>
@@ -2403,62 +2403,62 @@ or start time is later than end time!</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="583"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="589"/>
         <source>Play selected Channel</source>
         <translation>Просмотр передачи</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="615"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="621"/>
         <source>Record selected Channel</source>
         <translation>Запись выбранной передачи</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="656"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="662"/>
         <source>Stop Player</source>
         <translation>Остановить плеер</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="704"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="710"/>
         <source>Jump Backward</source>
         <translation>Шаг назад</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="733"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="739"/>
         <source>Time Jump Value in minutes</source>
         <translation>Длинна временного шага</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="737"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="743"/>
         <source>1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="742"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="748"/>
         <source>2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="747"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="753"/>
         <source>3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="752"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="758"/>
         <source>4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="757"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="763"/>
         <source>5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="762"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="768"/>
         <source>10</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="779"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="785"/>
         <source>Jump Forward</source>
         <translation>Шаг вперед</translation>
     </message>
@@ -2524,6 +2524,15 @@ or start time is later than end time!</source>
     <message>
         <source>Please enter security code:</source>
         <translation type="obsolete">Пожалуйста, введите пароль:</translation>
+    </message>
+</context>
+<context>
+    <name>QTimeLabel</name>
+    <message>
+        <location filename="qtimelabel.h" line="97"/>
+        <source>Buf: %1%</source>
+        <oldsource>Buff: %1%</oldsource>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

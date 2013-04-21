@@ -99,6 +99,72 @@ public:
       QRect    progRect(0, 0, width(), height());
       QPainter painter(this);
 
+      painter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+      // prepare pen for border line ...
+      QPen pen(Qt::SolidLine);
+      pen.setColor(QColor("#333"));
+      pen.setWidth(2);
+      painter.setPen(pen);
+
+      QBrush brush(QColor("#333"));
+      painter.setBrush(brush);
+
+      if (orientation() == Qt::Horizontal)
+      {
+         // height should be 14px ...
+         progRect.setHeight(14);
+         progRect.setY((height() - 14) / 2);
+
+         // compute size of inner rect (take care of border) ...
+         h =  progRect.height() - pen.width();
+         w = (progRect.width()  - pen.width()) * value() / 100;
+         x =  pen.width() / 2;
+         y =  progRect.y() + (pen.width() / 2);
+      }
+      else if (orientation() == Qt::Vertical)
+      {
+         // width should be 12px ...
+         progRect.setWidth(12);
+         progRect.setX(((width() - 12) / 2));
+
+         // compute size of inner rect (take care of border) ...
+         h = -((progRect.height() - pen.width()) * value() / 100);
+         w =  progRect.width()  - pen.width();
+         x =  progRect.x() + pen.width() / 2;
+         y =  progRect.height() - (pen.width() / 2);
+      }
+
+      // make sure background is white ...
+      // painter.fillRect(progRect, QColor("#333"));
+
+      // draw outline ...
+      painter.drawRoundedRect(progRect, 3, 3);
+
+      painter.fillRect(QRect(x, y, w, h), QColor(getPosColor(value())));
+   }
+
+   /*
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   repaint progress bar
+   //
+   //! \author  Jo2003
+   //! \date    19.04.2013
+   //
+   //! \param   pe (QPaintEvent *) pointer to paint event (unused)
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   virtual void paintEvent(QPaintEvent *pe)
+   {
+      Q_UNUSED(pe);
+
+      int x = 0, y = 0, h = 0, w = 0;
+
+      QRect    progRect(0, 0, width(), height());
+      QPainter painter(this);
+
       painter.setRenderHint(QPainter::Antialiasing);
 
       // prepare pen for border line ...
@@ -139,7 +205,7 @@ public:
       painter.drawRoundedRect(progRect, 3, 3);
 
       painter.fillRect(QRect(x, y, w, h), QColor(getPosColor(value())));
-   }
+   } */
 };
 
 #endif // __20130419_QBUFFERPROGRESSBAR_H

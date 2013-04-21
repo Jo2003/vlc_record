@@ -86,6 +86,7 @@ public:
    void setPosRange (int min, int max);
    int  posValue ();
    void setTime (quint64 time);
+   void setBuff(int iPercent);
    void btnSetIcon (const QIcon &icon, eBtnRole role);
    void setMutePixmap (const QPixmap &pix);
 
