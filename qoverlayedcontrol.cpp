@@ -182,6 +182,24 @@ void QOverlayedControl::mouseReleaseEvent(QMouseEvent* e)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   override QWidget::wheelEvent()
+//
+//! \author  Jo2003
+//! \date    08.02.2012
+//
+//! \param   event pointer to wheel event
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::wheelEvent(QWheelEvent *event)
+{
+   event->ignore();
+
+   emit wheel ((event->delta() > 0) ? true : false);
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   widget is about to be shown
 //
 //! \author  Jo2003

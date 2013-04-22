@@ -48,10 +48,12 @@ protected:
   virtual void mousePressEvent(QMouseEvent *e);
   virtual void mouseMoveEvent(QMouseEvent *e);
   virtual void mouseReleaseEvent(QMouseEvent *e);
+  virtual void wheelEvent(QWheelEvent *e);
 
 signals:
   void sigMouseAboveOverlay ();
   void sigMouseLeavesOverlay ();
+  void wheel(bool w);
 
 private slots:
   void slotFadeMore ();

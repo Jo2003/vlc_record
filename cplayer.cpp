@@ -961,7 +961,7 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
 \----------------------------------------------------------------- */
 void CPlayer::slotEventPoll()
 {
-   libvlc_event_type_t lastEvent;
+   libvlc_event_type_t lastEvent = libvlc_MediaPlayerNothingSpecial;
    float               buffPercent;
    bool                bEmpty;
 

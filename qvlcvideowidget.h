@@ -75,6 +75,7 @@ public slots:
    void fullScreenToggled(int on);
    void slotMouseEntersPanel ();
    void slotMouseLeavesPanel ();
+   void slotWheel(bool w);
 };
 
 #endif // __20120208_QVLCVIDEOWIDGET_H

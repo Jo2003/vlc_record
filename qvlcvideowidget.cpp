@@ -70,6 +70,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    connect (_mouseHide, SIGNAL(timeout()), this, SLOT(hideMouse()));
    connect (_ctrlPanel, SIGNAL(sigMouseAboveOverlay()), this, SLOT(slotMouseEntersPanel()));
    connect (_ctrlPanel, SIGNAL(sigMouseLeavesOverlay()), this, SLOT(slotMouseLeavesPanel()));
+   connect (_ctrlPanel, SIGNAL(wheel(bool)), this, SLOT(slotWheel(bool)));
 }
 
 //---------------------------------------------------------------------------
@@ -193,6 +194,22 @@ void QVlcVideoWidget::wheelEvent(QWheelEvent *event)
    event->ignore();
 
    emit wheel ((event->delta() > 0) ? true : false);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   wheel signal from overlay panel
+//
+//! \author  Jo2003
+//! \date    08.02.2012
+//
+//! \param   w wheel up or down
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotWheel(bool w)
+{
+   emit wheel (w);
 }
 
 //---------------------------------------------------------------------------

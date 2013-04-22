@@ -2538,7 +2538,7 @@ or start time is later than end time!</source>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="329"/>
+        <location filename="qvlcvideowidget.cpp" line="346"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
