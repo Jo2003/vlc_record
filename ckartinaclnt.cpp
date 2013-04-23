@@ -369,7 +369,10 @@ void CKartinaClnt::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&settings=all").arg(sUsr).arg(sPw),
+        QString("login=%1&pass=%2&settings=all&softid=%3%4-%5")
+            .arg(sUsr).arg(sPw)
+            .arg(pCustomization->strVal("APPLICATION_SHORTCUT"))
+            .arg(OP_SYS).arg(SOFTID_DEVELOPER),
         Iptv::Login);
 }
 

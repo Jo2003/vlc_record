@@ -61,6 +61,29 @@
    #define ApiParser      CStdJsonParser
 #endif
 
+// software developer (used in software id)
+#define SOFTID_DEVELOPER   "jo-001"
+
+// application shortcut ...
+#ifndef APPLICATION_SHORTCUT
+#  define APPLICATION_SHORTCUT "ktv"
+#endif
+
+// operating system ...
+#ifdef Q_OS_LINUX
+#  define OP_SYS  "linux"
+#elif defined Q_OS_WIN32
+#  define OP_SYS  "win"
+#elif defined Q_OS_MAC
+#  define OP_SYS  "mac"
+#else
+#  define OP_SYS  "ukn"
+#endif // op sys
+
+
+#ifndef SOFTWARE_ID
+#endif // SOFTWARE_ID
+
 #define PLAYER_LOG_FILE   "player.log"
 #define LIBVLC_LOG_FILE   "libvlc.log"
 #define MOD_DIR           "modules"

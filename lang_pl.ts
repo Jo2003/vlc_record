@@ -178,7 +178,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="522"/>
+        <location filename="ckartinaclnt.cpp" line="525"/>
         <source>Request URL for channel %1 ...</source>
         <oldsource>Request #%1 (%2) sent ...</oldsource>
         <translation></translation>
@@ -202,311 +202,311 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="391"/>
+        <location filename="ckartinaclnt.cpp" line="394"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="420"/>
+        <location filename="ckartinaclnt.cpp" line="423"/>
         <source>Request Stream Server List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="440"/>
+        <location filename="ckartinaclnt.cpp" line="443"/>
         <source>Request Time Shift ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="460"/>
+        <location filename="ckartinaclnt.cpp" line="463"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="481"/>
+        <location filename="ckartinaclnt.cpp" line="484"/>
         <source>Request Bit Rate ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="501"/>
+        <location filename="ckartinaclnt.cpp" line="504"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="550"/>
+        <location filename="ckartinaclnt.cpp" line="553"/>
         <source>Set Streaming Server to %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="571"/>
+        <location filename="ckartinaclnt.cpp" line="574"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="592"/>
+        <location filename="ckartinaclnt.cpp" line="595"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="615"/>
+        <location filename="ckartinaclnt.cpp" line="618"/>
         <source>Request Archiv URL ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="642"/>
+        <location filename="ckartinaclnt.cpp" line="645"/>
         <source>Request VOD Genres ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="662"/>
+        <location filename="ckartinaclnt.cpp" line="665"/>
         <source>Request Videos ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="682"/>
+        <location filename="ckartinaclnt.cpp" line="685"/>
         <source>Request Video info for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="709"/>
+        <location filename="ckartinaclnt.cpp" line="712"/>
         <source>Request Video Url for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="737"/>
+        <location filename="ckartinaclnt.cpp" line="740"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <oldsource>Hide channel %1 from channel list ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="760"/>
+        <location filename="ckartinaclnt.cpp" line="763"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <oldsource>Show channel %1 in channel list ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="783"/>
+        <location filename="ckartinaclnt.cpp" line="786"/>
         <source>Request VOD manager data ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="806"/>
+        <location filename="ckartinaclnt.cpp" line="809"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="829"/>
+        <location filename="ckartinaclnt.cpp" line="832"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="856"/>
+        <location filename="ckartinaclnt.cpp" line="859"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="883"/>
+        <location filename="ckartinaclnt.cpp" line="886"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="902"/>
+        <location filename="ckartinaclnt.cpp" line="905"/>
         <source>Change parent code ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="925"/>
+        <location filename="ckartinaclnt.cpp" line="928"/>
         <source>EPG current for Channels: %1 ...</source>
         <oldsource>Silently update EPG for Channel %1 ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="944"/>
+        <location filename="ckartinaclnt.cpp" line="947"/>
         <source>Check for available updates ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="962"/>
+        <location filename="ckartinaclnt.cpp" line="965"/>
         <source>Download image ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1043"/>
+        <location filename="ckartinaclnt.cpp" line="1046"/>
         <source>Unknown error</source>
         <translation>Nieznany błąd</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1044"/>
+        <location filename="ckartinaclnt.cpp" line="1047"/>
         <source>Incorrect request</source>
         <translation>Niepoprawne żądanie</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1045"/>
+        <location filename="ckartinaclnt.cpp" line="1048"/>
         <source>Wrong login or password</source>
         <translation>Niepoprawna nazwa użytkownika lub hasło</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1046"/>
+        <location filename="ckartinaclnt.cpp" line="1049"/>
         <source>Access denied</source>
         <translation>Odmowa dostępu</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1047"/>
+        <location filename="ckartinaclnt.cpp" line="1050"/>
         <source>Login incorrect</source>
         <translation>Niepoprawna nazwa użytkownika</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1048"/>
+        <location filename="ckartinaclnt.cpp" line="1051"/>
         <source>Your contract is inactive</source>
         <translation>Twoja umowa jest nieaktywna</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1049"/>
+        <location filename="ckartinaclnt.cpp" line="1052"/>
         <source>Your contract is paused</source>
         <translation>Twoja umowa jest wstrzymana</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1050"/>
+        <location filename="ckartinaclnt.cpp" line="1053"/>
         <source>Channel not found or not allowed</source>
         <translation>Kanał nie został znaleziony lub jest zabroniony</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1051"/>
+        <location filename="ckartinaclnt.cpp" line="1054"/>
         <source>Error in request: Bad parameters</source>
         <translation>Błąd w żądaniu: złe parametry</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1052"/>
+        <location filename="ckartinaclnt.cpp" line="1055"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation>Brakujący parametr (dzień) w formacie &lt;DDMMRR&gt;</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1053"/>
+        <location filename="ckartinaclnt.cpp" line="1056"/>
         <source>Missing parameter (cid)</source>
         <translation>Brakujący parametr (cid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1054"/>
+        <location filename="ckartinaclnt.cpp" line="1057"/>
         <source>Another client with your data logged in</source>
         <translation>Inny użytkownik jest zalogowany Twoimi danymi dostępu</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1055"/>
+        <location filename="ckartinaclnt.cpp" line="1058"/>
         <source>Authentication error</source>
         <translation>Błąd weryfikacji</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1056"/>
+        <location filename="ckartinaclnt.cpp" line="1059"/>
         <source>Your package expired</source>
         <translation>Twój pakiet wygasł</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1057"/>
+        <location filename="ckartinaclnt.cpp" line="1060"/>
         <source>Unknown API function</source>
         <translation>Nieznana funkcja API</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1058"/>
+        <location filename="ckartinaclnt.cpp" line="1061"/>
         <source>Archive not available</source>
         <translation>Archiwum niedostępne</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1059"/>
+        <location filename="ckartinaclnt.cpp" line="1062"/>
         <source>Missing parameter (place)</source>
         <translation>Brakujący parametr (place)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1060"/>
+        <location filename="ckartinaclnt.cpp" line="1063"/>
         <source>Missing parameter (name)</source>
         <translation>Brakujący parametr (name)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1061"/>
+        <location filename="ckartinaclnt.cpp" line="1064"/>
         <source>Incorrect confirmation code</source>
         <translation>Niepoprawny kod potwierdzenia</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1062"/>
+        <location filename="ckartinaclnt.cpp" line="1065"/>
         <source>Current code is wrong</source>
         <translation>Obecny kod jest niepoprawny</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1063"/>
+        <location filename="ckartinaclnt.cpp" line="1066"/>
         <source>New code is wrong</source>
         <translation>Nowy kod jest niepoprawny</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1064"/>
+        <location filename="ckartinaclnt.cpp" line="1067"/>
         <source>Missing parameter (val)</source>
         <translation>Brakujący parametr (val)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1065"/>
+        <location filename="ckartinaclnt.cpp" line="1068"/>
         <source>Value not allowed</source>
         <translation>Wartość niedostępna</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1066"/>
+        <location filename="ckartinaclnt.cpp" line="1069"/>
         <source>Missing parameter</source>
         <translation>Brakujący parametr</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1067"/>
+        <location filename="ckartinaclnt.cpp" line="1070"/>
         <source>Missing parameter (id)</source>
         <translation>Brakujący parametr (id)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1068"/>
+        <location filename="ckartinaclnt.cpp" line="1071"/>
         <source>Missing parameter (fileid)</source>
         <translation>Brakujący parametr (fileid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1069"/>
+        <location filename="ckartinaclnt.cpp" line="1072"/>
         <source>Missing parameter (type)</source>
         <translation>Brakujący parametr (type)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1070"/>
+        <location filename="ckartinaclnt.cpp" line="1073"/>
         <source>Missing parameter (query)</source>
         <translation>Brakujący parametr (query)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1071"/>
+        <location filename="ckartinaclnt.cpp" line="1074"/>
         <source>Bitrate not available</source>
         <translation>Bitrate jest niedostępny</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1072"/>
+        <location filename="ckartinaclnt.cpp" line="1075"/>
         <source>Service not available</source>
         <translation>Serwis jest niedostępny</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1073"/>
+        <location filename="ckartinaclnt.cpp" line="1076"/>
         <source>Query limit exceeded</source>
         <translation>Limit zapytań przekroczony</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1074"/>
+        <location filename="ckartinaclnt.cpp" line="1077"/>
         <source>Rule already exists</source>
         <translation>Zasada już istnieje</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1075"/>
-        <location filename="ckartinaclnt.cpp" line="1076"/>
+        <location filename="ckartinaclnt.cpp" line="1078"/>
+        <location filename="ckartinaclnt.cpp" line="1079"/>
         <source>Missing parameter (cmd)</source>
         <translation>Brakujący parametr(cmd)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1077"/>
+        <location filename="ckartinaclnt.cpp" line="1080"/>
         <source>Bad value (rate)</source>
         <translation>Błędna wartość(rate)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1078"/>
+        <location filename="ckartinaclnt.cpp" line="1081"/>
         <source>Can&apos;t find film</source>
         <translation>Nie można odnaleźć filmu</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1079"/>
+        <location filename="ckartinaclnt.cpp" line="1082"/>
         <source>Film already added</source>
         <translation>Film już został dodany</translation>
     </message>

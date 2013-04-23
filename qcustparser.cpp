@@ -31,13 +31,14 @@ QCustParser::QCustParser(QObject *parent) :
 {
    // Insert initial string values. Values will be replaced
    // if customization was found!
-   mStrings.insert("APP_NAME"     ,  APP_NAME     );
-   mStrings.insert("UPD_CHECK_URL",  UPD_CHECK_URL);
-   mStrings.insert("API_SERVER"   ,  API_SERVER   );
-   mStrings.insert("COMPANY_NAME" ,  COMPANY_NAME );
-   mStrings.insert("COMPANY_LINK" ,  COMPANY_LINK );
-   mStrings.insert("API_XML_PATH" ,  API_XML_PATH );
-   mStrings.insert("API_JSON_PATH",  API_JSON_PATH);
+   mStrings.insert("APP_NAME"            ,  APP_NAME            );
+   mStrings.insert("UPD_CHECK_URL"       ,  UPD_CHECK_URL       );
+   mStrings.insert("API_SERVER"          ,  API_SERVER          );
+   mStrings.insert("COMPANY_NAME"        ,  COMPANY_NAME        );
+   mStrings.insert("COMPANY_LINK"        ,  COMPANY_LINK        );
+   mStrings.insert("API_XML_PATH"        ,  API_XML_PATH        );
+   mStrings.insert("API_JSON_PATH"       ,  API_JSON_PATH       );
+   mStrings.insert("APPLICATION_SHORTCUT",  APPLICATION_SHORTCUT);
 }
 
 //---------------------------------------------------------------------------

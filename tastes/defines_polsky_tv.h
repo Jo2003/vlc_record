@@ -29,4 +29,6 @@
 #define COMPANY_LINK "<a href='http://www.polsky.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
+#define APPLICATION_SHORTCUT "pol"
+
 #endif // __012412__DEFINES_POLSKY_TV_H
