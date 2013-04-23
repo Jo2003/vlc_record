@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "63"
-#define BETA_EXT      "B5"
+#define BETA_EXT      "B6"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-04-23: Version 2.63B6
+| - show buffering info in time label
+| - mouse wheel will change volume in fullscreen also when
+|   positionend on control panel
+|
 | 2013-04-16: Version 2.63B5
 | - use QJSON parser for VLC-Record
 |

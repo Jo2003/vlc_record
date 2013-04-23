@@ -2544,7 +2544,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="qtimelabel.h" line="97"/>
         <source>Buf: %1%</source>
         <oldsource>Buff: %1%</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>

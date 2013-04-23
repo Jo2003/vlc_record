@@ -2532,7 +2532,7 @@ or start time is later than end time!</source>
         <location filename="qtimelabel.h" line="97"/>
         <source>Buf: %1%</source>
         <oldsource>Buff: %1%</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Буф: %1%</translation>
     </message>
 </context>
 <context>
