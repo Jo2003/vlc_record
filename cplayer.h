@@ -85,6 +85,7 @@ protected:
    void connectToVideoWidget ();
    int  addAd ();
    int  clearMediaList();
+   void cleanupLibVLC(bool bDestruct = false);
    QString aspectCropToString (const char *pFormat);
 
 private:

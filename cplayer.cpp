@@ -168,6 +168,24 @@ CPlayer::~CPlayer()
 
    stop();
 
+   cleanupLibVLC(true);
+
+   delete ui;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: cleanupLibVLC
+|  Begin: 24.04.2013
+|  Author: Jo2003
+|  Description: clean libvlc stuff
+|
+|  Parameters: bDestruct flag to tell that function
+|              is called from destructor
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::cleanupLibVLC(bool bDestruct)
+{
    if (pMediaList)
    {
       libvlc_media_list_release (pMediaList);
@@ -192,13 +210,21 @@ CPlayer::~CPlayer()
       // releasing it on Mac leads to crash if you end the
       // player with running video ... no problem at all 'cause
       // we want release at program close!
-      libvlc_retain(pVlcInstance);
+      if (bDestruct)
+      {
+         libvlc_retain(pVlcInstance);
+      }
+      else
+      {
+         libvlc_release(pVlcInstance);
+      }
 #else
+      Q_UNUSED(bDestruct)
       libvlc_release(pVlcInstance);
 #endif
-   }
 
-   delete ui;
+      pVlcInstance = NULL;
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -1000,6 +1026,9 @@ void CPlayer::slotEventPoll()
             mInfo("libvlc_MediaPlayerEncounteredError ...");
             emit sigPlayState((int)IncPlay::PS_ERROR);
             stopPlayTimer();
+
+            // no way to go on ... prepare to use a new instance of libVLC
+            cleanupLibVLC();
             break;
 
          // opening media ...
