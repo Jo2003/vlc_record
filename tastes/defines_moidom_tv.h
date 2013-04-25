@@ -29,5 +29,8 @@
 #define COMPANY_LINK "<a href='http://www.moi-dom.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
+// use xml parser ...
+#define ApiParser             CKartinaXMLParser
+
 #endif // __310113__DEFINES_MOIDOM_TV_H
 
