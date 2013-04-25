@@ -1023,7 +1023,7 @@ void CPlayer::slotEventPoll()
          {
          // error ...
          case libvlc_MediaPlayerEncounteredError:
-            mInfo("libvlc_MediaPlayerEncounteredError ...");
+            mInfo("libvlc_MediaPlayerEncounteredError --> clean up libVLC!");
             emit sigPlayState((int)IncPlay::PS_ERROR);
             stopPlayTimer();
 
