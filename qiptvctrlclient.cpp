@@ -122,7 +122,20 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
    }
    else
    {
+#ifdef _IS_OEM
+      // in case of OEM we should remove the API server string from
+      // error messages ...
+      QString sErr = reply->errorString();
+      QUrl    sUrl = reply->request().url();
+
+      sErr.remove(sUrl.host());
+      sErr = sErr.simplified();
+
+      emit sigErr(iReqId, sErr, (int)reply->error());
+
+#else
       emit sigErr(iReqId, reply->errorString(), (int)reply->error());
+#endif // _IS_OEM
    }
 
    // mark for deletion ...
