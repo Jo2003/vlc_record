@@ -446,7 +446,7 @@ void CRodnoeClient::SetCookie(const QString &cookie)
 void CRodnoeClient::Logout ()
 {
    mInfo(tr("Logout ..."));
-   get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
+   q_get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -466,7 +466,7 @@ void CRodnoeClient::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
+   q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
         QString("login=%1&pass=%2&with_acc=1&with_cfg=1&lng=%3")
         .arg(sUsr)
         .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw)))
@@ -492,7 +492,7 @@ void CRodnoeClient::GetChannelList ()
    mInfo(tr("Request Channel List ..."));
 
    // request channel list or channel list for settings ...
-   get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1");
+   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -517,7 +517,7 @@ void CRodnoeClient::GetProtChannelList (const QString &secCode)
    req += QString("&show=all&protect_code=%1").arg(secCode);
 
    // request channel list or channel list for settings ...
-   post((int)CIptvDefs::REQ_CHANLIST_ALL, sApiUrl + "get_list_tv", req);
+   q_post((int)CIptvDefs::REQ_CHANLIST_ALL, sApiUrl + "get_list_tv", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -537,7 +537,7 @@ void CRodnoeClient::GetServer()
 {
    mInfo(tr("Request Stream Server List ..."));
 
-   get((int)CIptvDefs::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
+   q_get((int)CIptvDefs::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -557,7 +557,7 @@ void CRodnoeClient::GetTimeShift()
 {
    mInfo(tr("Request Time Shift ..."));
 
-   get((int)CIptvDefs::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
+   q_get((int)CIptvDefs::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -577,7 +577,7 @@ void CRodnoeClient::SetTimeShift (int iHours)
 {
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
-   post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "set",
+   q_post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "set",
                QString("var=time_shift&val=%1").arg(iHours));
 }
 
@@ -598,7 +598,7 @@ void CRodnoeClient::GetBitRate()
 {
    mInfo(tr("Request Bit Rate ..."));
 
-   get((int)CIptvDefs::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
+   q_get((int)CIptvDefs::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -618,7 +618,7 @@ void CRodnoeClient::SetBitRate(int iRate)
 {
    mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
 
-   post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
+   q_post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
                QString("var=bitrate&val=%1").arg(iRate));
 }
 
@@ -646,7 +646,7 @@ void CRodnoeClient::GetStreamURL(int iChanID, const QString &secCode, bool bTime
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
+   q_post((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
                sApiUrl + "get_url_tv", req);
 }
 
@@ -667,7 +667,7 @@ void CRodnoeClient::SetServer (const QString &sIp)
 {
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
-   post((int)CIptvDefs::REQ_SERVER, sApiUrl + "set",
+   q_post((int)CIptvDefs::REQ_SERVER, sApiUrl + "set",
                QString("var=media_server_id&val=%1").arg(sIp));
 }
 
@@ -688,7 +688,7 @@ void CRodnoeClient::SetHttpBuffer(int iTime)
 {
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
-   post((int)CIptvDefs::REQ_HTTPBUFF, sApiUrl + "settings_set",
+   q_post((int)CIptvDefs::REQ_HTTPBUFF, sApiUrl + "settings_set",
                QString("var=http_caching&val=%1").arg(iTime));
 }
 
@@ -711,7 +711,7 @@ void CRodnoeClient::GetEPG(int iChanID, int iOffset)
 
    QDateTime dt(QDate::currentDate().addDays(iOffset));
 
-   post((int)CIptvDefs::REQ_EPG, sApiUrl + "get_epg",
+   q_post((int)CIptvDefs::REQ_EPG, sApiUrl + "get_epg",
         QString("cid=%1&from_uts=%2&hours=24").arg(iChanID).arg(dt.toTime_t()));
 }
 
@@ -742,7 +742,7 @@ void CRodnoeClient::GetArchivURL (const QString &prepared, const QString &secCod
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url_tv", req);
+   q_post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url_tv", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -762,7 +762,7 @@ void CRodnoeClient::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   get((int)CIptvDefs::REQ_GETVODGENRES, sApiUrl + "vod_genres");
+   q_get((int)CIptvDefs::REQ_GETVODGENRES, sApiUrl + "vod_genres");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -782,7 +782,7 @@ void CRodnoeClient::GetVideos(const QString &sPrepared)
 {
    mInfo(tr("Request Videos ..."));
 
-   get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
+   q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -809,7 +809,7 @@ void CRodnoeClient::GetVideoInfo(int iVodID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   get((int)CIptvDefs::REQ_GETVIDEOINFO, sApiUrl + req);
+   q_get((int)CIptvDefs::REQ_GETVIDEOINFO, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -837,7 +837,7 @@ void CRodnoeClient::GetVodUrl(int iVidId, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   get((int)CIptvDefs::REQ_GETVODURL, sApiUrl + req);
+   q_get((int)CIptvDefs::REQ_GETVODURL, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -860,7 +860,7 @@ void CRodnoeClient::setChanHide(const QString &cids, const QString &secCode)
    QString req = QString("cmd=hide_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   post((int)CIptvDefs::REQ_SETCHAN_HIDE, sApiUrl + "rule", req);
+   q_post((int)CIptvDefs::REQ_SETCHAN_HIDE, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -883,7 +883,7 @@ void CRodnoeClient::setChanShow(const QString &cids, const QString &secCode)
    QString req = QString("cmd=show_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   post((int)CIptvDefs::REQ_SETCHAN_SHOW, sApiUrl + "rule", req);
+   q_post((int)CIptvDefs::REQ_SETCHAN_SHOW, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -906,7 +906,7 @@ void CRodnoeClient::getVodManager(const QString &secCode)
    QString req = QString("cmd=get_user_rates&protect_code=%1")
            .arg(secCode);
 
-   post((int)CIptvDefs::REQ_GET_VOD_MANAGER, sApiUrl + "vod_manage", req);
+   q_post((int)CIptvDefs::REQ_GET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -929,7 +929,7 @@ void CRodnoeClient::setVodManager(const QString &rules, const QString &secCode)
    QString req = QString("cmd=set_user_rates%1&protect_code=%2")
            .arg(rules).arg(secCode);
 
-   post((int)CIptvDefs::REQ_SET_VOD_MANAGER, sApiUrl + "vod_manage", req);
+   q_post((int)CIptvDefs::REQ_SET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -956,7 +956,7 @@ void CRodnoeClient::addVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
+   q_post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -983,7 +983,7 @@ void CRodnoeClient::remVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
+   q_post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1002,7 +1002,7 @@ void CRodnoeClient::remVodFav(int iVidID, const QString &secCode)
 void CRodnoeClient::getVodFav()
 {
    mInfo(tr("Get VOD favourites (%1) ..."));
-   get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
+   q_get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1025,7 +1025,7 @@ void CRodnoeClient::setParentCode(const QString &oldCode, const QString &newCode
    QString req = QString("var=parental_pass&val=%1&protect_code=%2")
          .arg(newCode).arg(oldCode);
 
-   post((int)CIptvDefs::REQ_SET_PCODE, sApiUrl + "set", req);
+   q_post((int)CIptvDefs::REQ_SET_PCODE, sApiUrl + "set", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1045,7 +1045,7 @@ void CRodnoeClient::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   post((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + "get_epg_current", QString("cid=%1").arg(cids));
+   q_post((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + "get_epg_current", QString("cid=%1").arg(cids));
 }
 
 //---------------------------------------------------------------------------
@@ -1063,7 +1063,7 @@ void CRodnoeClient::updInfo (const QString& url)
 {
    mInfo(tr("Check for available updates ..."));
 
-   get((int)CIptvDefs::REQ_UPDATE_CHECK, url);
+   q_get((int)CIptvDefs::REQ_UPDATE_CHECK, url);
 }
 
 //---------------------------------------------------------------------------
@@ -1081,7 +1081,7 @@ void CRodnoeClient::slotDownImg(const QString &url)
 {
    mInfo(tr("Download image ..."));
 
-   get((int)CIptvDefs::REQ_DOWN_IMG, url, Iptv::Binary);
+   q_get((int)CIptvDefs::REQ_DOWN_IMG, url, Iptv::Binary);
 }
 
 //---------------------------------------------------------------------------
@@ -1098,7 +1098,7 @@ void CRodnoeClient::getRadioList()
 {
    mInfo(tr("Download radio list ..."));
 
-   get((int)CIptvDefs::REQ_CHANLIST_RADIO, sApiUrl + "get_list_radio");
+   q_get((int)CIptvDefs::REQ_CHANLIST_RADIO, sApiUrl + "get_list_radio");
 }
 
 //---------------------------------------------------------------------------
@@ -1117,7 +1117,7 @@ void CRodnoeClient::getRadioStream(int cid, bool bTimerRec)
 {
    mInfo(tr("Get radio stream Url ..."));
 
-   post(bTimerRec ? (int)CIptvDefs::REQ_RADIO_TIMERREC : (int)CIptvDefs::REQ_RADIO_STREAM,
+   q_post(bTimerRec ? (int)CIptvDefs::REQ_RADIO_TIMERREC : (int)CIptvDefs::REQ_RADIO_STREAM,
         sApiUrl + "get_url_radio", QString("cid=%1").arg(cid & ~RADIO_OFFSET));
 }
 

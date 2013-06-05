@@ -348,7 +348,7 @@ void CKartinaClnt::SetCookie(const QString &cookie)
 void CKartinaClnt::Logout ()
 {
    mInfo(tr("Logout ..."));
-   get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
+   q_get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -368,7 +368,7 @@ void CKartinaClnt::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
+   q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
         QString("login=%1&pass=%2&settings=all&softid=%3%4-%5")
             .arg(sUsr).arg(sPw)
             .arg(pCustomization->strVal("APPLICATION_SHORTCUT"))
@@ -401,7 +401,7 @@ void CKartinaClnt::GetChannelList (const QString &secCode)
    }
 
    // request channel list or channel list for settings ...
-   post((secCode == "") ? (int)CIptvDefs::REQ_CHANNELLIST : (int)CIptvDefs::REQ_CHANLIST_ALL,
+   q_post((secCode == "") ? (int)CIptvDefs::REQ_CHANNELLIST : (int)CIptvDefs::REQ_CHANLIST_ALL,
         sApiUrl + "channel_list", req);
 }
 
@@ -422,7 +422,7 @@ void CKartinaClnt::GetServer()
 {
    mInfo(tr("Request Stream Server List ..."));
 
-   get((int)CIptvDefs::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
+   q_get((int)CIptvDefs::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -442,7 +442,7 @@ void CKartinaClnt::GetTimeShift()
 {
    mInfo(tr("Request Time Shift ..."));
 
-   get((int)CIptvDefs::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
+   q_get((int)CIptvDefs::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -462,7 +462,7 @@ void CKartinaClnt::SetTimeShift (int iHours)
 {
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
-   post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "settings_set",
+   q_post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "settings_set",
                QString("var=timeshift&val=%1").arg(iHours));
 }
 
@@ -483,7 +483,7 @@ void CKartinaClnt::GetBitRate()
 {
    mInfo(tr("Request Bit Rate ..."));
 
-   get((int)CIptvDefs::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
+   q_get((int)CIptvDefs::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -503,7 +503,7 @@ void CKartinaClnt::SetBitRate(int iRate)
 {
    mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
 
-   post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
+   q_post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
                QString("var=bitrate&val=%1").arg(iRate));
 }
 
@@ -531,7 +531,7 @@ void CKartinaClnt::GetStreamURL(int iChanID, const QString &secCode, bool bTimer
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
+   q_post((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
                sApiUrl + "get_url", req);
 }
 
@@ -552,7 +552,7 @@ void CKartinaClnt::SetServer (const QString &sIp)
 {
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
-   post((int)CIptvDefs::REQ_SERVER, sApiUrl + "settings_set",
+   q_post((int)CIptvDefs::REQ_SERVER, sApiUrl + "settings_set",
                QString("var=stream_server&val=%1").arg(sIp));
 }
 
@@ -573,7 +573,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 {
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
-   post((int)CIptvDefs::REQ_HTTPBUFF, sApiUrl + "settings_set",
+   q_post((int)CIptvDefs::REQ_HTTPBUFF, sApiUrl + "settings_set",
                QString("var=http_caching&val=%1").arg(iTime));
 }
 
@@ -596,7 +596,7 @@ void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 
    QDate now = QDate::currentDate().addDays(iOffset);
 
-   get((int)CIptvDefs::REQ_EPG, sApiUrl + QString("epg?cid=%1&day=%2")
+   q_get((int)CIptvDefs::REQ_EPG, sApiUrl + QString("epg?cid=%1&day=%2")
        .arg(iChanID).arg(now.toString("ddMMyy")));
 }
 
@@ -624,7 +624,7 @@ void CKartinaClnt::GetArchivURL (const QString &prepared, const QString &secCode
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url", req);
+   q_post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -644,7 +644,7 @@ void CKartinaClnt::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   get((int)CIptvDefs::REQ_GETVODGENRES, sApiUrl + "vod_genres");
+   q_get((int)CIptvDefs::REQ_GETVODGENRES, sApiUrl + "vod_genres");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -664,7 +664,7 @@ void CKartinaClnt::GetVideos(const QString &sPrepared)
 {
    mInfo(tr("Request Videos ..."));
 
-   get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
+   q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -691,7 +691,7 @@ void CKartinaClnt::GetVideoInfo(int iVodID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   get((int)CIptvDefs::REQ_GETVIDEOINFO, sApiUrl + req);
+   q_get((int)CIptvDefs::REQ_GETVIDEOINFO, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -719,7 +719,7 @@ void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   get((int)CIptvDefs::REQ_GETVODURL, sApiUrl + req);
+   q_get((int)CIptvDefs::REQ_GETVODURL, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -742,7 +742,7 @@ void CKartinaClnt::setChanHide(const QString &cids, const QString &secCode)
    QString req = QString("cmd=hide_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   post((int)CIptvDefs::REQ_SETCHAN_HIDE, sApiUrl + "rule", req);
+   q_post((int)CIptvDefs::REQ_SETCHAN_HIDE, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -765,7 +765,7 @@ void CKartinaClnt::setChanShow(const QString &cids, const QString &secCode)
    QString req = QString("cmd=show_channel&cid=%1&protect_code=%2")
            .arg(cids).arg(secCode);
 
-   post((int)CIptvDefs::REQ_SETCHAN_SHOW, sApiUrl + "rule", req);
+   q_post((int)CIptvDefs::REQ_SETCHAN_SHOW, sApiUrl + "rule", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -788,7 +788,7 @@ void CKartinaClnt::getVodManager(const QString &secCode)
    QString req = QString("cmd=get_user_rates&protect_code=%1")
            .arg(secCode);
 
-   post((int)CIptvDefs::REQ_GET_VOD_MANAGER, sApiUrl + "vod_manage", req);
+   q_post((int)CIptvDefs::REQ_GET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -811,7 +811,7 @@ void CKartinaClnt::setVodManager(const QString &rules, const QString &secCode)
    QString req = QString("cmd=set_user_rates%1&protect_code=%2")
            .arg(rules).arg(secCode);
 
-   post((int)CIptvDefs::REQ_SET_VOD_MANAGER, sApiUrl + "vod_manage", req);
+   q_post((int)CIptvDefs::REQ_SET_VOD_MANAGER, sApiUrl + "vod_manage", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -838,7 +838,7 @@ void CKartinaClnt::addVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
+   q_post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -865,7 +865,7 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
+   q_post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -884,7 +884,7 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
 void CKartinaClnt::getVodFav()
 {
    mInfo(tr("Get VOD favourites (%1) ..."));
-   get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
+   q_get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -907,7 +907,7 @@ void CKartinaClnt::setParentCode(const QString &oldCode, const QString &newCode)
    QString req = QString("var=pcode&old_code=%1&new_code=%2&confirm_code=%2")
          .arg(oldCode).arg(newCode);
 
-   post((int)CIptvDefs::REQ_SET_PCODE, sApiUrl + "settings_set", req);
+   q_post((int)CIptvDefs::REQ_SET_PCODE, sApiUrl + "settings_set", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -927,7 +927,7 @@ void CKartinaClnt::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   get((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3")
+   q_get((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3")
        .arg(cids));
 }
 
@@ -946,7 +946,7 @@ void CKartinaClnt::updInfo (const QString& url)
 {
    mInfo(tr("Check for available updates ..."));
 
-   get((int)CIptvDefs::REQ_UPDATE_CHECK, url);
+   q_get((int)CIptvDefs::REQ_UPDATE_CHECK, url);
 }
 
 //---------------------------------------------------------------------------
@@ -964,7 +964,7 @@ void CKartinaClnt::slotDownImg(const QString &url)
 {
    mInfo(tr("Download image ..."));
 
-   get((int)CIptvDefs::REQ_DOWN_IMG, url, Iptv::Binary);
+   q_get((int)CIptvDefs::REQ_DOWN_IMG, url, Iptv::Binary);
 }
 
 /* -----------------------------------------------------------------\

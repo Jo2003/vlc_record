@@ -20,6 +20,8 @@
 #include <QVariant>
 #include <QMetaEnum>
 #include <QUrl>
+#include <QVector>
+#include <QMutex>
 
 #include "clogfile.h"
 
@@ -75,18 +77,50 @@ public:
 //---------------------------------------------------------------------------
 class QIptvCtrlClient : public QNetworkAccessManager
 {
+   /// Please note!
+   /// We have to make sure that requests are
+   /// executed in the incoming order. Since
+   /// some commands depend on others we only should
+   /// start next request when former request was done!
+   /// Therefore the command queue and busy flag was
+   /// added again. It's implemented into this class
+   /// to hide it from the childs. So API client
+   /// must not take care about that!
+
    Q_OBJECT
 
 public:
+
+   /// definitions for command queue ...
+   enum EHttpReqType {
+      E_REQ_GET,
+      E_REQ_POST,
+      E_REQ_UNKN = 255
+   };
+
+   struct SRequest {
+      EHttpReqType   eHttpReqType;
+      int            iReqId;
+      QString        sUrl;
+      QString        sContent;
+      Iptv::eReqType eIptvReqType;
+   };
+
    explicit QIptvCtrlClient(QObject* parent = 0);
    virtual ~QIptvCtrlClient();
 
-   virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String);
-   virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req = Iptv::String);
+   virtual void q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String);
+   virtual void q_get(int iReqId, const QString& url, Iptv::eReqType t_req = Iptv::String);
+
+   virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
+   virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
 
 private:
-   QVariant cookies;
-   bool     bCSet;
+   QVariant          cookies;
+   bool              bCSet;
+   bool              bBusy;
+   QVector<SRequest> vCmdQueue;
+   QMutex            mtxCmdQueue;
 #ifdef __TRACE
    Iptv     iptv;
 #endif
@@ -94,6 +128,7 @@ private:
 protected:
    QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
    QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
+   void workOffQueue ();
 
 signals:
    void sigStringResponse (int reqId, QString strResp);

@@ -493,16 +493,18 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
    {
       contentMap = contentMap.value("film").toMap();
 
-      vidInfo.sActors   = contentMap.value("actors").toString();
-      vidInfo.sCountry  = contentMap.value("country").toString();
-      vidInfo.sDescr    = contentMap.value("description").toString();
-      vidInfo.sDirector = contentMap.value("director").toString();
-      vidInfo.sImg      = contentMap.value("poster").toString();
-      vidInfo.sName     = contentMap.value("name").toString();
-      vidInfo.sYear     = contentMap.value("year").toString();
-      vidInfo.sGenres   = contentMap.value("genre_str").toString();
-      vidInfo.uiLength  = contentMap.value("lenght").toUInt();
-      vidInfo.uiVidId   = contentMap.value("id").toUInt();
+      vidInfo.sActors    = contentMap.value("actors").toString();
+      vidInfo.sCountry   = contentMap.value("country").toString();
+      vidInfo.sDescr     = contentMap.value("description").toString();
+      vidInfo.sDirector  = contentMap.value("director").toString();
+      vidInfo.sImg       = contentMap.value("poster").toString();
+      vidInfo.sName      = contentMap.value("name").toString();
+      vidInfo.sYear      = contentMap.value("year").toString();
+      vidInfo.sGenres    = contentMap.value("genre_str").toString();
+      vidInfo.uiLength   = contentMap.value("lenght").toUInt();
+      vidInfo.uiVidId    = contentMap.value("id").toUInt();
+      vidInfo.bFavourit  = contentMap.value("favorite").toBool();
+      vidInfo.bProtected = contentMap.value("pass_protect").toBool();
 
       foreach (const QVariant& lVideo, contentMap.value("videos").toList())
       {

@@ -37,6 +37,7 @@ QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
    QNetworkAccessManager(parent)
 {
    bCSet = false;
+   bBusy = false;
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
 }
 
@@ -140,6 +141,12 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
 
    // mark for deletion ...
    reply->deleteLater();
+
+   // request handled ...
+   bBusy = false;
+
+   // check for new requests ...
+   workOffQueue();
 }
 
 //---------------------------------------------------------------------------
@@ -276,4 +283,108 @@ QNetworkReply* QIptvCtrlClient::get(int iReqId, const QString& url,
    }
 
    return pReply;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   queue in a post request
+//
+//! \author  Jo2003
+//! \date    05.06.2013
+//
+//! \param   iReqId (int) request identifier
+//! \param   url (const QString&) url used for the get request
+//! \param   content (const QString&) data to be posted
+//! \param   t_req (Iptv::eReqType) type of request
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req)
+{
+   SRequest reqObj;
+   reqObj.eHttpReqType = E_REQ_POST;
+   reqObj.eIptvReqType = t_req;
+   reqObj.iReqId       = iReqId;
+   reqObj.sContent     = content;
+   reqObj.sUrl         = url;
+
+   // add request to command queue ...
+   mtxCmdQueue.lock();
+   vCmdQueue.append(reqObj);
+   mtxCmdQueue.unlock();
+
+   // try to handle request ...
+   workOffQueue();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   queue in a get request
+//
+//! \author  Jo2003
+//! \date    05.06.2013
+//
+//! \param   iReqId (int) request identifier
+//! \param   url (const QString&) url used for the get request
+//! \param   t_req (Iptv::eReqType) type of request
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::q_get(int iReqId, const QString& url, Iptv::eReqType t_req)
+{
+   SRequest reqObj;
+   reqObj.eHttpReqType = E_REQ_GET;
+   reqObj.eIptvReqType = t_req;
+   reqObj.iReqId       = iReqId;
+   reqObj.sContent     = "";
+   reqObj.sUrl         = url;
+
+   // add request to command queue ...
+   mtxCmdQueue.lock();
+   vCmdQueue.append(reqObj);
+   mtxCmdQueue.unlock();
+
+   // try to handle request ...
+   workOffQueue();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle next request stored in queue if not busy
+//
+//! \author  Jo2003
+//! \date    05.06.2013
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::workOffQueue()
+{
+   SRequest reqObj;
+   reqObj.eHttpReqType = E_REQ_UNKN;
+
+   // pending requests ... ?
+   if (!bBusy)
+   {
+      // something to do ... ?
+      mtxCmdQueue.lock();
+      if (!vCmdQueue.isEmpty())
+      {
+         reqObj = vCmdQueue.first();
+         vCmdQueue.remove(0);
+      }
+
+      if (reqObj.eHttpReqType == E_REQ_POST)
+      {
+         // handle queued post request ...
+         bBusy = true;
+         post(reqObj.iReqId, reqObj.sUrl, reqObj.sContent, reqObj.eIptvReqType);
+      }
+      else if (reqObj.eHttpReqType == E_REQ_GET)
+      {
+         // handle queued get request ...
+         bBusy = true;
+         get(reqObj.iReqId, reqObj.sUrl, reqObj.eIptvReqType);
+      }
+      mtxCmdQueue.unlock();
+   }
 }

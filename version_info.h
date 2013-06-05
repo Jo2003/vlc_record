@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "63"
-#define BETA_EXT      "B7"
+#define BETA_EXT      "B8"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,13 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2013-06-05: Version 2.63B8
+| - add missing parse for pass_protect and favorite
+|   in JSON parser for video info
+| - add command queue to iptv client so all requests
+|   are completed in needed order
+|
 | 2013-04-24: Version 2.63B7
 | - re-init libVlc after error event
 |

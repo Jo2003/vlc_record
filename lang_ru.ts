@@ -1838,11 +1838,11 @@ To change the parent code make sure:
         <location filename="cstdjsonparser.cpp" line="338"/>
         <location filename="cstdjsonparser.cpp" line="387"/>
         <location filename="cstdjsonparser.cpp" line="447"/>
-        <location filename="cstdjsonparser.cpp" line="526"/>
-        <location filename="cstdjsonparser.cpp" line="591"/>
-        <location filename="cstdjsonparser.cpp" line="640"/>
-        <location filename="cstdjsonparser.cpp" line="682"/>
-        <location filename="cstdjsonparser.cpp" line="743"/>
+        <location filename="cstdjsonparser.cpp" line="528"/>
+        <location filename="cstdjsonparser.cpp" line="593"/>
+        <location filename="cstdjsonparser.cpp" line="642"/>
+        <location filename="cstdjsonparser.cpp" line="684"/>
+        <location filename="cstdjsonparser.cpp" line="745"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
@@ -1854,11 +1854,11 @@ To change the parent code make sure:
         <location filename="cstdjsonparser.cpp" line="339"/>
         <location filename="cstdjsonparser.cpp" line="388"/>
         <location filename="cstdjsonparser.cpp" line="448"/>
-        <location filename="cstdjsonparser.cpp" line="527"/>
-        <location filename="cstdjsonparser.cpp" line="592"/>
-        <location filename="cstdjsonparser.cpp" line="641"/>
-        <location filename="cstdjsonparser.cpp" line="683"/>
-        <location filename="cstdjsonparser.cpp" line="744"/>
+        <location filename="cstdjsonparser.cpp" line="529"/>
+        <location filename="cstdjsonparser.cpp" line="594"/>
+        <location filename="cstdjsonparser.cpp" line="643"/>
+        <location filename="cstdjsonparser.cpp" line="685"/>
+        <location filename="cstdjsonparser.cpp" line="746"/>
         <source>QJSON error: %1</source>
         <translation>Ошибка QJSON строки: %1</translation>
     </message>
@@ -2353,24 +2353,24 @@ or start time is later than end time!</source>
 <context>
     <name>QIptvCtrlClient</name>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="83"/>
+        <location filename="qiptvctrlclient.cpp" line="84"/>
         <source>id=%1, type=&apos;%2&apos;, size=%3 bytes</source>
         <oldsource>iReqID=%1, ReqType=&apos;%2&apos;, DataSize=%3B</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="118"/>
+        <location filename="qiptvctrlclient.cpp" line="119"/>
         <source>Error, unknown request type: %1!</source>
         <oldsource>Error, unknown reqest type: %1!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="235"/>
+        <location filename="qiptvctrlclient.cpp" line="242"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;, data=&apos;%4&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="269"/>
+        <location filename="qiptvctrlclient.cpp" line="276"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
         <translation></translation>
     </message>
