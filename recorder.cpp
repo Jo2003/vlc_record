@@ -132,6 +132,7 @@ Recorder::Recorder(QTranslator *trans, QWidget *parent)
    vlcCtrl.setParent(this);
    favContext.setParent(this, Qt::Popup);
    timerWidget.setParent(this, Qt::Tool);
+   updNotifier.setParent(this, Qt::Popup);
 
    // help dialog class (non modal) ...
    pHelp = new QHelpDialog(NULL);
@@ -3256,15 +3257,30 @@ void Recorder::slotUpdateAnswer (const QString &str)
          && (updInfo.iMajor == atoi(VERSION_MAJOR))
          && (updInfo.sUrl != ""))
       {
-         QString s       = HTML_SITE;
-         QString content = tr("There is the new version %1 of %2 available.<br />Click %3 to download!")
-               .arg(updInfo.sVersion)
-               .arg(pCustomization->strVal("APP_NAME"))
-               .arg(QString("<a href='%1'>%2</a>").arg(updInfo.sUrl).arg(tr("here")));
+         int    iMinor  = pDb->intValue("UpdMinor");
+         int    iMajor  = pDb->intValue("UpdMajor");
+         qint64 llCheck = pDb->stringValue("UpdNextCheck").toLongLong();
+         bool   bDispl  = true;
 
-         s.replace(TMPL_CONT, content);
+         if ((updInfo.iMajor == iMajor) && (updInfo.iMinor == iMinor)
+             && ((llCheck == -1) || (QDateTime::currentDateTime().toTime_t() < llCheck)))
+         {
+            bDispl = false;
+         }
 
-         QMessageBox::information(this, tr("Update available"), s);
+         if (bDispl)
+         {
+            QString s       = HTML_SITE;
+            QString content = tr("There is the new version %1 of %2 available.<br />Click %3 to download!")
+                  .arg(updInfo.sVersion)
+                  .arg(pCustomization->strVal("APP_NAME"))
+                  .arg(QString("<a href='%1'>%2</a>").arg(updInfo.sUrl).arg(tr("here")));
+
+            s.replace(TMPL_CONT, content);
+
+            updNotifier.setUpdateData(s, updInfo.iMinor, updInfo.iMajor);
+            updNotifier.exec();
+         }
       }
       else
       {
@@ -3869,10 +3885,7 @@ void Recorder::initDialog ()
    InitShortCuts ();
 
    // check for program updates ...
-   if (Settings.checkForUpdate())
-   {
-      apiClient.queueRequest(CIptvDefs::REQ_UPDATE_CHECK, pCustomization->strVal("UPD_CHECK_URL"));
-   }
+   apiClient.queueRequest(CIptvDefs::REQ_UPDATE_CHECK, pCustomization->strVal("UPD_CHECK_URL"));
 }
 
 /* -----------------------------------------------------------------\

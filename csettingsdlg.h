@@ -72,7 +72,6 @@ public:
     bool AskForRecFile ();
     bool TranslitRecFile ();
     bool DetachPlayer ();
-    bool checkForUpdate();
     int  getTimeShift();
     bool doubleClickToPlay();
     bool useGpuAcc();

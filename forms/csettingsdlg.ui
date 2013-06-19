@@ -471,9 +471,6 @@ color: red;
           <string>Advanced Settings</string>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::FieldsStayAtSizeHint</enum>
-          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="lanApiServer">
             <property name="text">
@@ -588,9 +585,9 @@ color: red;
            </widget>
           </item>
           <item row="6" column="0">
-           <widget class="QCheckBox" name="checkUpdate">
+           <widget class="QCheckBox" name="check2ClicksToPlay">
             <property name="text">
-             <string>Check for updates</string>
+             <string>Doubleclick on channel list starts play</string>
             </property>
            </widget>
           </item>
@@ -602,13 +599,6 @@ color: red;
            </widget>
           </item>
           <item row="7" column="0">
-           <widget class="QCheckBox" name="check2ClicksToPlay">
-            <property name="text">
-             <string>Doubleclick on channel list starts play</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
            <widget class="QCheckBox" name="checkAds">
             <property name="enabled">
              <bool>false</bool>
@@ -776,8 +766,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>96</width>
-                     <height>26</height>
+                     <width>16</width>
+                     <height>16</height>
                     </rect>
                    </property>
                   </widget>
@@ -928,8 +918,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>96</width>
-                     <height>398</height>
+                     <width>70</width>
+                     <height>638</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1119,7 +1109,6 @@ color: red;
   <tabstop>checkHideToSystray</tabstop>
   <tabstop>checkDetach</tabstop>
   <tabstop>checkTranslit</tabstop>
-  <tabstop>checkUpdate</tabstop>
   <tabstop>checkGPUAcc</tabstop>
   <tabstop>check2ClicksToPlay</tabstop>
   <tabstop>checkAds</tabstop>
@@ -1139,7 +1128,6 @@ color: red;
   <tabstop>pushCancel</tabstop>
  </tabstops>
  <resources>
-  <include location="../iptv-record.qrc"/>
   <include location="../common.qrc"/>
  </resources>
  <connections>

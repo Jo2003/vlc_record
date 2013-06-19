@@ -57,6 +57,7 @@
 #include "qhelpdialog.h"
 #include "qrecordtimerwidget.h"
 #include "api_inc.h"
+#include "qupdatenotifydlg.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
@@ -168,6 +169,7 @@ private:
     Ui::STabWidget                  vodTabWidget;
     CIptvDefs                       metaKartina;
     QRecordTimerWidget              timerWidget;
+    QUpdateNotifyDlg                updNotifier;
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;

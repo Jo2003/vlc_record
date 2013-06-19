@@ -42,7 +42,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 {
    m_ui->setupUi(this);
    pParser         = NULL;
-   pApiClient       = NULL;
+   pApiClient      = NULL;
    pAccountInfo    = NULL;
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
@@ -270,15 +270,6 @@ void CSettingsDlg::readSettings()
    {
       // enable by default ...
       m_ui->check2ClicksToPlay->setCheckState(Qt::Checked);
-   }
-
-   m_ui->checkUpdate->setCheckState((Qt::CheckState)pDb->intValue("UpdateCheck", &iErr));
-
-   // value doesn't exist in database ...
-   if (iErr)
-   {
-      // enable by default ...
-      m_ui->checkUpdate->setCheckState(Qt::Checked);
    }
 
    m_ui->tabWidget->setTabEnabled(2, pDb->intValue("AdvSet") ? true : false);
@@ -549,7 +540,6 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("DetachPlayer", (int)m_ui->checkDetach->checkState());
    pDb->setValue("AdvSet", (int)m_ui->checkAdvanced->checkState());
    pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
-   pDb->setValue("UpdateCheck", (int)m_ui->checkUpdate->checkState());
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
 
@@ -1161,11 +1151,6 @@ int  CSettingsDlg::GetBitRate()
 QString CSettingsDlg::GetAPIServer()
 {
    return m_ui->lineApiServer->text();
-}
-
-bool CSettingsDlg::checkForUpdate()
-{
-   return m_ui->checkUpdate->isChecked();
 }
 
 int CSettingsDlg::getTimeShift()

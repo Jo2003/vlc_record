@@ -1,3 +1,16 @@
+/*------------------------------ Information ---------------------------*//**
+ *
+ *  $HeadURL$
+ *
+ *  @file     qrecordtimerwidget.cpp
+ *
+ *  @author   Jo2003
+ *
+ *  @date     09.12.2012
+ *
+ *  $Id$
+ *
+ *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qrecordtimerwidget.h"
 #include "ui_qrecordtimerwidget.h"
 
