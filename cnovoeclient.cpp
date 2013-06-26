@@ -394,11 +394,11 @@ void CNovoeClient::GetChannelList (const QString &secCode)
    
    if (secCode != "")
    {
-      req = "channel_list.php?have_sepg=1&" + sCookie;
+      req = "channel_list.php?" + sCookie;
    }
    else
    {
-      req = "channel_list.php?" + sCookie;
+      req = "channel_list.php?have_sepg=1&" + sCookie;
    }
 
    // request channel list or channel list for settings ...
