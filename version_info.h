@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "63"
-#define BETA_EXT      "B8"
+#define VERSION_MINOR "64"
+#define BETA_EXT      ""
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,12 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-06-26: Version 2.64
+| - RC1 for 2.64
+| - merge changes for Novoe.TV into trunk
+| - use QtJson instead of OJSON due to its smaller footprint
+| - program update can be delayed for one version only
+| - screenshots in help are unbranded
 |
 | 2013-06-05: Version 2.63B8
 | - add missing parse for pass_protect and favorite
