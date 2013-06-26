@@ -123,25 +123,32 @@ contains(DEFINES, _TASTE_IPTV_RECORD) {
     SOURCES += crodnoeclient.cpp \
                crodnoeparser.cpp
 } else {
-    message (Using standard api client ...)
-    HEADERS += ckartinaclnt.h
-    SOURCES += ckartinaclnt.cpp
+    contains(DEFINES, _TASTE_NOVOE_TV) {
+		message (Using novoe api client ...)
+		HEADERS += cnovoeclient.h \
+				   cnovoeparser.h
+		SOURCES += cnovoeclient.cpp \
+				   cnovoeparser.cpp
+    } else {
+		message (Using standard api client ...)
+		HEADERS += ckartinaclnt.h
+		SOURCES += ckartinaclnt.cpp
+	}
 }
 
 contains(DEFINES, _USE_QJSON) {
-    message (using QJson parser ...)
-    INCLUDEPATH += qjson/include
-    include (qjson/qjson.pri)
-    DEFINES += QJSON_EXPORT=""
-    SOURCES += cstdjsonparser.cpp
-    HEADERS += cstdjsonparser.h
+   message (using QtJson parser ...)
+   include (qtjson/qtjson.pri)
+   SOURCES += cstdjsonparser.cpp
+   HEADERS += cstdjsonparser.h
 } else {
-    message (using XML parser ...)
-    SOURCES += ckartinaxmlparser.cpp \
-               capixmlparser.cpp
-    HEADERS += ckartinaxmlparser.h \
+	message (using XML parser ...)
+	SOURCES += ckartinaxmlparser.cpp \
+			   capixmlparser.cpp
+	HEADERS += ckartinaxmlparser.h \
                capixmlparser.h
 }
+
 
 # for static build ...
 static {

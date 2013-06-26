@@ -2,7 +2,7 @@
  *
  *  $HeadURL$
  *
- *  @file     cstdjsonparser.cpp
+ *  @file     cnovoeparser.cpp
  *
  *  @author   Jo2003
  *
@@ -11,7 +11,7 @@
  *  $Id$
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
-#include "cstdjsonparser.h"
+#include "cnovoeparser.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -27,7 +27,7 @@ extern CLogFile VlcLog;
 //
 //! \return  --
 //---------------------------------------------------------------------------
-CStdJsonParser::CStdJsonParser(QObject * parent) : CApiParser(parent)
+CNovoeParser::CNovoeParser(QObject * parent) : CStdJsonParser(parent)
 {
    // nothing to do so far
 }
@@ -45,7 +45,7 @@ CStdJsonParser::CStdJsonParser(QObject * parent) : CApiParser(parent)
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
-int CStdJsonParser::parseChannelList (const QString &sResp,
+int CNovoeParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
                                          bool bFixTime)
 {
@@ -53,8 +53,9 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
    bool bOk = false;
    cparser::SChan      chan;
    cparser::STimeShift ts;
-   QVariantMap   contentMap;
+   QVariantMap contentMap;
    int iGrpIdx = 0;
+   QString strImgPrefix = "/_logos/channelLogos/";
 
    // clear channel list ...
    chanList.clear();
@@ -91,11 +92,10 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
                chan.bIsVideo     = mChannel.value("is_video").toBool();
                chan.bHasArchive  = mChannel.value("have_archive").toBool();
                chan.bIsProtected = mChannel.value("protected").toBool();
-               chan.sIcon        = mChannel.value("icon").toString();
+               chan.sIcon        = strImgPrefix + mChannel.value("logo_big").toString();
                chan.sProgramm    = mChannel.value("epg_progname").toString();
                chan.uiStart      = mChannel.value("epg_start").toUInt();
                chan.uiEnd        = mChannel.value("epg_end").toUInt();
-               chan.bIsHidden    = mChannel.value("hide").toBool();
 
                if (bFixTime)
                {
@@ -143,15 +143,13 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
-int CStdJsonParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
+int CNovoeParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
                                      QString &sActIp)
 {
    int  iRV = 0;
    bool bOk = false;
-   cparser::SSrv   srv;
-   QVariantMap     contentMap, nestedMap;
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+   cparser::SSrv srv;
+   QVariantMap   contentMap, nestedMap;
 
    // clear server list ...
    vSrv.clear();
@@ -170,217 +168,9 @@ int CStdJsonParser::parseSServersLogin(const QString &sResp, QVector<cparser::SS
          QVariantMap mSrv = lSrv.toMap();
 
          srv.sIp   = mSrv.value("ip").toString();
-         srv.sName = mSrv.value("descr").toString();
+         srv.sName = mSrv.value("desc").toString();
 
          vSrv.append(srv);
-      }
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse cookie response
-//
-//! \author  Jo2003
-//! \date    15.04.2013
-//
-//! \param   sResp (const QString &) ref. to response string
-//! \param   sCookie (QString&) ref. to cookie string
-//! \param   sInf (cparser::SAccountInfo &) ref. to account info
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf)
-{
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap   contentMap, nestedMap;
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      sCookie = QString("%1=%2")
-            .arg(contentMap.value("sid_name").toString())
-            .arg(contentMap.value("sid").toString());
-
-
-      nestedMap        = contentMap.value("account").toMap();
-      sInf.sExpires    = QDateTime::fromTime_t(nestedMap.value("packet_expire").toUInt())
-                           .toString(DEF_TIME_FORMAT);
-
-      nestedMap        = contentMap.value("services").toMap();
-      sInf.bHasArchive = nestedMap.value("archive").toBool();
-      sInf.bHasVOD     = nestedMap.value("vod").toBool();
-
-      // check offset ...
-      checkTimeOffSet (contentMap.value("servertime").toUInt());
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse vod genres response
-//
-//! \author  Jo2003
-//! \date    15.04.2013
-//
-//! \param   sResp (const QString &) ref. to response string
-//! \param   vGenres (QVector<cparser::SGenre>&) ref. to genre vector
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
-{
-   int  iRV = 0;
-   bool bOk = false;
-   cparser::SGenre sGenre;
-   QVariantMap     contentMap;
-
-   // clear genres ...
-   vGenres.clear();
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      foreach (const QVariant& lGenre, contentMap.value("genres").toList())
-      {
-         QVariantMap mGenre = lGenre.toMap();
-
-         sGenre.sGName = mGenre.value("name").toString();
-         sGenre.uiGid  = mGenre.value("id").toUInt();
-
-         vGenres.append(sGenre);
-      }
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse current epg current response
-//
-//! \author  Jo2003
-//! \date    15.04.2013
-//
-//! \param   sResp (const QString &) ref. to response string
-//! \param   currentEpg (QCurrentMap &) ref. to epg data map
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
-{
-   int  iRV = 0, cid;
-   bool bOk = false;
-   cparser::SEpgCurrent          entry;
-   QVector<cparser::SEpgCurrent> vEntries;
-   QVariantMap   contentMap;
-
-   // clear map ...
-   currentEpg.clear();
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      foreach (const QVariant& lEpg1, contentMap.value("epg").toList())
-      {
-         QVariantMap mEpg1 = lEpg1.toMap();
-
-         vEntries.clear();
-
-         cid = mEpg1.value("cid").toInt();
-
-         foreach (const QVariant& lEpg2, mEpg1.value("epg").toList())
-         {
-            QVariantMap mEpg2 = lEpg2.toMap();
-
-            entry.sShow   = mEpg2.value("progname").toString();
-            entry.uiStart = mEpg2.value("ts").toUInt();
-
-            vEntries.append(entry);
-         }
-
-         currentEpg.insert(cid, vEntries);
-      }
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse Vod Manager data (genre rating)
-//
-//! \author  Jo2003
-//! \date    15.04.2013
-//
-//! \param   sResp (const QString &) ref. to response string
-//! \param   currentEpg (QVector<cparser::SVodRate> &) ref. to rates vector
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseVodManager (const QString &sResp, QVector<cparser::SVodRate> &vRates)
-{
-   int  iRV = 0;
-   bool bOk = false;
-   cparser::SVodRate entry;
-   QVariantMap   contentMap;
-
-   // clear map ...
-   vRates.clear();
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      foreach (const QVariant& lAccess, contentMap.value("result").toList())
-      {
-         QVariantMap mAccess = lAccess.toMap();
-
-         entry.iRateID = mAccess.value("id_rate").toInt();
-         entry.sGenre  = mAccess.value("rate_name").toString();
-         entry.sAccess = mAccess.value("action").toString();
-
-         vRates.append(entry);
       }
    }
    else
@@ -408,12 +198,12 @@ int CStdJsonParser::parseVodManager (const QString &sResp, QVector<cparser::SVod
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
-int CStdJsonParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList, cparser::SGenreInfo &gInfo)
+int CNovoeParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList, cparser::SGenreInfo &gInfo)
 {
    int  iRV = 0;
    bool bOk = false;
    cparser::SVodVideo entry;
-   QVariantMap   contentMap;
+   QVariantMap contentMap;
 
    // clear vector ...
    vVodList.clear();
@@ -435,10 +225,9 @@ int CStdJsonParser::parseVodList(const QString &sResp, QVector<cparser::SVodVide
          entry.sName      = mRow.value("name").toString();
          entry.sDescr     = mRow.value("description").toString();
          entry.sYear      = mRow.value("year").toString();
-         entry.sCountry   = mRow.value("country").toString();
          entry.sImg       = mRow.value("poster").toString();
-         entry.bProtected = mRow.value("pass_protect").toBool();
-         entry.bFavourit  = mRow.value("favorite").toBool();
+         entry.bProtected = (mRow.value("vis").toString() != "on") ? true : false;
+         entry.sCountry   = mRow.value("country").toMap().value("name").toString();
 
          vVodList.append(entry);
       }
@@ -467,7 +256,7 @@ int CStdJsonParser::parseVodList(const QString &sResp, QVector<cparser::SVodVide
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
-int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
+int CNovoeParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
 {
    int  iRV = 0;
    bool bOk = false;
@@ -495,7 +284,6 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
       contentMap = contentMap.value("film").toMap();
 
       vidInfo.sActors    = contentMap.value("actors").toString();
-      vidInfo.sCountry   = contentMap.value("country").toString();
       vidInfo.sDescr     = contentMap.value("description").toString();
       vidInfo.sDirector  = contentMap.value("director").toString();
       vidInfo.sImg       = contentMap.value("poster").toString();
@@ -504,8 +292,8 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
       vidInfo.sGenres    = contentMap.value("genre_str").toString();
       vidInfo.uiLength   = contentMap.value("lenght").toUInt();
       vidInfo.uiVidId    = contentMap.value("id").toUInt();
-      vidInfo.bFavourit  = contentMap.value("favorite").toBool();
-      vidInfo.bProtected = contentMap.value("pass_protect").toBool();
+      vidInfo.bProtected = (contentMap.value("vis").toString() != "on") ? true : false;
+      vidInfo.sCountry   = contentMap.value("country").toMap().value("name").toString();
 
       foreach (const QVariant& lVideo, contentMap.value("videos").toList())
       {
@@ -548,12 +336,12 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
-int CStdJsonParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
+int CNovoeParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
 {
    int  iRV = 0;
    bool bOk = false;
    cparser::SEpg entry;
-   QVariantMap contentMap;
+   QVariantMap   contentMap;
    QString sTmp;
 
    // clear vector ...
@@ -569,6 +357,7 @@ int CStdJsonParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgL
 
          entry.sDescr = "";
          entry.uiGmt  = mEpg.value("ut_start").toUInt();
+         entry.uiEnd  = mEpg.value("ut_end").toUInt();
          sTmp         = mEpg.value("progname").toString();
 
          if (sTmp.contains('\n'))
@@ -615,7 +404,7 @@ int CStdJsonParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgL
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
-int CStdJsonParser::parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal)
+int CNovoeParser::parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal)
 {
    int  iRV = 0;
    bool bOk = false;
@@ -644,147 +433,6 @@ int CStdJsonParser::parseSetting(const QString& sResp, const QString &sName, QVe
                     tr("QtJson parser error in %1 %2():%3")
                     .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
 
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse URL response
-//
-//! \author  Jo2003
-//! \date    15.04.2013
-//
-//! \param   sResp (const QString &) ref. to response string
-//! \param   sUrl (QString &) ref. to url string
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseUrl(const QString &sResp, QString &sUrl)
-{
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      sUrl = contentMap.value("url").toString();
-      sUrl.replace("&amp;", "&");
-
-      if (sUrl.contains(' '))
-      {
-         sUrl = sUrl.left(sUrl.indexOf(' '));
-      }
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse VOD URL response
-//
-//! \author  Jo2003
-//! \date    15.04.2013
-//
-//! \param   sResp (const QString &) ref. to response string
-//! \param   sUrls (QStringList &) ref. to url list
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
-{
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
-   QString     sUrl, sAdUrl;
-
-   // clear url list ...
-   sUrls.clear();
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      sUrl = contentMap.value("url").toString();
-      sUrl.replace("&amp;", "&");
-
-      if (sUrl.contains(' '))
-      {
-         sUrl = sUrl.left(sUrl.indexOf(' '));
-      }
-
-      sAdUrl = contentMap.value("ad_url").toString();
-      sAdUrl.replace("&amp;", "&");
-
-      if (sAdUrl.contains(' '))
-      {
-         sAdUrl = sAdUrl.left(sAdUrl.indexOf(' '));
-      }
-
-      sUrls << sUrl;
-
-      if (!sAdUrl.isEmpty())
-      {
-         sUrls << sAdUrl;
-      }
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse error
-//
-//! \author  Jo2003
-//! \date    16.04.2013
-//
-//! \param   sResp (const QString &) ref. to response string
-//! \param   sMsg (QString &) ref. to error message
-//! \param   eCode (int&) ref. to error code
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseError (const QString& sResp, QString &sMsg, int &eCode)
-{
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      contentMap = contentMap.value("error").toMap();
-
-      sMsg       = contentMap.value("message").toString();
-      eCode      = contentMap.value("code").toInt();
-   }
-   else
-   {
-      // we shouldn't report any error using sigError when
-      // parsing an error ... !
       iRV = -1;
    }
 

@@ -18,6 +18,9 @@
 #ifdef _TASTE_IPTV_RECORD
    #include "crodnoeclient.h"
    #include "crodnoeparser.h"
+#elif _TASTE_NOVOE_TV
+   #include "cnovoeclient.h"
+   #include "cnovoeparser.h"
 #else
    #include "ckartinaclnt.h"
    #ifdef _USE_QJSON

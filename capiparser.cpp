@@ -285,7 +285,7 @@ void CApiParser::checkColor(QString& ccode, int idx)
 {
    QColor col(ccode);
 
-   if (!col.isValid() || (col == QColor("black")))
+   if (!col.isValid() || (col == QColor("black")) || (col == QColor("#ef4444")))
    {
       // set new group color ...
       ccode = slAltColors.at(idx % slAltColors.count());

@@ -1696,6 +1696,18 @@ void Recorder::slotLogout(const QString &str)
    // no need to look for errors in response ...
    Q_UNUSED(str);
 
+#ifdef INCLUDE_LIBVLC
+   if (vlcCtrl.withLibVLC())
+   {
+      ui->player->stop();
+   }
+   else
+#endif
+   if (vlcCtrl.IsRunning())
+   {
+      vlcCtrl.stop();
+   }
+
    mInfo(tr("logout done ..."));
    QDialog::accept ();
 }
@@ -1926,36 +1938,40 @@ void Recorder::slotEPG(const QString &str)
 
    QDateTime   epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
    QModelIndex idx     = ui->channelList->currentIndex();
-   int         cid     = qvariant_cast<int>(idx.data(channellist::cidRole));
-   QIcon       icon;
-
-   if (!apiParser.parseEpg(str, epg))
+      
+   if (idx.isValid())
    {
-      cparser::SChan chan;
+      int     cid      = qvariant_cast<int>(idx.data(channellist::cidRole));
+      QIcon   icon;
 
-      if (!getChanEntry(cid, chan))
+      if (!apiParser.parseEpg(str, epg))
       {
-         ui->textEpg->DisplayEpg(epg, chan.sName,
-                                 cid, epgTime.toTime_t(),
-                                 accountInfo.bHasArchive ? chan.bHasArchive : false);
+         cparser::SChan chan;
 
-         // fill epg control ...
-         icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
-         ui->labChanIcon->setPixmap(icon.pixmap(24, 24));
-         ui->labChanName->setText(chan.sName);
-         ui->labCurrDay->setText(epgTime.toString("dd. MMM. yyyy"));
-
-         pEpgNavbar->setCurrentIndex(epgTime.date().dayOfWeek() - 1);
-
-         TouchPlayCtrlBtns();
-         ui->channelList->setFocus(Qt::OtherFocusReason);
-
-         // update vod stuff only at startup ...
-         if (accountInfo.bHasVOD)
+         if (!getChanEntry(cid, chan))
          {
-            if (ui->cbxGenre->count() == 0)
+            ui->textEpg->DisplayEpg(epg, chan.sName,
+                                    cid, epgTime.toTime_t(),
+                                    accountInfo.bHasArchive ? chan.bHasArchive : false);
+
+            // fill epg control ...
+            icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
+            ui->labChanIcon->setPixmap(icon.pixmap(24, 24));
+            ui->labChanName->setText(chan.sName);
+            ui->labCurrDay->setText(epgTime.toString("dd. MMM. yyyy"));
+
+            pEpgNavbar->setCurrentIndex(epgTime.date().dayOfWeek() - 1);
+
+            TouchPlayCtrlBtns();
+            ui->channelList->setFocus(Qt::OtherFocusReason);
+
+            // update vod stuff only at startup ...
+            if (accountInfo.bHasVOD)
             {
-               apiClient.queueRequest(CIptvDefs::REQ_GETVODGENRES);
+               if (ui->cbxGenre->count() == 0)
+               {
+                  apiClient.queueRequest(CIptvDefs::REQ_GETVODGENRES);
+               }
             }
          }
       }
@@ -3031,32 +3047,35 @@ void Recorder::slotChannelUp()
    bool        bSuccess = false;
    idx  = ui->channelList->currentIndex();
 
-   do
+   if (idx.isValid())
    {
-      iRow = idx.row();
-
-      if (!iRow)
+      do
       {
-         iRow = pModel->rowCount() - 1;
-      }
-      else
-      {
-         iRow --;
-      }
+         iRow = idx.row();
 
-      idx = pModel->index(iRow, 0);
+         if (!iRow)
+         {
+            iRow = pModel->rowCount() - 1;
+         }
+         else
+         {
+            iRow --;
+         }
 
-      // make sure to not mark a channel group ...
-      if (qvariant_cast<int>(idx.data(channellist::cidRole)) != -1)
-      {
-         bSuccess = true;
-      }
+         idx = pModel->index(iRow, 0);
 
-   } while (!bSuccess);
+         // make sure to not mark a channel group ...
+         if (qvariant_cast<int>(idx.data(channellist::cidRole)) != -1)
+         {
+            bSuccess = true;
+         }
+
+      } while (!bSuccess);
 
 
-   ui->channelList->setCurrentIndex(idx);
-   ui->channelList->scrollTo(idx);
+      ui->channelList->setCurrentIndex(idx);
+      ui->channelList->scrollTo(idx);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -3076,31 +3095,34 @@ void Recorder::slotChannelDown()
    bool        bSuccess = false;
    idx  = ui->channelList->currentIndex();
 
-   do
+   if (idx.isValid())
    {
-      iRow = idx.row();
-
-      if (iRow == (pModel->rowCount() - 1))
+      do
       {
-         iRow = 0;
-      }
-      else
-      {
-         iRow ++;
-      }
+         iRow = idx.row();
 
-      idx = pModel->index(iRow, 0);
+         if (iRow == (pModel->rowCount() - 1))
+         {
+            iRow = 0;
+         }
+         else
+         {
+            iRow ++;
+         }
 
-      // make sure to not mark a channel group ...
-      if (qvariant_cast<int>(idx.data(channellist::cidRole)) != -1)
-      {
-         bSuccess = true;
-      }
+         idx = pModel->index(iRow, 0);
 
-   } while (!bSuccess);
+         // make sure to not mark a channel group ...
+         if (qvariant_cast<int>(idx.data(channellist::cidRole)) != -1)
+         {
+            bSuccess = true;
+         }
 
-   ui->channelList->setCurrentIndex(idx);
-   ui->channelList->scrollTo(idx);
+      } while (!bSuccess);
+
+      ui->channelList->setCurrentIndex(idx);
+      ui->channelList->scrollTo(idx);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -3389,26 +3411,41 @@ void Recorder::slotRefreshChanLogos()
    {
       QStandardItem      *pItem;
       QPixmap             icon;
-      int                 cid, curCid, i;
+      int                 cid, curCid = -1, i;
       QString             fLogo;
+      bool                bLoaded;
+      QModelIndex         modIdx = ui->channelList->currentIndex();
 
-      // get current selection ...
-      curCid = pModel->itemFromIndex(ui->channelList->currentIndex())->data(channellist::cidRole).toInt();
+      if(modIdx.isValid())
+      {
+         // get current selection ...
+         curCid = pModel->itemFromIndex(modIdx)->data(channellist::cidRole).toInt();
+      }
 
       for (i = 0; i < pModel->rowCount(); i++)
       {
-         pItem = pModel->item(i);
-         cid   = pItem->data(channellist::cidRole).toInt();
+         bLoaded = false;
+         pItem   = pModel->item(i);
+         cid     = pItem->data(channellist::cidRole).toInt();
 
          // is there a logo file ... ?
          if ((fLogo = pItem->data(channellist::logoFileRole).toString()) != "")
          {
-            if (icon.load(fLogo, "image/gif"))
+            if (icon.load(fLogo))                     // auto type detection ...
+            {
+               bLoaded = true;
+            }
+            else if (icon.load(fLogo, "image/gif"))   // force gif load ...
+            {
+               bLoaded = true;
+            }
+
+            if (bLoaded)
             {
                pItem->setData(QIcon(icon), channellist::iconRole);
 
                // update channel icon on EPG browser ...
-               if (cid == curCid)
+               if ((curCid != -1) && (cid == curCid))
                {
                   ui->labChanIcon->setPixmap(QIcon(icon).pixmap(24, 24));
                }
@@ -3422,10 +3459,10 @@ void Recorder::slotRefreshChanLogos()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotRefreshChanLogos [slot]
+|  Method: slotPCodeChangeResp [slot]
 |  Begin: 31.05.2012
 |  Author: Jo2003
-|  Description: update channel logos in channel list ...
+|  Description: parent code was changed ...
 |
 |  Parameters: --
 |
@@ -4296,18 +4333,19 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    QString   sLine;
    QString   sLogoFile;
    QStandardItem *pItem;
-   bool      bMissingIcon = false;
-   int       iRow, iRowGroup;
-   QFileInfo fInfo;
-   QPixmap   Pix(16, 16);
-   QPixmap   icon;
-   int       iChanCount =  0;
-   int       iLastChan  = -1;
-   int       iPos;
-   uint      now = QDateTime::currentDateTime().toTime_t();
+   bool        bMissingIcon = false;
+   int         iRow, iRowGroup;
+   QFileInfo   fInfo;
+   QPixmap     Pix(16, 16);
+   QPixmap     icon;
+   int         iChanCount =  0;
+   int         iLastChan  = -1;
+   int         iPos;
+   uint        now = QDateTime::currentDateTime().toTime_t();
+   QModelIndex idx = ui->channelList->currentIndex();
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
-   iRow      = ui->channelList->currentIndex().row();
+   iRow      = idx.isValid() ? idx.row() : -1;
    iRow      = (iRow <= 0) ? 1 : iRow;
    iRowGroup = (iRowGroup < 0) ? 0 : iRowGroup;
 
@@ -4369,21 +4407,24 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             else
             {
                // check if image file can be loaded ...
-               if (!icon.load(sLogoFile, "image/gif"))
+               if (!icon.load(sLogoFile))                   // try auto type detection ...
                {
-                  // can't load --> load default image ...
-                  icon.load(":png/no_logo");
+                  if (!icon.load(sLogoFile, "image/gif"))   // try to force to gif if auto type detection doesn't work ...
+                  {
+                     // can't load --> load default image ...
+                     icon.load(":png/no_logo");
 
-                  mInfo(tr("Can't load channel image \"%1.gif\" ...").arg(chanlist[i].iId));
+                     mInfo(tr("Can't load channel image \"%1\" ...").arg(sLogoFile));
 
-                  // delete logo file ...
-                  QFile::remove(sLogoFile);
+                     // delete logo file ...
+                     QFile::remove(sLogoFile);
 
-                  // enqueue pic to cache ...
-                  pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
+                     // enqueue pic to cache ...
+                     pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
 
-                  // mark for reload ...
-                  bMissingIcon = true;
+                     // mark for reload ...
+                     bMissingIcon = true;
+                  }
                }
             }
 
@@ -5068,7 +5109,7 @@ bool Recorder::TimeJumpAllowed()
 int Recorder::getCurrentCid()
 {
    QModelIndex idx = ui->channelList->currentIndex();
-   int         cid = qvariant_cast<int>(idx.data(channellist::cidRole));
+   int         cid = idx.isValid() ? qvariant_cast<int>(idx.data(channellist::cidRole)) : -1;
 
    return cid;
 }
