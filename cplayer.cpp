@@ -639,14 +639,14 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
       iRV = initPlayer(sOpts);
    }
 
+   // set aspect and crop cbx to current values ...
+   slotResetVideoFormat();
+
    // make sure we stop the player - needed since playlist support ...
    if (isPlaying())
    {
        stop();
    }
-
-   // set aspect and crop to std ...
-   slotResetVideoFormat();
 
    if (!iRV)
    {
@@ -1887,8 +1887,59 @@ QString CPlayer::aspectCropToString (const char *pFormat)
 \----------------------------------------------------------------- */
 void CPlayer::slotResetVideoFormat()
 {
-   missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_ASPECT);
-   missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_CROP);
+   char *pForm;
+   uint  idx;
+   bool  bFound;
+
+   if (pMediaPlayer)
+   {
+      ///////////////////////// ASPECT RATIO //////////////////////////////////
+      bFound = false;
+
+      if ((pForm = libvlc_video_get_aspect_ratio(pMediaPlayer)) != NULL)
+      {
+         for (idx = 0; (idx < (sizeof(_pAspect) / sizeof (_pAspect[0]))) && !bFound; idx++)
+         {
+            if (!strcmp(pForm, _pAspect[idx]))
+            {
+               missionControl.vidFormCbxSetCurrentIndex(idx, QFusionControl::CBX_ASPECT);
+               bFound = true;
+            }
+         }
+
+         libvlc_free((void *)pForm);
+      }
+
+      if (!bFound)
+      {
+         missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_ASPECT);
+         libvlc_video_set_aspect_ratio(pMediaPlayer, "");
+      }
+
+      ///////////////////////// CROP GEOMETRY ////////////////////////////////
+
+      bFound = false;
+
+      if ((pForm = libvlc_video_get_crop_geometry(pMediaPlayer)) != NULL)
+      {
+         for (idx = 0; (idx < (sizeof(_pCrop) / sizeof (_pCrop[0]))) && !bFound; idx++)
+         {
+            if (!strcmp(pForm, _pCrop[idx]))
+            {
+               missionControl.vidFormCbxSetCurrentIndex(idx, QFusionControl::CBX_CROP);
+               bFound = true;
+            }
+         }
+
+         libvlc_free((void *)pForm);
+      }
+
+      if (!bFound)
+      {
+         missionControl.vidFormCbxSetCurrentIndex(0, QFusionControl::CBX_CROP);
+         libvlc_video_set_crop_geometry(pMediaPlayer, "");
+      }
+   }
 }
 
 /* -----------------------------------------------------------------\
