@@ -12,7 +12,6 @@
 \=============================================================================*/
 #include "cnovoeclient.h"
 #include "qcustparser.h"
-#include "small_helpers.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -533,7 +532,7 @@ void CNovoeClient::GetStreamURL(int iChanID, const QString &secCode, bool bTimer
 
    if (secCode != "")
    {
-      req += QString("&protect_code=%1").arg(CSmallHelpers::md5(secCode));
+      req += QString("&protect_code=%1").arg(secCode);
    }
 
    q_get((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
