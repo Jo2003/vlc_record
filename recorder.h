@@ -291,6 +291,7 @@ private slots:
     void slotUpdateChannelList (const QList<int> &cidList = QList<int>());
     void slotRecordTimerEnded ();
     void slotGlobalError (int iType, const QString& sCaption, const QString& sDescr);
+    void slotTriggeredLogout();
 
 signals:
     void sigShow ();

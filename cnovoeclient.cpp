@@ -345,10 +345,7 @@ void CNovoeClient::Logout ()
 {
    mInfo(tr("Logout ..."));
 
-   // fake logout while it's not supported so far ...
-   slotStringResponse((int)CIptvDefs::REQ_LOGOUT, "Logout faked ... ");
-
-   // q_get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout.php?" + sCookie, Iptv::Logout);
+   q_get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout.php?" + sCookie, Iptv::Logout);
 }
 
 /*-----------------------------------------------------------------------------\

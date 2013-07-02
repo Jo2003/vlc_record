@@ -465,7 +465,7 @@ void Recorder::closeEvent(QCloseEvent *event)
       if (apiClient.cookieSet())
       {
          // logout from kartina ...
-         apiClient.queueRequest (CIptvDefs::REQ_LOGOUT);
+          QTimer::singleShot(200, this, SLOT(slotTriggeredLogout()));
 
          // ignore event here ...
          // we'll close app in logout slot ...
@@ -3730,6 +3730,23 @@ void Recorder::slotGlobalError (int iType, const QString& sCaption, const QStrin
       mInfo(tr("Unknown Message: %1").arg(sDescr));
       break;
    }
+}
+
+/* -----------------------------------------------------------------\
+|  Method: slotTriggeredLogout [slot]
+|  Begin: 02.07.2013
+|  Author: Jo2003
+|  Description: triggered / timed logout, function should be called
+|               by timer
+|
+|  Parameters: --
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void Recorder::slotTriggeredLogout()
+{
+   // logout from kartina ...
+   apiClient.queueRequest (CIptvDefs::REQ_LOGOUT);
 }
 
 
