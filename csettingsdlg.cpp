@@ -1,4 +1,4 @@
-/*********************** Information *************************\
+﻿/*********************** Information *************************\
 | $HeadURL$
 |
 | Author: Jo2003
@@ -74,6 +74,22 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->cbxBitRate->setDisabled(true);
    m_ui->listHide->setDisabled(true);
 #endif
+
+#ifdef _TASTE_NOVOE_TV
+   /////////////////////////////////////////////////////////////////////////////
+   //                           NOVOE.TV only                                 //
+   /////////////////////////////////////////////////////////////////////////////
+   m_ui->cbxBitRate->setDisabled(true);
+   m_ui->cbxStreamServer->setDisabled(true);
+   m_ui->cbxTimeShift->setDisabled(true);
+   m_ui->groupChanMan->hide();
+   m_ui->groupVodMan->hide();
+
+   // since parental manager is very reduced, there is no need
+   // to secure it using parental code ...
+   m_ui->stackedWidget->setCurrentIndex(1);
+   m_ui->btnSaveExitManager->setDisabled(true);
+#endif // _TASTE_NOVOE_TV
 
 #ifdef _IS_OEM
    if (m_ui->lineApiServer->isVisible())
@@ -542,6 +558,17 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
+
+#ifdef _TASTE_NOVOE_TV
+   /////////////////////////////////////////////////////////////////////////////
+   //                        NOVOE.TV only                                    //
+   /////////////////////////////////////////////////////////////////////////////
+   // These values are normally stored when leaving parental manager.
+   // Since this button is disabled here we save it using the normal
+   // save button.
+   pDb->setValue("AllowAdult", (int)m_ui->checkAdult->checkState());
+   pDb->setPassword("ErosPasswdEnc", m_ui->lineErosPass->text());
+#endif // _TASTE_NOVOE_TV
 
    // combo boxes ...
    pDb->setValue("Language", m_ui->cbxLanguage->currentText());
@@ -1305,9 +1332,11 @@ int CSettingsDlg::shortCutCount()
 \----------------------------------------------------------------- */
 void CSettingsDlg::slotLockParentalManager()
 {
+#ifndef _TASTE_NOVOE_TV
    sTempPasswd = "";
    m_ui->stackedWidget->setCurrentIndex(0);
    m_ui->tabWidget->setTabIcon(3, QIcon(":/access/locked"));
+#endif // _TASTE_NOVOE_TV
 }
 
 /* -----------------------------------------------------------------\
@@ -1680,8 +1709,11 @@ void CSettingsDlg::on_btnChgPCode_clicked()
    QString sConPCode = m_ui->lineConfirmPCode->text();
 
 
-
+#ifdef _TASTE_NOVOE_TV
+   if ((!sOldPCode.isEmpty())                         // old password is set
+#else
    if ((sOldPCode == sTempPasswd)                     // old password is ok
+#endif // _TASTE_NOVOE_TV
       && (sNewPCode == sConPCode)                     // new and confirm are equal
       && (sNewPCode.count() > 0)                      // there is a new password at all
       && ((sOldPCode.indexOf(rx) == -1)               // there are only numbers

@@ -388,7 +388,7 @@ void CNovoeClient::GetChannelList (const QString &secCode)
 {
    mInfo(tr("Request Channel List ..."));
    QString req;
-   
+
    if (secCode != "")
    {
       req = "channel_list.php?" + sCookie;
@@ -848,7 +848,7 @@ void CNovoeClient::addVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   q_post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
+   q_get((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd.php?" + req + QString("&") + sCookie);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -875,7 +875,7 @@ void CNovoeClient::remVodFav(int iVidID, const QString &secCode)
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   q_post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
+   q_get((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub.php?" + req + QString("&") + sCookie);
 }
 
 /*-----------------------------------------------------------------------------\

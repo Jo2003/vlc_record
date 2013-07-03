@@ -692,7 +692,7 @@ color: red;
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="5,5">
              <item>
-              <widget class="QGroupBox" name="groupBox">
+              <widget class="QGroupBox" name="groupChanMan">
                <property name="title">
                 <string> Channel Manager </string>
                </property>
@@ -736,7 +736,7 @@ color: red;
               </widget>
              </item>
              <item>
-              <widget class="QGroupBox" name="groupBox_2">
+              <widget class="QGroupBox" name="groupVodMan">
                <property name="title">
                 <string> VOD Manager </string>
                </property>
@@ -766,8 +766,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>16</width>
-                     <height>16</height>
+                     <width>255</width>
+                     <height>204</height>
                     </rect>
                    </property>
                   </widget>
@@ -918,8 +918,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>70</width>
-                     <height>638</height>
+                     <width>242</width>
+                     <height>121</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">

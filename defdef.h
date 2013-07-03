@@ -82,10 +82,6 @@
 #  define OP_SYS  "ukn"
 #endif // op sys
 
-
-#ifndef SOFTWARE_ID
-#endif // SOFTWARE_ID
-
 #define PLAYER_LOG_FILE   "player.log"
 #define LIBVLC_LOG_FILE   "libvlc.log"
 #define MOD_DIR           "modules"
