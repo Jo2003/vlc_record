@@ -118,6 +118,7 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
 
       // width ...
       CSmallHelpers::cutProgString(sProg, fmProg, option.rect.width() - (2 + iconsize.width() + 4 + 2));
+      CSmallHelpers::cutProgString(sChan, fmChan, option.rect.width() - (2 + iconsize.width() + 4 + 2));
       iTextWidth[0] = fmChan.size(Qt::TextSingleLine, sChan).width();
       iTextWidth[1] = fmProg.size(Qt::TextSingleLine, sProg).width();
       iTextWidth[2] = fmProg.size(Qt::TextSingleLine, fromTo).width();
@@ -216,6 +217,7 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
       y = option.rect.y() + 2;
       QRect chanRect(x, y, rightWidth, fmChan.height());
 
+      CSmallHelpers::cutProgString(sChan, fmChan, rightWidth);
       painter->setFont(chanFont);
       painter->drawText(chanRect, Qt::TextSingleLine, sChan, &bounting);
 
