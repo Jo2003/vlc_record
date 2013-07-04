@@ -1,7 +1,7 @@
 DEFINES += _TASTE_KARTINA_TV
 RESOURCES += kartina_tv.qrc
 HEADERS += tastes/defines_kartina_tv.h
-RC_FILE = kartina_tv.rc
+WINICO = kartina_tv.ico
 TRANSLATIONS = lang_de.ts \
                lang_ru.ts
 

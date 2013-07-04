@@ -18,6 +18,12 @@ INCLUDEPATH += .
 CONFIG += shared
 
 # -------------------------------------
+# program version
+# -------------------------------------
+PROGMAJ=2
+PROGMIN=64
+
+# -------------------------------------
 # customization ...
 # - make a define here and put needed
 # values into customization.h
@@ -116,6 +122,38 @@ RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
 
+
+# -------------------------------------------------
+# create Windows rc file ...
+# -------------------------------------------------
+win32 {
+    # Define how to create program.rc
+    VERINC="$${LITERAL_HASH}define VER_FILEVERSION 0,$${PROGMAJ},$${PROGMIN},0"
+    VERSTR="$${LITERAL_HASH}define VER_FILEVERSION_STR \"0,$${PROGMAJ},$${PROGMIN},0\""
+    PRODVER="$${LITERAL_HASH}define PROD_VER_STR \"$${PROGMAJ}.$${PROGMIN}\""
+    FILEVER="$${LITERAL_HASH}define FILE_VER_STR \"$${PROGMAJ}.$${PROGMIN}.0\""
+    WININC="$${LITERAL_HASH}include ^<windows.h^>"
+
+
+    rc.target = program.rc
+    rc.commands = echo $${WININC} > program.rc \
+      && echo IDI_ICON1 ICON DISCARDABLE \"resources/$${WINICO}\" >> program.rc \
+      && echo $${VERINC} >> program.rc \
+      && echo $${VERSTR} >> program.rc \
+      && echo $${PRODVER} >> program.rc \
+      && echo $${FILEVER} >> program.rc \
+      && type rc.tmpl >> program.rc
+    rc.depends =
+
+    QMAKE_EXTRA_TARGETS += rc
+
+    PRE_TARGETDEPS += program.rc
+
+    QMAKE_CLEAN += /q program.rc
+
+    RC_FILE = program.rc
+}
+
 contains(DEFINES, _TASTE_IPTV_RECORD) {
     message (Using alternative api client ...)
     HEADERS += crodnoeclient.h \
@@ -124,16 +162,16 @@ contains(DEFINES, _TASTE_IPTV_RECORD) {
                crodnoeparser.cpp
 } else {
     contains(DEFINES, _TASTE_NOVOE_TV) {
-		message (Using novoe api client ...)
-		HEADERS += cnovoeclient.h \
-				   cnovoeparser.h
-		SOURCES += cnovoeclient.cpp \
-				   cnovoeparser.cpp
+      message (Using novoe api client ...)
+      HEADERS += cnovoeclient.h \
+               cnovoeparser.h
+      SOURCES += cnovoeclient.cpp \
+               cnovoeparser.cpp
     } else {
-		message (Using standard api client ...)
-		HEADERS += ckartinaclnt.h
-		SOURCES += ckartinaclnt.cpp
-	}
+      message (Using standard api client ...)
+      HEADERS += ckartinaclnt.h
+      SOURCES += ckartinaclnt.cpp
+   }
 }
 
 contains(DEFINES, _USE_QJSON) {
@@ -142,10 +180,10 @@ contains(DEFINES, _USE_QJSON) {
    SOURCES += cstdjsonparser.cpp
    HEADERS += cstdjsonparser.h
 } else {
-	message (using XML parser ...)
-	SOURCES += ckartinaxmlparser.cpp \
-			   capixmlparser.cpp
-	HEADERS += ckartinaxmlparser.h \
+   message (using XML parser ...)
+   SOURCES += ckartinaxmlparser.cpp \
+            capixmlparser.cpp
+   HEADERS += ckartinaxmlparser.h \
                capixmlparser.h
 }
 
