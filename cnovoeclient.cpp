@@ -618,7 +618,7 @@ void CNovoeClient::GetArchivURL (const QString &prepared, const QString &secCode
 {
    mInfo(tr("Request Archiv URL ..."));
 
-   QString req = prepared;
+   QString req = QUrl::fromPercentEncoding(prepared.toUtf8());
 
    if (secCode != "")
    {
@@ -665,7 +665,7 @@ void CNovoeClient::GetVideos(const QString &sPrepared)
 {
    mInfo(tr("Request Videos ..."));
 
-   QString sTmp = sPrepared;
+   QString sTmp = QUrl::fromPercentEncoding(sPrepared.toUtf8());
 
    // add genre in case not used...
    if(!sTmp.contains("genre"))

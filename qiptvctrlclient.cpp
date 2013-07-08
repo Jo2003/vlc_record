@@ -172,6 +172,9 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
    // set user agent (name + version of this app) ...
    req.setRawHeader("User-Agent", QString("%1 %2").arg(pCustomization->strVal("APP_NAME")).arg(__MY__VERSION__).toUtf8());
 
+   // no persistent connections ...
+   req.setRawHeader("Connection", "close");
+
    // set content type ...
    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 

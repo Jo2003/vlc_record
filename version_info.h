@@ -38,6 +38,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-07-08: Version 2.64 RC2
+| - bugfix for nonworking search in VOD
+|  (percent encoding was done twice)
+| - make sure to don't use persistent http connections
+|
 | 2013-06-26: Version 2.64
 | - RC1 for 2.64
 | - merge changes for Novoe.TV into trunk

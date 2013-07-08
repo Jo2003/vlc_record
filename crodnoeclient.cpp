@@ -732,7 +732,7 @@ void CRodnoeClient::GetArchivURL (const QString &prepared, const QString &secCod
 {
    mInfo(tr("Request Archiv URL ..."));
 
-   QString req = prepared;
+   QString req = QUrl::fromPercentEncoding(prepared.toUtf8());
 
    // adapt rodnoe ...
    req.replace("&gmt=", "&uts=");
@@ -782,7 +782,7 @@ void CRodnoeClient::GetVideos(const QString &sPrepared)
 {
    mInfo(tr("Request Videos ..."));
 
-   q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + QString("vod_list?%1").arg(sPrepared));
+   q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + "vod_list?" + QUrl::fromPercentEncoding(sPrepared.toUtf8()));
 }
 
 /*-----------------------------------------------------------------------------\
