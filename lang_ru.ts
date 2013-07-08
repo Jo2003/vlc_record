@@ -282,248 +282,248 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="685"/>
         <source>Request Video info for video %1...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="712"/>
         <source>Request Video Url for video %1...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="740"/>
         <source>Hide channel(s) %1 from channel list ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="763"/>
         <source>Show channel(s) %1 in channel list ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="786"/>
         <source>Request VOD manager data ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="809"/>
         <source>Set VOD manager data (%1) ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="832"/>
         <source>Add VOD favourite (%1) ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="859"/>
         <source>Remove VOD favourite (%1) ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="886"/>
         <source>Get VOD favourites (%1) ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="905"/>
         <source>Change parent code ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="928"/>
         <source>EPG current for Channels: %1 ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="947"/>
         <source>Check for available updates ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="965"/>
         <source>Download image ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1046"/>
         <source>Unknown error</source>
-        <translation type="unfinished">Неизвестная ошибка</translation>
+        <translation>Неизвестная ошибка</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1047"/>
         <source>Incorrect request</source>
-        <translation type="unfinished">Неверный запрос</translation>
+        <translation>Неверный запрос</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1048"/>
         <source>Wrong login or password</source>
-        <translation type="unfinished">Неверный логин или пароль</translation>
+        <translation>Неверный логин или пароль</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1049"/>
         <source>Access denied</source>
-        <translation type="unfinished">Доступ запрещен</translation>
+        <translation>Доступ запрещен</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1050"/>
         <source>Login incorrect</source>
-        <translation type="unfinished">Неверный логин</translation>
+        <translation>Неверный логин</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1051"/>
         <source>Your contract is inactive</source>
-        <translation type="unfinished">Ваш договор неактивен</translation>
+        <translation>Ваш договор неактивен</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1052"/>
         <source>Your contract is paused</source>
-        <translation type="unfinished">Ваш договор приостановлен</translation>
+        <translation>Ваш договор приостановлен</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1053"/>
         <source>Channel not found or not allowed</source>
-        <translation type="unfinished">Канал не найден или не доступен</translation>
+        <translation>Канал не найден или не доступен</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1054"/>
         <source>Error in request: Bad parameters</source>
-        <translation type="unfinished">Ошибка в запросе: Неверный параметр</translation>
+        <translation>Ошибка в запросе: Неверный параметр</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1055"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation type="unfinished">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
+        <translation>Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1056"/>
         <source>Missing parameter (cid)</source>
-        <translation type="unfinished">Отсутствует параметр (cid)</translation>
+        <translation>Отсутствует параметр (cid)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1057"/>
         <source>Another client with your data logged in</source>
-        <translation type="unfinished">Ваш абонемент используется другим устройством</translation>
+        <translation>Ваш абонемент используется другим устройством</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1058"/>
         <source>Authentication error</source>
-        <translation type="unfinished">Ошибка идентификации</translation>
+        <translation>Ошибка идентификации</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1059"/>
         <source>Your package expired</source>
-        <translation type="unfinished">Ваша подписка истекла или ещё не активирована</translation>
+        <translation>Ваша подписка истекла или ещё не активирована</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1060"/>
         <source>Unknown API function</source>
-        <translation type="unfinished">Неизвестная функция API</translation>
+        <translation>Неизвестная функция API</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1061"/>
         <source>Archive not available</source>
-        <translation type="unfinished">Архив не доступен</translation>
+        <translation>Архив не доступен</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1062"/>
         <source>Missing parameter (place)</source>
-        <translation type="unfinished">Отсутствует параметр (place)</translation>
+        <translation>Отсутствует параметр (place)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1063"/>
         <source>Missing parameter (name)</source>
-        <translation type="unfinished">Отсутствует параметр (name)</translation>
+        <translation>Отсутствует параметр (name)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1064"/>
         <source>Incorrect confirmation code</source>
-        <translation type="unfinished">Неверный код подтверждения</translation>
+        <translation>Неверный код подтверждения</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1065"/>
         <source>Current code is wrong</source>
-        <translation type="unfinished">Текущий код неверный</translation>
+        <translation>Текущий код неверный</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1066"/>
         <source>New code is wrong</source>
-        <translation type="unfinished">Новый код неверный</translation>
+        <translation>Новый код неверный</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1067"/>
         <source>Missing parameter (val)</source>
-        <translation type="unfinished">Отсутствует параметр (val)</translation>
+        <translation>Отсутствует параметр (val)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1068"/>
         <source>Value not allowed</source>
-        <translation type="unfinished">Значение не доступно</translation>
+        <translation>Значение не доступно</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1069"/>
         <source>Missing parameter</source>
-        <translation type="unfinished">Отсутствует параметр</translation>
+        <translation>Отсутствует параметр</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1070"/>
         <source>Missing parameter (id)</source>
-        <translation type="unfinished">Отсутствует параметр (id)</translation>
+        <translation>Отсутствует параметр (id)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1071"/>
         <source>Missing parameter (fileid)</source>
-        <translation type="unfinished">Отсутствует параметр (fileid)</translation>
+        <translation>Отсутствует параметр (fileid)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1072"/>
         <source>Missing parameter (type)</source>
-        <translation type="unfinished">Отсутствует параметр (type)</translation>
+        <translation>Отсутствует параметр (type)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1073"/>
         <source>Missing parameter (query)</source>
-        <translation type="unfinished">Отсутствует параметр (query)</translation>
+        <translation>Отсутствует параметр (query)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1074"/>
         <source>Bitrate not available</source>
-        <translation type="unfinished">Битрейт не доступен</translation>
+        <translation>Битрейт не доступен</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1075"/>
         <source>Service not available</source>
-        <translation type="unfinished">Сервис не доступен</translation>
+        <translation>Сервис не доступен</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1076"/>
         <source>Query limit exceeded</source>
-        <translation type="unfinished">Превышен лимит запроса</translation>
+        <translation>Превышен лимит запроса</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1077"/>
         <source>Rule already exists</source>
-        <translation type="unfinished">Правило уже существует</translation>
+        <translation>Правило уже существует</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1078"/>
         <location filename="ckartinaclnt.cpp" line="1079"/>
         <source>Missing parameter (cmd)</source>
-        <translation type="unfinished">Отсутствует параметр (cmd)</translation>
+        <translation>Отсутствует параметр (cmd)</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1080"/>
         <source>Bad value (rate)</source>
-        <translation type="unfinished">Неверное значение рейтинга</translation>
+        <translation>Неверное значение рейтинга</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1081"/>
         <source>Can&apos;t find film</source>
-        <translation type="unfinished">Невозможно найти фильм</translation>
+        <translation>Невозможно найти фильм</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1082"/>
         <source>Film already added</source>
-        <translation type="unfinished">Этот фильм уже добавлен в список избранных</translation>
+        <translation>Этот фильм уже добавлен в список избранных</translation>
     </message>
 </context>
 <context>
