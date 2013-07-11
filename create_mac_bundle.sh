@@ -59,10 +59,30 @@ cp $QTTRANS/qt_fr.qm $CONTENTS/translations
 cp $QTTRANS/qt_pl.qm $CONTENTS/translations
 cp $QTTRANS/qt_ru.qm $CONTENTS/translations
 
-# patch Info.plist file ...
-sed -e "s/$APPNAME.rc/$APPNAME.icns/g" -e "s/yourcompany/Jo2003/g" -e "s/<\/dict>/	<key>CFBundleName<\/key>\\
-	<string>$OFFNAME<\/string>\\
-<\/dict>/g" $CONTENTS/Info.plist >$TMPFILE
+# create Info.plist file ...
+cat << EOF > $TMPFILE
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>$APPNAME.icns</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Created by Qt/QMake</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleExecutable</key>
+	<string>$APPNAME</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.Jo2003.$APPNAME</string>
+	<key>CFBundleName</key>
+	<string>$OFFNAME</string>
+</dict>
+</plist>
+EOF
+
 iconv -f ASCII -t UTF-8 $TMPFILE >$CONTENTS/Info.plist
 macdeployqt $APPNAME.app -verbose=0
 POS=`pwd`
