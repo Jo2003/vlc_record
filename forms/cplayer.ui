@@ -141,6 +141,28 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="checkDeintl">
+       <property name="styleSheet">
+        <string notr="true">QCheckBox#checkDeintl::indicator {
+   width: 24px;
+   height: 24px;
+}
+
+QCheckBox#checkDeintl::indicator:unchecked {
+     image: 	url(:/player/interlaced);
+ }
+
+QCheckBox#checkDeintl::indicator:checked {
+     image: 	url(:/player/deinterlaced);
+ }
+</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

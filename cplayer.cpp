@@ -61,6 +61,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pApiClient       = NULL;
    bSpoolPending    = true;
    bOmitNextEvent   = false;
+   bScanAuTrk       = true;
    uiDuration       = (uint)-1;
    ulLibvlcVersion  = 0;
    QStringList slKey;
@@ -144,6 +145,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
 
    // event poll ...
    connect(&tEventPoll, SIGNAL(timeout()), this, SLOT(slotEventPoll()));
+
+   connect(this, SIGNAL(sigBuffPercent(int)), this, SLOT(slotFinallyPlays(int)));
 
    // update position slider every second ...
    sliderTimer.start(1000);
@@ -1959,6 +1962,91 @@ void CPlayer::resetBuffPercent()
    _mtxEvt.unlock();
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   check audio tracks when stream really plays
+//
+//! \author  Jo2003
+//! \date    09.07.2013
+//
+//! \param   percent (int) buffer in percent
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CPlayer::slotFinallyPlays(int percent)
+{
+   libvlc_track_description_t* pAuTracks = NULL;
+   int iAuIdx;
+
+   if (percent == 0)
+   {
+      bScanAuTrk = true;
+   }
+   else if ((percent >= 99) && bScanAuTrk)
+   {
+      if (isPlaying())
+      {
+         // get audio track description ...
+         pAuTracks = libvlc_audio_get_track_description(pMediaPlayer);
+
+         // get current index ...
+         iAuIdx    = libvlc_audio_get_track(pMediaPlayer);
+
+         mInfo(tr("Scan for Audio tracks:"));
+
+         while (pAuTracks != NULL)
+         {
+            if (pAuTracks->i_id >= 0)
+            {
+               mInfo(tr("-> Audio track %1 %2%3")
+                     .arg(pAuTracks->i_id)
+                     .arg(QString::fromUtf8(pAuTracks->psz_name))
+                     .arg((iAuIdx == pAuTracks->i_id) ? " (current)" : ""));
+            }
+            pAuTracks = pAuTracks->p_next;
+         }
+      }
+      bScanAuTrk = false;
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   toggle deinterlace from checkbox
+//
+//! \author  Jo2003
+//! \date    12.07.2013
+//
+//! \param   checked (bool) deinterlace or even not ...
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CPlayer::on_checkDeintl_toggled(bool checked)
+{
+   if (pMediaPlayer)
+   {
+      mInfo(tr("%1 %2 deinterlace").arg(checked ? "enable" : "disable").arg(pSettings->getDeinlMode()));
+      libvlc_video_set_deinterlace(pMediaPlayer, checked ? pSettings->getDeinlMode().toUtf8().constData() : NULL);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   toggle deinterlace
+//
+//! \author  Jo2003
+//! \date    12.07.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CPlayer::slotToggleDeinterlace()
+{
+   ui->checkDeintl->toggle();
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+

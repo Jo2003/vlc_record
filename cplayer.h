@@ -107,6 +107,7 @@ private:
    bool                         bOmitNextEvent;
    const char*                  vlcArgs[MAX_LVLC_ARGS];
    QVector<QByteArray>          vArgs;
+   bool                         bScanAuTrk;
 
 private slots:
    void slotPositionChanged(int value);
@@ -118,8 +119,9 @@ private slots:
    void slotSliderPosChanged();
    void slotToggleFullscreen();
    void slotEventPoll();
-
+   void slotFinallyPlays(int percent);
    void slotBtnSaveAspectCropClicked();
+   void on_checkDeintl_toggled(bool checked);
 
 public slots:
    int  playMedia (const QString &sCmdLine, const QString &sOpts);
@@ -137,6 +139,7 @@ public slots:
    void slotShowInfoUpdated();
    void slotFsToggled (int on);
    void slotResetVideoFormat();
+   void slotToggleDeinterlace ();
 
 signals:
    void sigPlayState (int ps);

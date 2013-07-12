@@ -611,6 +611,61 @@ color: red;
             </property>
            </widget>
           </item>
+          <item row="7" column="1">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Deinterlace Mode: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbxDeintlMode">
+              <item>
+               <property name="text">
+                <string>blend</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>bob</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>discard</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>linear</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>mean</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>x</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>yadif</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>yadif2x</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
          </layout>
         </widget>
        </item>
@@ -766,8 +821,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>255</width>
-                     <height>204</height>
+                     <width>27</width>
+                     <height>16</height>
                     </rect>
                    </property>
                   </widget>
@@ -918,8 +973,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>242</width>
-                     <height>121</height>
+                     <width>70</width>
+                     <height>638</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">

@@ -332,6 +332,15 @@ void CSettingsDlg::readSettings()
 
    m_ui->cbxLogLevel->setCurrentIndex((int)pDb->intValue("LogLevel"));
 
+   // deinterlace mode ...
+   if ((s = pDb->stringValue("DeintlMode")) != "")
+   {
+      if ((iIdx = m_ui->cbxDeintlMode->findText(s)) != -1)
+      {
+         m_ui->cbxDeintlMode->setCurrentIndex(iIdx);
+      }
+   }
+
    if ((s = pDb->stringValue("PlayerModule")) == "")
    {
       // no player module chossen yet ...
@@ -381,6 +390,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
           int iLogIdx = m_ui->cbxLogLevel->currentIndex();
           int iBufIdx = m_ui->cbxBufferSeconds->currentIndex();
           int iModIdx = m_ui->cbxPlayerMod->currentIndex();
+          int iDeiIdx = m_ui->cbxDeintlMode->currentIndex();
 
           m_ui->retranslateUi(this);
 
@@ -389,6 +399,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
           m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
           m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
           m_ui->cbxPlayerMod->setCurrentIndex(iModIdx);
+          m_ui->cbxDeintlMode->setCurrentIndex(iDeiIdx);
 
           // set company name ...
           QString s = m_ui->groupAccount->title();
@@ -575,6 +586,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt());
    pDb->setValue("LogLevel", m_ui->cbxLogLevel->currentIndex());
    pDb->setValue("PlayerModule", m_ui->cbxPlayerMod->currentText());
+   pDb->setValue("DeintlMode", m_ui->cbxDeintlMode->currentText());
 
    // short cuts ...
    CShortCutGrabber *pGrab;
@@ -1108,6 +1120,11 @@ QString CSettingsDlg::GetPlayerModule()
    }
 
    return sPlayModule;
+}
+
+QString CSettingsDlg::getDeinlMode()
+{
+   return m_ui->cbxDeintlMode->currentText();
 }
 
 bool CSettingsDlg::UseProxy ()

@@ -64,6 +64,7 @@ public:
     QString GetPlayerModule ();
     QString GetCookie ();
     QString GetAPIServer ();
+    QString getDeinlMode ();
 
     bool UseProxy ();
     bool AllowEros ();
