@@ -223,21 +223,11 @@ unix {
 # -------------------------------------
 contains(DEFINES,INCLUDE_LIBVLC) {
 
-   win32:INCLUDEPATH += include
-
-   HEADERS += cplayer.h \
-        qvlcvideowidget.h \
-        qclickandgoslider.h \
-        qtimelabel.h
-        # qbufferprogressbar.h
-   FORMS += forms/cplayer.ui \
-        forms/recorder_inc.ui
-   SOURCES += qvlcvideowidget.cpp \
-              cplayer.cpp
-   LIBS += -lvlc
-   win32:LIBS += -Llib
-
-   mac {
+   win32 {
+      INCLUDEPATH += include
+      LIBS += -Llib
+   }
+   else:mac {
       OTHER_FILES += create_mac_bundle.sh \
                      release/create_dmg.sh
       INCLUDEPATH += mac/include
@@ -258,6 +248,18 @@ contains(DEFINES,INCLUDE_LIBVLC) {
    else {
       unix:LIBS += -lX11
    }
+
+   HEADERS += cplayer.h \
+        qvlcvideowidget.h \
+        qclickandgoslider.h \
+        qtimelabel.h
+
+   FORMS += forms/cplayer.ui \
+        forms/recorder_inc.ui
+
+   SOURCES += qvlcvideowidget.cpp \
+              cplayer.cpp
+   LIBS += -lvlc
 
 #    unix:LIBS += -L/opt/vlc-1.1.1/lib \
 #        -Wl,-rpath \

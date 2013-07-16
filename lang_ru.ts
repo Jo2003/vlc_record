@@ -3016,8 +3016,13 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="596"/>
+        <location filename="qvlcvideowidget.cpp" line="597"/>
         <source>Deinterlace Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="628"/>
+        <source>Audio %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

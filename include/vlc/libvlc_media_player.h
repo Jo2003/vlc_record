@@ -31,10 +31,12 @@
 #ifndef VLC_LIBVLC_MEDIA_PLAYER_H
 #define VLC_LIBVLC_MEDIA_PLAYER_H 1
 
+# ifndef __cplusplus
+#  include <stdbool.h>
+# endif
+
 # ifdef __cplusplus
 extern "C" {
-# else
-#  include <stdbool.h>
 # endif
 
 /*****************************************************************************

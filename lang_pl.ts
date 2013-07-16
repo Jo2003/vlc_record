@@ -563,6 +563,14 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CLtvClient</name>
+    <message>
+        <location filename="cltvclient.cpp" line="68"/>
+        <source>Fake account server settings ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CNovoeClient</name>
     <message>
         <location filename="cnovoeclient.cpp" line="84"/>
@@ -2817,8 +2825,13 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="596"/>
+        <location filename="qvlcvideowidget.cpp" line="597"/>
         <source>Deinterlace Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="628"/>
+        <source>Audio %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

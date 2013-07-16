@@ -629,7 +629,7 @@ void QVlcVideoWidget::touchContextMenu()
       }
 
       // create context menu entry ...
-      pAct = _contextMenu->addAction(QIcon(_langVector.at(i).current ? ":player/atrack" : ""), name);
+      pAct = _contextMenu->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), name);
 
       // prepare data ...
       contAct.actType = vlcvid::ACT_ChgLang;
