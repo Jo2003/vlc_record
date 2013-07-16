@@ -121,7 +121,6 @@ private slots:
    void slotEventPoll();
    void slotFinallyPlays(int percent);
    void slotBtnSaveAspectCropClicked();
-   void on_checkDeintl_toggled(bool checked);
 
 public slots:
    int  playMedia (const QString &sCmdLine, const QString &sOpts);
@@ -139,7 +138,8 @@ public slots:
    void slotShowInfoUpdated();
    void slotFsToggled (int on);
    void slotResetVideoFormat();
-   void slotToggleDeinterlace ();
+   void slotDeinterlace (bool bDeintl);
+   void slotChangeATrack (int id);
 
 signals:
    void sigPlayState (int ps);
@@ -147,6 +147,7 @@ signals:
    void sigCheckArchProg(ulong ulArchGmt);
    void sigToggleFullscreen();
    void sigBuffPercent(int);
+   void sigAudioTracks(QLangVector);
 };
 
 #endif /* __022410__CPLAYER_H */

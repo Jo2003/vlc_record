@@ -20,11 +20,47 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <QVBoxLayout>
+#include <QMenu>
+#include <QVector>
+#include <QAction>
+#include <QMutex>
 
 #include "clogfile.h"
 #include "cshortcutex.h"
 #include "qoverlayedcontrol.h"
 
+// ----------------------------------------------------------
+//    namespace ...
+// ----------------------------------------------------------
+namespace vlcvid {
+
+   enum eActType
+   {
+      ACT_Deinterlace,
+      ACT_ChgLang,
+      ACT_Unknown = 255
+   };
+
+   struct SContextAction
+   {
+      SContextAction():actType(ACT_Unknown) {}
+      eActType actType;
+      QString  actName;
+      QVariant actVal;
+   };
+
+   struct SContLang
+   {
+      int     id;
+      QString desc;
+      bool    current;
+   };
+}
+
+typedef QVector<vlcvid::SContLang> QLangVector;
+
+Q_DECLARE_METATYPE(vlcvid::SContextAction)
+Q_DECLARE_METATYPE(QLangVector)
 
 //---------------------------------------------------------------------------
 //! \class   QVlcVideoWidget
@@ -49,9 +85,14 @@ protected:
    virtual void mousePressEvent(QMouseEvent *event);
    virtual void wheelEvent(QWheelEvent *event);
    virtual void keyPressEvent (QKeyEvent *event);
+   virtual void changeEvent(QEvent *event);
 
    int fakeShortCut (const QKeySequence &seq);
    int keyEventToKeySequence (QKeyEvent *event, QKeySequence &seq);
+
+   void touchContextMenu ();
+   int setCurrentATrack (int id);
+   int getCurrentATrack ();
 
 private:
    QWidget                *_render;
@@ -61,6 +102,9 @@ private:
    QOverlayedControl      *_ctrlPanel;
    bool                    _mouseOnPanel;
    bool                    _panelPositioned;
+   QMenu                  *_contextMenu;
+   QLangVector             _langVector;
+   QMutex                  _mtxLv;
 
 signals:
    void fullScreen();
@@ -68,6 +112,8 @@ signals:
    void mouseHide();
    void rightClick(const QPoint pt);
    void wheel (const bool up);
+   void sigDeinterlace (bool);
+   void sigNewATrack (int);
 
 public slots:
    void toggleFullScreen ();
@@ -76,6 +122,11 @@ public slots:
    void slotMouseEntersPanel ();
    void slotMouseLeavesPanel ();
    void slotWheel(bool w);
+   void slotUpdLangVector(QLangVector lv);
+
+private slots:
+   void slotCustContextMenu(QPoint pt);
+   void slotContentActionTriggered (QAction *pAct);
 };
 
 #endif // __20120208_QVLCVIDEOWIDGET_H

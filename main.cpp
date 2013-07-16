@@ -63,6 +63,9 @@ int main(int argc, char *argv[])
    XInitThreads();
 #endif
 
+   qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
+   qRegisterMetaType<QLangVector>("QLangVector");
+
    int          iRV = -1;
    QTranslator  trans[Translators::TRANS_MAX];
    QApplication app(argc, argv);

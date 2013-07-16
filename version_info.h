@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "64"
-#define BETA_EXT      ""
+#define VERSION_MINOR "65"
+#define BETA_EXT      "B1"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-07-16: Version 2.65B1
+| - add context menu to video widget
+| - add deinterlace option to context menu and settings
+| - can change audio track (selectable in context menu)
+|
+| 2013-07-12: Version 2.64
+| - no changes to RC2
+|
 | 2013-07-08: Version 2.64 RC2
 | - bugfix for nonworking search in VOD
 |  (percent encoding was done twice)

@@ -147,6 +147,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(&tEventPoll, SIGNAL(timeout()), this, SLOT(slotEventPoll()));
 
    connect(this, SIGNAL(sigBuffPercent(int)), this, SLOT(slotFinallyPlays(int)));
+   connect(this, SIGNAL(sigAudioTracks(QLangVector)), ui->videoWidget, SLOT(slotUpdLangVector(QLangVector)));
+   connect(ui->videoWidget, SIGNAL(sigDeinterlace(bool)), this, SLOT(slotDeinterlace(bool)));
+   connect(ui->videoWidget, SIGNAL(sigNewATrack(int)), this, SLOT(slotChangeATrack(int)));
 
    // update position slider every second ...
    sliderTimer.start(1000);
@@ -1976,7 +1979,9 @@ void CPlayer::resetBuffPercent()
 void CPlayer::slotFinallyPlays(int percent)
 {
    libvlc_track_description_t* pAuTracks = NULL;
-   int iAuIdx;
+   int               iAuIdx;
+   QLangVector       lv;
+   vlcvid::SContLang al;
 
    if (percent == 0)
    {
@@ -1998,6 +2003,12 @@ void CPlayer::slotFinallyPlays(int percent)
          {
             if (pAuTracks->i_id >= 0)
             {
+               al.desc    = QString::fromUtf8(pAuTracks->psz_name);
+               al.id      = pAuTracks->i_id;
+               al.current = (iAuIdx == pAuTracks->i_id) ? true : false;
+
+               lv.append(al);
+
                mInfo(tr("-> Audio track %1 %2%3")
                      .arg(pAuTracks->i_id)
                      .arg(QString::fromUtf8(pAuTracks->psz_name))
@@ -2005,6 +2016,8 @@ void CPlayer::slotFinallyPlays(int percent)
             }
             pAuTracks = pAuTracks->p_next;
          }
+
+         emit sigAudioTracks(lv);
       }
       bScanAuTrk = false;
    }
@@ -2012,39 +2025,46 @@ void CPlayer::slotFinallyPlays(int percent)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   toggle deinterlace from checkbox
+//! \brief   enable / disable deinterlacing
 //
 //! \author  Jo2003
-//! \date    12.07.2013
+//! \date    16.07.2013
 //
-//! \param   checked (bool) deinterlace or even not ...
+//! \param   bDeintl (bool) deinterlace or even not ...
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CPlayer::on_checkDeintl_toggled(bool checked)
+void CPlayer::slotDeinterlace(bool bDeintl)
 {
    if (pMediaPlayer)
    {
-      mInfo(tr("%1 %2 deinterlace").arg(checked ? "enable" : "disable").arg(pSettings->getDeinlMode()));
-      libvlc_video_set_deinterlace(pMediaPlayer, checked ? pSettings->getDeinlMode().toUtf8().constData() : NULL);
+      mInfo(tr("%1 %2 deinterlace").arg(bDeintl ? "enable" : "disable").arg(pSettings->getDeinlMode()));
+      libvlc_video_set_deinterlace(pMediaPlayer, bDeintl ? pSettings->getDeinlMode().toUtf8().constData() : NULL);
    }
 }
 
 //---------------------------------------------------------------------------
 //
-//! \brief   toggle deinterlace
+//! \brief   switch to other audio track
 //
 //! \author  Jo2003
-//! \date    12.07.2013
+//! \date    16.07.2013
 //
-//! \param   --
+//! \param   id (int) audio track id
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void CPlayer::slotToggleDeinterlace()
+void CPlayer::slotChangeATrack(int id)
 {
-   ui->checkDeintl->toggle();
+   int iRet;
+   if (pMediaPlayer)
+   {
+      iRet = libvlc_audio_set_track(pMediaPlayer, id);
+
+      mInfo(tr("Change audio track to id %1: %2!").arg(id).arg((iRet == 0) ? "ok" : "error"));
+   }
 }
+
 
 /************************* History ***************************\
 | $Log$

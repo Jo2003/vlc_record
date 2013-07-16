@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>572</width>
-    <height>503</height>
+    <height>509</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -616,7 +616,7 @@ color: red;
             <item>
              <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>Deinterlace Mode: </string>
+               <string>Deinterlacing Mode: </string>
               </property>
              </widget>
             </item>
@@ -821,8 +821,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>27</width>
-                     <height>16</height>
+                     <width>96</width>
+                     <height>26</height>
                     </rect>
                    </property>
                   </widget>
@@ -973,8 +973,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>70</width>
-                     <height>638</height>
+                     <width>96</width>
+                     <height>398</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">

@@ -14,6 +14,7 @@
 #include "qvlcvideowidget.h"
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QRegExp>
 
 #include "qfusioncontrol.h"
 
@@ -42,7 +43,8 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _extFullScreen(false),
    _ctrlPanel(NULL),
    _mouseOnPanel(false),
-   _panelPositioned(false)
+   _panelPositioned(false),
+   _contextMenu(NULL)
 {
    setMouseTracking(true);
 
@@ -67,10 +69,23 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    // hide panel initially ...
    _ctrlPanel->hide();
 
+   // use own context menu ...
+   setContextMenuPolicy (Qt::CustomContextMenu);
+
+   // fill context menu ...
+   _contextMenu = new QMenu(this);
+   touchContextMenu();
+
    connect (_mouseHide, SIGNAL(timeout()), this, SLOT(hideMouse()));
    connect (_ctrlPanel, SIGNAL(sigMouseAboveOverlay()), this, SLOT(slotMouseEntersPanel()));
    connect (_ctrlPanel, SIGNAL(sigMouseLeavesOverlay()), this, SLOT(slotMouseLeavesPanel()));
    connect (_ctrlPanel, SIGNAL(wheel(bool)), this, SLOT(slotWheel(bool)));
+
+   // create context menu ...
+   connect (this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustContextMenu(QPoint)));
+
+   // all content menu actions handled by one slot ...
+   connect (_contextMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotContentActionTriggered(QAction*)));
 }
 
 //---------------------------------------------------------------------------
@@ -89,6 +104,32 @@ QVlcVideoWidget::~QVlcVideoWidget()
    // Qt memory management takes care of
    // object deletion e.g. will delete
    // all child objects!
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   retranslate on language change event
+//
+//! \author  Jo2003
+//! \date    16.07.2013
+//
+//! \param   event (QEvent *) pointer to change event
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::changeEvent(QEvent *event)
+{
+   QWidget::changeEvent(event);
+
+   switch (event->type())
+   {
+   case QEvent::LanguageChange:
+      // retranslate context menu ...
+      touchContextMenu();
+      break;
+   default:
+      break;
+   }
 }
 
 //---------------------------------------------------------------------------
@@ -269,6 +310,7 @@ void QVlcVideoWidget::hideMouse()
    if((isFullScreen() || _extFullScreen)
          && !_mouseOnPanel
          && !missionControl.isPopupActive()
+         && !_contextMenu->isVisible()
          && (hasFocus() || _ctrlPanel->hasFocus() || _render->hasFocus()))
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
@@ -502,4 +544,228 @@ void QVlcVideoWidget::slotMouseEntersPanel()
 void QVlcVideoWidget::slotMouseLeavesPanel()
 {
    _mouseOnPanel = false;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   display custom context menu
+//
+//! \author  Jo2003
+//! \date    15.07.2013
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotCustContextMenu(QPoint pt)
+{
+   _contextMenu->exec(mapToGlobal(pt));
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   (re-)create context menu for video widget
+//
+//! \author  Jo2003
+//! \date    16.07.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::touchContextMenu()
+{
+   QAction                *pAct;
+   vlcvid::SContextAction  contAct;
+   QRegExp                 rx("^.*\\[(.*)\\].*$");
+   int                     i;
+   QList<QAction*>         contActions = _contextMenu->actions();
+   bool                    bIntl       = false;
+
+   // in case of retranslation or update we should take care of
+   // interlaced setting ...
+   if (!contActions.isEmpty())
+   {
+      // action 0 will always be the interlaced stuff since this
+      // is always the first element we add ...
+      bIntl = contActions.at(0)->isChecked();
+   }
+
+   // remove all menue entries ...
+   _contextMenu->clear();
+
+   // interlace stuff ...
+   pAct = _contextMenu->addAction(tr("deinterlace video"));
+
+   // prepare data ...
+   contAct.actType = vlcvid::ACT_Deinterlace;
+   contAct.actName = "n.a.";
+   contAct.actVal.setValue(-1);
+
+   // set data ...
+   pAct->setData(QVariant::fromValue(contAct));
+   pAct->setCheckable(true);
+   pAct->setChecked(bIntl);
+
+   // add seperator ...
+   pAct = _contextMenu->addSeparator();
+
+   // --------------------------------------------------------
+   // language stuff ...
+   // --------------------------------------------------------
+   _mtxLv.lock();
+
+   // go through language vector and add context menu entries ...
+   for (i = 0; i < _langVector.count(); i++)
+   {
+      // try to grab language from track description ...
+      if (rx.indexIn(_langVector.at(i).desc) > -1)
+      {
+         // create context menu entry ...
+         pAct = _contextMenu->addAction(QIcon(_langVector.at(i).current ? ":player/atrack" : ""), rx.cap(1));
+
+         // prepare data ...
+         contAct.actType = vlcvid::ACT_ChgLang;
+         contAct.actName = _langVector.at(i).desc;
+         contAct.actVal.setValue(_langVector.at(i).id);
+
+         // set data ...
+         pAct->setData(QVariant::fromValue(contAct));
+      }
+   }
+   _mtxLv.unlock();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle all(!) context menu action triggers such as deinterlace
+//!          and audio track selection
+//
+//! \author  Jo2003
+//! \date    16.07.2013
+//
+//! \param   pAct (QAction *) pointer to triggered action
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotContentActionTriggered(QAction *pAct)
+{
+   vlcvid::SContextAction actData;
+
+   // do we have valid data attached to this action ... ?
+   if (pAct->data().isValid())
+   {
+      // get data ...
+      actData = pAct->data().value<vlcvid::SContextAction>();
+
+      // which action to do ...
+      switch(actData.actType)
+      {
+      // deinterlacing enabled / disabled ...
+      case vlcvid::ACT_Deinterlace:
+         emit sigDeinterlace(pAct->isChecked());
+         break;
+
+      // audio track selected ...
+      case vlcvid::ACT_ChgLang:
+         // has current track changed ( == 1) ... ?
+         if (setCurrentATrack(actData.actVal.toInt()) == 1)
+         {
+            // changed -> adapt context menu ...
+            touchContextMenu();
+
+            // tell about new audio track ...
+            emit sigNewATrack(actData.actVal.toInt());
+         }
+         break;
+
+      default:
+         break;
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   new audio track data available, update context menu
+//
+//! \author  Jo2003
+//! \date    16.07.2013
+//
+//! \param   lv (QLangVector) vector with audio track data
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotUpdLangVector(QLangVector lv)
+{
+   _mtxLv.lock();
+   _langVector = lv;
+   _mtxLv.unlock();
+   touchContextMenu();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set new current track in audio track vector
+//
+//! \author  Jo2003
+//! \date    16.07.2013
+//
+//! \param   id (int) id of new track
+//
+//! \return  -1 --> track id not found;
+//!           0 --> current track id hasn't changed;
+//!           1 --> new current track successfully set
+//---------------------------------------------------------------------------
+int QVlcVideoWidget::setCurrentATrack (int id)
+{
+   int iRV = -1;
+   QLangVector::iterator it;
+
+   _mtxLv.lock();
+   for (it = _langVector.begin(); it != _langVector.end(); it++)
+   {
+      if ((*it).id == id)
+      {
+         // changed (1) or unchanged (0) ?
+         iRV = (*it).current ? 0 : 1;
+
+         (*it).current = true;
+      }
+      else
+      {
+         (*it).current = false;
+      }
+   }
+   _mtxLv.unlock();
+
+   return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get current audio track
+//
+//! \author  Jo2003
+//! \date    16.07.2013
+//
+//! \param   --
+//
+//! \return  -1 --> nothing found
+//!        else --> current track id
+//---------------------------------------------------------------------------
+int QVlcVideoWidget::getCurrentATrack ()
+{
+   int i, iRV = -1;
+
+   _mtxLv.lock();
+   for (i = 0; i < _langVector.count(); i++)
+   {
+      if (_langVector.at(i).current)
+      {
+         iRV = _langVector.at(i).id;
+         break;
+      }
+   }
+   _mtxLv.unlock();
+
+   return iRV;
 }

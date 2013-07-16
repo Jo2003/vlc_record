@@ -3795,7 +3795,6 @@ void Recorder::fillShortCutTab()
       {tr("Toggle Aspect Ratio"),  ui->player, SLOT(slotToggleAspectRatio()),     "ALT+A"},
       {tr("Toggle Crop Geometry"), ui->player, SLOT(slotToggleCropGeometry()),    "ALT+C"},
       {tr("Toggle Fullscreen"),    this,       SLOT(slotToggleFullscreen()),      "ALT+F"},
-      {tr("Toggle Deinterlace"),   ui->player, SLOT(slotToggleDeinterlace()),     "CTRL+D"},
       {tr("Volume +"),             ui->player, SLOT(slotMoreLoudly()),            "+"},
       {tr("Volume -"),             ui->player, SLOT(slotMoreQuietly()),           "-"},
       {tr("Toggle Mute"),          ui->player, SLOT(slotMute()),                  "M"},
