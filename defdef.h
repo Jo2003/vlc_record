@@ -26,6 +26,8 @@
    #include <defines_novoe_tv.h>
 #elif defined _TASTE_IPTV_RECORD
    #include <defines_iptv_record.h>
+#elif defined _TASTE_LTVISION
+   #include <defines_ltvision.h>
 #elif defined _TASTE_OEM
    #include <defines_oem_record.h>
 #else

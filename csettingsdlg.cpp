@@ -789,7 +789,7 @@ void CSettingsDlg::fillTimeShiftCbx(const QVector<int> &vVals, int iAct)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxStreamServer_activated
+|  Method: on_cbxStreamServer_currentIndexChanged
 |  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
 |  Description: signal set of stream server
@@ -798,13 +798,13 @@ void CSettingsDlg::fillTimeShiftCbx(const QVector<int> &vVals, int iAct)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_cbxStreamServer_activated(int index)
+void CSettingsDlg::on_cbxStreamServer_currentIndexChanged(int index)
 {
    emit sigSetServer(m_ui->cbxStreamServer->itemData(index).toString());
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxBitRate_activated
+|  Method: on_cbxBitRate_currentIndexChanged
 |  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
 |  Description: set bitrate
@@ -813,13 +813,13 @@ void CSettingsDlg::on_cbxStreamServer_activated(int index)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_cbxBitRate_activated(int index)
+void CSettingsDlg::on_cbxBitRate_currentIndexChanged(int index)
 {
    emit sigSetBitRate(m_ui->cbxBitRate->itemData(index).toInt());
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxTimeShift_activated
+|  Method: on_cbxTimeShift_currentIndexChanged
 |  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
 |  Description: set timeshift
@@ -828,7 +828,7 @@ void CSettingsDlg::on_cbxBitRate_activated(int index)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_cbxTimeShift_activated(int index)
+void CSettingsDlg::on_cbxTimeShift_currentIndexChanged(int index)
 {
    emit sigSetTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 }

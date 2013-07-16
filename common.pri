@@ -21,7 +21,7 @@ CONFIG += shared
 # program version
 # -------------------------------------
 PROGMAJ=2
-PROGMIN=64
+PROGMIN=65
 
 # -------------------------------------
 # customization ...
@@ -154,25 +154,32 @@ win32 {
     RC_FILE = program.rc
 }
 
+#############
 contains(DEFINES, _TASTE_IPTV_RECORD) {
     message (Using alternative api client ...)
     HEADERS += crodnoeclient.h \
                crodnoeparser.h
     SOURCES += crodnoeclient.cpp \
                crodnoeparser.cpp
+} else:contains(DEFINES, _TASTE_NOVOE_TV) {
+   message (Using novoe api client ...)
+   HEADERS += cnovoeclient.h \
+              cnovoeparser.h
+   SOURCES += cnovoeclient.cpp \
+              cnovoeparser.cpp
+} else:contains(DEFINES, _TASTE_LTVISION) {
+   message (Using ltvision api client ...)
+   HEADERS += ckartinaclnt.h \
+              cltvclient.h
+   SOURCES += ckartinaclnt.cpp \
+              cltvclient.cpp
 } else {
-    contains(DEFINES, _TASTE_NOVOE_TV) {
-      message (Using novoe api client ...)
-      HEADERS += cnovoeclient.h \
-               cnovoeparser.h
-      SOURCES += cnovoeclient.cpp \
-               cnovoeparser.cpp
-    } else {
-      message (Using standard api client ...)
-      HEADERS += ckartinaclnt.h
-      SOURCES += ckartinaclnt.cpp
-   }
+   message (Using standard api client ...)
+   HEADERS += ckartinaclnt.h
+   SOURCES += ckartinaclnt.cpp
 }
+
+#############
 
 contains(DEFINES, _USE_QJSON) {
    message (using QtJson parser ...)

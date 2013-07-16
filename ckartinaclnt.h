@@ -38,7 +38,7 @@ class CKartinaClnt : public QIptvCtrlClient
 
 public:
    explicit CKartinaClnt(QObject *parent = 0);
-   ~CKartinaClnt();
+   virtual ~CKartinaClnt();
 
    void SetData(const QString &host, const QString &usr, const QString &pw, const QString& lang = "");
 
@@ -77,7 +77,6 @@ protected:
    void setParentCode (const QString& oldCode, const QString& newCode);
    void epgCurrent(const QString &cids);
    void updInfo (const QString& url);
-
    int  checkResponse (const QString &sResp, QString& sCleanResp);
 
 private:
@@ -91,8 +90,8 @@ private:
 public slots:
    void slotDownImg(const QString& url);
 
-private slots:
-   void slotStringResponse (int reqId, QString strResp);
+protected slots:
+   virtual void slotStringResponse (int reqId, QString strResp);
    void slotBinResponse (int reqId, QByteArray binResp);
    void slotErr (int iReqId, QString sErr, int iErr);
 

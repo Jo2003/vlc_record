@@ -2812,13 +2812,13 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="389"/>
+        <location filename="qvlcvideowidget.cpp" line="388"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="597"/>
-        <source>deinterlace video</source>
+        <location filename="qvlcvideowidget.cpp" line="596"/>
+        <source>Deinterlace Video</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
