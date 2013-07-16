@@ -579,6 +579,7 @@ void QVlcVideoWidget::touchContextMenu()
    int                     i;
    QList<QAction*>         contActions = _contextMenu->actions();
    bool                    bIntl       = false;
+   QString                 name;
 
    // in case of retranslation or update we should take care of
    // interlaced setting ...
@@ -616,20 +617,27 @@ void QVlcVideoWidget::touchContextMenu()
    // go through language vector and add context menu entries ...
    for (i = 0; i < _langVector.count(); i++)
    {
-      // try to grab language from track description ...
+      // try to grab language name from track description ...
       if (rx.indexIn(_langVector.at(i).desc) > -1)
       {
-         // create context menu entry ...
-         pAct = _contextMenu->addAction(QIcon(_langVector.at(i).current ? ":player/atrack" : ""), rx.cap(1));
-
-         // prepare data ...
-         contAct.actType = vlcvid::ACT_ChgLang;
-         contAct.actName = _langVector.at(i).desc;
-         contAct.actVal.setValue(_langVector.at(i).id);
-
-         // set data ...
-         pAct->setData(QVariant::fromValue(contAct));
+         name = rx.cap(1);
       }
+      else
+      {
+         // filter doesn't match so give it a understandable name ...
+         name = tr("Audio %1").arg(i + 1);
+      }
+
+      // create context menu entry ...
+      pAct = _contextMenu->addAction(QIcon(_langVector.at(i).current ? ":player/atrack" : ""), name);
+
+      // prepare data ...
+      contAct.actType = vlcvid::ACT_ChgLang;
+      contAct.actName = _langVector.at(i).desc;
+      contAct.actVal.setValue(_langVector.at(i).id);
+
+      // set data ...
+      pAct->setData(QVariant::fromValue(contAct));
    }
    _mtxLv.unlock();
 }
