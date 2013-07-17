@@ -76,11 +76,16 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    /////////////////////////////////////////////////////////////////////////////
    m_ui->groupChanMan->hide();
    m_ui->groupVodMan->hide();
+   m_ui->vlSetPage->setStretch(0, 0);  // hidden vod and channel manager
+   m_ui->vlSetPage->setStretch(1, 10); // parent code and erotik settings
+   m_ui->vlSetPage->setStretch(2, 5);  // vertical spacer
+   m_ui->vlSetPage->setStretch(3, 0);  // save button
 
    // since parental manager is very reduced, there is no need
    // to secure it using parental code ...
    m_ui->stackedWidget->setCurrentIndex(1);
    m_ui->btnSaveExitManager->setDisabled(true);
+   m_ui->btnSaveExitManager->hide();
 #endif // _HAS_VOD_MANAGER
 
 #ifdef _IS_OEM

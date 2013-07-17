@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>529</width>
-    <height>481</height>
+    <width>533</width>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -759,7 +759,7 @@ color: red;
           </layout>
          </widget>
          <widget class="QWidget" name="setPage">
-          <layout class="QVBoxLayout" name="verticalLayout_7" stretch="20,13,0">
+          <layout class="QVBoxLayout" name="vlSetPage" stretch="20,13,0,0">
            <property name="spacing">
             <number>2</number>
            </property>
@@ -843,8 +843,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>233</width>
-                     <height>191</height>
+                     <width>235</width>
+                     <height>192</height>
                     </rect>
                    </property>
                   </widget>
@@ -995,7 +995,7 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>220</width>
+                     <width>222</width>
                      <height>134</height>
                     </rect>
                    </property>
@@ -1039,6 +1039,19 @@ color: red;
               </widget>
              </item>
             </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+            </spacer>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_7">
