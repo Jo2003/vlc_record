@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>572</width>
-    <height>509</height>
+    <width>529</width>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -470,7 +470,7 @@ color: red;
          <property name="title">
           <string>Advanced Settings</string>
          </property>
-         <layout class="QFormLayout" name="formLayout_2">
+         <layout class="QGridLayout" name="gridLayout" columnstretch="5,5">
           <item row="0" column="0">
            <widget class="QLabel" name="lanApiServer">
             <property name="text">
@@ -503,7 +503,7 @@ color: red;
            </widget>
           </item>
           <item row="2" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,3">
+           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="5,1">
             <property name="spacing">
              <number>2</number>
             </property>
@@ -547,58 +547,109 @@ color: red;
            </layout>
           </item>
           <item row="3" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Deinterlacing Mode: </string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="cbxDeintlMode">
+            <item>
+             <property name="text">
+              <string>blend</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>bob</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>discard</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>linear</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>mean</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>x</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>yadif</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>yadif2x</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="4" column="0">
            <widget class="QLabel" name="label_13">
             <property name="text">
              <string>Shutdown Command:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="QLineEdit" name="lineShutdown"/>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="checkAskForName">
             <property name="text">
              <string>Ask for Record Filename</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="5" column="1">
            <widget class="QCheckBox" name="checkHideToSystray">
             <property name="text">
              <string>Minimize to Systray</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="6" column="0">
            <widget class="QCheckBox" name="checkDetach">
             <property name="text">
              <string>Detach Player at startup</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="6" column="1">
            <widget class="QCheckBox" name="checkTranslit">
             <property name="text">
              <string>Translit Record Filename</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="7" column="0">
            <widget class="QCheckBox" name="check2ClicksToPlay">
             <property name="text">
              <string>Doubleclick on channel list starts play</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="7" column="1">
            <widget class="QCheckBox" name="checkGPUAcc">
             <property name="text">
              <string>Use GPU for video decoding</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="8" column="0">
            <widget class="QCheckBox" name="checkAds">
             <property name="enabled">
              <bool>false</bool>
@@ -610,61 +661,6 @@ color: red;
              <bool>true</bool>
             </property>
            </widget>
-          </item>
-          <item row="7" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>Deinterlacing Mode: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="cbxDeintlMode">
-              <item>
-               <property name="text">
-                <string>blend</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>bob</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>discard</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>linear</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>mean</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>x</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>yadif</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>yadif2x</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
           </item>
          </layout>
         </widget>
@@ -821,8 +817,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>96</width>
-                     <height>26</height>
+                     <width>233</width>
+                     <height>191</height>
                     </rect>
                    </property>
                   </widget>
@@ -973,8 +969,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>96</width>
-                     <height>398</height>
+                     <width>220</width>
+                     <height>134</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1166,7 +1162,6 @@ color: red;
   <tabstop>checkTranslit</tabstop>
   <tabstop>checkGPUAcc</tabstop>
   <tabstop>check2ClicksToPlay</tabstop>
-  <tabstop>checkAds</tabstop>
   <tabstop>linePasswd</tabstop>
   <tabstop>btnEnterManager</tabstop>
   <tabstop>listHide</tabstop>
