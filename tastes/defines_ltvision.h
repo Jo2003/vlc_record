@@ -31,7 +31,6 @@
 
 // use xml parser ...
 #define ApiParser             CKartinaXMLParser
-#define ApiClient             CLtvClient
 
 #endif // __20130716__DEFINES_LTVISION_H
 

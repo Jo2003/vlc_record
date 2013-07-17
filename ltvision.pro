@@ -5,4 +5,6 @@ WINICO = television.ico
 TRANSLATIONS = lang_de.ts \
                lang_ru.ts
 
+# DEFINES += _IS_OEM
+
 include (common.pri)

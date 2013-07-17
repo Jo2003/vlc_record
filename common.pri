@@ -167,12 +167,6 @@ contains(DEFINES, _TASTE_IPTV_RECORD) {
               cnovoeparser.h
    SOURCES += cnovoeclient.cpp \
               cnovoeparser.cpp
-} else:contains(DEFINES, _TASTE_LTVISION) {
-   message (Using ltvision api client ...)
-   HEADERS += ckartinaclnt.h \
-              cltvclient.h
-   SOURCES += ckartinaclnt.cpp \
-              cltvclient.cpp
 } else {
    message (Using standard api client ...)
    HEADERS += ckartinaclnt.h

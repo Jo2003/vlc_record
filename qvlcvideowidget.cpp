@@ -594,10 +594,10 @@ void QVlcVideoWidget::touchContextMenu()
    _contextMenu->clear();
 
    // interlace stuff ...
-   pAct = _contextMenu->addAction(tr("Deinterlace Video"));
+   pAct = _contextMenu->addAction(tr("Deinterlacing Video"));
 
    // prepare data ...
-   contAct.actType = vlcvid::ACT_Deinterlace;
+   contAct.actType = vlcvid::ACT_Deinterlacing;
    contAct.actName = "n.a.";
    contAct.actVal.setValue(-1);
 
@@ -668,7 +668,7 @@ void QVlcVideoWidget::slotContentActionTriggered(QAction *pAct)
       switch(actData.actType)
       {
       // deinterlacing enabled / disabled ...
-      case vlcvid::ACT_Deinterlace:
+      case vlcvid::ACT_Deinterlacing:
          emit sigDeinterlace(pAct->isChecked());
          break;
 

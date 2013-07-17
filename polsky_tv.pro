@@ -1,4 +1,5 @@
-DEFINES += _TASTE_POLSKY_TV
+DEFINES += _TASTE_POLSKY_TV \
+           _HAS_VOD_MANAGER
 RESOURCES += polsky_tv.qrc
 HEADERS += tastes/defines_polsky_tv.h
 WINICO = polsky_tv.ico

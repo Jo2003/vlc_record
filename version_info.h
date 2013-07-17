@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "65"
-#define BETA_EXT      "B1"
+#define BETA_EXT      "B2"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,13 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-07-17: Version 2.65B2
+| - add a define which tells if vod manager is there
+| - adapt translation
+| - todo: adapt help
+| - disable comboboxes for server, timeshift and bitrate if
+|   there is no way to choose
+|
 | 2013-07-16: Version 2.65B1
 | - add context menu to video widget
 | - add deinterlace option to context menu and settings

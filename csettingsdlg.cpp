@@ -70,18 +70,10 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->checkAds->setEnabled(true);
 #endif // ENABLE_AD_SWITCH
 
-#ifdef _TASTE_IPTV_RECORD
-   m_ui->cbxBitRate->setDisabled(true);
-   m_ui->listHide->setDisabled(true);
-#endif
-
-#ifdef _TASTE_NOVOE_TV
+#ifndef _HAS_VOD_MANAGER
    /////////////////////////////////////////////////////////////////////////////
-   //                           NOVOE.TV only                                 //
+   //               Disable items if no VOD manager is supported              //
    /////////////////////////////////////////////////////////////////////////////
-   m_ui->cbxBitRate->setDisabled(true);
-   m_ui->cbxStreamServer->setDisabled(true);
-   m_ui->cbxTimeShift->setDisabled(true);
    m_ui->groupChanMan->hide();
    m_ui->groupVodMan->hide();
 
@@ -89,7 +81,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    // to secure it using parental code ...
    m_ui->stackedWidget->setCurrentIndex(1);
    m_ui->btnSaveExitManager->setDisabled(true);
-#endif // _TASTE_NOVOE_TV
+#endif // _HAS_VOD_MANAGER
 
 #ifdef _IS_OEM
    if (m_ui->lineApiServer->isVisible())
@@ -570,16 +562,16 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
 
-#ifdef _TASTE_NOVOE_TV
+#ifndef _HAS_VOD_MANAGER
    /////////////////////////////////////////////////////////////////////////////
-   //                        NOVOE.TV only                                    //
+   //                      no VOD manager is supported                        //
    /////////////////////////////////////////////////////////////////////////////
    // These values are normally stored when leaving parental manager.
    // Since this button is disabled here we save it using the normal
    // save button.
    pDb->setValue("AllowAdult", (int)m_ui->checkAdult->checkState());
    pDb->setPassword("ErosPasswdEnc", m_ui->lineErosPass->text());
-#endif // _TASTE_NOVOE_TV
+#endif // _HAS_VOD_MANAGER
 
    // combo boxes ...
    pDb->setValue("Language", m_ui->cbxLanguage->currentText());
@@ -672,24 +664,36 @@ void CSettingsDlg::SetStreamServerCbx (const QVector<cparser::SSrv> &vSrvList, c
    int iCount  = 0;
    QVector<cparser::SSrv>::const_iterator cit;
 
-
-   m_ui->cbxStreamServer->clear();
-
-   // add all servers ...
-   for (cit = vSrvList.constBegin(); cit != vSrvList.constEnd(); cit++)
+   if (!vSrvList.isEmpty())
    {
-      m_ui->cbxStreamServer->addItem((*cit).sName, QVariant((*cit).sIp));
+      m_ui->cbxStreamServer->clear();
 
-      if ((*cit).sIp == sActSrv)
+      // add all servers ...
+      for (cit = vSrvList.constBegin(); cit != vSrvList.constEnd(); cit++)
       {
-         iActIdx = iCount;
+         m_ui->cbxStreamServer->addItem((*cit).sName, QVariant((*cit).sIp));
+
+         if ((*cit).sIp == sActSrv)
+         {
+            iActIdx = iCount;
+         }
+
+         iCount ++;
       }
 
-      iCount ++;
+      // mark active server ...
+      m_ui->cbxStreamServer->setCurrentIndex(iActIdx);
    }
 
-   // mark active server ...
-   m_ui->cbxStreamServer->setCurrentIndex(iActIdx);
+   // make sure the box isn't touched if there is only one entry ...
+   if (vSrvList.count() < 2)
+   {
+      m_ui->cbxStreamServer->setDisabled(true);
+   }
+   else
+   {
+      m_ui->cbxStreamServer->setEnabled(true);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -709,48 +713,60 @@ void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
    QVector<int>::const_iterator cit;
    QString sName;
 
-
-   m_ui->cbxBitRate->clear();
-
-   // add all available bitrates ...
-   for (cit = vValues.constBegin(); cit != vValues.constEnd(); cit++)
+   if (!vValues.isEmpty())
    {
-      // build name ...
-      switch (*cit)
+      m_ui->cbxBitRate->clear();
+
+      // add all available bitrates ...
+      for (cit = vValues.constBegin(); cit != vValues.constEnd(); cit++)
       {
-      case 320:
-         sName = tr("Mobile");
-         break;
+         // build name ...
+         switch (*cit)
+         {
+         case 320:
+            sName = tr("Mobile");
+            break;
 
-      case 900:
-         sName = tr("Eco");
-         break;
+         case 900:
+            sName = tr("Eco");
+            break;
 
-      case 1500:
-         sName = tr("Standard");
-         break;
+         case 1500:
+            sName = tr("Standard");
+            break;
 
-      case 2500:
-         sName = tr("Premium");
-         break;
+         case 2500:
+            sName = tr("Premium");
+            break;
 
-      default:
-         sName = tr("%1 Kbit/s").arg(*cit);
-         break;
+         default:
+            sName = tr("%1 Kbit/s").arg(*cit);
+            break;
+         }
+
+         m_ui->cbxBitRate->addItem(sName, QVariant(*cit));
+
+         if (*cit == iActrate)
+         {
+            iActIdx = iCount;
+         }
+
+         iCount ++;
       }
 
-      m_ui->cbxBitRate->addItem(sName, QVariant(*cit));
-
-      if (*cit == iActrate)
-      {
-         iActIdx = iCount;
-      }
-
-      iCount ++;
+      // mark active rate ...
+      m_ui->cbxBitRate->setCurrentIndex(iActIdx);
    }
 
-   // mark active rate ...
-   m_ui->cbxBitRate->setCurrentIndex(iActIdx);
+   // make sure the box isn't touched if there is only one entry ...
+   if (vValues.count() < 2)
+   {
+      m_ui->cbxBitRate->setDisabled(true);
+   }
+   else
+   {
+      m_ui->cbxBitRate->setEnabled(true);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -769,27 +785,40 @@ void CSettingsDlg::fillTimeShiftCbx(const QVector<int> &vVals, int iAct)
    int iCount  = 0;
    QVector<int>::const_iterator cit;
 
-   m_ui->cbxTimeShift->clear();
-
-   // add all available timeshift values ...
-   for (cit = vVals.constBegin(); cit != vVals.constEnd(); cit++)
+   if (!vVals.isEmpty())
    {
-      m_ui->cbxTimeShift->addItem(QString::number(*cit), QVariant(*cit));
+      m_ui->cbxTimeShift->clear();
 
-      if (*cit == iAct)
+      // add all available timeshift values ...
+      for (cit = vVals.constBegin(); cit != vVals.constEnd(); cit++)
       {
-         iActIdx = iCount;
+         m_ui->cbxTimeShift->addItem(QString::number(*cit), QVariant(*cit));
+
+         if (*cit == iAct)
+         {
+            iActIdx = iCount;
+         }
+
+         iCount ++;
       }
 
-      iCount ++;
+      // mark active rate ...
+      m_ui->cbxTimeShift->setCurrentIndex(iActIdx);
    }
 
-   // mark active rate ...
-   m_ui->cbxTimeShift->setCurrentIndex(iActIdx);
+   // make sure the box isn't touched if there is only one entry ...
+   if (vVals.count() < 2)
+   {
+      m_ui->cbxTimeShift->setDisabled(true);
+   }
+   else
+   {
+      m_ui->cbxTimeShift->setEnabled(true);
+   }
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxStreamServer_currentIndexChanged
+|  Method: on_cbxStreamServer_activated
 |  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
 |  Description: signal set of stream server
@@ -798,13 +827,13 @@ void CSettingsDlg::fillTimeShiftCbx(const QVector<int> &vVals, int iAct)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_cbxStreamServer_currentIndexChanged(int index)
+void CSettingsDlg::on_cbxStreamServer_activated(int index)
 {
    emit sigSetServer(m_ui->cbxStreamServer->itemData(index).toString());
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxBitRate_currentIndexChanged
+|  Method: on_cbxBitRate_activated
 |  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
 |  Description: set bitrate
@@ -813,13 +842,13 @@ void CSettingsDlg::on_cbxStreamServer_currentIndexChanged(int index)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_cbxBitRate_currentIndexChanged(int index)
+void CSettingsDlg::on_cbxBitRate_activated(int index)
 {
    emit sigSetBitRate(m_ui->cbxBitRate->itemData(index).toInt());
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxTimeShift_currentIndexChanged
+|  Method: on_cbxTimeShift_activated
 |  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
 |  Description: set timeshift
@@ -828,7 +857,7 @@ void CSettingsDlg::on_cbxBitRate_currentIndexChanged(int index)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_cbxTimeShift_currentIndexChanged(int index)
+void CSettingsDlg::on_cbxTimeShift_activated(int index)
 {
    emit sigSetTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 }
@@ -1349,11 +1378,11 @@ int CSettingsDlg::shortCutCount()
 \----------------------------------------------------------------- */
 void CSettingsDlg::slotLockParentalManager()
 {
-#ifndef _TASTE_NOVOE_TV
+#ifdef _HAS_VOD_MANAGER
    sTempPasswd = "";
    m_ui->stackedWidget->setCurrentIndex(0);
    m_ui->tabWidget->setTabIcon(3, QIcon(":/access/locked"));
-#endif // _TASTE_NOVOE_TV
+#endif // _HAS_VOD_MANAGER
 }
 
 /* -----------------------------------------------------------------\
@@ -1726,11 +1755,11 @@ void CSettingsDlg::on_btnChgPCode_clicked()
    QString sConPCode = m_ui->lineConfirmPCode->text();
 
 
-#ifdef _TASTE_NOVOE_TV
+#ifndef _HAS_VOD_MANAGER
    if ((!sOldPCode.isEmpty())                         // old password is set
 #else
    if ((sOldPCode == sTempPasswd)                     // old password is ok
-#endif // _TASTE_NOVOE_TV
+#endif // _HAS_VOD_MANAGER
       && (sNewPCode == sConPCode)                     // new and confirm are equal
       && (sNewPCode.count() > 0)                      // there is a new password at all
       && ((sOldPCode.indexOf(rx) == -1)               // there are only numbers

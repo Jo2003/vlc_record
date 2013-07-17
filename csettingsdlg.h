@@ -142,9 +142,9 @@ private slots:
     void on_pushVLC_clicked();
     void slotEnableApiServer ();
     void slotEnableVlcVerbLine ();
-    void on_cbxStreamServer_currentIndexChanged(int index);
-    void on_cbxBitRate_currentIndexChanged(int index);
-    void on_cbxTimeShift_currentIndexChanged(int index);
+    void on_cbxStreamServer_activated(int index);
+    void on_cbxBitRate_activated(int index);
+    void on_cbxTimeShift_activated(int index);
     void on_btnSaveExitManager_clicked();
     void on_btnEnterManager_clicked();
     void slotLockParentalManager ();

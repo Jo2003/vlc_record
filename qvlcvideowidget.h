@@ -36,7 +36,7 @@ namespace vlcvid {
 
    enum eActType
    {
-      ACT_Deinterlace,
+      ACT_Deinterlacing,
       ACT_ChgLang,
       ACT_Unknown = 255
    };

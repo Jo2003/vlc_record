@@ -4,7 +4,8 @@ WINICO = television.ico
 TRANSLATIONS = lang_de.ts \
                lang_ru.ts \
                lang_pl.ts
-DEFINES += ENABLE_AD_SWITCH
+DEFINES += ENABLE_AD_SWITCH \
+           _HAS_VOD_MANAGER
 
 # stuff for QJSON ...
 DEFINES     += _USE_QJSON

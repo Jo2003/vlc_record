@@ -730,14 +730,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>CLtvClient</name>
-    <message>
-        <location filename="cltvclient.cpp" line="68"/>
-        <source>Fake account server settings ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CNovoeClient</name>
     <message>
         <location filename="cnovoeclient.cpp" line="84"/>
@@ -1083,21 +1075,17 @@ p, li { white-space: pre-wrap; }
     <name>CNovoeParser</name>
     <message>
         <location filename="cnovoeparser.cpp" line="123"/>
-        <location filename="cnovoeparser.cpp" line="178"/>
-        <location filename="cnovoeparser.cpp" line="237"/>
-        <location filename="cnovoeparser.cpp" line="317"/>
-        <location filename="cnovoeparser.cpp" line="383"/>
-        <location filename="cnovoeparser.cpp" line="432"/>
+        <location filename="cnovoeparser.cpp" line="206"/>
+        <location filename="cnovoeparser.cpp" line="286"/>
+        <location filename="cnovoeparser.cpp" line="352"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="cnovoeparser.cpp" line="124"/>
-        <location filename="cnovoeparser.cpp" line="179"/>
-        <location filename="cnovoeparser.cpp" line="238"/>
-        <location filename="cnovoeparser.cpp" line="318"/>
-        <location filename="cnovoeparser.cpp" line="384"/>
-        <location filename="cnovoeparser.cpp" line="433"/>
+        <location filename="cnovoeparser.cpp" line="207"/>
+        <location filename="cnovoeparser.cpp" line="287"/>
+        <location filename="cnovoeparser.cpp" line="353"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
@@ -1189,23 +1177,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="2000"/>
         <source>Scan for Audio tracks:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="2012"/>
         <source>-&gt; Audio track %1 %2%3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="2041"/>
         <source>%1 %2 deinterlace</source>
         <oldsource>%1 deinterlace</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="2064"/>
         <source>Change audio track to id %1: %2!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/cplayer.ui" line="14"/>
@@ -1675,124 +1663,126 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CSettingsDlg</name>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="514"/>
+        <location filename="forms/csettingsdlg.ui" line="540"/>
         <source>Log disabled</source>
         <translation>Протокол выкл.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="519"/>
+        <location filename="forms/csettingsdlg.ui" line="545"/>
         <source>Log Errors only</source>
         <translation>Только протокол ошибок</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="524"/>
+        <location filename="forms/csettingsdlg.ui" line="550"/>
         <source>Log Errors and Warnings</source>
         <translation>Протокол ошибок и предупреждений</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="529"/>
+        <location filename="forms/csettingsdlg.ui" line="555"/>
         <source>Log everything</source>
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="489"/>
+        <location filename="csettingsdlg.cpp" line="481"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="484"/>
+        <location filename="csettingsdlg.cpp" line="476"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="486"/>
+        <location filename="csettingsdlg.cpp" line="478"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="529"/>
+        <location filename="csettingsdlg.cpp" line="521"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="722"/>
+        <location filename="csettingsdlg.cpp" line="727"/>
         <source>Mobile</source>
         <translation>Мобильный</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="726"/>
+        <location filename="csettingsdlg.cpp" line="731"/>
         <source>Eco</source>
         <translation>Эко</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="730"/>
+        <location filename="forms/csettingsdlg.ui" line="153"/>
+        <location filename="forms/csettingsdlg.ui" line="172"/>
+        <location filename="csettingsdlg.cpp" line="735"/>
         <source>Standard</source>
         <translation>Стандарт</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="734"/>
+        <location filename="csettingsdlg.cpp" line="739"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="738"/>
+        <location filename="csettingsdlg.cpp" line="743"/>
         <source>%1 Kbit/s</source>
         <oldsource>Bitrate: %1Kbit/s</oldsource>
         <translation>%1 Кбит/с</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1439"/>
+        <location filename="csettingsdlg.cpp" line="1468"/>
         <source>blood</source>
         <translation>кровь</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1440"/>
+        <location filename="csettingsdlg.cpp" line="1469"/>
         <source>violence</source>
         <translation>насилие</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1443"/>
+        <location filename="csettingsdlg.cpp" line="1472"/>
         <source>porn</source>
         <translation>порнография</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1444"/>
+        <location filename="csettingsdlg.cpp" line="1473"/>
         <source>horror</source>
         <translation>ужасы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1441"/>
-        <location filename="csettingsdlg.cpp" line="1442"/>
+        <location filename="csettingsdlg.cpp" line="1470"/>
+        <location filename="csettingsdlg.cpp" line="1471"/>
         <source>obscene</source>
         <translation>непристойности</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1476"/>
+        <location filename="csettingsdlg.cpp" line="1505"/>
         <source>hide</source>
         <translation>скрывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1477"/>
+        <location filename="csettingsdlg.cpp" line="1506"/>
         <source>show</source>
         <translation>показывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1478"/>
+        <location filename="csettingsdlg.cpp" line="1507"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1670"/>
+        <location filename="csettingsdlg.cpp" line="1699"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1749"/>
+        <location filename="csettingsdlg.cpp" line="1778"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1750"/>
+        <location filename="csettingsdlg.cpp" line="1779"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1824,13 +1814,13 @@ To change the parent code make sure:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1801"/>
+        <location filename="csettingsdlg.cpp" line="1830"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1801"/>
-        <location filename="csettingsdlg.cpp" line="1802"/>
+        <location filename="csettingsdlg.cpp" line="1830"/>
+        <location filename="csettingsdlg.cpp" line="1831"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>
@@ -1840,18 +1830,18 @@ To change the parent code make sure:
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="225"/>
+        <location filename="forms/csettingsdlg.ui" line="251"/>
         <source>Reload Logos:</source>
         <translation>Обновить логотипы:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="238"/>
+        <location filename="forms/csettingsdlg.ui" line="264"/>
         <source>&amp;reload Logos</source>
         <translation></translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="43"/>
-        <location filename="forms/csettingsdlg.ui" line="437"/>
+        <location filename="forms/csettingsdlg.ui" line="463"/>
         <source>User: </source>
         <translation>Абонемент:</translation>
     </message>
@@ -1862,17 +1852,17 @@ To change the parent code make sure:
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="50"/>
-        <location filename="forms/csettingsdlg.ui" line="451"/>
+        <location filename="forms/csettingsdlg.ui" line="477"/>
         <source>Password: </source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="962"/>
+        <location filename="forms/csettingsdlg.ui" line="984"/>
         <source>Allow Adult Channels</source>
         <translation>Разрешить каналы для взрослых</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="378"/>
+        <location filename="forms/csettingsdlg.ui" line="404"/>
         <source> Proxy Server </source>
         <translation>Прокси сервер</translation>
     </message>
@@ -1905,17 +1895,17 @@ To change the parent code make sure:
         <translation>Проигрыватель:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="152"/>
+        <location filename="forms/csettingsdlg.ui" line="161"/>
         <source>Bitrate:</source>
         <translation>Битрэйт:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="491"/>
+        <location filename="forms/csettingsdlg.ui" line="517"/>
         <source>Player Module:</source>
         <translation>Модуль проигрывателя:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="198"/>
+        <location filename="forms/csettingsdlg.ui" line="224"/>
         <source>Program Settings </source>
         <translation>Настройки программы</translation>
     </message>
@@ -1930,39 +1920,44 @@ To change the parent code make sure:
         <translation>Сервер вещания: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="162"/>
+        <location filename="forms/csettingsdlg.ui" line="180"/>
         <source>Buffer (sec.):</source>
         <translation>Буферизация (в сек.):</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="172"/>
+        <location filename="forms/csettingsdlg.ui" line="190"/>
         <source>Timeshift: </source>
         <translation>Задержка:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="215"/>
+        <location filename="forms/csettingsdlg.ui" line="213"/>
+        <source>0</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/csettingsdlg.ui" line="241"/>
         <source>Language: </source>
         <translation>Язык: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="267"/>
+        <location filename="forms/csettingsdlg.ui" line="293"/>
         <source>Enable Advanced Settings</source>
         <oldsource>Enable Advacned Settings</oldsource>
         <translation>Вкл. допол. настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="372"/>
+        <location filename="forms/csettingsdlg.ui" line="398"/>
         <source>&amp;Advanced</source>
         <oldsource>Advanced</oldsource>
         <translation>&amp;Допол. настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="477"/>
+        <location filename="forms/csettingsdlg.ui" line="503"/>
         <source>API Server: </source>
         <translation>Сервер АПИ: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="501"/>
+        <location filename="forms/csettingsdlg.ui" line="527"/>
         <source>Log Level:</source>
         <translation>Уровень Протокола: </translation>
     </message>
@@ -1971,49 +1966,49 @@ To change the parent code make sure:
         <translation type="obsolete">Обновлять EPG каждые:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="607"/>
+        <location filename="forms/csettingsdlg.ui" line="684"/>
         <source>Show Ads</source>
         <translation>Показать рекламу</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="770"/>
+        <location filename="forms/csettingsdlg.ui" line="792"/>
         <source>Select Channels to hide:</source>
         <translation>Пометить каналы, чтобы скрыть:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="796"/>
+        <location filename="forms/csettingsdlg.ui" line="818"/>
         <source> VOD Manager </source>
         <oldsource>VOD Manager</oldsource>
         <translation>Менеджер видеотеки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1042"/>
+        <location filename="forms/csettingsdlg.ui" line="1064"/>
         <source>Save and E&amp;xit</source>
         <oldsource>Save and &amp;Exit</oldsource>
         <translation>Сохр&amp;анить и выйти</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="569"/>
+        <location filename="forms/csettingsdlg.ui" line="646"/>
         <source>Minimize to Systray</source>
         <translation>Сворачивать в трей</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="384"/>
+        <location filename="forms/csettingsdlg.ui" line="410"/>
         <source>Enable Proxy</source>
         <translation>Вкл. Прокси</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="397"/>
+        <location filename="forms/csettingsdlg.ui" line="423"/>
         <source>Address: </source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="411"/>
+        <location filename="forms/csettingsdlg.ui" line="437"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="260"/>
+        <location filename="forms/csettingsdlg.ui" line="286"/>
         <source>Try to fix time offset</source>
         <translation>Синхронизировать время</translation>
     </message>
@@ -2022,27 +2017,27 @@ To change the parent code make sure:
         <translation type="obsolete">минут(ы)</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1000"/>
+        <location filename="forms/csettingsdlg.ui" line="1022"/>
         <source>Parent Code: </source>
         <translation>Родительский пароль: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="562"/>
+        <location filename="forms/csettingsdlg.ui" line="639"/>
         <source>Ask for Record Filename</source>
         <translation>Запрос файла записи</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="552"/>
+        <location filename="forms/csettingsdlg.ui" line="629"/>
         <source>Shutdown Command:</source>
         <translation>Команда отключения системы: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="583"/>
+        <location filename="forms/csettingsdlg.ui" line="660"/>
         <source>Translit Record Filename</source>
         <translation>Транслит файла записи</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="576"/>
+        <location filename="forms/csettingsdlg.ui" line="653"/>
         <source>Detach Player at startup</source>
         <oldsource>Detach Player on startup</oldsource>
         <translation>Отдели проигр. при запуске</translation>
@@ -2052,39 +2047,39 @@ To change the parent code make sure:
         <translation type="obsolete">Доп. инфо в списке каналов</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="280"/>
+        <location filename="forms/csettingsdlg.ui" line="306"/>
         <source>Sh&amp;ortcuts</source>
         <oldsource>Shortcuts</oldsource>
         <translation>Горячие &amp;клавиши</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="299"/>
+        <location filename="forms/csettingsdlg.ui" line="325"/>
         <source>Function</source>
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="304"/>
+        <location filename="forms/csettingsdlg.ui" line="330"/>
         <source>ShortCut</source>
         <translation>Комбинация клавиш</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="359"/>
+        <location filename="forms/csettingsdlg.ui" line="385"/>
         <source>Reset Shortcuts to default</source>
         <oldsource>Reset Shortcuts</oldsource>
         <translation>Вернуть стандартные настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="322"/>
+        <location filename="forms/csettingsdlg.ui" line="348"/>
         <source>Changes in shortcuts take effect only after restarting the program.</source>
         <translation>Изменения в горячих клавишах вступят в силу только после перезагрузки программы.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="471"/>
+        <location filename="forms/csettingsdlg.ui" line="497"/>
         <source>Advanced Settings</source>
         <translation>Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="590"/>
+        <location filename="forms/csettingsdlg.ui" line="667"/>
         <source>Doubleclick on channel list starts play</source>
         <translation>Двойной щелчок на списке каналов стартует плеер</translation>
     </message>
@@ -2093,131 +2088,131 @@ To change the parent code make sure:
         <translation type="obsolete">Проверка обновлений программы</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="597"/>
+        <location filename="forms/csettingsdlg.ui" line="674"/>
         <source>Use GPU for video decoding</source>
         <translation>GPU декодирует видео</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="619"/>
+        <location filename="forms/csettingsdlg.ui" line="578"/>
         <source>Deinterlacing Mode: </source>
         <oldsource>Deinterlace Mode: </oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Режим деинтерлейсинга:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="627"/>
+        <location filename="forms/csettingsdlg.ui" line="586"/>
         <source>blend</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="632"/>
+        <location filename="forms/csettingsdlg.ui" line="591"/>
         <source>bob</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="637"/>
+        <location filename="forms/csettingsdlg.ui" line="596"/>
         <source>discard</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="642"/>
+        <location filename="forms/csettingsdlg.ui" line="601"/>
         <source>linear</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="647"/>
+        <location filename="forms/csettingsdlg.ui" line="606"/>
         <source>mean</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="652"/>
+        <location filename="forms/csettingsdlg.ui" line="611"/>
         <source>x</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="657"/>
+        <location filename="forms/csettingsdlg.ui" line="616"/>
         <source>yadif</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="662"/>
+        <location filename="forms/csettingsdlg.ui" line="621"/>
         <source>yadif2x</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="680"/>
+        <location filename="forms/csettingsdlg.ui" line="702"/>
         <source>Parental &amp;Manager</source>
         <oldsource>Parental Manager</oldsource>
         <translation>&amp;Родительский контроль</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="699"/>
+        <location filename="forms/csettingsdlg.ui" line="721"/>
         <source>Please enter your parent code:</source>
         <oldsource>Please enter security code:</oldsource>
         <translation>Пожалуйста, введите родительский пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="715"/>
+        <location filename="forms/csettingsdlg.ui" line="737"/>
         <source>&amp;Enter Site</source>
         <oldsource>Enter Site</oldsource>
         <translation>Дос&amp;туп</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="752"/>
+        <location filename="forms/csettingsdlg.ui" line="774"/>
         <source> Channel Manager </source>
         <oldsource>Channel Manager</oldsource>
         <translation>Менеджер каналов</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="841"/>
+        <location filename="forms/csettingsdlg.ui" line="863"/>
         <source>Parent Code</source>
         <oldsource>Parental Code</oldsource>
         <translation>Родительский пароль</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="850"/>
+        <location filename="forms/csettingsdlg.ui" line="872"/>
         <source>Old Code:</source>
         <translation>Старый пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="857"/>
-        <location filename="forms/csettingsdlg.ui" line="874"/>
-        <location filename="forms/csettingsdlg.ui" line="891"/>
+        <location filename="forms/csettingsdlg.ui" line="879"/>
+        <location filename="forms/csettingsdlg.ui" line="896"/>
+        <location filename="forms/csettingsdlg.ui" line="913"/>
         <source>Number only (0 ... 9)!</source>
         <translation>Использовать только цифры (0 ... 9)!</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="867"/>
+        <location filename="forms/csettingsdlg.ui" line="889"/>
         <source>New Code:</source>
         <translation>Новый пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="884"/>
+        <location filename="forms/csettingsdlg.ui" line="906"/>
         <source>Confirm Code:</source>
         <translation>Подтвердите пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="916"/>
+        <location filename="forms/csettingsdlg.ui" line="938"/>
         <source>Chan&amp;ge</source>
         <oldsource>&amp;Change</oldsource>
         <translation>Смен&amp;ить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="941"/>
+        <location filename="forms/csettingsdlg.ui" line="963"/>
         <source>Adult Channels</source>
         <translation>Каналы для взрослых</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="984"/>
+        <location filename="forms/csettingsdlg.ui" line="1006"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Please Note:&lt;/span&gt;&lt;br/&gt;If you insert the parental code below you&apos;re able to watch any adult channel without the need to insert the parent code. &lt;/p&gt;&lt;p&gt;Leaving this field blank you&apos;ll have to enter the parent code each time you want to watch an adult channel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Пожалуста, имейте в виду:&lt;/span&gt;&lt;br/&gt;Если Вы введете родительский пароль внизу, у Вас будет возможность смотреть любой канал для взрослых без необходимости ввода каждый раз родительского пароля. &lt;/p&gt;&lt;p&gt;Если Вы оставите это поле пустым, Вам будет необходимо вводитить родительский пароль каждый раз, когда Вы захотите смотреть канал для взрослых.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1087"/>
+        <location filename="forms/csettingsdlg.ui" line="1109"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1107"/>
+        <location filename="forms/csettingsdlg.ui" line="1129"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -3017,13 +3012,14 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="qvlcvideowidget.cpp" line="597"/>
-        <source>Deinterlace Video</source>
-        <translation type="unfinished"></translation>
+        <source>Deinterlacing Video</source>
+        <oldsource>Deinterlace Video</oldsource>
+        <translation>Деинтерлейсинг видео</translation>
     </message>
     <message>
         <location filename="qvlcvideowidget.cpp" line="628"/>
         <source>Audio %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Аудио %1</translation>
     </message>
 </context>
 <context>

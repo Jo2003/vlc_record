@@ -144,7 +144,16 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QComboBox" name="cbxStreamServer"/>
+             <widget class="QComboBox" name="cbxStreamServer">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <item>
+               <property name="text">
+                <string>Standard</string>
+               </property>
+              </item>
+             </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="labBitRate">
@@ -154,7 +163,16 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QComboBox" name="cbxBitRate"/>
+             <widget class="QComboBox" name="cbxBitRate">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <item>
+               <property name="text">
+                <string>Standard</string>
+               </property>
+              </item>
+             </widget>
             </item>
             <item row="2" column="0">
              <widget class="QLabel" name="labBuffer">
@@ -175,6 +193,9 @@
             </item>
             <item row="3" column="1">
              <widget class="QComboBox" name="cbxTimeShift">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>50</width>
@@ -187,6 +208,11 @@
                 <height>16777215</height>
                </size>
               </property>
+              <item>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
