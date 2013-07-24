@@ -45,6 +45,14 @@ QFusionControl missionControl;
 // customization ...
 QCustParser *pCustomization;
 
+// global api client and parser ...
+ApiClient   *pApiClient;
+ApiParser   *pApiParser;
+
+// global translaters ...
+QTranslator *pAppTransl;
+QTranslator *pQtTransl;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -67,35 +75,44 @@ int main(int argc, char *argv[])
    qRegisterMetaType<QLangVector>("QLangVector");
 
    int          iRV = -1;
-   QTranslator  trans[Translators::TRANS_MAX];
    QApplication app(argc, argv);
-   QApplication::installTranslator (&trans[Translators::TRANS_QT]);
-   QApplication::installTranslator (&trans[Translators::TRANS_OWN]);
-
    Recorder    *pRec;
    QFTSettings *pFTSet;
 
-   pFolders = new CDirStuff();
+   // Setting "app" as parent puts the new generated objects into Qt's memory management,
+   // so ne delete is needed since Qt takes care ...
+   pAppTransl = new QTranslator(&app);
+   pQtTransl  = new QTranslator(&app);
+   pFolders   = new CDirStuff(&app);
 
-   if (pFolders)
+   if (pFolders && pAppTransl && pQtTransl)
    {
       if (pFolders->isInitialized ())
       {
-         if ((pCustomization = new QCustParser()) != NULL)
+         if ((pCustomization = new QCustParser(&app)) != NULL)
          {
             pCustomization->parseCust();
 
             pFolders->setAppName(pCustomization->strVal("APP_NAME"));
 
-            pDb = new CVlcRecDB();
+            // make sure debug stuff is written from the very begining ...
+            VlcLog.SetLogFile(pFolders->getDataDir(), QString("%1.log").arg(pFolders->getBinName()));
+            VlcLog.SetLogLevel(vlclog::LOG_ALL);
 
-            if (pDb)
+            QApplication::installTranslator (pQtTransl);
+            QApplication::installTranslator (pAppTransl);
+
+            pDb        = new CVlcRecDB(&app);
+            pApiClient = new ApiClient(&app);
+            pApiParser = new ApiParser(&app);
+
+            if (pDb && pApiClient && pApiParser)
             {
                // check if needed settings are there ...
                if ((pDb->stringValue("User") == "")
                   && (pDb->stringValue("PasswdEnc") == ""))
                {
-                  if ((pFTSet = new QFTSettings(NULL, trans)) != NULL)
+                  if ((pFTSet = new QFTSettings()) != NULL)
                   {
                      pFTSet->exec();
                      delete pFTSet;
@@ -103,22 +120,16 @@ int main(int argc, char *argv[])
                   }
                }
 
-               if ((pRec = new Recorder(trans)) != NULL)
+               if ((pRec = new Recorder()) != NULL)
                {
                   pRec->show();
                   iRV = app.exec ();
                   delete pRec;
                   pRec = NULL;
                }
-
-               delete pDb;
             }
-
-            delete pCustomization;
          }
       }
-
-      delete pFolders;
    }
 
    return iRV;

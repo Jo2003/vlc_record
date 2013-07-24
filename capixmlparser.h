@@ -37,9 +37,9 @@ class CApiXmlParser : public CApiParser
 public:
    CApiXmlParser(QObject * parent = 0);
    virtual int parseError (const QString& sResp, QString& sMsg, int& eCode);
+   virtual QString xmlElementToValue (const QString &sElement, const QString &sName);
 
 protected:
-   virtual QString xmlElementToValue (const QString &sElement, const QString &sName);
    virtual int oneLevelParser (QXmlStreamReader &xml, const QString &sEndElement, const QStringList& slNeeded, QMap<QString, QString>& mResults);
    virtual int ignoreUntil(QXmlStreamReader &xml, const QString &sEndElement);
 };

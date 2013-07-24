@@ -63,7 +63,6 @@ public:
    void pausePlayTimer ();
    void stopPlayTimer ();
    void setSettings (CSettingsDlg *pDlg);
-   void setApiClient (ApiClient *pClient);
    bool isPositionable();
    void initSlider ();
    uint getSilderPos();
@@ -100,7 +99,6 @@ private:
    libvlc_media_list_player_t  *pMedialistPlayer;
    libvlc_media_list_t         *pMediaList;
    CSettingsDlg                *pSettings;
-   ApiClient                   *pApiClient;
    bool                         bSpoolPending;
    uint                         uiDuration;
    ulong                        ulLibvlcVersion;

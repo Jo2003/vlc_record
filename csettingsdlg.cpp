@@ -12,6 +12,7 @@
 #include "csettingsdlg.h"
 #include "ui_csettingsdlg.h"
 #include <QRadioButton>
+#include <QTranslator>
 #include "qcustparser.h"
 
 // global customization class ...
@@ -25,6 +26,14 @@ extern CDirStuff *pFolders;
 
 // storage db ...
 extern CVlcRecDB *pDb;
+
+// global client api classes ...
+extern ApiClient *pApiClient;
+extern ApiParser *pApiParser;
+
+// global translaters ...
+extern QTranslator *pAppTransl;
+extern QTranslator *pQtTransl;
 
 /* -----------------------------------------------------------------\
 |  Method: CSettingsDlg / constructor
@@ -41,8 +50,6 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
     m_ui(new Ui::CSettingsDlg)
 {
    m_ui->setupUi(this);
-   pParser         = NULL;
-   pApiClient      = NULL;
    pAccountInfo    = NULL;
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
@@ -111,28 +118,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 \----------------------------------------------------------------- */
 CSettingsDlg::~CSettingsDlg()
 {
-   if (pShortApiServer)
-   {
-      delete pShortApiServer;
-      pShortApiServer = NULL;
-   }
-
    delete m_ui;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: setXmlParser
-|  Begin: 22.05.2012
-|  Author: Jo2003
-|  Description: set xml parser to use in settings
-|
-|  Parameters: pointer to XML parser
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CSettingsDlg::setXmlParser(ApiParser *parser)
-{
-   pParser = parser;
 }
 
 /* -----------------------------------------------------------------\
@@ -148,21 +134,6 @@ void CSettingsDlg::setXmlParser(ApiParser *parser)
 void CSettingsDlg::setAccountInfo(const cparser::SAccountInfo *pInfo)
 {
    pAccountInfo = pInfo;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: setApiClient
-|  Begin: 14.05.2012
-|  Author: Jo2003
-|  Description: set API client
-|
-|  Parameters: pointer to API client
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CSettingsDlg::setApiClient (ApiClient *pClient)
-{
-   pApiClient = pClient;
 }
 
 /* -----------------------------------------------------------------\
@@ -868,6 +839,23 @@ void CSettingsDlg::on_cbxTimeShift_activated(int index)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: on_cbxLanguage_currentIndexChanged
+|  Begin: 24.07.2013
+|  Author: Jo2003
+|  Description: set and activate language
+|
+|  Parameters: new language shortcut
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_cbxLanguage_currentIndexChanged(const QString &lng)
+{
+   // set language as read ...
+   pAppTransl->load(QString("lang_%1").arg(lng), pFolders->getLangDir());
+   pQtTransl->load(QString("qt_%1").arg(lng), pFolders->getQtLangDir());
+}
+
+/* -----------------------------------------------------------------\
 |  Method: SaveSplitterSizes
 |  Begin: 18.02.2010 / 11:22:39
 |  Author: Jo2003
@@ -1408,7 +1396,7 @@ void CSettingsDlg::slotBuildChanManager(const QString &str)
 
    channelVector.clear();
 
-   if (!pParser->parseChannelList(str, channelVector, false))
+   if (!pApiParser->parseChannelList(str, channelVector, false))
    {
       m_ui->listHide->clear();
 
@@ -1489,7 +1477,7 @@ void CSettingsDlg::slotBuildVodManager(const QString &str)
       delete pLayout;
    }
 
-   if (!pParser->parseVodManager(str, vodRatesVector))
+   if (!pApiParser->parseVodManager(str, vodRatesVector))
    {
       pVMainLayout = new QVBoxLayout();
 
@@ -1862,6 +1850,39 @@ void CSettingsDlg::slotEnablePCodeForm()
    m_ui->btnChgPCode->setEnabled(true);
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   change language from outsite
+//
+//! \author  Jo2003
+//! \date    24.07.2013
+//
+//! \param   lng (const QString&) language code to set
+//
+//! \return  0 --> ok; -1 --> language not available
+//---------------------------------------------------------------------------
+int CSettingsDlg::setLanguage(const QString &lng)
+{
+   int idx = -1;
+
+   // language available ... ?
+   if ((idx = m_ui->cbxLanguage->findText(lng)) != -1)
+   {
+      // different from current language ... ?
+      if (idx != m_ui->cbxLanguage->currentIndex())
+      {
+         // set new language ...
+         m_ui->cbxLanguage->setCurrentIndex(idx);
+
+         // save it internal too ...
+         pDb->setValue("Language", lng);
+      }
+   }
+
+   return (idx > -1) ? 0 : idx;
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+

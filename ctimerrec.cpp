@@ -25,6 +25,10 @@ extern CVlcRecDB *pDb;
 // global showinfo class ...
 extern CShowInfo showInfo;
 
+// global client api classes ...
+extern ApiClient *pApiClient;
+extern ApiParser *pApiParser;
+
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor
 |  Begin: 26.01.2010 / 16:05:00
@@ -42,8 +46,6 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
    iReqId        = -1;
    uiActId       = 0;
    uiEdtId       = INVALID_ID;
-   pApiClient    = NULL;
-   pXmlParser    = NULL;
    pSettings     = NULL;
    itActJob      = NULL;
    pStreamLoader = NULL;
@@ -141,36 +143,6 @@ void CTimerRec::StartTimer()
       // check time every 3 second ...
       recTimer.start(3000);
    }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: SetXmlParser
-|  Begin: 26.01.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: set xml parser
-|
-|  Parameters: pointer to xml parser
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTimerRec::SetXmlParser(ApiParser *pParser)
-{
-   pXmlParser = pParser;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: setApiClient
-|  Begin: 26.01.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: set wait trigger
-|
-|  Parameters: pointer to wait trigger
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTimerRec::setApiClient(ApiClient *pClient)
-{
-   pApiClient = pClient;
 }
 
 /* -----------------------------------------------------------------\
@@ -946,7 +918,7 @@ void CTimerRec::slotTimerStreamUrl(const QString &str)
    Q_PID   vlcpid = 0;
    QString sUrl, sDst;
 
-   if (!pXmlParser->parseUrl(str, sUrl))
+   if (!pApiParser->parseUrl(str, sUrl))
    {
       sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
 

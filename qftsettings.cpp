@@ -14,6 +14,7 @@
 #include "qftsettings.h"
 #include "ui_qftsettings.h"
 #include "qcustparser.h"
+#include <QRegExp>
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -23,6 +24,10 @@ extern CDirStuff *pFolders;
 
 // storage db ...
 extern CVlcRecDB *pDb;
+
+// global translaters ...
+extern QTranslator *pAppTransl;
+extern QTranslator *pQtTransl;
 
 //---------------------------------------------------------------------------
 //
@@ -35,10 +40,9 @@ extern CVlcRecDB *pDb;
 //
 //! \return  --
 //---------------------------------------------------------------------------
-QFTSettings::QFTSettings(QWidget *parent, QTranslator *pTrans) :
+QFTSettings::QFTSettings(QWidget *parent) :
    QDialog(parent),
-   ui(new Ui::QFTSettings),
-   pTranslator(pTrans)
+   ui(new Ui::QFTSettings)
 {
     ui->setupUi(this);
 
@@ -140,8 +144,8 @@ void QFTSettings::changeEvent(QEvent *e)
 void QFTSettings::on_cbxLanguage_currentIndexChanged(QString str)
 {
    // set language as read ...
-   (pTranslator + Translators::TRANS_OWN)->load(QString("lang_%1").arg(str), pFolders->getLangDir());
-   (pTranslator + Translators::TRANS_QT)->load(QString("qt_%1").arg(str), pFolders->getQtLangDir());
+   pAppTransl->load(QString("lang_%1").arg(str), pFolders->getLangDir());
+   pQtTransl->load(QString("qt_%1").arg(str), pFolders->getQtLangDir());
 }
 
 //---------------------------------------------------------------------------

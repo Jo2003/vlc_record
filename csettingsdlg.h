@@ -105,11 +105,10 @@ public:
     void saveEpgDay(const QString &dateString);
     QString lastEpgDay();
     uint libVlcVerboseLevel();
-    void setApiClient (ApiClient *pClient);
-    void setXmlParser (ApiParser *parser);
     void setAccountInfo(const cparser::SAccountInfo *pInfo);
     void setGeometry(const QByteArray &ba);
     QByteArray getGeometry();
+    int setLanguage (const QString& lng);
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -120,8 +119,6 @@ private:
     CShortcutEx       *pShortApiServer;
     CShortcutEx       *pShortVerbLevel;
     QVector<float>     vBuffs;
-    ApiClient         *pApiClient;
-    ApiParser         *pParser;
     QVector<cparser::SChan>      channelVector;
     QVector<cparser::SVodRate>   vodRatesVector;
     const cparser::SAccountInfo *pAccountInfo;
@@ -152,7 +149,7 @@ private slots:
     void on_btnChgPCode_clicked();
 
     void on_linePasswd_returnPressed();
-
+    void on_cbxLanguage_currentIndexChanged(const QString &lng);
 
 public slots:
     void slotSplashStateChgd (bool bChecked);

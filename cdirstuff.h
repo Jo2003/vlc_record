@@ -30,10 +30,12 @@
 |  Description: class to handle directory name stuff
 |
 \********************************************************************/
-class CDirStuff
+class CDirStuff : public QObject
 {
+   Q_OBJECT
+
 public:
-   CDirStuff();
+   CDirStuff(QObject *parent = 0);
    ~CDirStuff ();
    const QString& getDataDir ();
    const QString& getResDir ();

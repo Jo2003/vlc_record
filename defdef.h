@@ -113,16 +113,6 @@
 #define MAX_LVLC_ARGS     16              // max arguments to give to libVLC at creation
 
 // a namespace for translators ...
-namespace Translators
-{
-   enum ETranslators
-   {
-      TRANS_QT,
-      TRANS_OWN,
-      TRANS_MAX
-   };
-}
-
 namespace Msg
 {
    enum eMsgType

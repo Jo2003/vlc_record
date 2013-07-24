@@ -37,7 +37,7 @@ class QFTSettings : public QDialog
     Q_OBJECT
 
 public:
-   QFTSettings(QWidget *parent = 0, QTranslator *pTrans = 0);
+   QFTSettings(QWidget *parent = 0);
     ~QFTSettings();
 
 private slots:
@@ -51,7 +51,6 @@ protected:
 
 private:
     Ui::QFTSettings *ui;
-    QTranslator     *pTranslator;
 };
 
 #endif // __20110913_QFTSETTINGS_H

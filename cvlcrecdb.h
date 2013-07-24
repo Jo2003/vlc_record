@@ -38,7 +38,7 @@ class CVlcRecDB : public QObject
    Q_OBJECT
 
 public:
-   CVlcRecDB();
+   CVlcRecDB(QObject *parent = 0);
    ~CVlcRecDB();
    int aspect (int iCid, QString &sAspect, QString &sCrop);
    int addAspect (int iCid, const QString &sAspect, const QString &sCrop);

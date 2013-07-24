@@ -28,6 +28,9 @@ extern CVlcRecDB *pDb;
 // global showinfo class ...
 extern CShowInfo showInfo;
 
+// global api client class ...
+extern ApiClient *pApiClient;
+
 // help macros to let QSlider support GMT values ...
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
@@ -58,7 +61,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pMediaList       = NULL;
    pEMPlay          = NULL;
    pSettings        = NULL;
-   pApiClient       = NULL;
    bSpoolPending    = true;
    bOmitNextEvent   = false;
    bScanAuTrk       = true;
@@ -277,21 +279,6 @@ void CPlayer::setShortCuts(QVector<CShortcutEx *> *pvSc)
 void CPlayer::setSettings(CSettingsDlg *pDlg)
 {
    pSettings = pDlg;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: setTrigger
-|  Begin: 16.06.2010 / 16:17:51
-|  Author: Jo2003
-|  Description: store a pointer to trigger class
-|
-|  Parameters: pointer to trigger class
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CPlayer::setApiClient(ApiClient *pClient)
-{
-   pApiClient = pClient;
 }
 
 /* -----------------------------------------------------------------\

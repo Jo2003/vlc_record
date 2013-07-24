@@ -18,11 +18,11 @@
 |  Author: Jo2003
 |  Description: init directory values
 |
-|  Parameters: --
+|  Parameters: pointer to parent object
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CDirStuff::CDirStuff()
+CDirStuff::CDirStuff(QObject *parent) : QObject(parent)
 {
    iInitState = -1;
 

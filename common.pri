@@ -182,10 +182,12 @@ contains(DEFINES, _USE_QJSON) {
    HEADERS += cstdjsonparser.h
 } else {
    message (using XML parser ...)
-   SOURCES += ckartinaxmlparser.cpp \
-            capixmlparser.cpp
-   HEADERS += ckartinaxmlparser.h \
-               capixmlparser.h
+   !contains(DEFINES, _TASTE_IPTV_RECORD) {
+      SOURCES += ckartinaxmlparser.cpp
+      HEADERS += ckartinaxmlparser.h
+   }
+   SOURCES += capixmlparser.cpp
+   HEADERS += capixmlparser.h
 }
 
 

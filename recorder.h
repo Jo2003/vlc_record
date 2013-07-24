@@ -124,7 +124,7 @@ class Recorder : public QDialog
    Q_OBJECT
 
 public:
-   Recorder(QTranslator *trans = 0, QWidget *parent = 0);
+   Recorder(QWidget *parent = 0);
     ~Recorder();
 
 public slots:
@@ -136,11 +136,8 @@ private:
     CSettingsDlg                    Settings;
     QHelpDialog                    *pHelp;
     QSecCodeDlg                     secCodeDlg;
-    ApiClient                       apiClient;
-    ApiParser                       apiParser;
     CStreamLoader                   streamLoader;
-    QTranslator                    *pTranslator;
-    QTimer                          Refresh;
+   QTimer                          Refresh;
     CPixLoader                      pixCache;
     int                             iEpgOffset;
     QTabBar                        *pEpgNavbar;

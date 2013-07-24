@@ -22,11 +22,11 @@ extern CDirStuff *pFolders;
 |  Author: Jo2003
 |  Description: init values ...
 |
-|  Parameters: --
+|  Parameters: pointer to parent object
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CVlcRecDB::CVlcRecDB()
+CVlcRecDB::CVlcRecDB(QObject *parent) : QObject(parent)
 {
    db = QSqlDatabase::addDatabase("QSQLITE");
    db.setDatabaseName(QString("%1/%2").arg(pFolders->getDataDir()).arg(VLC_REC_DB));

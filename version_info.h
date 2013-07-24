@@ -38,6 +38,12 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - make api client and -parser global
+| - make translators global
+| - language change will take effect without reload
+| - can get language from API server (where supported)
+| - update some classes to be child of QObject
+|
 | 2013-07-17: Version 2.65B2
 | - add a define which tells if vod manager is there
 | - adapt translation
