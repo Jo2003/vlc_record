@@ -85,7 +85,6 @@ public:
    void SetTimeShift (int iTs);
    void SetChanList  (const QVector<cparser::SChan> &chanList);
    void SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &name = QString());
-   void SetXmlParser (ApiParser *pParser);
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
    void SetStreamLoader (CStreamLoader *pLoader);
@@ -113,7 +112,6 @@ private:
    uint    uiActId;
    uint    uiEdtId;
    QTimer  recTimer;
-   ApiParser         *pXmlParser;
    CSettingsDlg      *pSettings;
    CVlcCtrl          *pVlcCtrl;
    CStreamLoader     *pStreamLoader;
