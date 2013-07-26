@@ -1536,6 +1536,7 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_GET_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_HTTPBUFF, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_SET_LANGUAGE, slotUnused(resp));
    default:
       break;
    }

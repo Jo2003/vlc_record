@@ -145,11 +145,10 @@ private slots:
     void on_btnSaveExitManager_clicked();
     void on_btnEnterManager_clicked();
     void slotLockParentalManager ();
-
     void on_btnChgPCode_clicked();
-
     void on_linePasswd_returnPressed();
     void on_cbxLanguage_currentIndexChanged(const QString &lng);
+    void on_cbxLanguage_activated(const QString &lng);
 
 public slots:
     void slotSplashStateChgd (bool bChecked);

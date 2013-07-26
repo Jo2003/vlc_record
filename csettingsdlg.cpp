@@ -855,6 +855,27 @@ void CSettingsDlg::on_cbxLanguage_currentIndexChanged(const QString &lng)
    pQtTransl->load(QString("qt_%1").arg(lng), pFolders->getQtLangDir());
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   change / save language change
+//
+//! \author  Jo2003
+//! \date    26.07.2013
+//
+//! \param   lng (const QString&) language code to set
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::on_cbxLanguage_activated(const QString &lng)
+{
+#ifdef _TASTE_IPTV_RECORD
+   // save language as read ...
+   pApiClient->queueRequest(CIptvDefs::REQ_SET_LANGUAGE, lng);
+#else
+   Q_UNUSED(lng)
+#endif
+}
+
 /* -----------------------------------------------------------------\
 |  Method: SaveSplitterSizes
 |  Begin: 18.02.2010 / 11:22:39

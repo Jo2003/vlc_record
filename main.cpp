@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
    QFTSettings *pFTSet;
 
    // Setting "app" as parent puts the new generated objects into Qt's memory management,
-   // so ne delete is needed since Qt takes care ...
+   // so no delete is needed since Qt takes care ...
    pAppTransl = new QTranslator(&app);
    pQtTransl  = new QTranslator(&app);
    pFolders   = new CDirStuff(&app);

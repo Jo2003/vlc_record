@@ -122,7 +122,14 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
          {
             initChanEntry(groupEntry, false);
          }
-         else if (xml.name() == "name")
+         else if (xml.name() == "name") // this is the default ...
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               groupEntry.sName = xml.text().toString();
+            }
+         }
+         else if (xml.name() == "user_title") // here we might overwrite the default name ...
          {
             if (xml.readNext() == QXmlStreamReader::Characters)
             {

@@ -380,6 +380,9 @@ int CRodnoeClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
       case CIptvDefs::REQ_RADIO_TIMERREC:
          getRadioStream(par_1.toInt(), true);
          break;
+      case CIptvDefs::REQ_SET_LANGUAGE:
+         setInterfaceLang(par_1.toString());
+         break;
       default:
          iRet = -1;
          break;
@@ -467,10 +470,10 @@ void CRodnoeClient::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&with_acc=1&with_cfg=1&lng=%3")
+        QString("login=%1&pass=%2&with_acc=1&with_cfg=1" /* &lng=%3*/)
         .arg(sUsr)
         .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw)))
-        .arg(sLang),
+        /*.arg(sLang)*/,
         Iptv::Login);
 }
 
@@ -1119,6 +1122,26 @@ void CRodnoeClient::getRadioStream(int cid, bool bTimerRec)
 
    q_post(bTimerRec ? (int)CIptvDefs::REQ_RADIO_TIMERREC : (int)CIptvDefs::REQ_RADIO_STREAM,
         sApiUrl + "get_url_radio", QString("cid=%1").arg(cid & ~RADIO_OFFSET));
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get stream url for radio
+//
+//! \author  Jo2003
+//! \date    25.03.2013
+//
+//! \param   cid (int) channel id
+//! \param   bTimerRec (bool) timer record flag
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CRodnoeClient::setInterfaceLang (const QString& langCode)
+{
+   mInfo(tr("Set interface language ..."));
+
+   q_post((int)CIptvDefs::REQ_SET_LANGUAGE, sApiUrl + "set",
+          QString("var=interface_lng&val=%1").arg(langCode));
 }
 
 /* -----------------------------------------------------------------\
