@@ -379,6 +379,12 @@ int CRodnoeClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
       case CIptvDefs::REQ_SET_LANGUAGE:
          setInterfaceLang(par_1.toString());
          break;
+      case CIptvDefs::REQ_CL_LANG:
+         chanListLang(par_1.toString());
+         break;
+      case CIptvDefs::REQ_GET_ALANG:
+         audioLang();
+         break;
       default:
          iRet = -1;
          break;
@@ -490,8 +496,52 @@ void CRodnoeClient::GetChannelList ()
 {
    mInfo(tr("Request Channel List ..."));
 
+   // reset language filter ...
+   sLangFilter = "";
+
    // request channel list or channel list for settings ...
    q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1");
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   request language filtered channel list
+//
+//! \author  Jo2003
+//! \date    29.07.2013
+//
+//! \param   lang (const QString&) language code string
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CRodnoeClient::chanListLang(const QString& lang)
+{
+   mInfo(tr("Request Channel List (language filtered) ..."));
+
+   // store language filter ...
+   sLangFilter = lang;
+
+   // request language filtered channel list ...
+   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1&afilter=" + lang);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   request available audio streams
+//
+//! \author  Jo2003
+//! \date    29.07.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CRodnoeClient::audioLang()
+{
+   mInfo(tr("Request available audio streams ..."));
+
+   // request language filtered channel list ...
+   q_get((int)CIptvDefs::REQ_GET_ALANG, sApiUrl + "get_audio_lang");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1097,7 +1147,14 @@ void CRodnoeClient::getRadioList()
 {
    mInfo(tr("Download radio list ..."));
 
-   q_get((int)CIptvDefs::REQ_CHANLIST_RADIO, sApiUrl + "get_list_radio");
+   QString req = "get_list_radio";
+
+   if(!sLangFilter.isEmpty())
+   {
+      req += "?afilter=" + sLangFilter;
+   }
+
+   q_get((int)CIptvDefs::REQ_CHANLIST_RADIO, sApiUrl + req);
 }
 
 //---------------------------------------------------------------------------

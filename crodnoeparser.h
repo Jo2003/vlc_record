@@ -50,6 +50,7 @@ public:
    virtual int parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres);
    virtual int parseVodManager (const QString& sResp, QVector<cparser::SVodRate>& vRates);
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
+   virtual int parseAStreams (const QString& sResp, QStringList &sl);
 
 protected:
    int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);

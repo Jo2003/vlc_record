@@ -83,12 +83,13 @@ Recorder::Recorder(QWidget *parent)
    // set (customized) windows title ...
    setWindowTitle(pCustomization->strVal("APP_NAME"));
 
-   ePlayState     =  IncPlay::PS_WTF;
-   iEpgOffset     =  0;
-   iFontSzChg     =  0;
-   iDwnReqId      = -1;
-   ulStartFlags   =  0;
-   pFilterMenu    =  NULL;
+   ePlayState        =  IncPlay::PS_WTF;
+   iEpgOffset        =  0;
+   iFontSzChg        =  0;
+   iDwnReqId         = -1;
+   ulStartFlags      =  0;
+   pFilterMenu       =  NULL;
+   pLangFilterWidget = NULL;
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
@@ -131,6 +132,11 @@ Recorder::Recorder(QWidget *parent)
    pFilterMenu   = new QMenu(this);
    pFilterWidget = new QStringFilterWidgetAction(this);
    pFilterMenu->addAction(pFilterWidget);
+
+#ifdef _TASTE_IPTV_RECORD
+   pLangFilterWidget = new QLangFilterWidgetAction(this);
+   pFilterMenu->addAction(pLangFilterWidget);
+#endif // _TASTE_IPTV_RECORD
 
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
@@ -254,6 +260,9 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
 
+#ifdef _TASTE_IPTV_RECORD
+   connect (pLangFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotLangFilterChannelList(QString)));
+#endif // _TASTE_IPTV_RECORD
    connect (pFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotFilterChannelList(QString)));
    connect (&pixCache,     SIGNAL(sigLoadImage(QString)), pApiClient, SLOT(slotDownImg(QString)));
    connect (pApiClient,    SIGNAL(sigImage(QByteArray)), &pixCache, SLOT(slotImage(QByteArray)));
@@ -1546,6 +1555,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_UPDATE_CHECK, slotUpdateAnswer(resp));
 
    ///////////////////////////////////////////////
+   // response for available audio streams (where supported) ...
+   mkCase(CIptvDefs::REQ_GET_ALANG, slotALang(resp));
+
+   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
    mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
@@ -2000,6 +2013,14 @@ void Recorder::slotEPG(const QString &str)
                   pApiClient->queueRequest(CIptvDefs::REQ_GETVODGENRES);
                }
             }
+
+#ifdef _TASTE_IPTV_RECORD
+            // So good that we queue requests ...
+            if (!pLangFilterWidget->langBoxFilled())
+            {
+               pApiClient->queueRequest(CIptvDefs::REQ_GET_ALANG);
+            }
+#endif // _TASTE_IPTV_RECORD
          }
       }
    }
@@ -3823,6 +3844,59 @@ void Recorder::slotFilterChannelList(QString filter)
    FillChannelList(cl);
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   filter channel list for language
+//
+//! \author  Jo2003
+//! \date    29.07.2013
+//
+//! \param   filter (QString) filter string
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotLangFilterChannelList(QString filter)
+{
+   if (!filter.isEmpty())
+   {
+      pApiClient->queueRequest(CIptvDefs::REQ_CL_LANG, filter);
+   }
+   else
+   {
+      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+   }
+
+   // requested list is not filtered for channel names ...
+   pFilterWidget->cleanFilter();
+
+   ui->pushFilter->setIcon(QIcon(filter.isEmpty() ? ":/app/filter" : ":/app/act_filter"));
+
+   pFilterMenu->hide();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   server response for available audio streams
+//
+//! \author  Jo2003
+//! \date    29.07.2013
+//
+//! \param   str (QString) server response with audio streams
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotALang(const QString &str)
+{
+#ifdef _TASTE_IPTV_RECORD
+   QStringList sl;
+   if (!pApiParser->parseAStreams(str, sl))
+   {
+      pLangFilterWidget->fillLangCbx(sl);
+   }
+#else
+   Q_UNUSED(str)
+#endif // _TASTE_IPTV_RECORD
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //

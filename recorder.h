@@ -59,6 +59,7 @@
 #include "api_inc.h"
 #include "qupdatenotifydlg.h"
 #include "qstringfilterwidgetaction.h"
+#include "qlangfilterwidgetaction.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
@@ -171,6 +172,8 @@ private:
     QUpdateNotifyDlg                updNotifier;
     QMenu                          *pFilterMenu;
     QStringFilterWidgetAction      *pFilterWidget;
+    QLangFilterWidgetAction        *pLangFilterWidget;
+
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
@@ -241,6 +244,7 @@ private slots:
     void on_btnNextSite_clicked();
     void on_pushLive_clicked();
     void on_channelList_clicked(QModelIndex index);
+    void on_pushFilter_clicked();
     void slotChanList (const QString &str);
     void slotEPG(const QString &str);
     void slotEPGCurrent (const QString &str);
@@ -293,8 +297,9 @@ private slots:
     void slotRecordTimerEnded ();
     void slotGlobalError (int iType, const QString& sCaption, const QString& sDescr);
     void slotTriggeredLogout();
-    void on_pushFilter_clicked();
     void slotFilterChannelList(QString filter);
+    void slotLangFilterChannelList(QString filter);
+    void slotALang(const QString& str);
 
 signals:
     void sigShow ();

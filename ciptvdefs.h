@@ -69,6 +69,8 @@ public:
       REQ_RADIO_STREAM,
       REQ_RADIO_TIMERREC,
       REQ_SET_LANGUAGE,
+      REQ_CL_LANG,
+      REQ_GET_ALANG,
       REQ_UNKNOWN = 255
    };
 

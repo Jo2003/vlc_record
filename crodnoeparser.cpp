@@ -1426,6 +1426,67 @@ int CRodnoeParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
    return iRV;
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   parse audio stream response
+//
+//! \author  Jo2003
+//! \date    29.07.2013
+//
+//! \param   sResp (const QString&) ref. to response string
+//! \param   sl (QStringList&) save audio codes here
+//
+//! \return  --
+//---------------------------------------------------------------------------
+int CRodnoeParser::parseAStreams(const QString &sResp, QStringList &sl)
+{
+   int              iRV = 0;
+   QXmlStreamReader xml;
+
+   sl.clear();
+
+   xml.addData(sResp);
+
+   while(!xml.atEnd() && !xml.hasError())
+   {
+      switch (xml.readNext())
+      {
+      // we aren't interested in ...
+      case QXmlStreamReader::StartDocument:
+      case QXmlStreamReader::EndDocument:
+      case QXmlStreamReader::EndElement:
+         break;
+
+      // any xml element starts ...
+      case QXmlStreamReader::StartElement:
+         if (xml.name() == "title")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               sl << xml.text().toString();
+            }
+         }
+         break;
+
+      default:
+         break;
+
+      } // end switch ...
+
+   } // end while ...
+
+   // check for xml errors ...
+   if(xml.hasError())
+   {
+      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                    tr("XML Error String: %1").arg(xml.errorString()));
+
+      iRV = -1;
+   }
+
+   return iRV;
+}
+
 /*=============================================================================\
 |                                    History:
 | ---------------------------------------------------------------------------

@@ -109,7 +109,8 @@ HEADERS += recorder.h \
     api_inc.h \
     capiparser.h \
     qupdatenotifydlg.h \
-    qstringfilterwidgetaction.h
+    qstringfilterwidgetaction.h \
+    qlangfilterwidgetaction.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

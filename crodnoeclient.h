@@ -82,8 +82,9 @@ protected:
    void getRadioStream(int cid, bool bTimerRec = false);
    QString combineChannelLists(const QString& resp);
    void setInterfaceLang (const QString& langCode);
-
    int  checkResponse (const QString &sResp, QString& sCleanResp);
+   void chanListLang(const QString& lang);
+   void audioLang();
 
 private:
    QString   sUsr;
@@ -94,6 +95,7 @@ private:
    QErrorMap errMap;
    CIptvDefs karTrace;
    QString   sChanListBuffer;
+   QString   sLangFilter;
 
 public slots:
    void slotDownImg(const QString& url);

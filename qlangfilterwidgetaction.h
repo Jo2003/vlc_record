@@ -2,7 +2,7 @@
  *
  *  $HeadURL$
  *
- *  @file     qstringfilterwidgetaction.h
+ *  @file     qlangfilterwidgetaction.h
  *
  *  @author   Jo2003
  *
@@ -11,30 +11,30 @@
  *  $Id$
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
-#ifndef __20130729_QSTRINGFILTERWIDGETACTION_H
-   #define __20130729_QSTRINGFILTERWIDGETACTION_H
+#ifndef __20130729_QLANGFILTERWIDGETACTION_H
+   #define __20130729_QLANGFILTERWIDGETACTION_H
 
 #include <QWidgetAction>
 #include <QHBoxLayout>
 #include <QLabel>
-#include <QLineEdit>
+#include <QComboBox>
 #include <QPushButton>
 #include <QEvent>
 
 //---------------------------------------------------------------------------
-//! \class   QStringFilterWidgetAction
+//! \class   QLangFilterWidgetAction
 //! \date    29.07.2013
 //! \author  Jo2003
-//! \brief   widget for channel filter
+//! \brief   widget for language channel filter
 //---------------------------------------------------------------------------
-class QStringFilterWidgetAction : public QWidgetAction
+class QLangFilterWidgetAction : public QWidgetAction
 {
    Q_OBJECT
 
 public:
    //---------------------------------------------------------------------------
    //
-   //! \brief   constructs QStringFilterWidgetAction object
+   //! \brief   constructs QLangFilterWidgetAction object
    //
    //! \author  Jo2003
    //! \date    29.07.2013
@@ -43,31 +43,58 @@ public:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   QStringFilterWidgetAction(QObject *parent = 0)
-      : QWidgetAction(parent), _lab(NULL), _line(NULL), _go(NULL), _cancel(NULL)
+   QLangFilterWidgetAction(QObject *parent = 0)
+      : QWidgetAction(parent), _lab(NULL), _cbx(NULL), _go(NULL), _cancel(NULL)
    {
 
    }
 
    //---------------------------------------------------------------------------
    //
-   //! \brief   clear filter string
+   //! \brief   fill language combo box
+   //
+   //! \author  Jo2003
+   //! \date    29.07.2013
+   //
+   //! \param   sl (const QStringList&) list with language codes
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void fillLangCbx(QStringList sl)
+   {
+      int i;
+
+      if(_cbx)
+      {
+         _cbx->clear();
+         _cbx->addItem(tr("All"));
+
+         for (i = 0; i < sl.count(); i++)
+         {
+            _cbx->addItem(sl.at(i));
+         }
+      }
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   is language box filles already?
    //
    //! \author  Jo2003
    //! \date    29.07.2013
    //
    //! \param   --
    //
-   //! \return  --
+   //! \return  true -> filled; false -> not yet filled
    //---------------------------------------------------------------------------
-   void cleanFilter()
+   bool langBoxFilled()
    {
-      _line->clear();
+      return (_cbx->count() > 1) ? true : false;
    }
 
 private:
    QLabel      *_lab;
-   QLineEdit   *_line;
+   QComboBox   *_cbx;
    QPushButton *_go;
    QPushButton *_cancel;
 
@@ -88,8 +115,8 @@ protected:
       QWidget     *w = new QWidget(parent);
       QHBoxLayout *l = new QHBoxLayout();
 
-      _lab           = new QLabel(tr("Filter Channels:"), w);
-      _line          = new QLineEdit(w);
+      _lab           = new QLabel(tr("Language Filter:"), w);
+      _cbx           = new QComboBox(w);
       _cancel        = new QPushButton(QIcon(":/app/del"), "", w);
       _go            = new QPushButton(QIcon(":/app/set"), "", w);
 
@@ -102,19 +129,20 @@ protected:
       _cancel->setFlat(true);
       _cancel->setToolTip(tr("delete filter"));
 
+      _cbx->addItem(tr("All"));
+
       l->setSpacing(3);
       l->setMargin(1);
 
       l->addWidget(_lab);
-      l->addWidget(_line, 10);
+      l->addWidget(_cbx, 10);
       l->addWidget(_cancel);
       l->addWidget(_go);
 
       w->setLayout(l);
 
-      connect(_go    , SIGNAL(clicked())      , this, SLOT(slotGo()));
-      connect(_cancel, SIGNAL(clicked())      , this, SLOT(slotCancel()));
-      connect(_line  , SIGNAL(returnPressed()), this, SLOT(slotGo()));
+      connect(_go    , SIGNAL(clicked()), this, SLOT(slotGo()));
+      connect(_cancel, SIGNAL(clicked()), this, SLOT(slotCancel()));
 
       return w;
    }
@@ -138,11 +166,12 @@ protected:
       {
          // make sure we already created
          // control elements ...
-         if (_lab && _go && _cancel)
+         if (_lab && _go && _cancel && _cbx)
          {
-            _lab->setText(tr("Filter Channels:"));
+            _lab->setText(tr("Language Filter:"));
             _go->setToolTip(tr("set filter"));
             _cancel->setToolTip(tr("delete filter"));
+            _cbx->setItemText(0, tr("All"));
 
             rv = true;
          }
@@ -171,7 +200,14 @@ private slots:
    {
       // slot is reached only if we've created
       // control elements already ...
-      emit sigFilter(_line->text());
+      if (_cbx->currentIndex() <= 0)
+      {
+         emit sigFilter(QString());
+      }
+      else
+      {
+         emit sigFilter(_cbx->currentText());
+      }
    }
 
    //---------------------------------------------------------------------------
@@ -187,8 +223,8 @@ private slots:
    //---------------------------------------------------------------------------
    void slotCancel()
    {
-      _line->setText("");
-      emit sigFilter(_line->text());
+      _cbx->setCurrentIndex(0);
+      emit sigFilter(QString());
    }
 
 signals:
@@ -206,4 +242,4 @@ signals:
    void sigFilter(QString);
 };
 
-#endif // __20130729_QSTRINGFILTERWIDGETACTION_H
+#endif // __20130729_QLANGFILTERWIDGETACTION_H
