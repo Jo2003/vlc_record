@@ -185,19 +185,22 @@ public:
    //---------------------------------------------------------------------------
    static void cutProgString (QString &str, const QFontMetrics &fm, int width)
    {
-      str = str.section('\n', 0, 0);
-      int iLength = str.length();
-
-      // check that text width matches ...
-      while (fm.size(Qt::TextSingleLine, str).width() > width)
+      if (width > 0)
       {
-         // to wide --> shrink ...
-         str = str.left(str.length() - 1);
-      }
+         str = str.section('\n', 0, 0);
+         int iLength = str.length();
 
-      if (str.length() != iLength)
-      {
-         str = str.left(str.length() - 3) + QString("...");
+         // check that text width matches ...
+         while (fm.size(Qt::TextSingleLine, str).width() > width)
+         {
+            // to wide --> shrink ...
+            str = str.left(str.length() - 1);
+         }
+
+         if (str.length() != iLength)
+         {
+            str = str.left(str.length() - 3) + QString("...");
+         }
       }
    }
 

@@ -23,6 +23,8 @@
         <file alias="restore">resources/restore.png</file>
         <file alias="record_timer">resources/record_timer.png</file>
         <file alias="set">resources/button_ok.png</file>
+        <file alias="filter">resources/filter.png</file>
+        <file alias="act_filter">resources/filter_active.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

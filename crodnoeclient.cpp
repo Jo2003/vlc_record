@@ -201,7 +201,6 @@ QString CRodnoeClient::combineChannelLists(const QString& resp)
 {
    QRegExp rx;
    int     iInsPos;
-   QString groupTmpl = QString("<item><id>2899</id><name>%1</name><color>#000000</color><channels>[%CHANNELS%]</channels></item>").arg(tr("Radio"));
    QString iconsTmpl = "<tv>[%%TV%%]</tv><radio>[%%RADIO%%]</radio>";
 
    // create new icon section ...
@@ -228,17 +227,14 @@ QString CRodnoeClient::combineChannelLists(const QString& resp)
    }
 
    // grab radio channels ...
-   rx.setPattern("<channels>(.*)</channels>");
+   rx.setPattern("<groups>(.*)</groups>");
 
    if (rx.indexIn(resp) > -1)
    {
-      // create new group section ...
-      groupTmpl.replace("[%CHANNELS%]", rx.cap(1));
-
-      // insert radio channels as last entry into group section ...
+      // append radio channels to tv channels ...
       if ((iInsPos = sChanListBuffer.lastIndexOf("</groups>")) > -1)
       {
-         sChanListBuffer.insert(iInsPos, groupTmpl);
+         sChanListBuffer.insert(iInsPos, rx.cap(1));
       }
    }
 

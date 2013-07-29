@@ -58,6 +58,7 @@
 #include "qrecordtimerwidget.h"
 #include "api_inc.h"
 #include "qupdatenotifydlg.h"
+#include "qstringfilterwidgetaction.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
@@ -137,7 +138,7 @@ private:
     QHelpDialog                    *pHelp;
     QSecCodeDlg                     secCodeDlg;
     CStreamLoader                   streamLoader;
-   QTimer                          Refresh;
+    QTimer                          Refresh;
     CPixLoader                      pixCache;
     int                             iEpgOffset;
     QTabBar                        *pEpgNavbar;
@@ -150,6 +151,7 @@ private:
     QToolButton                    *pFavBtn[MAX_NO_FAVOURITES];
     CFavAction                     *pFavAct[MAX_NO_FAVOURITES];
     QChanMap                        chanMap;
+    QGrpVector                      grpVector;
     QMutex                          mutexChanMap;
     QMenu                           favContext;
     CFavAction                     *pContextAct[MAX_NO_FAVOURITES];
@@ -167,6 +169,8 @@ private:
     CIptvDefs                       metaKartina;
     QRecordTimerWidget              timerWidget;
     QUpdateNotifyDlg                updNotifier;
+    QMenu                          *pFilterMenu;
+    QStringFilterWidgetAction      *pFilterWidget;
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
@@ -289,6 +293,8 @@ private slots:
     void slotRecordTimerEnded ();
     void slotGlobalError (int iType, const QString& sCaption, const QString& sDescr);
     void slotTriggeredLogout();
+    void on_pushFilter_clicked();
+    void slotFilterChannelList(QString filter);
 
 signals:
     void sigShow ();

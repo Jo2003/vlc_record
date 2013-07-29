@@ -88,6 +88,7 @@ Recorder::Recorder(QWidget *parent)
    iFontSzChg     =  0;
    iDwnReqId      = -1;
    ulStartFlags   =  0;
+   pFilterMenu    =  NULL;
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
@@ -125,6 +126,11 @@ Recorder::Recorder(QWidget *parent)
 
    ui->channelList->setItemDelegate(pDelegate);
    ui->channelList->setModel(pModel);
+
+   // menu for channel list filtering ...
+   pFilterMenu   = new QMenu(this);
+   pFilterWidget = new QStringFilterWidgetAction(this);
+   pFilterMenu->addAction(pFilterWidget);
 
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
@@ -248,6 +254,7 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
 
+   connect (pFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotFilterChannelList(QString)));
    connect (&pixCache,     SIGNAL(sigLoadImage(QString)), pApiClient, SLOT(slotDownImg(QString)));
    connect (pApiClient,    SIGNAL(sigImage(QByteArray)), &pixCache, SLOT(slotImage(QByteArray)));
 
@@ -1151,6 +1158,22 @@ void Recorder::on_channelList_clicked(QModelIndex index)
 void Recorder::on_pushHelp_clicked()
 {
    pHelp->show();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   filter button was pressed: show filter menu
+//
+//! \author  Jo2003
+//! \date    29.07.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::on_pushFilter_clicked()
+{
+   pFilterMenu->exec(cursor().pos());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3753,6 +3776,53 @@ void Recorder::slotTriggeredLogout()
    pApiClient->queueRequest (CIptvDefs::REQ_LOGOUT);
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   filter channel list to match filter string
+//
+//! \author  Jo2003
+//! \date    29.07.2013
+//
+//! \param   filter (QString) filter string
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotFilterChannelList(QString filter)
+{
+   pFilterMenu->hide();
+
+   QVector<cparser::SChan>   cl;
+   QGrpVector::ConstIterator cit;
+   cparser::SChan            grp, chan;
+   int                       i;
+
+   for (cit = grpVector.constBegin(); cit != grpVector.constEnd(); cit++)
+   {
+      grp.iId       = (*cit).iId;
+      grp.bIsGroup  = true;
+      grp.sProgramm = (*cit).sColor;
+      grp.sName     = (*cit).sName;
+
+      cl.append(grp);
+
+      for (i = 0; i < (*cit).vChannels.count(); i++)
+      {
+         getChanEntry((*cit).vChannels[i], chan);
+
+         if (filter.isEmpty()                                        // no filter set
+            || chan.sName.contains(filter, Qt::CaseInsensitive)      // find in name
+            || chan.sProgramm.contains(filter, Qt::CaseInsensitive)) // find in programm
+         {
+            cl.append(chan);
+         }
+      }
+   }
+
+   ui->pushFilter->setIcon(QIcon(filter.isEmpty() ? ":/app/filter" : ":/app/act_filter"));
+
+   FillChannelList(cl);
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
@@ -4329,6 +4399,9 @@ void Recorder::FillChanMap(const QVector<cparser::SChan> &chanlist)
    QVector<cparser::SChan>::const_iterator cit;
 
    chanMap.clear();
+   grpVector.clear();
+
+   cparser::SGrp grpEntry;
 
    // create channel map ...
    for (cit = chanlist.constBegin(); cit != chanlist.constEnd(); cit++)
@@ -4336,7 +4409,26 @@ void Recorder::FillChanMap(const QVector<cparser::SChan> &chanlist)
       if (!(*cit).bIsGroup)
       {
          chanMap.insert((*cit).iId, *cit);
+         grpEntry.vChannels.append((*cit).iId);
       }
+      else
+      {
+         if (!grpEntry.sName.isEmpty())
+         {
+            grpVector.append(grpEntry);
+         }
+
+         grpEntry.iId    = (*cit).iId;
+         grpEntry.sColor = (*cit).sProgramm;
+         grpEntry.sName  = (*cit).sName;
+         grpEntry.vChannels.clear();
+      }
+   }
+
+   // make sure we add last group ...
+   if (!grpEntry.sName.isEmpty())
+   {
+      grpVector.append(grpEntry);
    }
 }
 
