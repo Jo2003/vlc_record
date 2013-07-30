@@ -83,13 +83,13 @@ Recorder::Recorder(QWidget *parent)
    // set (customized) windows title ...
    setWindowTitle(pCustomization->strVal("APP_NAME"));
 
-   ePlayState        =  IncPlay::PS_WTF;
-   iEpgOffset        =  0;
-   iFontSzChg        =  0;
-   iDwnReqId         = -1;
-   ulStartFlags      =  0;
-   pFilterMenu       =  NULL;
-   pLangFilterWidget = NULL;
+   ePlayState    =  IncPlay::PS_WTF;
+   iEpgOffset    =  0;
+   iFontSzChg    =  0;
+   iDwnReqId     = -1;
+   ulStartFlags  =  0;
+   pFilterMenu   =  NULL;
+   pMnLangFilter =  NULL;
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
@@ -134,8 +134,7 @@ Recorder::Recorder(QWidget *parent)
    pFilterMenu->addAction(pFilterWidget);
 
 #ifdef _TASTE_IPTV_RECORD
-   pLangFilterWidget = new QLangFilterWidgetAction(this);
-   pFilterMenu->addAction(pLangFilterWidget);
+   pMnLangFilter = pFilterMenu->addMenu(tr("Language Filter"));
 #endif // _TASTE_IPTV_RECORD
 
    // set this dialog as parent for settings and timerRec ...
@@ -261,7 +260,7 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
 
 #ifdef _TASTE_IPTV_RECORD
-   connect (pLangFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotLangFilterChannelList(QString)));
+   connect (pMnLangFilter, SIGNAL(triggered(QAction*)), this, SLOT(slotLangFilterChannelList(QAction*)));
 #endif // _TASTE_IPTV_RECORD
    connect (pFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotFilterChannelList(QString)));
    connect (&pixCache,     SIGNAL(sigLoadImage(QString)), pApiClient, SLOT(slotDownImg(QString)));
@@ -2016,7 +2015,7 @@ void Recorder::slotEPG(const QString &str)
 
 #ifdef _TASTE_IPTV_RECORD
             // So good that we queue requests ...
-            if (!pLangFilterWidget->langBoxFilled())
+            if (pMnLangFilter->actions().isEmpty())
             {
                pApiClient->queueRequest(CIptvDefs::REQ_GET_ALANG);
             }
@@ -3851,25 +3850,38 @@ void Recorder::slotFilterChannelList(QString filter)
 //! \author  Jo2003
 //! \date    29.07.2013
 //
-//! \param   filter (QString) filter string
+//! \param   pAct (QAction *) pointer to action activated
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void Recorder::slotLangFilterChannelList(QString filter)
+void Recorder::slotLangFilterChannelList(QAction *pAct)
 {
-   if (!filter.isEmpty())
+   // get a list of available actions ...
+   QList<QAction *> actList = pMnLangFilter->actions();
+   QList<QAction *>::const_iterator cit;
+
+   for (cit = actList.constBegin(); cit != actList.constEnd(); cit ++)
    {
-      pApiClient->queueRequest(CIptvDefs::REQ_CL_LANG, filter);
+      // uncheck all non active languages ...
+      if (pAct != (*cit))
+      {
+         (*cit)->setChecked(false);
+      }
+   }
+
+   if (pAct->data().toString().isEmpty())
+   {
+      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
    }
    else
    {
-      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+      pApiClient->queueRequest(CIptvDefs::REQ_CL_LANG, pAct->data().toString());
    }
 
    // requested list is not filtered for channel names ...
    pFilterWidget->cleanFilter();
 
-   ui->pushFilter->setIcon(QIcon(filter.isEmpty() ? ":/app/filter" : ":/app/act_filter"));
+   ui->pushFilter->setIcon(QIcon(pAct->data().toString().isEmpty() ? ":/app/filter" : ":/app/act_filter"));
 
    pFilterMenu->hide();
 }
@@ -3888,10 +3900,27 @@ void Recorder::slotLangFilterChannelList(QString filter)
 void Recorder::slotALang(const QString &str)
 {
 #ifdef _TASTE_IPTV_RECORD
-   QStringList sl;
+   QStringList  sl;
+   QAction     *pAct;
+   int          i;
+
    if (!pApiParser->parseAStreams(str, sl))
    {
-      pLangFilterWidget->fillLangCbx(sl);
+      pMnLangFilter->clear();
+
+      // add "all" entry ...
+      pAct = pMnLangFilter->addAction(tr("All"));
+
+      pAct->setData(QString(""));
+      pAct->setCheckable(true);
+      pAct->setChecked(true);
+
+      for (i = 0; i < sl.count(); i++)
+      {
+         pAct = pMnLangFilter->addAction(sl.at(i));
+         pAct->setData(sl.at(i));
+         pAct->setCheckable(true);
+      }
    }
 #else
    Q_UNUSED(str)

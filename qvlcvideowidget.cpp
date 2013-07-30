@@ -594,7 +594,7 @@ void QVlcVideoWidget::touchContextMenu()
    _contextMenu->clear();
 
    // interlace stuff ...
-   pAct = _contextMenu->addAction(tr("Deinterlacing Video"));
+   pAct = _contextMenu->addAction(tr("Deinterlacing"));
 
    // prepare data ...
    contAct.actType = vlcvid::ACT_Deinterlacing;

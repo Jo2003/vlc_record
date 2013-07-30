@@ -59,7 +59,6 @@
 #include "api_inc.h"
 #include "qupdatenotifydlg.h"
 #include "qstringfilterwidgetaction.h"
-#include "qlangfilterwidgetaction.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
@@ -172,7 +171,7 @@ private:
     QUpdateNotifyDlg                updNotifier;
     QMenu                          *pFilterMenu;
     QStringFilterWidgetAction      *pFilterWidget;
-    QLangFilterWidgetAction        *pLangFilterWidget;
+    QMenu                          *pMnLangFilter;
 
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
@@ -298,7 +297,7 @@ private slots:
     void slotGlobalError (int iType, const QString& sCaption, const QString& sDescr);
     void slotTriggeredLogout();
     void slotFilterChannelList(QString filter);
-    void slotLangFilterChannelList(QString filter);
+    void slotLangFilterChannelList(QAction *pAct);
     void slotALang(const QString& str);
 
 signals:

@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "65"
-#define BETA_EXT      "B2"
+#define BETA_EXT      "B3"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2013-07-30: Version 2.65B3
+| - add channel list filter for channel name
+| - add channel list filter for language (where available)
 | - make api client and -parser global
 | - make translators global
 | - language change will take effect without reload
