@@ -394,6 +394,11 @@ void Recorder::changeEvent(QEvent *e)
    case QEvent::LanguageChange:
       ui->retranslateUi(this);
 
+#ifdef _TASTE_IPTV_RECORD
+      // translate language menu entry ...
+      pMnLangFilter->setTitle(tr("Language Filter"));
+#endif // _TASTE_IPTV_RECORD
+
       // translate manual created navbar ...
       TouchEpgNavi (false);
 
@@ -1977,7 +1982,7 @@ void Recorder::slotEPG(const QString &str)
 
    QDateTime   epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
    QModelIndex idx     = ui->channelList->currentIndex();
-      
+
    if (idx.isValid())
    {
       int     cid      = qvariant_cast<int>(idx.data(channellist::cidRole));
