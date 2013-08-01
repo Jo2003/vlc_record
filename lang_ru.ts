@@ -1078,6 +1078,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cnovoeparser.cpp" line="206"/>
         <location filename="cnovoeparser.cpp" line="286"/>
         <location filename="cnovoeparser.cpp" line="352"/>
+        <location filename="cnovoeparser.cpp" line="451"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
@@ -1086,8 +1087,15 @@ p, li { white-space: pre-wrap; }
         <location filename="cnovoeparser.cpp" line="207"/>
         <location filename="cnovoeparser.cpp" line="287"/>
         <location filename="cnovoeparser.cpp" line="353"/>
+        <location filename="cnovoeparser.cpp" line="452"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="cnovoeparser.cpp" line="435"/>
+        <source>Update Entries for channel %1:
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

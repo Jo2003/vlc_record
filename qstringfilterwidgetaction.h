@@ -113,7 +113,7 @@ protected:
 
       _ok->setMinimumSize(24, 24);
       _ok->setMaximumSize(24, 24);
-      _ok->setIconSize(QSize(20,20));
+      _ok->setIconSize(QSize(16, 16));
       _ok->setFlat(true);
 
       l->setSpacing(2);
