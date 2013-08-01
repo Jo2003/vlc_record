@@ -65,6 +65,23 @@ public:
       _chk->setChecked(false);
    }
 
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   set focus to line and place cursor at the end of text
+   //
+   //! \author  Jo2003
+   //! \date    31.07.2013
+   //
+   //! \param   --
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void lineFocus()
+   {
+      _line->setCursorPosition(_line->text().length());
+      _line->setFocus(Qt::OtherFocusReason);
+   }
+
 private:
    QLineEdit *_line;
    QCheckBox *_chk;

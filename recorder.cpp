@@ -1186,6 +1186,7 @@ void Recorder::on_pushHelp_clicked()
 //---------------------------------------------------------------------------
 void Recorder::on_pushFilter_clicked()
 {
+   pFilterWidget->lineFocus();
    pFilterMenu->exec(cursor().pos());
 }
 
@@ -3816,29 +3817,39 @@ void Recorder::slotFilterChannelList(QString filter)
 {
    pFilterMenu->hide();
 
-   QVector<cparser::SChan>   cl;
+   QVector<cparser::SChan>   cl, tmpCl;
    QGrpVector::ConstIterator cit;
    cparser::SChan            grp, chan;
    int                       i;
 
    for (cit = grpVector.constBegin(); cit != grpVector.constEnd(); cit++)
    {
+      tmpCl.clear();
+
       grp.iId       = (*cit).iId;
       grp.bIsGroup  = true;
       grp.sProgramm = (*cit).sColor;
       grp.sName     = (*cit).sName;
 
-      cl.append(grp);
+      tmpCl.append(grp);
 
       for (i = 0; i < (*cit).vChannels.count(); i++)
       {
          getChanEntry((*cit).vChannels[i], chan);
 
          if (filter.isEmpty()                                        // no filter set
-            || chan.sName.contains(filter, Qt::CaseInsensitive)      // find in name
-            || chan.sProgramm.contains(filter, Qt::CaseInsensitive)) // find in programm
+            || chan.sName.contains(filter, Qt::CaseInsensitive))     // find in name
          {
-            cl.append(chan);
+            tmpCl.append(chan);
+         }
+      }
+
+      // more than group only ...
+      if (tmpCl.count() > 1)
+      {
+         for (i = 0; i < tmpCl.count(); i++)
+         {
+            cl.append(tmpCl.at(i));
          }
       }
    }
