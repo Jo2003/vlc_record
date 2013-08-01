@@ -382,3 +382,78 @@ int CNovoeParser::parseSetting(const QString& sResp, const QString &sName, QVect
    iActVal = -1;
    return 0;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse current epg current response
+//
+//! \author  Jo2003
+//! \date    01.08.2013
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   currentEpg (QCurrentMap &) ref. to epg data map
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int CNovoeParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
+{
+   int  iRV = 0, cid;
+   bool bOk = false;
+   cparser::SEpgCurrent          entry;
+   QVector<cparser::SEpgCurrent> vEntries;
+   QVariantMap                   contentMap;
+
+   // clear map ...
+   currentEpg.clear();
+
+   contentMap = QtJson::parse(sResp, bOk).toMap();
+
+   if (bOk)
+   {
+      foreach (const QVariant& lEpg1, contentMap.value("epg").toList())
+      {
+         QVariantMap mEpg1 = lEpg1.toMap();
+
+         vEntries.clear();
+
+         cid = mEpg1.value("cid").toInt();
+
+         foreach (const QVariant& lEpg2, mEpg1.value("epg").toList())
+         {
+            QVariantMap mEpg2 = lEpg2.toMap();
+
+            entry.sShow   = mEpg2.value("epg_progname").toString();
+            entry.uiStart = mEpg2.value("epg_start").toUInt();
+            entry.uiEnd   = mEpg2.value("epg_end").toUInt();
+
+            vEntries.append(entry);
+         }
+
+         currentEpg.insert(cid, vEntries);
+#ifdef __TRACE
+         QString s;
+         s = tr("Update Entries for channel %1:\n").arg(cid);
+
+         for (int i = 0; i < vEntries.count(); i++)
+         {
+            s += QString("%1 - %2: %3\n")
+                  .arg(QDateTime::fromTime_t(vEntries.at(i).uiStart).toString("dd.MM.yyyy hh:mm"))
+                  .arg(QDateTime::fromTime_t(vEntries.at(i).uiEnd).toString("dd.MM.yyyy hh:mm"))
+                  .arg(vEntries.at(i).sShow);
+         }
+
+         mInfo(s);
+#endif // __TRACE
+      }
+   }
+   else
+   {
+      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                    tr("QtJson parser error in %1 %2():%3")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+      iRV = -1;
+   }
+
+   return iRV;
+}

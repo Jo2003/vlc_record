@@ -36,6 +36,7 @@ public:
    virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
    virtual int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
    virtual int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
+   virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
 };
 
 #endif // __20130612_CNOVOEPARSER_H
