@@ -19,6 +19,7 @@
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QEvent>
+#include <QPushButton>
 
 //---------------------------------------------------------------------------
 //! \class   QStringFilterWidgetAction
@@ -43,7 +44,7 @@ public:
    //! \return  --
    //---------------------------------------------------------------------------
    QStringFilterWidgetAction(QObject *parent = 0)
-      : QWidgetAction(parent), _line(NULL), _chk(NULL)
+      : QWidgetAction(parent), _line(NULL), _chk(NULL), _ok(NULL)
    {
 
    }
@@ -83,8 +84,9 @@ public:
    }
 
 private:
-   QLineEdit *_line;
-   QCheckBox *_chk;
+   QLineEdit   *_line;
+   QCheckBox   *_chk;
+   QPushButton *_ok;
 
 protected:
    //---------------------------------------------------------------------------
@@ -105,18 +107,25 @@ protected:
 
       _line          = new QLineEdit(w);
       _chk           = new QCheckBox(tr("Filter Channels"), w);
+      _ok            = new QPushButton(QIcon(":/app/set"), "", w);
 
       _chk->setToolTip(tr("enable / disable filter"));
+
+      _ok->setMinimumSize(24, 24);
+      _ok->setMaximumSize(24, 24);
+      _ok->setIconSize(QSize(20,20));
+      _ok->setFlat(true);
 
       l->setSpacing(2);
       l->setMargin(4);
 
       l->addWidget(_chk);
       l->addWidget(_line, 10);
+      l->addWidget(_ok);
 
       w->setLayout(l);
 
-      connect(_chk , SIGNAL(clicked(bool))  , this, SLOT(slotFilterToggled(bool)));
+      connect(_ok  , SIGNAL(clicked())      , this, SLOT(slotFilterOk()));
       connect(_line, SIGNAL(returnPressed()), this, SLOT(slotEnter()));
 
       return w;
@@ -160,25 +169,22 @@ protected:
 private slots:
    //---------------------------------------------------------------------------
    //
-   //! \brief   go button was pressed, trigger sigFilter
+   //! \brief   ok button was pressed, trigger sigFilter
    //
    //! \author  Jo2003
    //! \date    29.07.2013
    //
-   //! \param   b (bool) enabled or disabled
+   //! \param   --
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   void slotFilterToggled(bool b)
+   void slotFilterOk()
    {
       // slot is reached only if we've created
       // control elements already ...
-      if (b)
+      if (_chk->isChecked())
       {
-         if (!_line->text().isEmpty())
-         {
-            emit sigFilter(_line->text());
-         }
+         emit sigFilter(_line->text());
       }
       else
       {

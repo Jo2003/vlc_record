@@ -2983,14 +2983,14 @@ or start time is later than end time!</source>
 <context>
     <name>QStringFilterWidgetAction</name>
     <message>
-        <location filename="qstringfilterwidgetaction.h" line="107"/>
-        <location filename="qstringfilterwidgetaction.h" line="147"/>
+        <location filename="qstringfilterwidgetaction.h" line="109"/>
+        <location filename="qstringfilterwidgetaction.h" line="156"/>
         <source>Filter Channels</source>
         <translation>Фильтр каналов</translation>
     </message>
     <message>
-        <location filename="qstringfilterwidgetaction.h" line="109"/>
-        <location filename="qstringfilterwidgetaction.h" line="146"/>
+        <location filename="qstringfilterwidgetaction.h" line="112"/>
+        <location filename="qstringfilterwidgetaction.h" line="155"/>
         <source>enable / disable filter</source>
         <translation>Вкл / выкл фильтр</translation>
     </message>
