@@ -1091,7 +1091,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cnovoeparser.cpp" line="435"/>
         <source>Update Entries for channel %1:
 </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2999,16 +2999,19 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>QStringFilterWidgetAction</name>
     <message>
-        <location filename="qstringfilterwidgetaction.h" line="109"/>
-        <location filename="qstringfilterwidgetaction.h" line="156"/>
         <source>Filter Channels</source>
-        <translation>Kanalfilter</translation>
+        <translation type="obsolete">Kanalfilter</translation>
     </message>
     <message>
-        <location filename="qstringfilterwidgetaction.h" line="112"/>
-        <location filename="qstringfilterwidgetaction.h" line="155"/>
         <source>enable / disable filter</source>
-        <translation>Filter ein / aus</translation>
+        <translation type="obsolete">Filter ein / aus</translation>
+    </message>
+    <message>
+        <location filename="qstringfilterwidgetaction.h" line="107"/>
+        <location filename="qstringfilterwidgetaction.h" line="152"/>
+        <source>Channel filter: </source>
+        <oldsource>Filter Channels for: </oldsource>
+        <translation>Kanalfilter: </translation>
     </message>
 </context>
 <context>

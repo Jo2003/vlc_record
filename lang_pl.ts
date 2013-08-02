@@ -911,6 +911,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cnovoeparser.cpp" line="206"/>
         <location filename="cnovoeparser.cpp" line="286"/>
         <location filename="cnovoeparser.cpp" line="352"/>
+        <location filename="cnovoeparser.cpp" line="451"/>
         <source>Error in %1</source>
         <translation>Błąd w %1</translation>
     </message>
@@ -919,7 +920,14 @@ p, li { white-space: pre-wrap; }
         <location filename="cnovoeparser.cpp" line="207"/>
         <location filename="cnovoeparser.cpp" line="287"/>
         <location filename="cnovoeparser.cpp" line="353"/>
+        <location filename="cnovoeparser.cpp" line="452"/>
         <source>QtJson parser error in %1 %2():%3</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="cnovoeparser.cpp" line="435"/>
+        <source>Update Entries for channel %1:
+</source>
         <translation></translation>
     </message>
 </context>
@@ -2788,16 +2796,19 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QStringFilterWidgetAction</name>
     <message>
-        <location filename="qstringfilterwidgetaction.h" line="109"/>
-        <location filename="qstringfilterwidgetaction.h" line="156"/>
         <source>Filter Channels</source>
-        <translation>Filtry kanały</translation>
+        <translation type="obsolete">Filtry kanały</translation>
     </message>
     <message>
-        <location filename="qstringfilterwidgetaction.h" line="112"/>
-        <location filename="qstringfilterwidgetaction.h" line="155"/>
         <source>enable / disable filter</source>
-        <translation>Filtrowanie on / off</translation>
+        <translation type="obsolete">Filtrowanie on / off</translation>
+    </message>
+    <message>
+        <location filename="qstringfilterwidgetaction.h" line="107"/>
+        <location filename="qstringfilterwidgetaction.h" line="152"/>
+        <source>Channel filter: </source>
+        <oldsource>Filter Channels for: </oldsource>
+        <translation>Filtry kanały: </translation>
     </message>
 </context>
 <context>

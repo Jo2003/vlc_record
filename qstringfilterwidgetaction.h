@@ -17,7 +17,7 @@
 #include <QWidgetAction>
 #include <QHBoxLayout>
 #include <QLineEdit>
-#include <QCheckBox>
+#include <QLabel>
 #include <QEvent>
 #include <QPushButton>
 
@@ -44,7 +44,7 @@ public:
    //! \return  --
    //---------------------------------------------------------------------------
    QStringFilterWidgetAction(QObject *parent = 0)
-      : QWidgetAction(parent), _line(NULL), _chk(NULL), _ok(NULL)
+      : QWidgetAction(parent), _lab(NULL), _line(NULL), _ok(NULL)
    {
 
    }
@@ -63,7 +63,6 @@ public:
    void cleanFilter()
    {
       _line->clear();
-      _chk->setChecked(false);
    }
 
    //---------------------------------------------------------------------------
@@ -84,8 +83,8 @@ public:
    }
 
 private:
+   QLabel      *_lab;
    QLineEdit   *_line;
-   QCheckBox   *_chk;
    QPushButton *_ok;
 
 protected:
@@ -105,11 +104,9 @@ protected:
       QWidget     *w = new QWidget(parent);
       QHBoxLayout *l = new QHBoxLayout();
 
+      _lab           = new QLabel(tr("Channel filter: "), w);
       _line          = new QLineEdit(w);
-      _chk           = new QCheckBox(tr("Filter Channels"), w);
       _ok            = new QPushButton(QIcon(":/app/set"), "", w);
-
-      _chk->setToolTip(tr("enable / disable filter"));
 
       _ok->setMinimumSize(24, 24);
       _ok->setMaximumSize(24, 24);
@@ -119,14 +116,14 @@ protected:
       l->setSpacing(2);
       l->setMargin(4);
 
-      l->addWidget(_chk);
+      l->addWidget(_lab);
       l->addWidget(_line, 10);
       l->addWidget(_ok);
 
       w->setLayout(l);
 
-      connect(_ok  , SIGNAL(clicked())      , this, SLOT(slotFilterOk()));
-      connect(_line, SIGNAL(returnPressed()), this, SLOT(slotEnter()));
+      connect(_ok  , SIGNAL(clicked())      , this, SLOT(slotFilter()));
+      connect(_line, SIGNAL(returnPressed()), this, SLOT(slotFilter()));
 
       return w;
    }
@@ -150,10 +147,9 @@ protected:
       {
          // make sure we already created
          // control elements ...
-         if (_chk)
+         if (_lab)
          {
-            _chk->setToolTip(tr("enable / disable filter"));
-            _chk->setText(tr("Filter Channels"));
+            _lab->setText(tr("Channel filter: "));
 
             rv = true;
          }
@@ -169,7 +165,7 @@ protected:
 private slots:
    //---------------------------------------------------------------------------
    //
-   //! \brief   ok button was pressed, trigger sigFilter
+   //! \brief   ok button or enter was pressed, trigger sigFilter
    //
    //! \author  Jo2003
    //! \date    29.07.2013
@@ -178,37 +174,10 @@ private slots:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   void slotFilterOk()
+   void slotFilter()
    {
       // slot is reached only if we've created
       // control elements already ...
-      if (_chk->isChecked())
-      {
-         emit sigFilter(_line->text());
-      }
-      else
-      {
-         emit sigFilter(QString());
-      }
-   }
-
-   //---------------------------------------------------------------------------
-   //
-   //! \brief   enter pressed, trigger sigFilter
-   //
-   //! \author  Jo2003
-   //! \date    29.07.2013
-   //
-   //! \param   --
-   //
-   //! \return  --
-   //---------------------------------------------------------------------------
-   void slotEnter()
-   {
-      // slot is reached only if we've created
-      // control elements already ...
-      _chk->setChecked(!_line->text().isEmpty());
-
       emit sigFilter(_line->text());
    }
 
