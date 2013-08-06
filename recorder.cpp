@@ -2120,6 +2120,11 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    // create request string ...
    QString action = link.encodedQueryItemValue(QByteArray("action"));
    bool    ok     = false;
+   uint    uiStart, uiEnd;
+   int            cid;
+   QString        req;
+   cparser::SChan sChan;
+   epg::SShow     sEpg;
 
    if (action == "archivrec")
    {
@@ -2137,23 +2142,34 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    }
    else if(action == "timerrec")
    {
-      uint uiStart = link.encodedQueryItemValue(QByteArray("start")).toUInt();
-      uint uiEnd   = link.encodedQueryItemValue(QByteArray("end")).toUInt();
-      int  iChan   = link.encodedQueryItemValue(QByteArray("cid")).toInt();
+      uiStart = link.encodedQueryItemValue(QByteArray("start")).toUInt();
+      uiEnd   = link.encodedQueryItemValue(QByteArray("end")).toUInt();
+      cid     = link.encodedQueryItemValue(QByteArray("cid")).toInt();
 
-      timeRec.SetRecInfo(uiStart, uiEnd, iChan, CleanShowName(ui->textEpg->epgShow(uiStart).sShowName));
+      timeRec.SetRecInfo(uiStart, uiEnd, cid, CleanShowName(ui->textEpg->epgShow(uiStart).sShowName));
       timeRec.exec();
+   }
+   else if(action == "remember")
+   {
+      sEpg = ui->textEpg->epgShow(link.encodedQueryItemValue(QByteArray("gmt")).toUInt());
+      cid  = link.encodedQueryItemValue(QByteArray("cid")).toInt();
+
+      if (!getChanEntry(cid, sChan))
+      {
+         sChan.uiStart   = sEpg.uiStart;
+         sChan.uiEnd     = sEpg.uiEnd;
+         sChan.sProgramm = sEpg.sShowDescr.isEmpty() ? sEpg.sShowName : QString("%1\n%2").arg(sEpg.sShowName).arg(sEpg.sShowDescr);
+         pDb->addWatchEntry(sChan);
+      }
    }
 
    if (ok)
    {
-      QString cid  = link.encodedQueryItemValue(QByteArray("cid"));
+      cid  = link.encodedQueryItemValue(QByteArray("cid")).toInt();
 
-      cparser::SChan chan;
-
-      if (!getChanEntry(cid.toInt(), chan))
+      if (!getChanEntry(cid, sChan))
       {
-         if (grantAdultAccess(chan.bIsProtected))
+         if (grantAdultAccess(sChan.bIsProtected))
          {
             TouchPlayCtrlBtns(false);
 
@@ -2164,18 +2180,18 @@ void Recorder::slotEpgAnchor (const QUrl &link)
                iDwnReqId = -1;
             }
 
-            QString    gmt  = link.encodedQueryItemValue(QByteArray("gmt"));
-            QString    req  = QString("cid=%1&gmt=%2").arg(cid.toInt()).arg(gmt.toUInt());
-            epg::SShow sepg = ui->textEpg->epgShow(gmt.toUInt());
+            uiStart = link.encodedQueryItemValue(QByteArray("gmt")).toUInt();
+            req     = QString("cid=%1&gmt=%2").arg(cid).arg(uiStart);
+            sEpg    = ui->textEpg->epgShow(uiStart);
 
             // store all info about show ...
             showInfo.cleanShowInfo();
             showInfo.setEpgMap(ui->textEpg->exportProgMap());
-            showInfo.setChanId(cid.toInt());
-            showInfo.setChanName(chan.sName);
-            showInfo.setShowName(sepg.sShowName);
-            showInfo.setStartTime(gmt.toUInt());
-            showInfo.setEndTime(sepg.uiEnd);
+            showInfo.setChanId(cid);
+            showInfo.setChanName(sChan.sName);
+            showInfo.setShowName(sEpg.sShowName);
+            showInfo.setStartTime(uiStart);
+            showInfo.setEndTime(sEpg.uiEnd);
             showInfo.setShowType(ShowInfo::Archive);
             showInfo.setPlayState(ePlayState);
             showInfo.setLastJumpTime(0);
@@ -2184,11 +2200,11 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
                                    .arg("rgb(255, 254, 212)")
                                    .arg(CShowInfo::createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
-                                                      QString("%1 %2").arg(sepg.sShowName).arg(sepg.sShowDescr),
-                                                      sepg.uiStart, sepg.uiEnd))));
+                                                      QString("%1 %2").arg(sEpg.sShowName).arg(sEpg.sShowDescr),
+                                                      sEpg.uiStart, sEpg.uiEnd))));
 
             // add additional info to LCD ...
-            int     iTime = (sepg.uiEnd) ? (int)((sepg.uiEnd - sepg.uiStart) / 60) : 60;
+            int     iTime = (sEpg.uiEnd) ? (int)((sEpg.uiEnd - sEpg.uiStart) / 60) : 60;
             QString sTime = tr("Length: %1 min.").arg(iTime);
             ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
             ui->labState->setFooter(sTime);

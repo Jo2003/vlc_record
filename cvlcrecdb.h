@@ -22,6 +22,7 @@
 #include <QVariant>
 
 #include "cdirstuff.h"
+#include "cparser.h"
 
 #define VLC_REC_DB "vlcrec.db.sqlite"
 #define REC_DB_VER  1
@@ -79,6 +80,9 @@ public:
    QString    password(const QString &sKey);
    int        removeSetting(const QString &sKey);
    QByteArray blobValue(const QString &sKey, int *pErr = NULL);
+   int        addWatchEntry (const cparser::SChan& entry);
+   int        getWatchEntries (QVector<cparser::SChan> &vE);
+   int        delWatchEntry (int cid, uint uiGmt);
 
 
 protected:

@@ -178,17 +178,24 @@ QString CEpgBrowser::createHtmlCode()
 
             // play ...
             sArchivLinks += QString("<a href='vlc-record?action=archivplay&cid=%1&gmt=%2'>"
-                                    "<img src=':png/play' width='16' height='16' alt='play' "
+                                    "<img src=':/png/play' width='16' height='16' alt='play' "
                                     "title='%3' /></a>&nbsp;")
                                     .arg(iCid).arg(actShow.uiStart)
                                     .arg(tr("play from archive ..."));
 
             // record ...
             sArchivLinks += QString("<a href='vlc-record?action=archivrec&cid=%1&gmt=%2'>"
-                                    "<img src=':png/record' width='16' height='16' alt='record' "
+                                    "<img src=':/png/record' width='16' height='16' alt='record' "
                                     "title='%3' /></a>")
                                     .arg(iCid).arg(actShow.uiStart)
                                     .arg(tr("record from archive ..."));
+
+            // mark for later view ...
+            sArchivLinks += QString("<a href='vlc-record?action=remember&cid=%1&gmt=%2'>"
+                                    "<img src=':/png/remember' width='16' height='16' alt='record' "
+                                    "title='%3' /></a>")
+                                    .arg(iCid).arg(actShow.uiStart)
+                                    .arg(tr("watch later ..."));
 
             sStartTime += sArchivLinks;
          }

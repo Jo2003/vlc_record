@@ -102,6 +102,11 @@ int CVlcRecDB::checkDb()
       iRV |= query.exec(TAB_SHORTCUTS) ? 0 : -1;
    }
 
+   if (!lAllTabs.contains("watchlist"))
+   {
+      iRV |= query.exec(TAB_WATCHLIST) ? 0 : -1;
+   }
+
    // db update ...
    iRV |= updateDB();
 
@@ -605,6 +610,103 @@ QByteArray CVlcRecDB::blobValue(const QString &sKey, int *pErr)
    }
 
    return blob;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   add a new watchentry to watchlist
+//
+//! \author  Jo2003
+//! \date    06.08.2013
+//
+//! \param   entry (const cparser::SChan&) new entry to add
+//
+//! \return  0 -> ok; -1 -> query not successful
+//---------------------------------------------------------------------------
+int CVlcRecDB::addWatchEntry (const cparser::SChan& entry)
+{
+   QSqlQuery query;
+
+   query.prepare("REPLACE INTO watchlist VALUES(?, ?, ?, ?, ?)");
+   query.addBindValue(entry.iId);
+   query.addBindValue(entry.uiStart);
+   query.addBindValue(entry.uiEnd);
+   query.addBindValue(entry.sName);
+   query.addBindValue(entry.sProgramm);
+   return query.exec() ? 0 : -1;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get all entries from watchlist
+//
+//! \author  Jo2003
+//! \date    06.08.2013
+//
+//! \param   vE (QVector<cparser::SChan>&) ref. to store vector
+//
+//! \return  0 -> ok; -1 -> query not successful
+//---------------------------------------------------------------------------
+int CVlcRecDB::getWatchEntries (QVector<cparser::SChan> &vE)
+{
+   QSqlQuery      query;
+   cparser::SChan entry;
+   int            iRet;
+
+   vE.clear();
+
+   query.prepare("SELECT cid, t_start, t_end, name, prog FROM watchlist ORDER BY start");
+
+   iRet = query.exec() ? 0 : -1;
+
+   if (!iRet)
+   {
+      if (query.first())
+      {
+         entry.iId       = query.value(0).toInt();
+         entry.uiStart   = query.value(1).toUInt();
+         entry.uiEnd     = query.value(2).toUInt();
+         entry.sName     = query.value(3).toString();
+         entry.sProgramm = query.value(4).toString();
+
+         vE.append(entry);
+
+         while (query.next())
+         {
+            entry.iId       = query.value(0).toInt();
+            entry.uiStart   = query.value(1).toUInt();
+            entry.uiEnd     = query.value(2).toUInt();
+            entry.sName     = query.value(3).toString();
+            entry.sProgramm = query.value(4).toString();
+
+            vE.append(entry);
+         }
+      }
+   }
+
+   return iRet;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   delete specified entry from watchlist
+//
+//! \author  Jo2003
+//! \date    06.08.2013
+//
+//! \param   cid (int) channel id
+//! \param   uiGmt (uint) timestamp
+//
+//! \return  0 -> ok; -1 -> query not successful
+//---------------------------------------------------------------------------
+int CVlcRecDB::delWatchEntry (int cid, uint uiGmt)
+{
+   QSqlQuery query;
+
+   query.prepare("DELETE FROM watchlist WHERE cid=? AND start=?");
+   query.addBindValue(cid);
+   query.addBindValue(uiGmt);
+   return query.exec() ? 0 : -1;
 }
 
 /************************* History ***************************\
