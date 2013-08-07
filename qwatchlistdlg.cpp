@@ -219,8 +219,6 @@ void QWatchListDlg::buildWatchTab()
 
    html.replace(TMPL_CONT, content);
 
-   mInfo(html);
-
    ui->txtWatchTab->setHtml(html);
 }
 
@@ -238,8 +236,6 @@ void QWatchListDlg::buildWatchTab()
 void QWatchListDlg::slotListAnchor(QUrl url)
 {
    // delete watch list entry ...
-   mInfo(url.toString());
-
    if (url.queryItemValue("action") == "wl_del")
    {
       int cid = url.queryItemValue("cid").toInt();

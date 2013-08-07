@@ -187,7 +187,7 @@ QString CEpgBrowser::createHtmlCode()
             // record ...
             sArchivLinks += QString("<a href='vlc-record?action=archivrec&cid=%1&gmt=%2'>"
                                     "<img src=':/png/record' width='16' height='16' alt='record' "
-                                    "title='%3' /></a>")
+                                    "title='%3' /></a>&nbsp;")
                                     .arg(iCid).arg(actShow.uiStart)
                                     .arg(tr("record from archive ..."));
 
