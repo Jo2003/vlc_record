@@ -63,7 +63,6 @@ public:
 
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());
-    bool ArchivAvailable (uint uiThisShow);
     QString createHtmlCode();
 
 private:

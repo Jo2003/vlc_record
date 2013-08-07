@@ -217,7 +217,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
                  </size>
                 </property>
                 <property name="toolTip">
-                  <string>Channel list filter</string>
+                 <string>Channel list filter</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -1088,6 +1088,38 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
            <property name="icon">
             <iconset resource="../common.qrc">
              <normaloff>:/app/timerrec</normaloff>:/app/timerrec</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushWatchList">
+           <property name="maximumSize">
+            <size>
+             <width>34</width>
+             <height>34</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Open Watch List</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../common.qrc">
+             <normaloff>:/app/watchlist</normaloff>:/app/watchlist</iconset>
            </property>
            <property name="iconSize">
             <size>

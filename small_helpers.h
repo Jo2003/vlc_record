@@ -19,6 +19,7 @@
 #include <QFontMetrics>
 #include <QCryptographicHash>
 #include <QDateTime>
+#include "defdef.h"
 
 #define __VLCRECORD_KEY "O20J03N05+v205+n1907#80730108"
 
@@ -242,6 +243,45 @@ public:
 
       // Random number between low and high
       return qrand() % ((high + 1) - low) + low;
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   is archive available for this time
+   //
+   //! \author  Jo2003
+   //! \date    07.08.2013
+   //
+   //! \param   uiStart (uint) unix time stamp
+   //
+   //! \return  1 -> available; -1 -> not yet av.; -2 -> no more av.
+   //---------------------------------------------------------------------------
+   static int archiveAvailable (uint uiStart)
+   {
+      int  iRet = 0;
+      uint now        = QDateTime::currentDateTime().toTime_t();
+      uint uiArchLow  = now - MAX_ARCHIV_AGE;   // no older than 2 weeks
+      uint uiArchHigh = now - ARCHIV_OFFSET;    // 15 minutes in the past
+
+
+      // archiv should be available 10 minutes after show start
+      // in a time frame of 2 weeks ...
+      if (inBetween(uiArchLow, uiArchHigh, uiStart))
+      {
+         iRet = 1;
+      }
+      else if (uiStart < uiArchLow)
+      {
+         // to old ...
+         iRet = -2;
+      }
+      else
+      {
+         // not yet available ...
+         iRet = -1;
+      }
+
+      return iRet;
    }
 };
 

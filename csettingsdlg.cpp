@@ -1242,7 +1242,15 @@ QString CSettingsDlg::GetAPIServer()
 
 int CSettingsDlg::getTimeShift()
 {
-   return m_ui->cbxTimeShift->itemData(m_ui->cbxTimeShift->currentIndex()).toInt();
+   int idx;
+   if ((idx = m_ui->cbxTimeShift->currentIndex()) != -1)
+   {
+      return m_ui->cbxTimeShift->itemData(idx).toInt();
+   }
+   else
+   {
+      return 0;
+   }
 }
 
 void CSettingsDlg::saveChannel(int cid)

@@ -25,6 +25,7 @@
         <file alias="set">resources/button_ok.png</file>
         <file alias="filter">resources/filter.png</file>
         <file alias="act_filter">resources/filter_active.png</file>
+        <file alias="watchlist">resources/watchlist.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
@@ -48,6 +49,7 @@
         <file alias="group">resources/channel_group.png</file>
         <file alias="no_logo">resources/no_logo.png</file>
         <file alias="remember">resources/page_add.png</file>
+        <file alias="remove">resources/del_sm.png</file>
     </qresource>
     <qresource prefix="/player">
         <file alias="sound_on">resources/sound.png</file>

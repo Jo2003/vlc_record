@@ -655,7 +655,7 @@ int CVlcRecDB::getWatchEntries (QVector<cparser::SChan> &vE)
 
    vE.clear();
 
-   query.prepare("SELECT cid, t_start, t_end, name, prog FROM watchlist ORDER BY start");
+   query.prepare("SELECT cid, t_start, t_end, name, prog FROM watchlist ORDER BY t_start");
 
    iRet = query.exec() ? 0 : -1;
 
@@ -703,7 +703,7 @@ int CVlcRecDB::delWatchEntry (int cid, uint uiGmt)
 {
    QSqlQuery query;
 
-   query.prepare("DELETE FROM watchlist WHERE cid=? AND start=?");
+   query.prepare("DELETE FROM watchlist WHERE cid=? AND t_start=?");
    query.addBindValue(cid);
    query.addBindValue(uiGmt);
    return query.exec() ? 0 : -1;

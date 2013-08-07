@@ -65,7 +65,8 @@ SOURCES += main.cpp \
     qiptvctrlclient.cpp \
     qcustparser.cpp \
     capiparser.cpp \
-    qupdatenotifydlg.cpp
+    qupdatenotifydlg.cpp \
+    qwatchlistdlg.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -109,7 +110,8 @@ HEADERS += recorder.h \
     api_inc.h \
     capiparser.h \
     qupdatenotifydlg.h \
-    qstringfilterwidgetaction.h
+    qstringfilterwidgetaction.h \
+    qwatchlistdlg.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -118,7 +120,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/qhelpdialog.ui \
     forms/qoverlayedcontrol.ui \
     forms/qrecordtimerwidget.ui \
-    forms/qupdatenotifydlg.ui
+    forms/qupdatenotifydlg.ui \
+    forms/qwatchlistdlg.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

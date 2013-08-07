@@ -59,6 +59,7 @@
 #include "api_inc.h"
 #include "qupdatenotifydlg.h"
 #include "qstringfilterwidgetaction.h"
+#include "qwatchlistdlg.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
@@ -172,6 +173,7 @@ private:
     QMenu                          *pFilterMenu;
     QStringFilterWidgetAction      *pFilterWidget;
     QMenu                          *pMnLangFilter;
+    QWatchListDlg                  *pWatchList;
 
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
@@ -299,6 +301,8 @@ private slots:
     void slotFilterChannelList(QString filter);
     void slotLangFilterChannelList(QAction *pAct);
     void slotALang(const QString& str);
+    void slotWlClick(QUrl url);
+    void on_pushWatchList_clicked();
 
 signals:
     void sigShow ();

@@ -120,11 +120,18 @@ TMPL_CSS \
 "    <td style='color: black; background-color: rgb(255, 254, 212); padding: 3px;'>" TMPL_PROG "</td>\n"\
 "  </tr>\n"
 
+#define TD_TMPL_A \
+"    <td style='color: black; background-color: rgb(255, 254, 212); padding: 3px;'>" TMPL_CONT "</td>\n"
+
+
 #define TR_TMPL_B \
 "  <tr>\n"\
 "    <td style='color: black; background-color: rgb(234, 221, 166); padding: 3px;'>" TMPL_TIME "</td>\n"\
 "    <td style='color: black; background-color: rgb(234, 221, 166); padding: 3px;'>" TMPL_PROG "</td>\n"\
 "  </tr>\n"
+
+#define TD_TMPL_B \
+"    <td style='color: black; background-color: rgb(234, 221, 166); padding: 3px;'>" TMPL_CONT "</td>\n"
 
 #define TR_TMPL_ACTUAL \
 "  <tr>\n"\
@@ -136,6 +143,10 @@ TMPL_CSS \
 "  <tr>\n"\
 "    <th colspan='2' style='color: white; background-color: #820; padding: 3px; font: bold; text-align: center; vertical-align: middle;'>" TMPL_HEAD "</th>\n"\
 "  </tr>\n"
+
+#define TD_HEAD \
+"    <th style='color: white; background-color: #820; padding: 3px; font: bold; text-align: center; vertical-align: middle;'>" TMPL_HEAD "</th>\n"
+
 
 #define TMPL_CSS_WRAPPER \
 "<style type='text/css'>\n" \

@@ -137,6 +137,9 @@ Recorder::Recorder(QWidget *parent)
    pMnLangFilter = pFilterMenu->addMenu(tr("Language Filter"));
 #endif // _TASTE_IPTV_RECORD
 
+   // watch list ...
+   pWatchList = new QWatchListDlg (this);
+
    // set this dialog as parent for settings and timerRec ...
    Settings.setParent(this, Qt::Dialog);
    secCodeDlg.setParent(this, Qt::Dialog);
@@ -262,6 +265,7 @@ Recorder::Recorder(QWidget *parent)
 #ifdef _TASTE_IPTV_RECORD
    connect (pMnLangFilter, SIGNAL(triggered(QAction*)), this, SLOT(slotLangFilterChannelList(QAction*)));
 #endif // _TASTE_IPTV_RECORD
+   connect (pWatchList,    SIGNAL(sigClick(QUrl)), this, SLOT(slotWlClick(QUrl)));
    connect (pFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotFilterChannelList(QString)));
    connect (&pixCache,     SIGNAL(sigLoadImage(QString)), pApiClient, SLOT(slotDownImg(QString)));
    connect (pApiClient,    SIGNAL(sigImage(QByteArray)), &pixCache, SLOT(slotImage(QByteArray)));
@@ -1190,6 +1194,24 @@ void Recorder::on_pushFilter_clicked()
    pFilterMenu->exec(cursor().pos());
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   watch list button was pressed
+//
+//! \author  Jo2003
+//! \date    07.08.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::on_pushWatchList_clicked()
+{
+   pWatchList->setTs(Settings.getTimeShift());
+   pWatchList->buildWatchTab();
+   pWatchList->exec();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
@@ -2105,6 +2127,92 @@ void Recorder::slotEPGCurrent (const QString &str)
    }
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   watch list link was clicked [slot]
+//
+//! \author  Jo2003
+//! \date    07.08.2013
+//
+//! \param   url (QUrl) url of clicked link
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotWlClick(QUrl url)
+{
+   cparser::SChan chan;
+   QString        req;
+   QString        action = url.queryItemValue("action");
+   QStringList    sl     = url.queryItemValue("show").split("\n");
+   int            cid    = url.queryItemValue("cid").toInt();
+   bool           ok     = false;
+
+   if (action == "wl_play")
+   {
+      if (AllowAction(IncPlay::PS_PLAY))
+      {
+         ok = true;
+      }
+   }
+   else if (action == "wl_rec")
+   {
+      if (AllowAction(IncPlay::PS_RECORD))
+      {
+         ok = true;
+      }
+   }
+
+   if (ok)
+   {
+      if (!getChanEntry(cid, chan))
+      {
+         chan.uiStart   = url.queryItemValue("start").toUInt();
+         chan.uiEnd     = url.queryItemValue("end").toUInt();
+         chan.sProgramm = url.queryItemValue("show");
+
+         if (grantAdultAccess(chan.bIsProtected))
+         {
+            TouchPlayCtrlBtns(false);
+
+            // new own downloader ...
+            if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+            {
+               streamLoader.stopDownload (iDwnReqId);
+               iDwnReqId = -1;
+            }
+
+            req  = QString("cid=%1&gmt=%2").arg(cid).arg(chan.uiStart);
+
+            // store all info about show ...SetTimeShift
+            showInfo.cleanShowInfo();
+            showInfo.setChanId(cid);
+            showInfo.setChanName(chan.sName);
+            showInfo.setShowName(sl.at(0));
+            showInfo.setStartTime(chan.uiStart);
+            showInfo.setEndTime(chan.uiEnd);
+            showInfo.setShowType(ShowInfo::Archive);
+            showInfo.setPlayState(ePlayState);
+            showInfo.setLastJumpTime(0);
+            showInfo.setPCode(secCodeDlg.passWd());
+
+            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
+                                   .arg("rgb(255, 254, 212)")
+                                   .arg(CShowInfo::createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
+                                                                 QString("%1 %2").arg(sl.at(0)).arg((sl.count() > 1) ? sl.at(1) : ""),
+                                                                 chan.uiStart, chan.uiEnd))));
+
+            // add additional info to LCD ...
+            int     iTime = (chan.uiEnd) ? (int)((chan.uiEnd - chan.uiStart) / 60) : 60;
+            QString sTime = tr("Length: %1 min.").arg(iTime);
+            ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
+            ui->labState->setFooter(sTime);
+
+            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
+         }
+      }
+   }
+}
+
 /* -----------------------------------------------------------------\
 |  Method: slotEpgAnchor
 |  Begin: 19.01.2010 / 16:16:17
@@ -2118,7 +2226,7 @@ void Recorder::slotEPGCurrent (const QString &str)
 void Recorder::slotEpgAnchor (const QUrl &link)
 {
    // create request string ...
-   QString action = link.encodedQueryItemValue(QByteArray("action"));
+   QString action = link.queryItemValue("action");
    bool    ok     = false;
    uint    uiStart, uiEnd;
    int            cid;
@@ -2142,17 +2250,17 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    }
    else if(action == "timerrec")
    {
-      uiStart = link.encodedQueryItemValue(QByteArray("start")).toUInt();
-      uiEnd   = link.encodedQueryItemValue(QByteArray("end")).toUInt();
-      cid     = link.encodedQueryItemValue(QByteArray("cid")).toInt();
+      uiStart = link.queryItemValue("start").toUInt();
+      uiEnd   = link.queryItemValue("end").toUInt();
+      cid     = link.queryItemValue("cid").toInt();
 
       timeRec.SetRecInfo(uiStart, uiEnd, cid, CleanShowName(ui->textEpg->epgShow(uiStart).sShowName));
       timeRec.exec();
    }
    else if(action == "remember")
    {
-      sEpg = ui->textEpg->epgShow(link.encodedQueryItemValue(QByteArray("gmt")).toUInt());
-      cid  = link.encodedQueryItemValue(QByteArray("cid")).toInt();
+      sEpg = ui->textEpg->epgShow(link.queryItemValue("gmt").toUInt());
+      cid  = link.queryItemValue("cid").toInt();
 
       if (!getChanEntry(cid, sChan))
       {
@@ -2165,7 +2273,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
    if (ok)
    {
-      cid  = link.encodedQueryItemValue(QByteArray("cid")).toInt();
+      cid  = link.queryItemValue("cid").toInt();
 
       if (!getChanEntry(cid, sChan))
       {
@@ -2180,7 +2288,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
                iDwnReqId = -1;
             }
 
-            uiStart = link.encodedQueryItemValue(QByteArray("gmt")).toUInt();
+            uiStart = link.queryItemValue("gmt").toUInt();
             req     = QString("cid=%1&gmt=%2").arg(cid).arg(uiStart);
             sEpg    = ui->textEpg->epgShow(uiStart);
 

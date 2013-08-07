@@ -10,6 +10,7 @@
 | $Id$
 \*************************************************************/
 #include "cepgbrowser.h"
+#include "small_helpers.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -171,7 +172,7 @@ QString CEpgBrowser::createHtmlCode()
       if (bArchive)
       {
          // only show archiv links if this show already has ended ...
-         if (ArchivAvailable(actShow.uiStart))
+         if (CSmallHelpers::archiveAvailable(actShow.uiStart) == 1)
          {
             QString sArchivLinks = QString("<hr /><b>%1:</b> &nbsp;")
                                    .arg(tr("Ar."));
@@ -189,13 +190,6 @@ QString CEpgBrowser::createHtmlCode()
                                     "title='%3' /></a>")
                                     .arg(iCid).arg(actShow.uiStart)
                                     .arg(tr("record from archive ..."));
-
-            // mark for later view ...
-            sArchivLinks += QString("<a href='vlc-record?action=remember&cid=%1&gmt=%2'>"
-                                    "<img src=':/png/remember' width='16' height='16' alt='record' "
-                                    "title='%3' /></a>")
-                                    .arg(iCid).arg(actShow.uiStart)
-                                    .arg(tr("watch later ..."));
 
             sStartTime += sArchivLinks;
          }
@@ -215,6 +209,15 @@ QString CEpgBrowser::createHtmlCode()
                                .arg(tr("add timer record ..."));
       }
 
+      if (bArchive)
+      {
+         // mark for later view ...
+         sStartTime += QString("<a href='vlc-record?action=remember&cid=%1&gmt=%2'>"
+                               "<img src=':/png/remember' width='16' height='16' alt='record' "
+                               "title='%3' /></a>")
+                               .arg(iCid).arg(actShow.uiStart)
+                               .arg(tr("watch later ..."));
+      }
 
       sRow.replace(TMPL_PROG, sProgCell);
       sRow.replace(TMPL_TIME, sStartTime);
@@ -266,33 +269,6 @@ bool CEpgBrowser::NowRunning (const QDateTime &startThis, const QDateTime &start
    }
 
    return bNowRunning;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: ArchivAvailable
-|  Begin: 18.01.2010 / 16:11:12
-|  Author: Jo2003
-|  Description: check if archiv is avalable for given show
-|
-|  Parameters: timestamp for this show
-|
-|  Returns: true ==> archiv available
-|          false ==> not available
-\----------------------------------------------------------------- */
-bool CEpgBrowser::ArchivAvailable(uint uiThisShow)
-{
-   bool bArchiv = false;
-   uint now     = QDateTime::currentDateTime().toTime_t();
-
-   // archiv should be available 10 minutes after show start
-   // in a time frame of 2 weeks ...
-   if (((now - ARCHIV_OFFSET) > uiThisShow)        // 10 mins. up
-      && (uiThisShow > (now - MAX_ARCHIV_AGE)))    // within the 2 weeks
-   {
-      bArchiv = true;
-   }
-
-   return bArchiv;
 }
 
 /* -----------------------------------------------------------------\
