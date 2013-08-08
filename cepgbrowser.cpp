@@ -11,9 +11,13 @@
 \*************************************************************/
 #include "cepgbrowser.h"
 #include "small_helpers.h"
+#include "ctimeshift.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
 
 /* -----------------------------------------------------------------\
 |  Method: CEpgBrowser / constructor
@@ -28,8 +32,7 @@ extern CLogFile VlcLog;
 CEpgBrowser::CEpgBrowser(QWidget *parent) :
     QTextBrowser(parent)
 {
-   iTimeShift = 0;
-   iCid       = 0;
+   iCid = 0;
    mProgram.clear();
 }
 
@@ -136,12 +139,12 @@ QString CEpgBrowser::createHtmlCode()
 
       bMark       = false;
       sProgCell   = "";
-      dtStartThis = QDateTime::fromTime_t(actShow.uiStart + iTimeShift * 3600);
+      dtStartThis = QDateTime::fromTime_t(pTs->fromGmt(actShow.uiStart));
 
       // find out if we should mark the time ...
       if (actShow.uiEnd)
       {
-         dtStartNext = QDateTime::fromTime_t(actShow.uiEnd + iTimeShift * 3600);
+         dtStartNext = QDateTime::fromTime_t(pTs->fromGmt(actShow.uiEnd));
          bMark       = NowRunning(dtStartThis, dtStartNext);
       }
       else

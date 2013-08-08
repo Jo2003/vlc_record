@@ -18,12 +18,16 @@
 #include "templates.h"
 #include "small_helpers.h"
 #include "clogfile.h"
+#include "ctimeshift.h"
 
 // storage db ...
 extern CVlcRecDB *pDb;
 
 // for logging ...
 extern CLogFile VlcLog;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
 
 //---------------------------------------------------------------------------
 //
@@ -41,7 +45,6 @@ QWatchListDlg::QWatchListDlg(QWidget *parent) :
    ui(new Ui::QWatchListDlg)
 {
    ui->setupUi(this);
-   iTs = 0;
    connect(ui->txtWatchTab, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotListAnchor(QUrl)));
 }
 
@@ -202,7 +205,7 @@ void QWatchListDlg::buildWatchTab()
 
          tab += "  <tr>\n";
          tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
-         tab.replace(TMPL_CONT, QDateTime::fromTime_t(vE.at(i).uiStart + iTs * 3600).toString("dd.MM.yyyy<br />hh:mm"));
+         tab.replace(TMPL_CONT, pTs->fromGmtFormatted(vE.at(i).uiStart, "dd.MM.yyyy<br />hh:mm"));
          tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
          tab.replace(TMPL_CONT, tr("%1 min.").arg((vE.at(i).uiEnd - vE.at(i).uiStart) / 60));
          tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
@@ -247,22 +250,11 @@ void QWatchListDlg::slotListAnchor(QUrl url)
    }
    else
    {
+      // send url ...
       emit sigClick(url);
+
+      // close dialog ...
+      accept();
    }
 }
 
-//---------------------------------------------------------------------------
-//
-//! \brief   set timeshift value
-//
-//! \author  Jo2003
-//! \date    07.08.2013
-//
-//! \param   i (int) timeshift value
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QWatchListDlg::setTs(int i)
-{
-   iTs = i;
-}

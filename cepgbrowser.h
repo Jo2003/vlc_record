@@ -51,9 +51,7 @@ public:
 
     void recreateEpg ();
 
-    void SetTimeShift (int iTs) { iTimeShift = iTs; }
     int  GetCid () { return iCid; }
-    int  GetTimeShift () { return iTimeShift; }
     const epg::SShow epgShow (uint uiTimeT);
     void EnlargeFont ();
     void ReduceFont ();
@@ -66,7 +64,6 @@ protected:
     QString createHtmlCode();
 
 private:
-    int                    iTimeShift;
     int                    iCid;
     bool                   bArchive;
     uint                   uiTime;

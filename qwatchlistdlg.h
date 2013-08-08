@@ -38,7 +38,6 @@ class QWatchListDlg : public QDialog
 public:
    explicit QWatchListDlg(QWidget *parent = 0);
    ~QWatchListDlg();
-   void setTs(int i);
    void buildWatchTab();
 
 protected:
@@ -49,7 +48,6 @@ private slots:
 
 private:
    Ui::QWatchListDlg *ui;
-   int iTs;
 
 signals:
    void sigClick(QUrl);

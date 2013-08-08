@@ -17,6 +17,7 @@
 #include "qftsettings.h"
 #include "qfusioncontrol.h"
 #include "qcustparser.h"
+#include "ctimeshift.h"
 
 #ifdef DINCLUDEPLUGS
 #include <QtPlugin>
@@ -53,6 +54,9 @@ ApiParser   *pApiParser;
 QTranslator *pAppTransl;
 QTranslator *pQtTransl;
 
+// global timeshift class ...
+CTimeShift *pTs;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -84,8 +88,9 @@ int main(int argc, char *argv[])
    pAppTransl = new QTranslator(&app);
    pQtTransl  = new QTranslator(&app);
    pFolders   = new CDirStuff(&app);
+   pTs        = new CTimeShift(&app);
 
-   if (pFolders && pAppTransl && pQtTransl)
+   if (pFolders && pAppTransl && pQtTransl && pTs)
    {
       if (pFolders->isInitialized ())
       {

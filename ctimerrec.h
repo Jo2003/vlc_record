@@ -82,7 +82,6 @@ public:
    CTimerRec(QWidget *parent = 0);
    virtual ~CTimerRec();
 
-   void SetTimeShift (int iTs);
    void SetChanList  (const QVector<cparser::SChan> &chanList);
    void SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &name = QString());
    void SetSettings (CSettingsDlg *pSet);
@@ -99,13 +98,10 @@ public:
 protected:
    virtual void changeEvent(QEvent *e);
    int  SanityCheck (const QDateTime &start, const QDateTime &end, uint uiUpdId = INVALID_ID);
-   void GmtToTimeShift (uint &when, int iEntryTimeShift);
-   void TimeShiftToGmt (uint &when, int iEntryTimeShift);
    void delDbEntry (int id);
 
 private:
    Ui::CTimerRec *r_ui;
-   int     iTimeShift;
    QMap<uint, rec::SRecEntry> JobList;
    QMap<int, rec::SChanEntry> ChanList;
    QMap<uint, rec::SRecEntry>::iterator itActJob;

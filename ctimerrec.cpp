@@ -11,6 +11,7 @@
 \*************************************************************/
 #include "ctimerrec.h"
 #include "ui_ctimerrec.h"
+#include "ctimeshift.h"
 #include <QFileInfo>
 
 // logging stuff ...
@@ -29,6 +30,9 @@ extern CShowInfo showInfo;
 extern ApiClient *pApiClient;
 extern ApiParser *pApiParser;
 
+// global timeshift class ...
+extern CTimeShift *pTs;
+
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor
 |  Begin: 26.01.2010 / 16:05:00
@@ -42,7 +46,6 @@ extern ApiParser *pApiParser;
 CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
 {
    r_ui->setupUi(this);
-   iTimeShift    = 0;
    iReqId        = -1;
    uiActId       = 0;
    uiEdtId       = INVALID_ID;
@@ -91,21 +94,6 @@ void CTimerRec::changeEvent(QEvent *e)
    default:
        break;
    }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: SetTimeShift
-|  Begin: 26.01.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: set timeshift
-|
-|  Parameters: new timeshift value
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTimerRec::SetTimeShift(int iTs)
-{
-   iTimeShift = iTs;
 }
 
 /* -----------------------------------------------------------------\
@@ -196,8 +184,8 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
    uiEdtId = INVALID_ID;
 
    // set timeshift stuff ...
-   GmtToTimeShift(uiStart, iTimeShift);
-   GmtToTimeShift(uiEnd, iTimeShift);
+   uiStart = pTs->fromGmt(uiStart);
+   uiEnd   = pTs->fromGmt(uiEnd);
 
    QDateTime dtStart = QDateTime::fromTime_t(uiStart - TIMER_REC_OFFSET);
    QDateTime dtEnd   = QDateTime::fromTime_t(uiEnd + TIMER_REC_OFFSET);
@@ -215,7 +203,7 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
    }
 
    r_ui->cbxChannel->setCurrentIndex(r_ui->cbxChannel->findData(QVariant(cid)));
-   r_ui->cbxTimeShift->setCurrentIndex(r_ui->cbxTimeShift->findText(QString::number(iTimeShift)));
+   r_ui->cbxTimeShift->setCurrentIndex(r_ui->cbxTimeShift->findText(QString::number(pTs->timeShift())));
 
    if (name != "")
    {
@@ -351,15 +339,11 @@ void CTimerRec::on_btnSet_clicked()
             {
                (*it).cid        = r_ui->cbxChannel->itemData(r_ui->cbxChannel->currentIndex()).toInt();
                (*it).iTimeShift = r_ui->cbxTimeShift->currentText().toInt();
-               (*it).uiStart    = r_ui->dtEdtStart->dateTime().toTime_t();
-               (*it).uiEnd      = r_ui->dtEdtEnd->dateTime().toTime_t();
+               (*it).uiStart    = pTs->toGmt(r_ui->dtEdtStart->dateTime().toTime_t(), (*it).iTimeShift);
+               (*it).uiEnd      = pTs->toGmt(r_ui->dtEdtEnd->dateTime().toTime_t(), (*it).iTimeShift);
                (*it).sName      = r_ui->edtName->text();
 
                // leave id and record state untouched ...
-
-               // we need times in GMT ...
-               TimeShiftToGmt((*it).uiStart, (*it).iTimeShift);
-               TimeShiftToGmt((*it).uiEnd, (*it).iTimeShift);
 
                // delete from job tab ...
                DelRow(uiEdtId);
@@ -376,15 +360,11 @@ void CTimerRec::on_btnSet_clicked()
             // new entry ...
             rec::SRecEntry entry;
             entry.cid        = r_ui->cbxChannel->itemData(r_ui->cbxChannel->currentIndex()).toInt();
-            entry.uiStart    = r_ui->dtEdtStart->dateTime().toTime_t();
-            entry.uiEnd      = r_ui->dtEdtEnd->dateTime().toTime_t();
-            entry.sName      = r_ui->edtName->text();
             entry.iTimeShift = r_ui->cbxTimeShift->currentText().toInt();
+            entry.uiStart    = pTs->toGmt(r_ui->dtEdtStart->dateTime().toTime_t(), entry.iTimeShift);
+            entry.uiEnd      = pTs->toGmt(r_ui->dtEdtEnd->dateTime().toTime_t(), entry.iTimeShift);
+            entry.sName      = r_ui->edtName->text();
             entry.eState     = rec::REC_READY;
-
-            // we need times in GMT ...
-            TimeShiftToGmt(entry.uiStart, entry.iTimeShift);
-            TimeShiftToGmt(entry.uiEnd, entry.iTimeShift);
 
             // AddJob also adds the table row ...
             AddJob (entry);
@@ -469,11 +449,8 @@ int CTimerRec::AddRow(const rec::SRecEntry &entry)
    uint              uiStart, uiEnd;
 
    // convert times from GMT ...
-   uiStart = entry.uiStart;
-   uiEnd   = entry.uiEnd;
-
-   GmtToTimeShift(uiStart, entry.iTimeShift);
-   GmtToTimeShift(uiEnd, entry.iTimeShift);
+   uiStart = pTs->fromGmt(entry.uiStart, entry.iTimeShift);
+   uiEnd   = pTs->fromGmt(entry.uiEnd  , entry.iTimeShift);
 
    // prepare cell flags ...
    flags = Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
@@ -593,11 +570,8 @@ int CTimerRec::SanityCheck(const QDateTime &start, const QDateTime &end, uint ui
       {
          if ((uiUpdId == INVALID_ID) || (uiUpdId != JobList[i].id))
          {
-            uiStart = JobList[i].uiStart;
-            uiEnd   = JobList[i].uiEnd;
-
-            GmtToTimeShift(uiStart, JobList[i].iTimeShift);
-            GmtToTimeShift(uiEnd, JobList[i].iTimeShift);
+            uiStart = pTs->fromGmt(JobList[i].uiStart, JobList[i].iTimeShift);
+            uiEnd   = pTs->fromGmt(JobList[i].uiEnd  , JobList[i].iTimeShift);
 
                // start this between start/end other ...
             if (((start.toTime_t() >= uiStart) && (start.toTime_t() <= uiEnd))
@@ -654,13 +628,11 @@ void CTimerRec::on_tableRecordEntries_cellDoubleClicked(int row, int column)
          uint when;
 
          // start ...
-         when = (*cit).uiStart;
-         GmtToTimeShift(when, (*cit).iTimeShift);
+         when = pTs->fromGmt((*cit).uiStart, (*cit).iTimeShift);
          r_ui->dtEdtStart->setDateTime(QDateTime::fromTime_t(when));
 
          // end ...
-         when = (*cit).uiEnd;
-         GmtToTimeShift(when, (*cit).iTimeShift);
+         when = pTs->fromGmt((*cit).uiEnd, (*cit).iTimeShift);
          r_ui->dtEdtEnd->setDateTime(QDateTime::fromTime_t(when));
 
          // channel ...
@@ -673,36 +645,6 @@ void CTimerRec::on_tableRecordEntries_cellDoubleClicked(int row, int column)
          r_ui->edtName->setText((*cit).sName);
       }
    }
-}
-
-/* -----------------------------------------------------------------\
-|  Method: GmtToTimeShift
-|  Begin: 26.01.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: convert gmt into timeshift time
-|
-|  Parameters: ref. to timestamp, timeshift
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTimerRec::GmtToTimeShift (uint &when, int iEntryTimeShift)
-{
-   when = when + iEntryTimeShift * 3600;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: TimeShiftToGmt
-|  Begin: 26.01.2010 / 16:05:00
-|  Author: Jo2003
-|  Description: convert timeshift time into gmt
-|
-|  Parameters: ref. to timestamp, timeshift
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTimerRec::TimeShiftToGmt(uint &when, int iEntryTimeShift)
-{
-   when = when - iEntryTimeShift * 3600;
 }
 
 /* -----------------------------------------------------------------\
@@ -803,11 +745,8 @@ void CTimerRec::slotRecTimer()
 
          while (it != JobList.end())
          {
-            start = (*it).uiStart;
-            end   = (*it).uiEnd;
-
-            GmtToTimeShift(start, (*it).iTimeShift);
-            GmtToTimeShift(end, (*it).iTimeShift);
+            start = pTs->fromGmt((*it).uiStart, (*it).iTimeShift);
+            end   = pTs->fromGmt((*it).uiEnd  , (*it).iTimeShift);
 
             if (now >= end)
             {

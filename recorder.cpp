@@ -47,6 +47,9 @@ extern ApiParser *pApiParser;
 extern QTranslator *pAppTransl;
 extern QTranslator *pQtTransl;
 
+// global timeshift class ...
+extern CTimeShift *pTs;
+
 ///////////////////// debug ////////////////////
 #define chanMapLock   {mInfo("Lock Channel Map"); mutexChanMap.lock();}
 #define chanMapUnlock {mInfo("Unlock Channel Map"); mutexChanMap.unlock();}
@@ -90,6 +93,7 @@ Recorder::Recorder(QWidget *parent)
    ulStartFlags  =  0;
    pFilterMenu   =  NULL;
    pMnLangFilter =  NULL;
+   pWatchList    =  NULL;
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
@@ -1207,7 +1211,6 @@ void Recorder::on_pushFilter_clicked()
 //---------------------------------------------------------------------------
 void Recorder::on_pushWatchList_clicked()
 {
-   pWatchList->setTs(Settings.getTimeShift());
    pWatchList->buildWatchTab();
    pWatchList->exec();
 }
@@ -1892,10 +1895,11 @@ void Recorder::slotCookie (const QString &str)
          Settings.fillTimeShiftCbx(values, actVal);
 
          // set timeshift ...
-         ui->textEpg->SetTimeShift(actVal);
-         timeRec.SetTimeShift(actVal);
          mInfo(tr("Using following timeshift: %1").arg(actVal));
       }
+
+      // set timeshift to global ts class ...
+      pTs->setTimeShift(Settings.getTimeShift());
 
       // bitrate
       values.clear();
@@ -2183,7 +2187,7 @@ void Recorder::slotWlClick(QUrl url)
 
             req  = QString("cid=%1&gmt=%2").arg(cid).arg(chan.uiStart);
 
-            // store all info about show ...SetTimeShift
+            // store all info about show ...
             showInfo.cleanShowInfo();
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
@@ -2565,10 +2569,6 @@ void Recorder::slotSetBitrate(int iRate)
 void Recorder::slotSetTimeShift(int iShift)
 {
    TouchPlayCtrlBtns(false);
-
-   // set timeshift ...
-   ui->textEpg->SetTimeShift(iShift);
-   timeRec.SetTimeShift(iShift);
 
    pApiClient->queueRequest(CIptvDefs::REQ_TIMESHIFT, iShift);
 }
@@ -3343,9 +3343,6 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
 
    if (!getChanEntry(cid, entry))
    {
-      // get whole channel entry ...
-      int iTs;
-
       // update short info if we're in live mode
       if ((showInfo.showType() == ShowInfo::Live)
          && (showInfo.playState() == IncPlay::PS_STOP))
@@ -3358,16 +3355,13 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
       // quick'n'dirty timeshift hack ...
       if (entry.vTs.count() <= 2) // no timeshift available ...
       {
-         ui->textEpg->SetTimeShift(0);
+         // temporary unset timeshift ...
+         pTs->setTimeShift(0);
       }
       else
       {
-         iTs = Settings.getTimeShift();
-
-         if (ui->textEpg->GetTimeShift() != iTs)
-         {
-            ui->textEpg->SetTimeShift(iTs);
-         }
+         // set (back) to normal timeshift ...
+         pTs->setTimeShift(Settings.getTimeShift());
       }
 
       // was this a refresh or was channel changed ... ?

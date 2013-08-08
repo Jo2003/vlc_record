@@ -14,6 +14,7 @@
 #include <QRadioButton>
 #include <QTranslator>
 #include "qcustparser.h"
+#include "ctimeshift.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -34,6 +35,9 @@ extern ApiParser *pApiParser;
 // global translaters ...
 extern QTranslator *pAppTransl;
 extern QTranslator *pQtTransl;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
 
 /* -----------------------------------------------------------------\
 |  Method: CSettingsDlg / constructor
@@ -835,6 +839,9 @@ void CSettingsDlg::on_cbxBitRate_activated(int index)
 \----------------------------------------------------------------- */
 void CSettingsDlg::on_cbxTimeShift_activated(int index)
 {
+   // store global ...
+   pTs->setTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
+
    emit sigSetTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 }
 

@@ -60,6 +60,7 @@
 #include "qupdatenotifydlg.h"
 #include "qstringfilterwidgetaction.h"
 #include "qwatchlistdlg.h"
+#include "ctimeshift.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
