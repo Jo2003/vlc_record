@@ -60,8 +60,15 @@
 #define TMPL_FAVO      "<!--{[%FAVO%]}-->"
 #define TMPL_ERR       "<!--{[%ERROR%]}-->"
 
+#ifdef Q_OS_MAC
+   // hack to force a ca. 1px cell border ...
+   #define DEF_CELLSPACING  "1.75"
+#else
+   #define DEF_CELLSPACING  "1"
+#endif
+
 #define EPG_TMPL  \
-"<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
+"<table border='0' cellpadding='0' cellspacing='" DEF_CELLSPACING "' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
 TMPL_ROWS \
 "</table>\n"
 
@@ -93,6 +100,7 @@ TMPL_LINK "\n"
 "<html>\n" \
 "<head>\n" \
 "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n" \
+"<meta name=\"qrichtext\" content=\"1\" />\n" \
 "<title>" TMPL_TITLE "</title>\n" \
 TMPL_CSS \
 "</head>\n"\
@@ -158,7 +166,7 @@ TMPL_CSS \
 "body {background-color: rgb(255, 254, 212);}\n"
 
 #define TMPL_BACKCOLOR \
-"<table border='0' cellpadding='0' cellspacing='1' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
+"<table border='0' cellpadding='0' cellspacing='" DEF_CELLSPACING "' width='100%' style='color: black; background-color: #036; width: 100%;'>\n"\
 "  <tr>\n"\
 "    <td style='color: black; background-color: %1; padding: 3px;'>%2</td>\n"\
 "  </tr>\n"\
