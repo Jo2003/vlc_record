@@ -2961,15 +2961,15 @@ or start time is later than end time!</source>
         <translation type="obsolete">&amp;Отменить</translation>
     </message>
     <message>
-        <location filename="qrecordtimerwidget.cpp" line="57"/>
-        <location filename="qrecordtimerwidget.cpp" line="104"/>
+        <location filename="qrecordtimerwidget.cpp" line="60"/>
+        <location filename="qrecordtimerwidget.cpp" line="107"/>
         <source> h.</source>
         <oldsource>h.</oldsource>
         <translation> ч.</translation>
     </message>
     <message>
-        <location filename="qrecordtimerwidget.cpp" line="58"/>
-        <location filename="qrecordtimerwidget.cpp" line="105"/>
+        <location filename="qrecordtimerwidget.cpp" line="61"/>
+        <location filename="qrecordtimerwidget.cpp" line="108"/>
         <source> min.</source>
         <oldsource>min.</oldsource>
         <translation> мин.</translation>

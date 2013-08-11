@@ -30,13 +30,13 @@ public:
    /////////////////////////////////////////////////////////////////////
    // constructors / destructor without special functionality ...
    QTimeLabel (QWidget * parent = 0, Qt::WindowFlags f = 0)
-      : QLabel (parent, f), iPerc(0)
+      : QLabel (parent, f), iPerc(0), bWithBuffer(true)
    {
 
    }
 
    QTimeLabel (const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0)
-      : QLabel (text, parent, f), iPerc(0)
+      : QLabel (text, parent, f), iPerc(0), bWithBuffer(true)
    {
 
    }
@@ -60,7 +60,7 @@ public:
    //---------------------------------------------------------------------------
    void setTime (qint64 iSec)
    {
-      if (iPerc >= 100)
+      if ((iPerc >= 100) || !bWithBuffer)
       {
          int     h, m, s;
          QString lab = (iSec < 0) ? "-" : " ";
@@ -100,8 +100,26 @@ public:
       iPerc = iPercent;
    }
 
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   enable / disable buffer usage
+   //
+   //! \author  Jo2003
+   //! \date    11.08.2013
+   //
+   //! \param   flag (bool) enable (true) or disable (false) buffer feature
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void useBuffer(bool flag)
+   {
+      bWithBuffer = flag;
+   }
+
+
 private:
-   int iPerc;
+   int  iPerc;
+   bool bWithBuffer;
 };
 
 #endif // __20120227_QTIMELABEL_H

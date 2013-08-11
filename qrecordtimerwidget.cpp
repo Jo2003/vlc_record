@@ -54,6 +54,9 @@ QRecordTimerWidget::QRecordTimerWidget(QWidget *parent) :
    // increase minutes in 5 minute steps ...
    ui->spinMinutes->setSingleStep(5);
 
+   // don't use buffer feature ...
+   ui->timeLabel->useBuffer(false);
+
    ui->spinHours->setSuffix(tr(" h."));
    ui->spinMinutes->setSuffix(tr(" min."));
 

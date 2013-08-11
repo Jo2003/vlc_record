@@ -2770,15 +2770,15 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation type="obsolete">&amp;Anuluj</translation>
     </message>
     <message>
-        <location filename="qrecordtimerwidget.cpp" line="57"/>
-        <location filename="qrecordtimerwidget.cpp" line="104"/>
+        <location filename="qrecordtimerwidget.cpp" line="60"/>
+        <location filename="qrecordtimerwidget.cpp" line="107"/>
         <source> h.</source>
         <oldsource>h.</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qrecordtimerwidget.cpp" line="58"/>
-        <location filename="qrecordtimerwidget.cpp" line="105"/>
+        <location filename="qrecordtimerwidget.cpp" line="61"/>
+        <location filename="qrecordtimerwidget.cpp" line="108"/>
         <source> min.</source>
         <oldsource>min.</oldsource>
         <translation></translation>
