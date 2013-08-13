@@ -46,7 +46,7 @@ public:
     void ChangeFontSize (int iSz);
     void setPixCache (CPixLoader *pCache);
 
-    void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, bool bSaveList = true);
+    void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre);
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();
     const QString& getShortContent ();
@@ -56,10 +56,9 @@ private slots:
     void slotSetBufferedHtml();
 
 private:
-    QVector<cparser::SVodVideo> vVideos;
-    QString sName;
-    QString sShortContent;
-    QString sContentBuffer;
+    QString        _name;
+    QString        _shortContent;
+    QString        _contentBuffer;
     CSettingsDlg  *pSettings;
     CPixLoader    *pPixCache;
 };

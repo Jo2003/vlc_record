@@ -87,9 +87,7 @@ public:
    bool  streamLoader();
    const int& vodId();
    ulong epgUpdTime();
-
-   int autoUpdate(uint uiTime);
-   static QString createTooltip (const QString & name, const QString & prog, uint start, uint end);
+   int   autoUpdate(uint uiTime);
 
 private:
    QString              sShowName;

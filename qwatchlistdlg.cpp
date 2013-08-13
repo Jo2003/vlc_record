@@ -19,6 +19,7 @@
 #include "small_helpers.h"
 #include "clogfile.h"
 #include "ctimeshift.h"
+#include "chtmlwriter.h"
 
 // storage db ...
 extern CVlcRecDB *pDb;
@@ -28,6 +29,9 @@ extern CLogFile VlcLog;
 
 // global timeshift class ...
 extern CTimeShift *pTs;
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
 
 //---------------------------------------------------------------------------
 //
@@ -109,33 +113,22 @@ void QWatchListDlg::buildWatchTab()
    QVector<cparser::SChan> vE;
    QStringList sl;
    int i;
-   QString content, tab, line, act;
+   QString page, row, tab, line, act, img, len;
    QUrl url;
-   QString html = HTML_SITE;
-   html.replace(TMPL_CSS  , TMPL_CSS_WRAPPER);
-   html.replace(TMPL_CSS  , "body {background-color: rgb(255, 254, 212);}\n");
-   html.replace(TMPL_TITLE, tr("Watch List"));
 
    if (!pDb->getWatchEntries(vE))
    {
-      content += EPG_TMPL;
+      // build table head ...
+      row  = pHtml->tableHead(tr("Start")  , TMPL_TH_STYLE);
+      row += pHtml->tableHead(tr("Program"), TMPL_TH_STYLE);
 
-      tab  = "  <tr>\n";
-      tab += TD_HEAD;
-      tab.replace(TMPL_HEAD, tr("Start"));
-      tab += TD_HEAD;
-      tab.replace(TMPL_HEAD, tr("Length"));
-      tab += TD_HEAD;
-      tab.replace(TMPL_HEAD, tr("Channel"));
-      tab += TD_HEAD;
-      tab.replace(TMPL_HEAD, tr("Show"));
-      tab += TD_HEAD;
-      tab.replace(TMPL_HEAD, tr("Actions"));
-      tab += "  </tr>\n";
+      // wrap as row ...
+      tab = pHtml->tableRow(row);
 
       for (i = 0; i < vE.count(); i++)
       {
          act  = "";
+         row  = "";
          line = "";
 
          // handle old / very new entries ...
@@ -161,10 +154,11 @@ void QWatchListDlg::buildWatchTab()
             url.addQueryItem("chan"  , vE.at(i).sName);
             url.addQueryItem("show"  , vE.at(i).sProgramm);
 
-            // play ...
-            act += QString("<a href='%2'><img src=':/png/play' width='16' height='16' alt='play' title='%1' /></a>&nbsp;")
-                           .arg(tr("play from archive ..."))
-                           .arg(QString(url.toEncoded()));
+            // play button ...
+            img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
+
+            // wrap in link ...
+            act = pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
 
             url.clear();
             url.setPath("vlc-record");
@@ -175,10 +169,11 @@ void QWatchListDlg::buildWatchTab()
             url.addQueryItem("chan"  , vE.at(i).sName);
             url.addQueryItem("show"  , vE.at(i).sProgramm);
 
-            // record ...
-            act += QString("<a href='%2'><img src=':/png/record' width='16' height='16' alt='record' title='%1' /></a>&nbsp;")
-                           .arg(tr("record from archive ..."))
-                           .arg(QString(url.toEncoded()));
+            // record button ...
+            img  = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
+
+            // wrap in link ...
+            act += pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
          }
 
          // add delete link ...
@@ -188,41 +183,45 @@ void QWatchListDlg::buildWatchTab()
          url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
          url.addQueryItem("gmt"   , QString::number(vE.at(i).uiStart));
 
-         // delete ...
-         act += QString("<a href='%2'><img src=':/png/remove' width='16' height='16' alt='record' title='%1' /></a>")
-                        .arg(tr("delete from list ..."))
-                        .arg(QString(url.toEncoded()));
+         // delete button ...
+         img  = pHtml->image(":/png/remove", 16, 16, "", tr("delete from list ..."));
+
+         // wrap in link ...
+         act += pHtml->link(QString(url.toEncoded()), img);
+
+         // channel in red bold ...
+         line  = pHtml->htmlTag("b", vE.at(i).sName, "font-size: medium; color: red;") + "<br />";
 
          // do we have a description ?
-         sl   = vE.at(i).sProgramm.split("\n");
-         line = sl.at(0);
+         sl    = vE.at(i).sProgramm.split("\n");
+
+         line += pHtml->htmlTag("b", sl.at(0));
 
          // add description ...
          if (sl.count() > 1)
          {
-            line += QString("<br /><span style='color: #666'>%1</span>").arg(sl.at(1));
+            line += "<br />" + pHtml->span(sl.at(1), "color: #666");
          }
 
-         tab += "  <tr>\n";
-         tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
-         tab.replace(TMPL_CONT, pTs->fromGmtFormatted(vE.at(i).uiStart, "dd.MM.yyyy<br />hh:mm"));
-         tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
-         tab.replace(TMPL_CONT, tr("%1 min.").arg((vE.at(i).uiEnd - vE.at(i).uiStart) / 60));
-         tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
-         tab.replace(TMPL_CONT, QString("<b>%1</b>").arg(vE.at(i).sName));
-         tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
-         tab.replace(TMPL_CONT, line);
-         tab += (i % 2) ? TD_TMPL_A : TD_TMPL_B;
-         tab.replace(TMPL_CONT, act);
-         tab += "  </tr>\n";
+         // there might be no end time ...
+         len  = vE.at(i).uiEnd ? QString(" (%1)").arg(tr("%1 min.").arg((vE.at(i).uiEnd - vE.at(i).uiStart) / 60)) : "";
+
+         row  = pTs->fromGmtFormatted(vE.at(i).uiStart, "dd. MMM. yyyy, hh:mm") + len + "<br /> <br />" + act;
+         row  = pHtml->tableCell(row , (i % 2) ? TMPL_A_STYLE : TMPL_B_STYLE);
+         row += pHtml->tableCell(line, (i % 2) ? TMPL_A_STYLE : TMPL_B_STYLE);
+
+         // wrap as row ...
+         tab += pHtml->tableRow(row);
       }
 
-      content.replace(TMPL_ROWS, tab);
+      // wrap tab ...
+      tab = pHtml->table(tab, TMPL_TAB_STYLE);
    }
 
-   html.replace(TMPL_CONT, content);
+   // wrap in page ...
+   page = pHtml->htmlPage(tab, "Watch List");
 
-   ui->txtWatchTab->setHtml(html);
+   ui->txtWatchTab->setHtml(page);
 }
 
 //---------------------------------------------------------------------------

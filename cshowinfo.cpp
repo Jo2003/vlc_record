@@ -12,6 +12,10 @@
 #include "cshowinfo.h"
 #include "templates.h"
 #include "small_helpers.h"
+#include "chtmlwriter.h"
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
 
 
 /* -----------------------------------------------------------------\
@@ -551,11 +555,7 @@ int CShowInfo::autoUpdate(uint uiTime)
          uiStart    = (*cit).uiStart;
          uiEnd      = (*cit).uiEnd;
          uiJumpTime = (uiTime > (*cit).uiStart) ? uiTime : 0; // take care of relative time jumps!
-         sDescr     = QString(TMPL_BACKCOLOR)
-                         .arg("rgb(255, 254, 212)")
-                         .arg(createTooltip(sChanNameTmpl,
-                                            QString("%1 %2").arg((*cit).sShowName).arg((*cit).sShowDescr),
-                                            uiStart, uiEnd));
+         sDescr     = pHtml->createTooltip(sChanNameTmpl, QString("%1\n%2").arg((*cit).sShowName).arg((*cit).sShowDescr), uiStart, uiEnd);
          iRV = 0;
          break;
       }
@@ -592,37 +592,7 @@ void CShowInfo::updWithChanEntry (ulong ulTime, const cparser::SChan &entry)
    uiEnd        = entry.uiEnd;
    uiJumpTime   = (ulTime > entry.uiStart) ? ulTime : 0; // take care of relative time jumps!
    ulLastEpgUpd = 0; // updated show info -> be open for new updates ...
-   sDescr       = QString(TMPL_BACKCOLOR)
-                    .arg("rgb(255, 254, 212)")
-                    .arg(createTooltip(sChanNameTmpl, entry.sProgramm, entry.uiStart, entry.uiEnd));
-}
-
-/* -----------------------------------------------------------------\
-|  Method: createTooltip [static]
-|  Begin: 22.03.2010 / 18:15
-|  Author: Jo2003
-|  Description: create a tooltip for given data
-|
-|  Parameters: channel name, program description,
-|              start time, end time
-|
-|  Returns: tool tip string
-\----------------------------------------------------------------- */
-QString CShowInfo::createTooltip (const QString & name, const QString & prog, uint start, uint end)
-{
-   // create tool tip with programm info ...
-   QString sToolTip = PROG_INFO_TOOL_TIP;
-   sToolTip.replace(TMPL_PROG, tr("Program:"));
-   sToolTip.replace(TMPL_START, tr("Start:"));
-   sToolTip.replace(TMPL_END, tr("End:"));
-   sToolTip.replace(TMPL_TIME, tr("Length:"));
-
-   sToolTip = sToolTip.arg(name).arg(prog)
-               .arg(QDateTime::fromTime_t(start).toString(DEF_TIME_FORMAT))
-               .arg(end ? QDateTime::fromTime_t(end).toString(DEF_TIME_FORMAT) : "")
-               .arg(end ? tr("%1 min.").arg((end - start) / 60)                : "");
-
-   return sToolTip;
+   sDescr       = pHtml->createTooltip(sChanNameTmpl, entry.sProgramm, entry.uiStart, entry.uiEnd);
 }
 
 /************************* History ***************************\

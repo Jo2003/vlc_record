@@ -35,7 +35,7 @@ PROGMIN=65
 # included player or without?
 # -------------------------------------
 DEFINES += INCLUDE_LIBVLC
- DEFINES += __TRACE
+# DEFINES += __TRACE
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \
@@ -67,7 +67,8 @@ SOURCES += main.cpp \
     capiparser.cpp \
     qupdatenotifydlg.cpp \
     qwatchlistdlg.cpp \
-    ctimeshift.cpp
+    ctimeshift.cpp \
+    chtmlwriter.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -113,7 +114,8 @@ HEADERS += recorder.h \
     qupdatenotifydlg.h \
     qstringfilterwidgetaction.h \
     qwatchlistdlg.h \
-    ctimeshift.h
+    ctimeshift.h \
+    chtmlwriter.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

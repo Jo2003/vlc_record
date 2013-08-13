@@ -18,6 +18,7 @@
 #include "qfusioncontrol.h"
 #include "qcustparser.h"
 #include "ctimeshift.h"
+#include "chtmlwriter.h"
 
 #ifdef DINCLUDEPLUGS
 #include <QtPlugin>
@@ -57,6 +58,9 @@ QTranslator *pQtTransl;
 // global timeshift class ...
 CTimeShift *pTs;
 
+// global html writer ...
+CHtmlWriter *pHtml;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -89,8 +93,9 @@ int main(int argc, char *argv[])
    pQtTransl  = new QTranslator(&app);
    pFolders   = new CDirStuff(&app);
    pTs        = new CTimeShift(&app);
+   pHtml      = new CHtmlWriter(&app);
 
-   if (pFolders && pAppTransl && pQtTransl && pTs)
+   if (pFolders && pAppTransl && pQtTransl && pTs && pHtml)
    {
       if (pFolders->isInitialized ())
       {

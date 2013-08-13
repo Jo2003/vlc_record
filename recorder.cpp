@@ -20,6 +20,7 @@
 
 #include "qfusioncontrol.h"
 #include "qcustparser.h"
+#include "chtmlwriter.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -49,6 +50,9 @@ extern QTranslator *pQtTransl;
 
 // global timeshift class ...
 extern CTimeShift *pTs;
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
 
 ///////////////////// debug ////////////////////
 #define chanMapLock   {mInfo("Lock Channel Map"); mutexChanMap.lock();}
@@ -734,9 +738,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                      .arg("rgb(255, 254, 212)")
-                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
 
                TouchPlayCtrlBtns(false);
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1107,9 +1109,7 @@ void Recorder::on_pushLive_clicked()
             showInfo.setEndTime(chan.uiEnd);
             showInfo.setPCode(secCodeDlg.passWd());
             showInfo.setPlayState(IncPlay::PS_PLAY);
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+            showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
 
             TouchPlayCtrlBtns(false);
             pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1153,9 +1153,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                showInfo.setEndTime(chan.uiEnd);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                      .arg("rgb(255, 254, 212)")
-                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
 
                TouchPlayCtrlBtns(false);
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1280,9 +1278,7 @@ void Recorder::slotPlay()
                showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                      .arg("rgb(255, 254, 212)")
-                                      .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
 
                TouchPlayCtrlBtns(false);
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1396,9 +1392,7 @@ void Recorder::slotRecord()
                   showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                   showInfo.setPCode(secCodeDlg.passWd());
                   showInfo.setPlayState(IncPlay::PS_RECORD);
-                  showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                         .arg("rgb(255, 254, 212)")
-                                         .arg(CShowInfo::createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd))));
+                  showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
 
                   TouchPlayCtrlBtns(false);
                   pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -2199,11 +2193,9 @@ void Recorder::slotWlClick(QUrl url)
             showInfo.setLastJumpTime(0);
             showInfo.setPCode(secCodeDlg.passWd());
 
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
-                                                                 QString("%1 %2").arg(sl.at(0)).arg((sl.count() > 1) ? sl.at(1) : ""),
-                                                                 chan.uiStart, chan.uiEnd))));
+            showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
+                                                          QString("%1\n%2").arg(sl.at(0)).arg((sl.count() > 1) ? sl.at(1) : ""),
+                                                          chan.uiStart, chan.uiEnd));
 
             // add additional info to LCD ...
             int     iTime = (chan.uiEnd) ? (int)((chan.uiEnd - chan.uiStart) / 60) : 60;
@@ -2309,11 +2301,9 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             showInfo.setLastJumpTime(0);
             showInfo.setPCode(secCodeDlg.passWd());
 
-            showInfo.setHtmlDescr((QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
-                                                      QString("%1 %2").arg(sEpg.sShowName).arg(sEpg.sShowDescr),
-                                                      sEpg.uiStart, sEpg.uiEnd))));
+            showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
+                                                          QString("%1\n%2").arg(sEpg.sShowName).arg(sEpg.sShowDescr),
+                                                          sEpg.uiStart, sEpg.uiEnd));
 
             // add additional info to LCD ...
             int     iTime = (sEpg.uiEnd) ? (int)((sEpg.uiEnd - sEpg.uiStart) / 60) : 60;
@@ -3039,12 +3029,12 @@ void Recorder::slotGotVideos(const QString &str, bool bVodFavs)
 \----------------------------------------------------------------- */
 void Recorder::slotVodAnchor(const QUrl &link)
 {
-   QString action = link.encodedQueryItemValue(QByteArray("action"));
+   QString action = link.queryItemValue("action");
    bool ok        = false;
    int  id        = 0;
 
    // check password ...
-   if (link.encodedQueryItemValue(QByteArray("pass_protect")).toInt())
+   if (link.queryItemValue("pass_protect").toInt())
    {
       // need password ... ?
       if (secCodeDlg.passWd().isEmpty())
@@ -3063,7 +3053,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
       lastVodSite.sContent      = ui->vodBrowser->toHtml();
       lastVodSite.iScrollBarVal = ui->vodBrowser->verticalScrollBar()->value();
 
-      id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
+      id = link.queryItemValue("vodid").toInt();
 
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
@@ -3089,13 +3079,13 @@ void Recorder::slotVodAnchor(const QUrl &link)
    }
    else if (action == "add_fav")
    {
-      id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
+      id = link.queryItemValue("vodid").toInt();
       pApiClient->queueRequest(CIptvDefs::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
    else if (action == "del_fav")
    {
-      id = link.encodedQueryItemValue(QByteArray("vodid")).toInt();
+      id = link.queryItemValue("vodid").toInt();
       pApiClient->queueRequest(CIptvDefs::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
@@ -3111,7 +3101,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
          iDwnReqId = -1;
       }
 
-      id = link.encodedQueryItemValue(QByteArray("vid")).toInt();
+      id = link.queryItemValue("vid").toInt();
 
       showInfo.cleanShowInfo();
       showInfo.setShowName(ui->vodBrowser->getName());
@@ -3347,9 +3337,7 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
       if ((showInfo.showType() == ShowInfo::Live)
          && (showInfo.playState() == IncPlay::PS_STOP))
       {
-         ui->textEpgShort->setHtml(QString(TMPL_BACKCOLOR)
-                                   .arg("rgb(255, 254, 212)")
-                                   .arg(CShowInfo::createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd)));
+         ui->textEpgShort->setHtml(pHtml->createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd));
       }
 
       // quick'n'dirty timeshift hack ...
@@ -3463,15 +3451,12 @@ void Recorder::slotUpdateAnswer (const QString &str)
 
          if (bDispl)
          {
-            QString s       = HTML_SITE;
             QString content = tr("There is the new version %1 of %2 available.<br />Click %3 to download!")
                   .arg(updInfo.sVersion)
                   .arg(pCustomization->strVal("APP_NAME"))
-                  .arg(QString("<a href='%1'>%2</a>").arg(updInfo.sUrl).arg(tr("here")));
+                  .arg(pHtml->link(updInfo.sUrl, tr("here")));
 
-            s.replace(TMPL_CONT, content);
-
-            updNotifier.setUpdateData(s, updInfo.iMinor, updInfo.iMajor);
+            updNotifier.setUpdateData(pHtml->htmlPage(content, "Update Info"), updInfo.iMinor, updInfo.iMajor);
             updNotifier.exec();
          }
       }
@@ -5212,12 +5197,8 @@ QString Recorder::CleanShowName(const QString &str)
 \----------------------------------------------------------------- */
 bool Recorder::WantToStopRec()
 {
-   QString sText = HTML_SITE;
-   sText.replace(TMPL_CONT, tr("Pending Record!"
-                               "<br /> <br />"
-                               "Do you really want to stop recording now?"));
-
-   if (QMessageBox::question(this, tr("Question"), sText,
+   if (QMessageBox::question(this, tr("Question"),
+                             pHtml->htmlPage(tr("Pending Record!<br /> <br />Do you really want to stop recording now?")),
                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
    {
       return true;

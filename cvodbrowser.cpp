@@ -11,11 +11,16 @@
 |
 \=============================================================================*/
 #include "cvodbrowser.h"
+#include "chtmlwriter.h"
+#include <QUrl>
 
 extern CLogFile VlcLog;
 
 // for folders ...
 extern CDirStuff *pFolders;
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
 
 /* -----------------------------------------------------------------\
 |  Method: CVodBrowser / constructor
@@ -91,95 +96,87 @@ void CVodBrowser::setPixCache(CPixLoader *pCache)
 |  Returns:  --
 \----------------------------------------------------------------- */
 void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
-                                 const QString &sGenre,
-                                 bool bSaveList)
+                                 const QString &sGenre)
 {
    int i, j, iCount = vList.count(), iPixToLoad = 0;
-
-   if (bSaveList)
-   {
-      vVideos = vList;
-   }
-
-   QString sTab, sRows, sCol, sVidTitle, sLock, sImage;
-   QString sContent = HTML_SITE;
    QFileInfo info;
-   sContent.replace(TMPL_TITLE, tr("VOD"));
 
-   // we create a table with 2 columns here ...
-   sRows = TR_HEAD;
-   sRows.replace(TMPL_HEAD, sGenre);
+   QString tab, row, img, link, page, title;
+   QUrl url;
+
+   row = pHtml->tableHead(sGenre, TMPL_TH_STYLE, 2);
+   tab = pHtml->tableRow(row);
 
    for (i = 0; i < iCount; i += 2)
    {
-      sRows += TR_VOD_LIST;
+      row = "";
 
       for (j = i; (j <= (i + 1)) && (j < iCount); j ++)
       {
-         // load link image template ...
-         sCol = TMPL_IMG_LINK;
+         title = "";
 
-         // add link ...
-         sCol.replace(TMPL_LINK,  QString("videothek?action=vod_info&vodid=%1&pass_protect=%2")
-                      .arg(vList[j].uiVidId)
-                      .arg(vList[j].bProtected ? 1 : 0));
-
-         // handle image ...
+         // image ...
          info.setFile(vList[j].sImg);
-         sImage = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
+         img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
 
-         // enqueue pic if not already there in cache ...
-         if (!QFile::exists(sImage))
+         if (!QFile::exists(img))
          {
             iPixToLoad ++;
             pPixCache->enqueuePic(vList[j].sImg, pFolders->getVodPixDir());
          }
 
-         // add image ...
-         sCol.replace(TMPL_IMG,   QUrl::toPercentEncoding(sImage));
+         // image tag ...
+         url.setPath(img);
+         img = pHtml->image(QString(url.toEncoded()), 0, 0, "", QString("%1 (%2 %3)").arg(vList[j].sName).arg(vList[j].sCountry).arg(vList[j].sYear));
 
-         // add title ...
-         sCol.replace(TMPL_TITLE, QString("%1 (%2 %3)")
-                                         .arg(vList[j].sName).arg(vList[j].sCountry)
-                                         .arg(vList[j].sYear));
+         // create link url ...
+         url.clear();
+         url.setPath("videothek");
+         url.addQueryItem("action", "vod_info");
+         url.addQueryItem("vodid" , QString::number(vList[j].uiVidId));
+         url.addQueryItem("pass_protect", vList[j].bProtected ? "1" : "0");
 
-         sLock = "";
-         // show if video is protected ...
+         // wrap image into link ...
+         link  = pHtml->link(QString(url.toEncoded()), img) + "<br />";
+
          if (vList[j].bProtected)
          {
-            sLock = TMPL_HTML_ICON;
-            sLock.replace(TMPL_IMG, ":/access/locked");
-            sLock.replace(TMPL_TITLE, tr("password protected"));
+            // add locked image ...
+            title += pHtml->image(":/access/locked", 20, 20, "", tr("password protected")) + "&nbsp;";
          }
 
-         // add title below image ...
-         sVidTitle = TMPL_VIDEO_TITLE;
-         sVidTitle.replace(TMPL_TITLE, QString("%1%2").arg(sLock).arg(vList[j].sName));
+         // add title ...
+         title += vList[j].sName;
 
-         // insert into row template ...
-         sRows.replace((j == i) ? TMPL_VOD_L   : TMPL_VOD_R,   sCol);
-         sRows.replace((j == i) ? TMPL_TITLE_L : TMPL_TITLE_R, sVidTitle);
+         // wrap title in span ...
+         link += pHtml->htmlTag("div", title, "padding: 5px;");
+
+         // wrap into cell and add to row ...
+         row  += pHtml->tableCell(link, TMPL_VOD_STYLE, 1, "center", "middle");
       }
 
       if (j == (iCount - 1))
       {
-         sRows.replace(TMPL_VOD_R,   "&nbsp;");
-         sRows.replace(TMPL_TITLE_R, "&nbsp;");
+         row += pHtml->tableCell("&nbsp;", TMPL_VOD_STYLE);
       }
+
+      tab += pHtml->tableRow(row);
    }
 
-   sTab = EPG_TMPL;
-   sTab.replace(TMPL_ROWS, sRows);
-   sContent.replace(TMPL_CONT, sTab);
+   // wrap rows into table ...
+   tab = pHtml->table(tab, TMPL_TAB_STYLE);
+
+   // wrap tab into page ...
+   page = pHtml->htmlPage(tab, "VOD");
 
    if (iPixToLoad && pPixCache->busy())
    {
       // postbone display (when all pictures are ready) ...
-      sContentBuffer = sContent;
+      _contentBuffer = page;
    }
    else
    {
-      setHtml(sContent);
+      setHtml(page);
    }
 }
 
@@ -195,10 +192,10 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
 \----------------------------------------------------------------- */
 void CVodBrowser::slotSetBufferedHtml()
 {
-   if (sContentBuffer != "")
+   if (!_contentBuffer.isEmpty())
    {
-      setHtml(sContentBuffer);
-      sContentBuffer = "";
+      setHtml(_contentBuffer);
+      _contentBuffer.clear();
    }
 }
 
@@ -214,131 +211,136 @@ void CVodBrowser::slotSetBufferedHtml()
 \----------------------------------------------------------------- */
 void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 {
-   QString   sDoc = HTML_SITE;
-   QString   sCss = TMPL_CSS_WRAPPER;
-   QString   sLinks;
-   QString   sLinkTab;
-   QString   sTitle;
-   QString   sFormat;
-   QString   sFav;
+   int       i;
+   QString   img, content, tab, title, link, page, tok;
+   QUrl      url;
    QFileInfo info(sInfo.sImg);
 
-   // add css stuff ...
-   sCss.replace(TMPL_CSS, TMPL_CSS_IMG_FLOAT);
-   sDoc.replace(TMPL_CSS, sCss);
+   // save name ...
+   _name = sInfo.sName;
 
-   // document title ...
-   sDoc.replace(TMPL_TITLE, tr("Video Details"));
+   // create source url for image ...
+   url.setPath(QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName()));
 
-   // insert video details template ...
-   sDoc.replace(TMPL_CONT, TMPL_VIDEO_DETAILS);
+   // add image ...
+   content  = pHtml->image(QString(url.toEncoded()), 0, 0, TMPL_IMG_RFLOAT, sInfo.sName);
 
-   // insert poster ...
-   sDoc.replace(TMPL_IMG, QUrl::toPercentEncoding(QString("%1/%2")
-                .arg(pFolders->getVodPixDir())
-                .arg(info.fileName())));
+   // add headline ...
+   content += pHtml->htmlTag("h3", sInfo.sName) + "&nbsp;&nbsp;&nbsp;";
 
-   // insert name ...
-   sDoc.replace(TMPL_TITLE, sInfo.sName);
-   sName = sInfo.sName;
+   // create short from content ...
+   _shortContent = content;
 
-   // insert country, year and time ...
-   sDoc.replace(TMPL_TIME, QString("%1 %2, %3 %4")
-                .arg(sInfo.sCountry)
-                .arg(sInfo.sYear)
-                .arg(sInfo.uiLength)
-                .arg(tr("min.")));
-
-   // insert director ...
-   sDoc.replace(TMPL_DIREC, tr("Director: %1")
-                .arg(sInfo.sDirector));
-
-   // insert actors ...
-   sDoc.replace(TMPL_ACTORS, tr("With: %1")
-                .arg(sInfo.sActors));
-
-   // insert genres ...
-   sDoc.replace(TMPL_GENRE, tr("Genre: %1")
-                .arg(sInfo.sGenres));
-
-   // insert description ...
-   sDoc.replace(TMPL_PROG, sInfo.sDescr);
-
-   // for the short info we can end here ...
-   sShortContent = sDoc;
-   sShortContent.replace(TMPL_LINK, "");
-   sShortContent.replace(TMPL_FAVO, "");
-
-   // add favourite stuff ...
-   sFav = TEMPL_VOD_FAV;
+   // add favorite link ...
    if (sInfo.bFavourit)
    {
       // is favourite ...
-      sFav.replace(TMPL_IMG, ":/vod/is_fav");
-      sFav.replace(TMPL_TITLE, tr("Remove from favourites."));
-      sFav.replace(TMPL_LINK, QString("videothek?action=del_fav&vodid=%1&pass_protect=%2")
-                   .arg(sInfo.uiVidId)
-                   .arg(sInfo.bProtected ? 1 : 0));
+      url.clear();
+      url.setPath("videothek");
+      url.addQueryItem("action", "del_fav");
+      url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
+
+      img = pHtml->image(":/vod/is_fav", 20, 20, "", tr("Remove from favourites."));
    }
    else
    {
       // not a favourite ...
-      sFav.replace(TMPL_IMG, ":/vod/not_fav");
-      sFav.replace(TMPL_TITLE, tr("Add to favourites."));
-      sFav.replace(TMPL_LINK, QString("videothek?action=add_fav&vodid=%1&pass_protect=%2")
-                   .arg(sInfo.uiVidId)
-                   .arg(sInfo.bProtected ? 1 : 0));
-   }
-   sDoc.replace(TMPL_FAVO, sFav);
+      url.clear();
+      url.setPath("videothek");
+      url.addQueryItem("action", "add_fav");
+      url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
 
-   sLinks = TMPL_VIDEO_LINKS;
+      img = pHtml->image(":/vod/not_fav", 20, 20, "", tr("Add to favourites."));
+   }
+
+   // add favorite stuff ...
+   tok            = pHtml->link(QString(url.toEncoded()), img);
+   content       += tok;
+
+   // add genre ...
+   tok            = pHtml->htmlTag("p", tr("Genre: %1").arg(sInfo.sGenres), "color: #080;");
+   content       += tok;
+   _shortContent += tok;
+
+   // add country, year and length ...
+   tok            = pHtml->htmlTag("p", QString("%1 %2, %3 %4").arg(sInfo.sCountry).arg(sInfo.sYear).arg(sInfo.uiLength).arg(tr("min.")), "color: #888;");
+   content       += tok;
+   _shortContent += tok;
+
+   // add director ...
+   tok            = pHtml->htmlTag("p", tr("Director: %1").arg(sInfo.sDirector), "color: #800;");
+   content       += tok;
+   _shortContent += tok;
+
+   // add actors ...
+   tok            = pHtml->htmlTag("p", tr("With: %1").arg(sInfo.sActors), "color: #008;");
+   content       += tok;
+   _shortContent += tok;
+
+   // add description ...
+   tok            = pHtml->htmlTag("p", sInfo.sDescr);
+   content       += tok;
+   _shortContent += tok;
+
+   // add play / record links ...
+   for (i = 0; i < sInfo.vVodFiles.count(); i ++)
+   {
+      // add stream title ...
+      title = sInfo.vVodFiles[i].sTitle.isEmpty() ? tr("Part %1").arg(i + 1) : sInfo.vVodFiles[i].sTitle;
+      title = pHtml->htmlTag("b", title);
+
+      tok   = pHtml->tableCell(title, "padding: 3px;");
+
+      // add codec ...
+      title = QString("(%1; %2)").arg(sInfo.vVodFiles[i].sFormat).arg(sInfo.vVodFiles[i].sCodec);
+      title = pHtml->span(title, "color: #888");
+
+      tok  += pHtml->tableCell(title, "padding: 3px;");
+
+      // add play button ...
+      url.clear();
+      url.setPath("videothek");
+      url.addQueryItem("action", "play");
+      url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
+
+      img  = pHtml->image(":/png/play", 16, 16, "", tr("Play Movie ..."));
+      link = pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
+
+      // add record button ...
+      url.clear();
+      url.setPath("videothek");
+      url.addQueryItem("action", "record");
+      url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
+
+      img   = pHtml->image(":/png/record", 16, 16, "", tr("Record Movie ..."));
+      link += pHtml->link(QString(url.toEncoded()), img);
+
+      tok += pHtml->tableCell(link, "padding: 3px;");
+
+      tab += pHtml->tableRow(tok);
+   }
+
+   tab      = pHtml->htmlTag("table", tab);
+
+   content += pHtml->htmlTag("p", tab);
 
    // back link ...
-   sLinks.replace(TMPL_END, tr("Back"));
+   url.clear();
+   url.setPath("videothek");
+   url.addQueryItem("action", "backtolist");
 
-   sLinkTab = "<table>\n";
+   link     = pHtml->link(QString(url.toEncoded()), tr("Back"));
+   link     = "[ " + link + " ]";
+   content += pHtml->div(link, "", "center");
 
-   // links ...
-   for (int i = 0; i < sInfo.vVodFiles.count(); i ++)
-   {
-      sLinkTab += "<tr>\n";
-      sTitle  = (sInfo.vVodFiles[i].sTitle == "") ? tr("Part %1").arg(i + 1) : sInfo.vVodFiles[i].sTitle;
-      sFormat = TMPL_CODEC;
-      sFormat.replace(TMPL_TITLE, QString("(%1; %2)").arg(sInfo.vVodFiles[i].sFormat).arg(sInfo.vVodFiles[i].sCodec));
+   page          = pHtml->htmlPage(content, tr("Video Details"), "body {background-color: rgb(255, 254, 212);}");
+   _shortContent = pHtml->oneCellPage(_shortContent, TMPL_ONE_CELL);
 
-      sLinkTab += QString("<td style='padding: 3px;'><b>%1</b></td>\n").arg(sTitle);
-      sLinkTab += QString("<td style='padding: 3px;'>%1</td>\n").arg(sFormat);
-
-      // play link ...
-      sLinkTab += "<td style='padding: 3px;'>\n";
-      sLinkTab += TMPL_IMG_LINK;
-      sLinkTab.replace(TMPL_IMG, ":png/play");
-      sLinkTab.replace(TMPL_LINK, QString("videothek?action=play&vid=%1&pass_protect=%2")
-                       .arg(sInfo.vVodFiles[i].iId)
-                       .arg(sInfo.bProtected ? 1 : 0));
-
-      sLinkTab.replace(TMPL_TITLE, tr("Play Movie ..."));
-
-      sLinkTab += "&nbsp;&nbsp;";
-
-      // record link ...
-      sLinkTab += TMPL_IMG_LINK;
-      sLinkTab.replace(TMPL_IMG, ":png/record");
-      sLinkTab.replace(TMPL_LINK, QString("videothek?action=record&vid=%1&pass_protect=%2")
-                       .arg(sInfo.vVodFiles[i].iId)
-                       .arg(sInfo.bProtected ? 1 : 0));
-      sLinkTab.replace(TMPL_TITLE, tr("Record Movie ..."));
-
-      sLinkTab += "\n</td>\n</tr>\n";
-   }
-
-   sLinkTab += "</table>\n";
-
-   sLinks.replace(TMPL_LINK, sLinkTab);
-
-   sDoc.replace(TMPL_LINK, sLinks);
-
-   setHtml(sDoc);
+   setHtml(page);
 }
 
 /* -----------------------------------------------------------------\
@@ -353,7 +355,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 \----------------------------------------------------------------- */
 const QString& CVodBrowser::getName()
 {
-   return sName;
+   return _name;
 }
 
 /* -----------------------------------------------------------------\
@@ -419,7 +421,7 @@ void CVodBrowser::ChangeFontSize(int iSz)
 \----------------------------------------------------------------- */
 const QString& CVodBrowser::getShortContent()
 {
-   return sShortContent;
+   return _shortContent;
 }
 
 /************************* History ***************************\
