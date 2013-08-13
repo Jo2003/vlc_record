@@ -112,6 +112,7 @@ int CDirStuff::initDirectories(bool bCreate)
    {
 #ifdef Q_OS_WIN32
       sDataDir   = QString("%1/%2").arg(*cit).arg((sAppName == "" ) ? sBinName : sAppName);
+      sDataDir.replace("\\", "/");
 #else
       sDataDir   = QString("%1/%2").arg(*cit).arg("." + ((sAppName == "" ) ? sBinName : sAppName));
 #endif
@@ -157,6 +158,10 @@ int CDirStuff::initDirectories(bool bCreate)
    // -----------------------------------------------------
    //                      Windows
    // -----------------------------------------------------
+
+   // make sure to convert backslash into slash ...
+   sAppDir.replace("\\", "/");
+   sQtLangDir.replace("\\", "/");
 
    // language dir, modules dir and translations dir
    // will be right in installation folder

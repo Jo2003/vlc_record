@@ -2691,62 +2691,62 @@ or start time is later than end time!</source>
         <translation type="obsolete">Видеотека</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="244"/>
+        <location filename="cvodbrowser.cpp" line="247"/>
         <source>Remove from favourites.</source>
         <translation>Удалить из избранных.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="255"/>
+        <location filename="cvodbrowser.cpp" line="258"/>
         <source>Add to favourites.</source>
         <translation>Добавить в избранные.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="340"/>
+        <location filename="cvodbrowser.cpp" line="343"/>
         <source>Video Details</source>
         <translation>Информации о видео</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="145"/>
+        <location filename="cvodbrowser.cpp" line="146"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="268"/>
+        <location filename="cvodbrowser.cpp" line="271"/>
         <source>min.</source>
         <translation>мин.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="273"/>
+        <location filename="cvodbrowser.cpp" line="276"/>
         <source>Director: %1</source>
         <translation>Режиссер: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="278"/>
+        <location filename="cvodbrowser.cpp" line="281"/>
         <source>With: %1</source>
         <translation>В ролях: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="263"/>
+        <location filename="cvodbrowser.cpp" line="266"/>
         <source>Genre: %1</source>
         <translation>Жанр: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="336"/>
+        <location filename="cvodbrowser.cpp" line="339"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="291"/>
+        <location filename="cvodbrowser.cpp" line="294"/>
         <source>Part %1</source>
         <translation>Часть %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="309"/>
+        <location filename="cvodbrowser.cpp" line="312"/>
         <source>Play Movie ...</source>
         <translation>Просмотр фильма ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="319"/>
+        <location filename="cvodbrowser.cpp" line="322"/>
         <source>Record Movie ...</source>
         <translation>Запись фильма ...</translation>
     </message>

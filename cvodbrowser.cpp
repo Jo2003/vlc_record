@@ -126,6 +126,7 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
          }
 
          // image tag ...
+         url.clear();
          url.setPath(img);
          img = pHtml->image(QString(url.toEncoded()), 0, 0, "", QString("%1 (%2 %3)").arg(vList[j].sName).arg(vList[j].sCountry).arg(vList[j].sYear));
 
