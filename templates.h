@@ -36,29 +36,11 @@
 /**********************************************************/
 /*                      HTML templates                    */
 /**********************************************************/
-#define TMPL_TIME      "<!--{[%TIME%]}-->"
-#define TMPL_PROG      "<!--{[%PROG%]}-->"
-#define TMPL_ROWS      "<!--{[%ROWS%]}-->"
-#define TMPL_HEAD      "<!--{[%HEAD%]}-->"
-#define TMPL_START     "<!--{[%START%]}-->"
-#define TMPL_END       "<!--{[%END%]}-->"
-#define TMPL_TITLE     "<!--{[%TITLE%]}-->"
-#define TMPL_TITLE_L   "<!--{[%TITLE_L%]}-->"
-#define TMPL_TITLE_R   "<!--{[%TITLE_R%]}-->"
 #define TMPL_CONT      "<!--{[%CONTENT%]}-->"
-#define TMPL_VOD_L     "<!--{[%LEFTCOL%]}-->"
-#define TMPL_VOD_R     "<!--{[%RIGHTCOL%]}-->"
 #define TMPL_LINK      "<!--{[%LINK%]}-->"
-#define TMPL_IMG       "<!--{[%IMG%]}-->"
 #define TMPL_TITLE     "<!--{[%TITLE%]}-->"
-#define TMPL_ACTORS    "<!--{[%ACTORS%]}-->"
-#define TMPL_DIREC     "<!--{[%DIREC%]}-->"
 #define TMPL_CSS       "<!--{[%CSS%]}-->"
-#define TMPL_GENRE     "<!--{[%GENRE%]}-->"
 #define TMPL_NAME      "<!--{[%NAME%]}-->"
-#define TMPL_DESCR     "<!--{[%DESCR%]}-->"
-#define TMPL_FAVO      "<!--{[%FAVO%]}-->"
-#define TMPL_ERR       "<!--{[%ERROR%]}-->"
 #define TMPL_WIDTH     "<!--{[%WIDTH%]}-->"
 #define TMPL_HEIGHT    "<!--{[%HEIGHT%]}-->"
 #define TMPL_ALIGN     "<!--{[%ALIGN%]}-->"
@@ -72,6 +54,7 @@
    #define DEF_CELLSPACING  "1"
 #endif
 
+// css styles for html writer ...
 #define TMPL_TAB_STYLE  "color: black; background-color: #036; width: 100%;"
 #define TMPL_A_STYLE    "color: black; background-color: rgb(255, 254, 212); padding: 3px;"
 #define TMPL_B_STYLE    "color: black; background-color: rgb(234, 221, 166); padding: 3px;"
@@ -120,24 +103,6 @@
 "  font-weight: bold;\n"\
 "  color: %2;\n"\
 "}\n"
-
-#define TMPL_DETAILED_ERROR \
-"<p><b>%1</b></p>\n"\
-" <br />\n"\
-"<table border='0'>\n"\
-   "<tr>\n"\
-      "<td style='font-weight: bold;'>" TMPL_NAME  " </td>\n"\
-      "<td> %2</td>\n"\
-   "</tr>\n"\
-   "<tr>\n"\
-      "<td style='font-weight: bold;'>" TMPL_ERR   " </td>\n"\
-      "<td> %3</td>\n"\
-   "</tr>\n"\
-   "<tr>\n"\
-      "<td style='font-weight: bold;'>" TMPL_DESCR " </td>\n"\
-      "<td> %4</td>\n"\
-   "</tr>\n"\
-"</table>\n"
 
 
 #endif /* __011910__TEMPLATES_H */

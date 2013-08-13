@@ -156,11 +156,11 @@ QString CHtmlWriter::simpleTag(const QString& tag, const QString &content, const
 //---------------------------------------------------------------------------
 QString CHtmlWriter::tableCell (const QString &content, const QString& style, int colspan, const QString &align, const QString &valign)
 {
-   QString s = "<td" TMPL_DIREC TMPL_ALIGN TMPL_VALIGN TMPL_CSS">" TMPL_CONT "</td>";
+   QString s = "<td" TMPL_ATTR TMPL_ALIGN TMPL_VALIGN TMPL_CSS">" TMPL_CONT "</td>";
 
    s.replace(TMPL_ALIGN , align.isEmpty() ? "" : QString(" align='" TMPL_ALIGN "'").replace(TMPL_ALIGN, align));
    s.replace(TMPL_VALIGN, valign.isEmpty() ? "" : QString(" valign='" TMPL_VALIGN "'").replace(TMPL_VALIGN, valign));
-   s.replace(TMPL_DIREC , (colspan > 1) ? QString(" colspan='" TMPL_DIREC "'").replace(TMPL_DIREC, QString::number(colspan)) : "");
+   s.replace(TMPL_ATTR  , (colspan > 1) ? QString(" colspan='" TMPL_ATTR "'").replace(TMPL_ATTR, QString::number(colspan)) : "");
    s.replace(TMPL_CSS   , style.isEmpty() ? "" : QString(" style='" TMPL_CSS "'").replace(TMPL_CSS, style));
    s.replace(TMPL_CONT  , content);
 
@@ -184,11 +184,11 @@ QString CHtmlWriter::tableCell (const QString &content, const QString& style, in
 //---------------------------------------------------------------------------
 QString CHtmlWriter::tableHead(const QString &content, const QString &style, int colspan, const QString &align, const QString &valign)
 {
-   QString s = "<th" TMPL_DIREC TMPL_ALIGN TMPL_VALIGN TMPL_CSS">" TMPL_CONT "</th>";
+   QString s = "<th" TMPL_ATTR TMPL_ALIGN TMPL_VALIGN TMPL_CSS">" TMPL_CONT "</th>";
 
    s.replace(TMPL_ALIGN , align.isEmpty() ? "" : QString(" align='" TMPL_ALIGN "'").replace(TMPL_ALIGN, align));
    s.replace(TMPL_VALIGN, valign.isEmpty() ? "" : QString(" valign='" TMPL_VALIGN "'").replace(TMPL_VALIGN, valign));
-   s.replace(TMPL_DIREC , (colspan > 1) ? QString(" colspan='" TMPL_DIREC "'").replace(TMPL_DIREC, QString::number(colspan)) : "");
+   s.replace(TMPL_ATTR  , (colspan > 1) ? QString(" colspan='" TMPL_ATTR "'").replace(TMPL_ATTR, QString::number(colspan)) : "");
    s.replace(TMPL_CSS   , style.isEmpty() ? "" : QString(" style='" TMPL_CSS "'").replace(TMPL_CSS, style));
    s.replace(TMPL_CONT  , content);
 
