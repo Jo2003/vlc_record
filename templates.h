@@ -49,7 +49,7 @@
 
 #ifdef Q_OS_MAC
    // hack to force a ca. 1px cell border ...
-   #define DEF_CELLSPACING  "1.85"
+   #define DEF_CELLSPACING  "1.99"
 #else
    #define DEF_CELLSPACING  "1"
 #endif
