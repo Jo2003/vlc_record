@@ -158,7 +158,7 @@ void QWatchListDlg::buildWatchTab()
             img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
 
             // wrap in link ...
-            act = pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
+            act = pHtml->link(url.toEncoded(), img) + "&nbsp;";
 
             url.clear();
             url.setPath("vlc-record");
@@ -173,7 +173,7 @@ void QWatchListDlg::buildWatchTab()
             img  = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
 
             // wrap in link ...
-            act += pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
+            act += pHtml->link(url.toEncoded(), img) + "&nbsp;";
          }
 
          // add delete link ...
@@ -187,7 +187,7 @@ void QWatchListDlg::buildWatchTab()
          img  = pHtml->image(":/png/remove", 16, 16, "", tr("delete from list ..."));
 
          // wrap in link ...
-         act += pHtml->link(QString(url.toEncoded()), img);
+         act += pHtml->link(url.toEncoded(), img);
 
          // channel in red bold ...
          line  = pHtml->htmlTag("b", vE.at(i).sName, "font-size: medium; color: red;") + "<br />";

@@ -176,7 +176,7 @@ QString CEpgBrowser::createHtmlCode()
          img = pHtml->image(":/png/timer", 16, 16, "", tr("add timer record ..."));
 
          // wrap in link ...
-         timeCell += pHtml->link(QString(url.toEncoded()), img);
+         timeCell += pHtml->link(url.toEncoded(), img);
       }
 
       if (bArchive)
@@ -196,7 +196,7 @@ QString CEpgBrowser::createHtmlCode()
             img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
 
             // wrap in link ...
-            timeCell += pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
+            timeCell += pHtml->link(url.toEncoded(), img) + "&nbsp;";
 
             url.clear();
             url.setPath("vlc-record");
@@ -208,7 +208,7 @@ QString CEpgBrowser::createHtmlCode()
             img = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
 
             // wrap in link ...
-            timeCell += pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
+            timeCell += pHtml->link(url.toEncoded(), img) + "&nbsp;";
          }
 
          // mark for later view ...
@@ -222,7 +222,7 @@ QString CEpgBrowser::createHtmlCode()
          img = pHtml->image(":/png/remember", 16, 16, "", tr("watch later ..."));
 
          // wrap in link ...
-         timeCell += pHtml->link(QString(url.toEncoded()), img);
+         timeCell += pHtml->link(url.toEncoded(), img);
       }
 
       progCell = actShow.sShowName;

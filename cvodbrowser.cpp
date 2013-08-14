@@ -126,9 +126,7 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
          }
 
          // image tag ...
-         url.clear();
-         url.setPath(img);
-         img = pHtml->image(QString(url.toEncoded()), 0, 0, "", QString("%1 (%2 %3)").arg(vList[j].sName).arg(vList[j].sCountry).arg(vList[j].sYear));
+         img = pHtml->image(QUrl::toPercentEncoding(img), 0, 0, "", QString("%1 (%2 %3)").arg(vList[j].sName).arg(vList[j].sCountry).arg(vList[j].sYear));
 
          // create link url ...
          url.clear();
@@ -138,7 +136,7 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
          url.addQueryItem("pass_protect", vList[j].bProtected ? "1" : "0");
 
          // wrap image into link ...
-         link  = pHtml->link(QString(url.toEncoded()), img) + "<br />";
+         link  = pHtml->link(url.toEncoded(), img) + "<br />";
 
          if (vList[j].bProtected)
          {
@@ -221,10 +219,10 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    _name = sInfo.sName;
 
    // create source url for image ...
-   url.setPath(QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName()));
+   img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
 
    // add image ...
-   content  = pHtml->image(QString(url.toEncoded()), 0, 0, TMPL_IMG_RFLOAT, sInfo.sName);
+   content  = pHtml->image(QUrl::toPercentEncoding(img), 0, 0, TMPL_IMG_RFLOAT, sInfo.sName);
 
    // add headline ...
    content += pHtml->htmlTag("h3", sInfo.sName) + "&nbsp;&nbsp;&nbsp;";
@@ -257,7 +255,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    }
 
    // add favorite stuff ...
-   tok            = pHtml->link(QString(url.toEncoded()), img);
+   tok            = pHtml->link(url.toEncoded(), img);
    content       += tok;
 
    // add genre ...
@@ -308,7 +306,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
 
       img  = pHtml->image(":/png/play", 16, 16, "", tr("Play Movie ..."));
-      link = pHtml->link(QString(url.toEncoded()), img) + "&nbsp;";
+      link = pHtml->link(url.toEncoded(), img) + "&nbsp;";
 
       // add record button ...
       url.clear();
@@ -318,7 +316,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
 
       img   = pHtml->image(":/png/record", 16, 16, "", tr("Record Movie ..."));
-      link += pHtml->link(QString(url.toEncoded()), img);
+      link += pHtml->link(url.toEncoded(), img);
 
       tok += pHtml->tableCell(link, "padding: 3px;");
 
@@ -334,7 +332,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    url.setPath("videothek");
    url.addQueryItem("action", "backtolist");
 
-   link     = pHtml->link(QString(url.toEncoded()), tr("Back"));
+   link     = pHtml->link(url.toEncoded(), tr("Back"));
    link     = "[ " + link + " ]";
    content += pHtml->div(link, "", "center");
 
