@@ -302,16 +302,18 @@ QString CHtmlWriter::tableRow(const QString &content, const QString &style)
 //! \param   href (const QString&) link referer
 //! \param   content (const QString&) content within this tag
 //! \param   title (const QString&) title for this tag
+//! \param   style (const QString&) css for this tag
 //
 //! \return  html code of tag
 //---------------------------------------------------------------------------
-QString CHtmlWriter::link(const QString &href, const QString &content, const QString& title)
+QString CHtmlWriter::link(const QString &href, const QString &content, const QString& title, const QString& style)
 {
-   QString s = "<a href='" TMPL_LINK "' title='" TMPL_TITLE "'>" TMPL_CONT "</a>";
+   QString s = "<a href='" TMPL_LINK "' title='" TMPL_TITLE "'" TMPL_CSS ">" TMPL_CONT "</a>";
 
    s.replace(TMPL_LINK , href);
    s.replace(TMPL_TITLE, title);
    s.replace(TMPL_CONT , content);
+   s.replace(TMPL_CSS , style.isEmpty() ? "" : QString(" style='" TMPL_CSS "'").replace(TMPL_CSS, style));
 
    return s;
 }

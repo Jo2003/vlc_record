@@ -40,7 +40,7 @@ public:
    QString simpleTag(const QString& tag, const QString &content, const QString& style = QString());
    QString table(const QString &content, const QString& style = QString());
    QString tableRow(const QString &content, const QString& style = QString());
-   QString link(const QString& href, const QString& content, const QString& title = QString());
+   QString link(const QString& href, const QString& content, const QString& title = QString(), const QString &style = QString());
    QString image(const QString& src, int width = 0, int height = 0, const QString& style = QString(), const QString& title = QString());
    QString tableHead(const QString &content, const QString& style = QString(), int colspan = 1, const QString& align = QString(), const QString& valign = QString());
    QString div(const QString &content, const QString& style = QString(), const QString& align = QString());

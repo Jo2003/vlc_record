@@ -219,7 +219,7 @@ QString CEpgBrowser::createHtmlCode()
          url.addQueryItem("gmt"  , QString::number(actShow.uiStart));
 
          // remember button ...
-         img = pHtml->image(":/png/remember", 16, 16, "", tr("watch later ..."));
+         img = pHtml->image(":/png/remember", 16, 16, "", tr("add to watch list ..."));
 
          // wrap in link ...
          timeCell += pHtml->link(url.toEncoded(), img);

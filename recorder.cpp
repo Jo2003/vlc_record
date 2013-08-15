@@ -4103,6 +4103,7 @@ void Recorder::fillShortCutTab()
       {tr("Play Next Channel"),    this,       SLOT(slotPlayNextChannel()),       "CTRL+ALT+N"},
       {tr("Play Prev. Channel"),   this,       SLOT(slotPlayPreviousChannel()),   "CTRL+ALT+P"},
       {tr("Show EPG / VOD"),       this,       SLOT(slotToggleEpgVod()),          "CTRL+E"},
+      {tr("Watch List"),           this,       SLOT(on_pushWatchList_clicked()),  "ALT+W"},
       {tr("Help"),                 this,       SLOT(on_pushHelp_clicked()),       "F1"},
       // add further entries below ...
 

@@ -13,7 +13,6 @@
    #define __011810__CABOUTDIALOG_H
 
 #include <QDialog>
-#include <QTextStream>
 #include <QString>
 #ifdef INCLUDE_LIBVLC
    #include <vlc/vlc.h>

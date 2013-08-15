@@ -13,9 +13,14 @@
 #include "ui_caboutdialog.h"
 
 #include "qcustparser.h"
+#include "chtmlwriter.h"
+#include "templates.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
 
 /* -----------------------------------------------------------------\
 |  Method: CAboutDialog / constructor
@@ -102,32 +107,60 @@ void CAboutDialog::changeEvent(QEvent *e)
 void CAboutDialog::FillInfo(QString sExpires)
 {
    strAbout = "";
-   QTextStream str(&strAbout);
+   QString td, rows, link;
+   const char* linkcss = "text-decoration: underline; color: #0482FE;";
 
-   str << "<style type='text/css'>" << endl
-         << "a:link, a:visited, a:active { text-decoration: underline; color: #0482FE;}" << endl
-         << "</style>" << endl
-         << "<span style='font-weight: bold; font-size: 16px;'>" << pCustomization->strVal("APP_NAME") << "</span><br />" << endl
-         << "<table border='0' cellpadding='0' cellspacing='0'>" << endl
-         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Version:")).arg(__MY__VERSION__) << endl
+   strAbout = pHtml->span(pCustomization->strVal("APP_NAME"), "font-weight: bold; font-size: 16px;") + "<br />";
+   // version ...
+   td    = pHtml->tableCell(tr("Version:")         , "font-weight: bold;");
+   td   += pHtml->tableCell(__MY__VERSION__        , "padding-left: 7px;");
+   rows  = pHtml->tableRow(td);
 #ifdef INCLUDE_LIBVLC
-         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("libVLC:"))
-             .arg(QString("%1").arg(libvlc_get_version())) << endl
-#endif
-         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='mailto:coujo@gmx.net'>Jo2003</a></td></tr>").arg(tr("Author:")) << endl
+   // libvlc version ...
+   td    = pHtml->tableCell(tr("libVLC:")          , "font-weight: bold;");
+   td   += pHtml->tableCell(libvlc_get_version()   , "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
+#endif // INCLUDE_LIBVLC
+   // author ...
+   link  = pHtml->link("mailto:coujo@gmx.net", "Jo2003", "", linkcss);
+   td    = pHtml->tableCell(tr("Author:")          , "font-weight: bold;");
+   td   += pHtml->tableCell(link                   , "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
 #ifndef _IS_OEM
-         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'><a href='http://vlc-record.coujo.de'>vlc-record.coujo.de</a></td></tr>").arg(tr("Project Site:")) << endl
+   // project site ...
+   link  = pHtml->link("http://vlc-record.coujo.de", "vlc-record.coujo.de", "", linkcss);
+   td    = pHtml->tableCell(tr("Project Site:" )   , "font-weight: bold;");
+   td   += pHtml->tableCell(link                   , "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
 #endif // _IS_OEM
-         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>Olenka!</td></tr>").arg(tr("Inspired by:")) << endl
-         << QString("<tr><td><b>SDK:</b></td><td style='padding-left: 15px;'>Qt %2 by <a href='http://qt.digia.com'>Digia</a></td></tr>").arg(qVersion()) << endl
-         << QString("<tr><td><b>%1</b></td><td style='padding-left: 15px;'>%2</td></tr>").arg(tr("Account expires:")).arg(sExpires) << endl
-         << "<tr><td><b>Most icons:</b></td><td style='padding-left: 15px;'>by <a href='http://dryicons.com'>dryicons.com</a></td></tr>" << endl
-         << "</table><br /> <br />" << endl
-         << tr("<b>This program is free software!</b>") << endl
-         << tr("Nevertheless ... if you like this software, please support me: ") << endl
-         << "<a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909'>"
-         << tr("Donate some $ and / or &euro; at Paypal for my work.") << "</a><br /> <br />" << endl
-         << tr("Thank you,") << "<br />&nbsp;&nbsp;&nbsp;&nbsp;J&ouml;rg" << endl;
+   // inspiration ...
+   td    = pHtml->tableCell(tr("Inspired by:")     , "font-weight: bold;");
+   td   += pHtml->tableCell("Olenka!"              , "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
+   // qt version ...
+   link  = pHtml->link("http://qt.digia.com", "Digia", "", linkcss);
+   td    = pHtml->tableCell("SDK:"                 , "font-weight: bold;");
+   td   += pHtml->tableCell(link                   , "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
+   // expires ...
+   td    = pHtml->tableCell(tr("Account expires:") , "font-weight: bold;");
+   td   += pHtml->tableCell(sExpires               , "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
+   // icons ...
+   link  = pHtml->link("http://dryicons.com", "dryicons.com", "", linkcss);
+   td    = pHtml->tableCell("Most icons:"          , "font-weight: bold;");
+   td   += pHtml->tableCell(link                   , "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
+
+   // wrap into table ...
+   strAbout += pHtml->htmlTag("table", rows) + "<br /> <br />";
+
+   strAbout += pHtml->htmlTag("b", tr("This program is free software!")) + " ";
+   strAbout += tr("Nevertheless ... if you like this software, please support me: ");
+   strAbout += pHtml->link("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=11286909",
+                           tr("Donate some $ and / or &euro; at Paypal for my work."), "", linkcss) + "<br /> <br />";
+   strAbout += tr("Thank you,") + "<br />&nbsp;&nbsp;&nbsp;J&ouml;rg";
+   strAbout  = pHtml->htmlPage(strAbout);
 }
 
 /************************* History ***************************\

@@ -1303,7 +1303,7 @@ border-top: 0px;
                     </size>
                    </property>
                    <property name="toolTip">
-                    <string>Open Watch List</string>
+                    <string>Watch List</string>
                    </property>
                    <property name="text">
                     <string/>
