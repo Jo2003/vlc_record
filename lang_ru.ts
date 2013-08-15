@@ -3130,7 +3130,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="forms/qwatchlistdlg.ui" line="14"/>
         <source>Watch List</source>
-        <translation>Список Желаний</translation>
+        <translation>Памятный список</translation>
     </message>
 </context>
 <context>
