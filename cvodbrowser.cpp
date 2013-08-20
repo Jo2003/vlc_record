@@ -156,7 +156,7 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
 
       if (j == (iCount - 1))
       {
-         row += pHtml->tableCell("&nbsp;", TMPL_VOD_STYLE);
+         row += pHtml->tableCell("&nbsp; <br /> &nbsp;", TMPL_VOD_STYLE, 1, "center", "middle");
       }
 
       tab += pHtml->tableRow(row);
