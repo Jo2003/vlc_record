@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "65"
-#define BETA_EXT      "B4"
+#define BETA_EXT      "B5"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,10 +38,16 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-08-20: Version 2.65B5
 | - add new html writer class
 | - use html writer in almost all cases html output is needed
 | - re-style watch list and short info
 | - correct url usage in recorder.cpp
+| - about dialog uses html writer class
+| - add watch list - a list to remember what
+|   still to be watched
+| - update add and remove button for watch list
+| - bugfix for ORT widget where time stuck to 0:00
 |
 | 2013-07-30: Version 2.65B3
 | - add channel list filter for channel name
