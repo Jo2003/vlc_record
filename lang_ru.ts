@@ -33,94 +33,54 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Спасибо!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="115"/>
+        <location filename="caboutdialog.cpp" line="116"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="120"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>libVLC:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="126"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>Author:</source>
         <translation>Автор:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
+        <location filename="caboutdialog.cpp" line="135"/>
         <source>Project Site:</source>
         <translation>Сайт проекта:</translation>
     </message>
     <message>
-        <source>Homepage:</source>
-        <translation type="obsolete">Домашняя страница:</translation>
-    </message>
-    <message>
-        <location filename="caboutdialog.cpp" line="137"/>
+        <location filename="caboutdialog.cpp" line="140"/>
         <source>Inspired by:</source>
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="146"/>
+        <location filename="caboutdialog.cpp" line="150"/>
         <source>Account expires:</source>
         <translation>Пакет истекает:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="161"/>
+        <location filename="caboutdialog.cpp" line="165"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <source>This is a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
-        <oldsource>&lt;b&gt;vlc-record&lt;/b&gt; - a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</oldsource>
-        <translation type="obsolete">Эта программа для &lt;b&gt;просмотра и записи видеопотока&lt;/b&gt; с %1%2</translation>
-    </message>
-    <message>
-        <source> (click to buy a subscription).</source>
-        <oldsource> (Click to buy a subscription).</oldsource>
-        <translation type="obsolete">(нажимите на ссылку, чтобы купить подписку).</translation>
-    </message>
-    <message>
-        <source>To do this you will need to authorise using username and password provided by %1.</source>
-        <oldsource>To do this it will authenticate you with username and password at %1.</oldsource>
-        <translation type="obsolete">Программа подключается к %1 при помощи Вашей абонемента (Логин/Пароль).</translation>
-    </message>
-    <message>
-        <source>It then will start the %1 to display (and record) the selected stream.</source>
-        <translation type="obsolete">После чего, вы можете просматривать или записывать понравившуюся Вам передачу с помощью %1.</translation>
-    </message>
-    <message>
-        <source>It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.</source>
-        <translation type="obsolete">В программе отображается вся необходимая информация об эфире(Программа передач) и функция задержки вещания.</translation>
-    </message>
-    <message>
-        <source>For News and Updates please visit my site at %1.</source>
-        <oldsource>For News and Updates please visit my site at %1</oldsource>
-        <translation type="obsolete">Следите за обновлениями и новостями на моей интернет-странице %1.</translation>
-    </message>
-    <message>
-        <location filename="caboutdialog.cpp" line="158"/>
+        <location filename="caboutdialog.cpp" line="162"/>
         <source>This program is free software!</source>
         <oldsource>&lt;b&gt;This program is free software!&lt;/b&gt;</oldsource>
         <translation>Эта программа является бесплатной!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="159"/>
+        <location filename="caboutdialog.cpp" line="163"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
-        <translation>Но ... если Вам понравилась моя программа, вы можете отблагодарить меня: </translation>
+        <translation>Но ... если она Вам понравилась, Вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <source>If you enjoy this software and would like to support its further development, please </source>
-        <translation type="obsolete">Если Вам понравилась моя программа и Вы хотите поддержать меня, пожалуйста, </translation>
-    </message>
-    <message>
-        <source>donate here via Paypal</source>
-        <translation type="obsolete">поблагодарите через PayPal</translation>
-    </message>
-    <message>
-        <location filename="caboutdialog.cpp" line="162"/>
+        <location filename="caboutdialog.cpp" line="166"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
@@ -186,22 +146,6 @@ p, li { white-space: pre-wrap; }
         <location filename="chtmlwriter.cpp" line="402"/>
         <source>%1 min.</source>
         <translation>%1 мин.</translation>
-    </message>
-    <message>
-        <source>Program:</source>
-        <translation type="obsolete">Передача:</translation>
-    </message>
-    <message>
-        <source>Start:</source>
-        <translation type="obsolete">Начало:</translation>
-    </message>
-    <message>
-        <source>End:</source>
-        <translation type="obsolete">Окончание:</translation>
-    </message>
-    <message>
-        <source>Length:</source>
-        <translation type="obsolete">Длит.:</translation>
     </message>
 </context>
 <context>
@@ -304,10 +248,6 @@ p, li { white-space: pre-wrap; }
         <source>Request Videos ...</source>
         <oldsource>Request Videos for Genres %1...</oldsource>
         <translation></translation>
-    </message>
-    <message>
-        <source>Error #%1: %2!</source>
-        <translation type="obsolete">Ошибка #%1: %2!</translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="685"/>
@@ -606,157 +546,6 @@ p, li { white-space: pre-wrap; }
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <oldsource>Got Genre %1, Count %2, Page %3, Total %4</oldsource>
         <translation></translation>
-    </message>
-    <message>
-        <source>Error #%1: %2!</source>
-        <oldsource>Error #%1: %2</oldsource>
-        <translation type="obsolete">Ошибка #%1: %2!</translation>
-    </message>
-    <message>
-        <source>Error #%1 in %2():%3: %4!</source>
-        <oldsource>Error #%1 in %2():%3: %4</oldsource>
-        <translation type="obsolete">Ошибка #%1 в %2():%3: %4!</translation>
-    </message>
-    <message>
-        <source>Unknown error</source>
-        <oldsource>Unknown Error</oldsource>
-        <translation type="obsolete">Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Incorrect request</source>
-        <oldsource>Incorrect Request</oldsource>
-        <translation type="obsolete">Неверный запрос</translation>
-    </message>
-    <message>
-        <source>Wrong login or password</source>
-        <translation type="obsolete">Неверный логин или пароль</translation>
-    </message>
-    <message>
-        <source>Access denied</source>
-        <translation type="obsolete">Доступ запрещен</translation>
-    </message>
-    <message>
-        <source>Login incorrect</source>
-        <translation type="obsolete">Неверный логин</translation>
-    </message>
-    <message>
-        <source>Your contract is inactive</source>
-        <translation type="obsolete">Ваш договор неактивен</translation>
-    </message>
-    <message>
-        <source>Your contract is paused</source>
-        <translation type="obsolete">Ваш договор приостановлен</translation>
-    </message>
-    <message>
-        <source>Channel not found or not allowed</source>
-        <translation type="obsolete">Канал не найден или не доступен</translation>
-    </message>
-    <message>
-        <source>Error in request: Bad parameters</source>
-        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <oldsource>Missing Parameter (day) in format &lt;DDMMYY&gt;</oldsource>
-        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cid)</source>
-        <oldsource>Missing Parameter (cid)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (cid)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (place)</source>
-        <oldsource>Missing Parameter (place)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (place)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (name)</source>
-        <oldsource>Missing Parameter (name)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (name)</translation>
-    </message>
-    <message>
-        <source>Another client with your data logged in</source>
-        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
-    </message>
-    <message>
-        <source>Authentication error</source>
-        <oldsource>Authentication Error</oldsource>
-        <translation type="obsolete">Ошибка идентификации</translation>
-    </message>
-    <message>
-        <source>Your package expired</source>
-        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
-    </message>
-    <message>
-        <source>Unknown API function</source>
-        <translation type="obsolete">Неизвестная функция API</translation>
-    </message>
-    <message>
-        <source>Archive not available</source>
-        <translation type="obsolete">Архив не доступен</translation>
-    </message>
-    <message>
-        <source>Incorrect confirmation code</source>
-        <translation type="obsolete">Неверный код подтверждения</translation>
-    </message>
-    <message>
-        <source>Current code is wrong</source>
-        <translation type="obsolete">Текущий код неверный</translation>
-    </message>
-    <message>
-        <source>New code is wrong</source>
-        <translation type="obsolete">Новый код неверный</translation>
-    </message>
-    <message>
-        <source>Missing parameter (val)</source>
-        <oldsource>Missing Parameter (val)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (val)</translation>
-    </message>
-    <message>
-        <source>Value not allowed</source>
-        <translation type="obsolete">Значение не доступно</translation>
-    </message>
-    <message>
-        <source>Missing parameter</source>
-        <oldsource>Missing Parameter</oldsource>
-        <translation type="obsolete">Отсутствует параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (id)</source>
-        <oldsource>Missing Parameter (id)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (id)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (fileid)</source>
-        <oldsource>Missing Parameter (fileid)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (type)</source>
-        <oldsource>Missing Parameter (type)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (type)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (query)</source>
-        <oldsource>Missing Parameter (query)</oldsource>
-        <translation type="obsolete">Отсутствует параметр (query)</translation>
-    </message>
-    <message>
-        <source>Bitrate not available</source>
-        <translation type="obsolete">Битрейт не доступен</translation>
-    </message>
-    <message>
-        <source>Service not available</source>
-        <translation type="obsolete">Сервис не доступен</translation>
-    </message>
-    <message>
-        <source>Query limit exceeded</source>
-        <translation type="obsolete">Превышен лимит запроса</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation type="obsolete">Ошибка</translation>
     </message>
 </context>
 <context>
@@ -1239,14 +1028,6 @@ p, li { white-space: pre-wrap; }
         <translation>Форма</translation>
     </message>
     <message>
-        <source>Aspect:</source>
-        <translation type="obsolete">Формат изображения: </translation>
-    </message>
-    <message>
-        <source>Crop: </source>
-        <translation type="obsolete">Размер кадра:</translation>
-    </message>
-    <message>
         <location filename="forms/cplayer.ui" line="59"/>
         <source>Aspect</source>
         <translation>Формат изображения</translation>
@@ -1272,14 +1053,6 @@ p, li { white-space: pre-wrap; }
         <oldsource>0:00:00</oldsource>
         <translation></translation>
     </message>
-    <message>
-        <source>Jump Backward</source>
-        <translation type="obsolete">шаг назад</translation>
-    </message>
-    <message>
-        <source>Jump Forward</source>
-        <translation type="obsolete">шаг вперед</translation>
-    </message>
 </context>
 <context>
     <name>CRodnoeClient</name>
@@ -1295,10 +1068,6 @@ p, li { white-space: pre-wrap; }
         <location filename="crodnoeclient.cpp" line="100"/>
         <source>Request &apos;%2&apos; done!</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Radio</source>
-        <translation type="obsolete">Радио</translation>
     </message>
     <message>
         <location filename="crodnoeclient.cpp" line="242"/>
@@ -2016,10 +1785,6 @@ To change the parent code make sure:
         <translation>Уровень Протокола: </translation>
     </message>
     <message>
-        <source>Refresh EPG every:</source>
-        <translation type="obsolete">Обновлять EPG каждые:</translation>
-    </message>
-    <message>
         <location filename="forms/csettingsdlg.ui" line="684"/>
         <source>Show Ads</source>
         <translation>Показать рекламу</translation>
@@ -2067,10 +1832,6 @@ To change the parent code make sure:
         <translation>Синхронизировать время</translation>
     </message>
     <message>
-        <source>Minute(s)</source>
-        <translation type="obsolete">минут(ы)</translation>
-    </message>
-    <message>
         <location filename="forms/csettingsdlg.ui" line="1022"/>
         <source>Parent Code: </source>
         <translation>Родительский пароль: </translation>
@@ -2095,10 +1856,6 @@ To change the parent code make sure:
         <source>Detach Player at startup</source>
         <oldsource>Detach Player on startup</oldsource>
         <translation>Отдели проигр. при запуске</translation>
-    </message>
-    <message>
-        <source>Extended Channel List</source>
-        <translation type="obsolete">Доп. инфо в списке каналов</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="306"/>
@@ -2136,10 +1893,6 @@ To change the parent code make sure:
         <location filename="forms/csettingsdlg.ui" line="667"/>
         <source>Doubleclick on channel list starts play</source>
         <translation>Двойной щелчок на списке каналов стартует плеер</translation>
-    </message>
-    <message>
-        <source>Check for updates</source>
-        <translation type="obsolete">Проверка обновлений программы</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="674"/>
@@ -2287,26 +2040,6 @@ To change the parent code make sure:
         <source>%1 (Archive)</source>
         <translation>%1 (Архив)</translation>
     </message>
-    <message>
-        <source>Program:</source>
-        <translation type="obsolete">Передача:</translation>
-    </message>
-    <message>
-        <source>Start:</source>
-        <translation type="obsolete">Начало:</translation>
-    </message>
-    <message>
-        <source>End:</source>
-        <translation type="obsolete">Окончание:</translation>
-    </message>
-    <message>
-        <source>Length:</source>
-        <translation type="obsolete">Длит.:</translation>
-    </message>
-    <message>
-        <source>%1 min.</source>
-        <translation type="obsolete">%1 мин.</translation>
-    </message>
 </context>
 <context>
     <name>CStdJsonParser</name>
@@ -2341,15 +2074,6 @@ To change the parent code make sure:
         <location filename="cstdjsonparser.cpp" line="747"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>QJSON can&apos;t parse respone!</source>
-        <oldsource>Error QJSON can&apos;t parse respone!</oldsource>
-        <translation type="obsolete">QJSON не может разобрать ответ!</translation>
-    </message>
-    <message>
-        <source>XML Error String: %1</source>
-        <translation type="obsolete">Ошибка XML строки: %1</translation>
     </message>
 </context>
 <context>
@@ -2688,10 +2412,6 @@ or start time is later than end time!</source>
 <context>
     <name>CVodBrowser</name>
     <message>
-        <source>VOD</source>
-        <translation type="obsolete">Видеотека</translation>
-    </message>
-    <message>
         <location filename="cvodbrowser.cpp" line="243"/>
         <source>Remove from favourites.</source>
         <translation>Удалить из избранных.</translation>
@@ -2855,13 +2575,6 @@ or start time is later than end time!</source>
     </message>
 </context>
 <context>
-    <name>QLangFilterWidgetAction</name>
-    <message>
-        <source>All</source>
-        <translation type="obsolete">Все</translation>
-    </message>
-</context>
-<context>
     <name>QOverlayedControl</name>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="14"/>
@@ -2958,26 +2671,14 @@ or start time is later than end time!</source>
 <context>
     <name>QRecordTimerWidget</name>
     <message>
-        <source>Form</source>
-        <translation type="obsolete">Форма</translation>
-    </message>
-    <message>
         <location filename="forms/qrecordtimerwidget.ui" line="14"/>
         <source>Record Timer</source>
         <translation>Таймер записи</translation>
     </message>
     <message>
-        <source>&amp;Enable Record Timer</source>
-        <translation type="obsolete">&amp;Вкл. таймер записи</translation>
-    </message>
-    <message>
         <location filename="forms/qrecordtimerwidget.ui" line="54"/>
         <source>0:00:00</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="obsolete">&amp;Отменить</translation>
     </message>
     <message>
         <location filename="qrecordtimerwidget.cpp" line="60"/>
@@ -3007,21 +2708,9 @@ or start time is later than end time!</source>
         <source>Please enter your parent code:</source>
         <translation>Пожалуйста, введите парент код:</translation>
     </message>
-    <message>
-        <source>Please enter security code:</source>
-        <translation type="obsolete">Пожалуйста, введите пароль:</translation>
-    </message>
 </context>
 <context>
     <name>QStringFilterWidgetAction</name>
-    <message>
-        <source>Filter Channels</source>
-        <translation type="obsolete">Фильтр каналов</translation>
-    </message>
-    <message>
-        <source>enable / disable filter</source>
-        <translation type="obsolete">Вкл / выкл фильтр</translation>
-    </message>
     <message>
         <location filename="qstringfilterwidgetaction.h" line="107"/>
         <location filename="qstringfilterwidgetaction.h" line="152"/>
@@ -3193,25 +2882,9 @@ or start time is later than end time!</source>
         <translation>Тише</translation>
     </message>
     <message>
-        <source>VLC is still running.&lt;br /&gt;&lt;b&gt;Closing VLC record will also close the started VLC-Player.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Do you really want to close VLC Record now?</source>
-        <translation type="obsolete">VLC Mediaplayer ещё в работае.&lt;br /&gt;&lt;b&gt;Если вы остановите работу VLC-Record, то и VLC-Player закроется.&lt;/b&gt;&lt;br /&gt; &lt;br /&gt;Уверены ли Вы?</translation>
-    </message>
-    <message>
         <location filename="recorder.cpp" line="5201"/>
         <source>Question</source>
         <translation>Вопрос</translation>
-    </message>
-    <message>
-        <source>Program:</source>
-        <translation type="obsolete">Передача:</translation>
-    </message>
-    <message>
-        <source>Start:</source>
-        <translation type="obsolete">Начало:</translation>
-    </message>
-    <message>
-        <source>End:</source>
-        <translation type="obsolete">Окончание:</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2202"/>
@@ -3254,10 +2927,6 @@ or start time is later than end time!</source>
         <location filename="recorder.cpp" line="3660"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Макс. число избранных (%1) достигнуто.</translation>
-    </message>
-    <message>
-        <source>Can&apos;t start VLC-Media Player!</source>
-        <translation type="obsolete">Не удается запустить VLC Media Player!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4420"/>
@@ -3306,11 +2975,6 @@ dataDir: %1
         <location filename="recorder.cpp" line="4379"/>
         <source>All</source>
         <translation>Все</translation>
-    </message>
-    <message>
-        <source>%1 - Click to activate!</source>
-        <oldsource>vlc-record - Click to activate!</oldsource>
-        <translation type="obsolete">%1 - нажмите для запуска!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4454"/>
@@ -3456,10 +3120,6 @@ dataDir: %1
         <translation>тут</translation>
     </message>
     <message>
-        <source>Update available</source>
-        <translation type="obsolete">Новая версия</translation>
-    </message>
-    <message>
         <location filename="recorder.cpp" line="4081"/>
         <source>Record</source>
         <translation>Запись</translation>
@@ -3578,14 +3238,6 @@ dataDir: %1
         <translation>Избранное %1</translation>
     </message>
     <message>
-        <source>Length:</source>
-        <translation type="obsolete">Длит.:</translation>
-    </message>
-    <message>
-        <source>%1 min.</source>
-        <translation type="obsolete">%1 мин.</translation>
-    </message>
-    <message>
         <location filename="recorder.cpp" line="2944"/>
         <location filename="recorder.cpp" line="4910"/>
         <location filename="recorder.cpp" line="4977"/>
@@ -3596,11 +3248,6 @@ dataDir: %1
         <location filename="recorder.cpp" line="1732"/>
         <source>Error</source>
         <translation>Ошибка</translation>
-    </message>
-    <message>
-        <source>%1 Client API reports some errors: %2</source>
-        <oldsource>Kartina.tv Client API reports some errors: %1</oldsource>
-        <translation type="obsolete">%1 API сообщает о некоторых ошибках: %2</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="137"/>

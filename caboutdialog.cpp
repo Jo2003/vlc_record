@@ -53,7 +53,7 @@ CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires) :
 \----------------------------------------------------------------- */
 CAboutDialog::~CAboutDialog()
 {
-    delete ui;
+   delete ui;
 }
 
 /* -----------------------------------------------------------------\
@@ -84,14 +84,15 @@ void CAboutDialog::ConnectSettings(CSettingsDlg *pSet)
 \----------------------------------------------------------------- */
 void CAboutDialog::changeEvent(QEvent *e)
 {
-    QDialog::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+   QDialog::changeEvent(e);
+   switch (e->type())
+   {
+   case QEvent::LanguageChange:
+      ui->retranslateUi(this);
+      break;
+   default:
+      break;
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -117,8 +118,10 @@ void CAboutDialog::FillInfo(QString sExpires)
    rows  = pHtml->tableRow(td);
 #ifdef INCLUDE_LIBVLC
    // libvlc version ...
+   link  = pHtml->link("http://www.videolan.org", "VideoLAN.org", "", linkcss);
+   link  = QString("%1 by %2").arg(libvlc_get_version()).arg(link);
    td    = pHtml->tableCell(tr("libVLC:")          , "font-weight: bold;");
-   td   += pHtml->tableCell(libvlc_get_version()   , "padding-left: 7px;");
+   td   += pHtml->tableCell(link                   , "padding-left: 7px;");
    rows += pHtml->tableRow(td);
 #endif // INCLUDE_LIBVLC
    // author ...
@@ -138,7 +141,8 @@ void CAboutDialog::FillInfo(QString sExpires)
    td   += pHtml->tableCell("Olenka!"              , "padding-left: 7px;");
    rows += pHtml->tableRow(td);
    // qt version ...
-   link  = pHtml->link("http://qt.digia.com", "Digia", "", linkcss);
+   link  = pHtml->link("http://qt-project.org", "Qt Project", "", linkcss);
+   link  = QString("Qt %1 by %2").arg(qVersion()).arg(link);
    td    = pHtml->tableCell("SDK:"                 , "font-weight: bold;");
    td   += pHtml->tableCell(link                   , "padding-left: 7px;");
    rows += pHtml->tableRow(td);

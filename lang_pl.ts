@@ -33,86 +33,54 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Dziękujemy!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="115"/>
+        <location filename="caboutdialog.cpp" line="116"/>
         <source>Version:</source>
         <translation>Wersja:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="120"/>
+        <location filename="caboutdialog.cpp" line="123"/>
         <source>libVLC:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="126"/>
+        <location filename="caboutdialog.cpp" line="129"/>
         <source>Author:</source>
         <translation>Autor:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
+        <location filename="caboutdialog.cpp" line="135"/>
         <source>Project Site:</source>
         <translation>Strona projektu:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="137"/>
+        <location filename="caboutdialog.cpp" line="140"/>
         <source>Inspired by:</source>
         <translation>Dla:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="146"/>
+        <location filename="caboutdialog.cpp" line="150"/>
         <source>Account expires:</source>
         <translation>Konto wygasa:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="161"/>
+        <location filename="caboutdialog.cpp" line="165"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Zrób wpłatę w $ i / lub &amp;euro; przez Paypal, aby wesprzeć moją pracę.</translation>
     </message>
     <message>
-        <source>This is a tool to &lt;b&gt;view / record program streams&lt;/b&gt; from %1%2</source>
-        <translation type="obsolete">To narzędzie służy do &lt;b&gt;oglądania/ nagrywania strumieni wideo&lt;/b&gt; z %1%2</translation>
-    </message>
-    <message>
-        <source> (click to buy a subscription).</source>
-        <translation type="obsolete">(kliknij, aby kupić subskrypcję).</translation>
-    </message>
-    <message>
-        <source>To do this you will need to authorise using username and password provided by %1.</source>
-        <translation type="obsolete">Aby to zrobić, musisz zezwolić wpisując nazwę użytkownika i hasło dostarczone przez %1.</translation>
-    </message>
-    <message>
-        <source>It then will start the %1 to display (and record) the selected stream.</source>
-        <translation type="obsolete">Następnie rozpocznie %1, aby wyświetlić (i nagrać) wybrany strumień.</translation>
-    </message>
-    <message>
-        <source>It supports &lt;b&gt;EPG and TimeShift&lt;/b&gt;.</source>
-        <translation type="obsolete">Obsługuje &lt;b&gt;Przewodnik TV i TimeShift&lt;/b&gt;.</translation>
-    </message>
-    <message>
-        <source>For News and Updates please visit my site at %1.</source>
-        <translation type="obsolete">Aby zapoznać się z nowościami i aktualizacjami odwiedź moją stronę %1.</translation>
-    </message>
-    <message>
-        <location filename="caboutdialog.cpp" line="158"/>
+        <location filename="caboutdialog.cpp" line="162"/>
         <source>This program is free software!</source>
         <oldsource>&lt;b&gt;This program is free software!&lt;/b&gt;</oldsource>
         <translation>Ten program jest bezpłatny!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="159"/>
+        <location filename="caboutdialog.cpp" line="163"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Niemniej jednak, jeśli chcesz korzystać z tego programu, proszę wesprzyj mnie:</translation>
     </message>
     <message>
-        <source>If you enjoy this software and would like to support its further development, please </source>
-        <translation type="obsolete">Jeśli podoba Ci się ten program i chciałbyś wesprzeć jego rozwój, proszę</translation>
-    </message>
-    <message>
-        <source>donate here via Paypal</source>
-        <translation type="obsolete">zrób wpłatę przez Paypal</translation>
-    </message>
-    <message>
-        <location filename="caboutdialog.cpp" line="162"/>
+        <location filename="caboutdialog.cpp" line="166"/>
         <source>Thank you,</source>
         <translation>Dziękuję,</translation>
     </message>
@@ -164,7 +132,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cepgbrowser.cpp" line="222"/>
         <source>add to watch list ...</source>
         <oldsource>watch later ...</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>dodaj do playlisty ...</translation>
     </message>
     <message>
         <location filename="cepgbrowser.cpp" line="176"/>
@@ -178,22 +146,6 @@ p, li { white-space: pre-wrap; }
         <location filename="chtmlwriter.cpp" line="402"/>
         <source>%1 min.</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Program:</source>
-        <translation type="obsolete">Program:</translation>
-    </message>
-    <message>
-        <source>Start:</source>
-        <translation type="obsolete">Początek:</translation>
-    </message>
-    <message>
-        <source>End:</source>
-        <translation type="obsolete">Koniec:</translation>
-    </message>
-    <message>
-        <source>Length:</source>
-        <translation type="obsolete">Długość:</translation>
     </message>
 </context>
 <context>
@@ -985,17 +937,9 @@ p, li { white-space: pre-wrap; }
         <translation>Zapisz</translation>
     </message>
     <message>
-        <source>Aspect:</source>
-        <translation type="obsolete">Wygląd:</translation>
-    </message>
-    <message>
         <location filename="forms/cplayer.ui" line="374"/>
         <source> 0:00:00</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Crop: </source>
-        <translation type="obsolete">Kadr:</translation>
     </message>
     <message>
         <location filename="forms/cplayer.ui" line="235"/>
@@ -1643,10 +1587,6 @@ p, li { white-space: pre-wrap; }
         <translation>Spróbuj naprawić przesunięcie czasu</translation>
     </message>
     <message>
-        <source>Extended Channel List</source>
-        <translation type="obsolete">Rozszerzona lista kanałów</translation>
-    </message>
-    <message>
         <location filename="forms/csettingsdlg.ui" line="293"/>
         <source>Enable Advanced Settings</source>
         <translation>Włącz zaawansowane ustawienia</translation>
@@ -1771,14 +1711,6 @@ p, li { white-space: pre-wrap; }
         <translation>Polecenie wyłączenia:</translation>
     </message>
     <message>
-        <source>Refresh EPG every:</source>
-        <translation type="obsolete">Odśwież Przewodnik TV co:</translation>
-    </message>
-    <message>
-        <source>Minute(s)</source>
-        <translation type="obsolete">minut</translation>
-    </message>
-    <message>
         <location filename="forms/csettingsdlg.ui" line="639"/>
         <source>Ask for Record Filename</source>
         <translation>Zapytaj o nazwę pliku nagrania</translation>
@@ -1802,10 +1734,6 @@ p, li { white-space: pre-wrap; }
         <location filename="forms/csettingsdlg.ui" line="667"/>
         <source>Doubleclick on channel list starts play</source>
         <translation>Kliknij dwukrotnie na początek odtwarzania listy kanałów</translation>
-    </message>
-    <message>
-        <source>Check for updates</source>
-        <translation type="obsolete">Sprawdź aktualizacje</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="674"/>
@@ -2098,22 +2026,6 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
         <source>%1 (Archive)</source>
         <translation>%1 (Archiwum)</translation>
     </message>
-    <message>
-        <source>Program:</source>
-        <translation type="obsolete">Program:</translation>
-    </message>
-    <message>
-        <source>Start:</source>
-        <translation type="obsolete">Początek:</translation>
-    </message>
-    <message>
-        <source>End:</source>
-        <translation type="obsolete">Koniec:</translation>
-    </message>
-    <message>
-        <source>Length:</source>
-        <translation type="obsolete">Długość:</translation>
-    </message>
 </context>
 <context>
     <name>CStdJsonParser</name>
@@ -2148,15 +2060,6 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
         <location filename="cstdjsonparser.cpp" line="747"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>QJSON can&apos;t parse respone!</source>
-        <oldsource>Error QJSON can&apos;t parse respone!</oldsource>
-        <translation type="obsolete">QJSON nie może przetworzyć odpowiedzi!</translation>
-    </message>
-    <message>
-        <source>XML Error String: %1</source>
-        <translation type="obsolete">Błąd wiersza XML: %1</translation>
     </message>
 </context>
 <context>
@@ -2494,10 +2397,6 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>CVodBrowser</name>
     <message>
-        <source>VOD</source>
-        <translation type="obsolete">Wideoteka</translation>
-    </message>
-    <message>
         <location filename="cvodbrowser.cpp" line="243"/>
         <source>Remove from favourites.</source>
         <translation>Usuń z ulubionych.</translation>
@@ -2661,13 +2560,6 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
 </context>
 <context>
-    <name>QLangFilterWidgetAction</name>
-    <message>
-        <source>All</source>
-        <translation type="obsolete">Wszystko</translation>
-    </message>
-</context>
-<context>
     <name>QOverlayedControl</name>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="14"/>
@@ -2764,26 +2656,14 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QRecordTimerWidget</name>
     <message>
-        <source>Form</source>
-        <translation type="obsolete">Format</translation>
-    </message>
-    <message>
         <location filename="forms/qrecordtimerwidget.ui" line="14"/>
         <source>Record Timer</source>
         <translation>Timer nagrywania</translation>
     </message>
     <message>
-        <source>&amp;Enable Record Timer</source>
-        <translation type="obsolete">Włączanie timera &amp;nagrywania</translation>
-    </message>
-    <message>
         <location filename="forms/qrecordtimerwidget.ui" line="54"/>
         <source>0:00:00</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="obsolete">&amp;Anuluj</translation>
     </message>
     <message>
         <location filename="qrecordtimerwidget.cpp" line="60"/>
@@ -2816,14 +2696,6 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 </context>
 <context>
     <name>QStringFilterWidgetAction</name>
-    <message>
-        <source>Filter Channels</source>
-        <translation type="obsolete">Filtry kanały</translation>
-    </message>
-    <message>
-        <source>enable / disable filter</source>
-        <translation type="obsolete">Filtrowanie on / off</translation>
-    </message>
     <message>
         <location filename="qstringfilterwidgetaction.h" line="107"/>
         <location filename="qstringfilterwidgetaction.h" line="152"/>
@@ -2959,7 +2831,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="forms/recorder.ui" line="220"/>
         <location filename="forms/recorder_inc.ui" line="243"/>
         <source>Channel list filter</source>
-        <translation>Filtr Lista kanałów</translation>
+        <translation>Filtr listy kanałów</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="251"/>
@@ -3136,7 +3008,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="recorder.cpp" line="4106"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
-        <translation>Zakładka</translation>
+        <translation>Playlista</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="181"/>
@@ -3178,7 +3050,7 @@ dataDir: %1
         <location filename="recorder.cpp" line="411"/>
         <source>Language Filter</source>
         <oldsource>Audio Filter</oldsource>
-        <translation>Język Filter</translation>
+        <translation>ścieżka językowa</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1493"/>
@@ -3287,10 +3159,6 @@ dataDir: %1
         <translation>Błąd!</translation>
     </message>
     <message>
-        <source>Can&apos;t start VLC-Media Player!</source>
-        <translation type="obsolete">Nie można uruchomić VLC-Media Player!</translation>
-    </message>
-    <message>
         <location filename="recorder.cpp" line="2976"/>
         <location filename="recorder.cpp" line="4031"/>
         <location filename="recorder.cpp" line="4379"/>
@@ -3356,10 +3224,6 @@ dataDir: %1
         <location filename="recorder.cpp" line="3457"/>
         <source>here</source>
         <translation>tutaj</translation>
-    </message>
-    <message>
-        <source>Update available</source>
-        <translation type="obsolete">Aktualizacja dostępna</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4079"/>
@@ -3463,10 +3327,6 @@ dataDir: %1
         <location filename="recorder.cpp" line="4107"/>
         <source>Help</source>
         <translation>Pomóż</translation>
-    </message>
-    <message>
-        <source>%1 - Click to activate!</source>
-        <translation type="obsolete">%1 - Kliknij, aby aktywować!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4335"/>
