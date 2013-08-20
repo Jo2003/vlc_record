@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CUSTOMS="vlc-record kartina_tv polsky_tv moidom_tv"
+CUSTOMS="vlc-record kartina_tv polsky_tv"
 
 sudo rm -f *.deb
 
