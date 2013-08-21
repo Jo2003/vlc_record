@@ -21,6 +21,7 @@
 #include "qfusioncontrol.h"
 #include "qcustparser.h"
 #include "chtmlwriter.h"
+#include "qoverlayicon.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -274,6 +275,7 @@ Recorder::Recorder(QWidget *parent)
    connect (pMnLangFilter, SIGNAL(triggered(QAction*)), this, SLOT(slotLangFilterChannelList(QAction*)));
 #endif // _TASTE_IPTV_RECORD
    connect (pWatchList,    SIGNAL(sigClick(QUrl)), this, SLOT(slotWlClick(QUrl)));
+   connect (pWatchList,    SIGNAL(sigUpdCount()), this, SLOT(slotUpdWatchListCount()));
    connect (pFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotFilterChannelList(QString)));
    connect (&pixCache,     SIGNAL(sigLoadImage(QString)), pApiClient, SLOT(slotDownImg(QString)));
    connect (pApiClient,    SIGNAL(sigImage(QByteArray)), &pixCache, SLOT(slotImage(QByteArray)));
@@ -2264,6 +2266,9 @@ void Recorder::slotEpgAnchor (const QUrl &link)
          sChan.uiEnd     = sEpg.uiEnd;
          sChan.sProgramm = sEpg.sShowDescr.isEmpty() ? sEpg.sShowName : QString("%1\n%2").arg(sEpg.sShowName).arg(sEpg.sShowDescr);
          pDb->addWatchEntry(sChan);
+
+         // update watch list count ...
+         slotUpdWatchListCount();
       }
    }
 
@@ -4046,6 +4051,24 @@ void Recorder::slotALang(const QString &str)
 #endif // _TASTE_IPTV_RECORD
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   update overlay number for watchlist button icon [slot]
+//
+//! \author  Jo2003
+//! \date    21.08.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotUpdWatchListCount()
+{
+   QOverlayIcon ico(":/app/watchlist");
+   ico.placeInt(pWatchList->count(), QColor("#f00"));
+   ui->pushWatchList->setIcon(ico);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
 ////////////////////////////////////////////////////////////////////////////////
@@ -4238,6 +4261,9 @@ void Recorder::initDialog ()
 
    // check for program updates ...
    pApiClient->queueRequest(CIptvDefs::REQ_UPDATE_CHECK, pCustomization->strVal("UPD_CHECK_URL"));
+
+   // update watch list count ...
+   slotUpdWatchListCount();
 }
 
 /* -----------------------------------------------------------------\

@@ -246,6 +246,8 @@ void QWatchListDlg::slotListAnchor(QUrl url)
       pDb->delWatchEntry(cid, gmt);
 
       buildWatchTab();
+
+      emit sigUpdCount();
    }
    else
    {
@@ -257,3 +259,29 @@ void QWatchListDlg::slotListAnchor(QUrl url)
    }
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   get entry count
+//
+//! \author  Jo2003
+//! \date    21.08.2013
+//
+//! \param   --
+//
+//! \return  number of entries in watch list
+//---------------------------------------------------------------------------
+int QWatchListDlg::count()
+{
+   QSqlQuery q;
+   int       iRet = 0;
+
+   if(!pDb->ask("SELECT COUNT(*) AS numb FROM watchlist", q))
+   {
+      if (q.first())
+      {
+         iRet = q.value(0).toInt();
+      }
+   }
+
+   return iRet;
+}

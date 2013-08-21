@@ -39,6 +39,7 @@ public:
    explicit QWatchListDlg(QWidget *parent = 0);
    ~QWatchListDlg();
    void buildWatchTab();
+   int  count();
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -51,6 +52,7 @@ private:
 
 signals:
    void sigClick(QUrl);
+   void sigUpdCount();
 };
 
 #endif // __20130806_QWATCHLISTDLG_H

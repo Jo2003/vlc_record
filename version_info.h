@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - put an overlay on watch list button which shows the
+|   number of entries in watch list
+|
 | 2013-08-20: Version 2.65B5
 | - add new html writer class
 | - use html writer in almost all cases html output is needed

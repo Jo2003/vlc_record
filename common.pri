@@ -68,7 +68,8 @@ SOURCES += main.cpp \
     qupdatenotifydlg.cpp \
     qwatchlistdlg.cpp \
     ctimeshift.cpp \
-    chtmlwriter.cpp
+    chtmlwriter.cpp \
+    qoverlayicon.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -115,7 +116,8 @@ HEADERS += recorder.h \
     qstringfilterwidgetaction.h \
     qwatchlistdlg.h \
     ctimeshift.h \
-    chtmlwriter.h
+    chtmlwriter.h \
+    qoverlayicon.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

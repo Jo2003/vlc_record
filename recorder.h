@@ -304,6 +304,7 @@ private slots:
     void slotALang(const QString& str);
     void slotWlClick(QUrl url);
     void on_pushWatchList_clicked();
+    void slotUpdWatchListCount();
 
 signals:
     void sigShow ();

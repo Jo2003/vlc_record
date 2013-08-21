@@ -2825,130 +2825,130 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="4463"/>
-        <location filename="recorder.cpp" line="4484"/>
+        <location filename="recorder.cpp" line="4489"/>
+        <location filename="recorder.cpp" line="4510"/>
         <source>Mon</source>
         <translation>Mo</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4464"/>
-        <location filename="recorder.cpp" line="4485"/>
+        <location filename="recorder.cpp" line="4490"/>
+        <location filename="recorder.cpp" line="4511"/>
         <source>Tue</source>
         <translation>Di</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4465"/>
-        <location filename="recorder.cpp" line="4486"/>
+        <location filename="recorder.cpp" line="4491"/>
+        <location filename="recorder.cpp" line="4512"/>
         <source>Wed</source>
         <translation>Mi</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4466"/>
-        <location filename="recorder.cpp" line="4487"/>
+        <location filename="recorder.cpp" line="4492"/>
+        <location filename="recorder.cpp" line="4513"/>
         <source>Thu</source>
         <translation>Do</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4467"/>
-        <location filename="recorder.cpp" line="4488"/>
+        <location filename="recorder.cpp" line="4493"/>
+        <location filename="recorder.cpp" line="4514"/>
         <source>Fri</source>
         <translation>Fr</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4468"/>
-        <location filename="recorder.cpp" line="4489"/>
+        <location filename="recorder.cpp" line="4494"/>
+        <location filename="recorder.cpp" line="4515"/>
         <source>Sat</source>
         <translation>Sa</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4477"/>
-        <location filename="recorder.cpp" line="4490"/>
+        <location filename="recorder.cpp" line="4503"/>
+        <location filename="recorder.cpp" line="4516"/>
         <source>Sun</source>
         <translation>So</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4094"/>
+        <location filename="recorder.cpp" line="4117"/>
         <source>Volume +</source>
         <translation>Lauter</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4095"/>
+        <location filename="recorder.cpp" line="4118"/>
         <source>Volume -</source>
         <translation>Leiser</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5201"/>
+        <location filename="recorder.cpp" line="5227"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2202"/>
-        <location filename="recorder.cpp" line="2310"/>
-        <location filename="recorder.cpp" line="3539"/>
+        <location filename="recorder.cpp" line="2204"/>
+        <location filename="recorder.cpp" line="2315"/>
+        <location filename="recorder.cpp" line="3544"/>
         <source>Length: %1 min.</source>
         <translation>Länge: %1 min.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5202"/>
+        <location filename="recorder.cpp" line="5228"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Aufnahme läuft.&lt;br /&gt; &lt;br /&gt;Sind Sie sicher, dass Sie die Aufnahme abbrechen wollen?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2695"/>
+        <location filename="recorder.cpp" line="2700"/>
         <source>Remove from favourites</source>
         <translation>Aus Favoriten entfernen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2702"/>
+        <location filename="recorder.cpp" line="2707"/>
         <source>Add to favourites</source>
         <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2748"/>
-        <location filename="recorder.cpp" line="3659"/>
+        <location filename="recorder.cpp" line="2753"/>
+        <location filename="recorder.cpp" line="3664"/>
         <source>Note</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2749"/>
-        <location filename="recorder.cpp" line="3660"/>
+        <location filename="recorder.cpp" line="2754"/>
+        <location filename="recorder.cpp" line="3665"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Maximale Anzahl an Favoriten (%1) erreicht.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3465"/>
+        <location filename="recorder.cpp" line="3470"/>
         <source>Program up to date!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3842"/>
+        <location filename="recorder.cpp" line="3847"/>
         <source>Record timer timed out ... end pending record!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3886"/>
+        <location filename="recorder.cpp" line="3891"/>
         <source>Unknown Message: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4079"/>
+        <location filename="recorder.cpp" line="4102"/>
         <source>Play / Pause</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4080"/>
+        <location filename="recorder.cpp" line="4103"/>
         <source>Stop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4420"/>
-        <location filename="recorder.cpp" line="4497"/>
+        <location filename="recorder.cpp" line="4446"/>
+        <location filename="recorder.cpp" line="4523"/>
         <source>1 week backward</source>
         <translation>1 Woche zurück</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="181"/>
+        <location filename="recorder.cpp" line="182"/>
         <source>
 dataDir: %1
 </source>
@@ -2957,19 +2957,19 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="182"/>
+        <location filename="recorder.cpp" line="183"/>
         <source>logoDir: %1
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="183"/>
+        <location filename="recorder.cpp" line="184"/>
         <source>langDir: %1
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="184"/>
+        <location filename="recorder.cpp" line="185"/>
         <source>modDir:  %1
 </source>
         <oldsource>modDir: %1
@@ -2977,219 +2977,219 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="185"/>
+        <location filename="recorder.cpp" line="186"/>
         <source>appDir:  %1</source>
         <oldsource>appDir: %1</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2976"/>
-        <location filename="recorder.cpp" line="4031"/>
-        <location filename="recorder.cpp" line="4379"/>
+        <location filename="recorder.cpp" line="2981"/>
+        <location filename="recorder.cpp" line="4036"/>
+        <location filename="recorder.cpp" line="4405"/>
         <source>All</source>
         <translation>Alles</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4454"/>
-        <location filename="recorder.cpp" line="4502"/>
+        <location filename="recorder.cpp" line="4480"/>
+        <location filename="recorder.cpp" line="4528"/>
         <source>1 week forward</source>
         <translation>1 Woche nach vorn</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4081"/>
+        <location filename="recorder.cpp" line="4104"/>
         <source>Record</source>
         <translation>Aufnahme</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="145"/>
-        <location filename="recorder.cpp" line="411"/>
+        <location filename="recorder.cpp" line="146"/>
+        <location filename="recorder.cpp" line="413"/>
         <source>Language Filter</source>
         <oldsource>Audio Filter</oldsource>
         <translation>Sprachfilter</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4337"/>
-        <location filename="recorder.cpp" line="4356"/>
+        <location filename="recorder.cpp" line="4363"/>
+        <location filename="recorder.cpp" line="4382"/>
         <source>My Favourites</source>
         <translation>Meine Favoriten</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3454"/>
+        <location filename="recorder.cpp" line="3459"/>
         <source>There is the new version %1 of %2 available.&lt;br /&gt;Click %3 to download!</source>
         <translation>Es ist eine neue Version von %2 verfügbar (%1).&lt;br /&gt;Bitte klicken Sie %3, um das Update downzuladen!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="174"/>
+        <location filename="recorder.cpp" line="175"/>
         <source>Starting: %1 / Version: %2</source>
         <oldsource>Starting %1 Version: %2</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="177"/>
+        <location filename="recorder.cpp" line="178"/>
         <source>Using libVLC 0x%1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1493"/>
+        <location filename="recorder.cpp" line="1495"/>
         <source>
   --&gt; HTTP Response &apos;%1&apos;, calling &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1724"/>
+        <location filename="recorder.cpp" line="1726"/>
         <source>Error %1 (%2) in request &apos;%3&apos;: %4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1732"/>
+        <location filename="recorder.cpp" line="1734"/>
         <source>%1 Client API Error:
 %2 (#%3)</source>
         <translation>%1 Client API Fehler:
 %2 (#%3)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1768"/>
+        <location filename="recorder.cpp" line="1770"/>
         <source>logout done ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1892"/>
+        <location filename="recorder.cpp" line="1894"/>
         <source>Using following timeshift: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1904"/>
+        <location filename="recorder.cpp" line="1906"/>
         <source>Using Bitrate %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1913"/>
+        <location filename="recorder.cpp" line="1915"/>
         <source>Active stream server is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2196"/>
-        <location filename="recorder.cpp" line="2304"/>
+        <location filename="recorder.cpp" line="2198"/>
+        <location filename="recorder.cpp" line="2309"/>
         <source>%1 (Archive)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2203"/>
-        <location filename="recorder.cpp" line="2311"/>
+        <location filename="recorder.cpp" line="2205"/>
+        <location filename="recorder.cpp" line="2316"/>
         <source> (Ar.)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2580"/>
+        <location filename="recorder.cpp" line="2585"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2598"/>
+        <location filename="recorder.cpp" line="2603"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2622"/>
+        <location filename="recorder.cpp" line="2627"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2640"/>
+        <location filename="recorder.cpp" line="2645"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2833"/>
+        <location filename="recorder.cpp" line="2838"/>
         <source>Remove &quot;%1&quot; from favourites</source>
         <translation>&quot;%1&quot; aus den Favoriten entfernen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2944"/>
-        <location filename="recorder.cpp" line="4910"/>
-        <location filename="recorder.cpp" line="4977"/>
+        <location filename="recorder.cpp" line="2949"/>
+        <location filename="recorder.cpp" line="4936"/>
+        <location filename="recorder.cpp" line="5003"/>
         <source>Can&apos;t start player!</source>
         <translation>Kann Player nicht starten!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2950"/>
-        <location filename="recorder.cpp" line="4917"/>
-        <location filename="recorder.cpp" line="4983"/>
+        <location filename="recorder.cpp" line="2955"/>
+        <location filename="recorder.cpp" line="4943"/>
+        <location filename="recorder.cpp" line="5009"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3457"/>
+        <location filename="recorder.cpp" line="3462"/>
         <source>here</source>
         <translation>hier</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4084"/>
+        <location filename="recorder.cpp" line="4107"/>
         <source>About</source>
         <translation>Programm Info</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4085"/>
+        <location filename="recorder.cpp" line="4108"/>
         <source>Search EPG</source>
         <translation>EPG-Suche</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4086"/>
+        <location filename="recorder.cpp" line="4109"/>
         <source>Text Size +</source>
         <translation>Schrift vergrößern</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4087"/>
+        <location filename="recorder.cpp" line="4110"/>
         <source>Text Size -</source>
         <translation>Schrift verkleinern</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4091"/>
+        <location filename="recorder.cpp" line="4114"/>
         <source>Toggle Aspect Ratio</source>
         <translation>Seitenverhältnis umschalten</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4092"/>
+        <location filename="recorder.cpp" line="4115"/>
         <source>Toggle Crop Geometry</source>
         <translation>Videoformat zuschneiden</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4093"/>
+        <location filename="recorder.cpp" line="4116"/>
         <source>Toggle Fullscreen</source>
         <translation>Fullscreen</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4096"/>
+        <location filename="recorder.cpp" line="4119"/>
         <source>Toggle Mute</source>
         <translation>Lautlos</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4101"/>
+        <location filename="recorder.cpp" line="4124"/>
         <source>Next Channel</source>
         <translation>Nächster Kanal</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4102"/>
+        <location filename="recorder.cpp" line="4125"/>
         <source>Previous Channel</source>
         <translation>Vorheriger Kanal</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4103"/>
+        <location filename="recorder.cpp" line="4126"/>
         <source>Play Next Channel</source>
         <translation>Zeige nächsten Kanal</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4104"/>
+        <location filename="recorder.cpp" line="4127"/>
         <source>Play Prev. Channel</source>
         <translation>Zeige vorherigen Kanal</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4105"/>
+        <location filename="recorder.cpp" line="4128"/>
         <source>Show EPG / VOD</source>
         <translation>Zeige EPG / Videothek</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4314"/>
+        <location filename="recorder.cpp" line="4340"/>
         <source>&amp;restore %1</source>
         <oldsource>&amp;Restore %1!</oldsource>
         <translation>%1 &amp;wiederherstellen</translation>
@@ -3197,54 +3197,54 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="1296"/>
         <location filename="forms/recorder_inc.ui" line="1522"/>
-        <location filename="recorder.cpp" line="4107"/>
+        <location filename="recorder.cpp" line="4130"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4335"/>
-        <location filename="recorder.cpp" line="4346"/>
+        <location filename="recorder.cpp" line="4361"/>
+        <location filename="recorder.cpp" line="4372"/>
         <source>Newest</source>
         <translation>Neueste</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4336"/>
-        <location filename="recorder.cpp" line="4351"/>
+        <location filename="recorder.cpp" line="4362"/>
+        <location filename="recorder.cpp" line="4377"/>
         <source>Best</source>
         <translation>Beste</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4704"/>
+        <location filename="recorder.cpp" line="4730"/>
         <source>Exclude &apos;%1&apos; from channel list (hidden: %2, protected: %3).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4754"/>
+        <location filename="recorder.cpp" line="4780"/>
         <source>Can&apos;t load channel image &quot;%1&quot; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4835"/>
-        <location filename="recorder.cpp" line="5012"/>
+        <location filename="recorder.cpp" line="4861"/>
+        <location filename="recorder.cpp" line="5038"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5271"/>
-        <location filename="recorder.cpp" line="5483"/>
+        <location filename="recorder.cpp" line="5297"/>
+        <location filename="recorder.cpp" line="5509"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Favorit %1</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2944"/>
-        <location filename="recorder.cpp" line="4910"/>
-        <location filename="recorder.cpp" line="4977"/>
+        <location filename="recorder.cpp" line="2949"/>
+        <location filename="recorder.cpp" line="4936"/>
+        <location filename="recorder.cpp" line="5003"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1732"/>
+        <location filename="recorder.cpp" line="1734"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
@@ -3325,10 +3325,10 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="684"/>
         <location filename="forms/recorder_inc.ui" line="716"/>
-        <location filename="recorder.cpp" line="3113"/>
-        <location filename="recorder.cpp" line="4896"/>
-        <location filename="recorder.cpp" line="4963"/>
-        <location filename="recorder.cpp" line="5040"/>
+        <location filename="recorder.cpp" line="3118"/>
+        <location filename="recorder.cpp" line="4922"/>
+        <location filename="recorder.cpp" line="4989"/>
+        <location filename="recorder.cpp" line="5066"/>
         <source>Video On Demand</source>
         <translation>Videothek</translation>
     </message>
@@ -3372,7 +3372,7 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="1115"/>
         <location filename="forms/recorder_inc.ui" line="1306"/>
-        <location filename="recorder.cpp" line="4106"/>
+        <location filename="recorder.cpp" line="4129"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
         <translation>Merkliste</translation>
@@ -3399,14 +3399,14 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="1083"/>
         <location filename="forms/recorder_inc.ui" line="1274"/>
-        <location filename="recorder.cpp" line="4082"/>
+        <location filename="recorder.cpp" line="4105"/>
         <source>Timer Record</source>
         <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1220"/>
         <location filename="forms/recorder_inc.ui" line="1446"/>
-        <location filename="recorder.cpp" line="4083"/>
+        <location filename="recorder.cpp" line="4106"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -3419,7 +3419,7 @@ dataDir: %1
     <message>
         <location filename="forms/recorder.ui" line="1334"/>
         <location filename="forms/recorder_inc.ui" line="1560"/>
-        <location filename="recorder.cpp" line="4088"/>
+        <location filename="recorder.cpp" line="4111"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
@@ -3430,7 +3430,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1163"/>
-        <location filename="recorder.cpp" line="4098"/>
+        <location filename="recorder.cpp" line="4121"/>
         <source>Jump Backward</source>
         <translation>springe zurück</translation>
     </message>
@@ -3446,7 +3446,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1238"/>
-        <location filename="recorder.cpp" line="4097"/>
+        <location filename="recorder.cpp" line="4120"/>
         <source>Jump Forward</source>
         <translation>springe vorwärts</translation>
     </message>
