@@ -132,7 +132,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cepgbrowser.cpp" line="222"/>
         <source>add to watch list ...</source>
         <oldsource>watch later ...</oldsource>
-        <translation>Добавить в памятный список ...</translation>
+        <translation>Добавить в закладку ...</translation>
     </message>
     <message>
         <location filename="cepgbrowser.cpp" line="176"/>
@@ -2773,13 +2773,13 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="597"/>
+        <location filename="qvlcvideowidget.cpp" line="601"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="628"/>
+        <location filename="qvlcvideowidget.cpp" line="632"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
@@ -2819,7 +2819,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="forms/qwatchlistdlg.ui" line="14"/>
         <source>Watch List</source>
-        <translation>Памятный список</translation>
+        <translation>Закладка</translation>
     </message>
 </context>
 <context>
@@ -3376,7 +3376,7 @@ dataDir: %1
         <location filename="recorder.cpp" line="4129"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
-        <translation>Памятный список</translation>
+        <translation>Закладка</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="971"/>
