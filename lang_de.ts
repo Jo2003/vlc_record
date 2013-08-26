@@ -129,7 +129,7 @@ p, li { white-space: pre-wrap; }
         <translation>Aufnahme vom Archiv ...</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="222"/>
+        <location filename="cepgbrowser.cpp" line="224"/>
         <source>add to watch list ...</source>
         <oldsource>watch later ...</oldsource>
         <translation>Zu Merkliste hinzufügen ...</translation>
@@ -2773,13 +2773,13 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="597"/>
+        <location filename="qvlcvideowidget.cpp" line="599"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="628"/>
+        <location filename="qvlcvideowidget.cpp" line="630"/>
         <source>Audio %1</source>
         <translation></translation>
     </message>
@@ -2787,32 +2787,32 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>QWatchListDlg</name>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="122"/>
+        <location filename="qwatchlistdlg.cpp" line="125"/>
         <source>Start</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="123"/>
+        <location filename="qwatchlistdlg.cpp" line="126"/>
         <source>Program</source>
         <translation>Programm</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="158"/>
+        <location filename="qwatchlistdlg.cpp" line="161"/>
         <source>play from archive ...</source>
         <translation>Aus dem Archiv ansehen ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="173"/>
+        <location filename="qwatchlistdlg.cpp" line="176"/>
         <source>record from archive ...</source>
         <translation>Aufnahme vom Archiv ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="187"/>
+        <location filename="qwatchlistdlg.cpp" line="190"/>
         <source>delete from list ...</source>
         <translation>Von Liste löschen ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="207"/>
+        <location filename="qwatchlistdlg.cpp" line="210"/>
         <source>%1 min.</source>
         <translation></translation>
     </message>

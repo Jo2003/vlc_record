@@ -116,6 +116,9 @@ void QWatchListDlg::buildWatchTab()
    QString page, row, tab, line, act, img, len;
    QUrl url;
 
+   // remove old entries ...
+   cleanWatchList();
+
    if (!pDb->getWatchEntries(vE))
    {
       // build table head ...
@@ -134,10 +137,8 @@ void QWatchListDlg::buildWatchTab()
          // handle old / very new entries ...
          if ((iRet = CSmallHelpers::archiveAvailable(vE.at(i).uiStart)) == -2)
          {
-            // show to old and therefore no more part of archive -> remove db entry ...
-            pDb->delWatchEntry(vE.at(i).iId, vE.at(i).uiStart);
-
-            // and continue ...
+            // old entries should be deleted already (cleanWatchList())
+            // so this shouldn't happen ...
             continue;
          }
          else if (iRet == 1)
@@ -275,6 +276,9 @@ int QWatchListDlg::count()
    QSqlQuery q;
    int       iRet = 0;
 
+   // make sure we don't count old entries ...
+   cleanWatchList();
+
    if(!pDb->ask("SELECT COUNT(*) AS numb FROM watchlist", q))
    {
       if (q.first())
@@ -284,4 +288,27 @@ int QWatchListDlg::count()
    }
 
    return iRet;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   delete old entries from watch list
+//
+//! \author  Jo2003
+//! \date    26.08.2013
+//
+//! \param   --
+//
+//! \return  0 -> ok; else -> error
+//---------------------------------------------------------------------------
+int QWatchListDlg::cleanWatchList()
+{
+   uint      now       = QDateTime::currentDateTime().toTime_t();
+   uint      uiArchLow = now - MAX_ARCHIV_AGE;   // no older than 2 weeks
+   QSqlQuery q;
+
+   q.prepare("DELETE FROM watchlist WHERE t_start < ?");
+   q.addBindValue(uiArchLow);
+
+   return pDb->ask(q);
 }

@@ -129,10 +129,10 @@ p, li { white-space: pre-wrap; }
         <translation>Запись архива ...</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="222"/>
+        <location filename="cepgbrowser.cpp" line="224"/>
         <source>add to watch list ...</source>
         <oldsource>watch later ...</oldsource>
-        <translation>Добавить в закладку ...</translation>
+        <translation>Добавить в отложенные ...</translation>
     </message>
     <message>
         <location filename="cepgbrowser.cpp" line="176"/>
@@ -2773,13 +2773,13 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="601"/>
+        <location filename="qvlcvideowidget.cpp" line="599"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="632"/>
+        <location filename="qvlcvideowidget.cpp" line="630"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
@@ -2787,39 +2787,39 @@ or start time is later than end time!</source>
 <context>
     <name>QWatchListDlg</name>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="122"/>
+        <location filename="qwatchlistdlg.cpp" line="125"/>
         <source>Start</source>
         <translation>Начало</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="123"/>
+        <location filename="qwatchlistdlg.cpp" line="126"/>
         <source>Program</source>
         <translation>Программа</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="158"/>
+        <location filename="qwatchlistdlg.cpp" line="161"/>
         <source>play from archive ...</source>
         <translation>Просмотр архива ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="173"/>
+        <location filename="qwatchlistdlg.cpp" line="176"/>
         <source>record from archive ...</source>
         <translation>Запись архива ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="187"/>
+        <location filename="qwatchlistdlg.cpp" line="190"/>
         <source>delete from list ...</source>
         <translation>Удалить из списка ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="207"/>
+        <location filename="qwatchlistdlg.cpp" line="210"/>
         <source>%1 min.</source>
         <translation>%1 мин.</translation>
     </message>
     <message>
         <location filename="forms/qwatchlistdlg.ui" line="14"/>
         <source>Watch List</source>
-        <translation>Закладка</translation>
+        <translation>Отложенные передачи</translation>
     </message>
 </context>
 <context>
@@ -3376,7 +3376,7 @@ dataDir: %1
         <location filename="recorder.cpp" line="4129"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
-        <translation>Закладка</translation>
+        <translation>Отложенные передачи</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="971"/>

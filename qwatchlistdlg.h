@@ -39,6 +39,7 @@ public:
    explicit QWatchListDlg(QWidget *parent = 0);
    ~QWatchListDlg();
    void buildWatchTab();
+   int  cleanWatchList ();
    int  count();
 
 protected:
