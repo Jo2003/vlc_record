@@ -126,7 +126,7 @@ QString CEpgBrowser::createHtmlCode()
    QUrl       url;
    bool       bMark;
    epg::SShow actShow;
-   int        i;
+   int        i, iAa;
    QMap<uint, epg::SShow>::const_iterator cit;
 
 
@@ -179,12 +179,13 @@ QString CEpgBrowser::createHtmlCode()
          timeCell += pHtml->link(url.toEncoded(), img);
       }
 
-      if (bArchive)
+      // archive supported and still available ...
+      if (bArchive && ((iAa = CSmallHelpers::archiveAvailable(actShow.uiStart)) > -2))
       {
          timeCell += "<hr />" + pHtml->htmlTag("b", tr("Ar.")) + "&nbsp;";
 
-         // only show archiv links if this show already has ended ...
-         if (CSmallHelpers::archiveAvailable(actShow.uiStart) == 1)
+         // only show archiv links if this show is already available ...
+         if (iAa == 1)
          {
             url.clear();
             url.setPath("vlc-record");
@@ -211,21 +212,18 @@ QString CEpgBrowser::createHtmlCode()
             timeCell += pHtml->link(url.toEncoded(), img) + "&nbsp;";
          }
 
-         if (CSmallHelpers::archiveAvailable(actShow.uiStart) > -2) // not too old ...
-         {
-            // mark for later view ...
-            url.clear();
-            url.setPath("vlc-record");
-            url.addQueryItem("action", "remember");
-            url.addQueryItem("cid"  , QString::number(iCid));
-            url.addQueryItem("gmt"  , QString::number(actShow.uiStart));
+         // mark for later view ...
+         url.clear();
+         url.setPath("vlc-record");
+         url.addQueryItem("action", "remember");
+         url.addQueryItem("cid"  , QString::number(iCid));
+         url.addQueryItem("gmt"  , QString::number(actShow.uiStart));
 
-            // remember button ...
-            img = pHtml->image(":/png/remember", 16, 16, "", tr("add to watch list ..."));
+         // remember button ...
+         img = pHtml->image(":/png/remember", 16, 16, "", tr("add to watch list ..."));
 
-            // wrap in link ...
-            timeCell += pHtml->link(url.toEncoded(), img);
-         }
+         // wrap in link ...
+         timeCell += pHtml->link(url.toEncoded(), img);
       }
 
       progCell = actShow.sShowName;
