@@ -52,6 +52,9 @@ public:
     const QString& getShortContent ();
     void setSettings (CSettingsDlg *pDlg);
 
+protected:
+    QString createVodListTableCell (const cparser::SVodVideo& entry, bool& delay);
+
 private slots:
     void slotSetBufferedHtml();
 

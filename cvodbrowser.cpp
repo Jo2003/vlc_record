@@ -98,68 +98,35 @@ void CVodBrowser::setPixCache(CPixLoader *pCache)
 void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
                                  const QString &sGenre)
 {
-   int i, j, iCount = vList.count(), iPixToLoad = 0;
-   QFileInfo info;
-
-   QString tab, row, img, link, page, title;
-   QUrl url;
+   int     i, iCount = vList.count();
+   bool    bDelay = false;
+   QString tab, row, page;
 
    row = pHtml->tableHead(sGenre, TMPL_TH_STYLE, 2);
    tab = pHtml->tableRow(row);
 
-   for (i = 0; i < iCount; i += 2)
+   for (i = 0; i < iCount;)
    {
-      row = "";
+      // create table cell by cell and row by row  ...
+      row = createVodListTableCell(vList[i], bDelay);
+      i++;
 
-      for (j = i; (j <= (i + 1)) && (j < iCount); j ++)
+      // data available ... ?
+      if (i < iCount)
       {
-         title = "";
-
-         // image ...
-         info.setFile(vList[j].sImg);
-         img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
-
-         if (!QFile::exists(img))
-         {
-            iPixToLoad ++;
-            pPixCache->enqueuePic(vList[j].sImg, pFolders->getVodPixDir());
-         }
-
-         // image tag ...
-         img = pHtml->image(QUrl::toPercentEncoding(img), 0, 0, "", QString("%1 (%2 %3)").arg(vList[j].sName).arg(vList[j].sCountry).arg(vList[j].sYear));
-
-         // create link url ...
-         url.clear();
-         url.setPath("videothek");
-         url.addQueryItem("action", "vod_info");
-         url.addQueryItem("vodid" , QString::number(vList[j].uiVidId));
-         url.addQueryItem("pass_protect", vList[j].bProtected ? "1" : "0");
-
-         // wrap image into link ...
-         link  = pHtml->link(url.toEncoded(), img) + "<br />";
-
-         if (vList[j].bProtected)
-         {
-            // add locked image ...
-            title += pHtml->image(":/access/locked", 20, 20, "", tr("password protected")) + "&nbsp;";
-         }
-
-         // add title ...
-         title += vList[j].sName;
-
-         // wrap title in span ...
-         link += pHtml->htmlTag("div", title, "padding: 5px;");
-
-         // wrap into cell and add to row ...
-         row  += pHtml->tableCell(link, TMPL_VOD_STYLE, 1, "center", "middle");
+         // yes -> add next cell with data ...
+         row += createVodListTableCell(vList[i], bDelay);
+      }
+      else
+      {
+         // no -> add empty cell ...
+         row += pHtml->tableCell("&nbsp;<br />&nbsp;", TMPL_VOD_STYLE, 1, "center", "middle");
       }
 
-      if (j == (iCount - 1))
-      {
-         row += pHtml->tableCell("&nbsp; <br /> &nbsp;", TMPL_VOD_STYLE, 1, "center", "middle");
-      }
-
+      // wrap into table row and add to table ...
       tab += pHtml->tableRow(row);
+
+      i++;
    }
 
    // wrap rows into table ...
@@ -168,7 +135,7 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
    // wrap tab into page ...
    page = pHtml->htmlPage(tab, "VOD");
 
-   if (iPixToLoad && pPixCache->busy())
+   if (bDelay && pPixCache->busy())
    {
       // postbone display (when all pictures are ready) ...
       _contentBuffer = page;
@@ -177,6 +144,62 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
    {
       setHtml(page);
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   create table cell for one video in list view
+//
+//! \author  Jo2003
+//! \date    28.08.2013
+//
+//! \param   entry (const cparser::SVodVideo&) vod list entry
+//! \param   delay (bool &) flag for delayed display
+//
+//! \return  table cell html code (<td>...</td>)
+//---------------------------------------------------------------------------
+QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, bool& delay)
+{
+   QString   img, title, cell;
+   QFileInfo fi;
+   QUrl      url;
+
+   // image ...
+   fi.setFile(entry.sImg);
+   img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
+
+   if (!QFile::exists(img))
+   {
+      delay = true;
+      pPixCache->enqueuePic(entry.sImg, pFolders->getVodPixDir());
+   }
+
+   // image tag ...
+   img = pHtml->image(QUrl::toPercentEncoding(img), 0, 0, "", QString("%1 (%2 %3)").arg(entry.sName).arg(entry.sCountry).arg(entry.sYear));
+
+   // create link url ...
+   url.setPath("videothek");
+   url.addQueryItem("action", "vod_info");
+   url.addQueryItem("vodid" , QString::number(entry.uiVidId));
+   url.addQueryItem("pass_protect", entry.bProtected ? "1" : "0");
+
+   // wrap image into link ...
+   cell = pHtml->link(url.toEncoded(), img) + "<br />";
+
+   if (entry.bProtected)
+   {
+      // add locked image ...
+      title = pHtml->image(":/access/locked", 20, 20, "", tr("password protected")) + "&nbsp;";
+   }
+
+   // add title ...
+   title += entry.sName;
+
+   // wrap title in div ...
+   cell += pHtml->htmlTag("div", title, "padding: 5px;");
+
+   // wrap into cell ...
+   return pHtml->tableCell(cell, TMPL_VOD_STYLE, 1, "center", "middle");
 }
 
 /* -----------------------------------------------------------------\
