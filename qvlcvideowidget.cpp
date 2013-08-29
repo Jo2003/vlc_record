@@ -119,8 +119,6 @@ QVlcVideoWidget::~QVlcVideoWidget()
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::changeEvent(QEvent *event)
 {
-   QWidget::changeEvent(event);
-
    switch (event->type())
    {
    case QEvent::LanguageChange:
@@ -130,6 +128,8 @@ void QVlcVideoWidget::changeEvent(QEvent *event)
    default:
       break;
    }
+
+   QWidget::changeEvent(event);
 }
 
 //---------------------------------------------------------------------------
@@ -161,9 +161,9 @@ WId QVlcVideoWidget::widgetId()
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-   event->ignore();
-
    emit fullScreen();
+
+   QWidget::mouseDoubleClickEvent(event);
 }
 
 //---------------------------------------------------------------------------
@@ -179,8 +179,6 @@ void QVlcVideoWidget::mouseDoubleClickEvent(QMouseEvent *event)
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
 {
-   event->ignore();
-
    if(isFullScreen() || _extFullScreen)
    {
       emit mouseShow(event->globalPos());
@@ -195,6 +193,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       activateWindow();
       setFocus(Qt::OtherFocusReason);
    }
+
+   QWidget::mouseMoveEvent(event);
 }
 
 //---------------------------------------------------------------------------
@@ -210,13 +210,13 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::mousePressEvent(QMouseEvent *event)
 {
-   event->ignore();
-
    if(event->button() == Qt::RightButton)
    {
       QApplication::restoreOverrideCursor();
       emit rightClick(event->globalPos());
    }
+
+   QWidget::mousePressEvent(event);
 }
 
 //---------------------------------------------------------------------------
@@ -232,9 +232,9 @@ void QVlcVideoWidget::mousePressEvent(QMouseEvent *event)
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::wheelEvent(QWheelEvent *event)
 {
-   event->ignore();
-
    emit wheel ((event->delta() > 0) ? true : false);
+
+   QWidget::wheelEvent(event);
 }
 
 //---------------------------------------------------------------------------
@@ -335,13 +335,13 @@ void QVlcVideoWidget::keyPressEvent(QKeyEvent *event)
 {
    QKeySequence seq;
 
-   event->ignore();
-
    // make key sequence from key event ...
    if (!keyEventToKeySequence(event, seq))
    {
       fakeShortCut(seq);
    }
+
+   QWidget::keyPressEvent(event);
 }
 
 //---------------------------------------------------------------------------
@@ -500,12 +500,14 @@ void QVlcVideoWidget::fullScreenToggled(int on)
          _panelPositioned = true;
       }
 
+      // make sure we have the focus ...
+      _ctrlPanel->show();
+      _ctrlPanel->raise();
+      _ctrlPanel->activateWindow();
+      _ctrlPanel->setFocus(Qt::OtherFocusReason);
+
       // start mouse hiding ...
       _mouseHide->start(1000);
-
-      // make sure we have the focus ...
-      activateWindow();
-      setFocus(Qt::OtherFocusReason);
    }
    else
    {
