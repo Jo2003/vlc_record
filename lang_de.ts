@@ -114,22 +114,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CEpgBrowser</name>
     <message>
-        <location filename="cepgbrowser.cpp" line="184"/>
+        <location filename="cepgbrowser.cpp" line="185"/>
         <source>Ar.</source>
         <translation>Ar.</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="196"/>
+        <location filename="cepgbrowser.cpp" line="197"/>
         <source>play from archive ...</source>
         <translation>Aus dem Archiv ansehen ...</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="208"/>
+        <location filename="cepgbrowser.cpp" line="209"/>
         <source>record from archive ...</source>
         <translation>Aufnahme vom Archiv ...</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="224"/>
+        <location filename="cepgbrowser.cpp" line="223"/>
         <source>add to watch list ...</source>
         <oldsource>watch later ...</oldsource>
         <translation>Zu Merkliste hinzufügen ...</translation>
@@ -2412,62 +2412,62 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>CVodBrowser</name>
     <message>
-        <location filename="cvodbrowser.cpp" line="243"/>
+        <location filename="cvodbrowser.cpp" line="266"/>
         <source>Remove from favourites.</source>
         <translation>Aus den Favoriten entfernen.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="254"/>
+        <location filename="cvodbrowser.cpp" line="277"/>
         <source>Add to favourites.</source>
         <translation>Zu Favoriten hinzufügen.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="144"/>
+        <location filename="cvodbrowser.cpp" line="192"/>
         <source>password protected</source>
         <translation>passwortgeschützt</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="267"/>
+        <location filename="cvodbrowser.cpp" line="290"/>
         <source>min.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="272"/>
+        <location filename="cvodbrowser.cpp" line="295"/>
         <source>Director: %1</source>
         <translation>Regisseur: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="277"/>
+        <location filename="cvodbrowser.cpp" line="300"/>
         <source>With: %1</source>
         <translation>Mit: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="339"/>
+        <location filename="cvodbrowser.cpp" line="362"/>
         <source>Video Details</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="262"/>
+        <location filename="cvodbrowser.cpp" line="285"/>
         <source>Genre: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="335"/>
+        <location filename="cvodbrowser.cpp" line="358"/>
         <source>Back</source>
         <translation>Zurück</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="290"/>
+        <location filename="cvodbrowser.cpp" line="313"/>
         <source>Part %1</source>
         <translation>Teil %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="308"/>
+        <location filename="cvodbrowser.cpp" line="331"/>
         <source>Play Movie ...</source>
         <translation>Film abspielen ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="318"/>
+        <location filename="cvodbrowser.cpp" line="341"/>
         <source>Record Movie ...</source>
         <translation>Film aufzeichnen ...</translation>
     </message>
@@ -2797,22 +2797,22 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Programm</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="161"/>
+        <location filename="qwatchlistdlg.cpp" line="159"/>
         <source>play from archive ...</source>
         <translation>Aus dem Archiv ansehen ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="176"/>
+        <location filename="qwatchlistdlg.cpp" line="174"/>
         <source>record from archive ...</source>
         <translation>Aufnahme vom Archiv ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="190"/>
+        <location filename="qwatchlistdlg.cpp" line="188"/>
         <source>delete from list ...</source>
         <translation>Von Liste löschen ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="210"/>
+        <location filename="qwatchlistdlg.cpp" line="208"/>
         <source>%1 min.</source>
         <translation></translation>
     </message>

@@ -114,25 +114,25 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CEpgBrowser</name>
     <message>
-        <location filename="cepgbrowser.cpp" line="184"/>
+        <location filename="cepgbrowser.cpp" line="185"/>
         <source>Ar.</source>
         <translation>Ar.</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="196"/>
+        <location filename="cepgbrowser.cpp" line="197"/>
         <source>play from archive ...</source>
         <translation>Odtwarzaj z archiwum …</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="208"/>
+        <location filename="cepgbrowser.cpp" line="209"/>
         <source>record from archive ...</source>
         <translation>Nagrywaj z archiwum …</translation>
     </message>
     <message>
-        <location filename="cepgbrowser.cpp" line="224"/>
+        <location filename="cepgbrowser.cpp" line="223"/>
         <source>add to watch list ...</source>
         <oldsource>watch later ...</oldsource>
-        <translation>dodaj do playlisty ...</translation>
+        <translation>Dodaj do listy odtwarzania ...</translation>
     </message>
     <message>
         <location filename="cepgbrowser.cpp" line="176"/>
@@ -2397,62 +2397,62 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>CVodBrowser</name>
     <message>
-        <location filename="cvodbrowser.cpp" line="243"/>
+        <location filename="cvodbrowser.cpp" line="266"/>
         <source>Remove from favourites.</source>
         <translation>Usuń z ulubionych.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="254"/>
+        <location filename="cvodbrowser.cpp" line="277"/>
         <source>Add to favourites.</source>
         <translation>Dodaj do ulubionych.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="339"/>
+        <location filename="cvodbrowser.cpp" line="362"/>
         <source>Video Details</source>
         <translation>Szczegóły wideo</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="144"/>
+        <location filename="cvodbrowser.cpp" line="192"/>
         <source>password protected</source>
         <translation>zabezpieczone hasłem</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="267"/>
+        <location filename="cvodbrowser.cpp" line="290"/>
         <source>min.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="272"/>
+        <location filename="cvodbrowser.cpp" line="295"/>
         <source>Director: %1</source>
         <translation>Reżyser: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="277"/>
+        <location filename="cvodbrowser.cpp" line="300"/>
         <source>With: %1</source>
         <translation>Z: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="262"/>
+        <location filename="cvodbrowser.cpp" line="285"/>
         <source>Genre: %1</source>
         <translation>Gatunek: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="335"/>
+        <location filename="cvodbrowser.cpp" line="358"/>
         <source>Back</source>
         <translation>Powrót</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="290"/>
+        <location filename="cvodbrowser.cpp" line="313"/>
         <source>Part %1</source>
         <translation>Część %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="308"/>
+        <location filename="cvodbrowser.cpp" line="331"/>
         <source>Play Movie ...</source>
         <translation>Odtwarzaj film …</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="318"/>
+        <location filename="cvodbrowser.cpp" line="341"/>
         <source>Record Movie ...</source>
         <translation>Nagrywaj film …</translation>
     </message>
@@ -2701,7 +2701,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="qstringfilterwidgetaction.h" line="152"/>
         <source>Channel filter: </source>
         <oldsource>Filter Channels for: </oldsource>
-        <translation>Filtry kanały: </translation>
+        <translation>Filtruj kanały: </translation>
     </message>
 </context>
 <context>
@@ -2774,7 +2774,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/qwatchlistdlg.ui" line="14"/>
         <source>Watch List</source>
-        <translation>Zakładka</translation>
+        <translation>Lista odtwarzania</translation>
     </message>
     <message>
         <location filename="qwatchlistdlg.cpp" line="125"/>
@@ -2787,22 +2787,22 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation>Program</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="161"/>
+        <location filename="qwatchlistdlg.cpp" line="159"/>
         <source>play from archive ...</source>
         <translation>Odtwarzaj z archiwum …</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="176"/>
+        <location filename="qwatchlistdlg.cpp" line="174"/>
         <source>record from archive ...</source>
         <translation>Nagrywaj z archiwum …</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="190"/>
+        <location filename="qwatchlistdlg.cpp" line="188"/>
         <source>delete from list ...</source>
         <translation>Usuń zadanie z listy ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="210"/>
+        <location filename="qwatchlistdlg.cpp" line="208"/>
         <source>%1 min.</source>
         <translation></translation>
     </message>
@@ -3008,7 +3008,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="recorder.cpp" line="4129"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
-        <translation>Playlista</translation>
+        <translation>Lista odtwarzania</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="182"/>
@@ -3050,7 +3050,7 @@ dataDir: %1
         <location filename="recorder.cpp" line="413"/>
         <source>Language Filter</source>
         <oldsource>Audio Filter</oldsource>
-        <translation>ścieżka językowa</translation>
+        <translation>Język filtra</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1495"/>
