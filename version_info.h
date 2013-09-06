@@ -29,8 +29,8 @@
    #define VERSION_MAJOR "1"
 #endif
 
-#define VERSION_MINOR "65"
-#define BETA_EXT      "B5"
+#define VERSION_MINOR "66"
+#define BETA_EXT      ""
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-09-06: Version 2.66RC1
+| - updated help and translations
+| - make sure "add to watch list button" is only displayed
+|   when really needed
 | - put an overlay on watch list button which shows the
 |   number of entries in watch list
 |
