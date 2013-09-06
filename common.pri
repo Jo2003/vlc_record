@@ -21,7 +21,7 @@ CONFIG += shared
 # program version
 # -------------------------------------
 PROGMAJ=2
-PROGMIN=65
+PROGMIN=66
 
 # -------------------------------------
 # customization ...
