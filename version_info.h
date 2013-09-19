@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-09-19: Version 2.66
+| - no changes since RC1
+|
 | 2013-09-06: Version 2.66RC1
 | - updated help and translations
 | - make sure "add to watch list button" is only displayed
