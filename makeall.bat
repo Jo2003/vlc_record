@@ -19,5 +19,5 @@ FOR %%B IN (vlc-record kartina_tv polsky_tv) DO qmake.exe %%B.pro && mingw32-mak
 
 rem 7zip packages ...
 cd packages
-FOR %%B IN (*.exe) DO 7z a %%~nB.7z %%B
+FOR %%B IN (*.exe) DO 7z a %%~nB.zip %%B
 cd ..
