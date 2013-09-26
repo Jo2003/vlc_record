@@ -533,7 +533,7 @@ void CNovoeClient::GetStreamURL(int iChanID, const QString &secCode, bool bTimer
    }
 
    q_get((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
-               sApiUrl + "get_url.php?" + req  + QString("&") + sCookie);
+               sApiUrl + "get_url.php?" + req + QString("&force_ts=1&") +  sCookie);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -625,7 +625,7 @@ void CNovoeClient::GetArchivURL (const QString &prepared, const QString &secCode
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   q_get((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url.php?" + req + QString("&") + sCookie);
+   q_get((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url.php?" + req + QString("&force_ts=1&") +  sCookie);
 }
 
 /*-----------------------------------------------------------------------------\
