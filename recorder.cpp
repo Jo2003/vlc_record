@@ -55,10 +55,8 @@ extern CTimeShift *pTs;
 // global html writer ...
 extern CHtmlWriter *pHtml;
 
-///////////////////// debug ////////////////////
-#define chanMapLock   {mInfo("Lock Channel Map"); mutexChanMap.lock();}
-#define chanMapUnlock {mInfo("Unlock Channel Map"); mutexChanMap.unlock();}
-///////////////////// debug ////////////////////
+// gloabl channel map ...
+extern QChannelMap *pChanMap;
 
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
@@ -481,6 +479,10 @@ void Recorder::closeEvent(QCloseEvent *event)
          savePositions();
       }
 
+      // save font size and favorites ...
+      Settings.SetCustFontSize(iFontSzChg);
+      Settings.SaveFavourites(lFavourites);
+
       // save channel and epg position ...
       Settings.saveChannel(getCurrentCid());
       Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
@@ -724,7 +726,8 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
    {
       int cid = qvariant_cast<int>(index.data(channellist::cidRole));
       cparser::SChan chan;
-      if (!getChanEntry(cid, chan))
+
+      if (!pChanMap->entry(cid, chan))
       {
          if (AllowAction(IncPlay::PS_PLAY))
          {
@@ -740,7 +743,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
+               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1090,7 +1093,7 @@ void Recorder::on_pushLive_clicked()
    int cid = getCurrentCid();
    cparser::SChan chan;
 
-   if (!getChanEntry(cid, chan))
+   if (!pChanMap->entry(cid, chan))
    {
       // set EPG offset to 0 ...
       iEpgOffset = 0;
@@ -1111,7 +1114,7 @@ void Recorder::on_pushLive_clicked()
             showInfo.setEndTime(chan.uiEnd);
             showInfo.setPCode(secCodeDlg.passWd());
             showInfo.setPlayState(IncPlay::PS_PLAY);
-            showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
+            showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
             TouchPlayCtrlBtns(false);
             pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1139,7 +1142,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
 
       cparser::SChan chan;
 
-      if (!getChanEntry(cid, chan))
+      if (!pChanMap->entry(cid, chan))
       {
          if (AllowAction(IncPlay::PS_PLAY))
          {
@@ -1155,7 +1158,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                showInfo.setEndTime(chan.uiEnd);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
+               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1264,7 +1267,7 @@ void Recorder::slotPlay()
 
       cparser::SChan chan;
 
-      if (!getChanEntry(cid, chan))
+      if (!pChanMap->entry(cid, chan))
       {
          if (AllowAction(IncPlay::PS_PLAY))
          {
@@ -1280,7 +1283,7 @@ void Recorder::slotPlay()
                showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
+               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1371,7 +1374,7 @@ void Recorder::slotRecord()
 
          cparser::SChan chan;
 
-         if (!getChanEntry(cid, chan))
+         if (!pChanMap->entry(cid, chan))
          {
             if (AllowAction(IncPlay::PS_RECORD))
             {
@@ -1394,7 +1397,7 @@ void Recorder::slotRecord()
                   showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                   showInfo.setPCode(secCodeDlg.passWd());
                   showInfo.setPlayState(IncPlay::PS_RECORD);
-                  showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd));
+                  showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                   TouchPlayCtrlBtns(false);
                   pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
@@ -1955,13 +1958,14 @@ void Recorder::slotTimeShift (const QString &str)
 \----------------------------------------------------------------- */
 void Recorder::slotChanList (const QString &str)
 {
-   QVector<cparser::SChan> chanList;
+   QChanList chanList;
 
    if (!pApiParser->parseChannelList(str, chanList, Settings.FixTime()))
    {
-      mutexChanMap.lock();
-      FillChanMap(chanList);
-      mutexChanMap.unlock();
+      // handle timeshift stuff if needed ...
+      pApiParser->handleTsStuff(chanList);
+
+      pChanMap->fillFromChannelList(chanList);
 
       // Can we make an update or do we need to
       // rebuild the channel list?
@@ -2015,11 +2019,11 @@ void Recorder::slotEPG(const QString &str)
       {
          cparser::SChan chan;
 
-         if (!getChanEntry(cid, chan))
+         if (!pChanMap->entry(cid, chan))
          {
             ui->textEpg->DisplayEpg(epg, chan.sName,
                                     cid, epgTime.toTime_t(),
-                                    accountInfo.bHasArchive ? chan.bHasArchive : false);
+                                    accountInfo.bHasArchive ? chan.bHasArchive : false, chan.iTs);
 
             // fill epg control ...
             icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
@@ -2076,10 +2080,8 @@ void Recorder::slotEPGCurrent (const QString &str)
 
       for (i = 0; i < keyList.count(); i++)
       {
-         chanEntries = currentEpg.value(keyList.at(i));
-         mutexChanMap.lock();
-         chanMapEntry = chanMap.value(keyList.at(i));
-         mutexChanMap.unlock();
+         chanEntries  = currentEpg.value(keyList.at(i));
+         chanMapEntry = pChanMap->value(keyList.at(i), true);
 
          for (j = 0; j < chanEntries.count(); j++)
          {
@@ -2095,9 +2097,7 @@ void Recorder::slotEPGCurrent (const QString &str)
 
                chanMapEntry.sProgramm = chanEntries.at(j).sShow;
 
-               mutexChanMap.lock();
-               chanMap[keyList.at(i)] = chanMapEntry;
-               mutexChanMap.unlock();
+               pChanMap->update(keyList.at(i), chanMapEntry);
 
                // leave this for loop ...
                break;
@@ -2164,7 +2164,7 @@ void Recorder::slotWlClick(QUrl url)
 
    if (ok)
    {
-      if (!getChanEntry(cid, chan))
+      if (!pChanMap->entry(cid, chan))
       {
          chan.uiStart   = url.queryItemValue("start").toUInt();
          chan.uiEnd     = url.queryItemValue("end").toUInt();
@@ -2197,7 +2197,7 @@ void Recorder::slotWlClick(QUrl url)
 
             showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
                                                           QString("%1\n%2").arg(sl.at(0)).arg((sl.count() > 1) ? sl.at(1) : ""),
-                                                          chan.uiStart, chan.uiEnd));
+                                                          chan.uiStart, chan.uiEnd, chan.iTs));
 
             // add additional info to LCD ...
             int     iTime = (chan.uiEnd) ? (int)((chan.uiEnd - chan.uiStart) / 60) : 60;
@@ -2260,7 +2260,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
       sEpg = ui->textEpg->epgShow(link.queryItemValue("gmt").toUInt());
       cid  = link.queryItemValue("cid").toInt();
 
-      if (!getChanEntry(cid, sChan))
+      if (!pChanMap->entry(cid, sChan))
       {
          sChan.uiStart   = sEpg.uiStart;
          sChan.uiEnd     = sEpg.uiEnd;
@@ -2276,7 +2276,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    {
       cid  = link.queryItemValue("cid").toInt();
 
-      if (!getChanEntry(cid, sChan))
+      if (!pChanMap->entry(cid, sChan))
       {
          if (grantAdultAccess(sChan.bIsProtected))
          {
@@ -2308,7 +2308,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
             showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
                                                           QString("%1\n%2").arg(sEpg.sShowName).arg(sEpg.sShowDescr),
-                                                          sEpg.uiStart, sEpg.uiEnd));
+                                                          sEpg.uiStart, sEpg.uiEnd, sChan.iTs));
 
             // add additional info to LCD ...
             int     iTime = (sEpg.uiEnd) ? (int)((sEpg.uiEnd - sEpg.uiStart) / 60) : 60;
@@ -2334,18 +2334,18 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 \----------------------------------------------------------------- */
 void Recorder::slotReloadLogos()
 {
-   QChanMap::const_iterator cit;
+   QChannelMap::const_iterator cit;
 
-   // create tmp channel list with channels from channelList ...
-   mutexChanMap.lock();
-   for (cit = chanMap.constBegin(); cit != chanMap.constEnd(); cit++)
+   // queue all icons ...
+   pChanMap->lock();
+   for (cit = pChanMap->constBegin(); cit != pChanMap->constEnd(); cit++)
    {
       if (!(*cit).bIsGroup)
       {
          pixCache.enqueuePic((*cit).sIcon, pFolders->getLogoDir());
       }
    }
-   mutexChanMap.unlock();
+   pChanMap->unlock();
 }
 
 /* -----------------------------------------------------------------\
@@ -2361,11 +2361,8 @@ void Recorder::slotReloadLogos()
 void Recorder::slotbtnBack_clicked()
 {
    int cid = getCurrentCid();
-   mutexChanMap.lock();
-   bool bContains = chanMap.contains(cid);
-   mutexChanMap.unlock();
 
-   if (bContains)
+   if (pChanMap->contains(cid, true))
    {
       // set actual day in previous week to munday ...
       int iActDay  = pEpgNavbar->currentIndex();
@@ -2395,11 +2392,7 @@ void Recorder::slotbtnNext_clicked()
 {
    int cid = getCurrentCid();
 
-   mutexChanMap.lock();
-   bool bContains = chanMap.contains(cid);
-   mutexChanMap.unlock();
-
-   if (bContains)
+   if (pChanMap->contains(cid, true))
    {
       // set actual day in next week to munday ...
       int iActDay  = pEpgNavbar->currentIndex();
@@ -2481,11 +2474,8 @@ void Recorder::slotArchivURL(const QString &str)
 void Recorder::slotDayTabChanged(int iIdx)
 {
    int cid = getCurrentCid();
-   mutexChanMap.lock();
-   bool bContains = chanMap.contains(cid);
-   mutexChanMap.unlock();
 
-   if (bContains)
+   if (pChanMap->contains(cid, true))
    {
       QDateTime epgTime  = QDateTime::currentDateTime().addDays(iEpgOffset);
       int       iDay     = epgTime.date().dayOfWeek() - 1;
@@ -2683,7 +2673,7 @@ void Recorder::slotChanListContext(const QPoint &pt)
    cparser::SChan entry;
    QFileInfo      fInfo;
 
-   if (!getChanEntry(cid, entry))
+   if (!pChanMap->entry(cid, entry))
    {
       // create context menu ...
       CleanContextMenu();
@@ -2825,22 +2815,22 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
 
    CleanContextMenu();
 
-   mutexChanMap.lock();
+   pChanMap->lock();
    for (int i = 0; i < lFavourites.count(); i++)
    {
       pContextAct[i] = new CFavAction(&favContext);
 
       if (pContextAct[i])
       {
-         fInfo.setFile(chanMap.value(lFavourites[i]).sIcon);
+         fInfo.setFile(pChanMap->value(lFavourites[i]).sIcon);
          sLogoFile = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
          pContextAct[i]->setIcon(QIcon(sLogoFile));
-         pContextAct[i]->setText(tr("Remove \"%1\" from favourites").arg(chanMap.value(lFavourites[i]).sName));
+         pContextAct[i]->setText(tr("Remove \"%1\" from favourites").arg(pChanMap->value(lFavourites[i]).sName));
          pContextAct[i]->setFavData(lFavourites[i], kartinafav::FAV_DEL);
          favContext.addAction(pContextAct[i]);
       }
    }
-   mutexChanMap.unlock();
+   pChanMap->unlock();
 
    // display menu over first button since we have no way
    // to find out on over which button we clicked ...
@@ -3336,15 +3326,15 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
    int cid = qvariant_cast<int>(current.data(channellist::cidRole));
    cparser::SChan entry;
 
-   if (!getChanEntry(cid, entry))
+   if (!pChanMap->entry(cid, entry))
    {
       // update short info if we're in live mode
       if ((showInfo.showType() == ShowInfo::Live)
          && (showInfo.playState() == IncPlay::PS_STOP))
       {
-         ui->textEpgShort->setHtml(pHtml->createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd));
+         ui->textEpgShort->setHtml(pHtml->createTooltip(entry.sName, entry.sProgramm, entry.uiStart, entry.uiEnd, entry.iTs));
       }
-
+/*
       // quick'n'dirty timeshift hack ...
       if (entry.vTs.count() <= 2) // no timeshift available ...
       {
@@ -3356,7 +3346,7 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
          // set (back) to normal timeshift ...
          pTs->setTimeShift(Settings.getTimeShift());
       }
-
+*/
       // was this a refresh or was channel changed ... ?
       if (cid != ui->textEpg->GetCid())
       {
@@ -3505,7 +3495,7 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
             cparser::SChan chanEntry;
 
             // get channel entry from channel map ...
-            if (!getChanEntry(showInfo.channelId(), chanEntry))
+            if (!pChanMap->entry(showInfo.channelId(), chanEntry))
             {
                // has chan entry already updated data ... ?
                if (CSmallHelpers::inBetween(chanEntry.uiStart, chanEntry.uiEnd, (uint)ulArcGmt))
@@ -3778,18 +3768,18 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
       if (cid != -1)
       {
          // update chan list item ...
-         if (!getChanEntry(cid, chanEntry))
+         if (!pChanMap->entry(cid, chanEntry))
          {
             if (cidList.isEmpty())
             {
                // no new shows, simply update progress position ...
-               iPos = (int)(now - chanEntry.uiStart);
+               iPos = (int)(now - (chanEntry.uiStart + chanEntry.iTs));
 
                // update progress ...
                pItem->setData(iPos, channellist::posRole);
 
                // check if this channel needs an update ...
-               if ((chanEntry.uiEnd > 0) && (now > chanEntry.uiEnd))
+               if ((chanEntry.uiEnd > 0) && (now > (chanEntry.uiEnd + chanEntry.iTs)))
                {
                   // when we lately tried to update EPG for this ... ?
                   if ((pItem->data(channellist::lastEpgUpd).toUInt() + EPG_UPD_TMOUT) < now)
@@ -3809,15 +3799,14 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
             }
             else if (cidList.contains(cid))
             {
-               // no new shows, simply update progress position ...
+               // update whole list entry ...
                iPos = (int)(now - chanEntry.uiStart);
 
-               // whole entry ...
-               pItem->setData(iPos,                channellist::posRole);
-               pItem->setData(chanEntry.uiStart,   channellist::startRole);
-               pItem->setData(chanEntry.uiEnd,     channellist::endRole);
-               pItem->setData(chanEntry.sProgramm, channellist::progRole);
-               pItem->setData(chanEntry.sName,     channellist::nameRole);
+               pItem->setData(iPos,                                channellist::posRole);
+               pItem->setData(chanEntry.uiStart + chanEntry.iTs,   channellist::startRole);
+               pItem->setData(chanEntry.uiEnd   + chanEntry.iTs,   channellist::endRole);
+               pItem->setData(chanEntry.sProgramm,                 channellist::progRole);
+               pItem->setData(chanEntry.sName,                     channellist::nameRole);
             }
          }
       }
@@ -3925,12 +3914,12 @@ void Recorder::slotFilterChannelList(QString filter)
 {
    pFilterMenu->hide();
 
-   QVector<cparser::SChan>   cl, tmpCl;
+   QChanList                 cl, tmpCl;
    QGrpVector::ConstIterator cit;
    cparser::SChan            grp, chan;
    int                       i;
 
-   for (cit = grpVector.constBegin(); cit != grpVector.constEnd(); cit++)
+   for (cit = pChanMap->groupVector().constBegin(); cit != pChanMap->groupVector().constEnd(); cit++)
    {
       tmpCl.clear();
 
@@ -3943,7 +3932,7 @@ void Recorder::slotFilterChannelList(QString filter)
 
       for (i = 0; i < (*cit).vChannels.count(); i++)
       {
-         getChanEntry((*cit).vChannels[i], chan);
+         pChanMap->entry((*cit).vChannels[i], chan);
 
          if (filter.isEmpty()                                        // no filter set
             || chan.sName.contains(filter, Qt::CaseInsensitive))     // find in name
@@ -4291,9 +4280,6 @@ void Recorder::savePositions()
    Settings.SaveSplitterSizes("spVChanEpgPlay", ui->vSplitterChanEpgPlay->sizes());
    Settings.SaveSplitterSizes("spHPlay", ui->hSplitterPlayer ->sizes());
 #endif /* INCLUDE_LIBVLC */
-
-   Settings.SetCustFontSize(iFontSzChg);
-   Settings.SaveFavourites(lFavourites);
 }
 
 /* -----------------------------------------------------------------\
@@ -4634,54 +4620,6 @@ void Recorder::ClearShortCuts()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: FillChanMap
-|  Begin: 26.02.2010 / 09:20:24
-|  Author: Jo2003
-|  Description: fill channel map
-|
-|  Parameters: vector with channel elements
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void Recorder::FillChanMap(const QVector<cparser::SChan> &chanlist)
-{
-   QVector<cparser::SChan>::const_iterator cit;
-
-   chanMap.clear();
-   grpVector.clear();
-
-   cparser::SGrp grpEntry;
-
-   // create channel map ...
-   for (cit = chanlist.constBegin(); cit != chanlist.constEnd(); cit++)
-   {
-      if (!(*cit).bIsGroup)
-      {
-         chanMap.insert((*cit).iId, *cit);
-         grpEntry.vChannels.append((*cit).iId);
-      }
-      else
-      {
-         if (!grpEntry.sName.isEmpty())
-         {
-            grpVector.append(grpEntry);
-         }
-
-         grpEntry.iId    = (*cit).iId;
-         grpEntry.sColor = (*cit).sProgramm;
-         grpEntry.sName  = (*cit).sName;
-         grpEntry.vChannels.clear();
-      }
-   }
-
-   // make sure we add last group ...
-   if (!grpEntry.sName.isEmpty())
-   {
-      grpVector.append(grpEntry);
-   }
-}
-
-/* -----------------------------------------------------------------\
 |  Method: FillChannelList
 |  Begin: 19.01.2010 / 16:05:24
 |  Author: Jo2003
@@ -4740,10 +4678,10 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
          // is this a channel group ... ?
          if (chanlist[i].bIsGroup)
          {
-            pItem->setData(-1, channellist::cidRole);
-            pItem->setData(chanlist[i].sName, channellist::nameRole);
+            pItem->setData(-1,                    channellist::cidRole);
+            pItem->setData(chanlist[i].sName,     channellist::nameRole);
             pItem->setData(chanlist[i].sProgramm, channellist::bgcolorRole);
-            pItem->setData(QIcon(":png/group"), channellist::iconRole);
+            pItem->setData(QIcon(":png/group"),   channellist::iconRole);
 
             // add channel group entry ...
             Pix.fill(QColor(chanlist[i].sProgramm));
@@ -4802,18 +4740,18 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             }
 
             // progress position ...
-            iPos = (int)(QDateTime::currentDateTime().toTime_t() - chanlist[i].uiStart);
+            iPos = (int)(QDateTime::currentDateTime().toTime_t() - (chanlist[i].uiStart + chanlist[i].iTs));
 
             // insert data ...
-            pItem->setData(chanlist[i].iId, channellist::cidRole);
-            pItem->setData(sLine, channellist::nameRole);
-            pItem->setData(QIcon(icon), channellist::iconRole);
-            pItem->setData(chanlist[i].sProgramm, channellist::progRole);
-            pItem->setData(chanlist[i].uiStart, channellist::startRole);
-            pItem->setData(chanlist[i].uiEnd, channellist::endRole);
-            pItem->setData(sLogoFile, channellist::logoFileRole);
-            pItem->setData(iPos, channellist::posRole);
-            pItem->setData(now, channellist::lastEpgUpd);
+            pItem->setData(chanlist[i].iId,                       channellist::cidRole);
+            pItem->setData(sLine,                                 channellist::nameRole);
+            pItem->setData(QIcon(icon),                           channellist::iconRole);
+            pItem->setData(chanlist[i].sProgramm,                 channellist::progRole);
+            pItem->setData(chanlist[i].uiStart + chanlist[i].iTs, channellist::startRole);
+            pItem->setData(chanlist[i].uiEnd   + chanlist[i].iTs, channellist::endRole);
+            pItem->setData(sLogoFile,                             channellist::logoFileRole);
+            pItem->setData(iPos,                                  channellist::posRole);
+            pItem->setData(now,                                   channellist::lastEpgUpd);
          }
 
          pModel->appendRow(pItem);
@@ -5282,7 +5220,7 @@ void Recorder::HandleFavourites()
          // -------------------------
          // init action ...
          // -------------------------
-         getChanEntry(lFavourites[i], entry);
+         pChanMap->entry(lFavourites[i], entry);
          fInfo.setFile(entry.sIcon);
 
          // add logo ...
@@ -5302,9 +5240,7 @@ void Recorder::HandleFavourites()
          pFavAct[i]->setShortcut(QKeySequence(Settings.shortCut(sObj, SLOT(slotHandleFavAction(QAction*)))));
 
          // add channel name as tooltip ...
-         mutexChanMap.lock();
-         pFavAct[i]->setToolTip(chanMap.value(lFavourites[i]).sName);
-         mutexChanMap.unlock();
+         pFavAct[i]->setToolTip(pChanMap->value(lFavourites[i], true).sName);
 
          // style the tool button ...
          pFavBtn[i]->setStyleSheet(FAVBTN_STYLE);
@@ -5601,44 +5537,6 @@ void Recorder::toggleFullscreen()
 {
     setWindowState(windowState() ^ Qt::WindowFullScreen);
     show();
-}
-
-/* -----------------------------------------------------------------\
-|  Method: getChanEntry
-|  Begin: 04.12.2012
-|  Author: Jo2003
-|  Description: get entry from channel map, with lock / unlock
-|
-|  Parameters: - cid channel id
-|              - entry reference of entry to save value
-|              - optional lock flag
-|
-|  Returns: 0 -> found, -1 -> not found
-\----------------------------------------------------------------- */
-int Recorder::getChanEntry (int cid ,cparser::SChan &entry, bool doLock)
-{
-   int iRV = 0;
-
-   if (doLock)
-   {
-      mutexChanMap.lock();
-   }
-
-   if (chanMap.contains(cid))
-   {
-      entry = chanMap.value(cid);
-   }
-   else
-   {
-      iRV = -1;
-   }
-
-   if (doLock)
-   {
-      mutexChanMap.unlock();
-   }
-
-   return iRV;
 }
 
 /************************* History ***************************\

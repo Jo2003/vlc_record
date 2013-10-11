@@ -251,6 +251,14 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
                chanEntry.bHasArchive = (xml.text().toString().toInt() == 1) ? true : false;
             }
          }
+         else if (xml.name() == "time_shift")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               chanEntry.bHasTsInfo = true;
+               chanEntry.iTs        = xml.text().toString().toInt();
+            }
+         }
          else if (xml.name() == "protected")
          {
             if (xml.readNext() == QXmlStreamReader::Characters)

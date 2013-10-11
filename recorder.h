@@ -37,7 +37,6 @@
 #include <QMap>
 #include <QStandardItemModel>
 #include <QScrollBar>
-#include <QMutex>
 
 #include "csettingsdlg.h"
 #include "templates.h"
@@ -61,6 +60,7 @@
 #include "qstringfilterwidgetaction.h"
 #include "qwatchlistdlg.h"
 #include "ctimeshift.h"
+#include "qchannelmap.h"
 
 #ifdef INCLUDE_LIBVLC
    #include <QStackedLayout>
@@ -152,9 +152,6 @@ private:
     QList<int>                      lFavourites;
     QToolButton                    *pFavBtn[MAX_NO_FAVOURITES];
     CFavAction                     *pFavAct[MAX_NO_FAVOURITES];
-    QChanMap                        chanMap;
-    QGrpVector                      grpVector;
-    QMutex                          mutexChanMap;
     QMenu                           favContext;
     CFavAction                     *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates            ePlayState;
@@ -196,7 +193,6 @@ protected:
     void CreateSystray ();
     bool WantToStopRec ();
     void HandleFavourites ();
-    void FillChanMap (const QVector<cparser::SChan> &chanlist);
     void CleanContextMenu ();
     int  CheckCookie (const QString &cookie);
     int  AllowAction (IncPlay::ePlayStates newState);
@@ -210,7 +206,6 @@ protected:
     void correctEpgOffset();
     int  grantAdultAccess (bool bProtected);
     void toggleFullscreen();
-    int  getChanEntry (int cid, cparser::SChan &entry, bool doLock = true);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);

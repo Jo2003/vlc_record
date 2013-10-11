@@ -69,7 +69,8 @@ SOURCES += main.cpp \
     qwatchlistdlg.cpp \
     ctimeshift.cpp \
     chtmlwriter.cpp \
-    qoverlayicon.cpp
+    qoverlayicon.cpp \
+    qchannelmap.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -117,7 +118,8 @@ HEADERS += recorder.h \
     qwatchlistdlg.h \
     ctimeshift.h \
     chtmlwriter.h \
-    qoverlayicon.h
+    qoverlayicon.h \
+    qchannelmap.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

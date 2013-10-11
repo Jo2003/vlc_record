@@ -47,7 +47,7 @@ public:
     CEpgBrowser(QWidget *parent = 0);
     void DisplayEpg(QVector<cparser::SEpg> epglist,
                     const QString &sName, int iChanID,
-                    uint uiGmt, bool bHasArchiv);
+                    uint uiGmt, bool bHasArchiv, int iTs);
 
     void recreateEpg ();
 
@@ -64,6 +64,7 @@ protected:
     QString createHtmlCode();
 
 private:
+    int                    _iTs;
     int                    iCid;
     bool                   bArchive;
     uint                   uiTime;

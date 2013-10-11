@@ -12,14 +12,10 @@
 #include <QUrl>
 #include "cepgbrowser.h"
 #include "small_helpers.h"
-#include "ctimeshift.h"
 #include "chtmlwriter.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
-
-// global timeshift class ...
-extern CTimeShift *pTs;
 
 // global html writer ...
 extern CHtmlWriter *pHtml;
@@ -38,6 +34,7 @@ CEpgBrowser::CEpgBrowser(QWidget *parent) :
     QTextBrowser(parent)
 {
    iCid = 0;
+   _iTs = 0;
    mProgram.clear();
 }
 
@@ -48,13 +45,13 @@ CEpgBrowser::CEpgBrowser(QWidget *parent) :
 |  Description: display EPG entries
 |
 |  Parameters: list of entries, channel name, channel id,
-|              timestamp, archiv flag
+|              timestamp, archiv flag, timeshift
 |
 |  Returns: --
 \----------------------------------------------------------------- */
 void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
                              const QString &sName, int iChanID, uint uiGmt,
-                             bool bHasArchiv)
+                             bool bHasArchiv, int iTs)
 {
    epg::SShow actShow;
 
@@ -63,6 +60,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
    iCid      = iChanID;
    uiTime    = uiGmt;
    bArchive  = bHasArchiv;
+   _iTs      = iTs;
 
    // clear program map ...
    mProgram.clear();
@@ -135,6 +133,8 @@ QString CEpgBrowser::createHtmlCode()
                .arg(sChanName)
                .arg(QDateTime::fromTime_t(uiTime).toString("dd. MMM. yyyy"));
 
+   // mInfo(tr("Creating EPG html for \"%1\" with timeshift %2s!").arg(sChanName).arg(_iTs));
+
    // create table head ...
    row = pHtml->tableHead(sHeadLine, TMPL_TH_STYLE, 2);
 
@@ -145,12 +145,12 @@ QString CEpgBrowser::createHtmlCode()
    {
       actShow     = *cit;
       bMark       = false;
-      dtStartThis = QDateTime::fromTime_t(pTs->fromGmt(actShow.uiStart));
+      dtStartThis = QDateTime::fromTime_t(actShow.uiStart + _iTs);
 
       // find out if we should mark the time ...
       if (actShow.uiEnd)
       {
-         dtStartNext = QDateTime::fromTime_t(pTs->fromGmt(actShow.uiEnd));
+         dtStartNext = QDateTime::fromTime_t(actShow.uiEnd + _iTs);
          bMark       = NowRunning(dtStartThis, dtStartNext);
       }
       else

@@ -13,9 +13,13 @@
 #include "templates.h"
 #include "small_helpers.h"
 #include "chtmlwriter.h"
+#include "qchannelmap.h"
 
 // global html writer ...
 extern CHtmlWriter *pHtml;
+
+// global channel map ..
+extern QChannelMap *pChanMap;
 
 
 /* -----------------------------------------------------------------\
@@ -535,6 +539,7 @@ const QString& CShowInfo::pCode()
 int CShowInfo::autoUpdate(uint uiTime)
 {
    int     iRV = -1;
+   int     iTs =  0;
    QString sChanNameTmpl;
    t_EpgMap::const_iterator cit;
 
@@ -542,6 +547,8 @@ int CShowInfo::autoUpdate(uint uiTime)
    {
       if (CSmallHelpers::inBetween((*cit).uiStart, (*cit).uiEnd, uiTime))
       {
+         iTs = pChanMap->value(iChannelId, true).iTs;
+
          if (eShowType == ShowInfo::Archive)
          {
             sChanNameTmpl = tr("%1 (Archive)").arg(sChanName);
@@ -555,7 +562,7 @@ int CShowInfo::autoUpdate(uint uiTime)
          uiStart    = (*cit).uiStart;
          uiEnd      = (*cit).uiEnd;
          uiJumpTime = (uiTime > (*cit).uiStart) ? uiTime : 0; // take care of relative time jumps!
-         sDescr     = pHtml->createTooltip(sChanNameTmpl, QString("%1\n%2").arg((*cit).sShowName).arg((*cit).sShowDescr), uiStart, uiEnd);
+         sDescr     = pHtml->createTooltip(sChanNameTmpl, QString("%1\n%2").arg((*cit).sShowName).arg((*cit).sShowDescr), uiStart, uiEnd, iTs);
          iRV = 0;
          break;
       }
@@ -592,7 +599,7 @@ void CShowInfo::updWithChanEntry (ulong ulTime, const cparser::SChan &entry)
    uiEnd        = entry.uiEnd;
    uiJumpTime   = (ulTime > entry.uiStart) ? ulTime : 0; // take care of relative time jumps!
    ulLastEpgUpd = 0; // updated show info -> be open for new updates ...
-   sDescr       = pHtml->createTooltip(sChanNameTmpl, entry.sProgramm, entry.uiStart, entry.uiEnd);
+   sDescr       = pHtml->createTooltip(sChanNameTmpl, entry.sProgramm, entry.uiStart, entry.uiEnd, entry.iTs);
 }
 
 /************************* History ***************************\

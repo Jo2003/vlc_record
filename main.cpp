@@ -19,6 +19,7 @@
 #include "qcustparser.h"
 #include "ctimeshift.h"
 #include "chtmlwriter.h"
+#include "qchannelmap.h"
 
 #ifdef DINCLUDEPLUGS
 #include <QtPlugin>
@@ -61,6 +62,9 @@ CTimeShift *pTs;
 // global html writer ...
 CHtmlWriter *pHtml;
 
+// global channel map ...
+QChannelMap *pChanMap;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -94,8 +98,9 @@ int main(int argc, char *argv[])
    pFolders   = new CDirStuff(&app);
    pTs        = new CTimeShift(&app);
    pHtml      = new CHtmlWriter(&app);
+   pChanMap   = new QChannelMap();
 
-   if (pFolders && pAppTransl && pQtTransl && pTs && pHtml)
+   if (pFolders && pAppTransl && pQtTransl && pTs && pHtml && pChanMap)
    {
       if (pFolders->isInitialized ())
       {
@@ -140,6 +145,12 @@ int main(int argc, char *argv[])
             }
          }
       }
+   }
+
+   if (pChanMap)
+   {
+      delete pChanMap;
+      pChanMap = NULL;
    }
 
    return iRV;

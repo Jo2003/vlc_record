@@ -13,12 +13,16 @@
 #include "crodnoeclient.h"
 #include "small_helpers.h"
 #include "qcustparser.h"
+#include "ctimeshift.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
 
 // log file functions ...
 extern CLogFile VlcLog;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
 
 /*-----------------------------------------------------------------------------\
 | Function:    CRodnoeClient / constructor
@@ -472,10 +476,9 @@ void CRodnoeClient::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&with_acc=1&with_cfg=1" /* &lng=%3*/)
+        QString("login=%1&pass=%2&with_acc=1&with_cfg=1")
         .arg(sUsr)
-        .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw)))
-        /*.arg(sLang)*/,
+        .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw))),
         Iptv::Login);
 }
 
@@ -499,8 +502,10 @@ void CRodnoeClient::GetChannelList ()
    // reset language filter ...
    sLangFilter = "";
 
+   QString req = QString("get_list_tv?with_epg=1&time_shift=%1").arg(pTs->timeShift());
+
    // request channel list or channel list for settings ...
-   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1");
+   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + req);
 }
 
 //---------------------------------------------------------------------------
@@ -521,8 +526,10 @@ void CRodnoeClient::chanListLang(const QString& lang)
    // store language filter ...
    sLangFilter = lang;
 
+   QString req = QString("get_list_tv?with_epg=1&afilter=%1&time_shift=%2").arg(lang).arg(pTs->timeShift());
+
    // request language filtered channel list ...
-   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + "get_list_tv?with_epg=1&afilter=" + lang);
+   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + req);
 }
 
 //---------------------------------------------------------------------------
@@ -560,10 +567,8 @@ void CRodnoeClient::audioLang()
 void CRodnoeClient::GetProtChannelList (const QString &secCode)
 {
    mInfo(tr("Request Channel List ..."));
-   QString req = "with_epg=1";
 
-   // normal channel list request ...
-   req += QString("&show=all&protect_code=%1").arg(secCode);
+   QString req = QString("with_epg=1&show=all&protect_code=%1&time_shift=%2").arg(secCode).arg(pTs->timeShift());
 
    // request channel list or channel list for settings ...
    q_post((int)CIptvDefs::REQ_CHANLIST_ALL, sApiUrl + "get_list_tv", req);
@@ -688,7 +693,7 @@ void CRodnoeClient::GetStreamURL(int iChanID, const QString &secCode, bool bTime
 {
    mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
-   QString req = QString("cid=%1").arg(iChanID);
+   QString req = QString("cid=%1&time_shift=%2").arg(iChanID).arg(pTs->timeShift());
 
    if (secCode != "")
    {
@@ -761,7 +766,7 @@ void CRodnoeClient::GetEPG(int iChanID, int iOffset)
    QDateTime dt(QDate::currentDate().addDays(iOffset));
 
    q_post((int)CIptvDefs::REQ_EPG, sApiUrl + "get_epg",
-        QString("cid=%1&from_uts=%2&hours=24").arg(iChanID).arg(dt.toTime_t()));
+          QString("cid=%1&from_uts=%2&hours=24&time_shift=%3").arg(iChanID).arg(dt.toTime_t()).arg(pTs->timeShift()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1094,7 +1099,7 @@ void CRodnoeClient::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   q_post((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + "get_epg_current", QString("cid=%1").arg(cids));
+   q_post((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + "get_epg_current", QString("cid=%1&time_shift=%2").arg(cids).arg(pTs->timeShift()));
 }
 
 //---------------------------------------------------------------------------
@@ -1147,11 +1152,11 @@ void CRodnoeClient::getRadioList()
 {
    mInfo(tr("Download radio list ..."));
 
-   QString req = "get_list_radio";
+   QString req = QString("get_list_radio?time_shift=%1").arg(pTs->timeShift());
 
    if(!sLangFilter.isEmpty())
    {
-      req += "?afilter=" + sLangFilter;
+      req += "&afilter=" + sLangFilter;
    }
 
    q_get((int)CIptvDefs::REQ_CHANLIST_RADIO, sApiUrl + req);
@@ -1174,18 +1179,17 @@ void CRodnoeClient::getRadioStream(int cid, bool bTimerRec)
    mInfo(tr("Get radio stream Url ..."));
 
    q_post(bTimerRec ? (int)CIptvDefs::REQ_RADIO_TIMERREC : (int)CIptvDefs::REQ_RADIO_STREAM,
-        sApiUrl + "get_url_radio", QString("cid=%1").arg(cid & ~RADIO_OFFSET));
+          sApiUrl + "get_url_radio", QString("cid=%1&time_shift=%2").arg(cid & ~RADIO_OFFSET).arg(pTs->timeShift()));
 }
 
 //---------------------------------------------------------------------------
 //
-//! \brief   get stream url for radio
+//! \brief   set interface language
 //
 //! \author  Jo2003
 //! \date    25.03.2013
 //
-//! \param   cid (int) channel id
-//! \param   bTimerRec (bool) timer record flag
+//! \param   langCode (const QString&) new language code
 //
 //! \return  --
 //---------------------------------------------------------------------------

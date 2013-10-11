@@ -52,8 +52,8 @@ public:
    virtual int parseVodManager (const QString& sResp, QVector<cparser::SVodRate>& vRates) = 0;
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg) = 0;
    virtual int parseError (const QString& sResp, QString& sMsg, int& eCode) = 0;
-
    virtual int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
+   virtual int handleTsStuff(QVector<cparser::SChan> &chanList);
 
 protected:
    virtual void checkTimeOffSet (const uint &uiSrvTime);

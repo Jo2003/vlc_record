@@ -30,18 +30,20 @@ namespace cparser
 
    struct SChan
    {
-      SChan():uiStart(0),uiEnd(0),iId(0),bIsVideo(false),bIsProtected(false),bHasArchive(false),bIsGroup(false),bIsHidden(false){}
+      SChan():uiStart(0),uiEnd(0),iTs(0),iId(0),bIsVideo(false),bIsProtected(false),bHasArchive(false),bIsGroup(false),bIsHidden(false),bHasTsInfo(false){}
       QString sName;
       QString sProgramm;
       QString sIcon;
       uint    uiStart;
       uint    uiEnd;
+      int     iTs;
       int     iId;
       bool    bIsVideo;
       bool    bIsProtected;
       bool    bHasArchive;
       bool    bIsGroup;
       bool    bIsHidden;
+      bool    bHasTsInfo;
       QVector<cparser::STimeShift> vTs;
    };
 
@@ -148,5 +150,6 @@ namespace cparser
 typedef QMap<int, cparser::SChan>                 QChanMap;
 typedef QMap<int, QVector<cparser::SEpgCurrent> > QCurrentMap;
 typedef QVector<cparser::SGrp>                    QGrpVector;
+typedef QVector<cparser::SChan>                   QChanList;
 
 #endif // __20130325_CPARSER_H

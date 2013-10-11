@@ -13,13 +13,10 @@
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "chtmlwriter.h"
 #include "templates.h"
-#include "ctimeshift.h"
 #include "defdef.h"
 #include <QFileInfo>
 #include <QStringList>
-
-// extern timeshift class ...
-extern CTimeShift *pTs;
+#include <QDateTime>
 
 //---------------------------------------------------------------------------
 //
@@ -390,15 +387,16 @@ QString CHtmlWriter::oneCellPage (const QString& content, const QString& style)
 //! \param   prog (const QString&) program description
 //! \param   start (uint) unix timestamp of start time
 //! \param   end (uint) unix timestamp of end time
+//! \param   is (int) optional timeshift value in seconds
 //! \param   style (const QString&) css for this tag
 //
 //! \return  html code of tag
 //---------------------------------------------------------------------------
-QString CHtmlWriter::createTooltip (const QString &name, const QString &prog, uint start, uint end, const QString &style)
+QString CHtmlWriter::createTooltip (const QString &name, const QString &prog, uint start, uint end, int ts, const QString &style)
 {
    // create tool tip with programm info ...
-   QString sStart  = pTs->fromGmtFormatted(start, "dd. MMM yyyy, h:mm");
-   QString sEnd    = end ? (" - " + pTs->fromGmtFormatted(end, "h:mm")) : "";
+   QString sStart  = QDateTime::fromTime_t(start + ts).toString("dd. MMM yyyy, h:mm");
+   QString sEnd    = end ? (" - " + QDateTime::fromTime_t(end + ts).toString("h:mm")) : "";
    QString sLength = end ? (" (" + tr("%1 min.").arg((end - start) / 60) + ")")  : "";
    QStringList sl  = prog.split("\n");
 

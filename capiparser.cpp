@@ -13,9 +13,14 @@
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "capiparser.h"
 #include <QColor>
+#include "ctimeshift.h"
+#include "small_helpers.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
 
 //---------------------------------------------------------------------------
 //
@@ -166,6 +171,8 @@ void CApiParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
    entry.uiEnd        = 0;
    entry.uiStart      = 0;
    entry.bIsHidden    = false;
+   entry.bHasTsInfo   = false;
+   entry.iTs          = 0;
    entry.vTs.clear();
 }
 
@@ -315,4 +322,35 @@ bool CApiParser::ignoreGroup(cparser::SChan& grpEntry)
    }
 
    return false;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   in case we had no timeshift info in channel list, add them
+//
+//! \author  Jo2003
+//! \date    09.10.2013
+//
+//! \param   chanLlist (QVector<cparser::SChan> &) ref. to channel list
+//
+//! \return  0
+//---------------------------------------------------------------------------
+int CApiParser::handleTsStuff(QVector<cparser::SChan> &chanList)
+{
+   for (int i = 0; i < chanList.count(); i ++)
+   {
+      // mInfo(tr("%1 ts count: %2").arg(chanList[i].sName).arg(chanList[i].vTs.count()));
+
+      if (!chanList[i].bHasTsInfo)
+      {
+         /// Hack: if vTs.count() is 1 or 2: -> kartina.tv WITHOUT timeshift!
+         if (!CSmallHelpers::inBetween(1, 2, chanList[i].vTs.count()))
+         {
+            chanList[i].iTs        = pTs->timeShift() * 3600;
+            chanList[i].bHasTsInfo = true;
+         }
+      }
+   }
+
+   return 0;
 }

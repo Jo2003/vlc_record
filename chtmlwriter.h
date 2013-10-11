@@ -45,7 +45,7 @@ public:
    QString tableHead(const QString &content, const QString& style = QString(), int colspan = 1, const QString& align = QString(), const QString& valign = QString());
    QString div(const QString &content, const QString& style = QString(), const QString& align = QString());
    QString oneCellPage (const QString& content, const QString& style = QString());
-   QString createTooltip (const QString& name, const QString& prog, uint start, uint end, const QString& style = QString());
+   QString createTooltip (const QString& name, const QString& prog, uint start, uint end, int ts = 0, const QString& style = QString());
 };
 
 #endif // __20130809_CHTMLWRITER_H
