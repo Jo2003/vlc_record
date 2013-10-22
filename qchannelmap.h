@@ -32,6 +32,7 @@ public:
    ~QChannelMap();
    int fillFromChannelList(const QChanList& chanList);
    bool contains(int key, bool bLock = false);
+   int timeShift(int key, bool bLock = true);
    const cparser::SChan value(int key, bool bLock = false);
    int entry(int key, cparser::SChan &chan, bool bLock = true);
    void lock();

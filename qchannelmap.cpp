@@ -249,3 +249,31 @@ const QGrpVector& QChannelMap::groupVector()
 {
    return _grpVector;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get timeshift value for channel
+//
+//! \author  Jo2003
+//! \date    18.10.2013
+//
+//! \param   key (int) channel id
+//! \param   bLock (bool) do mutex locking (optional)
+//
+//! \return  timeshift
+//---------------------------------------------------------------------------
+int QChannelMap::timeShift(int key, bool bLock)
+{
+   int iRV = 0;
+
+   if (bLock) lock();
+
+   if (contains(key))
+   {
+      iRV = value(key).iTs;
+   }
+
+   if (bLock) unlock();
+
+   return iRV;
+}

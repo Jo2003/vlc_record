@@ -12,6 +12,7 @@
 #include "ctimerrec.h"
 #include "ui_ctimerrec.h"
 #include "ctimeshift.h"
+#include "qchannelmap.h"
 #include <QFileInfo>
 
 // logging stuff ...
@@ -32,6 +33,8 @@ extern ApiParser *pApiParser;
 
 // global timeshift class ...
 extern CTimeShift *pTs;
+
+extern QChannelMap *pChanMap;
 
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor
@@ -180,12 +183,21 @@ void CTimerRec::SetVlcCtrl(CVlcCtrl *pCtrl)
 \----------------------------------------------------------------- */
 void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &name)
 {
+   // check if timeshift is available for this channel ...
+   int iTs = pChanMap->timeShift(cid);
+
    // we don't update ...
    uiEdtId = INVALID_ID;
 
+   // helper ...
+   QString s = iTs ? QString::number(pTs->timeShift()) : "0";
+
    // set timeshift stuff ...
-   uiStart = pTs->fromGmt(uiStart);
-   uiEnd   = pTs->fromGmt(uiEnd);
+   if (iTs)
+   {
+      uiStart = pTs->fromGmt(uiStart);
+      uiEnd   = pTs->fromGmt(uiEnd);
+   }
 
    QDateTime dtStart = QDateTime::fromTime_t(uiStart - TIMER_REC_OFFSET);
    QDateTime dtEnd   = QDateTime::fromTime_t(uiEnd + TIMER_REC_OFFSET);
@@ -203,7 +215,7 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
    }
 
    r_ui->cbxChannel->setCurrentIndex(r_ui->cbxChannel->findData(QVariant(cid)));
-   r_ui->cbxTimeShift->setCurrentIndex(r_ui->cbxTimeShift->findText(QString::number(pTs->timeShift())));
+   r_ui->cbxTimeShift->setCurrentIndex(r_ui->cbxTimeShift->findText(s));
 
    if (name != "")
    {
