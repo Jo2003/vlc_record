@@ -64,7 +64,7 @@ public:
 
    // add control elements to its vector ...
    void addButton (QPushButton *pBtn, eBtnRole role);
-   void addVolSlider (QSlider *pSli);
+   void addVolSlider (QClickAndGoSlider *pSli);
    void addJumpBox (QComboBoxEx *pBox);
    void addCngSlider (QClickAndGoSlider *pSli);
    void addTimeLab (QTimeLabel *pLab);
@@ -148,7 +148,7 @@ private slots:
 
 private:
    // volume slider ...
-   QVector<QSlider *>            _volSliderVector;
+   QVector<QClickAndGoSlider *> _volSliderVector;
 
    // push buttons ...
    QVector<QPushButton *>       _playBtnVector;

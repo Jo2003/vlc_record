@@ -31,18 +31,36 @@ public:
    QClickAndGoSlider ( QWidget * parent = 0 )
       : QSlider(parent)
    {
-      // nothing to do ...
+      _iHandleRange = 80;
    }
 
    QClickAndGoSlider ( Qt::Orientation orientation, QWidget * parent = 0 )
       : QSlider(orientation, parent)
    {
-      // nothing to do ...
+      _iHandleRange = 80;
    }
 
    virtual ~QClickAndGoSlider ()
    {
-      // nothing to do ...
+      _iHandleRange = 80;
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   modify the range around the slider handle so it doesn't catch
+   //!          click events.
+   //!          std: 80. Larger values will reduce the range, lower will raise
+   //
+   //! \author  Jo2003
+   //! \date    11.11.2013
+   //
+   //! \param   --
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   virtual void setHandleRangeVal(int i)
+   {
+      _iHandleRange = i;
    }
 
 protected:
@@ -81,10 +99,10 @@ protected:
          // check if position is different from slider ...
          /// Note: We must use a practical threshold value here.
          /// So we use the range which should be handled by
-         /// the slider / 80 so we must not click at the 100%
+         /// the slider / _iHandleRange so we must not click at the 100%
          /// right position to get the "old" normal
          /// slider behavior.
-         if (abs(value() - pos) > (range / 80))
+         if (abs(value() - pos) > (range / _iHandleRange))
          {
             setValue(pos);
             emit sigClickNGo(pos);
@@ -99,6 +117,9 @@ protected:
       event->ignore();
       QSlider::mousePressEvent(event);
    }
+
+private:
+   int _iHandleRange;
 
 signals:
    // special signal so we know for sure how to handle...

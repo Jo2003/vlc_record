@@ -589,13 +589,17 @@ void QFusionControl::disconnectBtn()
 //! \author  Jo2003
 //! \date    26.11.2012
 //
-//! \param   pSli poibter to volume slider
+//! \param   pSli pointer to volume slider
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QFusionControl::addVolSlider (QSlider *pSli)
+void QFusionControl::addVolSlider (QClickAndGoSlider *pSli)
 {
+   // make sure we can use it as a normal slider as well ...
+   pSli->setHandleRangeVal(20);
+
    connect (pSli, SIGNAL(sliderMoved(int)), this, SLOT(slotVolSliderMoved(int)));
+   connect (pSli, SIGNAL(sigClickNGo(int)), this, SLOT(slotVolSliderMoved(int)));
    _volSliderVector.append(pSli);
 }
 

@@ -164,7 +164,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSlider" name="volSlider">
+      <widget class="QClickAndGoSlider" name="volSlider">
        <property name="minimumSize">
         <size>
          <width>80</width>
