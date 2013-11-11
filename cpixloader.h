@@ -16,6 +16,8 @@
 #include <QVector>
 #include <QMutex>
 
+#include "csettingsdlg.h"
+
 namespace PixCache {
    struct SPixDesc
    {
@@ -42,6 +44,7 @@ public:
    virtual ~CPixLoader();
    void enqueuePic (const QString& sRemote, const QString &sLocal);
    bool busy();
+   void importSettings(CSettingsDlg *pSetDlg);
 
 protected:
    void startDownLoad ();
@@ -54,9 +57,10 @@ public slots:
    void slotImage(const QByteArray& ba);
 
 private:
-   QMutex      mtxCacheQueue;
-   PixVector   cacheQueue;
-   bool        bRun;
+   CSettingsDlg *_pSettings;
+   QMutex        mtxCacheQueue;
+   PixVector     cacheQueue;
+   bool          bRun;
 };
 
 #endif // __011810__PIXLOADER_H

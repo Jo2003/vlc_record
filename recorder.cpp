@@ -164,6 +164,9 @@ Recorder::Recorder(QWidget *parent)
    // set settings for vod browser ...
    ui->vodBrowser->setSettings(&Settings);
 
+   // settings for pix loader ...
+   pixCache.importSettings(&Settings);
+
    // set pix cache ...
    ui->vodBrowser->setPixCache(&pixCache);
 

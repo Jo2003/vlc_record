@@ -11,10 +11,6 @@
 \*************************************************************/
 #include "cpixloader.h"
 #include "defdef.h"
-#include "qcustparser.h"
-
-// global customization class ...
-extern QCustParser *pCustomization;
 
 /* -----------------------------------------------------------------\
 |  Method: CPixLoader / constructor
@@ -28,7 +24,8 @@ extern QCustParser *pCustomization;
 \----------------------------------------------------------------- */
 CPixLoader::CPixLoader(QObject *parent) : QObject(parent)
 {
-   bRun  = false;
+   _pSettings = NULL;
+   bRun       = false;
 }
 
 /* -----------------------------------------------------------------\
@@ -43,6 +40,22 @@ CPixLoader::CPixLoader(QObject *parent) : QObject(parent)
 \----------------------------------------------------------------- */
 CPixLoader::~CPixLoader()
 {
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   import settings dialog (used for API Server)
+//
+//! \author  Jo2003
+//! \date    11.11.2013
+//
+//! \param   pSetDlg (CSettingsDlg *) pointer to settings dialog
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CPixLoader::importSettings(CSettingsDlg *pSetDlg)
+{
+   _pSettings = pSetDlg;
 }
 
 /* -----------------------------------------------------------------\
@@ -77,7 +90,7 @@ void CPixLoader::startDownLoad()
       }
       else
       {
-         emit sigLoadImage(QString("http://%1%2").arg(pCustomization->strVal("API_SERVER")).arg(desc.sRemote));
+         emit sigLoadImage(QString("http://%1%2").arg(_pSettings->GetAPIServer()).arg(desc.sRemote));
       }
    }
    else
