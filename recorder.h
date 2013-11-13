@@ -113,6 +113,14 @@ namespace Ui
        int      iPos;
        QWidget *pWidget;
     };
+
+    enum EDisplayMode
+    {
+       DM_FULLSCREEN,
+       DM_WINDOWED,
+       DM_NORMAL,
+       DM_UNKNOWN
+    };
 }
 
 /********************************************************************\
@@ -176,9 +184,15 @@ private:
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
+    Ui::EDisplayMode                eCurDMode;
+    QRect                           rectBackup;
+    QRect                           playWndRect;
 #endif //INCLUDE_LIBVLC
 
 protected:
+#ifdef INCLUDE_LIBVLC
+    void setDisplayMode(Ui::EDisplayMode newMode);
+#endif // INCLUDE_LIBVLC
     void fillShortCutTab();
     void touchLastOrBestCbx ();
     void touchGenreCbx();
@@ -218,6 +232,7 @@ private slots:
     void slotBwd();
     void slotFwd();
     void slotToggleFullscreen();
+    void slotWindowed();
 #endif /* INCLUDE_LIBVLC */
     void on_btnVodSearch_clicked();
     void on_cbxGenre_activated(int index);

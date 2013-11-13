@@ -84,6 +84,7 @@ Recorder::Recorder(QWidget *parent)
    ui->vMainLayout->removeWidget(ui->masterFrame);
    stackedLayout->addWidget(ui->masterFrame);
    ui->vMainLayout->addLayout(stackedLayout);
+   eCurDMode = Ui::DM_NORMAL;
 #endif // INCLUDE_LIBVLC
 
    // set (customized) windows title ...
@@ -477,7 +478,7 @@ void Recorder::closeEvent(QCloseEvent *event)
 
       // We want to close program, store all needed values ...
       // Note: putting this function in destructor doesn't work!
-      if (!isFullScreen())
+      if (eCurDMode == Ui::DM_NORMAL)
       {
          savePositions();
       }
@@ -3706,41 +3707,23 @@ void Recorder::slotDownStreamRequested (int id)
 \----------------------------------------------------------------- */
 void Recorder::slotToggleFullscreen()
 {
-   if (!pVideoWidget)
-   {
-      // get videoWidget ...
-      pVideoWidget = ui->player->getAndRemoveVideoWidget();
+   setDisplayMode(Ui::DM_FULLSCREEN);
+}
 
-      // add videoWidget to stacked layout ...
-      stackedLayout->addWidget(pVideoWidget);
-
-      // make sure videoWidget is the one we see ...
-      stackedLayout->setCurrentWidget(pVideoWidget);
-
-      // make dialog fullscreen ...
-      toggleFullscreen();
-
-      emit sigFullScreenToggled(1);
-   }
-   else
-   {
-      // remove videoWidget from stacked layout ...
-      stackedLayout->removeWidget(pVideoWidget);
-
-      // make sure main dialog is visible ...
-      stackedLayout->setCurrentWidget(ui->masterFrame);
-
-      // put videoWidget back into player widget ...
-      ui->player->addAndEmbedVideoWidget();
-
-      // reset videoWidgets local pointer ...
-      pVideoWidget = NULL;
-
-      // show normal ...
-      toggleFullscreen();
-
-      emit sigFullScreenToggled(0);
-   }
+//---------------------------------------------------------------------------
+//
+//! \brief   toggle windowed mode [slot]
+//
+//! \author  Jo2003
+//! \date    13.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotWindowed()
+{
+   setDisplayMode(Ui::DM_WINDOWED);
 }
 #endif // INCLUDE_LIBVLC
 
@@ -4112,6 +4095,7 @@ void Recorder::fillShortCutTab()
       {tr("Jump Forward"),         this,       SLOT(slotFwd()),                   "CTRL+ALT+F"},
       {tr("Jump Backward"),        this,       SLOT(slotBwd()),                   "CTRL+ALT+B"},
       {tr("Screenshot"),           ui->player, SLOT(slotTakeScreenShot()),        "F12"},
+      {tr("Windowed"),             this,       SLOT(slotWindowed()),              "F11"},
 #endif // INCLUDE_LIBVLC
 
       {tr("Next Channel"),         this,       SLOT(slotChannelDown()),           "CTRL+N"},
@@ -5543,7 +5527,168 @@ void Recorder::toggleFullscreen()
     show();
 }
 
+#ifdef INCLUDE_LIBVLC
+//---------------------------------------------------------------------------
+//
+//! \brief   switch between supported display modes
+//!          (normal, fullscreen, windowed)
+//
+//! \author  Jo2003
+//! \date    13.11.2013
+//
+//! \param   newMode (Ui::EDisplayMode) new display mode (toggle supported)
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
+{
+   // should we toggle a mode ... ?
+   if (newMode == eCurDMode)
+   {
+      newMode = Ui::DM_NORMAL;
+   }
+
+   // something to do ... ?
+   if (newMode != eCurDMode)
+   {
+      switch(eCurDMode)
+      {
+      //////////////////////////////////////////////////////////////////////////////
+      /// go from fullscreen to normal or windowed mode ...
+      //////////////////////////////////////////////////////////////////////////////
+      case Ui::DM_FULLSCREEN:
+         if (newMode == Ui::DM_NORMAL)
+         {
+            // remove videoWidget from stacked layout ...
+            stackedLayout->removeWidget(pVideoWidget);
+
+            // put mainframe back to stacked layout ...
+            stackedLayout->addWidget(ui->masterFrame);
+            ui->masterFrame->setVisible(true);
+
+            // make sure main dialog is visible ...
+            stackedLayout->setCurrentWidget(ui->masterFrame);
+
+            // put videoWidget back into player widget ...
+            ui->player->addAndEmbedVideoWidget();
+
+            // reset videoWidgets local pointer ...
+            pVideoWidget = NULL;
+
+            // show normal ...
+            toggleFullscreen();
+
+            // hide overlay control ...
+            emit sigFullScreenToggled(0);
+
+            // make sure we restore the initial geometry ...
+            setGeometry(rectBackup);
+         }
+         else if (newMode == Ui::DM_WINDOWED)
+         {
+            // show normal ...
+            toggleFullscreen();
+
+            // hide overlay control ...
+            emit sigFullScreenToggled(0);
+
+            // resize to initial player widget size ...
+            setGeometry(playWndRect);
+         }
+         break;
+
+      //////////////////////////////////////////////////////////////////////////////
+      /// go from normal to fullscreen or windowed mode ...
+      //////////////////////////////////////////////////////////////////////////////
+      case Ui::DM_NORMAL:
+
+         // collect old and new size ...
+         rectBackup  = geometry();
+
+         // not yet initialized ...
+         if (playWndRect.isNull())
+         {
+            playWndRect.setX(x());
+            playWndRect.setY(y());
+            playWndRect.setSize(ui->player->size());
+         }
+
+         // get videoWidget ...
+         pVideoWidget = ui->player->getAndRemoveVideoWidget();
+
+         // remove and hide master frame ...
+         stackedLayout->removeWidget(ui->masterFrame);
+         ui->masterFrame->setVisible(false);
+
+         // add videoWidget to stacked layout ...
+         stackedLayout->addWidget(pVideoWidget);
+
+         // make sure videoWidget is the one we see ...
+         stackedLayout->setCurrentWidget(pVideoWidget);
+
+         if (newMode == Ui::DM_FULLSCREEN)
+         {
+            // make dialog fullscreen ...
+            toggleFullscreen();
+
+            // tell about ...
+            emit sigFullScreenToggled(1);
+         }
+         else if (newMode == Ui::DM_WINDOWED)
+         {
+            // resize to initial player widget size ...
+            setGeometry(playWndRect);
+         }
+         break;
+
+      //////////////////////////////////////////////////////////////////////////////
+      /// go from windowed mode to fullscreen or normal mode ...
+      //////////////////////////////////////////////////////////////////////////////
+      case Ui::DM_WINDOWED:
+
+         // store current position and size ...
+         playWndRect = geometry();
+
+         if (newMode == Ui::DM_NORMAL)
+         {
+            // remove videoWidget from stacked layout ...
+            stackedLayout->removeWidget(pVideoWidget);
+
+            // put mainframe back to stacked layout ...
+            stackedLayout->addWidget(ui->masterFrame);
+            ui->masterFrame->setVisible(true);
+
+            // make sure main dialog is visible ...
+            stackedLayout->setCurrentWidget(ui->masterFrame);
+
+            // put videoWidget back into player widget ...
+            ui->player->addAndEmbedVideoWidget();
+
+            // reset videoWidgets local pointer ...
+            pVideoWidget = NULL;
+
+            // make sure we restore the initial geometry ...
+            setGeometry(rectBackup);
+         }
+         else if (newMode == Ui::DM_FULLSCREEN)
+         {
+            // make dialog fullscreen ...
+            toggleFullscreen();
+
+            // tell about ...
+            emit sigFullScreenToggled(1);
+         }
+         break;
+
+      default:
+         break;
+      }
+
+      eCurDMode = newMode;
+   }
+}
+#endif // INCLUDE_LIBVLC
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-
