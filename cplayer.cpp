@@ -78,6 +78,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.addMuteLab(ui->labSound);
    missionControl.addVidFormCbx(ui->cbxAspect, QFusionControl::CBX_ASPECT);
    missionControl.addVidFormCbx(ui->cbxCrop, QFusionControl::CBX_CROP);
+   missionControl.addButton(ui->btnScrShot, QFusionControl::BTN_SCRSHOT);
 
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
@@ -144,6 +145,9 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(&missionControl, SIGNAL(sigPosClickNGo(int)), this, SLOT(slotSliderPosChanged()));
    connect(&missionControl, SIGNAL(sigPosSliderReleased()), this, SLOT(slotSliderPosChanged()));
    connect(&missionControl, SIGNAL(sigPosSliderValueChanged(int)), this, SLOT(slotPositionChanged(int)));
+
+   // screenshot ...
+   connect(&missionControl, SIGNAL(sigScrShot()), this, SLOT(slotTakeScreenShot()));
 
    // event poll ...
    connect(&tEventPoll, SIGNAL(timeout()), this, SLOT(slotEventPoll()));
@@ -2049,6 +2053,28 @@ void CPlayer::slotChangeATrack(int id)
       iRet = libvlc_audio_set_track(pMediaPlayer, id);
 
       mInfo(tr("Change audio track to id %1: %2!").arg(id).arg((iRet == 0) ? "ok" : "error"));
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   take a screenshot and store it in video folder
+//
+//! \author  Jo2003
+//! \date    13.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CPlayer::slotTakeScreenShot()
+{
+   if (pMediaPlayer)
+   {
+      if (isPlaying())
+      {
+         libvlc_video_take_snapshot(pMediaPlayer, 0, pSettings->GetTargetDir().toUtf8().constData(), 0, 0);
+      }
    }
 }
 

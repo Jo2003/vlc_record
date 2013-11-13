@@ -51,6 +51,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addButton(ui->pushBwd,           QFusionControl::BTN_BWD);
    missionControl.addButton(ui->btnFullScreen,     QFusionControl::BTN_FS);
    missionControl.addButton(ui->btnSaveAspectCrop, QFusionControl::BTN_FRMT);
+   missionControl.addButton(ui->btnScrShot,        QFusionControl::BTN_SCRSHOT);
 
    missionControl.addCngSlider(ui->posSlider);
    missionControl.addJumpBox(ui->cbxTimeJumpVal);

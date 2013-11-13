@@ -142,6 +142,18 @@ extern CLogFile VlcLog;
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
+//! \fn      sigScrShot [signal]
+//! \brief   screenshot button clicked
+//
+//! \author  Jo2003
+//! \date    13.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
 //! \fn      sigSaveVideoFormat [signal]
 //! \brief   save video format button clicked
 //
@@ -309,6 +321,14 @@ void QFusionControl::addButton (QPushButton *pBtn, eBtnRole role)
       _frmtBtnVector.append(pBtn);
       break;
 
+   case BTN_SCRSHOT:
+      // connect signal --> slots ...
+      connect (pBtn, SIGNAL(clicked()), this, SLOT(slotScrShot()));
+
+      // add to vector ...
+      _scrShtBtnVector.append(pBtn);
+      break;
+
 
    default:
       break;
@@ -358,6 +378,10 @@ void QFusionControl::btnSetIcon(const QIcon &icon, eBtnRole role)
 
    case BTN_FRMT:
       pVector = &_frmtBtnVector;
+      break;
+
+   case BTN_SCRSHOT:
+      pVector = &_scrShtBtnVector;
       break;
 
    default:
@@ -471,6 +495,22 @@ void QFusionControl::slotFs ()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   one screenshot button was pressed, emit scrrenshot signal
+//
+//! \author  Jo2003
+//! \date    13.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::slotScrShot()
+{
+   emit sigScrShot();
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   save video format button was pressed, emit signal
 //
 //! \author  Jo2003
@@ -530,6 +570,10 @@ void QFusionControl::enableBtn (bool enable, eBtnRole role)
       pVector = &_frmtBtnVector;
       break;
 
+   case BTN_SCRSHOT:
+      pVector = &_scrShtBtnVector;
+      break;
+
    default:
       break;
    }
@@ -573,6 +617,9 @@ void QFusionControl::disconnectBtn()
 
    disconnect(this, SLOT(slotFs()));
    _fsBtnVector.clear();
+
+   disconnect(this, SLOT(slotScrShot()));
+   _scrShtBtnVector.clear();
 
    disconnect(this, SLOT(slotSaveVideoFormat()));
    _frmtBtnVector.clear();

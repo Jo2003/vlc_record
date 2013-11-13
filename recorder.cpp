@@ -4111,6 +4111,7 @@ void Recorder::fillShortCutTab()
       {tr("Toggle Mute"),          ui->player, SLOT(slotMute()),                  "M"},
       {tr("Jump Forward"),         this,       SLOT(slotFwd()),                   "CTRL+ALT+F"},
       {tr("Jump Backward"),        this,       SLOT(slotBwd()),                   "CTRL+ALT+B"},
+      {tr("Screenshot"),           ui->player, SLOT(slotTakeScreenShot()),        "F12"},
 #endif // INCLUDE_LIBVLC
 
       {tr("Next Channel"),         this,       SLOT(slotChannelDown()),           "CTRL+N"},

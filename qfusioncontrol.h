@@ -48,6 +48,7 @@ public:
       BTN_BWD,       ///< backward
       BTN_FS,        ///< fullscreen
       BTN_FRMT,      ///< save video format
+      BTN_SCRSHOT,   ///< take a screenshot
       BTN_ANY = 255  ///< undefined button
    };
 
@@ -111,6 +112,7 @@ signals:
    void sigRec ();
    void sigFwd ();
    void sigBwd ();
+   void sigScrShot ();
    void sigSaveVideoFormat ();
    void sigFullScreen ();
    void sigPosClickNGo (int pos);
@@ -135,6 +137,7 @@ private slots:
    void slotFwd ();
    void slotBwd ();
    void slotFs ();
+   void slotScrShot ();
    void slotVolSliderMoved (int vol);
    void slotJumpValChanged (int idx);
    void slotClickNGo(int pos);
@@ -158,6 +161,7 @@ private:
    QVector<QPushButton *>       _bwdBtnVector;
    QVector<QPushButton *>       _fsBtnVector;
    QVector<QPushButton *>       _frmtBtnVector;
+   QVector<QPushButton *>       _scrShtBtnVector;
 
    // time jump combobox ...
    QVector<QComboBoxEx *>       _jumpCbxVector;

@@ -138,6 +138,7 @@ public slots:
    void slotResetVideoFormat();
    void slotDeinterlace (bool bDeintl);
    void slotChangeATrack (int id);
+   void slotTakeScreenShot();
 
 signals:
    void sigPlayState (int ps);
