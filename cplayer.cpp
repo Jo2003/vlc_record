@@ -663,7 +663,7 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
          sMrl.replace('\\', '/');
       }
 
-      if ((p_md = libvlc_media_new_location(pVlcInstance, QUrl::toPercentEncoding(sMrl, "/:?&=%"))) != NULL)
+      if ((p_md = libvlc_media_new_location(pVlcInstance, QUrl::toPercentEncoding(sMrl, "/:?&=%@"))) != NULL)
       {
          mInfo(tr("Media successfully created from MRL:\n --> %1").arg(sMrl));
 
