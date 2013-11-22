@@ -86,6 +86,12 @@ int QCustParser::loadCustResource()
    else
    {
       QDir::addSearchPath("branding", ":/oem");
+#ifdef __EXTRACT_BRANDING
+      QFile::copy("branding:cust", "/tmp/cust.xml");
+      QFile::copy("branding:main/icon", "/tmp/icon.png");
+      QFile::copy("branding:main/live", "/tmp/live.png");
+      QFile::copy("branding:video/logo", "/tmp/logo.png");
+#endif // __EXTRACT_BRANDING
    }
 
    return iRet;
