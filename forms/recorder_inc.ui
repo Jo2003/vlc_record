@@ -1388,6 +1388,12 @@ border-top: 0px;
                 <iconset resource="../common.qrc">
                  <normaloff>:/app/cam</normaloff>:/app/cam</iconset>
                </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
                <property name="autoDefault">
                 <bool>false</bool>
                </property>
@@ -1680,8 +1686,8 @@ border-top: 0px;
   <tabstop>btnVodSearch</tabstop>
  </tabstops>
  <resources>
-  <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
+  <include location="../common.qrc"/>
  </resources>
  <connections>
   <connection>
