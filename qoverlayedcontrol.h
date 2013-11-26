@@ -14,12 +14,11 @@
 #ifndef __20121109_QOVERLAYEDCONTROL_H
    #define __20121109_QOVERLAYEDCONTROL_H
 
-#include <QWidget>
 #include <QEvent>
 #include <QShowEvent>
 #include <QMouseEvent>
-#include <QTimer>
 #include <QPoint>
+#include "qfadewidget.h"
 
 namespace Ui {
   class QOverlayedControl;
@@ -31,20 +30,18 @@ namespace Ui {
 //! \author  Jo2003
 //! \brief   a player control widget to show while player is fullscreen
 //---------------------------------------------------------------------------
-class QOverlayedControl : public QWidget
+class QOverlayedControl : public QFadeWidget
 {
   Q_OBJECT
 
 public:
   QOverlayedControl(QWidget *parent = 0, Qt::WindowFlags f = 0);
   virtual ~QOverlayedControl();
-  void fadeOut();
 
 protected:
   virtual void changeEvent(QEvent *e);
   virtual void enterEvent(QEvent *e);
   virtual void leaveEvent(QEvent *e);
-  virtual void showEvent(QShowEvent *e);
   virtual void mousePressEvent(QMouseEvent *e);
   virtual void mouseMoveEvent(QMouseEvent *e);
   virtual void mouseReleaseEvent(QMouseEvent *e);
@@ -56,7 +53,6 @@ signals:
   void wheel(bool w);
 
 private slots:
-  void slotFadeMore ();
   void slotMouseEntersMoveHandle ();
   void slotMouseLeavesMoveHandle ();
   void on_pushHide_clicked();
@@ -65,8 +61,6 @@ public slots:
 
 private:
   Ui::QOverlayedControl *ui;
-  qreal  _fOpaque;
-  QTimer _tFade;
   QPoint _offset;
   bool   _mouseOverMoveHandle;
 };
