@@ -2803,18 +2803,18 @@ or start time is later than end time!</source>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="424"/>
+        <location filename="qvlcvideowidget.cpp" line="426"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="654"/>
+        <location filename="qvlcvideowidget.cpp" line="656"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="685"/>
+        <location filename="qvlcvideowidget.cpp" line="687"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>

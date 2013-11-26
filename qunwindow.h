@@ -14,10 +14,8 @@
 #ifndef __20131125_QUNWINDOW_H
    #define __20131125_QUNWINDOW_H
 
-#include <QWidget>
-#include <QEvent>
 #include <QMouseEvent>
-#include <QTimer>
+#include "qfadewidget.h"
 
 namespace Ui {
    class QUnWindow;
@@ -29,30 +27,25 @@ namespace Ui {
 //! \author  Jo2003
 //! \brief   helper widget used as overlay button
 //---------------------------------------------------------------------------
-class QUnWindow : public QWidget
+class QUnWindow : public QFadeWidget
 {
    Q_OBJECT
    
 public:
    QUnWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
    virtual ~QUnWindow();
-   void fadeOut();
 
 protected:
    virtual void mousePressEvent(QMouseEvent *e);
    virtual void changeEvent(QEvent *event);
-   virtual void showEvent(QShowEvent *e);
 
 signals:
    void sigExitWindowed();
 
 private slots:
-   void slotFadeMore ();
    
 private:
    Ui::QUnWindow *ui;
-   qreal  _fOpaque;
-   QTimer _tFade;
 };
 
 #endif // __20131125_QUNWINDOW_H

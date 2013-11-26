@@ -121,7 +121,8 @@ HEADERS += recorder.h \
     chtmlwriter.h \
     qoverlayicon.h \
     qchannelmap.h \
-    qunwindow.h
+    qunwindow.h \
+    qfadewidget.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

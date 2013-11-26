@@ -27,16 +27,10 @@
 //! \return  --
 //---------------------------------------------------------------------------
 QUnWindow::QUnWindow(QWidget *parent, Qt::WindowFlags f) :
-   QWidget(parent, f),
-   ui(new Ui::QUnWindow),
-   _fOpaque(0.0)
+   QFadeWidget(parent, f),
+   ui(new Ui::QUnWindow)
 {
    ui->setupUi(this);
-
-   // transparent background ...
-   setAttribute(Qt::WA_TranslucentBackground);
-
-   connect (&_tFade, SIGNAL(timeout()), this, SLOT(slotFadeMore()));
 }
 
 //---------------------------------------------------------------------------
@@ -96,75 +90,3 @@ void QUnWindow::mousePressEvent(QMouseEvent *e)
 
    QWidget::mousePressEvent(e);
 }
-
-//---------------------------------------------------------------------------
-//
-//! \brief   widget is about to be shown
-//
-//! \author  Jo2003
-//! \date    27.11.2012
-//
-//! \param   e pointer to QShowEvent
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QUnWindow::showEvent(QShowEvent *e)
-{
-   // stop fader timer ...
-   _tFade.stop();
-
-   // reset opaque value to default (slightly transparent) ...
-   _fOpaque = 0.75;
-
-   // set transparancy to control panel ...
-   setWindowOpacity(_fOpaque);
-
-   // set pseudo caption ...
-   // ui->labMoveHandle->setText(APP_NAME);
-
-   QWidget::showEvent(e);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   start fade out
-//
-//! \author  Jo2003
-//! \date    27.11.2012
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QUnWindow::fadeOut()
-{
-   // fade a step every 10 msec ...
-   _tFade.start(10);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   fade out more and finally hide widget
-//
-//! \author  Jo2003
-//! \date    27.11.2012
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QUnWindow::slotFadeMore()
-{
-   _fOpaque -= 0.03;
-
-   if (_fOpaque <= 0.0)
-   {
-      _tFade.stop();
-      hide();
-   }
-   else
-   {
-      setWindowOpacity(_fOpaque);
-   }
-}
-

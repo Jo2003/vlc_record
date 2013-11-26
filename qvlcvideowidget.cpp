@@ -80,6 +80,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _ctrlPanel     = new QOverlayedControl(_render, f);
    _ctrlTogWndewd = new QUnWindow(_render, f);
    _ctrlTogWndewd->setMouseTracking(true);
+   _ctrlTogWndewd->setOpaque(0.85);
 
    // hide panel initially ...
    _ctrlPanel->hide();
@@ -210,7 +211,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
       slotDoOverlayPositioning();
-      _ctrlTogWndewd->show();
+      _ctrlTogWndewd->fadeIn();
+      // _ctrlTogWndewd->show();
       _ctrlTogWndewd->raise();
       _mouseHide->start(1500);
       raiseRender();
