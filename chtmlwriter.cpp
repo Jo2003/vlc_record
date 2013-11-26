@@ -400,7 +400,7 @@ QString CHtmlWriter::createTooltip (const QString &name, const QString &prog, ui
    QString sLength = end ? (" (" + tr("%1 min.").arg((end - start) / 60) + ")")  : "";
    QStringList sl  = prog.split("\n");
 
-   QString s = tableCell(htmlTag("b", name,  "color: red; font-size: large;"), "", 1, "left" );
+   QString s = tableCell(htmlTag("b", name,  "color: red;"), "", 1, "left" );
    s        += tableCell(span(sStart + sEnd + sLength, "color: #080;")       , "", 1, "right");
    s         = tableRow(s);
    s         = table(s);
