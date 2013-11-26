@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "67"
-#define BETA_EXT      "B2"
+#define BETA_EXT      "B3"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-11-26: Version 2.67B3
+| - add buttons for windowed mode
+| - add overlay to leave windowed mode
+| - place windowed mode where player window was
+| - create base class for fading widget
+| - use fading widget for overlay controls
+| - overlay controls fade in and out
+|
 | 2013-11-18: Version 2.67B2
 | - use click'n'go slider for volume as well
 | - support windowed mode (F11)
