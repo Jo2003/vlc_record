@@ -41,10 +41,11 @@ public:
    //! \return  --
    //---------------------------------------------------------------------------
    QFadeWidget(QWidget* parent = 0, Qt::WindowFlags f = 0)
-      : QWidget(parent, f),
-        _fOpaqueMaster(0.75),
-        _fOpaque(0.0)
+      : QWidget(parent, f)
    {
+      _fOpaqueMaster = 0.75;
+      _fOpaque       = 0.0;
+
       // transparent background ...
       setAttribute(Qt::WA_TranslucentBackground);
 

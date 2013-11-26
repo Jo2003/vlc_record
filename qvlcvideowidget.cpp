@@ -201,8 +201,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
    {
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
-      _ctrlPanel->raise();
       _ctrlPanel->fadeIn();
+      _ctrlPanel->raise();
       _mouseHide->start(1500);
    }
 
@@ -211,8 +211,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
       slotDoOverlayPositioning();
-      _ctrlTogWndewd->raise();
       _ctrlTogWndewd->fadeIn();
+      _ctrlTogWndewd->raise();
       _mouseHide->start(1500);
       raiseRender();
    }
@@ -538,8 +538,8 @@ void QVlcVideoWidget::fullScreenToggled(int on)
       }
 
       // make sure we have the focus ...
-      _ctrlPanel->raise();
       _ctrlPanel->fadeIn();
+      _ctrlPanel->raise();
       _ctrlPanel->activateWindow();
       _ctrlPanel->setFocus(Qt::OtherFocusReason);
 
