@@ -15,6 +15,9 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QRegExp>
+#include <QStackedLayout>
+#include <QPixmap>
+#include <QMessageBox>
 
 #include "qfusioncontrol.h"
 
@@ -42,8 +45,10 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _shortcuts(0),
    _extFullScreen(false),
    _ctrlPanel(NULL),
+   _ctrlTogWndewd(NULL),
    _mouseOnPanel(false),
    _panelPositioned(false),
+   _bWindowed(false),
    _contextMenu(NULL)
 {
    setMouseTracking(true);
@@ -51,6 +56,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    QVBoxLayout *pLayout = new QVBoxLayout();
    _render              = new QWidget(this);
    _mouseHide           = new QTimer(this);
+
    _render->setMouseTracking(true);
    _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
@@ -59,15 +65,25 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
                           "background-image: url(branding:video/logo);"
                           "background-repeat: no-repeat;"
                           "background-position: center middle;}");
+
    pLayout->setMargin(0);
    pLayout->addWidget(_render);
    setLayout(pLayout);
 
-   // create player control panel ...
-   _ctrlPanel = new QOverlayedControl(_render, Qt::Tool | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+   // window flags for overlay widgets ...
+   Qt::WindowFlags f = Qt::Window | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
+#ifdef Q_OS_LINUX
+   f |= Qt::X11BypassWindowManagerHint;
+#endif // Q_OS_LINUX
+
+   // create player control panels ...
+   _ctrlPanel     = new QOverlayedControl(_render, f);
+   _ctrlTogWndewd = new QUnWindow(_render, f);
+   _ctrlTogWndewd->setMouseTracking(true);
 
    // hide panel initially ...
    _ctrlPanel->hide();
+   _ctrlTogWndewd->hide();
 
    // use own context menu ...
    setContextMenuPolicy (Qt::CustomContextMenu);
@@ -86,6 +102,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
 
    // all content menu actions handled by one slot ...
    connect (_contextMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotContentActionTriggered(QAction*)));
+   connect(_ctrlTogWndewd, SIGNAL(sigExitWindowed()), this, SLOT(slotExitWindowed()));
 }
 
 //---------------------------------------------------------------------------
@@ -186,6 +203,17 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       _ctrlPanel->show();
       _ctrlPanel->raise();
       _mouseHide->start(1500);
+   }
+
+   if (_bWindowed)
+   {
+      emit mouseShow(event->globalPos());
+      QApplication::restoreOverrideCursor();
+      slotDoOverlayPositioning();
+      _ctrlTogWndewd->show();
+      _ctrlTogWndewd->raise();
+      _mouseHide->start(1500);
+      raiseRender();
    }
 
    if (!_mouseOnPanel)
@@ -315,6 +343,14 @@ void QVlcVideoWidget::hideMouse()
    {
       QApplication::setOverrideCursor(Qt::BlankCursor);
       _ctrlPanel->fadeOut();
+      _mouseHide->stop();
+      emit mouseHide();
+   }
+
+   if (_bWindowed)
+   {
+      QApplication::setOverrideCursor(Qt::BlankCursor);
+      _ctrlTogWndewd->fadeOut();
       _mouseHide->stop();
       emit mouseHide();
    }
@@ -517,6 +553,25 @@ void QVlcVideoWidget::fullScreenToggled(int on)
 
       // restore visible cursor ...
       QApplication::restoreOverrideCursor();
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   windowed toggled, do cursor hide stuff
+//
+//! \author  Jo2003
+//! \date    25.11.2013
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::windowed(int on)
+{
+   _bWindowed = !!on;
+
+   if (!_bWindowed)
+   {
+      _ctrlTogWndewd->hide();
    }
 }
 
@@ -778,4 +833,59 @@ int QVlcVideoWidget::getCurrentATrack ()
    _mtxLv.unlock();
 
    return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   exit windowed mode
+//
+//! \author  Jo2003
+//! \date    25.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotExitWindowed()
+{
+   emit sigExitWindowed();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   window was moved, hide close overlay
+//
+//! \author  Jo2003
+//! \date    25.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotMoved()
+{
+   if (_bWindowed)
+   {
+      _ctrlTogWndewd->hide();
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   re-position close overlay
+//
+//! \author  Jo2003
+//! \date    25.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::slotDoOverlayPositioning()
+{
+   if (_bWindowed)
+   {
+      QRect rect = parentWidget()->geometry();
+      _ctrlTogWndewd->move(rect.x() + rect.width() - (_ctrlTogWndewd->width() + 5), rect.y() + 5);
+   }
 }

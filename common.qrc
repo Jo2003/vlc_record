@@ -65,6 +65,8 @@
         <file alias="down_arrow">resources/down_arrow.png</file>
         <file alias="down_arrow_disabled">resources/down_arrow_disabled.png</file>
         <file alias="atrack">resources/audio.png</file>
+        <file alias="close_windowed">resources/close_windowed.png</file>
+        <file alias="enter_windowed">resources/enter_windowed.png</file>
     </qresource>
     <qresource prefix="/vod">
         <file alias="is_fav">resources/heart_red.png</file>

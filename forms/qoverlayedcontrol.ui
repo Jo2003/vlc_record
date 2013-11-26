@@ -188,6 +188,41 @@ border: 1px solid gray;
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="btnWindowed">
+          <property name="minimumSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16</width>
+            <height>16</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Enter Windowed Mode</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../common.qrc">
+            <normaloff>:/player/enter_windowed</normaloff>:/player/enter_windowed</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="btnFullScreen">
           <property name="minimumSize">
            <size>
@@ -849,6 +884,11 @@ color: #aaa;
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QComboBoxEx</class>
+   <extends>QComboBox</extends>
+   <header>qcomboboxex.h</header>
+  </customwidget>
+  <customwidget>
    <class>QClickAndGoSlider</class>
    <extends>QSlider</extends>
    <header>qclickandgoslider.h</header>
@@ -857,11 +897,6 @@ color: #aaa;
    <class>QTimeLabel</class>
    <extends>QLabel</extends>
    <header>qtimelabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QComboBoxEx</class>
-   <extends>QComboBox</extends>
-   <header>qcomboboxex.h</header>
   </customwidget>
   <customwidget>
    <class>QMoveHandle</class>

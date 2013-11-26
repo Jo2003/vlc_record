@@ -28,6 +28,7 @@
 #include "clogfile.h"
 #include "cshortcutex.h"
 #include "qoverlayedcontrol.h"
+#include "qunwindow.h"
 
 // ----------------------------------------------------------
 //    namespace ...
@@ -100,8 +101,10 @@ private:
    QVector<CShortcutEx *> *_shortcuts;
    bool                    _extFullScreen;
    QOverlayedControl      *_ctrlPanel;
+   QUnWindow              *_ctrlTogWndewd;
    bool                    _mouseOnPanel;
    bool                    _panelPositioned;
+   bool                    _bWindowed;
    QMenu                  *_contextMenu;
    QLangVector             _langVector;
    QMutex                  _mtxLv;
@@ -114,19 +117,25 @@ signals:
    void wheel (const bool up);
    void sigDeinterlace (bool);
    void sigNewATrack (int);
+   void sigExitWindowed ();
+   void sigForceParentsFocus();
 
 public slots:
    void toggleFullScreen ();
    void hideMouse ();
    void fullScreenToggled(int on);
+   void windowed(int on);
    void slotMouseEntersPanel ();
    void slotMouseLeavesPanel ();
    void slotWheel(bool w);
    void slotUpdLangVector(QLangVector lv);
+   void slotExitWindowed();
+   void slotMoved();
 
 private slots:
    void slotCustContextMenu(QPoint pt);
    void slotContentActionTriggered (QAction *pAct);
+   void slotDoOverlayPositioning();
 };
 
 #endif // __20120208_QVLCVIDEOWIDGET_H

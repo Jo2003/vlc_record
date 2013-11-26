@@ -70,6 +70,7 @@ public:
    void  addAndEmbedVideoWidget();
    ulong libvlcVersion();
    void resetBuffPercent();
+   QVlcVideoWidget*& getVideoWidget();
 
    static QVector<libvlc_event_type_t> _eventQueue;
    static const char*                  _pAspect[];
@@ -135,6 +136,7 @@ public slots:
    void slotMute();
    void slotShowInfoUpdated();
    void slotFsToggled (int on);
+   void slotWindowed (int on);
    void slotResetVideoFormat();
    void slotDeinterlace (bool bDeintl);
    void slotChangeATrack (int id);

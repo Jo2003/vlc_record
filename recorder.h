@@ -226,6 +226,7 @@ protected:
     virtual void hideEvent (QHideEvent * event);
     virtual void closeEvent (QCloseEvent *event);
     virtual void keyPressEvent (QKeyEvent *event);
+    virtual void moveEvent(QMoveEvent *event);
 
 private slots:
 #ifdef INCLUDE_LIBVLC
@@ -315,6 +316,7 @@ private slots:
     void slotWlClick(QUrl url);
     void on_pushWatchList_clicked();
     void slotUpdWatchListCount();
+    void slotForceFocus();
 
 signals:
     void sigShow ();
@@ -328,6 +330,8 @@ signals:
     void sigShowInfoUpdated();
     void sigFullScreenToggled (int on);
     void sigLockParentalManager();
+    void sigWindowed(int);
+    void sigMoved();
 };
 
 #endif /* __011910__RECORDER_H */

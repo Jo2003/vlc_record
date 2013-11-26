@@ -70,15 +70,15 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    uint i;
 
    // feed mission control ...
+   missionControl.addMuteLab(ui->labSound);
    missionControl.addCngSlider(ui->posSlider);
    missionControl.addTimeLab(ui->labPos);
    missionControl.addVolSlider(ui->volSlider);
-   missionControl.addButton(ui->btnFullScreen, QFusionControl::BTN_FS);
+   missionControl.addButton(ui->btnFullScreen,     QFusionControl::BTN_FS);
    missionControl.addButton(ui->btnSaveAspectCrop, QFusionControl::BTN_FRMT);
-   missionControl.addMuteLab(ui->labSound);
-   missionControl.addVidFormCbx(ui->cbxAspect, QFusionControl::CBX_ASPECT);
-   missionControl.addVidFormCbx(ui->cbxCrop, QFusionControl::CBX_CROP);
-   missionControl.addButton(ui->btnScrShot, QFusionControl::BTN_SCRSHOT);
+   missionControl.addButton(ui->btnWindowed,       QFusionControl::BTN_WNDWD);
+   missionControl.addVidFormCbx(ui->cbxAspect,     QFusionControl::CBX_ASPECT);
+   missionControl.addVidFormCbx(ui->cbxCrop,       QFusionControl::CBX_CROP);
 
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
@@ -1774,6 +1774,21 @@ void CPlayer::slotFsToggled(int on)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: slotWindowed
+|  Begin: 25.11.2013
+|  Author: Jo2003
+|  Description: windowed mode toggled
+|
+|  Parameters: enabled or disabled
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CPlayer::slotWindowed(int on)
+{
+   ui->videoWidget->windowed(on);
+}
+
+/* -----------------------------------------------------------------\
 |  Method: clearMediaList
 |  Begin: 13.08.2012
 |  Author: Jo2003
@@ -2078,6 +2093,20 @@ void CPlayer::slotTakeScreenShot()
    }
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   get pointer to video widget
+//
+//! \author  Jo2003
+//! \date    25.11.2013
+//
+//
+//! \return  pointer to video widget
+//---------------------------------------------------------------------------
+QVlcVideoWidget*& CPlayer::getVideoWidget()
+{
+   return ui->videoWidget;
+}
 
 /************************* History ***************************\
 | $Log$

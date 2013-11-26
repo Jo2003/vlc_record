@@ -100,11 +100,14 @@ Recorder::Recorder(QWidget *parent)
    pWatchList    =  NULL;
 
    // feed mission control ...
-   missionControl.addButton(ui->pushPlay,   QFusionControl::BTN_PLAY);
-   missionControl.addButton(ui->pushStop,   QFusionControl::BTN_STOP);
-   missionControl.addButton(ui->pushRecord, QFusionControl::BTN_REC);
-   missionControl.addButton(ui->pushFwd,    QFusionControl::BTN_FWD);
-   missionControl.addButton(ui->pushBwd,    QFusionControl::BTN_BWD);
+   missionControl.addButton(ui->pushPlay,     QFusionControl::BTN_PLAY);
+   missionControl.addButton(ui->pushStop,     QFusionControl::BTN_STOP);
+   missionControl.addButton(ui->pushRecord,   QFusionControl::BTN_REC);
+   missionControl.addButton(ui->pushFwd,      QFusionControl::BTN_FWD);
+   missionControl.addButton(ui->pushBwd,      QFusionControl::BTN_BWD);
+#ifdef INCLUDE_LIBVLC
+   missionControl.addButton(ui->pushScrnShot, QFusionControl::BTN_SCRSHOT);
+#endif // INCLUDE_LIBVLC
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
 
    // init account info ...
@@ -262,6 +265,11 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->player, SIGNAL(sigToggleFullscreen()), this, SLOT(slotToggleFullscreen()));
    connect (&missionControl, SIGNAL(sigFullScreen()), this, SLOT(slotToggleFullscreen()));
    connect (this, SIGNAL(sigFullScreenToggled(int)), ui->player, SLOT(slotFsToggled(int)));
+   connect (this, SIGNAL(sigWindowed(int)), ui->player, SLOT(slotWindowed(int)));
+   connect (this, SIGNAL(sigMoved()), ui->player->getVideoWidget(), SLOT(slotMoved()));
+   connect (ui->player->getVideoWidget(), SIGNAL(sigExitWindowed()), this, SLOT(slotWindowed()));
+   connect (&missionControl, SIGNAL(sigEnterWndwd()), this, SLOT(slotWindowed()));
+   connect (ui->player->getVideoWidget(), SIGNAL(sigForceParentsFocus()), this, SLOT(slotForceFocus()));
 
 
 #endif /* INCLUDE_LIBVLC */
@@ -588,6 +596,24 @@ void Recorder::hideEvent(QHideEvent *event)
 {
    emit sigHide();
    QWidget::hideEvent(event);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   widget was moved, signal this
+//
+//! \author  Jo2003
+//! \date    25.11.2013
+//
+//! \param   event (QMoveEvent *) pointer to move event
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::moveEvent(QMoveEvent *event)
+{
+   emit sigMoved();
+
+   QDialog::moveEvent(event);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4044,6 +4070,22 @@ void Recorder::slotUpdWatchListCount()
    ui->pushWatchList->setIcon(ico);
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   force focus for main dialog [slot]
+//
+//! \author  Jo2003
+//! \date    26.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotForceFocus()
+{
+   setFocus(Qt::OtherFocusReason);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
 ////////////////////////////////////////////////////////////////////////////////
@@ -5594,6 +5636,9 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
             // resize to initial player widget size ...
             setGeometry(playWndRect);
+
+            // we reach windowed mode ...
+            emit sigWindowed(1);
          }
          break;
 
@@ -5608,9 +5653,17 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
          // not yet initialized ...
          if (playWndRect.isNull())
          {
-            playWndRect.setX(x());
-            playWndRect.setY(y());
-            playWndRect.setSize(ui->player->size());
+            // try to let the player widget at its position ...
+            QPoint topLeft(ui->player->getVideoWidget()->mapToGlobal(ui->player->getVideoWidget()->geometry().topLeft()));
+            int xOffset = mapToGlobal(geometry().topLeft()).x() - mapToGlobal(frameGeometry().topLeft()).x();
+            int yOffSet = mapToGlobal(geometry().topLeft()).y() - mapToGlobal(frameGeometry().topLeft()).y();
+
+            // take care of window border ...
+            topLeft.setY(topLeft.y() - yOffSet);
+            topLeft.setX(topLeft.x() - xOffset);
+
+            playWndRect.setTopLeft(topLeft);
+            playWndRect.setSize(ui->player->getVideoWidget()->size());
          }
 
          // get videoWidget ...
@@ -5638,6 +5691,9 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
          {
             // resize to initial player widget size ...
             setGeometry(playWndRect);
+
+            // we reach windowed mode ...
+            emit sigWindowed(1);
          }
          break;
 
@@ -5648,6 +5704,9 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
          // store current position and size ...
          playWndRect = geometry();
+
+         // we leave windowed mode ...
+         emit sigWindowed(0);
 
          if (newMode == Ui::DM_NORMAL)
          {

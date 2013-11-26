@@ -35,7 +35,7 @@ PROGMIN=67
 # included player or without?
 # -------------------------------------
 DEFINES += INCLUDE_LIBVLC
-# DEFINES += __TRACE
+ DEFINES += __TRACE
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \
@@ -70,7 +70,8 @@ SOURCES += main.cpp \
     ctimeshift.cpp \
     chtmlwriter.cpp \
     qoverlayicon.cpp \
-    qchannelmap.cpp
+    qchannelmap.cpp \
+    qunwindow.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -119,7 +120,8 @@ HEADERS += recorder.h \
     ctimeshift.h \
     chtmlwriter.h \
     qoverlayicon.h \
-    qchannelmap.h
+    qchannelmap.h \
+    qunwindow.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -129,7 +131,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/qoverlayedcontrol.ui \
     forms/qrecordtimerwidget.ui \
     forms/qupdatenotifydlg.ui \
-    forms/qwatchlistdlg.ui
+    forms/qwatchlistdlg.ui \
+    forms/qunwindow.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

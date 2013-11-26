@@ -154,6 +154,18 @@ extern CLogFile VlcLog;
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
+//! \fn      sigEnterWndwd [signal]
+//! \brief   enter windowed mode button clicked
+//
+//! \author  Jo2003
+//! \date    26.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
 //! \fn      sigSaveVideoFormat [signal]
 //! \brief   save video format button clicked
 //
@@ -329,6 +341,14 @@ void QFusionControl::addButton (QPushButton *pBtn, eBtnRole role)
       _scrShtBtnVector.append(pBtn);
       break;
 
+   case BTN_WNDWD:
+      // connect signal --> slots ...
+      connect (pBtn, SIGNAL(clicked()), this, SLOT(slotEnterWndwd()));
+
+      // add to vector ...
+      _wndModBtnVector.append(pBtn);
+      break;
+
 
    default:
       break;
@@ -382,6 +402,10 @@ void QFusionControl::btnSetIcon(const QIcon &icon, eBtnRole role)
 
    case BTN_SCRSHOT:
       pVector = &_scrShtBtnVector;
+      break;
+
+   case BTN_WNDWD:
+      pVector = &_wndModBtnVector;
       break;
 
    default:
@@ -511,6 +535,22 @@ void QFusionControl::slotScrShot()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   one enter windowed mode button was pressed, emit signal
+//
+//! \author  Jo2003
+//! \date    26.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::slotEnterWndwd()
+{
+   emit sigEnterWndwd();
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   save video format button was pressed, emit signal
 //
 //! \author  Jo2003
@@ -574,6 +614,10 @@ void QFusionControl::enableBtn (bool enable, eBtnRole role)
       pVector = &_scrShtBtnVector;
       break;
 
+   case BTN_WNDWD:
+      pVector = &_wndModBtnVector;
+      break;
+
    default:
       break;
    }
@@ -620,6 +664,9 @@ void QFusionControl::disconnectBtn()
 
    disconnect(this, SLOT(slotScrShot()));
    _scrShtBtnVector.clear();
+
+   disconnect(this, SLOT(slotEnterWndwd()));
+   _wndModBtnVector.clear();
 
    disconnect(this, SLOT(slotSaveVideoFormat()));
    _frmtBtnVector.clear();

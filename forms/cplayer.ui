@@ -25,11 +25,14 @@
    </property>
    <item>
     <layout class="QHBoxLayout" name="hlTop">
+     <property name="spacing">
+      <number>4</number>
+     </property>
      <property name="leftMargin">
-      <number>6</number>
+      <number>4</number>
      </property>
      <property name="rightMargin">
-      <number>6</number>
+      <number>4</number>
      </property>
      <item>
       <widget class="QLabel" name="label_2">
@@ -154,41 +157,6 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnScrShot">
-       <property name="minimumSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>24</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="toolTip">
-        <string>Screenshot</string>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../common.qrc">
-         <normaloff>:/app/cam</normaloff>:/app/cam</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>20</width>
-         <height>24</height>
-        </size>
-       </property>
-       <property name="flat">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="labSound">
        <property name="text">
         <string/>
@@ -249,6 +217,41 @@
        </property>
        <property name="tickPosition">
         <enum>QSlider::NoTicks</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnWindowed">
+       <property name="minimumSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>24</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Enter Windowed Mode</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../common.qrc">
+         <normaloff>:/player/enter_windowed</normaloff>:/player/enter_windowed</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>18</width>
+         <height>18</height>
+        </size>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -419,6 +422,11 @@ color: white;
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QComboBoxEx</class>
+   <extends>QComboBox</extends>
+   <header>qcomboboxex.h</header>
+  </customwidget>
+  <customwidget>
    <class>QClickAndGoSlider</class>
    <extends>QSlider</extends>
    <header>qclickandgoslider.h</header>
@@ -427,11 +435,6 @@ color: white;
    <class>QTimeLabel</class>
    <extends>QLabel</extends>
    <header>qtimelabel.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QComboBoxEx</class>
-   <extends>QComboBox</extends>
-   <header>qcomboboxex.h</header>
   </customwidget>
   <customwidget>
    <class>QVlcVideoWidget</class>
