@@ -201,8 +201,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
    {
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
-      _ctrlPanel->fadeIn();
       _ctrlPanel->raise();
+      _ctrlPanel->fadeIn();
       _mouseHide->start(1500);
    }
 
@@ -211,8 +211,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       emit mouseShow(event->globalPos());
       QApplication::restoreOverrideCursor();
       slotDoOverlayPositioning();
-      _ctrlTogWndewd->fadeIn();
       _ctrlTogWndewd->raise();
+      _ctrlTogWndewd->fadeIn();
       _mouseHide->start(1500);
       raiseRender();
    }
@@ -518,10 +518,10 @@ void QVlcVideoWidget::raiseRender()
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::fullScreenToggled(int on)
 {
-   if (on)
-   {
-      _extFullScreen = true;
+   _extFullScreen = !!on;
 
+   if (_extFullScreen)
+   {
       if (!_panelPositioned)
       {
          // position player control panel correctly ...
@@ -538,8 +538,8 @@ void QVlcVideoWidget::fullScreenToggled(int on)
       }
 
       // make sure we have the focus ...
-      _ctrlPanel->fadeIn();
       _ctrlPanel->raise();
+      _ctrlPanel->fadeIn();
       _ctrlPanel->activateWindow();
       _ctrlPanel->setFocus(Qt::OtherFocusReason);
 
@@ -548,8 +548,6 @@ void QVlcVideoWidget::fullScreenToggled(int on)
    }
    else
    {
-      _extFullScreen = false;
-
       _ctrlPanel->hide();
 
       // restore visible cursor ...
