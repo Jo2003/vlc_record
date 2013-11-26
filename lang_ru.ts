@@ -2803,18 +2803,18 @@ or start time is later than end time!</source>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="426"/>
+        <location filename="qvlcvideowidget.cpp" line="425"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="656"/>
+        <location filename="qvlcvideowidget.cpp" line="655"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="687"/>
+        <location filename="qvlcvideowidget.cpp" line="686"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
@@ -3243,7 +3243,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1296"/>
-        <location filename="forms/recorder_inc.ui" line="1545"/>
+        <location filename="forms/recorder_inc.ui" line="1551"/>
         <location filename="recorder.cpp" line="4149"/>
         <source>Help</source>
         <translation>Помощь</translation>
@@ -3452,20 +3452,20 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1220"/>
-        <location filename="forms/recorder_inc.ui" line="1469"/>
+        <location filename="forms/recorder_inc.ui" line="1475"/>
         <location filename="recorder.cpp" line="4123"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1258"/>
-        <location filename="forms/recorder_inc.ui" line="1507"/>
+        <location filename="forms/recorder_inc.ui" line="1513"/>
         <source>About ...</source>
         <translation>О программе...</translation>
     </message>
     <message>
         <location filename="forms/recorder.ui" line="1334"/>
-        <location filename="forms/recorder_inc.ui" line="1583"/>
+        <location filename="forms/recorder_inc.ui" line="1589"/>
         <location filename="recorder.cpp" line="4128"/>
         <source>Quit</source>
         <translation>Выключить</translation>

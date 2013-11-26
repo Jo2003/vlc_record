@@ -80,7 +80,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _ctrlPanel     = new QOverlayedControl(_render, f);
    _ctrlTogWndewd = new QUnWindow(_render, f);
    _ctrlTogWndewd->setMouseTracking(true);
-   _ctrlTogWndewd->setOpaque(0.85);
+   _ctrlTogWndewd->setOpaque(0.80);
 
    // hide panel initially ...
    _ctrlPanel->hide();
@@ -573,6 +573,8 @@ void QVlcVideoWidget::windowed(int on)
    if (!_bWindowed)
    {
       _ctrlTogWndewd->hide();
+
+      QApplication::restoreOverrideCursor();
    }
 }
 
