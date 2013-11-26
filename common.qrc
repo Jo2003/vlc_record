@@ -27,6 +27,7 @@
         <file alias="act_filter">resources/filter_active.png</file>
         <file alias="watchlist">resources/watchlist.png</file>
         <file alias="cam">resources/photo_camera.png</file>
+        <file alias="cam2">resources/camera.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
