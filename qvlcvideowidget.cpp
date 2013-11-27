@@ -208,13 +208,10 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
 
    if (_bWindowed)
    {
-      emit mouseShow(event->globalPos());
-      QApplication::restoreOverrideCursor();
       slotDoOverlayPositioning();
       _ctrlTogWndewd->fadeIn();
       _ctrlTogWndewd->raise();
       _mouseHide->start(1500);
-      raiseRender();
    }
 
    if (!_mouseOnPanel)
@@ -223,7 +220,8 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       setFocus(Qt::OtherFocusReason);
    }
 
-   QWidget::mouseMoveEvent(event);
+   // QWidget::mouseMoveEvent(event);
+   event->accept();
 }
 
 //---------------------------------------------------------------------------
@@ -350,10 +348,8 @@ void QVlcVideoWidget::hideMouse()
 
    if (_bWindowed)
    {
-      QApplication::setOverrideCursor(Qt::BlankCursor);
       _ctrlTogWndewd->fadeOut();
       _mouseHide->stop();
-      emit mouseHide();
    }
 }
 
