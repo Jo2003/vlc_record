@@ -598,24 +598,6 @@ void Recorder::hideEvent(QHideEvent *event)
    QWidget::hideEvent(event);
 }
 
-//---------------------------------------------------------------------------
-//
-//! \brief   widget was moved, signal this
-//
-//! \author  Jo2003
-//! \date    25.11.2013
-//
-//! \param   event (QMoveEvent *) pointer to move event
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void Recorder::moveEvent(QMoveEvent *event)
-{
-   emit sigMoved();
-
-   QDialog::moveEvent(event);
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 //                           "on_" - Slots                                    //
 ////////////////////////////////////////////////////////////////////////////////

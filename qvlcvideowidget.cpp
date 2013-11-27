@@ -45,7 +45,6 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _shortcuts(0),
    _extFullScreen(false),
    _ctrlPanel(NULL),
-   _ctrlTogWndewd(NULL),
    _mouseOnPanel(false),
    _panelPositioned(false),
    _bWindowed(false),
@@ -78,13 +77,9 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
 
    // create player control panels ...
    _ctrlPanel     = new QOverlayedControl(_render, f);
-   _ctrlTogWndewd = new QUnWindow(_render, f);
-   _ctrlTogWndewd->setMouseTracking(true);
-   _ctrlTogWndewd->setOpaque(0.80);
 
    // hide panel initially ...
    _ctrlPanel->hide();
-   _ctrlTogWndewd->hide();
 
    // use own context menu ...
    setContextMenuPolicy (Qt::CustomContextMenu);
@@ -103,7 +98,6 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
 
    // all content menu actions handled by one slot ...
    connect (_contextMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotContentActionTriggered(QAction*)));
-   connect(_ctrlTogWndewd, SIGNAL(sigExitWindowed()), this, SLOT(slotExitWindowed()));
 }
 
 //---------------------------------------------------------------------------
@@ -206,22 +200,13 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       _mouseHide->start(1500);
    }
 
-   if (_bWindowed)
-   {
-      slotDoOverlayPositioning();
-      _ctrlTogWndewd->fadeIn();
-      _ctrlTogWndewd->raise();
-      _mouseHide->start(1500);
-   }
-
    if (!_mouseOnPanel)
    {
       activateWindow();
       setFocus(Qt::OtherFocusReason);
    }
 
-   // QWidget::mouseMoveEvent(event);
-   event->accept();
+   QWidget::mouseMoveEvent(event);
 }
 
 //---------------------------------------------------------------------------
@@ -344,12 +329,6 @@ void QVlcVideoWidget::hideMouse()
       _ctrlPanel->fadeOut();
       _mouseHide->stop();
       emit mouseHide();
-   }
-
-   if (_bWindowed)
-   {
-      _ctrlTogWndewd->fadeOut();
-      _mouseHide->stop();
    }
 }
 
@@ -563,13 +542,7 @@ void QVlcVideoWidget::fullScreenToggled(int on)
 void QVlcVideoWidget::windowed(int on)
 {
    _bWindowed = !!on;
-
-   if (!_bWindowed)
-   {
-      _ctrlTogWndewd->hide();
-
-      QApplication::restoreOverrideCursor();
-   }
+   touchContextMenu();
 }
 
 //---------------------------------------------------------------------------
@@ -663,6 +636,25 @@ void QVlcVideoWidget::touchContextMenu()
    // add seperator ...
    pAct = _contextMenu->addSeparator();
 
+   if (_bWindowed)
+   {
+      // interlace stuff ...
+      pAct = _contextMenu->addAction(QIcon(":/player/close_windowed"), tr("Exit Windowed Mode"));
+
+      // prepare data ...
+      contAct.actType = vlcvid::ACT_ExitWndwd;
+      contAct.actName = "n.a.";
+      contAct.actVal.setValue(-1);
+
+      // set data ...
+      pAct->setData(QVariant::fromValue(contAct));
+      pAct->setCheckable(true);
+      pAct->setChecked(false);
+
+      // add seperator ...
+      pAct = _contextMenu->addSeparator();
+   }
+
    // --------------------------------------------------------
    // language stuff ...
    // --------------------------------------------------------
@@ -724,6 +716,10 @@ void QVlcVideoWidget::slotContentActionTriggered(QAction *pAct)
       // deinterlacing enabled / disabled ...
       case vlcvid::ACT_Deinterlacing:
          emit sigDeinterlace(pAct->isChecked());
+         break;
+
+      case vlcvid::ACT_ExitWndwd:
+         emit sigExitWindowed();
          break;
 
       // audio track selected ...
@@ -830,59 +826,4 @@ int QVlcVideoWidget::getCurrentATrack ()
    _mtxLv.unlock();
 
    return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   exit windowed mode
-//
-//! \author  Jo2003
-//! \date    25.11.2013
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QVlcVideoWidget::slotExitWindowed()
-{
-   emit sigExitWindowed();
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   window was moved, hide close overlay
-//
-//! \author  Jo2003
-//! \date    25.11.2013
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QVlcVideoWidget::slotMoved()
-{
-   if (_bWindowed)
-   {
-      _ctrlTogWndewd->hide();
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   re-position close overlay
-//
-//! \author  Jo2003
-//! \date    25.11.2013
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QVlcVideoWidget::slotDoOverlayPositioning()
-{
-   if (_bWindowed)
-   {
-      QRect rect = parentWidget()->geometry();
-      _ctrlTogWndewd->move(rect.x() + rect.width() - (_ctrlTogWndewd->width() + 5), rect.y() + 5);
-   }
 }

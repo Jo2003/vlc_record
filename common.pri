@@ -70,8 +70,7 @@ SOURCES += main.cpp \
     ctimeshift.cpp \
     chtmlwriter.cpp \
     qoverlayicon.cpp \
-    qchannelmap.cpp \
-    qunwindow.cpp
+    qchannelmap.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -121,7 +120,6 @@ HEADERS += recorder.h \
     chtmlwriter.h \
     qoverlayicon.h \
     qchannelmap.h \
-    qunwindow.h \
     qfadewidget.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
@@ -132,8 +130,7 @@ FORMS += forms/csettingsdlg.ui \
     forms/qoverlayedcontrol.ui \
     forms/qrecordtimerwidget.ui \
     forms/qupdatenotifydlg.ui \
-    forms/qwatchlistdlg.ui \
-    forms/qunwindow.ui
+    forms/qwatchlistdlg.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

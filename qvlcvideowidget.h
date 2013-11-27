@@ -28,7 +28,6 @@
 #include "clogfile.h"
 #include "cshortcutex.h"
 #include "qoverlayedcontrol.h"
-#include "qunwindow.h"
 
 // ----------------------------------------------------------
 //    namespace ...
@@ -39,6 +38,7 @@ namespace vlcvid {
    {
       ACT_Deinterlacing,
       ACT_ChgLang,
+      ACT_ExitWndwd,
       ACT_Unknown = 255
    };
 
@@ -101,7 +101,6 @@ private:
    QVector<CShortcutEx *> *_shortcuts;
    bool                    _extFullScreen;
    QOverlayedControl      *_ctrlPanel;
-   QUnWindow              *_ctrlTogWndewd;
    bool                    _mouseOnPanel;
    bool                    _panelPositioned;
    bool                    _bWindowed;
@@ -129,13 +128,10 @@ public slots:
    void slotMouseLeavesPanel ();
    void slotWheel(bool w);
    void slotUpdLangVector(QLangVector lv);
-   void slotExitWindowed();
-   void slotMoved();
 
 private slots:
    void slotCustContextMenu(QPoint pt);
    void slotContentActionTriggered (QAction *pAct);
-   void slotDoOverlayPositioning();
 };
 
 #endif // __20120208_QVLCVIDEOWIDGET_H
