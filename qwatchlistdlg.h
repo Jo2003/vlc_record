@@ -17,6 +17,8 @@
 #include <QDialog>
 #include <QEvent>
 #include <QUrl>
+#include <QVector>
+#include <QTimer>
 
 #include "cvlcrecdb.h"
 #include "defdef.h"
@@ -47,13 +49,24 @@ protected:
 
 private slots:
    void slotListAnchor(QUrl url);
+   void on_pushRecordAll_clicked();
+   void slotNextRec();
+
+public slots:
+   void slotWLRecEnded();
+   void slotStopRecAll();
+
 
 private:
    Ui::QWatchListDlg *ui;
+   bool          _bRecAll;
+   QVector<QUrl> _vUrls;
+   QTimer        _tGap;
 
 signals:
    void sigClick(QUrl);
    void sigUpdCount();
+   void sigRecordArchiveFor (uint uid, int iCid, uint uiStart, int iLength);
 };
 
 #endif // __20130806_QWATCHLISTDLG_H

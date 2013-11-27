@@ -49,7 +49,10 @@ QWatchListDlg::QWatchListDlg(QWidget *parent) :
    ui(new Ui::QWatchListDlg)
 {
    ui->setupUi(this);
+   _bRecAll = false;
+   _tGap.setSingleShot(true);
    connect(ui->txtWatchTab, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotListAnchor(QUrl)));
+   connect(&_tGap, SIGNAL(timeout()), this, SLOT(slotNextRec()));
 }
 
 //---------------------------------------------------------------------------
@@ -116,6 +119,11 @@ void QWatchListDlg::buildWatchTab()
    QString page, row, tab, line, act, img, len;
    QUrl url;
 
+   if (!_bRecAll)
+   {
+      _vUrls.clear();
+   }
+
    // remove old entries ...
    cleanWatchList();
 
@@ -175,6 +183,15 @@ void QWatchListDlg::buildWatchTab()
 
             // wrap in link ...
             act += pHtml->link(url.toEncoded(), img) + "&nbsp;";
+
+            if (!_bRecAll)
+            {
+               // tell we should stop at end ...
+               url.addQueryItem("stopatend", "1");
+
+               // save url ...
+               _vUrls.append(url);
+            }
          }
 
          // add delete link ...
@@ -223,6 +240,11 @@ void QWatchListDlg::buildWatchTab()
    page = pHtml->htmlPage(tab, "Watch List");
 
    ui->txtWatchTab->setHtml(page);
+
+   if (!vE.isEmpty() && !_bRecAll)
+   {
+      ui->pushRecordAll->setEnabled(true);
+   }
 }
 
 //---------------------------------------------------------------------------
@@ -311,4 +333,88 @@ int QWatchListDlg::cleanWatchList()
    q.addBindValue(uiArchLow);
 
    return pDb->ask(q);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   record all entries
+//
+//! \author  Jo2003
+//! \date    27.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QWatchListDlg::on_pushRecordAll_clicked()
+{
+   _bRecAll = true;
+   ui->pushRecordAll->setDisabled(true);
+
+   slotNextRec();
+
+   // close dialog ...
+   accept();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   one watch list record ended
+//
+//! \author  Jo2003
+//! \date    27.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QWatchListDlg::slotWLRecEnded()
+{
+   _tGap.start(5000);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   start next watch list record
+//
+//! \author  Jo2003
+//! \date    27.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QWatchListDlg::slotNextRec()
+{
+   if (_bRecAll)
+   {
+      if (!_vUrls.isEmpty())
+      {
+         emit sigClick(_vUrls.at(0));
+         _vUrls.remove(0);
+      }
+      else
+      {
+         _bRecAll = false;
+         ui->pushRecordAll->setEnabled(true);
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   stop record all
+//
+//! \author  Jo2003
+//! \date    27.11.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QWatchListDlg::slotStopRecAll()
+{
+   _bRecAll = false;
+   _vUrls.clear();
+   ui->pushRecordAll->setEnabled(true);
 }

@@ -292,6 +292,7 @@ Recorder::Recorder(QWidget *parent)
 
    connect (pApiParser,    SIGNAL(sigError(int,QString,QString)), this, SLOT(slotGlobalError(int,QString,QString)));
    connect (&timerWidget,  SIGNAL(timeOut()), this, SLOT(slotRecordTimerEnded()));
+   connect (this,          SIGNAL(sigWLRecEnded()), pWatchList, SLOT(slotWLRecEnded()));
    connect (&streamLoader, SIGNAL(sigStreamRequested(int)), this, SLOT(slotDownStreamRequested(int)));
    connect (&streamLoader, SIGNAL(sigBufferPercent(int)), ui->labState, SLOT(bufferPercent(int)));
    connect (ui->hFrameFav, SIGNAL(sigAddFav(int)), this, SLOT(slotAddFav(int)));
@@ -2158,6 +2159,7 @@ void Recorder::slotWlClick(QUrl url)
    QStringList    sl     = url.queryItemValue("show").split("\n");
    int            cid    = url.queryItemValue("cid").toInt();
    bool           ok     = false;
+   bool           stop   = !!url.queryItemValue("stopatend").toInt();
 
    if (action == "wl_play")
    {
@@ -2170,7 +2172,7 @@ void Recorder::slotWlClick(QUrl url)
    {
       if (AllowAction(IncPlay::PS_RECORD))
       {
-         ok = true;
+         ok  = true;
       }
    }
 
@@ -2218,6 +2220,11 @@ void Recorder::slotWlClick(QUrl url)
             ui->labState->setFooter(sTime);
 
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
+
+            if (stop)
+            {
+               timerWidget.startExtern((chan.uiEnd - chan.uiStart) + TIMER_REC_OFFSET);
+            }
          }
       }
    }
@@ -3842,6 +3849,8 @@ void Recorder::slotRecordTimerEnded()
 
       showInfo.setPlayState(IncPlay::PS_STOP);
       TouchPlayCtrlBtns(true);
+
+      emit sigWLRecEnded();
    }
 }
 
@@ -5329,6 +5338,9 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
 
                // stop record timer ...
                timerWidget.stop();
+
+               // make sure we stop record all as well ...
+               pWatchList->slotStopRecAll();
             }
             break;
 

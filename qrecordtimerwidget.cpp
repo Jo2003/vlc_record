@@ -162,6 +162,25 @@ void QRecordTimerWidget::on_pushStart_clicked()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   start record timer from extern
+//
+//! \author  Jo2003
+//! \date    27.11.2013
+//
+//! \param   iSec (int) show length in seconds
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QRecordTimerWidget::startExtern(int iSec)
+{
+   ui->spinHours->setValue(iSec / 3600);
+   ui->spinMinutes->setValue((iSec % 3600) / 60);
+
+   on_pushStart_clicked();
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   tick timeout -> check time, emit timeout signal if needed
 //
 //! \author  Jo2003

@@ -40,6 +40,7 @@ class QRecordTimerWidget : public QDialog
 public:
    QRecordTimerWidget(QWidget *parent = 0);
    virtual ~QRecordTimerWidget();
+   void startExtern(int iSec);
 
 public slots:
    void stop();

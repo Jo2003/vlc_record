@@ -330,6 +330,7 @@ signals:
     void sigFullScreenToggled (int on);
     void sigLockParentalManager();
     void sigWindowed(int);
+    void sigWLRecEnded();
 };
 
 #endif /* __011910__RECORDER_H */
