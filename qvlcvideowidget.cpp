@@ -198,12 +198,12 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
       _ctrlPanel->fadeIn();
       _ctrlPanel->raise();
       _mouseHide->start(1500);
-   }
 
-   if (!_mouseOnPanel)
-   {
-      activateWindow();
-      setFocus(Qt::OtherFocusReason);
+      if (!_mouseOnPanel)
+      {
+         activateWindow();
+         setFocus(Qt::OtherFocusReason);
+      }
    }
 
    QWidget::mouseMoveEvent(event);

@@ -2798,7 +2798,8 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="qvlcvideowidget.cpp" line="640"/>
-        <source>Minimal Mode</source>
+        <source>Minimal Interface</source>
+        <oldsource>Minimal Mode</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3005,6 +3006,11 @@ dataDir: %1
         <translation>Все</translation>
     </message>
     <message>
+        <location filename="recorder.cpp" line="4128"/>
+        <source>Minimal Interface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="recorder.cpp" line="4484"/>
         <location filename="recorder.cpp" line="4532"/>
         <source>1 week forward</source>
@@ -3196,11 +3202,6 @@ dataDir: %1
         <location filename="forms/recorder_inc.ui" line="1382"/>
         <location filename="recorder.cpp" line="4127"/>
         <source>Screenshot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="4128"/>
-        <source>Windowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

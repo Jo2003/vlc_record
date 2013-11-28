@@ -2791,7 +2791,8 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="qvlcvideowidget.cpp" line="640"/>
-        <source>Minimal Mode</source>
+        <source>Minimal Interface</source>
+        <oldsource>Minimal Mode</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2961,6 +2962,11 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="recorder.cpp" line="4108"/>
         <source>Stop</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="4128"/>
+        <source>Minimal Interface</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4450"/>
@@ -3188,11 +3194,6 @@ dataDir: %1
         <location filename="forms/recorder_inc.ui" line="1382"/>
         <location filename="recorder.cpp" line="4127"/>
         <source>Screenshot</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="4128"/>
-        <source>Windowed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
