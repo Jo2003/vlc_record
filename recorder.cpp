@@ -4125,7 +4125,7 @@ void Recorder::fillShortCutTab()
       {tr("Jump Forward"),         this,       SLOT(slotFwd()),                   "CTRL+ALT+F"},
       {tr("Jump Backward"),        this,       SLOT(slotBwd()),                   "CTRL+ALT+B"},
       {tr("Screenshot"),           ui->player, SLOT(slotTakeScreenShot()),        "F12"},
-      {tr("Minimal Mode"),         this,       SLOT(slotWindowed()),              "F11"},
+      {tr("Minimal Interface"),    this,       SLOT(slotWindowed()),              "F11"},
 #endif // INCLUDE_LIBVLC
 
       {tr("Next Channel"),         this,       SLOT(slotChannelDown()),           "CTRL+N"},

@@ -637,7 +637,7 @@ void QVlcVideoWidget::touchContextMenu()
    pAct = _contextMenu->addSeparator();
 
    // minmal mode stuff ...
-   pAct = _contextMenu->addAction(tr("Minimal Mode"));
+   pAct = _contextMenu->addAction(tr("Minimal Interface"));
 
    // prepare data ...
    contAct.actType = vlcvid::ACT_ExitWndwd;
