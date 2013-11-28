@@ -636,29 +636,37 @@ void QVlcVideoWidget::touchContextMenu()
    // add seperator ...
    pAct = _contextMenu->addSeparator();
 
+   // minmal mode stuff ...
+   pAct = _contextMenu->addAction(tr("Minimal Mode"));
+
+   // prepare data ...
+   contAct.actType = vlcvid::ACT_ExitWndwd;
+   contAct.actName = "n.a.";
+   contAct.actVal.setValue(-1);
+
+   // set data ...
+   pAct->setData(QVariant::fromValue(contAct));
+   pAct->setCheckable(true);
+
    if (_bWindowed)
    {
-      // interlace stuff ...
-      pAct = _contextMenu->addAction(QIcon(":/player/close_windowed"), tr("Exit Windowed Mode"));
-
-      // prepare data ...
-      contAct.actType = vlcvid::ACT_ExitWndwd;
-      contAct.actName = "n.a.";
-      contAct.actVal.setValue(-1);
-
-      // set data ...
-      pAct->setData(QVariant::fromValue(contAct));
-      pAct->setCheckable(true);
+      pAct->setChecked(true);
+   }
+   else
+   {
       pAct->setChecked(false);
-
-      // add seperator ...
-      pAct = _contextMenu->addSeparator();
    }
 
    // --------------------------------------------------------
    // language stuff ...
    // --------------------------------------------------------
    _mtxLv.lock();
+
+   if (!_langVector.isEmpty())
+   {
+      // add seperator ...
+      pAct = _contextMenu->addSeparator();
+   }
 
    // go through language vector and add context menu entries ...
    for (i = 0; i < _langVector.count(); i++)
@@ -719,7 +727,7 @@ void QVlcVideoWidget::slotContentActionTriggered(QAction *pAct)
          break;
 
       case vlcvid::ACT_ExitWndwd:
-         emit sigExitWindowed();
+         emit sigWindowed();
          break;
 
       // audio track selected ...

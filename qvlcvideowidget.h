@@ -116,8 +116,7 @@ signals:
    void wheel (const bool up);
    void sigDeinterlace (bool);
    void sigNewATrack (int);
-   void sigExitWindowed ();
-   void sigForceParentsFocus();
+   void sigWindowed ();
 
 public slots:
    void toggleFullScreen ();

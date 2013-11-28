@@ -266,11 +266,8 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigFullScreen()), this, SLOT(slotToggleFullscreen()));
    connect (this, SIGNAL(sigFullScreenToggled(int)), ui->player, SLOT(slotFsToggled(int)));
    connect (this, SIGNAL(sigWindowed(int)), ui->player, SLOT(slotWindowed(int)));
-   connect (this, SIGNAL(sigMoved()), ui->player->getVideoWidget(), SLOT(slotMoved()));
-   connect (ui->player->getVideoWidget(), SIGNAL(sigExitWindowed()), this, SLOT(slotWindowed()));
+   connect (ui->player->getVideoWidget(), SIGNAL(sigWindowed()), this, SLOT(slotWindowed()));
    connect (&missionControl, SIGNAL(sigEnterWndwd()), this, SLOT(slotWindowed()));
-   connect (ui->player->getVideoWidget(), SIGNAL(sigForceParentsFocus()), this, SLOT(slotForceFocus()));
-
 
 #endif /* INCLUDE_LIBVLC */
 
@@ -4128,7 +4125,7 @@ void Recorder::fillShortCutTab()
       {tr("Jump Forward"),         this,       SLOT(slotFwd()),                   "CTRL+ALT+F"},
       {tr("Jump Backward"),        this,       SLOT(slotBwd()),                   "CTRL+ALT+B"},
       {tr("Screenshot"),           ui->player, SLOT(slotTakeScreenShot()),        "F12"},
-      {tr("Windowed"),             this,       SLOT(slotWindowed()),              "F11"},
+      {tr("Minimal Mode"),         this,       SLOT(slotWindowed()),              "F11"},
 #endif // INCLUDE_LIBVLC
 
       {tr("Next Channel"),         this,       SLOT(slotChannelDown()),           "CTRL+N"},
