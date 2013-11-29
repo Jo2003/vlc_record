@@ -2589,12 +2589,12 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="386"/>
         <source>Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Zrzut ekranu</translation>
     </message>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="402"/>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="627"/>
@@ -2777,7 +2777,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="qvlcvideowidget.cpp" line="640"/>
         <source>Minimal Interface</source>
         <oldsource>Minimal Mode</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Minimalny Interfejs</translation>
     </message>
     <message>
         <location filename="qvlcvideowidget.cpp" line="682"/>
@@ -2795,7 +2795,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/qwatchlistdlg.ui" line="59"/>
         <source>&amp;Record All</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Nagrywać wszystko</translation>
     </message>
     <message>
         <location filename="qwatchlistdlg.cpp" line="133"/>
@@ -3204,7 +3204,7 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="4128"/>
         <source>Minimal Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimalny Interfejs</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4367"/>
@@ -3320,7 +3320,7 @@ dataDir: %1
         <location filename="forms/recorder_inc.ui" line="1382"/>
         <location filename="recorder.cpp" line="4127"/>
         <source>Screenshot</source>
-        <translation type="unfinished"></translation>
+        <translation>Zrzut ekranu</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4131"/>
