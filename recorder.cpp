@@ -98,6 +98,7 @@ Recorder::Recorder(QWidget *parent)
    pFilterMenu   =  NULL;
    pMnLangFilter =  NULL;
    pWatchList    =  NULL;
+   bStayOnTop    =  false;
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,     QFusionControl::BTN_PLAY);
@@ -267,7 +268,7 @@ Recorder::Recorder(QWidget *parent)
    connect (this, SIGNAL(sigFullScreenToggled(int)), ui->player, SLOT(slotFsToggled(int)));
    connect (this, SIGNAL(sigWindowed(int)), ui->player, SLOT(slotWindowed(int)));
    connect (ui->player->getVideoWidget(), SIGNAL(sigWindowed()), this, SLOT(slotWindowed()));
-   connect (&missionControl, SIGNAL(sigEnterWndwd()), this, SLOT(slotWindowed()));
+   connect (ui->player->getVideoWidget(), SIGNAL(sigStayOnTop(bool)), this, SLOT(slotStayOnTop(bool)));
 
 #endif /* INCLUDE_LIBVLC */
 
@@ -4060,18 +4061,32 @@ void Recorder::slotUpdWatchListCount()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   force focus for main dialog [slot]
+//! \brief   update stay on top mode [slot]
 //
 //! \author  Jo2003
-//! \date    26.11.2013
+//! \date    29.11.2013
 //
-//! \param   --
+//! \param   on (bool) enable or disable stay on top
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void Recorder::slotForceFocus()
+void Recorder::slotStayOnTop(bool on)
 {
-   setFocus(Qt::OtherFocusReason);
+   bStayOnTop = on;
+
+   if (eCurDMode == Ui::DM_WINDOWED)
+   {
+      if (bStayOnTop)
+      {
+         setWindowFlags(windowFlags() |  Qt::WindowStaysOnTopHint);
+      }
+      else
+      {
+         setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+      }
+
+      show();
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5630,6 +5645,12 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
             // we reach windowed mode ...
             emit sigWindowed(1);
+
+            if (bStayOnTop)
+            {
+               setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+               show();
+            }
          }
          break;
 
@@ -5685,6 +5706,12 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
             // we reach windowed mode ...
             emit sigWindowed(1);
+
+            if (bStayOnTop)
+            {
+               setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
+               show();
+            }
          }
          break;
 
@@ -5698,6 +5725,12 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
          // we leave windowed mode ...
          emit sigWindowed(0);
+
+         // make sure we clear the stay on top stuff ...
+         if (bStayOnTop)
+         {
+            setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+         }
 
          if (newMode == Ui::DM_NORMAL)
          {
@@ -5727,6 +5760,12 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
             // tell about ...
             emit sigFullScreenToggled(1);
+         }
+
+         // make sure to show window after clearing the stay on top stuff ...
+         if (bStayOnTop)
+         {
+            show();
          }
          break;
 

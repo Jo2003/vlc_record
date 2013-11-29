@@ -606,15 +606,25 @@ void QVlcVideoWidget::touchContextMenu()
    int                     i;
    QList<QAction*>         contActions = _contextMenu->actions();
    bool                    bIntl       = false;
+   bool                    bOnTop      = false;
    QString                 name;
 
    // in case of retranslation or update we should take care of
    // interlaced setting ...
    if (!contActions.isEmpty())
    {
-      // action 0 will always be the interlaced stuff since this
-      // is always the first element we add ...
-      bIntl = contActions.at(0)->isChecked();
+      for (i = 0; i < contActions.count(); i++)
+      {
+         // search for current check states ...
+         if (contActions.at(i)->objectName() == "Act_dintl")
+         {
+            bIntl  = contActions.at(i)->isChecked();
+         }
+         else if (contActions.at(i)->objectName() == "Act_stontop")
+         {
+            bOnTop = contActions.at(i)->isChecked();
+         }
+      }
    }
 
    // remove all menue entries ...
@@ -632,6 +642,7 @@ void QVlcVideoWidget::touchContextMenu()
    pAct->setData(QVariant::fromValue(contAct));
    pAct->setCheckable(true);
    pAct->setChecked(bIntl);
+   pAct->setObjectName("Act_dintl");
 
    // add seperator ...
    pAct = _contextMenu->addSeparator();
@@ -640,13 +651,14 @@ void QVlcVideoWidget::touchContextMenu()
    pAct = _contextMenu->addAction(tr("Minimal Interface"));
 
    // prepare data ...
-   contAct.actType = vlcvid::ACT_ExitWndwd;
+   contAct.actType = vlcvid::ACT_TglMiniMd;
    contAct.actName = "n.a.";
    contAct.actVal.setValue(-1);
 
    // set data ...
    pAct->setData(QVariant::fromValue(contAct));
    pAct->setCheckable(true);
+   pAct->setObjectName("Act_minim");
 
    if (_bWindowed)
    {
@@ -655,6 +667,29 @@ void QVlcVideoWidget::touchContextMenu()
    else
    {
       pAct->setChecked(false);
+   }
+
+   // stay on top stuff ...
+   pAct = _contextMenu->addAction(tr("Stay on top"));
+
+   // prepare data ...
+   contAct.actType = vlcvid::ACT_StayOnTop;
+   contAct.actName = "n.a.";
+   contAct.actVal.setValue(-1);
+
+   // set data ...
+   pAct->setData(QVariant::fromValue(contAct));
+   pAct->setCheckable(true);
+   pAct->setObjectName("Act_stontop");
+   pAct->setChecked(bOnTop);
+
+   if (_bWindowed)
+   {
+      pAct->setEnabled(true);
+   }
+   else
+   {
+      pAct->setEnabled(false);
    }
 
    // --------------------------------------------------------
@@ -726,8 +761,14 @@ void QVlcVideoWidget::slotContentActionTriggered(QAction *pAct)
          emit sigDeinterlace(pAct->isChecked());
          break;
 
-      case vlcvid::ACT_ExitWndwd:
+      // toggle minimal mode ...
+      case vlcvid::ACT_TglMiniMd:
          emit sigWindowed();
+         break;
+
+      // change stay on top mode ...
+      case vlcvid::ACT_StayOnTop:
+         emit sigStayOnTop(pAct->isChecked());
          break;
 
       // audio track selected ...

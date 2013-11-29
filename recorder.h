@@ -180,6 +180,7 @@ private:
     QStringFilterWidgetAction      *pFilterWidget;
     QMenu                          *pMnLangFilter;
     QWatchListDlg                  *pWatchList;
+    bool                            bStayOnTop;
 
 #ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
@@ -315,7 +316,7 @@ private slots:
     void slotWlClick(QUrl url);
     void on_pushWatchList_clicked();
     void slotUpdWatchListCount();
-    void slotForceFocus();
+    void slotStayOnTop(bool on);
 
 signals:
     void sigShow ();

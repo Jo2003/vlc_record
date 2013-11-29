@@ -38,7 +38,8 @@ namespace vlcvid {
    {
       ACT_Deinterlacing,
       ACT_ChgLang,
-      ACT_ExitWndwd,
+      ACT_TglMiniMd,
+      ACT_StayOnTop,
       ACT_Unknown = 255
    };
 
@@ -117,6 +118,7 @@ signals:
    void sigDeinterlace (bool);
    void sigNewATrack (int);
    void sigWindowed ();
+   void sigStayOnTop(bool);
 
 public slots:
    void toggleFullScreen ();
