@@ -45,6 +45,7 @@
 | - picture size for VOD set to keep layout
 | - mouse over video widget raises player window only in
 |   fullscreen mode
+| - add "stay on top" mode if minimal mode enabled
 |
 | 2013-11-26: Version 2.67B3
 | - add buttons for windowed mode
