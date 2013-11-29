@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "67"
-#define BETA_EXT      "B3"
+#define BETA_EXT      "B5"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-11-29: Version 2.67B5
+| - windowed mode is now minimal mode
+| - minimal mode can be reached and leaved using player
+|   context menu
+| - picture size for VOD set to keep layout
+| - mouse over video widget raises player window only in
+|   fullscreen mode
+|
 | 2013-11-26: Version 2.67B3
 | - add buttons for windowed mode
 | - add overlay to leave windowed mode

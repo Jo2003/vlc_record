@@ -2412,62 +2412,62 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>CVodBrowser</name>
     <message>
-        <location filename="cvodbrowser.cpp" line="266"/>
+        <location filename="cvodbrowser.cpp" line="268"/>
         <source>Remove from favourites.</source>
         <translation>Aus den Favoriten entfernen.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="277"/>
+        <location filename="cvodbrowser.cpp" line="279"/>
         <source>Add to favourites.</source>
         <translation>Zu Favoriten hinzufügen.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="192"/>
+        <location filename="cvodbrowser.cpp" line="193"/>
         <source>password protected</source>
         <translation>passwortgeschützt</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="290"/>
+        <location filename="cvodbrowser.cpp" line="292"/>
         <source>min.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="295"/>
+        <location filename="cvodbrowser.cpp" line="297"/>
         <source>Director: %1</source>
         <translation>Regisseur: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="300"/>
+        <location filename="cvodbrowser.cpp" line="302"/>
         <source>With: %1</source>
         <translation>Mit: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="362"/>
+        <location filename="cvodbrowser.cpp" line="364"/>
         <source>Video Details</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="285"/>
+        <location filename="cvodbrowser.cpp" line="287"/>
         <source>Genre: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="358"/>
+        <location filename="cvodbrowser.cpp" line="360"/>
         <source>Back</source>
         <translation>Zurück</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="313"/>
+        <location filename="cvodbrowser.cpp" line="315"/>
         <source>Part %1</source>
         <translation>Teil %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="331"/>
+        <location filename="cvodbrowser.cpp" line="333"/>
         <source>Play Movie ...</source>
         <translation>Film abspielen ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="341"/>
+        <location filename="cvodbrowser.cpp" line="343"/>
         <source>Record Movie ...</source>
         <translation>Film aufzeichnen ...</translation>
     </message>

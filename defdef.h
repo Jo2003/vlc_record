@@ -111,6 +111,8 @@
 #define GPU_ACC_TOKEN     ":ffmpeg-hw"    // mrl option to use GPU acceleration
 #define EPG_UPD_TMOUT     120             // make sure epg update comes not to much
 #define MAX_LVLC_ARGS     16              // max arguments to give to libVLC at creation
+#define VOD_POSTER_WIDTH  120             // picture size for VOD (width)
+#define VOD_POSTER_HEIGHT 170             // picture size for VOD (height)
 
 // a namespace for translators ...
 namespace Msg

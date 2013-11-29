@@ -175,7 +175,8 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
    }
 
    // image tag ...
-   img = pHtml->image(QUrl::toPercentEncoding(img), 0, 0, "", QString("%1 (%2 %3)").arg(entry.sName).arg(entry.sCountry).arg(entry.sYear));
+   img = pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, VOD_POSTER_HEIGHT, "",
+                      QString("%1 (%2 %3)").arg(entry.sName).arg(entry.sCountry).arg(entry.sYear));
 
    // create link url ...
    url.setPath("videothek");
@@ -245,7 +246,8 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
 
    // add image ...
-   content  = pHtml->image(QUrl::toPercentEncoding(img), 0, 0, TMPL_IMG_RFLOAT, sInfo.sName);
+   content  = pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, VOD_POSTER_HEIGHT,
+                           TMPL_IMG_RFLOAT, sInfo.sName);
 
    // add headline ...
    content += pHtml->htmlTag("h3", sInfo.sName) + "&nbsp;&nbsp;&nbsp;";
