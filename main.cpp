@@ -11,6 +11,8 @@
 \*************************************************************/
 #include <QtGui/QApplication>
 #include <QTranslator>
+#include <QFont>
+#include <QSysInfo>
 #include "recorder.h"
 #include "cvlcrecdb.h"
 #include "cshowinfo.h"
