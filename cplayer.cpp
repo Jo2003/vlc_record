@@ -608,6 +608,7 @@ int CPlayer::pause()
 int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
 {
    int                         iRV    = 0;
+   int                         iAidx  = 0;
    libvlc_media_t             *p_md   = NULL;
    QStringList                 lArgs;
    QStringList::const_iterator cit;
@@ -722,6 +723,21 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
          sMrl = ":disable-screensaver";
          mInfo(tr("Add MRL Option: %1").arg(sMrl));
          libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+         ///////////////////////////////////////////////////////////////////////////
+         // default audio track stuff ...
+         ///////////////////////////////////////////////////////////////////////////
+         if (showInfo.channelId() != -1)
+         {
+            if ((iAidx = pDb->defAStream(showInfo.channelId())) == -1)
+            {
+               iAidx = showInfo.defAStream();
+            }
+
+            sMrl = QString(":audio-track=%1").arg(iAidx);
+            mInfo(tr("Add MRL Option: %1").arg(sMrl));
+            libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+         }
 
          ///////////////////////////////////////////////////////////////////////////
          // further mrl options from player module file ...
@@ -1989,7 +2005,7 @@ void CPlayer::slotFinallyPlays(int percent)
 {
    libvlc_track_description_t* pAuTracks = NULL;
    int               iAuIdx;
-   QLangVector       lv;
+   vAudTrk.clear();
    vlcvid::SContLang al;
 
    if (percent == 0)
@@ -2016,7 +2032,7 @@ void CPlayer::slotFinallyPlays(int percent)
                al.id      = pAuTracks->i_id;
                al.current = (iAuIdx == pAuTracks->i_id) ? true : false;
 
-               lv.append(al);
+               vAudTrk.append(al);
 
                mInfo(tr("-> Audio track %1 %2%3")
                      .arg(pAuTracks->i_id)
@@ -2026,7 +2042,7 @@ void CPlayer::slotFinallyPlays(int percent)
             pAuTracks = pAuTracks->p_next;
          }
 
-         emit sigAudioTracks(lv);
+         emit sigAudioTracks(vAudTrk);
       }
       bScanAuTrk = false;
    }
@@ -2065,12 +2081,25 @@ void CPlayer::slotDeinterlace(bool bDeintl)
 //---------------------------------------------------------------------------
 void CPlayer::slotChangeATrack(int id)
 {
-   int iRet;
+   int iRet, i = -1;
    if (pMediaPlayer)
    {
+      if (showInfo.channelId() != -1)
+      {
+         // get index of this audio track ...
+         for (i = 0; i < vAudTrk.count(); i++)
+         {
+            if (vAudTrk.at(i).id == id)
+            {
+               pDb->setDefAStream(showInfo.channelId(), i);
+               break;
+            }
+         }
+      }
+
       iRet = libvlc_audio_set_track(pMediaPlayer, id);
 
-      mInfo(tr("Change audio track to id %1: %2!").arg(id).arg((iRet == 0) ? "ok" : "error"));
+      mInfo(tr("Change audio track to id %1 (idx %2): %3!").arg(id).arg(i).arg((iRet == 0) ? "ok" : "error"));
    }
 }
 

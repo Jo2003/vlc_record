@@ -50,8 +50,8 @@
 
 #define TAB_ASTREAM \
 "CREATE TABLE astream ("\
-      "cid integer NOT NULL PRIMARY KEY UNIQUE," \
-      "aidx tiny int NOT NULL)"
+      "cid integer PRIMARY KEY UNIQUE," \
+      "aidx tiny int)"
 
 #endif // __130610_TABLES_H
 /************************* History ***************************\

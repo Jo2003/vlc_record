@@ -107,6 +107,7 @@ private:
    const char*                  vlcArgs[MAX_LVLC_ARGS];
    QVector<QByteArray>          vArgs;
    bool                         bScanAuTrk;
+   QLangVector                  vAudTrk;
 
 private slots:
    void slotPositionChanged(int value);
