@@ -30,7 +30,7 @@
 #define VERSION_APPENDIX
 
 // use xml parser ...
-#define ApiParser             CKartinaXMLParser
+#define ApiParser             CMoiDomXmlParser
 
 #endif // __310113__DEFINES_MOIDOM_TV_H
 

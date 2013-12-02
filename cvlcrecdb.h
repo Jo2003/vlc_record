@@ -83,6 +83,8 @@ public:
    int        addWatchEntry (const cparser::SChan& entry);
    int        getWatchEntries (QVector<cparser::SChan> &vE);
    int        delWatchEntry (int cid, uint uiGmt);
+   int        setDefAStream (int cid, int idx);
+   int        defAStream (int cid);
 
 
 protected:

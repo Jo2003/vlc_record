@@ -30,12 +30,15 @@ namespace cparser
 
    struct SChan
    {
-      SChan():uiStart(0),uiEnd(0),iTs(0),iId(0),bIsVideo(false),bIsProtected(false),bHasArchive(false),bIsGroup(false),bIsHidden(false),bHasTsInfo(false){}
+      SChan():uiStart(0),uiEnd(0),uiDefAud(0),iTs(0),iId(0),bIsVideo(false),
+         bIsProtected(false),bHasArchive(false),bIsGroup(false),
+         bIsHidden(false),bHasTsInfo(false){}
       QString sName;
       QString sProgramm;
       QString sIcon;
       uint    uiStart;
       uint    uiEnd;
+      uint    uiDefAud;
       int     iTs;
       int     iId;
       bool    bIsVideo;

@@ -48,6 +48,11 @@
       "prog tiny text NOT NULL," \
       "PRIMARY KEY (cid, t_start))"
 
+#define TAB_ASTREAM \
+"CREATE TABLE astream ("\
+      "cid integer NOT NULL PRIMARY KEY UNIQUE," \
+      "aidx tiny int NOT NULL)"
+
 #endif // __130610_TABLES_H
 /************************* History ***************************\
 | $Log$

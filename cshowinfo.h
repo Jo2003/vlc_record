@@ -70,6 +70,7 @@ public:
    void useStreamLoader (bool bUse);
    void setEpgUpdTime (ulong ts);
    void updWithChanEntry (ulong ulTime, const cparser::SChan &entry);
+   void setDefAStream(int idx);
 
    // get values ...
    const QString &showName();
@@ -88,6 +89,7 @@ public:
    const int& vodId();
    ulong epgUpdTime();
    int   autoUpdate(uint uiTime);
+   const int& defAStream();
 
 private:
    QString              sShowName;
@@ -105,6 +107,7 @@ private:
    t_EpgMap             epgMap;
    bool                 bStreamLoader;
    ulong                ulLastEpgUpd;
+   int                  iDefAStream;
 };
 
 #endif // __150610_CSHOWINFO_H

@@ -53,9 +53,9 @@ public:
    virtual int parseAStreams (const QString& sResp, QStringList &sl);
 
 protected:
-   int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
-   int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
-   int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
+   virtual int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
 
 private:
    QString     sImgTmplTv;

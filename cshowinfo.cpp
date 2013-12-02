@@ -63,6 +63,7 @@ void CShowInfo::cleanShowInfo()
    uiJumpTime     = 0;
    bStreamLoader  = false;
    ulLastEpgUpd   = 0;
+   iDefAStream    = 0;
    epgMap.clear();
 }
 
@@ -601,6 +602,39 @@ void CShowInfo::updWithChanEntry (ulong ulTime, const cparser::SChan &entry)
    ulLastEpgUpd = 0; // updated show info -> be open for new updates ...
    sDescr       = pHtml->createTooltip(sChanNameTmpl, entry.sProgramm, entry.uiStart, entry.uiEnd, entry.iTs);
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   store default audio track index
+//
+//! \author  Jo2003
+//! \date    02.12.2013
+//
+//! \param   idx (int) audio track index
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CShowInfo::setDefAStream(int idx)
+{
+   iDefAStream = idx;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get default audio track index
+//
+//! \author  Jo2003
+//! \date    02.12.2013
+//
+//! \param   --
+//
+//! \return  audio track index
+//---------------------------------------------------------------------------
+const int &CShowInfo::defAStream()
+{
+   return iDefAStream;
+}
+
 
 /************************* History ***************************\
 | $Log$

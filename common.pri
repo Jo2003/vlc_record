@@ -35,7 +35,7 @@ PROGMIN=67
 # included player or without?
 # -------------------------------------
 DEFINES += INCLUDE_LIBVLC
-# DEFINES += __TRACE
+ DEFINES += __TRACE
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \

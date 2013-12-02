@@ -549,6 +549,19 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>CMoiDomXmlParser</name>
+    <message>
+        <location filename="cmoidomxmlparser.cpp" line="177"/>
+        <source>Found unused element %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cmoidomxmlparser.cpp" line="183"/>
+        <source>Found unused child %1: %2 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CNovoeClient</name>
     <message>
         <location filename="cnovoeclient.cpp" line="84"/>
@@ -2035,8 +2048,8 @@ To change the parent code make sure:
 <context>
     <name>CShowInfo</name>
     <message>
-        <location filename="cshowinfo.cpp" line="554"/>
-        <location filename="cshowinfo.cpp" line="590"/>
+        <location filename="cshowinfo.cpp" line="555"/>
+        <location filename="cshowinfo.cpp" line="591"/>
         <source>%1 (Archive)</source>
         <translation>%1 (Архив)</translation>
     </message>

@@ -21,6 +21,9 @@
 #elif _TASTE_NOVOE_TV
    #include "cnovoeclient.h"
    #include "cnovoeparser.h"
+#elif _TASTE_MOIDOM_TV
+   #include "cmoidomxmlparser.h"
+   #include "ckartinaclnt.h"
 #else
    #include "ckartinaclnt.h"
    #ifdef _USE_QJSON

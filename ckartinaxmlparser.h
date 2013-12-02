@@ -51,9 +51,9 @@ public:
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
 
 protected:
-   int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
-   int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
-   int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
+   virtual int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
 };
 
 #endif /* __201005075459_CKARTINAXMLPARSER_H */

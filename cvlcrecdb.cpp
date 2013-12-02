@@ -107,6 +107,11 @@ int CVlcRecDB::checkDb()
       iRV |= query.exec(TAB_WATCHLIST) ? 0 : -1;
    }
 
+   if (!lAllTabs.contains("astream"))
+   {
+      iRV |= query.exec(TAB_ASTREAM) ? 0 : -1;
+   }
+
    // db update ...
    iRV |= updateDB();
 
@@ -707,6 +712,56 @@ int CVlcRecDB::delWatchEntry (int cid, uint uiGmt)
    query.addBindValue(cid);
    query.addBindValue(uiGmt);
    return query.exec() ? 0 : -1;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   store default audio stream index for a channel
+//
+//! \author  Jo2003
+//! \date    02.12.2013
+//
+//! \param   cid (int) channel id
+//! \param   idx (int) audio stream index
+//
+//! \return  0 -> ok; -1 -> query not successful
+//---------------------------------------------------------------------------
+int CVlcRecDB::setDefAStream (int cid, int idx)
+{
+   QSqlQuery query;
+
+   query.prepare("REPLACE INTO astream VALUES(?, ?)");
+   query.addBindValue(cid);
+   query.addBindValue(idx);
+   return query.exec() ? 0 : -1;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get default audio stream index for a channel
+//
+//! \author  Jo2003
+//! \date    02.12.2013
+//
+//! \param   cid (int) channel id
+//
+//! \return  -1 -> no value stored; >-1 stream index
+//---------------------------------------------------------------------------
+int CVlcRecDB::defAStream (int cid)
+{
+   int       iRet = -1;
+   QSqlQuery query;
+
+   query.prepare("SELECT aidx FROM astream WHERE cid=?");
+   query.addBindValue(cid);
+   query.exec();
+
+   if (query.first())
+   {
+      iRet = query.value(0).toInt();
+   }
+
+   return iRet;
 }
 
 /************************* History ***************************\
