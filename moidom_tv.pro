@@ -1,5 +1,6 @@
 DEFINES += _TASTE_MOIDOM_TV \
-           _HAS_VOD_MANAGER
+           _HAS_VOD_MANAGER \
+           _IS_OEM
 RESOURCES += moidom_tv.qrc
 HEADERS += tastes/defines_moidom_tv.h \
            cmoidomxmlparser.h
