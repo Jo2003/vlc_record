@@ -205,6 +205,7 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
    cparser::SChan         chanEntry;
    QStringList            slNeeded;
    QMap<QString, QString> mResults;
+   QStringList            slATracks;
 
    // while no end of channels ...
    while (!((xml.readNext() == QXmlStreamReader::EndElement)
@@ -308,6 +309,21 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
          {
             // go into next level ... parse stream params ...
             parseStreamParams(xml, chanEntry.vTs);
+         }
+         else if (xml.name() == "audiotracks")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               slATracks = xml.text().toString().split(QChar(','), QString::SkipEmptyParts);
+            }
+         }
+         else if (xml.name() == "audiotrack_default")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               uint idx = (uint)slATracks.indexOf(xml.text().toString());
+               chanEntry.uiDefAud = (idx == (uint)-1) ? 0 : idx;
+            }
          }
          else
          {
