@@ -1,4 +1,4 @@
-DEFINES += _TASTE_IPTV_RECORD
+DEFINES += _TASTE_IPTV_RECORD _IS_OEM
 RESOURCES += iptv-record.qrc
 HEADERS += tastes/defines_iptv_record.h
 WINICO = television.ico
