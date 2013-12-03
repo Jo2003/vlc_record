@@ -2005,7 +2005,6 @@ void CPlayer::slotFinallyPlays(int percent)
 {
    libvlc_track_description_t* pAuTracks = NULL;
    int               iAuIdx;
-   vAudTrk.clear();
    vlcvid::SContLang al;
 
    if (percent == 0)
@@ -2016,6 +2015,9 @@ void CPlayer::slotFinallyPlays(int percent)
    {
       if (isPlaying())
       {
+         // clear audio track vector ...
+         vAudTrk.clear();
+
          // get audio track description ...
          pAuTracks = libvlc_audio_get_track_description(pMediaPlayer);
 
@@ -2091,6 +2093,7 @@ void CPlayer::slotChangeATrack(int id)
          {
             if (vAudTrk.at(i).id == id)
             {
+               // found track id, store index ...
                pDb->setDefAStream(showInfo.channelId(), i);
                break;
             }

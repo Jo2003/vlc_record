@@ -49,9 +49,11 @@
       "PRIMARY KEY (cid, t_start))"
 
 #define TAB_ASTREAM \
-"CREATE TABLE astream ("\
-      "cid integer PRIMARY KEY UNIQUE," \
-      "aidx tiny int)"
+"CREATE TABLE \"astream\" ("\
+      "\"cid\"  INTEGER NOT NULL,"\
+      "\"aidx\"  INTEGER NOT NULL,"\
+      "PRIMARY KEY(\"cid\"),"\
+      "UNIQUE(\"cid\"))"
 
 #endif // __130610_TABLES_H
 /************************* History ***************************\
