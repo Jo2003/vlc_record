@@ -30,7 +30,7 @@
 #endif
 
 #define VERSION_MINOR "67"
-#define BETA_EXT      "B5"
+#define BETA_EXT      "B6"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -38,6 +38,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-12-03: Version 2.67B6
+| - saves and restore choosen audio track
+|
 | 2013-11-29: Version 2.67B5
 | - windowed mode is now minimal mode
 | - minimal mode can be reached and leaved using player
