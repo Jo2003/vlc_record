@@ -697,36 +697,40 @@ void QVlcVideoWidget::touchContextMenu()
    // --------------------------------------------------------
    _mtxLv.lock();
 
-   if (!_langVector.isEmpty())
+   // only display audio change stuff if we have more then one entry ...
+   if (_langVector.count() > 1)
    {
       // add seperator ...
       pAct = _contextMenu->addSeparator();
-   }
 
-   // go through language vector and add context menu entries ...
-   for (i = 0; i < _langVector.count(); i++)
-   {
-      // try to grab language name from track description ...
-      if (rx.indexIn(_langVector.at(i).desc) > -1)
+      // create submenu ---
+      QMenu* pAudSubm = _contextMenu->addMenu(tr("Audio Streams"));
+
+      // go through language vector and add context menu entries ...
+      for (i = 0; i < _langVector.count(); i++)
       {
-         name = rx.cap(1);
+         // try to grab language name from track description ...
+         if (rx.indexIn(_langVector.at(i).desc) > -1)
+         {
+            name = rx.cap(1);
+         }
+         else
+         {
+            // filter doesn't match so give it a understandable name ...
+            name = tr("Audio %1").arg(i + 1);
+         }
+
+         // create context menu entry ...
+         pAct = pAudSubm->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), name);
+
+         // prepare data ...
+         contAct.actType = vlcvid::ACT_ChgLang;
+         contAct.actName = _langVector.at(i).desc;
+         contAct.actVal.setValue(_langVector.at(i).id);
+
+         // set data ...
+         pAct->setData(QVariant::fromValue(contAct));
       }
-      else
-      {
-         // filter doesn't match so give it a understandable name ...
-         name = tr("Audio %1").arg(i + 1);
-      }
-
-      // create context menu entry ...
-      pAct = _contextMenu->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), name);
-
-      // prepare data ...
-      contAct.actType = vlcvid::ACT_ChgLang;
-      contAct.actName = _langVector.at(i).desc;
-      contAct.actVal.setValue(_langVector.at(i).id);
-
-      // set data ...
-      pAct->setData(QVariant::fromValue(contAct));
    }
    _mtxLv.unlock();
 }

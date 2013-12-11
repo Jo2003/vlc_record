@@ -549,19 +549,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>CMoiDomXmlParser</name>
-    <message>
-        <location filename="cmoidomxmlparser.cpp" line="177"/>
-        <source>Found unused element %1 ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cmoidomxmlparser.cpp" line="183"/>
-        <source>Found unused child %1: %2 ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CNovoeClient</name>
     <message>
         <location filename="cnovoeclient.cpp" line="84"/>
@@ -1016,38 +1003,23 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2026"/>
+        <location filename="cplayer.cpp" line="2027"/>
         <source>Scan for Audio tracks:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2038"/>
+        <location filename="cplayer.cpp" line="2039"/>
         <source>-&gt; Audio track %1 %2%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2067"/>
+        <location filename="cplayer.cpp" line="2068"/>
         <source>%1 %2 deinterlace</source>
         <oldsource>%1 deinterlace</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2090"/>
-        <source>We have %1 audio tracks and want to switch to %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cplayer.cpp" line="2095"/>
-        <source>Checking %1 &lt;--&gt; %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cplayer.cpp" line="2099"/>
-        <source>New audio track has index %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="cplayer.cpp" line="2107"/>
+        <location filename="cplayer.cpp" line="2105"/>
         <source>Change audio track to id %1 (idx %2): %3!</source>
         <oldsource>Change audio track to id %1 /idx %2: %3!</oldsource>
         <translation type="unfinished"></translation>
@@ -1464,51 +1436,51 @@ p, li { white-space: pre-wrap; }
     <name>CRodnoeParser</name>
     <message>
         <location filename="crodnoeparser.cpp" line="88"/>
-        <location filename="crodnoeparser.cpp" line="515"/>
-        <location filename="crodnoeparser.cpp" line="630"/>
-        <location filename="crodnoeparser.cpp" line="696"/>
-        <location filename="crodnoeparser.cpp" line="790"/>
-        <location filename="crodnoeparser.cpp" line="876"/>
-        <location filename="crodnoeparser.cpp" line="971"/>
-        <location filename="crodnoeparser.cpp" line="1111"/>
-        <location filename="crodnoeparser.cpp" line="1204"/>
-        <location filename="crodnoeparser.cpp" line="1305"/>
-        <location filename="crodnoeparser.cpp" line="1428"/>
-        <location filename="crodnoeparser.cpp" line="1489"/>
+        <location filename="crodnoeparser.cpp" line="531"/>
+        <location filename="crodnoeparser.cpp" line="646"/>
+        <location filename="crodnoeparser.cpp" line="712"/>
+        <location filename="crodnoeparser.cpp" line="806"/>
+        <location filename="crodnoeparser.cpp" line="892"/>
+        <location filename="crodnoeparser.cpp" line="987"/>
+        <location filename="crodnoeparser.cpp" line="1127"/>
+        <location filename="crodnoeparser.cpp" line="1220"/>
+        <location filename="crodnoeparser.cpp" line="1321"/>
+        <location filename="crodnoeparser.cpp" line="1444"/>
+        <location filename="crodnoeparser.cpp" line="1505"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="crodnoeparser.cpp" line="89"/>
-        <location filename="crodnoeparser.cpp" line="516"/>
-        <location filename="crodnoeparser.cpp" line="631"/>
-        <location filename="crodnoeparser.cpp" line="697"/>
-        <location filename="crodnoeparser.cpp" line="791"/>
-        <location filename="crodnoeparser.cpp" line="877"/>
-        <location filename="crodnoeparser.cpp" line="972"/>
-        <location filename="crodnoeparser.cpp" line="1112"/>
-        <location filename="crodnoeparser.cpp" line="1205"/>
-        <location filename="crodnoeparser.cpp" line="1306"/>
-        <location filename="crodnoeparser.cpp" line="1429"/>
-        <location filename="crodnoeparser.cpp" line="1490"/>
+        <location filename="crodnoeparser.cpp" line="532"/>
+        <location filename="crodnoeparser.cpp" line="647"/>
+        <location filename="crodnoeparser.cpp" line="713"/>
+        <location filename="crodnoeparser.cpp" line="807"/>
+        <location filename="crodnoeparser.cpp" line="893"/>
+        <location filename="crodnoeparser.cpp" line="988"/>
+        <location filename="crodnoeparser.cpp" line="1128"/>
+        <location filename="crodnoeparser.cpp" line="1221"/>
+        <location filename="crodnoeparser.cpp" line="1322"/>
+        <location filename="crodnoeparser.cpp" line="1445"/>
+        <location filename="crodnoeparser.cpp" line="1506"/>
         <source>XML Error String: %1</source>
         <translation>Ошибка XML строки: %1</translation>
     </message>
     <message>
         <location filename="crodnoeparser.cpp" line="174"/>
-        <location filename="crodnoeparser.cpp" line="318"/>
-        <location filename="crodnoeparser.cpp" line="394"/>
+        <location filename="crodnoeparser.cpp" line="334"/>
+        <location filename="crodnoeparser.cpp" line="410"/>
         <source>Found unused element %1 ...</source>
         <translation></translation>
     </message>
     <message>
         <location filename="crodnoeparser.cpp" line="180"/>
-        <location filename="crodnoeparser.cpp" line="324"/>
+        <location filename="crodnoeparser.cpp" line="340"/>
         <source>Found unused child %1: %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="931"/>
+        <location filename="crodnoeparser.cpp" line="947"/>
         <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
         <translation></translation>
     </message>
@@ -2838,7 +2810,12 @@ or start time is later than end time!</source>
         <translation>Закрепление окна</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="717"/>
+        <location filename="qvlcvideowidget.cpp" line="707"/>
+        <source>Audio Streams</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="720"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
