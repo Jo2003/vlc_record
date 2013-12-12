@@ -70,7 +70,8 @@ SOURCES += main.cpp \
     ctimeshift.cpp \
     chtmlwriter.cpp \
     qoverlayicon.cpp \
-    qchannelmap.cpp
+    qchannelmap.cpp \
+    qextm3uparser.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -120,7 +121,8 @@ HEADERS += recorder.h \
     chtmlwriter.h \
     qoverlayicon.h \
     qchannelmap.h \
-    qfadewidget.h
+    qfadewidget.h \
+    qextm3uparser.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
