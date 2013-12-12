@@ -326,6 +326,7 @@ int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
                   if (rx.indexIn(sl.at(i)) > -1)
                   {
                      stok.iByteCount = rx.cap(1).toInt();
+                     stok.iBOffset   = 0;
                   }
                }
             }
