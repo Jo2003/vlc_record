@@ -55,9 +55,9 @@ protected:
    void GetChannelList (const QString &secCode = QString());
    void SetTimeShift (int iHours);
    void GetTimeShift ();
-   void GetStreamURL (int iChanID, const QString &secCode, bool bTimerRec = false);
-   void GetArchivURL (const QString &prepared, const QString &secCode);
-   void GetVodUrl (int iVidId, const QString &secCode);
+   virtual void GetStreamURL (int iChanID, const QString &secCode, bool bTimerRec = false);
+   virtual void GetArchivURL (const QString &prepared, const QString &secCode);
+   virtual void GetVodUrl (int iVidId, const QString &secCode);
    void GetVodGenres ();
    void SetServer (const QString& sIp);
    void GetServer ();
@@ -78,6 +78,7 @@ protected:
    void epgCurrent(const QString &cids);
    void updInfo (const QString& url);
    int  checkResponse (const QString &sResp, QString& sCleanResp);
+   const QString& apiUrl();
 
 private:
    QString   sUsr;

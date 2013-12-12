@@ -30,6 +30,8 @@
    #include <defines_ltvision.h>
 #elif defined _TASTE_OEM
    #include <defines_oem_record.h>
+#elif defined _TASTE_SUNDUK_TV
+   #include <defines_sunduk_tv.h>
 #else
    #include <defines_vlc_record.h>
 #endif // _TASTE_XXX

@@ -24,6 +24,9 @@
 #elif _TASTE_MOIDOM_TV
    #include "cmoidomxmlparser.h"
    #include "ckartinaclnt.h"
+#elif _TASTE_SUNDUK_TV
+   #include "csundukclnt.h"
+   #include "cstdjsonparser.h"
 #else
    #include "ckartinaclnt.h"
    #ifdef _USE_QJSON

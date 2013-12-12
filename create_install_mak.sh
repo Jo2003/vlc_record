@@ -30,6 +30,10 @@ case ${NAME} in
       OFFNAME="Iptv-Record"
       SSERVER="some Iptv stations"
       ;;
+   sunduk_tv)
+      OFFNAME="Sunduk.TV"
+      SSERVER=$OFFNAME
+      ;;
    *)
       OFFNAME=${NAME}
       ;;

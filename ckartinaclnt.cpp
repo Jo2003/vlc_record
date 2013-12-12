@@ -1031,6 +1031,21 @@ int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: apiUrl
+|  Begin: 12.12.2013
+|  Author: Jo2003
+|  Description: get API url
+|
+|  Parameters: --
+|
+|  Returns: api url
+\----------------------------------------------------------------- */
+const QString& CKartinaClnt::apiUrl()
+{
+   return sApiUrl;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: fillErrorMap
 |  Begin: 21.07.2011 / 12:30
 |  Author: Jo2003
