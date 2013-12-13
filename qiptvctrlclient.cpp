@@ -111,6 +111,14 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
          emit sigBinResponse(iReqId, ba);
          break;
 
+      case Iptv::m3u:
+         emit sigM3u (iReqId, QString::fromUtf8(ba.constData()));
+         break;
+
+      case Iptv::hls:
+         emit sigHls (iReqId, ba);
+         break;
+
       case Iptv::Stream:
          // nothing to do here ...
          break;

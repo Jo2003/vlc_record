@@ -45,6 +45,8 @@ public:
       String,
       Binary,
       Stream,
+      m3u,
+      hls,
       Unknown
    };
 
@@ -122,7 +124,7 @@ private:
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
 #ifdef __TRACE
-   Iptv     iptv;
+   Iptv              iptv;
 #endif
 
 protected:
@@ -134,6 +136,9 @@ signals:
    void sigStringResponse (int reqId, QString strResp);
    void sigBinResponse (int reqId, QByteArray binResp);
    void sigErr (int reqId, QString sErr, int iErr);
+
+   void sigM3u (int reqId, QString s);
+   void sigHls (int reqId, QByteArray bHls);
 
 public slots:
 

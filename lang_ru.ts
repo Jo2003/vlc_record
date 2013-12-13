@@ -2110,24 +2110,6 @@ To change the parent code make sure:
     </message>
 </context>
 <context>
-    <name>CSundukClnt</name>
-    <message>
-        <location filename="csundukclnt.cpp" line="66"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="csundukclnt.cpp" line="93"/>
-        <source>Request Archiv URL ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="csundukclnt.cpp" line="120"/>
-        <source>Request Video Url for video %1...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CTimerRec</name>
     <message>
         <location filename="ctimerrec.cpp" line="389"/>
@@ -2578,20 +2560,20 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="119"/>
+        <location filename="qiptvctrlclient.cpp" line="127"/>
         <source>Error, unknown request type: %1!</source>
         <oldsource>Error, unknown reqest type: %1!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="245"/>
+        <location filename="qiptvctrlclient.cpp" line="253"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;, data=&apos;%4&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="279"/>
+        <location filename="qiptvctrlclient.cpp" line="287"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
