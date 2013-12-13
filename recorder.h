@@ -61,12 +61,9 @@
 #include "qwatchlistdlg.h"
 #include "ctimeshift.h"
 #include "qchannelmap.h"
-
-#ifdef INCLUDE_LIBVLC
-   #include <QStackedLayout>
-   #include "qvlcvideowidget.h"
-#endif // INCLUDE_LIBVLC
-
+#include <QStackedLayout>
+#include "qvlcvideowidget.h"
+#include "qextm3uparser.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -181,19 +178,15 @@ private:
     QMenu                          *pMnLangFilter;
     QWatchListDlg                  *pWatchList;
     bool                            bStayOnTop;
-
-#ifdef INCLUDE_LIBVLC
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
     Ui::EDisplayMode                eCurDMode;
     QRect                           rectBackup;
     QRect                           playWndRect;
-#endif //INCLUDE_LIBVLC
+    QExtM3uParser                  *pM3uParser;
 
 protected:
-#ifdef INCLUDE_LIBVLC
     void setDisplayMode(Ui::EDisplayMode newMode);
-#endif // INCLUDE_LIBVLC
     void fillShortCutTab();
     void touchLastOrBestCbx ();
     void touchGenreCbx();
@@ -221,6 +214,7 @@ protected:
     void correctEpgOffset();
     int  grantAdultAccess (bool bProtected);
     void toggleFullscreen();
+    int  check4PlayList (const QString& sUrl);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
@@ -229,12 +223,10 @@ protected:
     virtual void keyPressEvent (QKeyEvent *event);
 
 private slots:
-#ifdef INCLUDE_LIBVLC
     void slotBwd();
     void slotFwd();
     void slotToggleFullscreen();
     void slotWindowed();
-#endif /* INCLUDE_LIBVLC */
     void on_btnVodSearch_clicked();
     void on_cbxGenre_activated(int index);
     void on_cbxLastOrBest_activated(int index);

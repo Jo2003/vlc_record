@@ -116,14 +116,14 @@ void CAboutDialog::FillInfo(QString sExpires)
    td    = pHtml->tableCell(tr("Version:")         , "font-weight: bold;");
    td   += pHtml->tableCell(__MY__VERSION__        , "padding-left: 7px;");
    rows  = pHtml->tableRow(td);
-#ifdef INCLUDE_LIBVLC
+
    // libvlc version ...
    link  = pHtml->link("http://www.videolan.org", "VideoLAN.org", "", linkcss);
    link  = QString("%1 by %2").arg(libvlc_get_version()).arg(link);
    td    = pHtml->tableCell(tr("libVLC:")          , "font-weight: bold;");
    td   += pHtml->tableCell(link                   , "padding-left: 7px;");
    rows += pHtml->tableRow(td);
-#endif // INCLUDE_LIBVLC
+
    // author ...
    link  = pHtml->link("mailto:coujo@gmx.net", "Jo2003", "", linkcss);
    td    = pHtml->tableCell(tr("Author:")          , "font-weight: bold;");

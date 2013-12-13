@@ -23,12 +23,7 @@
    #define MY_BUILD_SYS "unknown"
 #endif
 
-#ifdef INCLUDE_LIBVLC
-   #define VERSION_MAJOR "2"
-#else
-   #define VERSION_MAJOR "1"
-#endif
-
+#define VERSION_MAJOR "2"
 #define VERSION_MINOR "67"
 #define BETA_EXT      "B6"
 

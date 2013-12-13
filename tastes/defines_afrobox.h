@@ -14,19 +14,12 @@
 
 #include <QtGlobal>
 
-#ifdef INCLUDE_LIBVLC
-   #define APP_NAME          "Afrobox"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/afrobox_ver.xml"
-#else
-   #define APP_NAME          "Afrobox-classic"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/afrobox_classic.xml"
-#endif // INCLUDE_LIBVLC
-
-#define BIN_NAME             "afrobox"
-#define KARTINA_HOST         "iptv.afrobox.co.uk"
-
-#define COMPANY_NAME "Afrobox.co.uk"
-#define COMPANY_LINK "<a href='http://www.afrobox.co.uk'>" COMPANY_NAME "</a>"
+#define APP_NAME      "Afrobox"
+#define UPD_CHECK_URL "http://rt.coujo.de/afrobox_ver.xml"
+#define BIN_NAME      "afrobox"
+#define KARTINA_HOST  "iptv.afrobox.co.uk"
+#define COMPANY_NAME  "Afrobox.co.uk"
+#define COMPANY_LINK  "<a href='http://www.afrobox.co.uk'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
 #endif // __012412__DEFINES_AFROBOX_H

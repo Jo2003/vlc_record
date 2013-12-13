@@ -14,9 +14,7 @@
 
 #include <QDialog>
 #include <QString>
-#ifdef INCLUDE_LIBVLC
-   #include <vlc/vlc.h>
-#endif
+#include <vlc/vlc.h>
 #include <version_info.h>
 #include "csettingsdlg.h"
 #include "defdef.h"

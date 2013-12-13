@@ -14,19 +14,12 @@
 
 #include <QtGlobal>
 
-#ifdef INCLUDE_LIBVLC
-   #define APP_NAME          "Sunduk.TV"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/sunduk_tv_ver.xml"
-#else
-   #define APP_NAME          "Sunduk.TV-classic"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/sunduk_tv_ver_classic.xml"
-#endif // INCLUDE_LIBVLC
-
-#define BIN_NAME             "sunduk_tv"
-#define API_SERVER           "iptv.sunduk.tv"
-
-#define COMPANY_NAME "Sunduk.TV"
-#define COMPANY_LINK "<a href='http://www.sunduk.tv'>" COMPANY_NAME "</a>"
+#define APP_NAME      "Sunduk.TV"
+#define UPD_CHECK_URL "http://rt.coujo.de/sunduk_tv_ver.xml"
+#define BIN_NAME      "sunduk_tv"
+#define API_SERVER    "iptv.sunduk.tv"
+#define COMPANY_NAME  "Sunduk.TV"
+#define COMPANY_LINK  "<a href='http://www.sunduk.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 #define ApiClient      CSundukClnt
 

@@ -14,19 +14,12 @@
 
 #include <QtGlobal>
 
-#ifdef INCLUDE_LIBVLC
-   #define APP_NAME          "Iptv-Record"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/rodnoe_tv_ver.xml"
-#else
-   #define APP_NAME          "Iptv-Record-classic"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/rodnoe_tv_ver_classic.xml"
-#endif // INCLUDE_LIBVLC
-
-#define BIN_NAME             "iptv-record"
-#define API_SERVER           "file-teleport.com"
-
-#define COMPANY_NAME "Iptv-Provider"
-#define COMPANY_LINK "<a href='http://vlc-record.coujo.de'>" COMPANY_NAME "</a>"
+#define APP_NAME      "Iptv-Record"
+#define UPD_CHECK_URL "http://rt.coujo.de/rodnoe_tv_ver.xml"
+#define BIN_NAME      "iptv-record"
+#define API_SERVER    "file-teleport.com"
+#define COMPANY_NAME  "Iptv-Provider"
+#define COMPANY_LINK  "<a href='http://vlc-record.coujo.de'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
 #define API_XML_PATH   "/iptv/api/v1/xml/"

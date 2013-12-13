@@ -315,16 +315,10 @@ void CSettingsDlg::readSettings()
 
    if ((s = pDb->stringValue("PlayerModule")) == "")
    {
-      // no player module chossen yet ...
+      // no player module chosen yet ...
 
-#ifdef INCLUDE_LIBVLC
       // default module in version 2.xx is 5_libvlc.mod
       s = "5_libvlc.mod";
-#else
-      // default module in version 1.xx is 1_vlc-player.mod
-      s = "1_vlc-player.mod";
-#endif
-
    }
 
    iIdx = m_ui->cbxPlayerMod->findText(s);

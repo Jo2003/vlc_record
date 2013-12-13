@@ -14,19 +14,12 @@
 
 #include <QtGlobal>
 
-#ifdef INCLUDE_LIBVLC
-   #define APP_NAME          "Polsky.TV"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/polsky_tv_ver.xml"
-#else
-   #define APP_NAME          "Polsky.TV-classic"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/polsky_tv_ver_classic.xml"
-#endif // INCLUDE_LIBVLC
-
-#define BIN_NAME             "polsky_tv"
-#define API_SERVER           "iptv.polsky.tv"
-
-#define COMPANY_NAME "Polsky.TV"
-#define COMPANY_LINK "<a href='http://www.polsky.tv'>" COMPANY_NAME "</a>"
+#define APP_NAME      "Polsky.TV"
+#define UPD_CHECK_URL "http://rt.coujo.de/polsky_tv_ver.xml"
+#define BIN_NAME      "polsky_tv"
+#define API_SERVER    "iptv.polsky.tv"
+#define COMPANY_NAME  "Polsky.TV"
+#define COMPANY_LINK  "<a href='http://www.polsky.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
 #define APPLICATION_SHORTCUT "pol"

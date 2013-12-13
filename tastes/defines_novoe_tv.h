@@ -14,19 +14,12 @@
 
 #include <QtGlobal>
 
-#ifdef INCLUDE_LIBVLC
-   #define APP_NAME          "Novoe.TV"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/novoe_tv_ver.xml"
-#else
-   #define APP_NAME          "Novoe.TV-classic"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/novoe_tv_ver_classic.xml"
-#endif // INCLUDE_LIBVLC
-
-#define BIN_NAME             "novoe_tv"
-#define API_SERVER           "ott.new-rus.tv"
-
-#define COMPANY_NAME "Novoe.TV"
-#define COMPANY_LINK "<a href='http://www.novoe.tv'>" COMPANY_NAME "</a>"
+#define APP_NAME      "Novoe.TV"
+#define UPD_CHECK_URL "http://rt.coujo.de/novoe_tv_ver.xml"
+#define BIN_NAME      "novoe_tv"
+#define API_SERVER    "ott.new-rus.tv"
+#define COMPANY_NAME  "Novoe.TV"
+#define COMPANY_LINK  "<a href='http://www.novoe.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
 #define API_JSON_PATH  "/api/json2/"

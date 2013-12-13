@@ -12,11 +12,7 @@
 #include "recorder.h"
 #include "small_helpers.h"
 
-#ifndef INCLUDE_LIBVLC
-   #include "ui_recorder.h"
-#else
-   #include "ui_recorder_inc.h"
-#endif
+#include "ui_recorder_inc.h"
 
 #include "qfusioncontrol.h"
 #include "qcustparser.h"
@@ -76,7 +72,6 @@ Recorder::Recorder(QWidget *parent)
    ui->setupUi(this);
    QString sHlp;
 
-#ifdef INCLUDE_LIBVLC
    // build layout stack ...
    pVideoWidget  = NULL;
    stackedLayout = new QStackedLayout();
@@ -85,7 +80,6 @@ Recorder::Recorder(QWidget *parent)
    stackedLayout->addWidget(ui->masterFrame);
    ui->vMainLayout->addLayout(stackedLayout);
    eCurDMode = Ui::DM_NORMAL;
-#endif // INCLUDE_LIBVLC
 
    // set (customized) windows title ...
    setWindowTitle(pCustomization->strVal("APP_NAME"));
@@ -98,6 +92,7 @@ Recorder::Recorder(QWidget *parent)
    pFilterMenu   =  NULL;
    pMnLangFilter =  NULL;
    pWatchList    =  NULL;
+   pM3uParser    =  NULL;
    bStayOnTop    =  false;
 
    // feed mission control ...
@@ -106,9 +101,7 @@ Recorder::Recorder(QWidget *parent)
    missionControl.addButton(ui->pushRecord,   QFusionControl::BTN_REC);
    missionControl.addButton(ui->pushFwd,      QFusionControl::BTN_FWD);
    missionControl.addButton(ui->pushBwd,      QFusionControl::BTN_BWD);
-#ifdef INCLUDE_LIBVLC
    missionControl.addButton(ui->pushScrnShot, QFusionControl::BTN_SCRSHOT);
-#endif // INCLUDE_LIBVLC
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
 
    // init account info ...
@@ -132,6 +125,9 @@ Recorder::Recorder(QWidget *parent)
       pFavAct[i]     = NULL;
       pContextAct[i] = NULL;
    }
+
+   // create playlist parser ...
+   pM3uParser = new QExtM3uParser(this);
 
    // set channel list model and delegate ...
    pModel    = new QStandardItemModel(this);
@@ -179,10 +175,7 @@ Recorder::Recorder(QWidget *parent)
    VlcLog.SetLogLevel(Settings.GetLogLevel());
 
    mLog(tr("Starting: %1 / Version: %2").arg(pCustomization->strVal("APP_NAME")).arg(__MY__VERSION__));
-
-#ifdef INCLUDE_LIBVLC
    mLog(tr("Using libVLC 0x%1").arg(ui->player->libvlcVersion(), 8, 16, QChar('0')));
-#endif
 
    // log folder locations ...
    mInfo (tr("\ndataDir: %1\n").arg(pFolders->getDataDir())
@@ -233,8 +226,6 @@ Recorder::Recorder(QWidget *parent)
    vodTabWidget.pWidget = ui->tabEpgVod->widget(vodTabWidget.iPos);
    ui->tabEpgVod->removeTab(vodTabWidget.iPos);
 
-#ifdef INCLUDE_LIBVLC
-
    // do we use libVLC ?
    if (Settings.GetPlayerModule().contains("libvlc", Qt::CaseInsensitive))
    {
@@ -269,8 +260,6 @@ Recorder::Recorder(QWidget *parent)
    connect (this, SIGNAL(sigWindowed(int)), ui->player, SLOT(slotWindowed(int)));
    connect (ui->player->getVideoWidget(), SIGNAL(sigWindowed()), this, SLOT(slotWindowed()));
    connect (ui->player->getVideoWidget(), SIGNAL(sigStayOnTop(bool)), this, SLOT(slotStayOnTop(bool)));
-
-#endif /* INCLUDE_LIBVLC */
 
    // connect signals and slots ...
    connect (&missionControl, SIGNAL(sigPlay()), this, SLOT(slotPlay()));
@@ -637,7 +626,6 @@ void Recorder::on_pushSettings_clicked()
          streamLoader.setProxy(proxy);
       }
 
-#ifdef INCLUDE_LIBVLC
       // do we use libVLC ?
       if (Settings.GetPlayerModule().contains("libvlc", Qt::CaseInsensitive))
       {
@@ -647,7 +635,6 @@ void Recorder::on_pushSettings_clicked()
       {
          vlcCtrl.UseLibVlc(false);
       }
-#endif /* INCLUDE_LIBVLC */
 
       // give vlcCtrl needed infos ...
       vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
@@ -1248,7 +1235,6 @@ void Recorder::on_pushWatchList_clicked()
 \----------------------------------------------------------------- */
 void Recorder::slotPlay()
 {
-#ifdef INCLUDE_LIBVLC
    // play or pause functionality ...
    if ((showInfo.playState() == IncPlay::PS_PLAY)
       && showInfo.canCtrlStream())
@@ -1276,7 +1262,6 @@ void Recorder::slotPlay()
    }
    else
    {
-#endif // INCLUDE_LIBVLC
       int cid  = getCurrentCid();
 
       cparser::SChan chan;
@@ -1306,10 +1291,7 @@ void Recorder::slotPlay()
             }
          }
       }
-
-#ifdef INCLUDE_LIBVLC
    }
-#endif // INCLUDE_LIBVLC
 }
 
 /* -----------------------------------------------------------------\
@@ -1363,8 +1345,6 @@ void Recorder::slotRecord()
    }
    else
    {
-#ifdef INCLUDE_LIBVLC
-
       // is archive play active ...
       if ((showInfo.showType() == ShowInfo::Archive)
          && (showInfo.playState () == IncPlay::PS_PLAY))
@@ -1383,8 +1363,6 @@ void Recorder::slotRecord()
       }
       else
       {
-
-#endif // INCLUDE_LIBVLC
          int cid = getCurrentCid();
 
          cparser::SChan chan;
@@ -1421,14 +1399,10 @@ void Recorder::slotRecord()
                }
             }
          }
-
-#ifdef INCLUDE_LIBVLC
       }
-#endif // INCLUDE_LIBVLC
    }
 }
 
-#ifdef INCLUDE_LIBVLC
 /* -----------------------------------------------------------------\
 |  Method: slotBwd [slot]
 |  Begin: 23.06.2010 / 12:32:12
@@ -1466,7 +1440,6 @@ void Recorder::slotFwd()
    // jump ...
    ui->player->slotTimeJumpRelative(iJmpVal);
 }
-#endif /* INCLUDE_LIBVLC */
 
 /* -----------------------------------------------------------------\
 |  Method: show [slot]
@@ -1702,7 +1675,6 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    case CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE:
       // if someone else uses this account
       // we have to stop the player ...
-#ifdef INCLUDE_LIBVLC
       if (vlcCtrl.withLibVLC())
       {
          // stop internal player ...
@@ -1711,9 +1683,7 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
             ui->player->stop();
          }
       }
-      else
-#endif
-      if (vlcCtrl.IsRunning())
+      else if (vlcCtrl.IsRunning())
       {
          // stop external player if under control ...
          if (!Settings.DetachPlayer())
@@ -1774,14 +1744,11 @@ void Recorder::slotLogout(const QString &str)
    // no need to look for errors in response ...
    Q_UNUSED(str);
 
-#ifdef INCLUDE_LIBVLC
    if (vlcCtrl.withLibVLC())
    {
       ui->player->stop();
    }
-   else
-#endif
-   if (vlcCtrl.IsRunning())
+   else if (vlcCtrl.IsRunning())
    {
       vlcCtrl.stop();
    }
@@ -1830,14 +1797,11 @@ void Recorder::slotStreamURL(const QString &str)
          }
          else
          {
-#ifdef INCLUDE_LIBVLC
             if (vlcCtrl.withLibVLC())
             {
                ui->player->silentStop();
             }
-            else
-#endif
-            if (vlcCtrl.IsRunning())
+            else if (vlcCtrl.IsRunning())
             {
                vlcCtrl.stop();
             }
@@ -2457,14 +2421,11 @@ void Recorder::slotArchivURL(const QString &str)
          }
          else
          {
-#ifdef INCLUDE_LIBVLC
             if (vlcCtrl.withLibVLC())
             {
                ui->player->silentStop();
             }
-            else
-#endif
-            if (vlcCtrl.IsRunning())
+            else if (vlcCtrl.IsRunning())
             {
                vlcCtrl.stop();
             }
@@ -3186,14 +3147,11 @@ void Recorder::slotVodURL(const QString &str)
          }
          else
          {
-#ifdef INCLUDE_LIBVLC
             if (vlcCtrl.withLibVLC())
             {
                ui->player->silentStop();
             }
-            else
-#endif
-            if (vlcCtrl.IsRunning())
+            else if (vlcCtrl.IsRunning())
             {
                vlcCtrl.stop();
             }
@@ -3713,7 +3671,6 @@ void Recorder::slotDownStreamRequested (int id)
    iDwnReqId = id;
 }
 
-#ifdef INCLUDE_LIBVLC
 /* -----------------------------------------------------------------\
 |  Method: slotToggleFullscreen [slot]
 |  Begin: 27.04.2012
@@ -3745,7 +3702,6 @@ void Recorder::slotWindowed()
 {
    setDisplayMode(Ui::DM_WINDOWED);
 }
-#endif // INCLUDE_LIBVLC
 
 /* -----------------------------------------------------------------\
 |  Method: slotUpdateChannelList [slot]
@@ -4136,8 +4092,6 @@ void Recorder::fillShortCutTab()
       {tr("Text Size +"),          this,       SLOT(on_btnFontLarger_clicked()),  "ALT++"},
       {tr("Text Size -"),          this,       SLOT(on_btnFontSmaller_clicked()), "ALT+-"},
       {tr("Quit"),                 this,       SLOT(close()),                     "ALT+Q"},
-
-#ifdef INCLUDE_LIBVLC
       {tr("Toggle Aspect Ratio"),  ui->player, SLOT(slotToggleAspectRatio()),     "ALT+A"},
       {tr("Toggle Crop Geometry"), ui->player, SLOT(slotToggleCropGeometry()),    "ALT+C"},
       {tr("Toggle Fullscreen"),    this,       SLOT(slotToggleFullscreen()),      "ALT+F"},
@@ -4148,8 +4102,6 @@ void Recorder::fillShortCutTab()
       {tr("Jump Backward"),        this,       SLOT(slotBwd()),                   "CTRL+ALT+B"},
       {tr("Screenshot"),           ui->player, SLOT(slotTakeScreenShot()),        "F12"},
       {tr("Minimal Interface"),    this,       SLOT(slotWindowed()),              "F11"},
-#endif // INCLUDE_LIBVLC
-
       {tr("Next Channel"),         this,       SLOT(slotChannelDown()),           "CTRL+N"},
       {tr("Previous Channel"),     this,       SLOT(slotChannelUp()),             "CTRL+P"},
       {tr("Play Next Channel"),    this,       SLOT(slotPlayNextChannel()),       "CTRL+ALT+N"},
@@ -4246,19 +4198,6 @@ void Recorder::initDialog ()
    // set splitter sizes as last used
    // -------------------------------------------
    QList<int> sSplit;
-#ifndef INCLUDE_LIBVLC
-   sSplit = Settings.GetSplitterSizes("spChanEpg", &ok);
-   if (ok)
-   {
-      ui->vSplitterChanEpg->setSizes(sSplit);
-   }
-
-   sSplit = Settings.GetSplitterSizes("spChan", &ok);
-   if (ok)
-   {
-      ui->hSplitterChannels->setSizes(sSplit);
-   }
-#else /* ifdef INCLUDE_LIBVLC */
    sSplit = Settings.GetSplitterSizes("spVChanEpg", &ok);
    if (ok)
    {
@@ -4276,7 +4215,6 @@ void Recorder::initDialog ()
    {
       ui->hSplitterPlayer ->setSizes(sSplit);
    }
-#endif /* INCLUDE_LIBVLC */
 
    // display splash screen ...
    if (!Settings.DisableSplashScreen())
@@ -4311,15 +4249,9 @@ void Recorder::savePositions()
    // save gui settings ...
    // -------------------------------------------
    Settings.setGeometry(saveGeometry());
-
-#ifndef INCLUDE_LIBVLC
-   Settings.SaveSplitterSizes("spChanEpg", ui->vSplitterChanEpg->sizes());
-   Settings.SaveSplitterSizes("spChan", ui->hSplitterChannels->sizes());
-#else  /* ifdef INCLUDE_LIBVLC */
    Settings.SaveSplitterSizes("spVChanEpg", ui->vSplitterChanEpg->sizes());
    Settings.SaveSplitterSizes("spVChanEpgPlay", ui->vSplitterChanEpgPlay->sizes());
    Settings.SaveSplitterSizes("spHPlay", ui->hSplitterPlayer ->sizes());
-#endif /* INCLUDE_LIBVLC */
 }
 
 /* -----------------------------------------------------------------\
@@ -5065,7 +4997,6 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
 \----------------------------------------------------------------- */
 void Recorder::TouchPlayCtrlBtns (bool bEnable)
 {
-#ifdef INCLUDE_LIBVLC
    if (vlcCtrl.withLibVLC())
    {
       if ((showInfo.playState() == IncPlay::PS_PLAY)
@@ -5091,7 +5022,6 @@ void Recorder::TouchPlayCtrlBtns (bool bEnable)
       missionControl.enableBtn(false, QFusionControl::BTN_FWD);
       missionControl.enableJumpBox(false);
    }
-#endif /* INCLUDE_LIBVLC */
 
    // switch icon of record button to make visible record timer stuff ...
    if ((showInfo.playState() == IncPlay::PS_RECORD) && (showInfo.showType() != ShowInfo::VOD))
@@ -5582,7 +5512,35 @@ void Recorder::toggleFullscreen()
     show();
 }
 
-#ifdef INCLUDE_LIBVLC
+//---------------------------------------------------------------------------
+//
+//! \brief   check if media url is a playlist (means HLS streaming)
+//
+//! \author  Jo2003
+//! \date    13.12.2013
+//
+//! \param   sUrl (const QString&) url to check
+//
+//! \return  0 -> normal handling; 1 -> playlist / hls handling
+//---------------------------------------------------------------------------
+int Recorder::check4PlayList(const QString& sUrl)
+{
+   if (sUrl.indexOf("m3u", 0, Qt::CaseInsensitive) > -1)
+   {
+      // HLS .. Oops!
+      pM3uParser->setMasterUrl(sUrl);
+
+      // download master playlist file ...
+      pApiClient->q_get((int)m3u::M3U_MASTER_PL, sUrl, Iptv::m3u);
+
+      return 1;
+   }
+   else
+   {
+      return 0;
+   }
+}
+
 //---------------------------------------------------------------------------
 //
 //! \brief   switch between supported display modes
@@ -5783,7 +5741,6 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
       eCurDMode = newMode;
    }
 }
-#endif // INCLUDE_LIBVLC
 
 /************************* History ***************************\
 | $Log$

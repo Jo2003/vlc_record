@@ -23,12 +23,7 @@
 #include "chtmlwriter.h"
 #include "qchannelmap.h"
 
-#ifdef DINCLUDEPLUGS
-#include <QtPlugin>
-Q_IMPORT_PLUGIN(qsqlite)
-#endif // DINCLUDEPLUGS
-
-#if ((defined Q_WS_X11) && (defined INCLUDE_LIBVLC))
+#ifdef Q_WS_X11
    #include <X11/Xlib.h>
 #endif
 
@@ -81,7 +76,7 @@ QChannelMap *pChanMap;
 int main(int argc, char *argv[])
 {
    // bugfix for crash on exit on *nix ...
-#if ((defined Q_WS_X11) && (defined INCLUDE_LIBVLC))
+#ifdef Q_WS_X11
    XInitThreads();
 #endif
 

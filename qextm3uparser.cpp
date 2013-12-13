@@ -371,6 +371,7 @@ void QExtM3uParser::reset()
 {
    _iMediaIndex  = -1;
    _iTrgDuration = -1;
+   _sMasterUrl   = "";
 }
 
 //---------------------------------------------------------------------------
@@ -403,4 +404,20 @@ const int& QExtM3uParser::mediaIndex()
 const int& QExtM3uParser::targetDuration()
 {
    return _iTrgDuration;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set master url used in case of relative playlist pathes
+//
+//! \author  Jo2003
+//! \date    13.12.2013
+//
+//! \param   s (const QString&) master url
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QExtM3uParser::setMasterUrl(const QString &s)
+{
+   _sMasterUrl = s;
 }

@@ -13,8 +13,7 @@ CONFIG += debug_and_release \
 TEMPLATE = app
 INCLUDEPATH += .
 
-# build shared or static ... ?
-# CONFIG += static
+# build shared !
 CONFIG += shared
 
 # -------------------------------------
@@ -23,19 +22,9 @@ CONFIG += shared
 PROGMAJ=2
 PROGMIN=67
 
-# -------------------------------------
-# customization ...
-# - make a define here and put needed
-# values into customization.h
-# -------------------------------------
-# DEFINES += _CUST_RUSS_TELEK
-# DEFINES += _CUST_RUSS_SERVICES
-# -------------------------------------
-# Build with or without
-# included player or without?
-# -------------------------------------
-DEFINES += INCLUDE_LIBVLC
+# here you can enable traces ...
 # DEFINES += __TRACE
+
 SOURCES += main.cpp \
     recorder.cpp \
     csettingsdlg.cpp \
@@ -71,7 +60,9 @@ SOURCES += main.cpp \
     chtmlwriter.cpp \
     qoverlayicon.cpp \
     qchannelmap.cpp \
-    qextm3uparser.cpp
+    qextm3uparser.cpp \
+    qvlcvideowidget.cpp \
+    cplayer.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -122,7 +113,11 @@ HEADERS += recorder.h \
     qoverlayicon.h \
     qchannelmap.h \
     qfadewidget.h \
-    qextm3uparser.h
+    qextm3uparser.h \
+    cplayer.h \
+    qvlcvideowidget.h \
+    qclickandgoslider.h \
+    qtimelabel.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -132,10 +127,13 @@ FORMS += forms/csettingsdlg.ui \
     forms/qoverlayedcontrol.ui \
     forms/qrecordtimerwidget.ui \
     forms/qupdatenotifydlg.ui \
-    forms/qwatchlistdlg.ui
+    forms/qwatchlistdlg.ui \
+    forms/cplayer.ui \
+    forms/recorder_inc.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
+LIBS += -lvlc
 
 
 # -------------------------------------------------
@@ -167,6 +165,33 @@ win32 {
     QMAKE_CLEAN += /q program.rc
 
     RC_FILE = program.rc
+
+    INCLUDEPATH += include
+    LIBS += -Llib
+}
+else:mac {
+   OTHER_FILES += create_mac_bundle.sh \
+                  release/create_dmg.sh
+   INCLUDEPATH += mac/include
+
+   CONFIG(debug,debug|release):appclean.commands = cd debug && rm -rf *.app && rm -f *.dmg
+   CONFIG(release,debug|release):appclean.commands = cd release && rm -rf *.app && rm -f *.dmg
+   QMAKE_EXTRA_TARGETS += appclean
+
+   # Hook our appclean target in between qmake's Makefile update and the actual project target.
+   appcleanhook.depends = appclean
+   CONFIG(debug,debug|release):appcleanhook.target = Makefile.Debug
+   CONFIG(release,debug|release):appcleanhook.target = Makefile.Release
+   QMAKE_EXTRA_TARGETS += appcleanhook
+
+   LIBS += -L./mac/lib
+   QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
+}
+else:unix {
+   LIBS += -lX11
+   OTHER_FILES += create_install_mak.sh \
+                  documentation/create_qthelp.sh
+   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
 }
 
 #############
@@ -205,78 +230,11 @@ contains(DEFINES, _USE_QJSON) {
    HEADERS += capixmlparser.h
 }
 
-
-# for static build ...
-static {
-    DEFINES += DSTATIC
-    DEFINES += DINCLUDEPLUGS
-    QTPLUGIN += qsqlite
-}
-
 # where the target should be stored ...
-win32 {
-# nothing
-}
-else  {
+!win32 {
     CONFIG(debug, debug|release):DESTDIR = debug
     else:DESTDIR = release
 }
-
-unix {
-   OTHER_FILES += create_install_mak.sh \
-      documentation/create_qthelp.sh
-   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
-}
-
-# -------------------------------------
-# add includes if we want to build
-# with included player!
-# -------------------------------------
-contains(DEFINES,INCLUDE_LIBVLC) {
-
-   win32 {
-      INCLUDEPATH += include
-      LIBS += -Llib
-   }
-   else:mac {
-      OTHER_FILES += create_mac_bundle.sh \
-                     release/create_dmg.sh
-      INCLUDEPATH += mac/include
-
-      CONFIG(debug,debug|release):appclean.commands = cd debug && rm -rf *.app && rm -f *.dmg
-      CONFIG(release,debug|release):appclean.commands = cd release && rm -rf *.app && rm -f *.dmg
-      QMAKE_EXTRA_TARGETS += appclean
-
-      # Hook our appclean target in between qmake's Makefile update and the actual project target.
-      appcleanhook.depends = appclean
-      CONFIG(debug,debug|release):appcleanhook.target = Makefile.Debug
-      CONFIG(release,debug|release):appcleanhook.target = Makefile.Release
-      QMAKE_EXTRA_TARGETS += appcleanhook
-
-      LIBS += -L./mac/lib
-      QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
-   }
-   else {
-      unix:LIBS += -lX11
-   }
-
-   HEADERS += cplayer.h \
-        qvlcvideowidget.h \
-        qclickandgoslider.h \
-        qtimelabel.h
-
-   FORMS += forms/cplayer.ui \
-        forms/recorder_inc.ui
-
-   SOURCES += qvlcvideowidget.cpp \
-              cplayer.cpp
-   LIBS += -lvlc
-
-#    unix:LIBS += -L/opt/vlc-1.1.1/lib \
-#        -Wl,-rpath \
-#        /opt/vlc-1.1.1/lib
-}
-else:FORMS += forms/recorder.ui
 
 # translation stuff ...
 include (language.pri)

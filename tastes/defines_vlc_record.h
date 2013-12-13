@@ -14,19 +14,12 @@
 
 #include <QtGlobal>
 
-#ifdef INCLUDE_LIBVLC
-   #define APP_NAME          "VLC-Record"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/vlc_record_ver.xml"
-#else
-   #define APP_NAME          "VLC-Record-classic"
-   #define UPD_CHECK_URL     "http://rt.coujo.de/vlc_record_ver_classic.xml"
-#endif // INCLUDE_LIBVLC
-
-#define BIN_NAME             "vlc-record"
-#define API_SERVER           "iptv.kartina.tv"
-
-#define COMPANY_NAME "Kartina.TV"
-#define COMPANY_LINK "<a href='http://www.kartina.tv'>" COMPANY_NAME "</a>"
+#define APP_NAME      "VLC-Record"
+#define UPD_CHECK_URL "http://rt.coujo.de/vlc_record_ver.xml"
+#define BIN_NAME      "vlc-record"
+#define API_SERVER    "iptv.kartina.tv"
+#define COMPANY_NAME  "Kartina.TV"
+#define COMPANY_LINK  "<a href='http://www.kartina.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
 #endif // __012412__DEFINES_VLC_RECORD_H

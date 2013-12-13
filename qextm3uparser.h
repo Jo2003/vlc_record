@@ -75,13 +75,16 @@ public:
    const int& mediaIndex();
    const int& targetDuration();
 
+   void setMasterUrl(const QString& s);
+
 protected:
    bool isTag(const QString& line);
    bool isURI(const QString& line);
 
 private:
-   int _iMediaIndex;
-   int _iTrgDuration;
+   int     _iMediaIndex;
+   int     _iTrgDuration;
+   QString _sMasterUrl;
 };
 
 #endif // __20131212_QEXTM3UPARSER_H
