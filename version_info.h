@@ -25,7 +25,7 @@
 
 #define VERSION_MAJOR "2"
 #define VERSION_MINOR "67"
-#define BETA_EXT      "B6"
+#define BETA_EXT      "B8"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -33,6 +33,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-12-17: Version 2.67B8
+| - add workaround for HLS because libVLC can't handle
+|   it correctly (needs testing!)
+|
 | 2013-12-03: Version 2.67B6
 | - saves and restore choosen audio track
 |

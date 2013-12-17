@@ -2536,6 +2536,48 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
 </context>
 <context>
+    <name>QHlsControl</name>
+    <message>
+        <location filename="qhlscontrol.cpp" line="60"/>
+        <source>Started HLS queue server ...</source>
+        <oldsource>Started HLS queue server: %1</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="136"/>
+        <source>Using stream playlist %5 (id: %1, bandwidth: %2, size: %3x%4)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="153"/>
+        <location filename="qhlscontrol.cpp" line="192"/>
+        <source>Downloading HLS stream token %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="198"/>
+        <source>Downloading next media playlist %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="285"/>
+        <source>HLS queue-in reports error: %1 (%2)</source>
+        <oldsource>HLS queue in reports error: %1 (%2)</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="301"/>
+        <source>HLS queue-out reports error: %1 (%2)</source>
+        <oldsource>HLS queue out reports error: %1 (%2)</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="320"/>
+        <source>Starting HLS play from master playlist %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QIptvCtrlClient</name>
     <message>
         <location filename="qiptvctrlclient.cpp" line="84"/>

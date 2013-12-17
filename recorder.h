@@ -63,7 +63,7 @@
 #include "qchannelmap.h"
 #include <QStackedLayout>
 #include "qvlcvideowidget.h"
-#include "qextm3uparser.h"
+#include "qhlscontrol.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -183,7 +183,8 @@ private:
     Ui::EDisplayMode                eCurDMode;
     QRect                           rectBackup;
     QRect                           playWndRect;
-    QExtM3uParser                  *pM3uParser;
+    QHlsControl                    *pHlsControl;
+    QString                         sHlsShowBuffer;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -309,6 +310,7 @@ private slots:
     void on_pushWatchList_clicked();
     void slotUpdWatchListCount();
     void slotStayOnTop(bool on);
+    void slotPlayHls();
 
 signals:
     void sigShow ();

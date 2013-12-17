@@ -92,7 +92,7 @@ Recorder::Recorder(QWidget *parent)
    pFilterMenu   =  NULL;
    pMnLangFilter =  NULL;
    pWatchList    =  NULL;
-   pM3uParser    =  NULL;
+   pHlsControl   =  NULL;
    bStayOnTop    =  false;
 
    // feed mission control ...
@@ -127,7 +127,7 @@ Recorder::Recorder(QWidget *parent)
    }
 
    // create playlist parser ...
-   pM3uParser = new QExtM3uParser(this);
+   pHlsControl = new QHlsControl(this);
 
    // set channel list model and delegate ...
    pModel    = new QStandardItemModel(this);
@@ -309,6 +309,11 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
    connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
    connect (this,           SIGNAL(sigLockParentalManager()), &Settings, SLOT(slotLockParentalManager()));
+
+   // HLS play stuff ...
+   connect (pApiClient, SIGNAL(sigM3u(int,QString)), pHlsControl, SLOT(slotM3uResp(int,QString)));
+   connect (pApiClient, SIGNAL(sigHls(int,QByteArray)), pHlsControl, SLOT(slotStreamTokResp(int,QByteArray)));
+   connect (pHlsControl, SIGNAL(sigPlay()), this, SLOT(slotPlayHls()));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -1320,6 +1325,8 @@ void Recorder::slotStop()
 
       vlcCtrl.stop();
 
+      pHlsControl->stop();
+
       showInfo.setPlayState(IncPlay::PS_STOP);
       TouchPlayCtrlBtns(true);
    }
@@ -1793,7 +1800,14 @@ void Recorder::slotStreamURL(const QString &str)
       {
          if (!vlcCtrl.ownDwnld())
          {
-            StartVlcRec(sUrl, sShow);
+            if (!check4PlayList(sUrl))
+            {
+               StartVlcRec(sUrl, sShow);
+            }
+            else
+            {
+               sHlsShowBuffer = sShow;
+            }
          }
          else
          {
@@ -1811,7 +1825,14 @@ void Recorder::slotStreamURL(const QString &str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         StartVlcPlay(sUrl);
+         if (!check4PlayList(sUrl))
+         {
+            StartVlcPlay(sUrl);
+         }
+         else
+         {
+            sHlsShowBuffer = "";
+         }
       }
    }
 
@@ -2417,7 +2438,14 @@ void Recorder::slotArchivURL(const QString &str)
       {
          if (!vlcCtrl.ownDwnld())
          {
-            StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
+            if (!check4PlayList(sUrl))
+            {
+               StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
+            }
+            else
+            {
+               sHlsShowBuffer = CleanShowName(showInfo.showName());
+            }
          }
          else
          {
@@ -2437,7 +2465,14 @@ void Recorder::slotArchivURL(const QString &str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         StartVlcPlay(sUrl);
+         if (!check4PlayList(sUrl))
+         {
+            StartVlcPlay(sUrl);
+         }
+         else
+         {
+            sHlsShowBuffer = "";
+         }
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }
@@ -3143,7 +3178,15 @@ void Recorder::slotVodURL(const QString &str)
          // use own downloader ... ?
          if (!vlcCtrl.ownDwnld())
          {
-            StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
+            if (!check4PlayList(sUrls[0]))
+            {
+               StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
+            }
+            else
+            {
+               sHlsShowBuffer = CleanShowName(showInfo.showName());
+            }
+
          }
          else
          {
@@ -3165,7 +3208,14 @@ void Recorder::slotVodURL(const QString &str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         StartVlcPlay(sUrls[0]);
+         if (!check4PlayList(sUrls[0]))
+         {
+            StartVlcPlay(sUrls[0]);
+         }
+         else
+         {
+            sHlsShowBuffer = "";
+         }
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }
@@ -5525,19 +5575,49 @@ void Recorder::toggleFullscreen()
 //---------------------------------------------------------------------------
 int Recorder::check4PlayList(const QString& sUrl)
 {
-   if (sUrl.indexOf("m3u", 0, Qt::CaseInsensitive) > -1)
+   if (sUrl.contains("m3u", Qt::CaseInsensitive))
    {
       // HLS .. Oops!
-      pM3uParser->setMasterUrl(sUrl);
 
-      // download master playlist file ...
-      pApiClient->q_get((int)m3u::M3U_MASTER_PL, sUrl, Iptv::m3u);
+      // make sure to remove the ts which might be present ...
+
+      QString s = sUrl;
+
+      // there shouldn't ... but there is ...
+      s.replace("http/ts://", "http://");
+
+      pHlsControl->startHls(s, Settings.GetBufferTime() / 1000);
+
+      showInfo.useHls(true);
 
       return 1;
    }
    else
    {
       return 0;
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   play or record from hls stream buffer
+//
+//! \author  Jo2003
+//! \date    17.12.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotPlayHls()
+{
+   if (sHlsShowBuffer.isEmpty())
+   {
+      StartVlcPlay(DEF_STREAM_FIFO);
+   }
+   else
+   {
+      StartVlcRec(DEF_STREAM_FIFO, sHlsShowBuffer);
    }
 }
 
