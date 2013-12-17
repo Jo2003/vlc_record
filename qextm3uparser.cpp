@@ -27,7 +27,7 @@
 //! \return  --
 //---------------------------------------------------------------------------
 QExtM3uParser::QExtM3uParser(QObject *parent) :
-   QObject(parent),_iMediaIndex(-1),_iTrgDuration(-1)
+   QObject(parent),_iMediaIndex(-1),_iMediaIdxUsed(-1),_iTrgDuration(-1)
 {
 }
 
@@ -203,7 +203,7 @@ int QExtM3uParser::getStreams(const QString& pl, m3u::StreamVector& sVec)
 
                if (rx.indexIn(sl.at(i)) > -1)
                {
-                  stream.iBandWidth = rx.cap(i).toInt();
+                  stream.iBandWidth = rx.cap(1).toInt();
                }
             }
 
@@ -212,7 +212,7 @@ int QExtM3uParser::getStreams(const QString& pl, m3u::StreamVector& sVec)
          else if(isURI(sl.at(i)))
          {
             // get url of media playlist ...
-            stream.sUri = sl.at(i).simplified();
+            stream.sUri = completeUri(sl.at(i).simplified());
 
             // add element to vector ...
             sVec.append(stream);
@@ -248,10 +248,14 @@ int QExtM3uParser::getStreams(const QString& pl, m3u::StreamVector& sVec)
 //---------------------------------------------------------------------------
 int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
 {
-   int              iRet   = -1;
+   int              iRet      = -1;
+   int              iTokCount =  0;
    QRegExp          rx;
    m3u::t_StreamTok stok;
-   QStringList      sl     = pl.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+   QStringList      sl        = pl.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+
+   // reset endlist tag ...
+   _bEndList = false;
 
    sTVec.clear();
 
@@ -262,7 +266,7 @@ int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
       {
          if (isTag(sl.at(i)))
          {
-            if (sl.at(i).indexOf("#EXT-X-MEDIA-SEQUENCE:") > -1)
+            if (sl.at(i).contains("#EXT-X-MEDIA-SEQUENCE:"))
             {
                rx.setPattern("#EXT-X-MEDIA-SEQUENCE:([0-9]*)");
 
@@ -271,6 +275,11 @@ int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
                   if (rx.cap(1).toInt() > _iMediaIndex)
                   {
                      _iMediaIndex = rx.cap(1).toInt();
+
+                     if (_iMediaIdxUsed == -1)
+                     {
+                        _iMediaIdxUsed = _iMediaIndex;
+                     }
                   }
                   else
                   {
@@ -280,7 +289,7 @@ int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
                   }
                }
             }
-            else if(sl.at(i).indexOf("#EXT-X-TARGETDURATION:") > -1)
+            else if(sl.at(i).contains("#EXT-X-TARGETDURATION:"))
             {
                rx.setPattern("#EXT-X-TARGETDURATION:([0-9]*)");
 
@@ -289,23 +298,23 @@ int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
                   _iTrgDuration = rx.cap(1).toInt();
                }
             }
-            else if(sl.at(i).indexOf("#EXTINF:") > -1)
+            else if(sl.at(i).contains("#EXTINF:"))
             {
-               rx.setPattern("#EXTINF:([0-9]*)");
+               rx.setPattern("#EXTINF:([^,]*),");
 
                if (rx.indexIn(sl.at(i)) > -1)
                {
-                  stok.iDuration = rx.cap(1).toInt();
+                  stok.iDuration = qRound(rx.cap(1).toFloat());
                }
 
-               rx.setPattern("#EXTINF:([0-9]*),(.*)$");
+               rx.setPattern("#EXTINF:.*,(.*)$");
 
                if (rx.indexIn(sl.at(i)) > -1)
                {
-                  stok.sTitle = rx.cap(2);
+                  stok.sTitle = rx.cap(1);
                }
             }
-            else if(sl.at(i).indexOf("#EXT-X-BYTERANGE:") > -1)
+            else if(sl.at(i).contains("#EXT-X-BYTERANGE:"))
             {
                if (sl.at(i).indexOf('@') > -1)
                {
@@ -330,13 +339,22 @@ int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
                   }
                }
             }
+            else if(sl.at(i).contains("#EXT-X-ENDLIST"))
+            {
+               _bEndList = true;
+            }
 
             // other tags not supported so far ...
          }
          else if(isURI(sl.at(i)))
          {
-            stok.sUri = sl.at(i).simplified();
-            sTVec.append(stok);
+            iTokCount ++;
+            if ((_iMediaIndex + iTokCount) > _iMediaIdxUsed)
+            {
+               stok.sUri = completeUri(sl.at(i).simplified());
+               _iMediaIdxUsed ++;
+               sTVec.append(stok);
+            }
 
             // reset stream structure ...
             stok.iBOffset   = -1;
@@ -369,9 +387,10 @@ int QExtM3uParser::getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec)
 //---------------------------------------------------------------------------
 void QExtM3uParser::reset()
 {
-   _iMediaIndex  = -1;
-   _iTrgDuration = -1;
-   _sMasterUrl   = "";
+   _iMediaIndex   = -1;
+   _iMediaIdxUsed = -1;
+   _iTrgDuration  = -1;
+   _sMasterUrl    = "";
 }
 
 //---------------------------------------------------------------------------
@@ -419,5 +438,57 @@ const int& QExtM3uParser::targetDuration()
 //---------------------------------------------------------------------------
 void QExtM3uParser::setMasterUrl(const QString &s)
 {
-   _sMasterUrl = s;
+   int i = s.lastIndexOf("/");
+
+   // remove playlist part of URI ...
+   if (i > -1)
+   {
+      _sMasterUrl = s.left(i + 1); // include the slash ...
+   }
+   else
+   {
+      _sMasterUrl = s;
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   prepend absolute path to uri if needed
+//
+//! \author  Jo2003
+//! \date    16.12.2013
+//
+//! \param   sIn (const QString&) master url
+//
+//! \return  URI
+//---------------------------------------------------------------------------
+QString QExtM3uParser::completeUri(const QString& sIn)
+{
+   // absolute or relative path ...
+   if (sIn.indexOf("://") > -1)
+   {
+      // absolute ...
+      return sIn;
+   }
+   else
+   {
+      // relative -> add first part ..
+      return _sMasterUrl + sIn;
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   end of list reached
+//
+//! \author  Jo2003
+//! \date    17.12.2013
+//
+//! \param   --
+//
+//! \return  true -> end reached; false -> not reached
+//---------------------------------------------------------------------------
+bool QExtM3uParser::endList()
+{
+   return _bEndList;
 }

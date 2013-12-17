@@ -65,7 +65,7 @@ void CSundukClnt::GetStreamURL (int iChanID, const QString &secCode, bool bTimer
 {
    mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
-   QString req = QString("cid=%1&stream_protocol=rtsp").arg(iChanID);
+   QString req = QString("cid=%1&stream_protocol=hls").arg(iChanID);
 
    if (secCode != "")
    {

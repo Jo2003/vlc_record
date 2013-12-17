@@ -744,8 +744,11 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
          ///////////////////////////////////////////////////////////////////////////
          for (cit = lArgs.constBegin(); cit != lArgs.constEnd(); cit ++)
          {
-            mInfo(tr("Add MRL Option: %1").arg(*cit));
-            libvlc_media_add_option(p_md, (*cit).toUtf8().constData());
+            if (!bLocal && !((*cit).contains("network-caching") || (*cit).contains("no-http-reconnect")))
+            {
+               mInfo(tr("Add MRL Option: %1").arg(*cit));
+               libvlc_media_add_option(p_md, (*cit).toUtf8().constData());
+            }
          }
 
          // add commercial to media list (if any) ...
@@ -862,7 +865,7 @@ void CPlayer::slotUpdateSlider()
       if (libvlc_media_player_is_playing(pMediaPlayer))
       {
          uint pos;
-         if (isPositionable() && !showInfo.streamLoader())
+         if (isPositionable() && !showInfo.streamLoader() && !showInfo.isHls())
          {
             pos = libvlc_media_player_get_time (pMediaPlayer) / 1000;
 
@@ -1550,7 +1553,7 @@ void CPlayer::initSlider()
    uiDuration = libvlc_media_player_get_length(pMediaPlayer);
    mInfo(tr("Film length: %1ms.").arg(uiDuration));
 
-   if (isPositionable() && !showInfo.streamLoader())
+   if (isPositionable() && !showInfo.streamLoader() && !showInfo.isHls())
    {
       // VOD stuff ...
       missionControl.setPosRange(0, (int)(uiDuration / 1000));

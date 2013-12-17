@@ -62,7 +62,8 @@ SOURCES += main.cpp \
     qchannelmap.cpp \
     qextm3uparser.cpp \
     qvlcvideowidget.cpp \
-    cplayer.cpp
+    cplayer.cpp \
+    qhlscontrol.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -117,7 +118,8 @@ HEADERS += recorder.h \
     cplayer.h \
     qvlcvideowidget.h \
     qclickandgoslider.h \
-    qtimelabel.h
+    qtimelabel.h \
+    qhlscontrol.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

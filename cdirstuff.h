@@ -47,6 +47,7 @@ public:
    const QString& getAppDir ();
    const QString& getDocDir ();
    const QString& getBinName ();
+   const QString& getTmpFolder ();
    bool  isInitialized ();
    void  setAppName(const QString& name);
 
@@ -66,6 +67,7 @@ private:
    QString                sResDir;
    QString                sBinName;
    QString                sAppName;
+   QString                sTmpFolder;
    QMap<QString, QString> mSysEnv;
    int                    iInitState;
 };

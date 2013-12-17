@@ -146,6 +146,9 @@ int CDirStuff::initDirectories(bool bCreate)
       iRV = -1;
    }
 
+   // temp folder ...
+   sTmpFolder = QDir::tempPath();
+
    // app folder
    sAppDir    = QApplication::applicationDirPath();
 
@@ -438,7 +441,7 @@ const QString& CDirStuff::getModDir()
 |  Method: fillSysEnvMap
 |  Begin: 22.03.2010 / 08:55:51
 |  Author: Jo2003
-|  Description: get sys environment and store it in mSysEnv map
+|  Description: get sys environment and store it in mSysEnv mapQDir::tempPath()
 |
 |  Parameters: --
 |
@@ -448,6 +451,21 @@ const QString& CDirStuff::getModDir()
 bool CDirStuff::isInitialized()
 {
    return (iInitState) ? false : true;
+}
+
+/* -----------------------------------------------------------------\
+|  Method: getTmpFolder
+|  Begin: 17.12.2013
+|  Author: Jo2003
+|  Description: get temp folder
+|
+|  Parameters: --
+|
+|  Returns: temp folder
+\----------------------------------------------------------------- */
+const QString&  CDirStuff::getTmpFolder()
+{
+   return sTmpFolder;
 }
 
 /************************* History ***************************\

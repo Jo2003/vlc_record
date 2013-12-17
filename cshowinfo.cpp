@@ -62,6 +62,7 @@ void CShowInfo::cleanShowInfo()
    uiEnd          = 0;
    uiJumpTime     = 0;
    bStreamLoader  = false;
+   bHls           = false;
    ulLastEpgUpd   = 0;
    iDefAStream    = 0;
    epgMap.clear();
@@ -278,6 +279,21 @@ void CShowInfo::useStreamLoader(bool bUse)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: useHls
+|  Begin: 17.12.2013
+|  Author: Jo2003
+|  Description: do we use the hls?
+|
+|  Parameters: true or false
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CShowInfo::useHls(bool bUse)
+{
+   bHls = bUse;
+}
+
+/* -----------------------------------------------------------------\
 |  Method: setEpgUpdTime
 |  Begin: 04.12.2012
 |  Author: Jo2003
@@ -321,6 +337,22 @@ bool CShowInfo::streamLoader()
 {
    return bStreamLoader;
 }
+
+/* -----------------------------------------------------------------\
+|  Method: isHls
+|  Begin: 17.12.2013
+|  Author: Jo2003
+|  Description: is hls used
+|
+|  Parameters: --
+|
+|  Returns: true or false
+\----------------------------------------------------------------- */
+bool CShowInfo::isHls()
+{
+   return bHls;
+}
+
 
 /* -----------------------------------------------------------------\
 |  Method: showName
@@ -634,7 +666,6 @@ const int &CShowInfo::defAStream()
 {
    return iDefAStream;
 }
-
 
 /************************* History ***************************\
 | $Log$

@@ -21,6 +21,9 @@ extern ApiClient *pApiClient;
 // for logging ...
 extern CLogFile VlcLog;
 
+// global folders ...
+extern CDirStuff *pFolders;
+
 //---------------------------------------------------------------------------
 //
 //! \brief   constructs QHlsControl object

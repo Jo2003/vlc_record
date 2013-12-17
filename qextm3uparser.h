@@ -16,6 +16,7 @@
 
 #include <QString>
 #include <QVector>
+#include <QMap>
 
 #include <QObject>
 #include <QSize>
@@ -45,11 +46,12 @@ namespace m3u {
    typedef enum {
       M3U_MASTER_PL,
       M3U_MEDIA_PL,
+      M3U_HLS_TOK,
       M3U_UNKWN_PL = 255
    } t_type;
 
-   typedef QVector<t_Stream>    StreamVector;
-   typedef QVector<t_StreamTok> StreamTokVector;
+   typedef QVector<t_Stream>       StreamVector;
+   typedef QVector<t_StreamTok>    StreamTokVector;
 }
 
 //---------------------------------------------------------------------------
@@ -71,11 +73,13 @@ public:
    int getStreamToks(const QString& pl, m3u::StreamTokVector& sTVec);
 
    void reset();
+   bool endList();
 
    const int& mediaIndex();
    const int& targetDuration();
 
    void setMasterUrl(const QString& s);
+   QString completeUri(const QString& sIn);
 
 protected:
    bool isTag(const QString& line);
@@ -83,7 +87,9 @@ protected:
 
 private:
    int     _iMediaIndex;
+   int     _iMediaIdxUsed;
    int     _iTrgDuration;
+   bool    _bEndList;
    QString _sMasterUrl;
 };
 

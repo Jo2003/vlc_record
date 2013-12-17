@@ -68,6 +68,7 @@ public:
    void setVodId (int id);
    void setEpgMap(const t_EpgMap &map);
    void useStreamLoader (bool bUse);
+   void useHls (bool bUse);
    void setEpgUpdTime (ulong ts);
    void updWithChanEntry (ulong ulTime, const cparser::SChan &entry);
    void setDefAStream(int idx);
@@ -86,6 +87,7 @@ public:
    const ShowInfo::eProgType &showType();
    bool  canCtrlStream();
    bool  streamLoader();
+   bool  isHls();
    const int& vodId();
    ulong epgUpdTime();
    int   autoUpdate(uint uiTime);
@@ -106,6 +108,7 @@ private:
    int                  iVodId;
    t_EpgMap             epgMap;
    bool                 bStreamLoader;
+   bool                 bHls;
    ulong                ulLastEpgUpd;
    int                  iDefAStream;
 };

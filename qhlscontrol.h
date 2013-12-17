@@ -18,12 +18,9 @@
 #include <QObject>
 #include <QTimer>
 #include <QFile>
+#include "cdirstuff.h"
 
-#ifdef Q_OS_WIN32
-   #define DEF_STREAM_FIFO "\\\\.\\pipe\\hlsfifo"
-#else // Q_OS_UNIX
-   #define DEF_STREAM_FIFO "/tmp/hlsfifo"
-#endif
+#define DEF_STREAM_FIFO (pFolders->getTmpFolder() + "/_hlsFifo")
 
 //---------------------------------------------------------------------------
 //! \class   QHlsControl
