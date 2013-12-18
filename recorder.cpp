@@ -313,7 +313,7 @@ Recorder::Recorder(QWidget *parent)
    // HLS play stuff ...
    connect (pApiClient, SIGNAL(sigM3u(int,QString)), pHlsControl, SLOT(slotM3uResp(int,QString)));
    connect (pApiClient, SIGNAL(sigHls(int,QByteArray)), pHlsControl, SLOT(slotStreamTokResp(int,QByteArray)));
-   connect (pHlsControl, SIGNAL(sigPlay()), this, SLOT(slotPlayHls()));
+   connect (pHlsControl, SIGNAL(sigPlay(QString)), this, SLOT(slotPlayHls(QString)));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -5611,17 +5611,17 @@ int Recorder::check4PlayList(const QString& sUrl)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void Recorder::slotPlayHls()
+void Recorder::slotPlayHls(const QString &s)
 {
    if (sHlsShowBuffer.isEmpty())
    {
       mInfo(tr("Starting play ..."));
-      StartVlcPlay(DEF_STREAM_FIFO);
+      StartVlcPlay(s);
    }
    else
    {
       mInfo(tr("Starting record of %1  ...").arg(sHlsShowBuffer));
-      StartVlcRec(DEF_STREAM_FIFO, sHlsShowBuffer);
+      StartVlcRec(s, sHlsShowBuffer);
    }
 }
 

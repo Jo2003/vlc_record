@@ -36,13 +36,13 @@ public:
    QHlsControl(QObject *parent = 0);
    ~QHlsControl();
    int fd();
-   void startHls(const QString& sUrl, int iBuffSec);
+   void startHls(const QString& sUrl, int iBuffSec, const QString& sPath = QString());
 
 protected:
    int mediaPlDuration();
    
 signals:
-   void sigPlay();
+   void sigPlay(const QString& s);
    
 public slots:
    void slotM3uResp(int id, const QString& resp);
@@ -59,11 +59,12 @@ private:
    m3u::StreamTokVector _stVec;
    QString              _sMasterPlUri;
 
-   int   _iBytesWritten;
-   int   _iBandWidth;
-   int   _iBuffSecs;
+   int    _iBytesWritten;
+   int    _iBandWidth;
+   int    _iBuffSecs;
 
-   QFile _fVlcFifo;
+   QFile  _fVlcFifo;
+   QTimer _tReloadPl;
 };
 
 #endif // __20131216_QHLSCONTROL_H

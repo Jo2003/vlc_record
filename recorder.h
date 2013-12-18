@@ -310,7 +310,7 @@ private slots:
     void on_pushWatchList_clicked();
     void slotUpdWatchListCount();
     void slotStayOnTop(bool on);
-    void slotPlayHls();
+    void slotPlayHls(const QString& s);
 
 signals:
     void sigShow ();

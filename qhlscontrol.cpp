@@ -48,6 +48,9 @@ QHlsControl::QHlsControl(QObject *parent) :
    // we aren't playing HLS so far ...
    _bGo           = false;
    _bPlay         = false;
+
+   _tReloadPl.setSingleShot(true);
+   connect (&_tReloadPl, SIGNAL(timeout()), this, SLOT(slotNewMediaPl()));
 }
 
 //---------------------------------------------------------------------------
@@ -63,14 +66,19 @@ QHlsControl::QHlsControl(QObject *parent) :
 //---------------------------------------------------------------------------
 QHlsControl::~QHlsControl()
 {
+   if (_fVlcFifo.isOpen())
+   {
+      _fVlcFifo.close();
+   }
+
    if (QFile::exists(DEF_STREAM_FIFO))
    {
-      if (_fVlcFifo.isOpen())
-      {
-         _fVlcFifo.close();
-      }
-
       QFile::remove(DEF_STREAM_FIFO);
+   }
+
+   if (_tReloadPl.isActive())
+   {
+      _tReloadPl.stop();
    }
 }
 
@@ -134,7 +142,7 @@ void QHlsControl::slotM3uResp(int id, const QString& resp)
                // trigger reload of media playlist ...
                if (!_pM3uParser->endList())
                {
-                  QTimer::singleShot(1000 * _pM3uParser->targetDuration(), this, SLOT(slotNewMediaPl()));
+                  _tReloadPl.start(1000 * _pM3uParser->targetDuration());
                }
 
                mInfo(tr("Downloading HLS stream token %1").arg(_stVec.at(0).sUri));
@@ -146,7 +154,7 @@ void QHlsControl::slotM3uResp(int id, const QString& resp)
          else if (iRet == 1)
          {
             // no new elements ...
-            QTimer::singleShot(1000 * _pM3uParser->targetDuration() / 2, this, SLOT(slotNewMediaPl()));
+            _tReloadPl.start(1000 * _pM3uParser->targetDuration() / 2);
          }
       }
    }
@@ -192,7 +200,7 @@ void QHlsControl::slotStreamTokResp (int id, const QByteArray& tok)
          if (!_bPlay && (_iBytesWritten >= ((_iBandWidth / 8) * _iBuffSecs)))
          {
             _bPlay = true;
-            emit sigPlay();
+            emit sigPlay(_fVlcFifo.fileName());
          }
       }
 
@@ -234,24 +242,29 @@ void QHlsControl::slotNewMediaPl()
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QHlsControl::startHls(const QString &sUrl, int iBuffSec)
+void QHlsControl::startHls(const QString &sUrl, int iBuffSec, const QString &sPath)
 {
    // start HLS play ...
    _bGo       = true;
    _bPlay     = false;
    _iBuffSecs = iBuffSec;
 
+   if (_fVlcFifo.isOpen())
+   {
+      _fVlcFifo.close();
+   }
+
    if (QFile::exists(DEF_STREAM_FIFO))
    {
-      if (_fVlcFifo.isOpen())
-      {
-         _fVlcFifo.close();
-      }
-
       QFile::remove(DEF_STREAM_FIFO);
    }
 
-   _fVlcFifo.setFileName(DEF_STREAM_FIFO);
+   if (_tReloadPl.isActive())
+   {
+      _tReloadPl.stop();
+   }
+
+   _fVlcFifo.setFileName(sPath.isEmpty() ? DEF_STREAM_FIFO : sPath);
    _fVlcFifo.open(QIODevice::WriteOnly);
    _iBytesWritten = 0;
 
@@ -277,6 +290,16 @@ void QHlsControl::stop()
 {
    mInfo(tr("Stopping event loop ..."));
    _bGo = false;
+
+   if (_fVlcFifo.isOpen())
+   {
+      _fVlcFifo.close();
+   }
+
+   if (_tReloadPl.isActive())
+   {
+      _tReloadPl.stop();
+   }
 }
 
 //---------------------------------------------------------------------------

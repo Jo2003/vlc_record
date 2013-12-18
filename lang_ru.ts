@@ -2573,7 +2573,7 @@ or start time is later than end time!</source>
 <context>
     <name>QHlsControl</name>
     <message>
-        <location filename="qhlscontrol.cpp" line="93"/>
+        <location filename="qhlscontrol.cpp" line="101"/>
         <source>Playlist content: -&gt;
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -2585,39 +2585,44 @@ or start time is later than end time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="113"/>
+        <location filename="qhlscontrol.cpp" line="121"/>
         <source>Using stream playlist %5 (id: %1, bandwidth: %2, size: %3x%4)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="140"/>
-        <location filename="qhlscontrol.cpp" line="202"/>
+        <location filename="qhlscontrol.cpp" line="148"/>
+        <location filename="qhlscontrol.cpp" line="210"/>
         <source>Downloading HLS stream token %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="177"/>
+        <location filename="qhlscontrol.cpp" line="185"/>
         <source>Writing %1 bytes HLS stream data to %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="183"/>
+        <location filename="qhlscontrol.cpp" line="191"/>
         <source>HLS queue-in error ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="187"/>
+        <location filename="qhlscontrol.cpp" line="195"/>
         <source>Written %1 of %2 bytes!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="222"/>
+        <location filename="qhlscontrol.cpp" line="230"/>
         <source>Downloading next media playlist %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="258"/>
+        <location filename="qhlscontrol.cpp" line="271"/>
         <source>Starting HLS play from master playlist %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="291"/>
+        <source>Stopping event loop ...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
