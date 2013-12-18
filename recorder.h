@@ -184,7 +184,6 @@ private:
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
-    QString                         sHlsShowBuffer;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -215,7 +214,8 @@ protected:
     void correctEpgOffset();
     int  grantAdultAccess (bool bProtected);
     void toggleFullscreen();
-    int  check4PlayList (const QString& sUrl);
+    int  check4PlayList (const QString& sUrl, const QString& sName = QString());
+    QString recFileName (const QString& name, QString& ext);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);

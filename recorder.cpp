@@ -1800,13 +1800,9 @@ void Recorder::slotStreamURL(const QString &str)
       {
          if (!vlcCtrl.ownDwnld())
          {
-            if (!check4PlayList(sUrl))
+            if (!check4PlayList(sUrl, sShow))
             {
                StartVlcRec(sUrl, sShow);
-            }
-            else
-            {
-               sHlsShowBuffer = sShow;
             }
          }
          else
@@ -1828,10 +1824,6 @@ void Recorder::slotStreamURL(const QString &str)
          if (!check4PlayList(sUrl))
          {
             StartVlcPlay(sUrl);
-         }
-         else
-         {
-            sHlsShowBuffer = "";
          }
       }
    }
@@ -2438,13 +2430,9 @@ void Recorder::slotArchivURL(const QString &str)
       {
          if (!vlcCtrl.ownDwnld())
          {
-            if (!check4PlayList(sUrl))
+            if (!check4PlayList(sUrl, CleanShowName(showInfo.showName())))
             {
                StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
-            }
-            else
-            {
-               sHlsShowBuffer = CleanShowName(showInfo.showName());
             }
          }
          else
@@ -2468,10 +2456,6 @@ void Recorder::slotArchivURL(const QString &str)
          if (!check4PlayList(sUrl))
          {
             StartVlcPlay(sUrl);
-         }
-         else
-         {
-            sHlsShowBuffer = "";
          }
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
@@ -3180,15 +3164,10 @@ void Recorder::slotVodURL(const QString &str)
          // use own downloader ... ?
          if (!vlcCtrl.ownDwnld())
          {
-            if (!check4PlayList(sUrls[0]))
+            if (!check4PlayList(sUrls[0], CleanShowName(showInfo.showName())))
             {
                StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
             }
-            else
-            {
-               sHlsShowBuffer = CleanShowName(showInfo.showName());
-            }
-
          }
          else
          {
@@ -3213,10 +3192,6 @@ void Recorder::slotVodURL(const QString &str)
          if (!check4PlayList(sUrls[0]))
          {
             StartVlcPlay(sUrls[0]);
-         }
-         else
-         {
-            sHlsShowBuffer = "";
          }
 
          showInfo.setPlayState(IncPlay::PS_PLAY);
@@ -4794,6 +4769,71 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    return 0;
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   create file name for record
+//
+//! \author  Jo2003
+//! \date    18.12.2013
+//
+//! \param   name (const QString&) name to use in file name
+//! \param   ext (const QString&) optional file extension
+//
+//! \return  record file name (incl. path)
+//---------------------------------------------------------------------------
+QString Recorder::recFileName (const QString& name, QString &ext)
+{
+   QDateTime now      = QDateTime::currentDateTime();
+   QString   fileName;
+
+   // a good default ...
+   ext = "ts";
+
+   // should we ask for file name ... ?
+   if (Settings.AskForRecFile())
+   {
+      // yes! Create file save dialog ...
+      QString   sFilter;
+      QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
+                          .arg(name).arg(now.toString("yyyy-MM-dd__hh-mm"));
+
+      fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
+                 sTarget, QString("MPEG 4 Video (*.m4v);;Transport Stream (*.ts);;AVI File (*.avi)"),
+                 &sFilter);
+
+      if (fileName != "")
+      {
+         // which filter was used ... ?
+         if (sFilter == "Transport Stream (*.ts)")
+         {
+            ext = "ts";
+         }
+         else if (sFilter ==  "AVI File (*.avi)")
+         {
+            ext = "avi";
+         }
+         else if (sFilter ==  "MPEG 4 Video (*.m4v)")
+         {
+            ext = "m4v";
+         }
+
+         QFileInfo info(fileName);
+
+         // re-create complete file name ...
+         fileName = QString ("%1/%2").arg(info.path())
+                    .arg(info.completeBaseName());
+      }
+   }
+   else
+   {
+      // create filename as we think it's good ...
+      fileName = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
+                 .arg(name).arg(now.toString("yyyy-MM-dd__hh-mm"));
+   }
+
+   return fileName;
+}
+
 /* -----------------------------------------------------------------\
 |  Method: StartVlcRec
 |  Begin: 19.01.2010 / 16:06:16
@@ -4808,51 +4848,9 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel)
 {
    int         iRV      = -1;
    Q_PID       vlcpid   = 0;
-   QDateTime   now      = QDateTime::currentDateTime();
-   QString     sExt     = "ts", fileName;
+   QString     sExt;
+   QString     fileName = recFileName(sChannel, sExt);
    QString     sCmdLine;
-
-   // should we ask for file name ... ?
-   if (Settings.AskForRecFile())
-   {
-      // yes! Create file save dialog ...
-      QString   sFilter;
-      QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                          .arg(sChannel).arg(now.toString("yyyy-MM-dd__hh-mm"));
-
-      fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
-                 sTarget, QString("MPEG 4 Container (*.mp4);;Transport Stream (*.ts);;AVI File (*.avi)"),
-                 &sFilter);
-
-      if (fileName != "")
-      {
-         // which filter was used ... ?
-         if (sFilter == "Transport Stream (*.ts)")
-         {
-            sExt = "ts";
-         }
-         else if (sFilter ==  "AVI File (*.avi)")
-         {
-            sExt = "avi";
-         }
-         else if (sFilter ==  "MPEG 4 Container (*.mp4)")
-         {
-            sExt = "mp4";
-         }
-
-         QFileInfo info(fileName);
-
-         // re-create complete file name ...
-         fileName = QString ("%1/%2").arg(info.path())
-                    .arg(info.completeBaseName());
-      }
-   }
-   else
-   {
-      // create filename as we think it's good ...
-      fileName = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                 .arg(sChannel).arg(now.toString("yyyy-MM-dd__hh-mm"));
-   }
 
    if (fileName != "")
    {
@@ -4985,38 +4983,8 @@ int Recorder::StartVlcPlay (const QString &sURL)
 \----------------------------------------------------------------- */
 void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, const QString &sFileExt)
 {
-   QString   sExt = sFileExt, fileName;
-   QDateTime now  = QDateTime::currentDateTime();
-
-   // should we ask for file name ... ?
-   if (Settings.AskForRecFile())
-   {
-      // yes! Create file save dialog ...
-      QString   sFilter;
-      QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                          .arg(vlcCtrl.doTranslit() ? translit.CyrToLat(sName, true) : sName)
-                          .arg(now.toString("yyyy-MM-dd__hh-mm"));
-
-      fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
-                 sTarget, QString("Transport Stream (*.ts);;MPEG 4 Video (*.m4v)"),
-                 &sFilter);
-
-      if (fileName != "")
-      {
-         QFileInfo info(fileName);
-
-         // re-create complete file name ...
-         fileName = QString ("%1/%2").arg(info.path())
-                    .arg(info.completeBaseName());
-      }
-   }
-   else
-   {
-      // create filename as we think it's good ...
-      fileName = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                 .arg(vlcCtrl.doTranslit() ? translit.CyrToLat(sName, true) : sName)
-                 .arg(now.toString("yyyy-MM-dd__hh-mm"));
-   }
+   QString sExt;
+   QString fileName = recFileName(sName, sExt);
 
    if (fileName != "")
    {
@@ -5025,14 +4993,14 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
       // update show info in overlay display ...
       if (showInfo.showType() == ShowInfo::VOD)
       {
-          missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
+         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
       }
       else
       {
          missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
       }
 
-      streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sExt),
+      streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sFileExt),
                                    Settings.GetBufferTime ());
    }
 }
@@ -5575,7 +5543,7 @@ void Recorder::toggleFullscreen()
 //
 //! \return  0 -> normal handling; 1 -> playlist / hls handling
 //---------------------------------------------------------------------------
-int Recorder::check4PlayList(const QString& sUrl)
+int Recorder::check4PlayList(const QString& sUrl, const QString &sName)
 {
    if (sUrl.contains("m3u", Qt::CaseInsensitive))
    {
@@ -5588,7 +5556,18 @@ int Recorder::check4PlayList(const QString& sUrl)
       // there shouldn't ... but there is ...
       s.replace("http/ts://", "http://");
 
-      pHlsControl->startHls(s, Settings.GetBufferTime() / 1000);
+      if (sName.isEmpty())
+      {
+         // normal play ...
+         pHlsControl->startHls(s, Settings.GetBufferTime() / 1000);
+      }
+      else
+      {
+         // record ...
+         QString sExt;
+         QString sFileName = recFileName(sName, sExt) + ".ts";
+         pHlsControl->startHls(s, Settings.GetBufferTime() / 1000, sFileName);
+      }
 
       showInfo.useHls(true);
 
@@ -5613,16 +5592,9 @@ int Recorder::check4PlayList(const QString& sUrl)
 //---------------------------------------------------------------------------
 void Recorder::slotPlayHls(const QString &s)
 {
-   if (sHlsShowBuffer.isEmpty())
-   {
-      mInfo(tr("Starting play ..."));
-      StartVlcPlay(s);
-   }
-   else
-   {
-      mInfo(tr("Starting record of %1  ...").arg(sHlsShowBuffer));
-      StartVlcRec(s, sHlsShowBuffer);
-   }
+   mInfo(tr("Playing file '%1' ...").arg(s));
+
+   StartVlcPlay(s);
 }
 
 //---------------------------------------------------------------------------

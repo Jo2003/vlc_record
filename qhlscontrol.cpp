@@ -182,7 +182,7 @@ void QHlsControl::slotStreamTokResp (int id, const QByteArray& tok)
    {
       if (_fVlcFifo.isOpen())
       {
-         mInfo(tr("Writing %1 bytes HLS stream data to %2").arg(tok.size()).arg(DEF_STREAM_FIFO));
+         mInfo(tr("Writing %1 bytes HLS stream data to '%2'").arg(tok.size()).arg(_fVlcFifo.fileName()));
 
          i64BytesWritten = _fVlcFifo.write(tok);
 
