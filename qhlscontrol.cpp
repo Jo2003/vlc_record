@@ -275,6 +275,7 @@ void QHlsControl::startHls(const QString &sUrl, int iBuffSec)
 //---------------------------------------------------------------------------
 void QHlsControl::stop()
 {
+   mInfo(tr("Stopping event loop ...");
    _bGo = false;
 }
 

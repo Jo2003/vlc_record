@@ -2638,6 +2638,8 @@ void Recorder::slotVlcEnds(int iState __UNUSED)
       ePlayState = IncPlay::PS_STOP;
    }
    TouchPlayCtrlBtns();
+
+   pHlsControl->stop();
 }
 
 /* -----------------------------------------------------------------\
@@ -5613,10 +5615,12 @@ void Recorder::slotPlayHls()
 {
    if (sHlsShowBuffer.isEmpty())
    {
+      mInfo(tr("Starting play ..."));
       StartVlcPlay(DEF_STREAM_FIFO);
    }
    else
    {
+      mInfo(tr("Starting record of %1  ...").arg(sHlsShowBuffer));
       StartVlcRec(DEF_STREAM_FIFO, sHlsShowBuffer);
    }
 }
