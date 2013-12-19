@@ -48,6 +48,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _mouseOnPanel(false),
    _panelPositioned(false),
    _bWindowed(false),
+   _bCPanelIfWnd(false),
    _contextMenu(NULL)
 {
    setMouseTracking(true);
@@ -205,6 +206,18 @@ void QVlcVideoWidget::mouseMoveEvent(QMouseEvent *event)
          setFocus(Qt::OtherFocusReason);
       }
    }
+   else if (_bWindowed && _bCPanelIfWnd)
+   {
+      _ctrlPanel->fadeIn();
+      _ctrlPanel->raise();
+      _mouseHide->start(1500);
+
+      if (!_mouseOnPanel)
+      {
+         activateWindow();
+         setFocus(Qt::OtherFocusReason);
+      }
+   }
 
    QWidget::mouseMoveEvent(event);
 }
@@ -329,6 +342,14 @@ void QVlcVideoWidget::hideMouse()
       _ctrlPanel->fadeOut();
       _mouseHide->stop();
       emit mouseHide();
+   }
+   else if(_bWindowed
+         && !_mouseOnPanel
+         && !missionControl.isPopupActive()
+         && !_contextMenu->isVisible())
+   {
+      _ctrlPanel->fadeOut();
+      _mouseHide->stop();
    }
 }
 
@@ -484,6 +505,33 @@ void QVlcVideoWidget::raiseRender()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   position control panel on stream
+//
+//! \author  Jo2003
+//! \date    19.12.2013
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::positionCtrlPanel()
+{
+   if (!_panelPositioned)
+   {
+      // position player control panel correctly ...
+      QDesktopWidget *pDesc = QApplication::desktop();
+      QRect            rect = pDesc->screenGeometry(_render);
+
+      int x = rect.width() / 2 - _ctrlPanel->width() / 2;
+      int y = rect.height() - (int)((float)_ctrlPanel->height() * 1.33);
+
+      _ctrlPanel->setGeometry(x, y, _ctrlPanel->width(), _ctrlPanel->height());
+
+      // mark as positioned ...
+      _panelPositioned = true;
+   }
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   fullscreen toggled, do cursor hide stuff
 //
 //! \author  Jo2003
@@ -497,20 +545,8 @@ void QVlcVideoWidget::fullScreenToggled(int on)
 
    if (_extFullScreen)
    {
-      if (!_panelPositioned)
-      {
-         // position player control panel correctly ...
-         QDesktopWidget *pDesc = QApplication::desktop();
-         QRect            rect = pDesc->screenGeometry(_render);
-
-         int x = rect.width() / 2 - _ctrlPanel->width() / 2;
-         int y = rect.height() - (int)((float)_ctrlPanel->height() * 1.33);
-
-         _ctrlPanel->setGeometry(x, y, _ctrlPanel->width(), _ctrlPanel->height());
-
-         // mark as positioned ...
-         _panelPositioned = true;
-      }
+      // position panel if needed ...
+      positionCtrlPanel();
 
       // make sure we have the focus ...
       _ctrlPanel->raise();
@@ -542,6 +578,29 @@ void QVlcVideoWidget::fullScreenToggled(int on)
 void QVlcVideoWidget::windowed(int on)
 {
    _bWindowed = !!on;
+
+   if (_bWindowed)
+   {
+      if (_bCPanelIfWnd)
+      {
+         // position panel if needed ...
+         positionCtrlPanel();
+
+         // make sure we have the focus ...
+         _ctrlPanel->raise();
+         _ctrlPanel->fadeIn();
+         _ctrlPanel->activateWindow();
+         _ctrlPanel->setFocus(Qt::OtherFocusReason);
+
+         // start mouse hiding ...
+         _mouseHide->start(1000);
+      }
+   }
+   else
+   {
+      _ctrlPanel->hide();
+   }
+
    touchContextMenu();
 }
 
@@ -607,6 +666,8 @@ void QVlcVideoWidget::touchContextMenu()
    QList<QAction*>         contActions = _contextMenu->actions();
    bool                    bIntl       = false;
    bool                    bOnTop      = false;
+   bool                    bShowCtrl   = false;
+   QMenu*                  pSubm       = NULL;
    QString                 name;
 
    // in case of retranslation or update we should take care of
@@ -623,6 +684,10 @@ void QVlcVideoWidget::touchContextMenu()
          else if (contActions.at(i)->objectName() == "Act_stontop")
          {
             bOnTop = contActions.at(i)->isChecked();
+         }
+         else if (contActions.at(i)->objectName() == "Act_showctrl")
+         {
+            bShowCtrl = contActions.at(i)->isChecked();
          }
       }
    }
@@ -647,8 +712,13 @@ void QVlcVideoWidget::touchContextMenu()
    // add seperator ...
    pAct = _contextMenu->addSeparator();
 
+   // --------------------------------------------------------
+   // mini interface stuff ...
+   // --------------------------------------------------------
+   pSubm = _contextMenu->addMenu(tr("Minimal Interface"));
+
    // minmal mode stuff ...
-   pAct = _contextMenu->addAction(tr("Minimal Interface"));
+   pAct = pSubm->addAction(tr("Enable"));
 
    // prepare data ...
    contAct.actType = vlcvid::ACT_TglMiniMd;
@@ -670,7 +740,7 @@ void QVlcVideoWidget::touchContextMenu()
    }
 
    // stay on top stuff ...
-   pAct = _contextMenu->addAction(tr("Stay on top"));
+   pAct = pSubm->addAction(tr("Stay on top"));
 
    // prepare data ...
    contAct.actType = vlcvid::ACT_StayOnTop;
@@ -682,6 +752,29 @@ void QVlcVideoWidget::touchContextMenu()
    pAct->setCheckable(true);
    pAct->setObjectName("Act_stontop");
    pAct->setChecked(bOnTop);
+
+   if (_bWindowed)
+   {
+      pAct->setEnabled(true);
+   }
+   else
+   {
+      pAct->setEnabled(false);
+   }
+
+   // show control panel stuff
+   pAct = pSubm->addAction(tr("Show Control Panel"));
+
+   // prepare data ...
+   contAct.actType = vlcvid::ACT_ShowCtrlPanel;
+   contAct.actName = "n.a.";
+   contAct.actVal.setValue(-1);
+
+   // set data ...
+   pAct->setData(QVariant::fromValue(contAct));
+   pAct->setCheckable(true);
+   pAct->setObjectName("Act_showctrl");
+   pAct->setChecked(bShowCtrl);
 
    if (_bWindowed)
    {
@@ -704,7 +797,7 @@ void QVlcVideoWidget::touchContextMenu()
       pAct = _contextMenu->addSeparator();
 
       // create submenu ---
-      QMenu* pAudSubm = _contextMenu->addMenu(tr("Audio Streams"));
+      pSubm = _contextMenu->addMenu(tr("Audio Streams"));
 
       // go through language vector and add context menu entries ...
       for (i = 0; i < _langVector.count(); i++)
@@ -721,7 +814,7 @@ void QVlcVideoWidget::touchContextMenu()
          }
 
          // create context menu entry ...
-         pAct = pAudSubm->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), name);
+         pAct = pSubm->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), name);
 
          // prepare data ...
          contAct.actType = vlcvid::ACT_ChgLang;
@@ -773,6 +866,19 @@ void QVlcVideoWidget::slotContentActionTriggered(QAction *pAct)
       // change stay on top mode ...
       case vlcvid::ACT_StayOnTop:
          emit sigStayOnTop(pAct->isChecked());
+         break;
+
+      // show control panel state changed ...
+      case vlcvid::ACT_ShowCtrlPanel:
+         // this only will happen when in windowed mode ...
+         _bCPanelIfWnd = pAct->isChecked();
+
+         if (_bCPanelIfWnd)
+         {
+            // make sure panel is placed where needed ...
+            _ctrlPanel->move(mapToGlobal(geometry().bottomLeft()));
+            _ctrlPanel->fadeIn();
+         }
          break;
 
       // audio track selected ...

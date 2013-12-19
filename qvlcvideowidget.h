@@ -40,6 +40,7 @@ namespace vlcvid {
       ACT_ChgLang,
       ACT_TglMiniMd,
       ACT_StayOnTop,
+      ACT_ShowCtrlPanel,
       ACT_Unknown = 255
    };
 
@@ -93,8 +94,9 @@ protected:
    int keyEventToKeySequence (QKeyEvent *event, QKeySequence &seq);
 
    void touchContextMenu ();
-   int setCurrentATrack (int id);
-   int getCurrentATrack ();
+   int  setCurrentATrack (int id);
+   int  getCurrentATrack ();
+   void positionCtrlPanel();
 
 private:
    QWidget                *_render;
@@ -105,6 +107,7 @@ private:
    bool                    _mouseOnPanel;
    bool                    _panelPositioned;
    bool                    _bWindowed;
+   bool                    _bCPanelIfWnd;
    QMenu                  *_contextMenu;
    QLangVector             _langVector;
    QMutex                  _mtxLv;

@@ -25,7 +25,7 @@
 
 #define VERSION_MAJOR "2"
 #define VERSION_MINOR "67"
-#define BETA_EXT      "B8"
+#define BETA_EXT      "B10"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -33,6 +33,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2013-12-19: Version 2.67B10
+| - HLS now working for record and timer record as well
+| - bugfix for not storing window position at close
+| - bugfix for not showing overlay control panel on
+|   2nd fullscreen toggle
+| - can show control panel also in mini mode
+|   (enable in context menu)
+|
 | 2013-12-17: Version 2.67B8
 | - add workaround for HLS because libVLC can't handle
 |   it correctly (needs testing!)

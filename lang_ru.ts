@@ -1023,7 +1023,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cplayer.cpp" line="2116"/>
         <source>Change audio track to id %1 (idx %2): %3!</source>
         <oldsource>Change audio track to id %1 /idx %2: %3!</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/cplayer.ui" line="14"/>
@@ -2111,24 +2111,6 @@ To change the parent code make sure:
     </message>
 </context>
 <context>
-    <name>CSundukClnt</name>
-    <message>
-        <location filename="csundukclnt.cpp" line="66"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="csundukclnt.cpp" line="93"/>
-        <source>Request Archiv URL ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="csundukclnt.cpp" line="120"/>
-        <source>Request Video Url for video %1...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>CTimerRec</name>
     <message>
         <location filename="ctimerrec.cpp" line="434"/>
@@ -2195,7 +2177,7 @@ or start time is later than end time!</source>
         <location filename="ctimerrec.cpp" line="936"/>
         <source>Use HLS control to download stream...</source>
         <oldsource>Use HLS control to download stream.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="969"/>
@@ -2588,49 +2570,49 @@ or start time is later than end time!</source>
 ===8&lt;===
 %1
 ===8&lt;===</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="121"/>
         <source>Using stream playlist %5 (id: %1, bandwidth: %2, size: %3x%4)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="148"/>
         <location filename="qhlscontrol.cpp" line="210"/>
         <source>Downloading HLS stream token %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="185"/>
         <source>Writing %1 bytes HLS stream data to &apos;%2&apos;</source>
         <oldsource>Writing %1 bytes HLS stream data to %2</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="191"/>
         <source>HLS queue-in error ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="195"/>
         <source>Written %1 of %2 bytes!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="230"/>
         <source>Downloading next media playlist %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="271"/>
         <source>Starting HLS play from master playlist %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhlscontrol.cpp" line="291"/>
         <source>Stopping event loop ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2655,7 +2637,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="qiptvctrlclient.cpp" line="287"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2824,13 +2806,6 @@ or start time is later than end time!</source>
     </message>
 </context>
 <context>
-    <name>QUnWindow</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Форма</translation>
-    </message>
-</context>
-<context>
     <name>QUpdateNotifyDlg</name>
     <message>
         <location filename="forms/qupdatenotifydlg.ui" line="14"/>
@@ -2870,34 +2845,44 @@ or start time is later than end time!</source>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="400"/>
+        <location filename="qvlcvideowidget.cpp" line="421"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="634"/>
+        <location filename="qvlcvideowidget.cpp" line="699"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="651"/>
+        <location filename="qvlcvideowidget.cpp" line="718"/>
         <source>Minimal Interface</source>
         <oldsource>Minimal Mode</oldsource>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="673"/>
+        <location filename="qvlcvideowidget.cpp" line="721"/>
+        <source>Enable</source>
+        <translation>Включать</translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="743"/>
         <source>Stay on top</source>
         <translation>Закрепление окна</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="707"/>
-        <source>Audio Streams</source>
-        <translation type="unfinished"></translation>
+        <location filename="qvlcvideowidget.cpp" line="766"/>
+        <source>Show Control Panel</source>
+        <translation>Показать панель управления</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="720"/>
+        <location filename="qvlcvideowidget.cpp" line="800"/>
+        <source>Audio Streams</source>
+        <translation>Аудио-дорожка</translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="813"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
@@ -3295,12 +3280,12 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="5599"/>
         <source>Playing file &apos;%1&apos; ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5605"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1382"/>
@@ -3410,10 +3395,6 @@ dataDir: %1
         <location filename="forms/recorder_inc.ui" line="274"/>
         <source>Channel List</source>
         <translation>Список каналов</translation>
-    </message>
-    <message>
-        <source> Now Playing </source>
-        <translation type="obsolete"> В эфире </translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1326"/>

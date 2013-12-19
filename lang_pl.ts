@@ -964,21 +964,22 @@ p, li { white-space: pre-wrap; }
         <location filename="cplayer.cpp" line="716"/>
         <location filename="cplayer.cpp" line="724"/>
         <location filename="cplayer.cpp" line="738"/>
-        <location filename="cplayer.cpp" line="747"/>
-        <location filename="cplayer.cpp" line="802"/>
-        <location filename="cplayer.cpp" line="806"/>
-        <location filename="cplayer.cpp" line="822"/>
+        <location filename="cplayer.cpp" line="751"/>
+        <location filename="cplayer.cpp" line="757"/>
+        <location filename="cplayer.cpp" line="813"/>
+        <location filename="cplayer.cpp" line="817"/>
+        <location filename="cplayer.cpp" line="833"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="703"/>
-        <location filename="cplayer.cpp" line="828"/>
+        <location filename="cplayer.cpp" line="839"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="798"/>
+        <location filename="cplayer.cpp" line="809"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -986,12 +987,12 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1847"/>
+        <location filename="cplayer.cpp" line="1858"/>
         <source>Error: Can&apos;t delete media item from media list!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="764"/>
+        <location filename="cplayer.cpp" line="775"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
@@ -1002,49 +1003,49 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1088"/>
+        <location filename="cplayer.cpp" line="1099"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1118"/>
+        <location filename="cplayer.cpp" line="1129"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1142"/>
+        <location filename="cplayer.cpp" line="1153"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1463"/>
+        <location filename="cplayer.cpp" line="1474"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1551"/>
+        <location filename="cplayer.cpp" line="1562"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2027"/>
+        <location filename="cplayer.cpp" line="2038"/>
         <source>Scan for Audio tracks:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2039"/>
+        <location filename="cplayer.cpp" line="2050"/>
         <source>-&gt; Audio track %1 %2%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2068"/>
+        <location filename="cplayer.cpp" line="2079"/>
         <source>%1 %2 deinterlace</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2105"/>
+        <location filename="cplayer.cpp" line="2116"/>
         <source>Change audio track to id %1 (idx %2): %3!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2022,8 +2023,8 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
 <context>
     <name>CShowInfo</name>
     <message>
-        <location filename="cshowinfo.cpp" line="555"/>
-        <location filename="cshowinfo.cpp" line="591"/>
+        <location filename="cshowinfo.cpp" line="587"/>
+        <location filename="cshowinfo.cpp" line="623"/>
         <source>%1 (Archive)</source>
         <translation>%1 (Archiwum)</translation>
     </message>
@@ -2232,85 +2233,90 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
         <translation>&amp;Do tyłu</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="316"/>
-        <location filename="ctimerrec.cpp" line="437"/>
+        <location filename="ctimerrec.cpp" line="361"/>
+        <location filename="ctimerrec.cpp" line="482"/>
         <source>Error in %1</source>
         <translation>Błąd w %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="317"/>
-        <location filename="ctimerrec.cpp" line="438"/>
+        <location filename="ctimerrec.cpp" line="362"/>
+        <location filename="ctimerrec.cpp" line="483"/>
         <source>SQL Error String: %1</source>
         <translation>Błąd wiersza SQL: %1</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="389"/>
-        <location filename="ctimerrec.cpp" line="395"/>
+        <location filename="ctimerrec.cpp" line="434"/>
+        <location filename="ctimerrec.cpp" line="440"/>
         <source>Please Correct!</source>
         <translation>Proszę popraw!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="390"/>
+        <location filename="ctimerrec.cpp" line="435"/>
         <source>Please insert a name!</source>
         <translation>Proszę wpisz nazwę!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="396"/>
+        <location filename="ctimerrec.cpp" line="441"/>
         <source>The entry you want to add overlapps with an existing entry
 or start time is later than end time!</source>
         <translation>Zapis, które chcesz dodać koliduje z istniejącym zapisem
 lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="551"/>
+        <location filename="ctimerrec.cpp" line="596"/>
         <source>Add Job #%1 (%2) to Joblist!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="602"/>
+        <location filename="ctimerrec.cpp" line="647"/>
         <source>Don&apos;t check ID %1 (it will be updated).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="771"/>
+        <location filename="ctimerrec.cpp" line="817"/>
         <source>Delete old entry #%1 (%2) from Joblist.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="779"/>
+        <location filename="ctimerrec.cpp" line="825"/>
         <source>Stopping timer record #%1 (%2). End time reached!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="821"/>
+        <location filename="ctimerrec.cpp" line="870"/>
         <source>Record #%1 (%2) starts soon. Set timer to standby!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="829"/>
+        <location filename="ctimerrec.cpp" line="878"/>
         <source>Start record #%1 (%2)!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="904"/>
-        <location filename="ctimerrec.cpp" line="973"/>
+        <location filename="ctimerrec.cpp" line="936"/>
+        <source>Use HLS control to download stream...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="ctimerrec.cpp" line="969"/>
+        <location filename="ctimerrec.cpp" line="1039"/>
         <source>Error!</source>
         <translation>Błąd!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="904"/>
-        <location filename="ctimerrec.cpp" line="973"/>
+        <location filename="ctimerrec.cpp" line="969"/>
+        <location filename="ctimerrec.cpp" line="1039"/>
         <source>Can&apos;t start Player!</source>
         <translation>Nie można uruchomić odtwarzacza!</translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="908"/>
-        <location filename="ctimerrec.cpp" line="977"/>
+        <location filename="ctimerrec.cpp" line="973"/>
+        <location filename="ctimerrec.cpp" line="1043"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctimerrec.cpp" line="926"/>
+        <location filename="ctimerrec.cpp" line="992"/>
         <source>All records done. Shutdown system using command line:
   --&gt; %1</source>
         <translation></translation>
@@ -2538,43 +2544,53 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QHlsControl</name>
     <message>
-        <location filename="qhlscontrol.cpp" line="60"/>
-        <source>Started HLS queue server ...</source>
-        <oldsource>Started HLS queue server: %1</oldsource>
-        <translation type="unfinished"></translation>
+        <location filename="qhlscontrol.cpp" line="101"/>
+        <source>Playlist content: -&gt;
+ ==8&lt;==8&lt;==8&lt;==
+%1
+ ==8&lt;==8&lt;==8&lt;==</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="136"/>
+        <location filename="qhlscontrol.cpp" line="121"/>
         <source>Using stream playlist %5 (id: %1, bandwidth: %2, size: %3x%4)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="153"/>
-        <location filename="qhlscontrol.cpp" line="192"/>
+        <location filename="qhlscontrol.cpp" line="148"/>
+        <location filename="qhlscontrol.cpp" line="210"/>
         <source>Downloading HLS stream token %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="198"/>
+        <location filename="qhlscontrol.cpp" line="185"/>
+        <source>Writing %1 bytes HLS stream data to &apos;%2&apos;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="191"/>
+        <source>HLS queue-in error ...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="195"/>
+        <source>Written %1 of %2 bytes!</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="qhlscontrol.cpp" line="230"/>
         <source>Downloading next media playlist %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="285"/>
-        <source>HLS queue-in reports error: %1 (%2)</source>
-        <oldsource>HLS queue in reports error: %1 (%2)</oldsource>
-        <translation type="unfinished"></translation>
+        <location filename="qhlscontrol.cpp" line="291"/>
+        <source>Stopping event loop ...</source>
+        <translation></translation>
     </message>
     <message>
-        <location filename="qhlscontrol.cpp" line="301"/>
-        <source>HLS queue-out reports error: %1 (%2)</source>
-        <oldsource>HLS queue out reports error: %1 (%2)</oldsource>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="qhlscontrol.cpp" line="320"/>
+        <location filename="qhlscontrol.cpp" line="271"/>
         <source>Starting HLS play from master playlist %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2599,7 +2615,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="qiptvctrlclient.cpp" line="287"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2806,34 +2822,44 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="400"/>
+        <location filename="qvlcvideowidget.cpp" line="421"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="634"/>
+        <location filename="qvlcvideowidget.cpp" line="699"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Usunięcie przeplotu</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="651"/>
+        <location filename="qvlcvideowidget.cpp" line="718"/>
         <source>Minimal Interface</source>
         <oldsource>Minimal Mode</oldsource>
         <translation>Minimalny Interfejs</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="673"/>
+        <location filename="qvlcvideowidget.cpp" line="721"/>
+        <source>Enable</source>
+        <translation>Umożliwiać</translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="743"/>
         <source>Stay on top</source>
         <translation>Przypinanie okna</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="707"/>
-        <source>Audio Streams</source>
-        <translation type="unfinished"></translation>
+        <location filename="qvlcvideowidget.cpp" line="766"/>
+        <source>Show Control Panel</source>
+        <translation>Pokaż panel sterowania</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="720"/>
+        <location filename="qvlcvideowidget.cpp" line="800"/>
+        <source>Audio Streams</source>
+        <translation>Strumienie audio</translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="813"/>
         <source>Audio %1</source>
         <translation></translation>
     </message>
@@ -2848,7 +2874,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/qwatchlistdlg.ui" line="59"/>
         <source>&amp;Record All</source>
-        <translation>&amp;Nagrywać wszystko</translation>
+        <translation>&amp;Nagraj wszystko</translation>
     </message>
     <message>
         <location filename="qwatchlistdlg.cpp" line="133"/>
@@ -2909,10 +2935,6 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation>Lista kanałów</translation>
     </message>
     <message>
-        <source> Now Playing </source>
-        <translation type="obsolete"> Teraz odtwarzanie </translation>
-    </message>
-    <message>
         <location filename="forms/recorder_inc.ui" line="1326"/>
         <source>Short EPG</source>
         <translation>Krótki Przewodnik TV</translation>
@@ -2935,10 +2957,10 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="716"/>
-        <location filename="recorder.cpp" line="3093"/>
-        <location filename="recorder.cpp" line="4832"/>
-        <location filename="recorder.cpp" line="4899"/>
-        <location filename="recorder.cpp" line="4976"/>
+        <location filename="recorder.cpp" line="3115"/>
+        <location filename="recorder.cpp" line="4884"/>
+        <location filename="recorder.cpp" line="4951"/>
+        <location filename="recorder.cpp" line="4998"/>
         <source>Video On Demand</source>
         <translation>Wideoteka</translation>
     </message>
@@ -2980,13 +3002,13 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1265"/>
-        <location filename="recorder.cpp" line="4088"/>
+        <location filename="recorder.cpp" line="4116"/>
         <source>Timer Record</source>
         <translation>Programator nagrywania</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1475"/>
-        <location filename="recorder.cpp" line="4089"/>
+        <location filename="recorder.cpp" line="4117"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
@@ -2997,7 +3019,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1589"/>
-        <location filename="recorder.cpp" line="4094"/>
+        <location filename="recorder.cpp" line="4122"/>
         <source>Quit</source>
         <translation>Wyjdź</translation>
     </message>
@@ -3008,7 +3030,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1154"/>
-        <location filename="recorder.cpp" line="4102"/>
+        <location filename="recorder.cpp" line="4130"/>
         <source>Jump Backward</source>
         <translation>Do tyłu</translation>
     </message>
@@ -3049,13 +3071,13 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1229"/>
-        <location filename="recorder.cpp" line="4101"/>
+        <location filename="recorder.cpp" line="4129"/>
         <source>Jump Forward</source>
         <translation>Do przodu</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1297"/>
-        <location filename="recorder.cpp" line="4110"/>
+        <location filename="recorder.cpp" line="4138"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
         <translation>Lista odtwarzania</translation>
@@ -3091,158 +3113,168 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1723"/>
+        <location filename="recorder.cpp" line="1731"/>
         <source>Error</source>
         <translation>Błąd</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="145"/>
-        <location filename="recorder.cpp" line="411"/>
+        <location filename="recorder.cpp" line="417"/>
         <source>Language Filter</source>
         <oldsource>Audio Filter</oldsource>
         <translation>Język filtra</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1487"/>
+        <location filename="recorder.cpp" line="1495"/>
         <source>
   --&gt; HTTP Response &apos;%1&apos;, calling &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1715"/>
+        <location filename="recorder.cpp" line="1723"/>
         <source>Error %1 (%2) in request &apos;%3&apos;: %4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1723"/>
+        <location filename="recorder.cpp" line="1731"/>
         <source>%1 Client API Error:
 %2 (#%3)</source>
         <translation>%1 Błąd:
 %2 (#%3)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1756"/>
+        <location filename="recorder.cpp" line="1764"/>
         <source>logout done ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1877"/>
+        <location filename="recorder.cpp" line="1891"/>
         <source>Using following timeshift: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1889"/>
+        <location filename="recorder.cpp" line="1903"/>
         <source>Using Bitrate %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1898"/>
+        <location filename="recorder.cpp" line="1912"/>
         <source>Active stream server is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2180"/>
-        <location filename="recorder.cpp" line="2297"/>
+        <location filename="recorder.cpp" line="2194"/>
+        <location filename="recorder.cpp" line="2311"/>
         <source>%1 (Archive)</source>
         <translation>%1 (Archiwum)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2186"/>
-        <location filename="recorder.cpp" line="2303"/>
-        <location filename="recorder.cpp" line="3516"/>
+        <location filename="recorder.cpp" line="2200"/>
+        <location filename="recorder.cpp" line="2317"/>
+        <location filename="recorder.cpp" line="3544"/>
         <source>Length: %1 min.</source>
         <translation>Długość: %1 min.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2187"/>
-        <location filename="recorder.cpp" line="2304"/>
+        <location filename="recorder.cpp" line="2201"/>
+        <location filename="recorder.cpp" line="2318"/>
         <source> (Ar.)</source>
         <translation> (Ar.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2560"/>
+        <location filename="recorder.cpp" line="2580"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2578"/>
+        <location filename="recorder.cpp" line="2598"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2602"/>
+        <location filename="recorder.cpp" line="2622"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2620"/>
+        <location filename="recorder.cpp" line="2642"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2675"/>
+        <location filename="recorder.cpp" line="2697"/>
         <source>Remove from favourites</source>
         <translation>Usuń z ulubionych</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2682"/>
+        <location filename="recorder.cpp" line="2704"/>
         <source>Add to favourites</source>
         <translation>Dodaj do ulubionych</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2728"/>
-        <location filename="recorder.cpp" line="3636"/>
+        <location filename="recorder.cpp" line="2750"/>
+        <location filename="recorder.cpp" line="3664"/>
         <source>Note</source>
         <translation>Uwaga</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2729"/>
-        <location filename="recorder.cpp" line="3637"/>
+        <location filename="recorder.cpp" line="2751"/>
+        <location filename="recorder.cpp" line="3665"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Osiągnięto max. liczbę ulubionych (%1).</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2924"/>
-        <location filename="recorder.cpp" line="4846"/>
-        <location filename="recorder.cpp" line="4913"/>
+        <location filename="recorder.cpp" line="2946"/>
+        <location filename="recorder.cpp" line="4898"/>
+        <location filename="recorder.cpp" line="4965"/>
         <source>Error!</source>
         <translation>Błąd!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2956"/>
-        <location filename="recorder.cpp" line="3989"/>
-        <location filename="recorder.cpp" line="4363"/>
+        <location filename="recorder.cpp" line="2978"/>
+        <location filename="recorder.cpp" line="4017"/>
+        <location filename="recorder.cpp" line="4391"/>
         <source>All</source>
         <translation>Wszystko</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3442"/>
+        <location filename="recorder.cpp" line="3470"/>
         <source>Program up to date!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3798"/>
+        <location filename="recorder.cpp" line="3826"/>
         <source>Record timer timed out ... end pending record!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3844"/>
+        <location filename="recorder.cpp" line="3872"/>
         <source>Unknown Message: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4104"/>
+        <location filename="recorder.cpp" line="4132"/>
         <source>Minimal Interface</source>
         <translation>Minimalny Interfejs</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4321"/>
-        <location filename="recorder.cpp" line="4340"/>
+        <location filename="recorder.cpp" line="4349"/>
+        <location filename="recorder.cpp" line="4368"/>
         <source>My Favourites</source>
         <translation>Ulubione</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3431"/>
+        <location filename="recorder.cpp" line="5599"/>
+        <source>Playing file &apos;%1&apos; ...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="5605"/>
+        <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="3459"/>
         <source>There is the new version %1 of %2 available.&lt;br /&gt;Click %3 to download!</source>
         <translation>Tutaj dostępna jest %1 of %2 nowa wersja.&lt;br /&gt;Kliknij %3, aby pobrać!</translation>
     </message>
@@ -3257,232 +3289,231 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2813"/>
+        <location filename="recorder.cpp" line="2835"/>
         <source>Remove &quot;%1&quot; from favourites</source>
         <translation>Usuń &quot;%1&quot; z ulubionych</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2924"/>
-        <location filename="recorder.cpp" line="4846"/>
-        <location filename="recorder.cpp" line="4913"/>
+        <location filename="recorder.cpp" line="2946"/>
+        <location filename="recorder.cpp" line="4898"/>
+        <location filename="recorder.cpp" line="4965"/>
         <source>Can&apos;t start player!</source>
         <translation>Nie można uruchomić odtwarzacza!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2930"/>
-        <location filename="recorder.cpp" line="4853"/>
-        <location filename="recorder.cpp" line="4919"/>
+        <location filename="recorder.cpp" line="2952"/>
+        <location filename="recorder.cpp" line="4905"/>
+        <location filename="recorder.cpp" line="4971"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3434"/>
+        <location filename="recorder.cpp" line="3462"/>
         <source>here</source>
         <translation>tutaj</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4085"/>
+        <location filename="recorder.cpp" line="4113"/>
         <source>Play / Pause</source>
         <translation>Odtwarzaj / Pauza</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4086"/>
+        <location filename="recorder.cpp" line="4114"/>
         <source>Stop</source>
         <translation>Zatrzymaj</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4087"/>
+        <location filename="recorder.cpp" line="4115"/>
         <source>Record</source>
         <translation>Nagrywaj</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4090"/>
+        <location filename="recorder.cpp" line="4118"/>
         <source>About</source>
         <translation>O</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4091"/>
+        <location filename="recorder.cpp" line="4119"/>
         <source>Search EPG</source>
         <translation>Wyszukaj Przewodnik TV</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4092"/>
+        <location filename="recorder.cpp" line="4120"/>
         <source>Text Size +</source>
         <translation>Rozmiar tekstu +</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4093"/>
+        <location filename="recorder.cpp" line="4121"/>
         <source>Text Size -</source>
         <translation>Rozmiar tekstu -</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4095"/>
+        <location filename="recorder.cpp" line="4123"/>
         <source>Toggle Aspect Ratio</source>
         <translation>Przełącz współczynnik kształtu obrazu</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4096"/>
+        <location filename="recorder.cpp" line="4124"/>
         <source>Toggle Crop Geometry</source>
         <translation>Przełącz geometrię kadru</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4097"/>
+        <location filename="recorder.cpp" line="4125"/>
         <source>Toggle Fullscreen</source>
         <translation>Przełącz na tryb pełnoekranowy</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4098"/>
+        <location filename="recorder.cpp" line="4126"/>
         <source>Volume +</source>
         <translation>Głośność +</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4099"/>
+        <location filename="recorder.cpp" line="4127"/>
         <source>Volume -</source>
         <translation>Głośność -</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4100"/>
+        <location filename="recorder.cpp" line="4128"/>
         <source>Toggle Mute</source>
         <translation>Przełącz na brak dźwięku</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1382"/>
-        <location filename="recorder.cpp" line="4103"/>
+        <location filename="recorder.cpp" line="4131"/>
         <source>Screenshot</source>
         <translation>Zrzut ekranu</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4105"/>
+        <location filename="recorder.cpp" line="4133"/>
         <source>Next Channel</source>
         <translation>Następny kanał</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4106"/>
+        <location filename="recorder.cpp" line="4134"/>
         <source>Previous Channel</source>
         <translation>Poprzedni kanał</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4107"/>
+        <location filename="recorder.cpp" line="4135"/>
         <source>Play Next Channel</source>
         <translation>Odtwarzaj następny kanał</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4108"/>
+        <location filename="recorder.cpp" line="4136"/>
         <source>Play Prev. Channel</source>
         <translation>Odtwarzaj poprzedni kanał</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4109"/>
+        <location filename="recorder.cpp" line="4137"/>
         <source>Show EPG / VOD</source>
         <translation>Pokaż Przewodnik TV / wideotekę</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4298"/>
+        <location filename="recorder.cpp" line="4326"/>
         <source>&amp;restore %1</source>
         <oldsource>&amp;Restore %1!</oldsource>
         <translation>&amp;przywrócić %1</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1551"/>
-        <location filename="recorder.cpp" line="4111"/>
+        <location filename="recorder.cpp" line="4139"/>
         <source>Help</source>
         <translation>Pomóż</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4319"/>
-        <location filename="recorder.cpp" line="4330"/>
+        <location filename="recorder.cpp" line="4347"/>
+        <location filename="recorder.cpp" line="4358"/>
         <source>Newest</source>
         <translation>Nowości</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4320"/>
-        <location filename="recorder.cpp" line="4335"/>
+        <location filename="recorder.cpp" line="4348"/>
+        <location filename="recorder.cpp" line="4363"/>
         <source>Best</source>
         <translation>Najlepsze</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4404"/>
-        <location filename="recorder.cpp" line="4481"/>
+        <location filename="recorder.cpp" line="4432"/>
+        <location filename="recorder.cpp" line="4509"/>
         <source>1 week backward</source>
         <translation>tydzień wstecz</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4438"/>
-        <location filename="recorder.cpp" line="4486"/>
+        <location filename="recorder.cpp" line="4466"/>
+        <location filename="recorder.cpp" line="4514"/>
         <source>1 week forward</source>
         <translation>tydzień do przodu</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4447"/>
-        <location filename="recorder.cpp" line="4468"/>
+        <location filename="recorder.cpp" line="4475"/>
+        <location filename="recorder.cpp" line="4496"/>
         <source>Mon</source>
         <translation>Pon</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4448"/>
-        <location filename="recorder.cpp" line="4469"/>
+        <location filename="recorder.cpp" line="4476"/>
+        <location filename="recorder.cpp" line="4497"/>
         <source>Tue</source>
         <translation>Wt</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4449"/>
-        <location filename="recorder.cpp" line="4470"/>
+        <location filename="recorder.cpp" line="4477"/>
+        <location filename="recorder.cpp" line="4498"/>
         <source>Wed</source>
         <translation>Śr</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4450"/>
-        <location filename="recorder.cpp" line="4471"/>
+        <location filename="recorder.cpp" line="4478"/>
+        <location filename="recorder.cpp" line="4499"/>
         <source>Thu</source>
         <translation>Czw</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4451"/>
-        <location filename="recorder.cpp" line="4472"/>
+        <location filename="recorder.cpp" line="4479"/>
+        <location filename="recorder.cpp" line="4500"/>
         <source>Fri</source>
         <translation>Pt</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4452"/>
-        <location filename="recorder.cpp" line="4473"/>
+        <location filename="recorder.cpp" line="4480"/>
+        <location filename="recorder.cpp" line="4501"/>
         <source>Sat</source>
         <translation>Sob</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4461"/>
-        <location filename="recorder.cpp" line="4474"/>
+        <location filename="recorder.cpp" line="4489"/>
+        <location filename="recorder.cpp" line="4502"/>
         <source>Sun</source>
         <translation>Niedz</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4640"/>
+        <location filename="recorder.cpp" line="4668"/>
         <source>Exclude &apos;%1&apos; from channel list (hidden: %2, protected: %3).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4690"/>
+        <location filename="recorder.cpp" line="4718"/>
         <source>Can&apos;t load channel image &quot;%1&quot; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4771"/>
-        <location filename="recorder.cpp" line="4948"/>
+        <location filename="recorder.cpp" line="4801"/>
         <source>Save Stream as</source>
         <translation>Zachowaj strumień jako</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5136"/>
+        <location filename="recorder.cpp" line="5158"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <translation>Nagrywanie trwa!&lt;br /&gt; &lt;br /&gt;Czy na pewno chcesz teraz zatrzymać nagrywanie?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5135"/>
+        <location filename="recorder.cpp" line="5157"/>
         <source>Question</source>
         <translation>Pytanie</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5205"/>
-        <location filename="recorder.cpp" line="5418"/>
+        <location filename="recorder.cpp" line="5227"/>
+        <location filename="recorder.cpp" line="5440"/>
         <source>Favourite %1</source>
         <translation>Ulubione %1</translation>
     </message>
