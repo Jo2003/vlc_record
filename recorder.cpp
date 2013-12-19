@@ -218,6 +218,7 @@ Recorder::Recorder(QWidget *parent)
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
    timeRec.SetStreamLoader(&streamLoader);
+   timeRec.setHlsControl(pHlsControl);
 
    // hide / remove VOD tab widget ...
    vodTabWidget.iPos    = 1;  // index of VOD tab
@@ -4828,7 +4829,8 @@ QString Recorder::recFileName (const QString& name, QString &ext)
    {
       // create filename as we think it's good ...
       fileName = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                 .arg(name).arg(now.toString("yyyy-MM-dd__hh-mm"));
+                 .arg(vlcCtrl.doTranslit() ? translit.CyrToLat(name, true) : name)
+                 .arg(now.toString("yyyy-MM-dd__hh-mm"));
    }
 
    return fileName;
@@ -5592,9 +5594,16 @@ int Recorder::check4PlayList(const QString& sUrl, const QString &sName)
 //---------------------------------------------------------------------------
 void Recorder::slotPlayHls(const QString &s)
 {
-   mInfo(tr("Playing file '%1' ...").arg(s));
+   if (!timeRec.silentRec())
+   {
+      mInfo(tr("Playing file '%1' ...").arg(s));
 
-   StartVlcPlay(s);
+      StartVlcPlay(s);
+   }
+   else
+   {
+      mInfo(tr("Don't show file '%1'' due to silent timer record ...").arg(s));
+   }
 }
 
 //---------------------------------------------------------------------------

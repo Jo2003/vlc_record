@@ -53,8 +53,9 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
    uiActId       = 0;
    uiEdtId       = INVALID_ID;
    pSettings     = NULL;
-   itActJob      = NULL;
    pStreamLoader = NULL;
+   pHlsControl   = NULL;
+   actJob.id     = (uint)-1;
    InitTab();
    connect (&recTimer, SIGNAL(timeout()), this, SLOT(slotRecTimer()));
    connect (this, SIGNAL(accepted()), this, SLOT(slotSaveRecordList()));
@@ -115,6 +116,50 @@ void CTimerRec::SetStreamLoader(CStreamLoader *pLoader)
 
    connect (pStreamLoader, SIGNAL(sigStreamDwnTimer(int,QString)), this,
             SLOT(slotStreamReady(int,QString)));
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set HLS control instance
+//
+//! \author  Jo2003
+//! \date    19.12.2013
+//
+//! \param   pCtrl (QHlsControl*) pointer to hls control instance
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CTimerRec::setHlsControl(QHlsControl *pCtrl)
+{
+   pHlsControl = pCtrl;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   is silent timer record active ... ?
+//
+//! \author  Jo2003
+//! \date    19.12.2013
+//
+//! \param   --
+//
+//! \return  true -> active; false -> not active ...
+//---------------------------------------------------------------------------
+bool CTimerRec::silentRec()
+{
+   bool bSRAct = false;
+
+   // do we have marked an active job ... ?
+   if (actJob.id != (uint)-1)
+   {
+      // is timer record running in silent mode ?
+      if ((actJob.eState == rec::REC_RUNNING) && r_ui->checkRecMini->isChecked())
+      {
+         bSRAct = true;
+      }
+   }
+
+   return bSRAct;
 }
 
 /* -----------------------------------------------------------------\
@@ -762,7 +807,8 @@ void CTimerRec::slotRecTimer()
 
             if (now >= end)
             {
-               // old entry ...
+               // mark active job as invalid ...
+               actJob.id = (uint)-1;
 
                // was record active ... ?
                if ((*it).eState != rec::REC_RUNNING)
@@ -792,6 +838,9 @@ void CTimerRec::slotRecTimer()
                      pStreamLoader->stopDownload(iReqId);
                      iReqId = -1;
                   }
+
+                  // stop hls download ...
+                  pHlsControl->stop();
 
                   emit sigRecDone();
 
@@ -829,7 +878,9 @@ void CTimerRec::slotRecTimer()
                   mInfo(tr("Start record #%1 (%2)!").arg((*it).id).arg((*it).sName));
                   emit sigRecActive((int)IncPlay::PS_TIMER_RECORD);
                   (*it).eState = rec::REC_RUNNING;
-                  itActJob     = it;
+
+                  // save current entry ...
+                  actJob       = *it;
 
                   showInfo.cleanShowInfo();
                   showInfo.setChanId((*it).cid);
@@ -871,41 +922,56 @@ void CTimerRec::slotTimerStreamUrl(const QString &str)
 
    if (!pApiParser->parseUrl(str, sUrl))
    {
-      sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg((*itActJob).sName);
+      sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg(actJob.sName);
 
-      if (pVlcCtrl->ownDwnld())
+      // check for hls ...
+      if (sUrl.contains("m3u"))
       {
-         // own downloader ...
-         pStreamLoader->downloadStream(sUrl, QString("%1.%2").arg(sDst).arg("ts"),
-                                       pSettings->GetBufferTime(), true);
+         sUrl.replace("http/ts://", "http://");
+
+         // tell that we use HLS ...
+         showInfo.useHls(true);
+
+         // hls timer record ...
+         mInfo(tr("Use HLS control to download stream."));
+         pHlsControl->startHls(sUrl, pSettings->GetBufferTime() / 1000, sDst + ".ts");
       }
       else
       {
-         if (r_ui->checkRecMini->isChecked())
+         if (pVlcCtrl->ownDwnld())
          {
-            // silent record ...
-            sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
-                                              pSettings->GetVLCPath(), sUrl,
-                                              pSettings->GetBufferTime(), sDst, "ts");
+            // own downloader ...
+            pStreamLoader->downloadStream(sUrl, QString("%1.%2").arg(sDst).arg("ts"),
+                                          pSettings->GetBufferTime(), true);
          }
          else
          {
-            // normal record ...
-            sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
-                                              pSettings->GetVLCPath(), sUrl,
-                                              pSettings->GetBufferTime(), sDst, "ts");
-         }
+            if (r_ui->checkRecMini->isChecked())
+            {
+               // silent record ...
+               sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
+                                                 pSettings->GetVLCPath(), sUrl,
+                                                 pSettings->GetBufferTime(), sDst, "ts");
+            }
+            else
+            {
+               // normal record ...
+               sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
+                                                 pSettings->GetVLCPath(), sUrl,
+                                                 pSettings->GetBufferTime(), sDst, "ts");
+            }
 
-         vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
+            vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
 
-         // successfully started ?
-         if (!vlcpid)
-         {
-            QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
-         }
-         else
-         {
-            mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
+            // successfully started ?
+            if (!vlcpid)
+            {
+               QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
+            }
+            else
+            {
+               mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
+            }
          }
       }
    }

@@ -28,6 +28,7 @@
 #include "cshowinfo.h"
 #include "cstreamloader.h"
 #include "api_inc.h"
+#include "qhlscontrol.h"
 
 //===================================================================
 // namespace
@@ -56,6 +57,7 @@ namespace rec
 
    struct SRecEntry
    {
+      SRecEntry():dbId(0),id((uint)-1),cid(-1),iTimeShift(-1),uiStart(0),uiEnd(0),sName(""),eState(REC_UNKNOWN){}
       uint      dbId;
       uint      id;
       int       cid;
@@ -87,6 +89,7 @@ public:
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
    void SetStreamLoader (CStreamLoader *pLoader);
+   void setHlsControl (QHlsControl *pCtrl);
    int  ReadRecordList ();
    int  AddRow (const rec::SRecEntry &entry);
    void AddJob (rec::SRecEntry &entry);
@@ -94,6 +97,7 @@ public:
    void InitTab ();
    void StartTimer ();
    void ShutDown ();
+   bool silentRec();
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -101,17 +105,18 @@ protected:
    void delDbEntry (int id);
 
 private:
-   Ui::CTimerRec *r_ui;
-   QMap<uint, rec::SRecEntry> JobList;
-   QMap<int, rec::SChanEntry> ChanList;
-   QMap<uint, rec::SRecEntry>::iterator itActJob;
-   uint    uiActId;
-   uint    uiEdtId;
-   QTimer  recTimer;
-   CSettingsDlg      *pSettings;
-   CVlcCtrl          *pVlcCtrl;
-   CStreamLoader     *pStreamLoader;
-   int                iReqId;
+   Ui::CTimerRec              *r_ui;
+   QMap<uint, rec::SRecEntry>  JobList;
+   QMap<int, rec::SChanEntry>  ChanList;
+   rec::SRecEntry              actJob;
+   uint                        uiActId;
+   uint                        uiEdtId;
+   QTimer                      recTimer;
+   CSettingsDlg               *pSettings;
+   CVlcCtrl                   *pVlcCtrl;
+   CStreamLoader              *pStreamLoader;
+   QHlsControl                *pHlsControl;
+   int                         iReqId;
 
 signals:
    void sigRecDone ();

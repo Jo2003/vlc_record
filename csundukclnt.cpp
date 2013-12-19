@@ -93,7 +93,7 @@ void CSundukClnt::GetArchivURL (const QString &prepared, const QString &secCode)
    mInfo(tr("Request Archiv URL ..."));
 
    QString req = QUrl::fromPercentEncoding(prepared.toUtf8());
-   req += "&stream_protocol=rtsp";
+   req += "&stream_protocol=hls";
 
    if (secCode != "")
    {
@@ -119,7 +119,7 @@ void CSundukClnt::GetVodUrl (int iVidId, const QString &secCode)
 {
    mInfo(tr("Request Video Url for video %1...").arg(iVidId));
 
-   QString req = QString("vod_geturl?fileid=%1&ad=1&stream_protocol=rtsp")
+   QString req = QString("vod_geturl?fileid=%1&ad=1&stream_protocol=hls")
          .arg(iVidId);
 
    if (secCode != "")
