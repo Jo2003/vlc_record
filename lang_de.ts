@@ -2193,7 +2193,8 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     </message>
     <message>
         <location filename="ctimerrec.cpp" line="936"/>
-        <source>Use HLS control to download stream.</source>
+        <source>Use HLS control to download stream...</source>
+        <oldsource>Use HLS control to download stream.</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>

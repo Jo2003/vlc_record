@@ -933,7 +933,7 @@ void CTimerRec::slotTimerStreamUrl(const QString &str)
          showInfo.useHls(true);
 
          // hls timer record ...
-         mInfo(tr("Use HLS control to download stream."));
+         mInfo(tr("Use HLS control to download stream..."));
          pHlsControl->startHls(sUrl, pSettings->GetBufferTime() / 1000, sDst + ".ts");
       }
       else

@@ -89,7 +89,7 @@ public:
    //! \brief   start fade out
    //
    //! \author  Jo2003
-   //! \date    27.11.2012
+   //! \date    27.11.2013
    //
    //! \param   --
    //
@@ -141,7 +141,7 @@ protected:
    //! \brief   widget is about to be shown
    //
    //! \author  Jo2003
-   //! \date    27.11.2012
+   //! \date    27.11.2013
    //
    //! \param   e pointer to QShowEvent
    //
@@ -156,10 +156,38 @@ protected:
       if (!_tFadeIn.isActive())
       {
          setWindowOpacity(_fOpaqueMaster);
+         _fOpaque = _fOpaqueMaster;
       }
 
       // set pseudo caption ...
       QWidget::showEvent(e);
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   widget is about to be hidden
+   //
+   //! \author  Jo2003
+   //! \date    19.12.2013
+   //
+   //! \param   e pointer to QHideEvent
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   virtual void hideEvent(QHideEvent *e)
+   {
+      // stop fader timer ...
+      _tFadeIn.stop();
+
+      // set transparancy to panel only if no fade in in progress ...
+      if (!_tFadeOut.isActive())
+      {
+         setWindowOpacity(0.0);
+         _fOpaque = 0.0;
+      }
+
+      // set pseudo caption ...
+      QWidget::hideEvent(e);
    }
 
 private slots:
@@ -168,7 +196,7 @@ private slots:
    //! \brief   fade out more and finally hide widget
    //
    //! \author  Jo2003
-   //! \date    27.11.2012
+   //! \date    27.11.2013
    //
    //! \param   --
    //
@@ -181,6 +209,7 @@ private slots:
       if (_fOpaque <= 0.0)
       {
          _tFadeOut.stop();
+         _fOpaque = 0.0;
          hide();
       }
       else
@@ -194,7 +223,7 @@ private slots:
    //! \brief   fade out more and finally hide widget
    //
    //! \author  Jo2003
-   //! \date    27.11.2012
+   //! \date    27.11.2013
    //
    //! \param   --
    //

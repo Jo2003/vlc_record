@@ -513,8 +513,8 @@ void QVlcVideoWidget::fullScreenToggled(int on)
       }
 
       // make sure we have the focus ...
-      _ctrlPanel->fadeIn();
       _ctrlPanel->raise();
+      _ctrlPanel->fadeIn();
       _ctrlPanel->activateWindow();
       _ctrlPanel->setFocus(Qt::OtherFocusReason);
 

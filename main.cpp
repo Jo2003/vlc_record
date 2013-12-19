@@ -123,9 +123,13 @@ int main(int argc, char *argv[])
             QApplication::installTranslator (pQtTransl);
             QApplication::installTranslator (pAppTransl);
 
-            pDb        = new CVlcRecDB(&app);
             pApiClient = new ApiClient(&app);
             pApiParser = new ApiParser(&app);
+
+            // The database is the last service used.
+            // Make sure it destroyed latest!
+            // Therefore we don't set app as parent!
+            pDb        = new CVlcRecDB();
 
             if (pDb && pApiClient && pApiParser)
             {
@@ -148,6 +152,13 @@ int main(int argc, char *argv[])
                   delete pRec;
                   pRec = NULL;
                }
+            }
+
+            // delete database ...
+            if (pDb)
+            {
+               delete pDb;
+               pDb = NULL;
             }
          }
       }
