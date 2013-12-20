@@ -744,7 +744,19 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
          ///////////////////////////////////////////////////////////////////////////
          for (cit = lArgs.constBegin(); cit != lArgs.constEnd(); cit ++)
          {
-            if ((*cit).contains("network-caching") || (*cit).contains("no-http-reconnect"))
+            if ((*cit).contains("network-caching"))
+            {
+               sMrl = *cit;
+
+               if (bLocal)
+               {
+                  sMrl.replace("network", "file");
+               }
+
+               mInfo(tr("Add MRL Option: %1").arg(sMrl));
+               libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+            }
+            else if ((*cit).contains("no-http-reconnect"))
             {
                if (!bLocal)
                {
