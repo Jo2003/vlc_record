@@ -150,6 +150,7 @@ signals:
    void sigToggleFullscreen();
    void sigBuffPercent(int);
    void sigAudioTracks(QLangVector);
+   void sigStopOnDemand();
 };
 
 #endif /* __022410__CPLAYER_H */

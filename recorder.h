@@ -311,6 +311,7 @@ private slots:
     void slotUpdWatchListCount();
     void slotStayOnTop(bool on);
     void slotPlayHls(const QString& s);
+    void stopOnDemand();
 
 signals:
     void sigShow ();

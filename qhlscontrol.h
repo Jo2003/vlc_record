@@ -37,6 +37,7 @@ public:
    ~QHlsControl();
    int fd();
    void startHls(const QString& sUrl, int iBuffSec, const QString& sPath = QString());
+   bool isActive();
 
 protected:
    int mediaPlDuration();

@@ -41,9 +41,9 @@ QHlsControl::QHlsControl(QObject *parent) :
    // create playlist parser ...
    _pM3uParser    = new QExtM3uParser(this);
 
-   _iBytesWritten = -1;
-   _iBandWidth    = -1;
-   _iBuffSecs     = -1;
+   _iBytesWritten =      -1;
+   _iBandWidth    = 2048000; // 2Mbit
+   _iBuffSecs     =      -1;
 
    // we aren't playing HLS so far ...
    _bGo           = false;
@@ -270,6 +270,10 @@ void QHlsControl::startHls(const QString &sUrl, int iBuffSec, const QString &sPa
 
    mInfo(tr("Starting HLS play from master playlist %1").arg(sUrl));
 
+   // in case we haven't a master playlist, but only media playlist
+   // we store this url to be used on playlist reaload ...
+   _sMasterPlUri = sUrl;
+
    _pM3uParser->reset();
    _pM3uParser->setMasterUrl(sUrl);
    pApiClient->q_get((int)m3u::M3U_MASTER_PL, sUrl, Iptv::m3u);
@@ -295,7 +299,12 @@ void QHlsControl::stop()
    {
       _fVlcFifo.close();
    }
-
+///////////////////////////////////////////////////////////////
+   if (_fVlcFifo.fileName() == DEF_STREAM_FIFO)
+   {
+      QFile::remove(DEF_STREAM_FIFO);
+   }
+///////////////////////////////////////////////////////////////
    if (_tReloadPl.isActive())
    {
       _tReloadPl.stop();
@@ -323,4 +332,20 @@ int QHlsControl::mediaPlDuration()
    }
 
    return iRet;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   check if hls download is active
+//
+//! \author  Jo2003
+//! \date    19.12.2013
+//
+//! \param   --
+//
+//! \return  true -> active; false -> inactive
+//---------------------------------------------------------------------------
+bool QHlsControl::isActive()
+{
+   return _bGo;
 }

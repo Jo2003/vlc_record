@@ -1266,7 +1266,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
    {
       uint pos;
 
-      if (isPositionable())
+      if (isPositionable() && !showInfo.isHls())
       {
          pos  = libvlc_media_player_get_time(pMediaPlayer);
 
@@ -1300,6 +1300,8 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
 
          // save jump time ...
          showInfo.setLastJumpTime(pos);
+
+         emit sigStopOnDemand();
 
          pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
 
@@ -1460,7 +1462,7 @@ void CPlayer::slotSliderPosChanged()
 
       uint position = (uint)missionControl.posValue();
 
-      if (isPositionable())
+      if (isPositionable() && !showInfo.isHls())
       {
          libvlc_media_player_set_time(pMediaPlayer, position * 1000);
       }
@@ -1488,6 +1490,8 @@ void CPlayer::slotSliderPosChanged()
             // save new start value ...
             showInfo.setLastJumpTime(position);
 
+            emit sigStopOnDemand();
+
             // trigger stream request ...
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
          }
@@ -1512,7 +1516,7 @@ void CPlayer::slotPositionChanged(int value)
 {
    if (isPlaying() && showInfo.canCtrlStream())
    {
-      if (!isPositionable())
+      if (!isPositionable() || showInfo.isHls())
       {
          value  = mToGmt(value);
          value -= showInfo.starts();
@@ -2017,6 +2021,7 @@ void CPlayer::slotFinallyPlays(int percent)
    libvlc_track_description_t* pAuTracks = NULL;
    int               iAuIdx;
    vlcvid::SContLang al;
+   bool              bHaveCurrent = false;
 
    if (percent == 0)
    {
@@ -2045,6 +2050,11 @@ void CPlayer::slotFinallyPlays(int percent)
                al.id      = pAuTracks->i_id;
                al.current = (iAuIdx == pAuTracks->i_id) ? true : false;
 
+               if (al.current)
+               {
+                  bHaveCurrent = true;
+               }
+
                vAudTrk.append(al);
 
                mInfo(tr("-> Audio track %1 %2%3")
@@ -2053,6 +2063,19 @@ void CPlayer::slotFinallyPlays(int percent)
                      .arg((iAuIdx == pAuTracks->i_id) ? " (current)" : ""));
             }
             pAuTracks = pAuTracks->p_next;
+         }
+
+         // do we have current audio ... ?
+         if (!bHaveCurrent && !vAudTrk.isEmpty())
+         {
+            // use first audio stream ...
+            al = vAudTrk.first();
+
+            // this is new current ...
+            al.current = true;
+
+            // change audio track to first existing ...
+            slotChangeATrack(al.id);
          }
 
          emit sigAudioTracks(vAudTrk);

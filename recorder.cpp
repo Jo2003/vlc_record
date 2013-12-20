@@ -315,6 +315,7 @@ Recorder::Recorder(QWidget *parent)
    connect (pApiClient, SIGNAL(sigM3u(int,QString)), pHlsControl, SLOT(slotM3uResp(int,QString)));
    connect (pApiClient, SIGNAL(sigHls(int,QByteArray)), pHlsControl, SLOT(slotStreamTokResp(int,QByteArray)));
    connect (pHlsControl, SIGNAL(sigPlay(QString)), this, SLOT(slotPlayHls(QString)));
+   connect (ui->player, SIGNAL(sigStopOnDemand()), this, SLOT(stopOnDemand()));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -751,6 +752,9 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
+
+               stopOnDemand();
+
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                       cid, secCodeDlg.passWd());
             }
@@ -1123,6 +1127,9 @@ void Recorder::on_pushLive_clicked()
             showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
             TouchPlayCtrlBtns(false);
+
+            stopOnDemand();
+
             pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                    cid, secCodeDlg.passWd());
          }
@@ -1168,6 +1175,9 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
+
+               stopOnDemand();
+
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                       cid, secCodeDlg.passWd());
             }
@@ -1292,6 +1302,9 @@ void Recorder::slotPlay()
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
+
+               stopOnDemand();
+
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                       cid, secCodeDlg.passWd());
             }
@@ -1366,6 +1379,9 @@ void Recorder::slotRecord()
             showInfo.setPlayState(IncPlay::PS_RECORD);
 
             TouchPlayCtrlBtns(false);
+
+            stopOnDemand();
+
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
@@ -1402,6 +1418,9 @@ void Recorder::slotRecord()
                   showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                   TouchPlayCtrlBtns(false);
+
+                  stopOnDemand();
+
                   pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                          cid, secCodeDlg.passWd());
                }
@@ -2201,6 +2220,8 @@ void Recorder::slotWlClick(QUrl url)
             ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
             ui->labState->setFooter(sTime);
 
+            stopOnDemand();
+
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
 
             if (stop)
@@ -2317,6 +2338,8 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             QString sTime = tr("Length: %1 min.").arg(iTime);
             ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
             ui->labState->setFooter(sTime);
+
+            stopOnDemand();
 
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
          }
@@ -3114,6 +3137,8 @@ void Recorder::slotVodAnchor(const QUrl &link)
 
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
+
+      stopOnDemand();
 
       pApiClient->queueRequest(CIptvDefs::REQ_GETVODURL, id, secCodeDlg.passWd());
    }
@@ -5804,6 +5829,34 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
       }
 
       eCurDMode = newMode;
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   make sure to stop playback in case hls download is active
+//
+//! \author  Jo2003
+//! \date    20.12.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::stopOnDemand()
+{
+   if (pHlsControl->isActive())
+   {
+      if (vlcCtrl.withLibVLC())
+      {
+         ui->player->silentStop();
+      }
+      else
+      {
+         vlcCtrl.stop();
+      }
+
+      pHlsControl->stop();
    }
 }
 
