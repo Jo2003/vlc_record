@@ -4821,7 +4821,8 @@ QString Recorder::recFileName (const QString& name, QString &ext)
       // yes! Create file save dialog ...
       QString   sFilter;
       QString   sTarget  = QString("%1/%2(%3)").arg(Settings.GetTargetDir())
-                          .arg(name).arg(now.toString("yyyy-MM-dd__hh-mm"));
+                          .arg(vlcCtrl.doTranslit() ? translit.CyrToLat(name, true) : name)
+                          .arg(now.toString("yyyy-MM-dd__hh-mm"));
 
       fileName = QFileDialog::getSaveFileName(this, tr("Save Stream as"),
                  sTarget, QString("MPEG 4 Video (*.m4v);;Transport Stream (*.ts);;AVI File (*.avi)"),
@@ -4930,6 +4931,12 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel)
          mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
       }
    }
+   else
+   {
+      // no filename given -> set to stop ...
+      ePlayState = IncPlay::PS_STOP;
+      TouchPlayCtrlBtns();
+   }
 
    return iRV;
 }
@@ -5029,6 +5036,12 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
 
       streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sFileExt),
                                    Settings.GetBufferTime ());
+   }
+   else
+   {
+      // no filename given -> set to stop ...
+      ePlayState = IncPlay::PS_STOP;
+      TouchPlayCtrlBtns();
    }
 }
 
