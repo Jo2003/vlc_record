@@ -3,8 +3,9 @@ APPNAME=${1}
 TMPFILE=/tmp/plist.tmp
 CONTENTS=$APPNAME.app/Contents
 OFFNAME=""
+QTPATH=/Users/joergn/Qt/4.8.5
 if [ -z $QTTRANS ] ; then
-    QTTRANS=/Users/joergn/Qt/4.8.5/translations
+    QTTRANS=$QTPATH/translations
 fi
 
 # create official name ...
@@ -84,7 +85,7 @@ cat << EOF > $TMPFILE
 EOF
 
 iconv -f ASCII -t UTF-8 $TMPFILE >$CONTENTS/Info.plist
-macdeployqt $APPNAME.app -verbose=0
+$QTPATH/bin/macdeployqt $APPNAME.app -verbose=0
 POS=`pwd`
 cd $CONTENTS/Frameworks
 rm -rf QtDeclarative.framework

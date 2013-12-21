@@ -2986,7 +2986,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Leiser</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5182"/>
+        <location filename="recorder.cpp" line="5195"/>
         <source>Question</source>
         <translation>Frage</translation>
     </message>
@@ -2998,7 +2998,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Länge: %1 min.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5183"/>
+        <location filename="recorder.cpp" line="5196"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Aufnahme läuft.&lt;br /&gt; &lt;br /&gt;Sind Sie sicher, dass Sie die Aufnahme abbrechen wollen?</translation>
@@ -3220,15 +3220,15 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="2969"/>
-        <location filename="recorder.cpp" line="4923"/>
-        <location filename="recorder.cpp" line="4990"/>
+        <location filename="recorder.cpp" line="4924"/>
+        <location filename="recorder.cpp" line="4997"/>
         <source>Can&apos;t start player!</source>
         <translation>Kann Player nicht starten!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2975"/>
-        <location filename="recorder.cpp" line="4930"/>
-        <location filename="recorder.cpp" line="4996"/>
+        <location filename="recorder.cpp" line="4931"/>
+        <location filename="recorder.cpp" line="5003"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
@@ -3278,12 +3278,12 @@ dataDir: %1
         <translation>Lautlos</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5624"/>
+        <location filename="recorder.cpp" line="5637"/>
         <source>Playing file &apos;%1&apos; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5630"/>
+        <location filename="recorder.cpp" line="5643"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
         <translation></translation>
     </message>
@@ -3353,21 +3353,21 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4826"/>
+        <location filename="recorder.cpp" line="4827"/>
         <source>Save Stream as</source>
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5252"/>
-        <location filename="recorder.cpp" line="5465"/>
+        <location filename="recorder.cpp" line="5265"/>
+        <location filename="recorder.cpp" line="5478"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Favorit %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2969"/>
-        <location filename="recorder.cpp" line="4923"/>
-        <location filename="recorder.cpp" line="4990"/>
+        <location filename="recorder.cpp" line="4924"/>
+        <location filename="recorder.cpp" line="4997"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
@@ -3436,9 +3436,9 @@ dataDir: %1
     <message>
         <location filename="forms/recorder_inc.ui" line="716"/>
         <location filename="recorder.cpp" line="3138"/>
-        <location filename="recorder.cpp" line="4909"/>
-        <location filename="recorder.cpp" line="4976"/>
-        <location filename="recorder.cpp" line="5023"/>
+        <location filename="recorder.cpp" line="4910"/>
+        <location filename="recorder.cpp" line="4983"/>
+        <location filename="recorder.cpp" line="5030"/>
         <source>Video On Demand</source>
         <translation>Videothek</translation>
     </message>
