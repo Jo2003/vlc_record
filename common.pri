@@ -23,7 +23,7 @@ PROGMAJ=2
 PROGMIN=67
 
 # here you can enable traces ...
- DEFINES += __TRACE
+# DEFINES += __TRACE
 
 SOURCES += main.cpp \
     recorder.cpp \

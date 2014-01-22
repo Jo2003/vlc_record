@@ -44,6 +44,13 @@ namespace vlcvid {
       ACT_Unknown = 255
    };
 
+   enum ePanelPos
+   {
+      Pos_Wnd,
+      Pos_FS,
+      Pos_Ukwn = 255
+   };
+
    struct SContextAction
    {
       SContextAction():actType(ACT_Unknown) {}
@@ -96,21 +103,21 @@ protected:
    void touchContextMenu ();
    int  setCurrentATrack (int id);
    int  getCurrentATrack ();
-   void positionCtrlPanel();
 
 private:
    QWidget                *_render;
    QTimer                 *_mouseHide;
+   QTimer                 *_placePanel;
    QVector<CShortcutEx *> *_shortcuts;
    bool                    _extFullScreen;
    QOverlayedControl      *_ctrlPanel;
    bool                    _mouseOnPanel;
-   bool                    _panelPositioned;
    bool                    _bWindowed;
    bool                    _bCPanelIfWnd;
    QMenu                  *_contextMenu;
    QLangVector             _langVector;
    QMutex                  _mtxLv;
+   vlcvid::ePanelPos       _lastPos;
 
 signals:
    void fullScreen();
@@ -136,6 +143,7 @@ public slots:
 private slots:
    void slotCustContextMenu(QPoint pt);
    void slotContentActionTriggered (QAction *pAct);
+   void slotPositionCtrlPanel();
 };
 
 #endif // __20120208_QVLCVIDEOWIDGET_H
