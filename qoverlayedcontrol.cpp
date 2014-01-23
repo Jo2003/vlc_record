@@ -48,6 +48,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addButton(ui->btnFullScreen,     QFusionControl::BTN_FS);
    missionControl.addButton(ui->btnSaveAspectCrop, QFusionControl::BTN_FRMT);
    missionControl.addButton(ui->btnScrShot,        QFusionControl::BTN_SCRSHOT);
+   missionControl.addButton(ui->btnWindowed,       QFusionControl::BTN_WNDWD);
 
    missionControl.addCngSlider(ui->posSlider);
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
@@ -276,4 +277,50 @@ void QOverlayedControl::slotMouseLeavesMoveHandle()
 void QOverlayedControl::on_pushHide_clicked()
 {
    fadeOut();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   windowed mode changed -> adapt button
+//
+//! \author  Jo2003
+//! \date    23.01.2014
+//
+//! \param   on (bool) windowed state
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::chgWindowed (bool on)
+{
+   if (on)
+   {
+      ui->btnWindowed->setIcon(QIcon(":/player/from_wnd_panel"));
+   }
+   else
+   {
+      ui->btnWindowed->setIcon(QIcon(":/player/to_wnd_panel"));
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   fullscreen mode changed -> adapt button
+//
+//! \author  Jo2003
+//! \date    23.01.2014
+//
+//! \param   on (bool) fullscreen state
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::chgFullscreen (bool on)
+{
+   if (on)
+   {
+      ui->btnFullScreen->setIcon(QIcon(":/player/leave-fullscreen"));
+   }
+   else
+   {
+      ui->btnFullScreen->setIcon(QIcon(":/player/fullscreen"));
+   }
 }

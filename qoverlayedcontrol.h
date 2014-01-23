@@ -37,6 +37,8 @@ class QOverlayedControl : public QFadeWidget
 public:
   QOverlayedControl(QWidget *parent = 0, Qt::WindowFlags f = 0);
   virtual ~QOverlayedControl();
+  void chgWindowed (bool on);
+  void chgFullscreen (bool on);
 
 protected:
   virtual void changeEvent(QEvent *e);

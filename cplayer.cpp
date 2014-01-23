@@ -76,6 +76,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addButton(ui->btnFullScreen,     QFusionControl::BTN_FS);
    missionControl.addButton(ui->btnSaveAspectCrop, QFusionControl::BTN_FRMT);
+   missionControl.addButton(ui->btnWindowed,       QFusionControl::BTN_WNDWD);
    missionControl.addVidFormCbx(ui->cbxAspect,     QFusionControl::CBX_ASPECT);
    missionControl.addVidFormCbx(ui->cbxCrop,       QFusionControl::CBX_CROP);
 

@@ -66,6 +66,9 @@
         <file alias="down_arrow">resources/down_arrow.png</file>
         <file alias="down_arrow_disabled">resources/down_arrow_disabled.png</file>
         <file alias="atrack">resources/audio.png</file>
+        <file alias="to_wnd">resources/window_accept.png</file>
+        <file alias="from_wnd_panel">resources/panel_from_wnd_32.png</file>
+        <file alias="to_wnd_panel">resources/panel_to_wnd_32.png</file>
     </qresource>
     <qresource prefix="/vod">
         <file alias="is_fav">resources/heart_red.png</file>

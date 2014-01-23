@@ -260,6 +260,7 @@ Recorder::Recorder(QWidget *parent)
    connect (this, SIGNAL(sigFullScreenToggled(int)), ui->player, SLOT(slotFsToggled(int)));
    connect (this, SIGNAL(sigWindowed(int)), ui->player, SLOT(slotWindowed(int)));
    connect (ui->player->getVideoWidget(), SIGNAL(sigWindowed()), this, SLOT(slotWindowed()));
+   connect (&missionControl, SIGNAL(sigEnterWndwd()), this, SLOT(slotWindowed()));
    connect (ui->player->getVideoWidget(), SIGNAL(sigStayOnTop(bool)), this, SLOT(slotStayOnTop(bool)));
 
    // connect signals and slots ...

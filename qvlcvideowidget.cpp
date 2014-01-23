@@ -511,7 +511,7 @@ void QVlcVideoWidget::raiseRender()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   position control panel on stream [slot]
+//! \brief   position control panel on screen [slot]
 //
 //! \author  Jo2003
 //! \date    19.12.2013
@@ -588,6 +588,9 @@ void QVlcVideoWidget::fullScreenToggled(int on)
 {
    _extFullScreen = !!on;
 
+   _ctrlPanel->chgFullscreen(_extFullScreen);
+   _ctrlPanel->chgWindowed(!_extFullScreen);
+
    if (_extFullScreen)
    {
       // position panel if needed ...
@@ -614,6 +617,9 @@ void QVlcVideoWidget::fullScreenToggled(int on)
 void QVlcVideoWidget::windowed(int on)
 {
    _bWindowed = !!on;
+
+   _ctrlPanel->chgWindowed(_bWindowed);
+   _ctrlPanel->chgFullscreen(!_bWindowed);
 
    if (_bWindowed)
    {
