@@ -181,6 +181,7 @@ private:
     QStackedLayout                 *stackedLayout;
     QVlcVideoWidget                *pVideoWidget;
     Ui::EDisplayMode                eCurDMode;
+    Ui::EDisplayMode                eOldDMode;
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;

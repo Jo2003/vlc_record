@@ -80,6 +80,7 @@ Recorder::Recorder(QWidget *parent)
    stackedLayout->addWidget(ui->masterFrame);
    ui->vMainLayout->addLayout(stackedLayout);
    eCurDMode = Ui::DM_NORMAL;
+   eOldDMode = Ui::DM_NORMAL;
 
    // set (customized) windows title ...
    setWindowTitle(pCustomization->strVal("APP_NAME"));
@@ -5659,10 +5660,25 @@ void Recorder::slotPlayHls(const QString &s)
 //---------------------------------------------------------------------------
 void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 {
-   // should we toggle a mode ... ?
+   // take care for toggle mode ...
    if (newMode == eCurDMode)
    {
-      newMode = Ui::DM_NORMAL;
+      if (eCurDMode == Ui::DM_FULLSCREEN)
+      {
+         // fullscreen toggle -> restore previous mode ...
+         newMode = eOldDMode;
+      }
+      else
+      {
+         // windowed toggle -> go into normal mode ...
+         newMode = Ui::DM_NORMAL;
+      }
+   }
+   else if (newMode == Ui::DM_FULLSCREEN)
+   {
+      // save mode before going to fullscreen to have the chance
+      // to restore this mode ...
+      eOldDMode = eCurDMode;
    }
 
    // something to do ... ?

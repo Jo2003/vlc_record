@@ -24,8 +24,8 @@
 #endif
 
 #define VERSION_MAJOR "2"
-#define VERSION_MINOR "67"
-#define BETA_EXT      "B10"
+#define VERSION_MINOR "68"
+#define BETA_EXT      ""
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -33,6 +33,12 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2014-01-26: Version 2.68RC1
+| - updated help and language files
+| - when exiting fullscreen restore previous display mode
+| - can (again) enter mini mode using button on GUI
+| - show control panel in mini mode as default
+|
 | 2013-12-19: Version 2.67B10
 | - HLS now working for record and timer record as well
 | - bugfix for not storing window position at close
