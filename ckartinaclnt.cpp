@@ -278,6 +278,9 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
       case CIptvDefs::REQ_UPDATE_CHECK:
          updInfo(par_1.toString());
          break;
+      case CIptvDefs::REQ_VOD_LANG:
+         getVodLang();
+         break;
       default:
          iRet = -1;
          break;
@@ -403,6 +406,24 @@ void CKartinaClnt::GetChannelList (const QString &secCode)
    // request channel list or channel list for settings ...
    q_post((secCode == "") ? (int)CIptvDefs::REQ_CHANNELLIST : (int)CIptvDefs::REQ_CHANLIST_ALL,
         sApiUrl + "channel_list", req);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get available VOD languages
+//
+//! \author  Jo2003
+//! \date    28.01.2014
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CKartinaClnt::getVodLang()
+{
+   mInfo(tr("Request available VOD languages ..."));
+
+   q_get((int)CIptvDefs::REQ_VOD_LANG, sApiUrl + "getinfo?info=langs");
 }
 
 /*-----------------------------------------------------------------------------\

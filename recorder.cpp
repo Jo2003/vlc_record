@@ -85,6 +85,12 @@ Recorder::Recorder(QWidget *parent)
    // set (customized) windows title ...
    setWindowTitle(pCustomization->strVal("APP_NAME"));
 
+#ifndef _HAS_VOD_LANG
+   // hide vod language stuff if needed ...
+   ui->cbxVodLang->hide();
+   ui->labVodLang->hide();
+#endif // _HAS_VOD_LANG
+
    ePlayState    =  IncPlay::PS_WTF;
    iEpgOffset    =  0;
    iFontSzChg    =  0;
@@ -905,6 +911,10 @@ void Recorder::on_cbxGenre_activated(int index)
 
    url.addQueryItem("type", sType);
 
+#ifdef _HAS_VOD_LANG
+   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+#endif // _HAS_VOD_LANG
+
    if (iGid != -1)
    {
       url.addQueryItem("genre", QString::number(iGid));
@@ -943,8 +953,38 @@ void Recorder::on_cbxLastOrBest_activated(int index)
          url.addQueryItem("genre", QString::number(iGid));
       }
 
+#ifdef _HAS_VOD_LANG
+      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+#endif // _HAS_VOD_LANG
+
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   VOD language was changed -> request videos
+//
+//! \author  Jo2003
+//! \date    28.01.2014
+//
+//! \param   index (int) new selection index
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::on_cbxVodLang_activated(int index)
+{
+   int  iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+
+   QUrl url;
+   url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
+   url.addQueryItem("lang", ui->cbxVodLang->itemData(index).toString());
+   url.addQueryItem("nums", "20");
+   if (iGid != -1)
+   {
+      url.addQueryItem("genre", QString::number(iGid));
+   }
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -962,6 +1002,10 @@ void Recorder::on_btnVodSearch_clicked()
    int     iGid;
    QString sType;
    QUrl    url;
+
+#ifdef _HAS_VOD_LANG
+   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+#endif // _HAS_VOD_LANG
 
    if (ui->lineVodSearch->text() != "")
    {
@@ -1024,6 +1068,10 @@ void Recorder::on_cbxSites_activated(int index)
       url.addQueryItem("type", sType);
       url.addQueryItem("page", QString::number(index + 1));
 
+#ifdef _HAS_VOD_LANG
+      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+#endif // _HAS_VOD_LANG
+
       if (iGenre != -1)
       {
          url.addQueryItem("genre", QString::number(iGenre));
@@ -1053,6 +1101,10 @@ void Recorder::on_btnPrevSite_clicked()
    url.addQueryItem("type", sType);
    url.addQueryItem("page", QString::number(iPage - 1));
 
+#ifdef _HAS_VOD_LANG
+   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+#endif // _HAS_VOD_LANG
+
    if (iGenre != -1)
    {
       url.addQueryItem("genre", QString::number(iGenre));
@@ -1080,6 +1132,10 @@ void Recorder::on_btnNextSite_clicked()
 
    url.addQueryItem("type", sType);
    url.addQueryItem("page", QString::number(iPage + 1));
+
+#ifdef _HAS_VOD_LANG
+   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+#endif // _HAS_VOD_LANG
 
    if (iGenre != -1)
    {
@@ -1604,6 +1660,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    ///////////////////////////////////////////////
    // response for available audio streams (where supported) ...
    mkCase(CIptvDefs::REQ_GET_ALANG, slotALang(resp));
+
+   ///////////////////////////////////////////////
+   // response for available VOD languages (where supported) ...
+   mkCase(CIptvDefs::REQ_VOD_LANG, slotVodLang(resp));
 
    ///////////////////////////////////////////////
    // Make sure the unused responses are listed
@@ -3013,11 +3073,17 @@ void Recorder::slotGotVodGenres(const QString &str)
 
    ui->cbxGenre->setCurrentIndex(0);
 
+#ifdef _HAS_VOD_LANG
+   // before asking for vidoes get a list of available languages ...
+   pApiClient->queueRequest(CIptvDefs::REQ_VOD_LANG);
+
+#else
    // trigger video load ...
    QUrl url;
    url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
    url.addQueryItem("nums", "20");
    pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+#endif // _HAS_VOD_LANG
 }
 
 /* -----------------------------------------------------------------\
@@ -4057,6 +4123,42 @@ void Recorder::slotALang(const QString &str)
 #else
    Q_UNUSED(str)
 #endif // _TASTE_IPTV_RECORD
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   server response for available VOD languages
+//
+//! \author  Jo2003
+//! \date    28.01.2014
+//
+//! \param   str (QString) server response with VOD languages
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotVodLang(const QString &str)
+{
+   QVodLangMap lMap;
+
+   if (!pApiParser->parseVodLang(str, lMap))
+   {
+      ui->cbxVodLang->clear();
+
+      // fill vod lang combobox ...
+      QVodLangMap::const_iterator cit;
+      for (cit = lMap.constBegin(); cit != lMap.constEnd(); cit++)
+      {
+         ui->cbxVodLang->addItem(cit.key(), cit.value());
+      }
+
+      // request videos ...
+      // trigger video load ...
+      QUrl url;
+      url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
+      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+      url.addQueryItem("nums", "20");
+      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   }
 }
 
 //---------------------------------------------------------------------------

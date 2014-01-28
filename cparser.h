@@ -154,5 +154,6 @@ typedef QMap<int, cparser::SChan>                 QChanMap;
 typedef QMap<int, QVector<cparser::SEpgCurrent> > QCurrentMap;
 typedef QVector<cparser::SGrp>                    QGrpVector;
 typedef QVector<cparser::SChan>                   QChanList;
+typedef QMap<QString, QString>                    QVodLangMap;
 
 #endif // __20130325_CPARSER_H

@@ -71,6 +71,7 @@ public:
       REQ_SET_LANGUAGE,
       REQ_CL_LANG,
       REQ_GET_ALANG,
+      REQ_VOD_LANG,
       REQ_UNKNOWN = 255
    };
 

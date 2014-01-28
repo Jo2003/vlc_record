@@ -78,6 +78,7 @@ protected:
    void epgCurrent(const QString &cids);
    void updInfo (const QString& url);
    int  checkResponse (const QString &sResp, QString& sCleanResp);
+   virtual void getVodLang();
    const QString& apiUrl();
 
 private:

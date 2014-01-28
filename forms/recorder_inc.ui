@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1018</width>
+    <width>1033</width>
     <height>571</height>
    </rect>
   </property>
@@ -720,7 +720,7 @@ color: white;
             <number>6</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,8,0,8,0,0,0,0,0">
+            <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,8,0,8,0,8,0,0,0,0,0">
              <item>
               <widget class="QLabel" name="labGenre">
                <property name="text">
@@ -740,6 +740,16 @@ color: white;
              </item>
              <item>
               <widget class="QComboBox" name="cbxLastOrBest"/>
+             </item>
+             <item>
+              <widget class="QLabel" name="labVodLang">
+               <property name="text">
+                <string>Lang.:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="cbxVodLang"/>
              </item>
              <item>
               <spacer name="horizontalSpacer_5">
