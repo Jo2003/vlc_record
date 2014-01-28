@@ -54,16 +54,19 @@
    #define DEF_CELLSPACING  "1"
 #endif
 
-// css styles for html writer ...
-#define TMPL_TAB_STYLE  "color: black; background-color: #036; width: 100%;"
-#define TMPL_A_STYLE    "color: black; background-color: rgb(255, 254, 212); padding: 3px;"
-#define TMPL_B_STYLE    "color: black; background-color: rgb(234, 221, 166); padding: 3px;"
-#define TMPL_INNER_TAB  "color: black; background-color: rgb(242, 230, 187); padding: 5px;"
-#define TMPL_TH_STYLE   "color: white; background-color: #820; padding: 3px; font: bold; text-align: center; vertical-align: middle;"
-#define TMPL_CUR_STYLE  "color: black; background-color: #fc0; padding: 3px;"
-#define TMPL_VOD_STYLE  "color: #800; background-color: rgb(255, 254, 212); font-weight: bold; padding: 10px;"
-#define TMPL_IMG_RFLOAT "float: right; margin: 15px; padding: 2px; border: 1px solid #666;"
-#define TMPL_ONE_CELL   "background-color: rgb(255, 254, 212); color: black; padding: 3px;"
+#ifndef _HAS_OWN_STYLES
+   // css styles for html writer ...
+   #define TMPL_TAB_STYLE  "color: black; background-color: #036; width: 100%;"
+   #define TMPL_A_STYLE    "color: black; background-color: rgb(255, 254, 212); padding: 3px;"
+   #define TMPL_B_STYLE    "color: black; background-color: rgb(234, 221, 166); padding: 3px;"
+   #define TMPL_INNER_TAB  "color: black; background-color: rgb(242, 230, 187); padding: 5px;"
+   #define TMPL_TH_STYLE   "color: white; background-color: #820; padding: 3px; font: bold; text-align: center; vertical-align: middle;"
+   #define TMPL_CUR_STYLE  "color: black; background-color: #fc0; padding: 3px;"
+   #define TMPL_VOD_STYLE  "color: #800; background-color: rgb(255, 254, 212); font-weight: bold; padding: 10px;"
+   #define TMPL_IMG_RFLOAT "float: right; margin: 15px; padding: 2px; border: 1px solid #666;"
+   #define TMPL_ONE_CELL   "background-color: rgb(255, 254, 212); color: black; padding: 3px;"
+   #define TMPL_VOD_BODY   "body {background-color: rgb(255, 254, 212);}"
+#endif // _HAS_OWN_STYLES
 
 #define NAVBAR_STYLE \
 "QTabBar::tab {\n"\

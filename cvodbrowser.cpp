@@ -361,7 +361,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    link     = "[ " + link + " ]";
    content += pHtml->div(link, "", "center");
 
-   page          = pHtml->htmlPage(content, tr("Video Details"), "body {background-color: rgb(255, 254, 212);}");
+   page          = pHtml->htmlPage(content, tr("Video Details"), TMPL_VOD_BODY);
    _shortContent = pHtml->oneCellPage(_shortContent, TMPL_ONE_CELL);
 
    setHtml(page);

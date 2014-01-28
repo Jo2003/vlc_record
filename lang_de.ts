@@ -2117,6 +2117,24 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
     </message>
 </context>
 <context>
+    <name>CSundukClnt</name>
+    <message>
+        <location filename="csundukclnt.cpp" line="66"/>
+        <source>Request URL for channel %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="csundukclnt.cpp" line="93"/>
+        <source>Request Archiv URL ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="csundukclnt.cpp" line="120"/>
+        <source>Request Video Url for video %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CTimerRec</name>
     <message>
         <location filename="ctimerrec.cpp" line="434"/>
@@ -3288,12 +3306,12 @@ dataDir: %1
         <translation>Lautlos</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5639"/>
+        <location filename="recorder.cpp" line="5645"/>
         <source>Playing file &apos;%1&apos; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5645"/>
+        <location filename="recorder.cpp" line="5651"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
         <translation></translation>
     </message>
