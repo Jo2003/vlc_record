@@ -5587,6 +5587,7 @@ void Recorder::toggleFullscreen()
 //---------------------------------------------------------------------------
 int Recorder::check4PlayList(const QString& sUrl, const QString &sName)
 {
+#ifndef __VLC_FOR_HLS ///< this should be defined in case VLC should handle HLS!
    if (sUrl.contains("m3u", Qt::CaseInsensitive))
    {
       // HLS .. Oops!
@@ -5616,6 +5617,11 @@ int Recorder::check4PlayList(const QString& sUrl, const QString &sName)
       return 1;
    }
    else
+#else
+   // avoid warnings ...
+   Q_UNUSED(sUrl)
+   Q_UNUSED(sName)
+#endif // __VLC_FOR_HLS
    {
       return 0;
    }
