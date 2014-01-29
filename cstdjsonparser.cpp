@@ -91,7 +91,13 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
                chan.bIsVideo     = mChannel.value("is_video").toBool();
                chan.bHasArchive  = mChannel.value("have_archive").toBool();
                chan.bIsProtected = mChannel.value("protected").toBool();
+#ifdef _TASTE_CHITRAM_TV
+               // due to resource problems chitram.tv hasn't so far
+               // normal channel icons ...
+               chan.sIcon        = QString("/dune/chitram/images_v3/s%1.7.png").arg(chan.iId);
+#else
                chan.sIcon        = mChannel.value("icon").toString();
+#endif // _TASTE_CHITRAM_TV
                chan.sProgramm    = mChannel.value("epg_progname").toString();
                chan.uiStart      = mChannel.value("epg_start").toUInt();
                chan.uiEnd        = mChannel.value("epg_end").toUInt();

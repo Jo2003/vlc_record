@@ -68,7 +68,12 @@ QSize QChanListDelegate::sizeHint(const QStyleOptionViewItem &option, const QMod
    uint    uiStart  = qvariant_cast<uint>(index.data(channellist::startRole));
    uint    uiEnd    = qvariant_cast<uint>(index.data(channellist::endRole));
    QIcon   icon     = qvariant_cast<QIcon>(index.data(channellist::iconRole));
+#ifdef _TASTE_CHITRAM_TV
+   // maybe we should think about to use these values for all brandings ...
+   QSize   iconsize = icon.actualSize(QSize(42, 42));
+#else
    QSize   iconsize = icon.actualSize(option.decorationSize);
+#endif // _TASTE_CHITRAM_TV
    QString sChan    = qvariant_cast<QString>(index.data(channellist::nameRole));
    QString sProg    = qvariant_cast<QString>(index.data(channellist::progRole));
    QString fromTo   = QString("%1 - %2")
@@ -160,7 +165,12 @@ void QChanListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
    uint    uiStart  = qvariant_cast<uint>(index.data(channellist::startRole));
    uint    uiEnd    = qvariant_cast<uint>(index.data(channellist::endRole));
    QIcon   icon     = qvariant_cast<QIcon>(index.data(channellist::iconRole));
+#ifdef _TASTE_CHITRAM_TV
+   // maybe we should think about to use these values for all brandings ...
+   QSize   iconsize = icon.actualSize(QSize(42, 42));
+#else
    QSize   iconsize = icon.actualSize(option.decorationSize);
+#endif // _TASTE_CHITRAM_TV
    QString sChan    = qvariant_cast<QString>(index.data(channellist::nameRole));
    QString sProg    = qvariant_cast<QString>(index.data(channellist::progRole));
    QString sColor   = qvariant_cast<QString>(index.data(channellist::bgcolorRole));

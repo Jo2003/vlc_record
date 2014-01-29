@@ -2102,7 +2102,7 @@ void Recorder::slotEPG(const QString &str)
 
             // fill epg control ...
             icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
-            ui->labChanIcon->setPixmap(icon.pixmap(24, 24));
+            ui->labChanIcon->setPixmap(icon.pixmap(42, 24));
             ui->labChanName->setText(chan.sName);
             ui->labCurrDay->setText(epgTime.toString("dd. MMM. yyyy"));
 
@@ -3701,7 +3701,7 @@ void Recorder::slotRefreshChanLogos()
                // update channel icon on EPG browser ...
                if ((curCid != -1) && (cid == curCid))
                {
-                  ui->labChanIcon->setPixmap(QIcon(icon).pixmap(24, 24));
+                  ui->labChanIcon->setPixmap(QIcon(icon).pixmap(42, 24));
                }
             }
          }
@@ -4839,7 +4839,8 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
                // check if image file can be loaded ...
                if (!icon.load(sLogoFile))                   // try auto type detection ...
                {
-                  if (!icon.load(sLogoFile, "image/gif"))   // try to force to gif if auto type detection doesn't work ...
+                  // try to force load with type from file extension ...
+                  if (!icon.load(sLogoFile, QString("image/%1").arg(fInfo.suffix()).toUtf8().constBegin()))
                   {
                      // can't load --> load default image ...
                      icon.load(":png/no_logo");
