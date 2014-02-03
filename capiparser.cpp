@@ -354,3 +354,24 @@ int CApiParser::handleTsStuff(QVector<cparser::SChan> &chanList)
 
    return 0;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   empty prototype for VOD language parser
+//!          (so far only used for Chitram.TV)
+//
+//! \author  Jo2003
+//! \date    03.02.2014
+//
+//! \param   sResp (const QString&) html response
+//! \param   lMap (QVodLangMap&) result map for available languages
+//
+//! \return  0 -> ok; -1 -> error
+//---------------------------------------------------------------------------
+int CApiParser::parseVodLang(const QString &sResp, QVodLangMap &lMap)
+{
+   Q_UNUSED(sResp)
+   Q_UNUSED(lMap)
+
+   return 0;
+}

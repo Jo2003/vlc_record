@@ -54,7 +54,7 @@ public:
    virtual int parseError (const QString& sResp, QString& sMsg, int& eCode) = 0;
    virtual int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
    virtual int handleTsStuff(QVector<cparser::SChan> &chanList);
-   virtual int parseVodLang(const QString &sResp, QVodLangMap &lMap) = 0;
+   virtual int parseVodLang(const QString &sResp, QVodLangMap &lMap);
 
 protected:
    virtual void checkTimeOffSet (const uint &uiSrvTime);
