@@ -1944,6 +1944,29 @@ void Recorder::slotCookie (const QString &str)
             // add tab ...
             ui->tabEpgVod->addTab(vodTabWidget.pWidget, (title != "") ? title : vodTabWidget.sText);
             ui->tabEpgVod->adjustSize();
+
+#ifdef _TASTE_POLSKY_TV
+            // we should make the tab button more visible for
+            // Polsky.TV ...
+            QString stSh = ui->tabEpgVod->styleSheet();
+
+            if (!stSh.contains(":last"))
+            {
+               stSh += "QTabBar::tab:last:hover {\n"
+                       "  border-bottom-color: #eee;\n"
+                       "}\n"
+                       "QTabBar::tab:last {\n"
+                       "  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #FFCACA, stop:0.7 #FF6666, stop:1 #FFCECE);\n"
+                       "}\n"
+                       "QTabBar::tab:last:selected {\n"
+                       "  background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #FFCACA, stop:0.7 #FF6666, stop:1 #FFCECE);\n"
+                       "  border-bottom-color: #eee;\n"
+                       "  border-top-color: #800;\n"
+                       "}";
+
+               ui->tabEpgVod->setStyleSheet(stSh);
+            }
+#endif // _TASTE_POLSKY_TV
          }
       }
       else
