@@ -224,6 +224,7 @@ int CStdJsonParser::parseCookie (const QString &sResp, QString &sCookie, cparser
       nestedMap        = contentMap.value("account").toMap();
       sInf.sExpires    = QDateTime::fromTime_t(nestedMap.value("packet_expire").toUInt())
                            .toString(DEF_TIME_FORMAT);
+      sInf.dtExpires   = QDateTime::fromTime_t(nestedMap.value("packet_expire").toUInt());
 
       nestedMap        = contentMap.value("services").toMap();
       sInf.bHasArchive = nestedMap.value("archive").toBool();

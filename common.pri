@@ -54,6 +54,7 @@ SOURCES += main.cpp \
     qiptvctrlclient.cpp \
     qcustparser.cpp \
     capiparser.cpp \
+    qnotifydlg.cpp \
     qupdatenotifydlg.cpp \
     qwatchlistdlg.cpp \
     ctimeshift.cpp \
@@ -63,7 +64,8 @@ SOURCES += main.cpp \
     qextm3uparser.cpp \
     qvlcvideowidget.cpp \
     cplayer.cpp \
-    qhlscontrol.cpp
+    qhlscontrol.cpp \
+    qexpirenotifydlg.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -106,6 +108,7 @@ HEADERS += recorder.h \
     qcustparser.h \
     api_inc.h \
     capiparser.h \
+    qnotifydlg.h \
     qupdatenotifydlg.h \
     qstringfilterwidgetaction.h \
     qwatchlistdlg.h \
@@ -119,7 +122,8 @@ HEADERS += recorder.h \
     qvlcvideowidget.h \
     qclickandgoslider.h \
     qtimelabel.h \
-    qhlscontrol.h
+    qhlscontrol.h \
+    qexpirenotifydlg.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -128,7 +132,7 @@ FORMS += forms/csettingsdlg.ui \
     forms/qhelpdialog.ui \
     forms/qoverlayedcontrol.ui \
     forms/qrecordtimerwidget.ui \
-    forms/qupdatenotifydlg.ui \
+    forms/qnotifydlg.ui \
     forms/qwatchlistdlg.ui \
     forms/cplayer.ui \
     forms/recorder_inc.ui

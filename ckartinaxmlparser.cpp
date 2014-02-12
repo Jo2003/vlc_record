@@ -558,6 +558,8 @@ int CKartinaXMLParser::parseCookie (const QString &sResp, QString &sCookie, cpar
             // format into string ...
             sInf.sExpires = QDateTime::fromTime_t(mResults.value("packet_expire").toUInt())
                   .toString(DEF_TIME_FORMAT);
+
+            sInf.dtExpires = QDateTime::fromTime_t(mResults.value("packet_expire").toUInt());
          }
          else if (xml.name() == "services")
          {

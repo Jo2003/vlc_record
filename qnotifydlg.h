@@ -2,7 +2,7 @@
  *
  *  $HeadURL$
  *
- *  @file     qupdatenotifydlg.h
+ *  @file     qnotifydlg.h
  *
  *  @author   Jo2003
  *
@@ -11,36 +11,42 @@
  *  $Id$
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
-#ifndef __20130619_QUPDATENOTIFYDLG_H
-   #define __20130619_QUPDATENOTIFYDLG_H
+#ifndef __20130619_QNOTIFYDLG_H
+   #define __20130619_QNOTIFYDLG_H
 
-#include "qnotifydlg.h"
+#include <QDialog>
+#include <QUrl>
+#include <QComboBox>
+
+namespace Ui {
+   class QNotifyDlg;
+}
 
 //---------------------------------------------------------------------------
-//! \class   QUpdateNotifyDlg
+//! \class   QNotifyDlg
 //! \date    19.06.2013
 //! \author  Jo2003
-//! \brief   a widget to inform about program updates
+//! \brief   a widget to inform about something
 //---------------------------------------------------------------------------
-class QUpdateNotifyDlg : public QNotifyDlg
+class QNotifyDlg : public QDialog
 {
    Q_OBJECT
    
 public:
-   explicit QUpdateNotifyDlg(QWidget *parent = 0);
-   ~QUpdateNotifyDlg();
-   void setUpdateData(const QString &str, int minor, int major);
+   explicit QNotifyDlg(QWidget *parent = 0);
+   ~QNotifyDlg();
+   void setNotifyContent (const QString& str);
    
 protected:
    virtual void changeEvent(QEvent *e);
+   QComboBox* remindCbx();
 
 public slots:
    virtual void on_btnRemind_clicked();
    virtual void slotNotifyLinkClicked(QUrl url);
 
 private:
-   int _iMinor;
-   int _iMajor;
+   Ui::QNotifyDlg *ui;
 };
 
-#endif // __20130619_QUPDATENOTIFYDLG_H
+#endif // __20130619_QNOTIFYDLG_H

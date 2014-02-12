@@ -16,6 +16,7 @@
 #include <QVector>
 #include <QString>
 #include <QMap>
+#include <QDateTime>
 
 //===================================================================
 // namespace
@@ -113,9 +114,10 @@ namespace cparser
 
    struct SAccountInfo
    {
-      QString sExpires;
-      bool    bHasArchive;
-      bool    bHasVOD;
+      QString   sExpires;
+      QDateTime dtExpires;
+      bool      bHasArchive;
+      bool      bHasVOD;
    };
 
    struct SGenreInfo

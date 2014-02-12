@@ -12,11 +12,10 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qupdatenotifydlg.h"
-#include "ui_qupdatenotifydlg.h"
+
 #include "cvlcrecdb.h"
 
 #include <QDateTime>
-#include <QDesktopServices>
 
 // db storage class ...
 extern CVlcRecDB *pDb;
@@ -33,19 +32,16 @@ extern CVlcRecDB *pDb;
 //! \return  --
 //---------------------------------------------------------------------------
 QUpdateNotifyDlg::QUpdateNotifyDlg(QWidget *parent) :
-   QDialog(parent),
-   ui(new Ui::QUpdateNotifyDlg), _iMinor(0), _iMajor(0)
+   QNotifyDlg(parent), _iMinor(0), _iMajor(0)
 {
-   ui->setupUi(this);
+   setWindowTitle(tr("Update Notification"));
 
-   ui->cbxRemind->addItem(tr("Tomorrow"),                1);
-   ui->cbxRemind->addItem(tr("In one week"),             7);
-   ui->cbxRemind->addItem(tr("In one month"),           30);
+   remindCbx()->addItem(tr("Tomorrow"),                1);
+   remindCbx()->addItem(tr("In one week"),             7);
+   remindCbx()->addItem(tr("In one month"),           30);
 #ifndef _TASTE_IPTV_RECORD
-   ui->cbxRemind->addItem(tr("Never for this release"), -1);
+   remindCbx()->addItem(tr("Never for this release"), -1);
 #endif // _TASTE_IPTV_RECORD
-
-   connect (ui->txtUpdAvailable, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotUpdlinkClicked(QUrl)));
 }
 
 //---------------------------------------------------------------------------
@@ -59,7 +55,7 @@ QUpdateNotifyDlg::QUpdateNotifyDlg(QWidget *parent) :
 //---------------------------------------------------------------------------
 QUpdateNotifyDlg::~QUpdateNotifyDlg()
 {
-   delete ui;
+
 }
 
 //---------------------------------------------------------------------------
@@ -78,25 +74,24 @@ void QUpdateNotifyDlg::changeEvent(QEvent *e)
    if (e->type() == QEvent::LanguageChange)
    {
       // get current value ...
-      int i = ui->cbxRemind->currentIndex();
+      int i = remindCbx()->currentIndex();
 
-      // translate ...
-      ui->retranslateUi(this);
+      setWindowTitle(tr("Update Notification"));
 
-      ui->cbxRemind->clear();
+      remindCbx()->clear();
 
-      ui->cbxRemind->addItem(tr("Tomorrow"),                1);
-      ui->cbxRemind->addItem(tr("In one week"),             7);
-      ui->cbxRemind->addItem(tr("In one month"),           30);
+      remindCbx()->addItem(tr("Tomorrow"),                1);
+      remindCbx()->addItem(tr("In one week"),             7);
+      remindCbx()->addItem(tr("In one month"),           30);
 #ifndef _TASTE_IPTV_RECORD
-      ui->cbxRemind->addItem(tr("Never for this release"), -1);
+      remindCbx()->addItem(tr("Never for this release"), -1);
 #endif // _TASTE_IPTV_RECORD
 
       // set current index ...
-      ui->cbxRemind->setCurrentIndex(i);
+      remindCbx()->setCurrentIndex(i);
    }
 
-   QWidget::changeEvent(e);
+   QNotifyDlg::changeEvent(e);
 }
 
 //---------------------------------------------------------------------------
@@ -113,7 +108,7 @@ void QUpdateNotifyDlg::changeEvent(QEvent *e)
 void QUpdateNotifyDlg::on_btnRemind_clicked()
 {
    // timestamp ...
-   qint64 llOffs = ui->cbxRemind->itemData(ui->cbxRemind->currentIndex()).toInt();
+   qint64 llOffs = remindCbx()->itemData(remindCbx()->currentIndex()).toInt();
 
    if (llOffs != -1)
    {
@@ -140,7 +135,8 @@ void QUpdateNotifyDlg::on_btnRemind_clicked()
 //---------------------------------------------------------------------------
 void QUpdateNotifyDlg::setUpdateData(const QString &str, int minor, int major)
 {
-   ui->txtUpdAvailable->setHtml(str);
+   setNotifyContent(str);
+
    _iMinor = minor;
    _iMajor = major;
 }
@@ -156,13 +152,12 @@ void QUpdateNotifyDlg::setUpdateData(const QString &str, int minor, int major)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QUpdateNotifyDlg::slotUpdlinkClicked(QUrl url)
+void QUpdateNotifyDlg::slotNotifyLinkClicked(QUrl url)
 {
    // remove update stuff from DB ...
    pDb->removeSetting("UpdMinor");
    pDb->removeSetting("UpdMajor");
    pDb->removeSetting("UpdNextCheck");
 
-   QDesktopServices::openUrl(url);
-   accept();
+   QNotifyDlg::slotNotifyLinkClicked(url);
 }

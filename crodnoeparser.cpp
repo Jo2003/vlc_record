@@ -599,7 +599,10 @@ int CRodnoeParser::parseCookie (const QString &sResp, QString &sCookie, cparser:
             oneLevelParser(xml, "item", slNeeded, mResults);
 
             // format into string ...
-            sInf.sExpires = mResults.value("end_date");
+            sInf.sExpires  = mResults.value("end_date");
+
+            /// Fix-Me! this might not work ... I haven't the possibility to check this right now!
+            sInf.dtExpires = QDateTime::fromString(sInf.sExpires);
          }
          else if (xml.name() == "services")
          {

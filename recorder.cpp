@@ -165,6 +165,7 @@ Recorder::Recorder(QWidget *parent)
    favContext.setParent(this, Qt::Popup);
    timerWidget.setParent(this, Qt::Tool);
    updNotifier.setParent(this, Qt::Popup);
+   expNotifier.setParent(this, Qt::Popup);
 
    // help dialog class (non modal) ...
    pHelp = new QHelpDialog(NULL);
@@ -1931,6 +1932,27 @@ void Recorder::slotCookie (const QString &str)
    if (!pApiParser->parseCookie(str, s, accountInfo))
    {
       pApiClient->SetCookie(s);
+
+      if (accountInfo.dtExpires.isValid())
+      {
+         int iDaysTo = QDateTime::currentDateTime().daysTo(accountInfo.dtExpires);
+
+         // be sure to don't tell about negative days ... !
+         if ((iDaysTo >= 0) && (iDaysTo <= 7))
+         {
+            qint64 llCheck = pDb->stringValue("ExpNextRemind").toLongLong();
+
+            if (QDateTime::currentDateTime().toTime_t() > llCheck)
+            {
+               QString content = tr("Your account will expire in %1 day(s).<br />Visit the web page of %2 to extend your account!")
+                     .arg(iDaysTo)
+                     .arg(pCustomization->strVal("COMPANY_LINK"));
+
+               expNotifier.setNotifyContent(pHtml->htmlPage(content, "Account Info"));
+               expNotifier.exec();
+            }
+         }
+      }
 
       // decide if we should enable / disable VOD stuff ...
       if (accountInfo.bHasVOD)

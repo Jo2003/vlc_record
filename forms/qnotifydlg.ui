@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QUpdateNotifyDlg</class>
- <widget class="QDialog" name="QUpdateNotifyDlg">
+ <class>QNotifyDlg</class>
+ <widget class="QDialog" name="QNotifyDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Update Notification</string>
+   <string>Notification</string>
   </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
@@ -54,7 +54,7 @@
     </widget>
    </item>
    <item row="0" column="0" colspan="3">
-    <widget class="QTextBrowser" name="txtUpdAvailable">
+    <widget class="QTextBrowser" name="txtNotify">
      <property name="enabled">
       <bool>true</bool>
      </property>

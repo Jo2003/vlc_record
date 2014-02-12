@@ -57,6 +57,7 @@
 #include "qrecordtimerwidget.h"
 #include "api_inc.h"
 #include "qupdatenotifydlg.h"
+#include "qexpirenotifydlg.h"
 #include "qstringfilterwidgetaction.h"
 #include "qwatchlistdlg.h"
 #include "ctimeshift.h"
@@ -173,6 +174,7 @@ private:
     CIptvDefs                       metaKartina;
     QRecordTimerWidget              timerWidget;
     QUpdateNotifyDlg                updNotifier;
+    QExpireNotifyDlg                expNotifier;
     QMenu                          *pFilterMenu;
     QStringFilterWidgetAction      *pFilterWidget;
     QMenu                          *pMnLangFilter;
