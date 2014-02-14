@@ -192,7 +192,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="424"/>
         <source>Request available VOD languages ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="444"/>
@@ -2483,25 +2483,25 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <location filename="qexpirenotifydlg.cpp" line="37"/>
         <location filename="qexpirenotifydlg.cpp" line="76"/>
         <source>Account Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Zawiadomienie konta</translation>
     </message>
     <message>
         <location filename="qexpirenotifydlg.cpp" line="39"/>
         <location filename="qexpirenotifydlg.cpp" line="80"/>
         <source>Tomorrow</source>
-        <translation type="unfinished">Jutro</translation>
+        <translation>Jutro</translation>
     </message>
     <message>
         <location filename="qexpirenotifydlg.cpp" line="40"/>
         <location filename="qexpirenotifydlg.cpp" line="81"/>
         <source>In two days</source>
-        <translation type="unfinished"></translation>
+        <translation>Po dwóch dniach</translation>
     </message>
     <message>
         <location filename="qexpirenotifydlg.cpp" line="41"/>
         <location filename="qexpirenotifydlg.cpp" line="82"/>
         <source>In five days</source>
-        <translation type="unfinished"></translation>
+        <translation>Po pięciu dniach</translation>
     </message>
 </context>
 <context>
@@ -2663,12 +2663,12 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/qnotifydlg.ui" line="14"/>
         <source>Notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Uwaga</translation>
     </message>
     <message>
         <location filename="forms/qnotifydlg.ui" line="23"/>
         <source>Remind me: </source>
-        <translation type="unfinished">Przypomnij mi: </translation>
+        <translation>Przypomnij mi: </translation>
     </message>
 </context>
 <context>
@@ -3025,7 +3025,7 @@ lub czas początkowy jest później niż czas końcowy!</translation>
     <message>
         <location filename="forms/recorder_inc.ui" line="727"/>
         <source>Lang.:</source>
-        <translation type="unfinished"></translation>
+        <translation>Język:</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="737"/>
@@ -3212,8 +3212,9 @@ dataDir: %1
     </message>
     <message>
         <location filename="recorder.cpp" line="1947"/>
-        <source>Your account will expire in %1 day(s).&lt;br /&gt;Visit the web page of %2!</source>
-        <translation type="unfinished"></translation>
+        <source>Your subscription will end in %1 day(s).&lt;br /&gt;Visit %2 to renew it!</source>
+        <oldsource>Your abonnoment will expire in %1 day(s).&lt;br /&gt;Visit the web page of %2 to extend your subscription!</oldsource>
+        <translation>Twoja subskrypcja wygaśnie za %1 dzień/dni. Odwiedź stronę internetową %2 aby przedłużyć ważność abonamentu!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2017"/>

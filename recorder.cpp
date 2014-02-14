@@ -1944,7 +1944,7 @@ void Recorder::slotCookie (const QString &str)
 
             if (QDateTime::currentDateTime().toTime_t() > llCheck)
             {
-               QString content = tr("Your account will expire in %1 day(s).<br />Visit the web page of %2 to extend your account!")
+               QString content = tr("Your subscription will end in %1 day(s).<br />Visit %2 to renew it!")
                      .arg(iDaysTo)
                      .arg(pCustomization->strVal("COMPANY_LINK"));
 
