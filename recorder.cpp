@@ -1863,50 +1863,65 @@ void Recorder::slotStreamURL(const QString &str)
 
    if (!pApiParser->parseUrl(str, sUrl))
    {
-      sShow = CleanShowName (showInfo.showName());
-      sChan = showInfo.chanName();
-
-      sTime = sTime = QString("%1 - %2")
-                      .arg(QDateTime::fromTime_t(showInfo.starts()).toString("hh:mm"))
-                      .arg(QDateTime::fromTime_t(showInfo.ends()).toString("hh:mm"));
-
-      if (sShow == "")
+      if (sUrl == "protected")
       {
-         sShow = sChan;
+         // hack! We don't get an error in some
+         // cases therefore we here check the "magic"
+         // keyword "protected" ...
+         QMessageBox::critical(this, tr("Error!"), tr("Authentication error"));
+         showInfo.setPCode("");
+         secCodeDlg.slotClearPasswd();
+
+         // change the player state to error ...!
+         ePlayState = IncPlay::PS_ERROR;
       }
-
-      // add additional info to LCD ...
-      ui->labState->setHeader(sChan);
-      ui->labState->setFooter(sTime);
-
-      if (ePlayState == IncPlay::PS_RECORD)
+      else
       {
-         if (!vlcCtrl.ownDwnld())
+         sShow = CleanShowName (showInfo.showName());
+         sChan = showInfo.chanName();
+
+         sTime = sTime = QString("%1 - %2")
+                         .arg(QDateTime::fromTime_t(showInfo.starts()).toString("hh:mm"))
+                         .arg(QDateTime::fromTime_t(showInfo.ends()).toString("hh:mm"));
+
+         if (sShow == "")
          {
-            if (!check4PlayList(sUrl, sShow))
+            sShow = sChan;
+         }
+
+         // add additional info to LCD ...
+         ui->labState->setHeader(sChan);
+         ui->labState->setFooter(sTime);
+
+         if (ePlayState == IncPlay::PS_RECORD)
+         {
+            if (!vlcCtrl.ownDwnld())
             {
-               StartVlcRec(sUrl, sShow);
+               if (!check4PlayList(sUrl, sShow))
+               {
+                  StartVlcRec(sUrl, sShow);
+               }
+            }
+            else
+            {
+               if (vlcCtrl.withLibVLC())
+               {
+                  ui->player->silentStop();
+               }
+               else if (vlcCtrl.IsRunning())
+               {
+                  vlcCtrl.stop();
+               }
+               showInfo.useStreamLoader(true);
+               StartStreamDownload(sUrl, sShow);
             }
          }
-         else
+         else if (ePlayState == IncPlay::PS_PLAY)
          {
-            if (vlcCtrl.withLibVLC())
+            if (!check4PlayList(sUrl))
             {
-               ui->player->silentStop();
+               StartVlcPlay(sUrl);
             }
-            else if (vlcCtrl.IsRunning())
-            {
-               vlcCtrl.stop();
-            }
-            showInfo.useStreamLoader(true);
-            StartStreamDownload(sUrl, sShow);
-         }
-      }
-      else if (ePlayState == IncPlay::PS_PLAY)
-      {
-         if (!check4PlayList(sUrl))
-         {
-            StartVlcPlay(sUrl);
          }
       }
    }
