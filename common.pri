@@ -213,6 +213,10 @@ contains(DEFINES, _TASTE_IPTV_RECORD) {
               cnovoeparser.h
    SOURCES += cnovoeclient.cpp \
               cnovoeparser.cpp
+} else:contains(DEFINES, _TASTE_TELEPROM) {
+   message (Using teleprom api client ...)
+   HEADERS += ctelepromclient.h
+   SOURCES += ctelepromclient.cpp
 } else {
    message (Using standard api client ...)
    HEADERS += ckartinaclnt.h

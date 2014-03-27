@@ -592,6 +592,10 @@ int CStdJsonParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgL
          {
             entry.sDescr = mEpg.value("pdescr").toString();
          }
+         else if(mEpg.contains("description"))
+         {
+            entry.sDescr = mEpg.value("description").toString();
+         }
 
          epgList.append(entry);
       }

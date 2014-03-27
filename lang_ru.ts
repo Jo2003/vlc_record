@@ -2066,11 +2066,11 @@ To change the parent code make sure:
         <location filename="cstdjsonparser.cpp" line="395"/>
         <location filename="cstdjsonparser.cpp" line="455"/>
         <location filename="cstdjsonparser.cpp" line="536"/>
-        <location filename="cstdjsonparser.cpp" line="601"/>
-        <location filename="cstdjsonparser.cpp" line="650"/>
-        <location filename="cstdjsonparser.cpp" line="692"/>
-        <location filename="cstdjsonparser.cpp" line="753"/>
-        <location filename="cstdjsonparser.cpp" line="831"/>
+        <location filename="cstdjsonparser.cpp" line="605"/>
+        <location filename="cstdjsonparser.cpp" line="654"/>
+        <location filename="cstdjsonparser.cpp" line="696"/>
+        <location filename="cstdjsonparser.cpp" line="757"/>
+        <location filename="cstdjsonparser.cpp" line="835"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
@@ -2083,11 +2083,11 @@ To change the parent code make sure:
         <location filename="cstdjsonparser.cpp" line="396"/>
         <location filename="cstdjsonparser.cpp" line="456"/>
         <location filename="cstdjsonparser.cpp" line="537"/>
-        <location filename="cstdjsonparser.cpp" line="602"/>
-        <location filename="cstdjsonparser.cpp" line="651"/>
-        <location filename="cstdjsonparser.cpp" line="693"/>
-        <location filename="cstdjsonparser.cpp" line="754"/>
-        <location filename="cstdjsonparser.cpp" line="832"/>
+        <location filename="cstdjsonparser.cpp" line="606"/>
+        <location filename="cstdjsonparser.cpp" line="655"/>
+        <location filename="cstdjsonparser.cpp" line="697"/>
+        <location filename="cstdjsonparser.cpp" line="758"/>
+        <location filename="cstdjsonparser.cpp" line="836"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
@@ -2121,6 +2121,348 @@ To change the parent code make sure:
         <location filename="cstreamloader.cpp" line="216"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>CTelepromClient</name>
+    <message>
+        <location filename="ctelepromclient.cpp" line="84"/>
+        <source>Response for request &apos;%1&apos;:
+ ==8&lt;==8&lt;==8&lt;==
+%2
+ ==&gt;8==&gt;8==&gt;8==</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="98"/>
+        <source>Request &apos;%2&apos; done!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="328"/>
+        <source>We&apos;ve got following Cookie: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="346"/>
+        <source>Logout ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="366"/>
+        <source>Request Authentication ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="389"/>
+        <source>Request Channel List ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="411"/>
+        <source>Request Stream Server List ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="432"/>
+        <source>Request Time Shift ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="453"/>
+        <source>Set TimeShift to %1 hour(s) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="474"/>
+        <source>Request Bit Rate ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="495"/>
+        <source>Set BitRate to %1 kbit/s ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="516"/>
+        <source>Request URL for channel %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="544"/>
+        <source>Set Streaming Server to %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="565"/>
+        <source>Set Http Buffer to %1 msec. ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="586"/>
+        <source>Request EPG for Channel %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="609"/>
+        <source>Request Archiv URL ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="636"/>
+        <source>Request VOD Genres ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="656"/>
+        <source>Request Videos ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="685"/>
+        <source>Request Video info for video %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="712"/>
+        <source>Request Video Url for video %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="740"/>
+        <source>Hide channel(s) %1 from channel list ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="763"/>
+        <source>Show channel(s) %1 in channel list ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="786"/>
+        <source>Request VOD manager data ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="809"/>
+        <source>Set VOD manager data (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="832"/>
+        <source>Add VOD favourite (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="859"/>
+        <source>Remove VOD favourite (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="886"/>
+        <source>Get VOD favourites (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="905"/>
+        <source>Change parent code ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="928"/>
+        <source>EPG current for Channels: %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="947"/>
+        <source>Check for available updates ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="965"/>
+        <source>Download image ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1046"/>
+        <source>Unknown error</source>
+        <translation type="unfinished">Неизвестная ошибка</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1047"/>
+        <source>Incorrect request</source>
+        <translation type="unfinished">Неверный запрос</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1048"/>
+        <source>Wrong login or password</source>
+        <translation type="unfinished">Неверный логин или пароль</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1049"/>
+        <source>Access denied</source>
+        <translation type="unfinished">Доступ запрещен</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1050"/>
+        <source>Login incorrect</source>
+        <translation type="unfinished">Неверный логин</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1051"/>
+        <source>Your contract is inactive</source>
+        <translation type="unfinished">Ваш договор неактивен</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1052"/>
+        <source>Your contract is paused</source>
+        <translation type="unfinished">Ваш договор приостановлен</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1053"/>
+        <source>Channel not found or not allowed</source>
+        <translation type="unfinished">Канал не найден или не доступен</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1054"/>
+        <source>Error in request: Bad parameters</source>
+        <translation type="unfinished">Ошибка в запросе: Неверный параметр</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1055"/>
+        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
+        <translation type="unfinished">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1056"/>
+        <source>Missing parameter (cid)</source>
+        <translation type="unfinished">Отсутствует параметр (cid)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1057"/>
+        <source>Another client with your data logged in</source>
+        <translation type="unfinished">Ваш абонемент используется другим устройством</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1058"/>
+        <source>Authentication error</source>
+        <translation type="unfinished">Ошибка идентификации</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1059"/>
+        <source>Your package expired</source>
+        <translation type="unfinished">Ваша подписка истекла или ещё не активирована</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1060"/>
+        <source>Unknown API function</source>
+        <translation type="unfinished">Неизвестная функция API</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1061"/>
+        <source>Archive not available</source>
+        <translation type="unfinished">Архив не доступен</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1062"/>
+        <source>Missing parameter (place)</source>
+        <translation type="unfinished">Отсутствует параметр (place)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1063"/>
+        <source>Missing parameter (name)</source>
+        <translation type="unfinished">Отсутствует параметр (name)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1064"/>
+        <source>Incorrect confirmation code</source>
+        <translation type="unfinished">Неверный код подтверждения</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1065"/>
+        <source>Current code is wrong</source>
+        <translation type="unfinished">Текущий код неверный</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1066"/>
+        <source>New code is wrong</source>
+        <translation type="unfinished">Новый код неверный</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1067"/>
+        <source>Missing parameter (val)</source>
+        <translation type="unfinished">Отсутствует параметр (val)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1068"/>
+        <source>Value not allowed</source>
+        <translation type="unfinished">Значение не доступно</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1069"/>
+        <source>Missing parameter</source>
+        <translation type="unfinished">Отсутствует параметр</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1070"/>
+        <source>Missing parameter (id)</source>
+        <translation type="unfinished">Отсутствует параметр (id)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1071"/>
+        <source>Missing parameter (fileid)</source>
+        <translation type="unfinished">Отсутствует параметр (fileid)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1072"/>
+        <source>Missing parameter (type)</source>
+        <translation type="unfinished">Отсутствует параметр (type)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1073"/>
+        <source>Missing parameter (query)</source>
+        <translation type="unfinished">Отсутствует параметр (query)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1074"/>
+        <source>Bitrate not available</source>
+        <translation type="unfinished">Битрейт не доступен</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1075"/>
+        <source>Service not available</source>
+        <translation type="unfinished">Сервис не доступен</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1076"/>
+        <source>Query limit exceeded</source>
+        <translation type="unfinished">Превышен лимит запроса</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1077"/>
+        <source>Rule already exists</source>
+        <translation type="unfinished">Правило уже существует</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1078"/>
+        <location filename="ctelepromclient.cpp" line="1079"/>
+        <source>Missing parameter (cmd)</source>
+        <translation type="unfinished">Отсутствует параметр (cmd)</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1080"/>
+        <source>Bad value (rate)</source>
+        <translation type="unfinished">Неверное значение рейтинга</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1081"/>
+        <source>Can&apos;t find film</source>
+        <translation type="unfinished">Невозможно найти фильм</translation>
+    </message>
+    <message>
+        <location filename="ctelepromclient.cpp" line="1082"/>
+        <source>Film already added</source>
+        <translation type="unfinished">Этот фильм уже добавлен в список избранных</translation>
     </message>
 </context>
 <context>

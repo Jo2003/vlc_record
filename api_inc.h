@@ -27,6 +27,9 @@
 #elif _TASTE_SUNDUK_TV
    #include "csundukclnt.h"
    #include "cstdjsonparser.h"
+#elif _TASTE_TELEPROM
+   #include "ctelepromclient.h"
+   #include "cstdjsonparser.h"
 #else
    #include "ckartinaclnt.h"
    #ifdef _USE_QJSON
