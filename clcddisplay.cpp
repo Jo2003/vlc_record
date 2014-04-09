@@ -24,7 +24,7 @@
 CLCDDisplay::CLCDDisplay(const QString &text, QWidget *parent, Qt::WindowFlags f)
    : QLabel(text, parent, f)
 {
-   lcdState = lcd::WTF;
+   lcdState = lcd::STATE_WTF;
 }
 
 /* -----------------------------------------------------------------\
@@ -40,7 +40,7 @@ CLCDDisplay::CLCDDisplay(const QString &text, QWidget *parent, Qt::WindowFlags f
 CLCDDisplay::CLCDDisplay(QWidget *parent, Qt::WindowFlags f)
    : QLabel(parent, f)
 {
-   lcdState = lcd::WTF;
+   lcdState = lcd::STATE_WTF;
 }
 
 /* -----------------------------------------------------------------\
@@ -169,7 +169,7 @@ void CLCDDisplay::updateState(int iState)
 void CLCDDisplay::clearState()
 {
    // clear image and text ...
-   lcdState = lcd::BLANK;
+   lcdState = lcd::STATE_BLANK;
    sHeader  = "";
    sFooter  = "";
 
@@ -278,41 +278,41 @@ void CLCDDisplay::loadImage(lcd::eState state)
 {
    switch (state)
    {
-   case lcd::BUFFER:
+   case lcd::STATE_BUFFER:
       lcdImg.load(":/lcd/buffer");
       break;
-   case lcd::END:
+   case lcd::STATE_END:
       lcdImg.load(":/lcd/end");
       break;
-   case lcd::ERROR:
+   case lcd::STATE_ERROR:
       lcdImg.load(":/lcd/error");
       break;
-   case lcd::OPEN:
+   case lcd::STATE_OPEN:
       lcdImg.load(":/lcd/open");
       break;
-   case lcd::PAUSE:
+   case lcd::STATE_PAUSE:
       lcdImg.load(":/lcd/pause");
       break;
-   case lcd::PLAY:
+   case lcd::STATE_PLAY:
       lcdImg.load(":/lcd/play");
       break;
-   case lcd::READY:
+   case lcd::STATE_READY:
       lcdImg.load(":/lcd/ready");
       break;
-   case lcd::RECORD:
+   case lcd::STATE_RECORD:
       lcdImg.load(":/lcd/rec");
       break;
-   case lcd::STOP:
+   case lcd::STATE_STOP:
       lcdImg.load(":/lcd/stop");
       break;
-   case lcd::TIMER_REC:
+   case lcd::STATE_TIMER_REC:
       lcdImg.load(":/lcd/timer_rec");
       break;
-   case lcd::TIMER_STBY:
+   case lcd::STATE_TIMER_STBY:
       lcdImg.load(":/lcd/timer_stby");
       break;
-   case lcd::BLANK:
-   case lcd::WTF:
+   case lcd::STATE_BLANK:
+   case lcd::STATE_WTF:
    default:
       lcdImg.load(":/lcd/blank");
       break;
@@ -353,7 +353,7 @@ void CLCDDisplay::bufferPercent(int percent)
 {
    if (percent < 100)
    {
-      loadImage(lcd::BUFFER);
+      loadImage(lcd::STATE_BUFFER);
       addHeader(QString("  %1% ...").arg(percent));
       showLCD();
    }

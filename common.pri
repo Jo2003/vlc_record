@@ -3,9 +3,8 @@
 # -------------------------------------------------
 QT += network \
     sql \
-    xml
-
-CONFIG += help
+    xml \
+    help
 
 # build debug and release ...
 CONFIG += debug_and_release \
@@ -20,7 +19,7 @@ CONFIG += shared
 # program version
 # -------------------------------------
 PROGMAJ=2
-PROGMIN=67
+PROGMIN=68
 
 # here you can enable traces ...
 # DEFINES += __TRACE
@@ -249,3 +248,4 @@ contains(DEFINES, _USE_QJSON) {
 # translation stuff ...
 include (language.pri)
 
+include (qhttp/qhttp.pri)

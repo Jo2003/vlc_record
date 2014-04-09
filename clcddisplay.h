@@ -29,19 +29,19 @@ namespace lcd
 {
    enum eState
    {
-      BUFFER     = IncPlay::PS_BUFFER,
-      END        = IncPlay::PS_END,
-      ERROR      = IncPlay::PS_ERROR,
-      OPEN       = IncPlay::PS_OPEN,
-      PAUSE      = IncPlay::PS_PAUSE,
-      PLAY       = IncPlay::PS_PLAY,
-      READY      = IncPlay::PS_READY,
-      RECORD     = IncPlay::PS_RECORD,
-      STOP       = IncPlay::PS_STOP,
-      TIMER_REC  = IncPlay::PS_TIMER_RECORD,
-      TIMER_STBY = IncPlay::PS_TIMER_STBY,
-      BLANK,
-      WTF = 255
+      STATE_BUFFER     = IncPlay::PS_BUFFER,
+      STATE_END        = IncPlay::PS_END,
+      STATE_ERROR      = IncPlay::PS_ERROR,
+      STATE_OPEN       = IncPlay::PS_OPEN,
+      STATE_PAUSE      = IncPlay::PS_PAUSE,
+      STATE_PLAY       = IncPlay::PS_PLAY,
+      STATE_READY      = IncPlay::PS_READY,
+      STATE_RECORD     = IncPlay::PS_RECORD,
+      STATE_STOP       = IncPlay::PS_STOP,
+      STATE_TIMER_REC  = IncPlay::PS_TIMER_RECORD,
+      STATE_TIMER_STBY = IncPlay::PS_TIMER_STBY,
+      STATE_BLANK,
+      STATE_WTF = 255
    };
 }
 

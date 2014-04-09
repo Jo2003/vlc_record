@@ -12,6 +12,7 @@
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qfavframe.h"
+#include <QMimeData>
 
 // log file functions ...
 extern CLogFile VlcLog;

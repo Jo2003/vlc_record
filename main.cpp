@@ -9,7 +9,7 @@
 |
 | $Id$
 \*************************************************************/
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QTranslator>
 #include <QFont>
 #include <QSysInfo>

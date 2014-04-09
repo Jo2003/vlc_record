@@ -13,6 +13,7 @@
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include <QDateTime>
 #include <QStringList>
+#include <QUrlQuery>
 #include "qwatchlistdlg.h"
 #include "ui_qwatchlistdlg.h"
 #include "templates.h"
@@ -118,6 +119,7 @@ void QWatchListDlg::buildWatchTab()
    int i;
    QString page, row, tab, line, act, img, len;
    QUrl url;
+   QUrlQuery q;
 
    if (!_bRecAll)
    {
@@ -156,12 +158,14 @@ void QWatchListDlg::buildWatchTab()
             // build action links ...
             url.clear();
             url.setPath("vlc-record");
-            url.addQueryItem("action", "wl_play");
-            url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
-            url.addQueryItem("start" , QString::number(vE.at(i).uiStart));
-            url.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
-            url.addQueryItem("chan"  , vE.at(i).sName);
-            url.addQueryItem("show"  , vE.at(i).sProgramm);
+            q.clear();
+            q.addQueryItem("action", "wl_play");
+            q.addQueryItem("cid"   , QString::number(vE.at(i).iId));
+            q.addQueryItem("start" , QString::number(vE.at(i).uiStart));
+            q.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
+            q.addQueryItem("chan"  , vE.at(i).sName);
+            q.addQueryItem("show"  , vE.at(i).sProgramm);
+            url.setQuery(q);
 
             // play button ...
             img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
@@ -171,12 +175,14 @@ void QWatchListDlg::buildWatchTab()
 
             url.clear();
             url.setPath("vlc-record");
-            url.addQueryItem("action", "wl_rec");
-            url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
-            url.addQueryItem("start" , QString::number(vE.at(i).uiStart));
-            url.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
-            url.addQueryItem("chan"  , vE.at(i).sName);
-            url.addQueryItem("show"  , vE.at(i).sProgramm);
+            q.clear();
+            q.addQueryItem("action", "wl_rec");
+            q.addQueryItem("cid"   , QString::number(vE.at(i).iId));
+            q.addQueryItem("start" , QString::number(vE.at(i).uiStart));
+            q.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
+            q.addQueryItem("chan"  , vE.at(i).sName);
+            q.addQueryItem("show"  , vE.at(i).sProgramm);
+            url.setQuery(q);
 
             // record button ...
             img  = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
@@ -187,7 +193,8 @@ void QWatchListDlg::buildWatchTab()
             if (!_bRecAll)
             {
                // tell we should stop at end ...
-               url.addQueryItem("stopatend", "1");
+               q.addQueryItem("stopatend", "1");
+               url.setQuery(q);
 
                // save url ...
                _vUrls.append(url);
@@ -197,9 +204,11 @@ void QWatchListDlg::buildWatchTab()
          // add delete link ...
          url.clear();
          url.setPath("vlc-record");
-         url.addQueryItem("action", "wl_del");
-         url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
-         url.addQueryItem("gmt"   , QString::number(vE.at(i).uiStart));
+         q.clear();
+         q.addQueryItem("action", "wl_del");
+         q.addQueryItem("cid"   , QString::number(vE.at(i).iId));
+         q.addQueryItem("gmt"   , QString::number(vE.at(i).uiStart));
+         url.setQuery(q);
 
          // delete button ...
          img  = pHtml->image(":/png/remove", 16, 16, "", tr("delete from list ..."));
@@ -260,11 +269,13 @@ void QWatchListDlg::buildWatchTab()
 //---------------------------------------------------------------------------
 void QWatchListDlg::slotListAnchor(QUrl url)
 {
+   QUrlQuery q(url.query());
+
    // delete watch list entry ...
-   if (url.queryItemValue("action") == "wl_del")
+   if (q.queryItemValue("action") == "wl_del")
    {
-      int cid = url.queryItemValue("cid").toInt();
-      int gmt = url.queryItemValue("gmt").toUInt();
+      int cid = q.queryItemValue("cid").toInt();
+      int gmt = q.queryItemValue("gmt").toUInt();
 
       pDb->delWatchEntry(cid, gmt);
 

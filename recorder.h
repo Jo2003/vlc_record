@@ -12,7 +12,7 @@
 #ifndef __011910__RECORDER_H
    #define __011910__RECORDER_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 #include <QString>
 #include <QFile>
 #include <QFileInfo>
@@ -37,6 +37,7 @@
 #include <QMap>
 #include <QStandardItemModel>
 #include <QScrollBar>
+#include <QUrlQuery>
 
 #include "csettingsdlg.h"
 #include "templates.h"

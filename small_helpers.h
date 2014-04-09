@@ -123,8 +123,8 @@ public:
 
       for (i = 0; i < pass.length(); i++)
       {
-         a = pass.at(i).toAscii();
-         b = sKey.at(j--).toAscii();
+         a = pass.at(i).toLatin1();
+         b = sKey.at(j--).toLatin1();
          c = a ^ b;
          strEncrypted += QString("%1").arg((uint)c, 2, 16, QChar('0'));
 
@@ -158,7 +158,7 @@ public:
       for (i = 0; i < pass.length() / 2; i++)
       {
          a = (char)pass.mid(i * 2, 2).toInt(0, 16);
-         b = sKey.at(j--).toAscii();
+         b = sKey.at(j--).toLatin1();
          c = a ^ b;
          strDecrypted[i] = c;
 
@@ -218,7 +218,7 @@ public:
    //---------------------------------------------------------------------------
    static QString md5(const QString& str)
    {
-      return QString(QCryptographicHash::hash(str.toAscii(), QCryptographicHash::Md5).toHex());
+      return QString(QCryptographicHash::hash(str.toLatin1(), QCryptographicHash::Md5).toHex());
    }
 
    //---------------------------------------------------------------------------

@@ -99,22 +99,6 @@ QOverlayIcon::QOverlayIcon(QIconEngine * engine) : QIcon(engine)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   constructs QOverlayIcon object
-//
-//! \author  Jo2003
-//! \date    21.08.2013
-//
-//! \param   engine (QIconEngineV2 *) icon source
-//
-//! \return  --
-//---------------------------------------------------------------------------
-QOverlayIcon::QOverlayIcon(QIconEngineV2 * engine) : QIcon(engine)
-{
-   takeBackup();
-}
-
-//---------------------------------------------------------------------------
-//
 //! \brief   destroys QOverlayIcon object
 //
 //! \author  Jo2003

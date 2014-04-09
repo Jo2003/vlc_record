@@ -899,9 +899,9 @@ void Recorder::on_btnFontLarger_clicked()
 void Recorder::on_cbxGenre_activated(int index)
 {
    // check for vod favourites ...
-   QString sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-   int     iGid  = ui->cbxGenre->itemData(index).toInt();
-   QUrl    url;
+   QString   sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int       iGid  = ui->cbxGenre->itemData(index).toInt();
+   QUrlQuery q;
 
    if (sType == "vodfav")
    {
@@ -910,18 +910,18 @@ void Recorder::on_cbxGenre_activated(int index)
       sType = "last";
    }
 
-   url.addQueryItem("type", sType);
+   q.addQueryItem("type", sType);
 
 #ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+   q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
 #endif // _HAS_VOD_LANG
 
    if (iGid != -1)
    {
-      url.addQueryItem("genre", QString::number(iGid));
+      q.addQueryItem("genre", QString::number(iGid));
    }
 
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
 }
 
 /* -----------------------------------------------------------------\
@@ -944,21 +944,21 @@ void Recorder::on_cbxLastOrBest_activated(int index)
    }
    else
    {
-      int  iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-      QUrl url;
+      int       iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+      QUrlQuery q;
 
-      url.addQueryItem("type", sType);
+      q.addQueryItem("type", sType);
 
       if (iGid != -1)
       {
-         url.addQueryItem("genre", QString::number(iGid));
+         q.addQueryItem("genre", QString::number(iGid));
       }
 
 #ifdef _HAS_VOD_LANG
-      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+      q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
 #endif // _HAS_VOD_LANG
 
-      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
    }
 }
 
@@ -977,15 +977,15 @@ void Recorder::on_cbxVodLang_activated(int index)
 {
    int  iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
 
-   QUrl url;
-   url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(index).toString());
-   url.addQueryItem("nums", "20");
+   QUrlQuery q;
+   q.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
+   q.addQueryItem("lang", ui->cbxVodLang->itemData(index).toString());
+   q.addQueryItem("nums", "20");
    if (iGid != -1)
    {
-      url.addQueryItem("genre", QString::number(iGid));
+      q.addQueryItem("genre", QString::number(iGid));
    }
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
 }
 
 /* -----------------------------------------------------------------\
@@ -1000,27 +1000,27 @@ void Recorder::on_cbxVodLang_activated(int index)
 \----------------------------------------------------------------- */
 void Recorder::on_btnVodSearch_clicked()
 {
-   int     iGid;
-   QString sType;
-   QUrl    url;
+   int       iGid;
+   QString   sType;
+   QUrlQuery q;
 
 #ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+   q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
 #endif // _HAS_VOD_LANG
 
    if (ui->lineVodSearch->text() != "")
    {
-      url.addQueryItem("type", "text");
+      q.addQueryItem("type", "text");
 
       // when searching show up to 100 results ...
-      url.addQueryItem("nums", QString::number(100));
-      url.addQueryItem("query", ui->lineVodSearch->text());
+      q.addQueryItem("nums", QString::number(100));
+      q.addQueryItem("query", ui->lineVodSearch->text());
 
       iGid = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
 
       if (iGid != -1)
       {
-         url.addQueryItem("genre", QString::number(iGid));
+         q.addQueryItem("genre", QString::number(iGid));
       }
    }
    else
@@ -1036,15 +1036,15 @@ void Recorder::on_btnVodSearch_clicked()
          ui->cbxLastOrBest->setCurrentIndex(0);
       }
 
-      url.addQueryItem("type", sType);
+      q.addQueryItem("type", sType);
 
       if (iGid != -1)
       {
-         url.addQueryItem("genre", QString::number(iGid));
+         q.addQueryItem("genre", QString::number(iGid));
       }
    }
 
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
 }
 
 /* -----------------------------------------------------------------\
@@ -1062,23 +1062,23 @@ void Recorder::on_cbxSites_activated(int index)
    // something changed ... ?
    if ((index + 1) != genreInfo.iPage)
    {
-      QUrl    url;
-      QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-      int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+      QUrlQuery q;
+      QString   sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+      int       iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
 
-      url.addQueryItem("type", sType);
-      url.addQueryItem("page", QString::number(index + 1));
+      q.addQueryItem("type", sType);
+      q.addQueryItem("page", QString::number(index + 1));
 
 #ifdef _HAS_VOD_LANG
-      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+      q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
 #endif // _HAS_VOD_LANG
 
       if (iGenre != -1)
       {
-         url.addQueryItem("genre", QString::number(iGenre));
+         q.addQueryItem("genre", QString::number(iGenre));
       }
 
-      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
    }
 }
 
@@ -1094,24 +1094,24 @@ void Recorder::on_cbxSites_activated(int index)
 \----------------------------------------------------------------- */
 void Recorder::on_btnPrevSite_clicked()
 {
-   QUrl    url;
-   QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-   int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-   int     iPage  = ui->cbxSites->currentIndex() + 1;
+   QUrlQuery q;
+   QString   sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int       iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   int       iPage  = ui->cbxSites->currentIndex() + 1;
 
-   url.addQueryItem("type", sType);
-   url.addQueryItem("page", QString::number(iPage - 1));
+   q.addQueryItem("type", sType);
+   q.addQueryItem("page", QString::number(iPage - 1));
 
 #ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+   q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
 #endif // _HAS_VOD_LANG
 
    if (iGenre != -1)
    {
-      url.addQueryItem("genre", QString::number(iGenre));
+      q.addQueryItem("genre", QString::number(iGenre));
    }
 
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
 }
 
 /* -----------------------------------------------------------------\
@@ -1126,24 +1126,24 @@ void Recorder::on_btnPrevSite_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_btnNextSite_clicked()
 {
-   QUrl    url;
-   QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-   int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-   int     iPage  = ui->cbxSites->currentIndex() + 1;
+   QUrlQuery q;
+   QString   sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int       iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   int       iPage  = ui->cbxSites->currentIndex() + 1;
 
-   url.addQueryItem("type", sType);
-   url.addQueryItem("page", QString::number(iPage + 1));
+   q.addQueryItem("type", sType);
+   q.addQueryItem("page", QString::number(iPage + 1));
 
 #ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+   q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
 #endif // _HAS_VOD_LANG
 
    if (iGenre != -1)
    {
-      url.addQueryItem("genre", QString::number(iGenre));
+      q.addQueryItem("genre", QString::number(iGenre));
    }
 
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
 }
 
 /* -----------------------------------------------------------------\
@@ -2277,11 +2277,12 @@ void Recorder::slotWlClick(QUrl url)
 {
    cparser::SChan chan;
    QString        req;
-   QString        action = url.queryItemValue("action");
-   QStringList    sl     = url.queryItemValue("show").split("\n");
-   int            cid    = url.queryItemValue("cid").toInt();
+   QUrlQuery      q(url.query());
+   QString        action = q.queryItemValue("action");
+   QStringList    sl     = q.queryItemValue("show").split("\n");
+   int            cid    = q.queryItemValue("cid").toInt();
    bool           ok     = false;
-   bool           stop   = !!url.queryItemValue("stopatend").toInt();
+   bool           stop   = !!q.queryItemValue("stopatend").toInt();
 
    if (action == "wl_play")
    {
@@ -2302,9 +2303,9 @@ void Recorder::slotWlClick(QUrl url)
    {
       if (!pChanMap->entry(cid, chan))
       {
-         chan.uiStart   = url.queryItemValue("start").toUInt();
-         chan.uiEnd     = url.queryItemValue("end").toUInt();
-         chan.sProgramm = url.queryItemValue("show");
+         chan.uiStart   = q.queryItemValue("start").toUInt();
+         chan.uiEnd     = q.queryItemValue("end").toUInt();
+         chan.sProgramm = q.queryItemValue("show");
 
          if (grantAdultAccess(chan.bIsProtected))
          {
@@ -2368,7 +2369,8 @@ void Recorder::slotWlClick(QUrl url)
 void Recorder::slotEpgAnchor (const QUrl &link)
 {
    // create request string ...
-   QString action = link.queryItemValue("action");
+   QUrlQuery        q(link.query());
+   QString action = q.queryItemValue("action");
    bool    ok     = false;
    uint    uiStart, uiEnd;
    int            cid;
@@ -2392,17 +2394,17 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    }
    else if(action == "timerrec")
    {
-      uiStart = link.queryItemValue("start").toUInt();
-      uiEnd   = link.queryItemValue("end").toUInt();
-      cid     = link.queryItemValue("cid").toInt();
+      uiStart = q.queryItemValue("start").toUInt();
+      uiEnd   = q.queryItemValue("end").toUInt();
+      cid     = q.queryItemValue("cid").toInt();
 
       timeRec.SetRecInfo(uiStart, uiEnd, cid, CleanShowName(ui->textEpg->epgShow(uiStart).sShowName));
       timeRec.exec();
    }
    else if(action == "remember")
    {
-      sEpg = ui->textEpg->epgShow(link.queryItemValue("gmt").toUInt());
-      cid  = link.queryItemValue("cid").toInt();
+      sEpg = ui->textEpg->epgShow(q.queryItemValue("gmt").toUInt());
+      cid  = q.queryItemValue("cid").toInt();
 
       if (!pChanMap->entry(cid, sChan))
       {
@@ -2418,7 +2420,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
    if (ok)
    {
-      cid  = link.queryItemValue("cid").toInt();
+      cid  = q.queryItemValue("cid").toInt();
 
       if (!pChanMap->entry(cid, sChan))
       {
@@ -2433,7 +2435,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
                iDwnReqId = -1;
             }
 
-            uiStart = link.queryItemValue("gmt").toUInt();
+            uiStart = q.queryItemValue("gmt").toUInt();
             req     = QString("cid=%1&gmt=%2").arg(cid).arg(uiStart);
             sEpg    = ui->textEpg->epgShow(uiStart);
 
@@ -3139,10 +3141,10 @@ void Recorder::slotGotVodGenres(const QString &str)
 
 #else
    // trigger video load ...
-   QUrl url;
-   url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
-   url.addQueryItem("nums", "20");
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+   QUrlQuery q;
+   q.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
+   q.addQueryItem("nums", "20");
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
 #endif // _HAS_VOD_LANG
 }
 
@@ -3182,12 +3184,13 @@ void Recorder::slotGotVideos(const QString &str, bool bVodFavs)
 \----------------------------------------------------------------- */
 void Recorder::slotVodAnchor(const QUrl &link)
 {
-   QString action = link.queryItemValue("action");
+   QUrlQuery        q(link.query());
+   QString action = q.queryItemValue("action");
    bool ok        = false;
    int  id        = 0;
 
    // check password ...
-   if (link.queryItemValue("pass_protect").toInt())
+   if (q.queryItemValue("pass_protect").toInt())
    {
       // need password ... ?
       if (secCodeDlg.passWd().isEmpty())
@@ -3206,7 +3209,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
       lastVodSite.sContent      = ui->vodBrowser->toHtml();
       lastVodSite.iScrollBarVal = ui->vodBrowser->verticalScrollBar()->value();
 
-      id = link.queryItemValue("vodid").toInt();
+      id = q.queryItemValue("vodid").toInt();
 
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
@@ -3232,13 +3235,13 @@ void Recorder::slotVodAnchor(const QUrl &link)
    }
    else if (action == "add_fav")
    {
-      id = link.queryItemValue("vodid").toInt();
+      id = q.queryItemValue("vodid").toInt();
       pApiClient->queueRequest(CIptvDefs::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
    else if (action == "del_fav")
    {
-      id = link.queryItemValue("vodid").toInt();
+      id = q.queryItemValue("vodid").toInt();
       pApiClient->queueRequest(CIptvDefs::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }
@@ -3254,7 +3257,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
          iDwnReqId = -1;
       }
 
-      id = link.queryItemValue("vid").toInt();
+      id = q.queryItemValue("vid").toInt();
 
       showInfo.cleanShowInfo();
       showInfo.setShowName(ui->vodBrowser->getName());
@@ -4213,11 +4216,11 @@ void Recorder::slotVodLang(const QString &str)
 
       // request videos ...
       // trigger video load ...
-      QUrl url;
-      url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
-      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-      url.addQueryItem("nums", "20");
-      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
+      QUrlQuery q;
+      q.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
+      q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+      q.addQueryItem("nums", "20");
+      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
    }
 }
 
