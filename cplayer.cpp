@@ -2031,7 +2031,8 @@ void CPlayer::resetBuffPercent()
 //---------------------------------------------------------------------------
 void CPlayer::slotFinallyPlays(int percent)
 {
-   libvlc_track_description_t* pAuTracks = NULL;
+   libvlc_track_description_t* pCurrentATrack = NULL;
+   libvlc_track_description_t* pStartATrack   = NULL;
    int               iAuIdx;
    vlcvid::SContLang al;
    bool              bHaveCurrent = false;
@@ -2048,34 +2049,41 @@ void CPlayer::slotFinallyPlays(int percent)
          vAudTrk.clear();
 
          // get audio track description ...
-         pAuTracks = libvlc_audio_get_track_description(pMediaPlayer);
-
-         // get current index ...
-         iAuIdx    = libvlc_audio_get_track(pMediaPlayer);
-
-         mInfo(tr("Scan for Audio tracks:"));
-
-         while (pAuTracks != NULL)
+         if ((pStartATrack = libvlc_audio_get_track_description(pMediaPlayer)) != NULL)
          {
-            if (pAuTracks->i_id >= 0)
+            // leave start pointer untouched ...
+            pCurrentATrack = pStartATrack;
+
+            // get current index ...
+            iAuIdx    = libvlc_audio_get_track(pMediaPlayer);
+
+            mInfo(tr("Scan for Audio tracks:"));
+
+            while (pCurrentATrack != NULL)
             {
-               al.desc    = QString::fromUtf8(pAuTracks->psz_name);
-               al.id      = pAuTracks->i_id;
-               al.current = (iAuIdx == pAuTracks->i_id) ? true : false;
-
-               if (al.current)
+               if (pCurrentATrack->i_id >= 0)
                {
-                  bHaveCurrent = true;
+                  al.desc    = QString::fromUtf8(pCurrentATrack->psz_name);
+                  al.id      = pCurrentATrack->i_id;
+                  al.current = (iAuIdx == pCurrentATrack->i_id) ? true : false;
+
+                  if (al.current)
+                  {
+                     bHaveCurrent = true;
+                  }
+
+                  vAudTrk.append(al);
+
+                  mInfo(tr("-> Audio track %1 %2%3")
+                        .arg(pCurrentATrack->i_id)
+                        .arg(QString::fromUtf8(pCurrentATrack->psz_name))
+                        .arg((iAuIdx == pCurrentATrack->i_id) ? " (current)" : ""));
                }
-
-               vAudTrk.append(al);
-
-               mInfo(tr("-> Audio track %1 %2%3")
-                     .arg(pAuTracks->i_id)
-                     .arg(QString::fromUtf8(pAuTracks->psz_name))
-                     .arg((iAuIdx == pAuTracks->i_id) ? " (current)" : ""));
+               pCurrentATrack = pCurrentATrack->p_next;
             }
-            pAuTracks = pAuTracks->p_next;
+
+            // free audio track info items ...
+            libvlc_track_description_list_release (pStartATrack);
          }
 
          // do we have current audio ... ?

@@ -898,25 +898,25 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CNovoeParser</name>
     <message>
-        <location filename="cnovoeparser.cpp" line="123"/>
-        <location filename="cnovoeparser.cpp" line="206"/>
-        <location filename="cnovoeparser.cpp" line="286"/>
-        <location filename="cnovoeparser.cpp" line="352"/>
-        <location filename="cnovoeparser.cpp" line="451"/>
+        <location filename="cnovoeparser.cpp" line="134"/>
+        <location filename="cnovoeparser.cpp" line="224"/>
+        <location filename="cnovoeparser.cpp" line="309"/>
+        <location filename="cnovoeparser.cpp" line="384"/>
+        <location filename="cnovoeparser.cpp" line="489"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
-        <location filename="cnovoeparser.cpp" line="124"/>
-        <location filename="cnovoeparser.cpp" line="207"/>
-        <location filename="cnovoeparser.cpp" line="287"/>
-        <location filename="cnovoeparser.cpp" line="353"/>
-        <location filename="cnovoeparser.cpp" line="452"/>
-        <source>QtJson parser error in %1 %2():%3</source>
-        <translation></translation>
+        <location filename="cnovoeparser.cpp" line="135"/>
+        <location filename="cnovoeparser.cpp" line="225"/>
+        <location filename="cnovoeparser.cpp" line="310"/>
+        <location filename="cnovoeparser.cpp" line="385"/>
+        <location filename="cnovoeparser.cpp" line="490"/>
+        <source>QJson parser error in %1 %2():%3 -&gt; %4</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cnovoeparser.cpp" line="435"/>
+        <location filename="cnovoeparser.cpp" line="472"/>
         <source>Update Entries for channel %1:
 </source>
         <translation></translation>
@@ -964,9 +964,7 @@ p, li { white-space: pre-wrap; }
         <location filename="cplayer.cpp" line="822"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
-        <oldsource>Show Ad:
- -&gt; %1</oldsource>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="1875"/>
@@ -1010,23 +1008,23 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2056"/>
+        <location filename="cplayer.cpp" line="2060"/>
         <source>Scan for Audio tracks:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2073"/>
+        <location filename="cplayer.cpp" line="2077"/>
         <source>-&gt; Audio track %1 %2%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2115"/>
+        <location filename="cplayer.cpp" line="2123"/>
         <source>%1 %2 deinterlace</source>
         <oldsource>%1 deinterlace</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2152"/>
+        <location filename="cplayer.cpp" line="2160"/>
         <source>Change audio track to id %1 (idx %2): %3!</source>
         <oldsource>Change audio track to id %1 /idx %2: %3!</oldsource>
         <translation></translation>
@@ -2058,38 +2056,38 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
 <context>
     <name>CStdJsonParser</name>
     <message>
-        <location filename="cstdjsonparser.cpp" line="129"/>
-        <location filename="cstdjsonparser.cpp" line="186"/>
-        <location filename="cstdjsonparser.cpp" line="238"/>
-        <location filename="cstdjsonparser.cpp" line="286"/>
-        <location filename="cstdjsonparser.cpp" line="346"/>
-        <location filename="cstdjsonparser.cpp" line="395"/>
-        <location filename="cstdjsonparser.cpp" line="455"/>
-        <location filename="cstdjsonparser.cpp" line="536"/>
-        <location filename="cstdjsonparser.cpp" line="605"/>
-        <location filename="cstdjsonparser.cpp" line="654"/>
-        <location filename="cstdjsonparser.cpp" line="696"/>
-        <location filename="cstdjsonparser.cpp" line="757"/>
-        <location filename="cstdjsonparser.cpp" line="835"/>
+        <location filename="cstdjsonparser.cpp" line="140"/>
+        <location filename="cstdjsonparser.cpp" line="204"/>
+        <location filename="cstdjsonparser.cpp" line="266"/>
+        <location filename="cstdjsonparser.cpp" line="319"/>
+        <location filename="cstdjsonparser.cpp" line="385"/>
+        <location filename="cstdjsonparser.cpp" line="439"/>
+        <location filename="cstdjsonparser.cpp" line="506"/>
+        <location filename="cstdjsonparser.cpp" line="592"/>
+        <location filename="cstdjsonparser.cpp" line="666"/>
+        <location filename="cstdjsonparser.cpp" line="716"/>
+        <location filename="cstdjsonparser.cpp" line="763"/>
+        <location filename="cstdjsonparser.cpp" line="826"/>
+        <location filename="cstdjsonparser.cpp" line="917"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
-        <location filename="cstdjsonparser.cpp" line="130"/>
-        <location filename="cstdjsonparser.cpp" line="187"/>
-        <location filename="cstdjsonparser.cpp" line="239"/>
-        <location filename="cstdjsonparser.cpp" line="287"/>
-        <location filename="cstdjsonparser.cpp" line="347"/>
-        <location filename="cstdjsonparser.cpp" line="396"/>
-        <location filename="cstdjsonparser.cpp" line="456"/>
-        <location filename="cstdjsonparser.cpp" line="537"/>
-        <location filename="cstdjsonparser.cpp" line="606"/>
-        <location filename="cstdjsonparser.cpp" line="655"/>
-        <location filename="cstdjsonparser.cpp" line="697"/>
-        <location filename="cstdjsonparser.cpp" line="758"/>
-        <location filename="cstdjsonparser.cpp" line="836"/>
-        <source>QtJson parser error in %1 %2():%3</source>
-        <translation></translation>
+        <location filename="cstdjsonparser.cpp" line="141"/>
+        <location filename="cstdjsonparser.cpp" line="205"/>
+        <location filename="cstdjsonparser.cpp" line="267"/>
+        <location filename="cstdjsonparser.cpp" line="320"/>
+        <location filename="cstdjsonparser.cpp" line="386"/>
+        <location filename="cstdjsonparser.cpp" line="440"/>
+        <location filename="cstdjsonparser.cpp" line="507"/>
+        <location filename="cstdjsonparser.cpp" line="593"/>
+        <location filename="cstdjsonparser.cpp" line="667"/>
+        <location filename="cstdjsonparser.cpp" line="717"/>
+        <location filename="cstdjsonparser.cpp" line="764"/>
+        <location filename="cstdjsonparser.cpp" line="827"/>
+        <location filename="cstdjsonparser.cpp" line="918"/>
+        <source>QJson parser error in %1 %2():%3 -&gt; %4</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

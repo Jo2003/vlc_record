@@ -49,77 +49,88 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
                                          QVector<cparser::SChan> &chanList,
                                          bool bFixTime)
 {
-   int  iRV = 0;
-   bool bOk = false;
+
+   int                 iRV     = 0;
+   int                 iGrpIdx = 0;
    cparser::SChan      chan;
    cparser::STimeShift ts;
-   QVariantMap   contentMap;
-   int iGrpIdx = 0;
+   QJsonParseError     jErr;
+   QJsonDocument       jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
    // clear channel list ...
    chanList.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      foreach (const QVariant& lGroup, contentMap.value("groups").toList())
+      if (jsonDoc.isObject())
       {
-         QVariantMap mGroup = lGroup.toMap();
+         QJsonArray  groups  = jsonDoc.object().value("groups").toArray();
+         QJsonObject groupObj;
 
-         initChanEntry(chan, false);
-
-         chan.iId       = mGroup.value("id").toInt();
-         chan.sName     = mGroup.value("name").toString();
-         chan.sProgramm = mGroup.value("color").toString();
-
-         if (!ignoreGroup(chan))
+         foreach (const QJsonValue& group, groups)
          {
-            // make sure group color isn't black ...
-            checkColor(chan.sProgramm, iGrpIdx++);
+            groupObj = group.toObject();
 
-            chanList.append(chan);
+            initChanEntry(chan, false);
 
-            foreach (const QVariant& lChannel, mGroup.value("channels").toList())
+            chan.iId       = groupObj.value("id").toVariant().toInt();
+            chan.sName     = groupObj.value("name").toString();
+            chan.sProgramm = groupObj.value("color").toString();
+
+            if (!ignoreGroup(chan))
             {
-               QVariantMap mChannel = lChannel.toMap();
-
-               initChanEntry(chan);
-
-               chan.iId          = mChannel.value("id").toInt();
-               chan.sName        = mChannel.value("name").toString();
-               chan.bIsVideo     = mChannel.value("is_video").toBool();
-               chan.bHasArchive  = mChannel.value("have_archive").toBool();
-               chan.bIsProtected = mChannel.value("protected").toBool();
-#ifdef _TASTE_CHITRAM_TV
-               // due to resource problems chitram.tv hasn't so far
-               // normal channel icons ...
-               chan.sIcon        = QString("/dune/chitram/images_v3/s%1.7.png").arg(chan.iId);
-#else
-               chan.sIcon        = mChannel.value("icon").toString();
-#endif // _TASTE_CHITRAM_TV
-               chan.sProgramm    = mChannel.value("epg_progname").toString();
-               chan.uiStart      = mChannel.value("epg_start").toUInt();
-               chan.uiEnd        = mChannel.value("epg_end").toUInt();
-               chan.bIsHidden    = mChannel.value("hide").toBool();
-
-               if (bFixTime)
-               {
-                  fixTime(chan.uiStart);
-                  fixTime(chan.uiEnd);
-               }
-
-               foreach (const QVariant& lParam, mChannel.value("stream_params").toList())
-               {
-                  QVariantMap mParam = lParam.toMap();
-
-                  ts.iBitRate   = mParam.value("rate").toInt();
-                  ts.iTimeShift = mParam.value("ts").toInt();
-
-                  chan.vTs.append(ts);
-               }
+               // make sure group color isn't black ...
+               checkColor(chan.sProgramm, iGrpIdx++);
 
                chanList.append(chan);
+
+               QJsonArray  channels = groupObj.value("channels").toArray();
+               QJsonObject channObj;
+
+               foreach (const QJsonValue& channel, channels)
+               {
+                  channObj = channel.toObject();
+
+                  initChanEntry(chan);
+
+                  chan.iId          = channObj.value("id").toVariant().toInt();
+                  chan.sName        = channObj.value("name").toString();
+                  chan.bIsVideo     = channObj.value("is_video").toVariant().toBool();
+                  chan.bHasArchive  = channObj.value("have_archive").toVariant().toBool();
+                  chan.bIsProtected = channObj.value("protected").toVariant().toBool();
+#ifdef _TASTE_CHITRAM_TV
+                  // due to resource problems chitram.tv hasn't so far
+                  // normal channel icons ...
+                  chan.sIcon        = QString("/dune/chitram/images_v3/s%1.7.png").arg(chan.iId);
+#else
+                  chan.sIcon        = channObj.value("icon").toString();
+#endif // _TASTE_CHITRAM_TV
+                  chan.sProgramm    = channObj.value("epg_progname").toString();
+                  chan.uiStart      = channObj.value("epg_start").toVariant().toUInt();
+                  chan.uiEnd        = channObj.value("epg_end").toVariant().toUInt();
+                  chan.bIsHidden    = channObj.value("hide").toVariant().toBool();
+
+                  if (bFixTime)
+                  {
+                     fixTime(chan.uiStart);
+                     fixTime(chan.uiEnd);
+                  }
+
+                  QJsonArray  strParams = channObj.value("stream_params").toArray();
+                  QJsonObject stpObj;
+
+                  foreach (const QJsonValue& strParam, strParams)
+                  {
+                     stpObj        = strParam.toObject();
+
+                     ts.iBitRate   = stpObj.value("rate").toVariant().toInt();
+                     ts.iTimeShift = stpObj.value("ts").toVariant().toInt();
+
+                     chan.vTs.append(ts);
+                  }
+
+                  chanList.append(chan);
+               }
             }
          }
       }
@@ -127,9 +138,9 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -152,41 +163,48 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
 int CStdJsonParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
                                      QString &sActIp)
 {
-   int  iRV = 0;
-   bool bOk = false;
+   int             iRV = 0;
    cparser::SSrv   srv;
-   QVariantMap     contentMap, nestedMap;
-
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
    // clear server list ...
    vSrv.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      nestedMap = contentMap.value("settings").toMap();
-      nestedMap = nestedMap.value("stream_server").toMap();
-
-      sActIp    = nestedMap.value("value").toString();
-
-      foreach (const QVariant& lSrv, nestedMap.value("list").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mSrv = lSrv.toMap();
+         QJsonObject jObj = jsonDoc.object();
 
-         srv.sIp   = mSrv.value("ip").toString();
-         srv.sName = mSrv.value("descr").toString();
+         // dive to stream servers ...
+         QJsonValue jVal = jObj.value("settings").toObject().value("stream_server");
 
-         vSrv.append(srv);
+         if (jVal.isObject())
+         {
+            sActIp = jVal.toObject().value("value").toString();
+
+            QJsonArray jArr = jVal.toObject().value("list").toArray();
+
+            foreach (const QJsonValue& jVal2, jArr)
+            {
+               if (jVal2.isObject())
+               {
+                  srv.sIp   = jVal2.toObject().value("ip").toString();
+                  srv.sName = jVal2.toObject().value("descr").toString();
+                  vSrv.append(srv);
+               }
+            }
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -208,37 +226,47 @@ int CStdJsonParser::parseSServersLogin(const QString &sResp, QVector<cparser::SS
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap   contentMap, nestedMap;
+   int             iRV = 0;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+   sCookie = "";
 
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      sCookie = QString("%1=%2")
-            .arg(contentMap.value("sid_name").toString())
-            .arg(contentMap.value("sid").toString());
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
+      {
+         QJsonObject mainObj = jsonDoc.object();
+
+         // cookie ...
+         sCookie = QString("%1=%2")
+               .arg(mainObj.value("sid_name").toString())
+               .arg(mainObj.value("sid").toString());
+
+         // check offset ...
+         checkTimeOffSet (mainObj.value("servertime").toVariant().toUInt());
+
+         QJsonObject accObj = mainObj.value("account").toObject();
+
+         // expires ...
+         sInf.dtExpires   = QDateTime::fromTime_t(accObj.value("packet_expire").toVariant().toUInt());
+         sInf.sExpires    = sInf.dtExpires.toString(DEF_TIME_FORMAT);
 
 
-      nestedMap        = contentMap.value("account").toMap();
-      sInf.sExpires    = QDateTime::fromTime_t(nestedMap.value("packet_expire").toUInt())
-                           .toString(DEF_TIME_FORMAT);
-      sInf.dtExpires   = QDateTime::fromTime_t(nestedMap.value("packet_expire").toUInt());
+         QJsonObject servObj = mainObj.value("services").toObject();
 
-      nestedMap        = contentMap.value("services").toMap();
-      sInf.bHasArchive = nestedMap.value("archive").toBool();
-      sInf.bHasVOD     = nestedMap.value("vod").toBool();
-
-      // check offset ...
-      checkTimeOffSet (contentMap.value("servertime").toUInt());
+         // services ...
+         sInf.bHasArchive = servObj.value("archive").toVariant().toBool();
+         sInf.bHasVOD     = servObj.value("vod").toVariant().toBool();
+      }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -259,34 +287,39 @@ int CStdJsonParser::parseCookie (const QString &sResp, QString &sCookie, cparser
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& vGenres)
 {
-   int  iRV = 0;
-   bool bOk = false;
+   int             iRV = 0;
    cparser::SGenre sGenre;
-   QVariantMap     contentMap;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
    // clear genres ...
    vGenres.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      foreach (const QVariant& lGenre, contentMap.value("genres").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mGenre = lGenre.toMap();
+         QJsonArray  genres  = jsonDoc.object().value("genres").toArray();
+         QJsonObject genreObj;
 
-         sGenre.sGName = mGenre.value("name").toString();
-         sGenre.uiGid  = mGenre.value("id").toUInt();
+         foreach (const QJsonValue& genre, genres)
+         {
+            genreObj = genre.toObject();
 
-         vGenres.append(sGenre);
+            sGenre.sGName = genreObj.value("name").toString();
+            sGenre.uiGid  = genreObj.value("id").toVariant().toUInt();
+
+            vGenres.append(sGenre);
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -307,46 +340,52 @@ int CStdJsonParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>&
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
 {
-   int  iRV = 0, cid;
-   bool bOk = false;
+   int iRV =  0;
+   int cid = -1;
    cparser::SEpgCurrent          entry;
    QVector<cparser::SEpgCurrent> vEntries;
-   QVariantMap   contentMap;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
    // clear map ...
    currentEpg.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      foreach (const QVariant& lEpg1, contentMap.value("epg").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mEpg1 = lEpg1.toMap();
+         QJsonArray  epgEntries = jsonDoc.object().value("epg").toArray();
+         QJsonObject epgObj, epgObjL2;
 
-         vEntries.clear();
-
-         cid = mEpg1.value("cid").toInt();
-
-         foreach (const QVariant& lEpg2, mEpg1.value("epg").toList())
+         foreach (const QJsonValue& epg, epgEntries)
          {
-            QVariantMap mEpg2 = lEpg2.toMap();
+            epgObj = epg.toObject();
 
-            entry.sShow   = mEpg2.value("progname").toString();
-            entry.uiStart = mEpg2.value("ts").toUInt();
+            vEntries.clear();
 
-            vEntries.append(entry);
+            cid = epgObj.value("cid").toVariant().toInt();
+
+            foreach (const QJsonValue& epg2, epgObj.value("epg").toArray())
+            {
+               epgObjL2 = epg2.toObject();
+
+               entry.sShow   = epgObjL2.value("progname").toString();
+               entry.uiStart = epgObjL2.value("ts").toVariant().toUInt();
+
+               vEntries.append(entry);
+            }
+
+            currentEpg.insert(cid, vEntries);
          }
-
-         currentEpg.insert(cid, vEntries);
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -367,35 +406,40 @@ int CStdJsonParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentE
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseVodManager (const QString &sResp, QVector<cparser::SVodRate> &vRates)
 {
-   int  iRV = 0;
-   bool bOk = false;
+   int               iRV = 0;
    cparser::SVodRate entry;
-   QVariantMap   contentMap;
+   QJsonParseError   jErr;
+   QJsonDocument     jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
-   // clear map ...
+   // clear rates ...
    vRates.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      foreach (const QVariant& lAccess, contentMap.value("result").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mAccess = lAccess.toMap();
+         QJsonArray  results = jsonDoc.object().value("result").toArray();
+         QJsonObject resObj;
 
-         entry.iRateID = mAccess.value("id_rate").toInt();
-         entry.sGenre  = mAccess.value("rate_name").toString();
-         entry.sAccess = mAccess.value("action").toString();
+         foreach (const QJsonValue& result, results)
+         {
+            resObj = result.toObject();
 
-         vRates.append(entry);
+            entry.iRateID = resObj.value("id_rate").toVariant().toInt();
+            entry.sGenre  = resObj.value("rate_name").toString();
+            entry.sAccess = resObj.value("action").toString();
+
+            vRates.append(entry);
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -417,45 +461,52 @@ int CStdJsonParser::parseVodManager (const QString &sResp, QVector<cparser::SVod
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo> &vVodList, cparser::SGenreInfo &gInfo)
 {
-   int  iRV = 0;
-   bool bOk = false;
+   int                iRV = 0;
    cparser::SVodVideo entry;
-   QVariantMap   contentMap;
+   QJsonParseError    jErr;
+   QJsonDocument      jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
-   // clear vector ...
+   // clear list ...
    vVodList.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      gInfo.sType  = contentMap.value("type").toString();
-      gInfo.iTotal = contentMap.value("total").toInt();
-      gInfo.iPage  = contentMap.value("page").toInt();
-      gInfo.iCount = contentMap.value("count").toInt();
-
-      foreach (const QVariant& lRow, contentMap.value("rows").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mRow = lRow.toMap();
+         QJsonObject mainObj = jsonDoc.object();
 
-         entry.uiVidId    = mRow.value("id").toUInt();
-         entry.sName      = mRow.value("name").toString();
-         entry.sDescr     = mRow.value("description").toString();
-         entry.sYear      = mRow.value("year").toString();
-         entry.sCountry   = mRow.value("country").toString();
-         entry.sImg       = mRow.value("poster").toString();
-         entry.bProtected = mRow.value("pass_protect").toBool();
-         entry.bFavourit  = mRow.value("favorite").toBool();
+         gInfo.sType  = mainObj.value("type").toString();
+         gInfo.iTotal = mainObj.value("total").toVariant().toInt();
+         gInfo.iPage  = mainObj.value("page").toVariant().toInt();
+         gInfo.iCount = mainObj.value("count").toVariant().toInt();
 
-         vVodList.append(entry);
+         QJsonArray  rows = mainObj.value("rows").toArray();
+         QJsonObject rowObj;
+
+         foreach (const QJsonValue& row, rows)
+         {
+            rowObj = row.toObject();
+
+            entry.uiVidId    = rowObj.value("id").toVariant().toUInt();
+            entry.sName      = rowObj.value("name").toString();
+            entry.sDescr     = rowObj.value("description").toString();
+            entry.sYear      = rowObj.value("year").toString();
+            entry.sCountry   = rowObj.value("country").toString();
+            entry.sImg       = rowObj.value("poster").toString();
+            entry.bProtected = rowObj.value("pass_protect").toVariant().toBool();
+            entry.bFavourit  = rowObj.value("favorite").toVariant().toBool();
+
+            vVodList.append(entry);
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -476,9 +527,9 @@ int CStdJsonParser::parseVodList(const QString &sResp, QVector<cparser::SVodVide
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidInfo)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
+   int             iRV = 0;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
    cparser::SVodFileInfo fInfo;
 
    // init struct ...
@@ -495,48 +546,53 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
    vidInfo.bFavourit  = false;
    vidInfo.vVodFiles.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      contentMap = contentMap.value("film").toMap();
-
-      vidInfo.sActors    = contentMap.value("actors").toString();
-      vidInfo.sCountry   = contentMap.value("country").toString();
-      vidInfo.sDescr     = contentMap.value("description").toString();
-      vidInfo.sDirector  = contentMap.value("director").toString();
-      vidInfo.sImg       = contentMap.value("poster").toString();
-      vidInfo.sName      = contentMap.value("name").toString();
-      vidInfo.sYear      = contentMap.value("year").toString();
-      vidInfo.sGenres    = contentMap.value("genre_str").toString();
-      vidInfo.uiLength   = contentMap.value("lenght").toUInt();
-      vidInfo.uiVidId    = contentMap.value("id").toUInt();
-      vidInfo.bFavourit  = contentMap.value("favorite").toBool();
-      vidInfo.bProtected = contentMap.value("pass_protect").toBool();
-
-      foreach (const QVariant& lVideo, contentMap.value("videos").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mVideo = lVideo.toMap();
+         QJsonObject filmObj = jsonDoc.object().value("film").toObject();
 
-         fInfo.iHeight = mVideo.value("height").toInt();
-         fInfo.iId     = mVideo.value("id").toInt();
-         fInfo.iLength = mVideo.value("length").toInt();
-         fInfo.iSize   = mVideo.value("size").toInt();
-         fInfo.iWidth  = mVideo.value("width").toInt();
-         fInfo.sCodec  = mVideo.value("codec").toString();
-         fInfo.sFormat = mVideo.value("format").toString();
-         fInfo.sTitle  = mVideo.value("title").toString();
-         fInfo.sUrl    = mVideo.value("url").toString();
+         vidInfo.sActors    = filmObj.value("actors").toString();
+         vidInfo.sCountry   = filmObj.value("country").toString();
+         vidInfo.sDescr     = filmObj.value("description").toString();
+         vidInfo.sDirector  = filmObj.value("director").toString();
+         vidInfo.sImg       = filmObj.value("poster").toString();
+         vidInfo.sName      = filmObj.value("name").toString();
+         vidInfo.sYear      = filmObj.value("year").toString();
+         vidInfo.sGenres    = filmObj.value("genre_str").toString();
+         vidInfo.uiLength   = filmObj.value("lenght").toVariant().toUInt();
+         vidInfo.uiVidId    = filmObj.value("id").toVariant().toUInt();
+         vidInfo.bFavourit  = filmObj.value("favorite").toVariant().toBool();
+         vidInfo.bProtected = filmObj.value("pass_protect").toVariant().toBool();
 
-         vidInfo.vVodFiles.append(fInfo);
+         QJsonArray  videos = filmObj.value("videos").toArray();
+         QJsonObject vidObj;
+
+         foreach (const QJsonValue& video, videos)
+         {
+            vidObj = video.toObject();
+
+            fInfo.iHeight = vidObj.value("height").toVariant().toInt();
+            fInfo.iId     = vidObj.value("id").toVariant().toInt();
+            fInfo.iLength = vidObj.value("length").toVariant().toInt();
+            fInfo.iSize   = vidObj.value("size").toVariant().toInt();
+            fInfo.iWidth  = vidObj.value("width").toVariant().toInt();
+            fInfo.sCodec  = vidObj.value("codec").toString();
+            fInfo.sFormat = vidObj.value("format").toString();
+            fInfo.sTitle  = vidObj.value("title").toString();
+            fInfo.sUrl    = vidObj.value("url").toString();
+
+            vidInfo.vVodFiles.append(fInfo);
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -557,55 +613,60 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   cparser::SEpg entry;
-   QVariantMap contentMap;
-   QString sTmp;
+   int             iRV = 0;
+   QString         sTmp;
+   cparser::SEpg   entry;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
-   // clear vector ...
+   // clear list ...
    epgList.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      foreach (const QVariant& lEpg, contentMap.value("epg").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mEpg = lEpg.toMap();
+         QJsonArray  epgArr = jsonDoc.object().value("epg").toArray();
+         QJsonObject epgObj;
 
-         entry.sDescr = "";
-         entry.uiGmt  = mEpg.value("ut_start").toUInt();
-         sTmp         = mEpg.value("progname").toString();
+         foreach (const QJsonValue& epg, epgArr)
+         {
+            epgObj = epg.toObject();
 
-         if (sTmp.contains('\n'))
-         {
-            entry.sName  = sTmp.left(sTmp.indexOf('\n'));
-            entry.sDescr = sTmp.mid(sTmp.indexOf('\n') + 1);
-         }
-         else
-         {
-            entry.sName = sTmp;
-         }
+            entry.sDescr = "";
+            entry.uiGmt  = epgObj.value("ut_start").toVariant().toUInt();
+            sTmp         = epgObj.value("progname").toString();
 
-         if (mEpg.contains("pdescr"))
-         {
-            entry.sDescr = mEpg.value("pdescr").toString();
-         }
-         else if(mEpg.contains("description"))
-         {
-            entry.sDescr = mEpg.value("description").toString();
-         }
+            if (sTmp.contains('\n'))
+            {
+               entry.sName  = sTmp.left(sTmp.indexOf('\n'));
+               entry.sDescr = sTmp.mid(sTmp.indexOf('\n') + 1);
+            }
+            else
+            {
+               entry.sName = sTmp;
+            }
 
-         epgList.append(entry);
+            if (epgObj.contains("pdescr"))
+            {
+               entry.sDescr = epgObj.value("pdescr").toString();
+            }
+            else if(epgObj.contains("description"))
+            {
+               entry.sDescr = epgObj.value("description").toString();
+            }
+
+            epgList.append(entry);
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -628,33 +689,34 @@ int CStdJsonParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgL
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
+   int             iRV = 0;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
    // clear vector ...
    vValues.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      contentMap = contentMap.value("settings").toMap();
-      contentMap = contentMap.value(sName).toMap();
-
-      iActVal = contentMap.value("value").toInt();
-
-      foreach (const QVariant& val, contentMap.value("list").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         vValues.append(val.toInt());
+         QJsonObject setObj = jsonDoc.object().value("settings").toObject().value(sName).toObject();
+
+         iActVal = setObj.value("value").toVariant().toInt();
+
+         foreach (const QJsonValue& val, setObj.value("list").toArray())
+         {
+            vValues.append(val.toVariant().toInt());
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -675,28 +737,33 @@ int CStdJsonParser::parseSetting(const QString& sResp, const QString &sName, QVe
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseUrl(const QString &sResp, QString &sUrl)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
+   int             iRV = 0;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+   // clear url ...
+   sUrl = "";
 
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      sUrl = contentMap.value("url").toString();
-      sUrl.replace("&amp;", "&");
-
-      if (sUrl.contains(' '))
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         sUrl = sUrl.left(sUrl.indexOf(' '));
+         sUrl = jsonDoc.object().value("url").toString();
+         sUrl.replace("&amp;", "&");
+
+         if (sUrl.contains(' '))
+         {
+            sUrl = sUrl.left(sUrl.indexOf(' '));
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -717,47 +784,49 @@ int CStdJsonParser::parseUrl(const QString &sResp, QString &sUrl)
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
-   QString     sUrl, sAdUrl;
+   int             iRV = 0;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
+   QString         sUrl, sAdUrl;
 
-   // clear url list ...
+   // clear url ...
    sUrls.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      sUrl = contentMap.value("url").toString();
-      sUrl.replace("&amp;", "&");
-
-      if (sUrl.contains(' '))
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         sUrl = sUrl.left(sUrl.indexOf(' '));
-      }
+         sUrl = jsonDoc.object().value("url").toString();
+         sUrl.replace("&amp;", "&");
 
-      sAdUrl = contentMap.value("ad_url").toString();
-      sAdUrl.replace("&amp;", "&");
+         if (sUrl.contains(' '))
+         {
+            sUrl = sUrl.left(sUrl.indexOf(' '));
+         }
 
-      if (sAdUrl.contains(' '))
-      {
-         sAdUrl = sAdUrl.left(sAdUrl.indexOf(' '));
-      }
+         sAdUrl = jsonDoc.object().value("ad_url").toString();
+         sAdUrl.replace("&amp;", "&");
 
-      sUrls << sUrl;
+         if (sAdUrl.contains(' '))
+         {
+            sAdUrl = sAdUrl.left(sAdUrl.indexOf(' '));
+         }
 
-      if (!sAdUrl.isEmpty())
-      {
-         sUrls << sAdUrl;
+         sUrls << sUrl;
+
+         if (!sAdUrl.isEmpty())
+         {
+            sUrls << sAdUrl;
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 
@@ -779,18 +848,22 @@ int CStdJsonParser::parseVodUrls (const QString& sResp, QStringList& sUrls)
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseError (const QString& sResp, QString &sMsg, int &eCode)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
+   int             iRV = 0;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+   // clear message ...
+   sMsg = "";
 
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      contentMap = contentMap.value("error").toMap();
-
-      sMsg       = contentMap.value("message").toString();
-      eCode      = contentMap.value("code").toInt();
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
+      {
+         QJsonObject errObj = jsonDoc.object().value("error").toObject();
+         sMsg  = errObj.value("message").toString();
+         eCode = errObj.value("code").toVariant().toInt();
+      }
    }
    else
    {
@@ -816,26 +889,35 @@ int CStdJsonParser::parseError (const QString& sResp, QString &sMsg, int &eCode)
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseVodLang(const QString &sResp, QVodLangMap &lMap)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap contentMap;
+   int             iRV = 0;
+   QJsonParseError jErr;
+   QJsonDocument   jsonDoc = QJsonDocument::fromJson(sResp.toUtf8(), &jErr);
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+   // clear map ...
+   lMap.clear();
 
-   if (bOk)
+   if (jErr.error == QJsonParseError::NoError)
    {
-      foreach (const QVariant& lRow, contentMap.value("langs").toList())
+      // answer always comes as object ...
+      if (jsonDoc.isObject())
       {
-         QVariantMap mRow = lRow.toMap();
-         lMap.insert(mRow.value("name").toString(), mRow.value("lang").toString());
+         QJsonArray  langArr = jsonDoc.object().value("langs").toArray();
+         QJsonObject langObj;
+
+         foreach(const QJsonValue& lang, langArr)
+         {
+            langObj = lang.toObject();
+
+            lMap.insert(langObj.value("name").toString(), langObj.value("lang").toString());
+         }
       }
    }
    else
    {
       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
+                    tr("QJson parser error in %1 %2():%3 -> %4")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__)
+                    .arg(jErr.errorString()));
       iRV = -1;
    }
 

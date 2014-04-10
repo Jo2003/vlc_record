@@ -76,8 +76,6 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\release\${BINNAME}"
   File "${SRCDIR}\resources\${INSTICON}"
   File "${SRCDIR}\installer\shortcut.url"
-  File "${QTLIBS}\libgcc_s_dw2-1.dll"
-  File "${QTLIBS}\mingwm10.dll"
 
   SetOutPath "$INSTDIR\language"
   File /r "${SRCDIR}\*.qm"
@@ -141,13 +139,7 @@ SectionEnd
 ; Installer Sections for qt libraries
 Section "qt Framework" SecQt
    SetOutPath "$INSTDIR"
-   File "${QTLIBS}\QtCore4.dll"
-   File "${QTLIBS}\QtSql4.dll"
-   FILE "${QTLIBS}\QtGui4.dll"
-   FILE "${QTLIBS}\QtNetwork4.dll"
-   FILE "${QTLIBS}\QtXml4.dll"
-   FILE "${QTLIBS}\QtHelp4.dll"
-   FILE "${QTLIBS}\QtCLucene4.dll"
+   File "${QTLIBS}\*.dll"
 
    SetOutPath "$INSTDIR\imageformats"
    File /r "${QTLIBS}\imageformats\*.dll"
@@ -241,13 +233,7 @@ Section "un.Qt"
   Delete "$INSTDIR\imageformats\*.*"
   Delete "$INSTDIR\sqldrivers\*.*"
   Delete "$INSTDIR\translations\*.*"
-  Delete "$INSTDIR\QtCore4.dll"
-  Delete "$INSTDIR\QtSql4.dll"
-  Delete "$INSTDIR\QtGui4.dll"
-  Delete "$INSTDIR\QtNetwork4.dll"
-  Delete "$INSTDIR\QtXml4.dll"
-  Delete "$INSTDIR\QtHelp4.dll"
-  Delete "$INSTDIR\QtCLucene4.dll"
+  Delete "$INSTDIR\*.dll"
   RMDir  "$INSTDIR\imageformats"
   RMDir  "$INSTDIR\sqldrivers"
   RMDir  "$INSTDIR\translations"
@@ -282,8 +268,6 @@ Section "un.Program"
 
   ; delete vlc-record itself ...
   Delete "$INSTDIR\${BINNAME}"
-  Delete "$INSTDIR\libgcc_s_dw2-1.dll"
-  Delete "$INSTDIR\mingwm10.dll"
   Delete "$INSTDIR\${INSTICON}"
   Delete "$INSTDIR\shortcut.url"
 

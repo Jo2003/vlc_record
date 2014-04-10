@@ -225,8 +225,7 @@ contains(DEFINES, _TASTE_IPTV_RECORD) {
 #############
 
 contains(DEFINES, _USE_QJSON) {
-   message (using QtJson parser ...)
-   include (qtjson/qtjson.pri)
+   message (using QJson parser ...)
    SOURCES += cstdjsonparser.cpp
    HEADERS += cstdjsonparser.h
 } else {
