@@ -710,9 +710,29 @@ void QVlcVideoWidget::touchContextMenu()
          {
             bIntl  = contActions.at(i)->isChecked();
          }
-         else if (contActions.at(i)->objectName() == "Act_stontop")
+         else if (contActions.at(i)->objectName() == "mini_sub")
          {
-            bOnTop = contActions.at(i)->isChecked();
+            pSubm  = contActions.at(i)->menu();
+         }
+      }
+   }
+
+   // take care for values in submenu ...
+   if (pSubm)
+   {
+      contActions = pSubm->actions();
+
+      if (!contActions.isEmpty())
+      {
+         for (i = 0; i < contActions.count(); i++)
+         {
+            // search for current check states ...
+            if (contActions.at(i)->objectName() == "Act_stontop")
+            {
+               bOnTop = contActions.at(i)->isChecked();
+               // we search only one ...
+               break;
+            }
          }
       }
    }
@@ -741,6 +761,7 @@ void QVlcVideoWidget::touchContextMenu()
    // mini interface stuff ...
    // --------------------------------------------------------
    pSubm = _contextMenu->addMenu(tr("Minimal Interface"));
+   pSubm->menuAction()->setObjectName("mini_sub");
 
    // minmal mode stuff ...
    pAct = pSubm->addAction(tr("Enable"));

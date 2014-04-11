@@ -4259,15 +4259,7 @@ void Recorder::slotStayOnTop(bool on)
 
    if (eCurDMode == Ui::DM_WINDOWED)
    {
-      if (bStayOnTop)
-      {
-         setWindowFlags(windowFlags() |  Qt::WindowStaysOnTopHint);
-      }
-      else
-      {
-         setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
-      }
-
+      stayOnTop(bStayOnTop);
       show();
    }
 }
@@ -5903,11 +5895,8 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
             // we reach windowed mode ...
             emit sigWindowed(1);
 
-            if (bStayOnTop)
-            {
-               setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-               show();
-            }
+            stayOnTop(bStayOnTop);
+            show();
          }
          break;
 
@@ -5964,11 +5953,8 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
             // we reach windowed mode ...
             emit sigWindowed(1);
 
-            if (bStayOnTop)
-            {
-               setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
-               show();
-            }
+            stayOnTop(bStayOnTop);
+            show();
          }
          break;
 
@@ -5984,9 +5970,9 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
          emit sigWindowed(0);
 
          // make sure we clear the stay on top stuff ...
-         if (bStayOnTop)
+         if (windowFlags() & Qt::WindowStaysOnTopHint)
          {
-            setWindowFlags(windowFlags() & ~Qt::WindowStaysOnTopHint);
+            stayOnTop(false);
          }
 
          if (newMode == Ui::DM_NORMAL)
@@ -6020,10 +6006,7 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
          }
 
          // make sure to show window after clearing the stay on top stuff ...
-         if (bStayOnTop)
-         {
-            show();
-         }
+         show();
          break;
 
       default:
@@ -6060,6 +6043,41 @@ void Recorder::stopOnDemand()
 
       pHlsControl->stop();
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   encapsulate workaround for QTBUG-30359
+//!          - after enabling "stay on top" it can't be undone
+//
+//! \author  Jo2003
+//! \date    11.04.2014
+//
+//! \param   checked (bool) stay on top or not
+//
+//! \return  stay on top or not
+//---------------------------------------------------------------------------
+bool Recorder::stayOnTop(bool checked)
+{
+   Qt::WindowFlags flags = windowFlags();
+
+   if (checked)
+   {
+#ifdef Q_OS_WIN32
+      flags &= ~Qt::WindowStaysOnBottomHint;
+#endif // Q_OS_WIN32
+      flags |=  Qt::WindowStaysOnTopHint;
+   }
+   else
+   {
+      flags &= ~Qt::WindowStaysOnTopHint;
+#ifdef Q_OS_WIN32
+      flags |=  Qt::WindowStaysOnBottomHint;
+#endif // Q_OS_WIN32
+   }
+   setWindowFlags(flags);
+
+   return checked;
 }
 
 /************************* History ***************************\
