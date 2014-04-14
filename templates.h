@@ -47,7 +47,7 @@
 #define TMPL_VALIGN    "<!--{[%VALIGN%]}-->"
 #define TMPL_ATTR      "<!--{[%ATTRIBUTE%]}-->"
 
-#ifdef Q_OS_MAC
+#if ((defined Q_OS_MACX) && (QT_VERSION < 0x050000))
    // hack to force a ca. 1px cell border ...
    #define DEF_CELLSPACING  "1.99"
 #else

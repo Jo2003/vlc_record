@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
    qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
    qRegisterMetaType<QLangVector>("QLangVector");
 
-#ifdef Q_OS_MACX
+#if ((defined Q_OS_MACX) && (QT_VERSION < 0x050200))
    if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )
    {
        // fix Mac OS X 10.9 (mavericks) font issue
