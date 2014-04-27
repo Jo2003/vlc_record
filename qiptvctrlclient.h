@@ -22,6 +22,7 @@
 #include <QUrl>
 #include <QVector>
 #include <QMutex>
+#include <QDateTime>
 
 #include "clogfile.h"
 
@@ -123,6 +124,7 @@ private:
    bool              bBusy;
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
+   QString           sUnique;
 #ifdef __TRACE
    Iptv              iptv;
 #endif

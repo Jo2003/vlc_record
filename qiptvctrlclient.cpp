@@ -16,6 +16,8 @@
 #include "defdef.h"
 #include "qcustparser.h"
 
+#include <QCryptographicHash>
+
 // global customization class ...
 extern QCustParser *pCustomization;
 
@@ -36,8 +38,22 @@ extern CLogFile VlcLog;
 QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
    QNetworkAccessManager(parent)
 {
-   bCSet = false;
-   bBusy = false;
+   QTime now = QDateTime::currentDateTime().time();
+
+   bCSet   = false;
+   bBusy   = false;
+
+   // create a more or less random hash code ...
+   sUnique = QString("%1%2%3%4")
+         .arg(now.hour())
+         .arg(now.minute())
+         .arg(now.second())
+         .arg(now.msec());
+
+   qsrand((uint)now.msec());
+   sUnique += QString::number(qrand());
+   sUnique = QString(QCryptographicHash::hash((sUnique), QCryptographicHash::Md5).toHex());
+
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
 }
 
@@ -182,6 +198,9 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
 
    // no persistent connections ...
    req.setRawHeader("Connection", "close");
+
+   // custom header with unique id created in constructor ...
+   req.setRawHeader("STB_SERIAL", sUnique.toUtf8());
 
    // set content type ...
    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
