@@ -103,6 +103,7 @@ public:
    };
 
    struct SRequest {
+      SRequest():eHttpReqType(E_REQ_UNKN),iReqId(-1),eIptvReqType(Iptv::Unknown){}
       EHttpReqType   eHttpReqType;
       int            iReqId;
       QString        sUrl;
@@ -116,6 +117,8 @@ public:
    virtual void q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String);
    virtual void q_get(int iReqId, const QString& url, Iptv::eReqType t_req = Iptv::String);
 
+   void requeue();
+
    virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
 
@@ -126,6 +129,7 @@ private:
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
    QString           sStbSerial;
+   SRequest          lastRequest;
 #ifdef __TRACE
    Iptv              iptv;
 #endif

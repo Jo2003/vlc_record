@@ -16,8 +16,6 @@
 #include "defdef.h"
 #include "qcustparser.h"
 
-#include <QCryptographicHash>
-
 // global customization class ...
 extern QCustParser *pCustomization;
 
@@ -272,6 +270,13 @@ QNetworkReply* QIptvCtrlClient::post(int iReqId, const QString& url,
    QNetworkRequest req;
    QUrl            data(content);
 
+   // buffer request ...
+   lastRequest.eHttpReqType = E_REQ_POST;
+   lastRequest.eIptvReqType = t_req;
+   lastRequest.iReqId       = iReqId;
+   lastRequest.sContent     = content;
+   lastRequest.sUrl         = url;
+
    prepareRequest(req, url, data.toEncoded().size());
 
 #ifdef __TRACE
@@ -305,6 +310,13 @@ QNetworkReply* QIptvCtrlClient::get(int iReqId, const QString& url,
 {
    QNetworkReply*  pReply;
    QNetworkRequest req;
+
+   // buffer request ...
+   lastRequest.eHttpReqType = E_REQ_GET;
+   lastRequest.eIptvReqType = t_req;
+   lastRequest.iReqId       = iReqId;
+   lastRequest.sContent     = "";
+   lastRequest.sUrl         = url;
 
    prepareRequest(req, url);
 
@@ -422,5 +434,30 @@ void QIptvCtrlClient::workOffQueue()
          get(reqObj.iReqId, reqObj.sUrl, reqObj.eIptvReqType);
       }
       mtxCmdQueue.unlock();
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   requeue last request
+//
+//! \author  Jo2003
+//! \date    29.04.2014
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::requeue()
+{
+   if ((lastRequest.eHttpReqType != E_REQ_UNKN)
+      && (lastRequest.iReqId != -1))
+   {
+      if (lastRequest.eHttpReqType == E_REQ_POST)
+      {
+         q_post(lastRequest.iReqId, lastRequest.sUrl, lastRequest.sContent, lastRequest.eIptvReqType);
+      }
+      else if (lastRequest.eHttpReqType == E_REQ_GET)
+      {
+         q_get(lastRequest.iReqId, lastRequest.sUrl, lastRequest.eIptvReqType);
+      }
    }
 }
