@@ -52,7 +52,7 @@ QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
 
    qsrand((uint)now.msec());
    sUnique += QString::number(qrand());
-   sUnique = QString(QCryptographicHash::hash((sUnique), QCryptographicHash::Md5).toHex());
+   sUnique = QString(QCryptographicHash::hash(sUnique.toUtf8(), QCryptographicHash::Md5).toHex());
 
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
 }
