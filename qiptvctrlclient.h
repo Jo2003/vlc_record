@@ -17,12 +17,13 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QNetworkConfiguration>
+#include <QNetworkInterface>
 #include <QVariant>
 #include <QMetaEnum>
 #include <QUrl>
 #include <QVector>
 #include <QMutex>
-#include <QDateTime>
 
 #include "clogfile.h"
 
@@ -124,7 +125,7 @@ private:
    bool              bBusy;
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
-   QString           sUnique;
+   QString           sStbSerial;
 #ifdef __TRACE
    Iptv              iptv;
 #endif

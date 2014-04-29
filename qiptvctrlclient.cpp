@@ -38,21 +38,8 @@ extern CLogFile VlcLog;
 QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
    QNetworkAccessManager(parent)
 {
-   QTime now = QDateTime::currentDateTime().time();
-
-   bCSet   = false;
-   bBusy   = false;
-
-   // create a more or less random hash code ...
-   sUnique = QString("%1%2%3%4")
-         .arg(now.hour())
-         .arg(now.minute())
-         .arg(now.second())
-         .arg(now.msec());
-
-   qsrand((uint)now.msec());
-   sUnique += QString::number(qrand());
-   sUnique = QString(QCryptographicHash::hash(sUnique.toUtf8(), QCryptographicHash::Md5).toHex());
+   bCSet = false;
+   bBusy = false;
 
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
 }
@@ -199,8 +186,27 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
    // no persistent connections ...
    req.setRawHeader("Connection", "close");
 
-   // custom header with unique id created in constructor ...
-   req.setRawHeader("STB_SERIAL", sUnique.toUtf8());
+   if (sStbSerial.isEmpty())
+   {
+      foreach(QNetworkInterface netInterface, QNetworkInterface::allInterfaces())
+      {
+         // Return only the first non-loopback MAC Address
+         if (!(netInterface.flags() & QNetworkInterface::IsLoopBack)
+             && (netInterface.flags() & QNetworkInterface::IsUp))
+         {
+            QString ifName = netInterface.name();
+            sStbSerial     = netInterface.hardwareAddress();
+
+            mInfo(tr("Using interface %1 (%2) ...").arg(ifName).arg(sStbSerial));
+            break;
+         }
+      }
+   }
+   else
+   {
+      // set stb serial ...
+      req.setRawHeader("STB_SERIAL", sStbSerial.toUtf8());
+   }
 
    // set content type ...
    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
