@@ -1757,6 +1757,24 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    // special error handling for special errors ...
    switch ((CIptvDefs::EErr)err)
    {
+   case CIptvDefs::ERR_AUTHENTICATION:
+      // no need to display another error ...
+      bSilent = true;
+
+      // delete the cookie ...
+      pApiClient->SetCookie("");
+
+      // ask for authentication data ...
+      if (authDlg.exec() == QDialog::Accepted)
+      {
+         // connection data might be updated ...
+         pApiClient->SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
+
+         // complete relogin!
+         pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
+      }
+      break;
+
    case CIptvDefs::ERR_WRONG_PCODE:
       showInfo.setPCode("");
       secCodeDlg.slotClearPasswd();
@@ -1792,7 +1810,7 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    case CIptvDefs::ERR_LOGIN_INCORRECT:
    case CIptvDefs::ERR_CONTRACT_INACTIVE:
    case CIptvDefs::ERR_CONTRACT_PAUSED:
-   case CIptvDefs::ERR_AUTHENTICATION:
+   // case CIptvDefs::ERR_AUTHENTICATION:
 
       // and delete the cookie ...
       pApiClient->SetCookie("");

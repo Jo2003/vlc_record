@@ -110,6 +110,9 @@ public:
     QByteArray getGeometry();
     int setLanguage (const QString& lng);
 
+    void setUser(const QString& str);
+    void setPasswd(const QString& str);
+
 protected:
     virtual void changeEvent(QEvent *e);
 

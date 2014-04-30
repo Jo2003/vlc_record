@@ -66,6 +66,7 @@
 #include <QStackedLayout>
 #include "qvlcvideowidget.h"
 #include "qhlscontrol.h"
+#include "qauthdlg.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -188,6 +189,7 @@ private:
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
+    QAuthDlg                        authDlg;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);

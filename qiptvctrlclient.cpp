@@ -451,13 +451,12 @@ void QIptvCtrlClient::requeue()
    if ((lastRequest.eHttpReqType != E_REQ_UNKN)
       && (lastRequest.iReqId != -1))
    {
-      if (lastRequest.eHttpReqType == E_REQ_POST)
-      {
-         q_post(lastRequest.iReqId, lastRequest.sUrl, lastRequest.sContent, lastRequest.eIptvReqType);
-      }
-      else if (lastRequest.eHttpReqType == E_REQ_GET)
-      {
-         q_get(lastRequest.iReqId, lastRequest.sUrl, lastRequest.eIptvReqType);
-      }
+      // add request to command queue ...
+      mtxCmdQueue.lock();
+      vCmdQueue.append(lastRequest);
+      mtxCmdQueue.unlock();
+
+      // try to handle request ...
+      workOffQueue();
    }
 }

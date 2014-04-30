@@ -72,6 +72,7 @@ public:
       REQ_CL_LANG,
       REQ_GET_ALANG,
       REQ_VOD_LANG,
+      REQ_LOGIN_ONLY,
       REQ_UNKNOWN = 255
    };
 

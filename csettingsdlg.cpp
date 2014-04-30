@@ -1912,6 +1912,38 @@ int CSettingsDlg::setLanguage(const QString &lng)
    return (idx > -1) ? 0 : idx;
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   set username from outsite
+//
+//! \author  Jo2003
+//! \date    30.04.2014
+//
+//! \param   str (const QString&) new username
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::setUser(const QString& str)
+{
+   m_ui->lineUsr->setText(str);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set password from outsite
+//
+//! \author  Jo2003
+//! \date    30.04.2014
+//
+//! \param   str (const QString&) new password
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::setPasswd(const QString& str)
+{
+   m_ui->linePass->setText(str);
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
