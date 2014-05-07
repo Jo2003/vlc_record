@@ -12,6 +12,7 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qiptvctrlclient.h"
+#include "ciptvdefs.h"
 #include "version_info.h"
 #include "defdef.h"
 #include "qcustparser.h"
@@ -277,6 +278,12 @@ QNetworkReply* QIptvCtrlClient::post(int iReqId, const QString& url,
    lastRequest.sContent     = content;
    lastRequest.sUrl         = url;
 
+   if (t_req == Iptv::Login)
+   {
+      lastLogin        = lastRequest;
+      lastLogin.iReqId = (int)CIptvDefs::REQ_LOGIN_ONLY;
+   }
+
    prepareRequest(req, url, data.toEncoded().size());
 
 #ifdef __TRACE
@@ -317,6 +324,12 @@ QNetworkReply* QIptvCtrlClient::get(int iReqId, const QString& url,
    lastRequest.iReqId       = iReqId;
    lastRequest.sContent     = "";
    lastRequest.sUrl         = url;
+
+   if (t_req == Iptv::Login)
+   {
+      lastLogin        = lastRequest;
+      lastLogin.iReqId = (int)CIptvDefs::REQ_LOGIN_ONLY;
+   }
 
    prepareRequest(req, url);
 
@@ -446,11 +459,21 @@ void QIptvCtrlClient::workOffQueue()
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QIptvCtrlClient::requeue()
+void QIptvCtrlClient::requeue(bool withLogin)
 {
    if ((lastRequest.eHttpReqType != E_REQ_UNKN)
       && (lastRequest.iReqId != -1))
    {
+
+      // should we prepend something (e.g. login)?
+      if (withLogin)
+      {
+         // add request to command queue ...
+         mtxCmdQueue.lock();
+         vCmdQueue.append(lastLogin);
+         mtxCmdQueue.unlock();
+      }
+
       // add request to command queue ...
       mtxCmdQueue.lock();
       vCmdQueue.append(lastRequest);

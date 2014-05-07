@@ -117,7 +117,7 @@ public:
    virtual void q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String);
    virtual void q_get(int iReqId, const QString& url, Iptv::eReqType t_req = Iptv::String);
 
-   void requeue();
+   void requeue(bool withLogin = false);
 
    virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
@@ -130,6 +130,7 @@ private:
    QMutex            mtxCmdQueue;
    QString           sStbSerial;
    SRequest          lastRequest;
+   SRequest          lastLogin;
 #ifdef __TRACE
    Iptv              iptv;
 #endif

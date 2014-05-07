@@ -1667,6 +1667,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_VOD_LANG, slotVodLang(resp));
 
    ///////////////////////////////////////////////
+   // response for silent relogin ...
+   mkCase(CIptvDefs::REQ_LOGIN_ONLY, loginOnly(resp));
+
+   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
    mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
@@ -1810,7 +1814,6 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    case CIptvDefs::ERR_LOGIN_INCORRECT:
    case CIptvDefs::ERR_CONTRACT_INACTIVE:
    case CIptvDefs::ERR_CONTRACT_PAUSED:
-   // case CIptvDefs::ERR_AUTHENTICATION:
 
       // and delete the cookie ...
       pApiClient->SetCookie("");
@@ -1832,6 +1835,13 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
                             .arg(pCustomization->strVal("COMPANY_NAME"))
                             .arg(str)
                             .arg(err));
+   }
+
+   if ((CIptvDefs::EErr)err == CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE)
+   {
+      // Show must go on:
+      // Make silent relogin and try last sent request
+      pApiClient->requeue(true);
    }
 
    TouchPlayCtrlBtns();
@@ -6096,6 +6106,29 @@ bool Recorder::stayOnTop(bool checked)
    setWindowFlags(flags);
 
    return checked;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle silent relogin
+//
+//! \author  Jo2003
+//! \date    06.05.2014
+//
+//! \param   resp (const QString&) ref. to response
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::loginOnly(const QString &resp)
+{
+   QString s;
+   cparser::SAccountInfo aInfo;
+
+   // parse cookie ...
+   if (!pApiParser->parseCookie(resp, s, aInfo))
+   {
+      pApiClient->SetCookie(s);
+   }
 }
 
 /************************* History ***************************\
