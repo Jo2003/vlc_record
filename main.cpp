@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
    XInitThreads();
 #endif
 
-   qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
-   qRegisterMetaType<QLangVector>("QLangVector");
+   // qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
+   // qRegisterMetaType<QLangVector>("QLangVector");
 
 #if ((defined Q_OS_MACX) && (QT_VERSION < 0x050200))
    if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )

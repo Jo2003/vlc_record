@@ -4,6 +4,7 @@
 QT += network \
     sql \
     xml \
+    widgets \
     help
 
 # build debug and release ...
@@ -65,7 +66,8 @@ SOURCES += main.cpp \
     cplayer.cpp \
     qhlscontrol.cpp \
     qexpirenotifydlg.cpp \
-    qauthdlg.cpp
+    qauthdlg.cpp \
+    qwaitwidget.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -124,7 +126,8 @@ HEADERS += recorder.h \
     qtimelabel.h \
     qhlscontrol.h \
     qexpirenotifydlg.h \
-    qauthdlg.h
+    qauthdlg.h \
+    qwaitwidget.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -137,7 +140,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/qwatchlistdlg.ui \
     forms/cplayer.ui \
     forms/recorder_inc.ui \
-    forms/qauthdlg.ui
+    forms/qauthdlg.ui \
+    forms/qwaitwidget.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
