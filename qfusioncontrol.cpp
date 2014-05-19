@@ -883,7 +883,8 @@ int QFusionControl::getJumpValue()
    if (!_jumpCbxVector.isEmpty())
    {
       // all jump boxes should be synchronized ...
-      iRV = _jumpCbxVector.at(0)->currentText().toInt(&ok);
+      QString t = _jumpCbxVector.at(0)->currentText();
+      iRV =   t.split(" ").at(0).toInt(&ok);
    }
 
    return (ok ? iRV : -1);
