@@ -16,6 +16,8 @@
 
 #include <QSlider>
 #include <QMouseEvent>
+#include <QToolTip>
+#include <QTime>
 
 //---------------------------------------------------------------------------
 //! \class   QClickAndGoSlider
@@ -29,20 +31,19 @@ class QClickAndGoSlider : public QSlider
 
 public:
    QClickAndGoSlider ( QWidget * parent = 0 )
-      : QSlider(parent)
+      : QSlider(parent), _isVideo(false)
    {
-      _iHandleRange = 80;
+      init();
    }
 
    QClickAndGoSlider ( Qt::Orientation orientation, QWidget * parent = 0 )
-      : QSlider(orientation, parent)
+      : QSlider(orientation, parent), _isVideo(false)
    {
-      _iHandleRange = 80;
+      init();
    }
 
    virtual ~QClickAndGoSlider ()
    {
-      _iHandleRange = 80;
    }
 
    //---------------------------------------------------------------------------
@@ -63,7 +64,99 @@ public:
       _iHandleRange = i;
    }
 
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   set video flag
+   //
+   //! \author  Jo2003
+   //! \date    19.05.2014
+   //
+   //! \param   val (bool) new value
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void setVideo (bool val)
+   {
+      _isVideo = val;
+   }
+
 protected:
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   set handle range and mouse tracking
+   //
+   //! \author  Jo2003
+   //! \date    19.05.2014
+   //
+   //! \param   --
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void init ()
+   {
+      _iHandleRange = 80;
+      setMouseTracking(true);
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   show special tooltip with timing information
+   //
+   //! \author  Jo2003
+   //! \date    19.05.2014
+   //
+   //! \param   event (QMouseEvent *) pointer to mous event
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   virtual void mouseMoveEvent(QMouseEvent * event)
+   {
+      // create additional tooltip when using
+      // as video slider ...
+      if (_isVideo)
+      {
+         int pos;
+         int range = maximum() - minimum();
+         int dif;
+         QString tt;
+
+         if (orientation() == Qt::Vertical)
+         {
+            pos = (range * (height() - event->y())) / height();
+         }
+         else
+         {
+            pos = (range * event->x()) / width();
+         }
+
+         // get time from slider handle and mouse position ...
+         QTime tpos = QTime(0, 0).addSecs(pos);
+         QTime npos = QTime(0, 0).addSecs(value() - minimum());
+
+         // remove old tooltip (if exists) ...
+         if (!QToolTip::text().isEmpty())
+         {
+            QToolTip::showText(mapToGlobal(QPoint(0, 0)), "", this);
+         }
+
+         // get difference between slider handle and mouse position ...
+         dif = npos.secsTo(tpos);
+
+
+         QTime dtime = QTime(0, 0).addSecs(abs(dif));
+
+         // create tooltip string ...
+         tt = QString("%1 %2 -> %3").arg((dif < 0) ? "-" : "+")
+               .arg(dtime.toString((abs(dif) < 3600) ? "m:ss" : "H:mm:ss"))
+               .arg(tpos.toString("H:mm:ss"));
+
+         // display tooltip ...
+         QToolTip::showText(mapToGlobal(event->pos()), tt, this);
+      }
+
+      QSlider::mouseMoveEvent(event);
+   }
 
    //---------------------------------------------------------------------------
    //
@@ -119,7 +212,8 @@ protected:
    }
 
 private:
-   int _iHandleRange;
+   int  _iHandleRange;
+   bool _isVideo;
 
 signals:
    // special signal so we know for sure how to handle...

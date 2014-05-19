@@ -929,6 +929,10 @@ void QFusionControl::addCngSlider (QClickAndGoSlider *pSli)
    connect (pSli, SIGNAL(sigClickNGo(int)), this, SLOT(slotClickNGo(int)));
    connect (pSli, SIGNAL(sliderReleased()), this, SLOT(slotPosSliderReleased()));
    connect (pSli, SIGNAL(valueChanged(int)), this, SLOT(slotPosSliderValueChanged(int)));
+
+   // set as video slider ...
+   pSli->setVideo(true);
+
    _cngSliderVector.append(pSli);
 }
 
