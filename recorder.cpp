@@ -1671,6 +1671,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_LOGIN_ONLY, loginOnly(resp));
 
    ///////////////////////////////////////////////
+   // response for stream server changed ...
+   mkCase(CIptvDefs::REQ_SERVER, slotSSrvChgd(resp));
+
+   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
    mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
@@ -1682,7 +1686,6 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_GETBITRATE, slotUnused(resp));
    mkCase(CIptvDefs::REQ_GETTIMESHIFT, slotUnused(resp));
    mkCase(CIptvDefs::REQ_GET_SERVER, slotUnused(resp));
-   mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_HTTPBUFF, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SET_LANGUAGE, slotUnused(resp));
    default:
@@ -4292,6 +4295,47 @@ void Recorder::slotStayOnTop(bool on)
    {
       stayOnTop(bStayOnTop);
       show();
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   stream server was changed [slot]
+//
+//! \author  Jo2003
+//! \date    19.05.2014
+//
+//! \param   str (const QString &) response string
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotSSrvChgd(const QString &str)
+{
+   Q_UNUSED(str)
+
+   // only takes effect when using internal player ...
+   if (vlcCtrl.withLibVLC())
+   {
+      // in case a stream is played we should stop and restart so
+      // the new stream server takes effect ...
+
+      if (ePlayState == IncPlay::PS_PLAY)
+      {
+         if (showInfo.showType() == ShowInfo::Live)
+         {
+            // simply re-request live stream url ...
+            ui->player->silentStop();
+            pApiClient->queueRequest(CIptvDefs::REQ_STREAM, showInfo.channelId(), showInfo.pCode());
+         }
+         else if (showInfo.showType() == ShowInfo::Archive)
+         {
+            // request stream url taking care about the time it already runs ...
+            quint64 pos = ui->player->getSilderPos();
+            QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
+            ui->player->silentStop();
+            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+         }
+      }
    }
 }
 

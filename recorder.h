@@ -324,6 +324,7 @@ private slots:
     void slotPlayHls(const QString& s);
     void stopOnDemand();
     void slotVodLang(const QString &str);
+    void slotSSrvChgd (const QString &str);
 
 signals:
     void sigShow ();
