@@ -39,8 +39,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    ui(new Ui::QOverlayedControl),
    _offset(0, 0),
    _mouseOverMoveHandle(false),
-   _pAnimation(NULL),
-   _aniType(NO_ANIMATION)
+   _pAnimation(NULL)
 {
    ui->setupUi(this);
 
@@ -70,12 +69,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
 
    // animation stuff for extended settings and information ...
    _pAnimation = new QPropertyAnimation (this, "geometry");
-   _pAnimation->setDuration(125);
-   connect (_pAnimation, SIGNAL(finished()), this, SLOT(fitToContent()));
-
-   // hide extended settings and information part ...
-   ui->frameToHide->hide();
-   ui->frameInfo->hide();
+   _pAnimation->setDuration(175);
 
    // resize to optimized size ...
    resize(__PANEL_WIDTH_STD, __PANEL_HEIGHT_STD);
@@ -358,31 +352,29 @@ void QOverlayedControl::chgFullscreen (bool on)
 //---------------------------------------------------------------------------
 void QOverlayedControl::on_pushExt_clicked()
 {
-   if (_aniType == NO_ANIMATION)
+   if (_pAnimation->state() != QAbstractAnimation::Running)
    {
       QRect geo   = geometry();
       QRect trg   = geo;
-      bool  bShow = ui->frameToHide->isHidden();
 
       _pAnimation->setStartValue(geo);
 
-      if (bShow)
+      if (_dState & SHOW_EXT)
       {
-         _aniType = STD_TO_EXT;
-         trg.setWidth(__PANEL_WIDTH_EXT);
-         _pAnimation->setEndValue(trg);
-         _pAnimation->start();
-         ui->pushExt->setIcon(QIcon(":png/close"));
-      }
-      else
-      {
-         _aniType = EXT_TO_STD;
-         ui->frameToHide->setVisible(false);
          trg.setWidth(__PANEL_WIDTH_STD);
          _pAnimation->setEndValue(trg);
          _pAnimation->start();
          ui->pushExt->setIcon(QIcon(":png/open"));
       }
+      else
+      {
+         trg.setWidth(__PANEL_WIDTH_EXT);
+         _pAnimation->setEndValue(trg);
+         _pAnimation->start();
+         ui->pushExt->setIcon(QIcon(":png/close"));
+      }
+
+      _dState ^= SHOW_EXT;
    }
 }
 
@@ -399,59 +391,28 @@ void QOverlayedControl::on_pushExt_clicked()
 //---------------------------------------------------------------------------
 void QOverlayedControl::on_pushInfo_clicked()
 {
-   if (_aniType == NO_ANIMATION)
+   if (_pAnimation->state() != QAbstractAnimation::Running)
    {
       QRect geo   = geometry();
       QRect trg   = geo;
-      bool  bShow = ui->frameInfo->isHidden();
 
       _pAnimation->setStartValue(geo);
 
-      if (bShow)
+      if (_dState & SHOW_INF)
       {
-         _aniType = STD_TO_INF;
-         trg.setHeight(__PANEL_HEIGHT_INF);
-         _pAnimation->setEndValue(trg);
-         _pAnimation->start();
-         ui->pushInfo->setIcon(QIcon(":png/info_close"));
-      }
-      else
-      {
-         _aniType = INF_TO_STD;
-         ui->frameInfo->setVisible(false);
          trg.setHeight(__PANEL_HEIGHT_STD);
          _pAnimation->setEndValue(trg);
          _pAnimation->start();
          ui->pushInfo->setIcon(QIcon(":png/info_open"));
       }
+      else
+      {
+         trg.setHeight(__PANEL_HEIGHT_INF);
+         _pAnimation->setEndValue(trg);
+         _pAnimation->start();
+         ui->pushInfo->setIcon(QIcon(":png/info_close"));
+      }
+
+      _dState ^= SHOW_INF;
    }
 }
-
-//---------------------------------------------------------------------------
-//
-//! \brief   extend / reduce animation finished
-//
-//! \author  Jo2003
-//! \date    19.05.2014
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QOverlayedControl::fitToContent()
-{
-   switch (_aniType)
-   {
-   case STD_TO_EXT:
-      ui->frameToHide->setVisible(true);
-      break;
-   case STD_TO_INF:
-      ui->frameInfo->setVisible(true);
-      break;
-   default:
-      break;
-   }
-
-   _aniType = NO_ANIMATION;
-}
-

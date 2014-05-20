@@ -20,13 +20,14 @@
 #include <QPoint>
 #include <QPropertyAnimation>
 #include <QTimer>
+#include <QFlags>
 #include "qfadewidget.h"
 
 // sizes of control panel (don't change without a need)
-#define __PANEL_WIDTH_EXT  646
-#define __PANEL_WIDTH_STD  468
-#define __PANEL_HEIGHT_STD 122
-#define __PANEL_HEIGHT_INF 228
+#define __PANEL_WIDTH_EXT  655
+#define __PANEL_WIDTH_STD  490
+#define __PANEL_HEIGHT_STD 121
+#define __PANEL_HEIGHT_INF 240
 
 namespace Ui {
   class QOverlayedControl;
@@ -48,14 +49,13 @@ public:
   void chgWindowed (bool on);
   void chgFullscreen (bool on);
 
-  // define animation states ...
-  typedef enum {
-     STD_TO_EXT,
-     EXT_TO_STD,
-     STD_TO_INF,
-     INF_TO_STD,
-     NO_ANIMATION
-  } ani_t;
+  enum displState {
+     SHOW_STD = 0x00,
+     SHOW_EXT = 0x01,
+     SHOW_INF = 0x02
+  };
+
+  Q_DECLARE_FLAGS(displStates, displState)
 
 protected:
   virtual void changeEvent(QEvent *e);
@@ -76,7 +76,6 @@ private slots:
   void slotMouseLeavesMoveHandle ();
   void on_pushHide_clicked();
   void on_pushExt_clicked();
-  void fitToContent();
   void on_pushInfo_clicked();
 
 public slots:
@@ -86,7 +85,9 @@ private:
   QPoint              _offset;
   bool                _mouseOverMoveHandle;
   QPropertyAnimation *_pAnimation;
-  ani_t               _aniType;
+  displStates         _dState;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(QOverlayedControl::displStates)
 
 #endif // __20121109_QOVERLAYEDCONTROL_H
