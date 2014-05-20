@@ -53,6 +53,10 @@
         <file alias="no_logo">resources/no_logo.png</file>
         <file alias="remember">resources/page_add.png</file>
         <file alias="remove">resources/del_sm.png</file>
+        <file alias="close">resources/close_ext.png</file>
+        <file alias="open">resources/open_ext.png</file>
+        <file alias="info_close">resources/close_info.png</file>
+        <file alias="info_open">resources/open_info.png</file>
     </qresource>
     <qresource prefix="/player">
         <file alias="sound_on">resources/sound.png</file>

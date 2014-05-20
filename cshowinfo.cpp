@@ -216,6 +216,7 @@ void CShowInfo::setVodId(int id)
 void CShowInfo::setHtmlDescr(const QString &descr)
 {
    sDescr = descr;
+   emit sigHtmlDescr(sDescr);
 }
 
 /* -----------------------------------------------------------------\

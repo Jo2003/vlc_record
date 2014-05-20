@@ -14,10 +14,13 @@
 #include "qoverlayedcontrol.h"
 #include "ui_qoverlayedcontrol.h"
 #include "qfusioncontrol.h"
+#include "cshowinfo.h"
 #include "defdef.h"
 
 // fusion control ...
 extern QFusionControl missionControl;
+
+extern CShowInfo showInfo;
 
 //---------------------------------------------------------------------------
 //
@@ -35,7 +38,9 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    QFadeWidget(parent, f),
    ui(new Ui::QOverlayedControl),
    _offset(0, 0),
-   _mouseOverMoveHandle(false)
+   _mouseOverMoveHandle(false),
+   _pAnimation(NULL),
+   _aniType(NO_ANIMATION)
 {
    ui->setupUi(this);
 
@@ -62,6 +67,21 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
 
    connect (ui->labMoveHandle, SIGNAL(mouseEnters()), this, SLOT(slotMouseEntersMoveHandle()));
    connect (ui->labMoveHandle, SIGNAL(mouseLeabes()), this, SLOT(slotMouseLeavesMoveHandle()));
+
+   // animation stuff for extended settings and information ...
+   _pAnimation = new QPropertyAnimation (this, "geometry");
+   _pAnimation->setDuration(125);
+   connect (_pAnimation, SIGNAL(finished()), this, SLOT(fitToContent()));
+
+   // hide extended settings and information part ...
+   ui->frameToHide->hide();
+   ui->frameInfo->hide();
+
+   // resize to optimized size ...
+   resize(__PANEL_WIDTH_STD, __PANEL_HEIGHT_STD);
+
+   // make sure showinfo is updated in info part ...
+   connect (&showInfo, SIGNAL(sigHtmlDescr(QString)), ui->textEdit, SLOT(setHtml(QString)));
 }
 
 //---------------------------------------------------------------------------
@@ -294,11 +314,11 @@ void QOverlayedControl::chgWindowed (bool on)
 {
    if (on)
    {
-      ui->btnWindowed->setIcon(QIcon(":/player/from_wnd_panel"));
+      ui->btnWindowed->setIcon(QIcon(":player/from_wnd_panel"));
    }
    else
    {
-      ui->btnWindowed->setIcon(QIcon(":/player/to_wnd_panel"));
+      ui->btnWindowed->setIcon(QIcon(":player/to_wnd_panel"));
    }
 }
 
@@ -317,10 +337,121 @@ void QOverlayedControl::chgFullscreen (bool on)
 {
    if (on)
    {
-      ui->btnFullScreen->setIcon(QIcon(":/player/leave-fullscreen"));
+      ui->btnFullScreen->setIcon(QIcon(":player/leave-fullscreen"));
    }
    else
    {
-      ui->btnFullScreen->setIcon(QIcon(":/player/fullscreen"));
+      ui->btnFullScreen->setIcon(QIcon(":player/fullscreen"));
    }
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   extend / reduce button clicked
+//
+//! \author  Jo2003
+//! \date    19.05.2014
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::on_pushExt_clicked()
+{
+   if (_aniType == NO_ANIMATION)
+   {
+      QRect geo   = geometry();
+      QRect trg   = geo;
+      bool  bShow = ui->frameToHide->isHidden();
+
+      _pAnimation->setStartValue(geo);
+
+      if (bShow)
+      {
+         _aniType = STD_TO_EXT;
+         trg.setWidth(__PANEL_WIDTH_EXT);
+         _pAnimation->setEndValue(trg);
+         _pAnimation->start();
+         ui->pushExt->setIcon(QIcon(":png/close"));
+      }
+      else
+      {
+         _aniType = EXT_TO_STD;
+         ui->frameToHide->setVisible(false);
+         trg.setWidth(__PANEL_WIDTH_STD);
+         _pAnimation->setEndValue(trg);
+         _pAnimation->start();
+         ui->pushExt->setIcon(QIcon(":png/open"));
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   show / hide additional information
+//
+//! \author  Jo2003
+//! \date    20.05.2014
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::on_pushInfo_clicked()
+{
+   if (_aniType == NO_ANIMATION)
+   {
+      QRect geo   = geometry();
+      QRect trg   = geo;
+      bool  bShow = ui->frameInfo->isHidden();
+
+      _pAnimation->setStartValue(geo);
+
+      if (bShow)
+      {
+         _aniType = STD_TO_INF;
+         trg.setHeight(__PANEL_HEIGHT_INF);
+         _pAnimation->setEndValue(trg);
+         _pAnimation->start();
+         ui->pushInfo->setIcon(QIcon(":png/info_close"));
+      }
+      else
+      {
+         _aniType = INF_TO_STD;
+         ui->frameInfo->setVisible(false);
+         trg.setHeight(__PANEL_HEIGHT_STD);
+         _pAnimation->setEndValue(trg);
+         _pAnimation->start();
+         ui->pushInfo->setIcon(QIcon(":png/info_open"));
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   extend / reduce animation finished
+//
+//! \author  Jo2003
+//! \date    19.05.2014
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QOverlayedControl::fitToContent()
+{
+   switch (_aniType)
+   {
+   case STD_TO_EXT:
+      ui->frameToHide->setVisible(true);
+      break;
+   case STD_TO_INF:
+      ui->frameInfo->setVisible(true);
+      break;
+   default:
+      break;
+   }
+
+   _aniType = NO_ANIMATION;
+}
+

@@ -93,6 +93,9 @@ public:
    int   autoUpdate(uint uiTime);
    const int& defAStream();
 
+signals:
+   void sigHtmlDescr (const QString& s);
+
 private:
    QString              sShowName;
    int                  iChannelId;

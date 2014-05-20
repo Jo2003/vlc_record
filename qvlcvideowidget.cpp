@@ -548,7 +548,7 @@ void QVlcVideoWidget::slotPositionCtrlPanel()
             QRect            rect = pDesc->screenGeometry(_render);
 
             int x = rect.width() / 2 - _ctrlPanel->width() / 2;
-            int y = rect.height() - (int)((float)_ctrlPanel->height() * 1.33);
+            int y = rect.height() - (int)((float)__PANEL_HEIGHT_INF * 1.1);
 
             _ctrlPanel->setGeometry(x, y, _ctrlPanel->width(), _ctrlPanel->height());
          }
