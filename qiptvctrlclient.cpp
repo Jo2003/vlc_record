@@ -201,7 +201,8 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
          }
       }
    }
-   else
+   
+   if (!sStbSerial.isEmpty())
    {
       // set stb serial ...
       req.setRawHeader("STB_SERIAL", sStbSerial.toUtf8());
