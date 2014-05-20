@@ -2049,8 +2049,8 @@ To change the parent code make sure:
 <context>
     <name>CShowInfo</name>
     <message>
-        <location filename="cshowinfo.cpp" line="587"/>
-        <location filename="cshowinfo.cpp" line="623"/>
+        <location filename="cshowinfo.cpp" line="588"/>
+        <location filename="cshowinfo.cpp" line="624"/>
         <source>%1 (Archive)</source>
         <translation>%1 (Архив)</translation>
     </message>
@@ -3071,104 +3071,128 @@ or start time is later than end time!</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="610"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="959"/>
         <source> 0:00:00</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="328"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="1001"/>
+        <source>Additional Information</source>
+        <translation>Дополнительная информация</translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="1054"/>
+        <source>Additional Settings</source>
+        <translation>Дополнительные настройки</translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="201"/>
         <source>Aspect</source>
         <translation>Формат изображения</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="223"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="416"/>
         <source>Minimal Interface</source>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="372"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="270"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jörg, fill with content :-D ...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qoverlayedcontrol.ui" line="217"/>
         <source>Crop</source>
         <translation>Размер кадра</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="391"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="238"/>
         <source>Save Video Format</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="766"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="617"/>
         <source>Screenshot</source>
         <oldsource>Take a screenshot</oldsource>
         <translation>Скриншот</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="782"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="633"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="847"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="698"/>
         <source>1 min</source>
         <translation>1 мин</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="852"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="703"/>
         <source>2 min</source>
         <translation>2 мин</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="857"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="708"/>
         <source>3 min</source>
         <translation>3 мин</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="862"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="713"/>
         <source>4 min</source>
         <translation>4 мин</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="867"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="718"/>
         <source>5 min</source>
         <translation>5 мин</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="642"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="493"/>
         <source>Play selected Channel</source>
         <translation>Просмотр передачи</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="674"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="525"/>
         <source>Record selected Channel</source>
         <translation>Запись выбранной передачи</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="715"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="566"/>
         <source>Stop Player</source>
         <translation>Остановить плеер</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="814"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="665"/>
         <source>Jump Backward</source>
         <translation>Шаг назад</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="843"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="694"/>
         <source>Time Jump Value in minutes</source>
         <translation>Длинна временного шага</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="872"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="723"/>
         <source>10 min</source>
         <oldsource>10</oldsource>
         <translation>10 мин</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="889"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="740"/>
         <source>Jump Forward</source>
         <translation>Шаг вперед</translation>
     </message>
     <message>
-        <location filename="forms/qoverlayedcontrol.ui" line="258"/>
+        <location filename="forms/qoverlayedcontrol.ui" line="451"/>
         <source>Toggle Fullscreen</source>
         <oldsource>Leave Fullscreen</oldsource>
         <translation>Полный экран</translation>
@@ -3279,39 +3303,39 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="724"/>
+        <location filename="qvlcvideowidget.cpp" line="744"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="743"/>
+        <location filename="qvlcvideowidget.cpp" line="763"/>
         <source>Minimal Interface</source>
         <oldsource>Minimal Mode</oldsource>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="746"/>
+        <location filename="qvlcvideowidget.cpp" line="767"/>
         <source>Enable</source>
         <translation>Включать</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="760"/>
+        <location filename="qvlcvideowidget.cpp" line="781"/>
         <source>Stay on top</source>
         <translation>Закрепление окна</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="783"/>
+        <location filename="qvlcvideowidget.cpp" line="804"/>
         <source>Show Control Panel</source>
         <translation>Показать панель управления</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="817"/>
+        <location filename="qvlcvideowidget.cpp" line="838"/>
         <source>Audio Streams</source>
         <translation>Аудио-дорожка</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="830"/>
+        <location filename="qvlcvideowidget.cpp" line="851"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
