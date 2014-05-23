@@ -50,6 +50,7 @@ public:
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();
     const QString& getShortContent ();
+    uint  getLength();
     void setSettings (CSettingsDlg *pDlg);
 
 protected:
@@ -62,6 +63,7 @@ private:
     QString        _name;
     QString        _shortContent;
     QString        _contentBuffer;
+    uint           _uiLength;
     CSettingsDlg  *pSettings;
     CPixLoader    *pPixCache;
 };

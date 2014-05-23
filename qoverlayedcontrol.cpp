@@ -58,6 +58,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addTimeLab(ui->labTime);
+   missionControl.addLengthLab(ui->labLength);
    missionControl.addMuteLab(ui->labSound);
    missionControl.addInfoLab(ui->labMoveHandle);
 

@@ -120,7 +120,7 @@ void CEpgBrowser::recreateEpg()
 \----------------------------------------------------------------- */
 QString CEpgBrowser::createHtmlCode()
 {
-   QString    tab, row, page, sHeadLine, timeCell, img, progCell;
+   QString    tab, row, page, sHeadLine, timeCell, img, progCell, buttons;
    QDateTime  dtStartThis, dtStartNext;
    QUrl       url;
    QUrlQuery  q;
@@ -145,6 +145,7 @@ QString CEpgBrowser::createHtmlCode()
 
    for (cit = mProgram.constBegin(), i = 0; cit != mProgram.constEnd(); cit++, i++)
    {
+      buttons     = "";
       actShow     = *cit;
       bMark       = false;
       dtStartThis = QDateTime::fromTime_t(actShow.uiStart + _iTs);
@@ -161,7 +162,7 @@ QString CEpgBrowser::createHtmlCode()
       }
 
       timeCell  = bMark ? pHtml->simpleTag("a", "name='nowPlaying'") : "";
-      timeCell += dtStartThis.toString("hh:mm") + "&nbsp;";
+      timeCell += dtStartThis.toString("hh:mm") + "<hr>";
 
       // timer record stuff ...
       if (dtStartThis > QDateTime::currentDateTime())
@@ -180,14 +181,12 @@ QString CEpgBrowser::createHtmlCode()
          img = pHtml->image(":/png/timer", 16, 16, "", tr("add timer record ..."));
 
          // wrap in link ...
-         timeCell += pHtml->link(url.toEncoded(), img);
+         buttons = pHtml->link(url.toEncoded(), img) + "&nbsp;";
       }
 
       // archive supported and still available ...
       if (bArchive && ((iAa = CSmallHelpers::archiveAvailable(actShow.uiStart)) > -2))
       {
-         timeCell += "<hr />" + pHtml->htmlTag("b", tr("Ar.")) + "&nbsp;";
-
          // only show archiv links if this show is already available ...
          if (iAa == 1)
          {
@@ -203,7 +202,7 @@ QString CEpgBrowser::createHtmlCode()
             img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
 
             // wrap in link ...
-            timeCell += pHtml->link(url.toEncoded(), img) + "&nbsp;";
+            buttons += pHtml->link(url.toEncoded(), img) + "&nbsp;";
 
             url.clear();
             url.setPath("vlc-record");
@@ -217,7 +216,7 @@ QString CEpgBrowser::createHtmlCode()
             img = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
 
             // wrap in link ...
-            timeCell += pHtml->link(url.toEncoded(), img) + "&nbsp;";
+            buttons += pHtml->link(url.toEncoded(), img) + "&nbsp;";
          }
 
          // mark for later view ...
@@ -233,8 +232,10 @@ QString CEpgBrowser::createHtmlCode()
          img = pHtml->image(":/png/remember", 16, 16, "", tr("add to watch list ..."));
 
          // wrap in link ...
-         timeCell += pHtml->link(url.toEncoded(), img);
+         buttons += pHtml->link(url.toEncoded(), img);
       }
+
+      timeCell += pHtml->htmlTag("div", buttons, "white-space: pre;");
 
       progCell = actShow.sShowName;
 

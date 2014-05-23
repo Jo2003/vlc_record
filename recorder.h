@@ -226,6 +226,7 @@ protected:
     QString recFileName (const QString& name, QString& ext);
     bool stayOnTop(bool checked);
     void loginOnly(const QString& resp);
+    QString createVideoInfo(bool checkVod = true);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);

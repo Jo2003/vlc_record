@@ -24,8 +24,8 @@
 #endif
 
 #define VERSION_MAJOR "2"
-#define VERSION_MINOR "68"
-#define BETA_EXT      ""
+#define VERSION_MINOR "69"
+#define BETA_EXT      "B5"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -33,6 +33,18 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2014-05-20: Version 2.69B5
+| - added various message boxes if:
+|    + account soon ends
+|    + load of channel list takes longer
+|    + authentication problem
+|    + multiple account usage
+| - fix a glitch in vlc window context menu
+| - animate overlay control to show / hide additional info / settings
+| - add timing information to video slider
+| - change skip button to fast forward / backward
+| - add minutes label to time chooser
+| 
 | 2014-01-26: Version 2.68RC1
 | - updated help and language files
 | - when exiting fullscreen restore previous display mode

@@ -20,7 +20,7 @@ CONFIG += shared
 # program version
 # -------------------------------------
 PROGMAJ=2
-PROGMIN=68
+PROGMIN=69
 
 # here you can enable traces ...
 # DEFINES += __TRACE
@@ -67,7 +67,8 @@ SOURCES += main.cpp \
     qhlscontrol.cpp \
     qexpirenotifydlg.cpp \
     qauthdlg.cpp \
-    qwaitwidget.cpp
+    qwaitwidget.cpp \
+    qclickandgoslider.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \

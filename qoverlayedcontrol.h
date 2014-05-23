@@ -24,9 +24,9 @@
 #include "qfadewidget.h"
 
 // sizes of control panel (don't change without a need)
-#define __PANEL_WIDTH_EXT  655
-#define __PANEL_WIDTH_STD  490
-#define __PANEL_HEIGHT_STD 121
+#define __PANEL_WIDTH_EXT  686
+#define __PANEL_WIDTH_STD  522
+#define __PANEL_HEIGHT_STD 122
 #define __PANEL_HEIGHT_INF 240
 
 namespace Ui {

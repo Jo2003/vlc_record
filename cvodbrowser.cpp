@@ -37,6 +37,7 @@ CVodBrowser::CVodBrowser(QWidget *parent) : QTextBrowser(parent)
 {
    pSettings   = NULL;
    pPixCache   = NULL;
+   _uiLength   = (uint)-1;
 }
 
 /* -----------------------------------------------------------------\
@@ -245,6 +246,9 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 
    // save name ...
    _name = sInfo.sName;
+
+   // save length in seconds ...
+   _uiLength = sInfo.uiLength * 60;
 
    // create source url for image ...
    img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
@@ -460,6 +464,22 @@ void CVodBrowser::ChangeFontSize(int iSz)
 const QString& CVodBrowser::getShortContent()
 {
    return _shortContent;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get video length
+//
+//! \author  Jo2003
+//! \date    23.05.2014
+//
+//! \param   --
+//
+//! \return  length in seconds
+//---------------------------------------------------------------------------
+uint CVodBrowser::getLength()
+{
+   return _uiLength;
 }
 
 /************************* History ***************************\

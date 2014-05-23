@@ -73,6 +73,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.addMuteLab(ui->labSound);
    missionControl.addCngSlider(ui->posSlider);
    missionControl.addTimeLab(ui->labPos);
+   missionControl.addLengthLab(ui->labLength);
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addButton(ui->btnFullScreen,     QFusionControl::BTN_FS);
    missionControl.addButton(ui->btnSaveAspectCrop, QFusionControl::BTN_FRMT);
@@ -623,6 +624,9 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
    // while not showing video, disable spooling ...
    bSpoolPending = true;
    enableDisablePlayControl (false);
+
+   // set length ...
+   missionControl.setLength(showInfo.ends() - showInfo.starts());
 
    // get MRL ...
    QString     sMrl  = sCmdLine.section(";;", 0, 0);

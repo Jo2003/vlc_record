@@ -3299,6 +3299,8 @@ void Recorder::slotVodAnchor(const QUrl &link)
       showInfo.setPlayState(ePlayState);
       showInfo.setHtmlDescr(ui->vodBrowser->getShortContent());
       showInfo.setVodId(id);
+      showInfo.setStartTime(0);
+      showInfo.setEndTime(ui->vodBrowser->getLength());
 
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
@@ -3739,7 +3741,7 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
       // update show info in overlay display ...
-      missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+      missionControl.setVideoInfo(createVideoInfo(false));
 
       // done ...
       emit sigShowInfoUpdated();
@@ -5140,14 +5142,7 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel)
          ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
          // update show info in overlay display ...
-         if (showInfo.showType() == ShowInfo::VOD)
-         {
-             missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
-         }
-         else
-         {
-            missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
-         }
+         missionControl.setVideoInfo (createVideoInfo());
 
          vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
       }
@@ -5213,14 +5208,7 @@ int Recorder::StartVlcPlay (const QString &sURL)
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
       // update show info in overlay display ...
-      if (showInfo.showType() == ShowInfo::VOD)
-      {
-          missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
-      }
-      else
-      {
-         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
-      }
+      missionControl.setVideoInfo (createVideoInfo());
 
       vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
    }
@@ -5260,14 +5248,7 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
       // update show info in overlay display ...
-      if (showInfo.showType() == ShowInfo::VOD)
-      {
-         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
-      }
-      else
-      {
-         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
-      }
+      missionControl.setVideoInfo (createVideoInfo());
 
       streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sFileExt),
                                    Settings.GetBufferTime ());
@@ -6176,6 +6157,36 @@ void Recorder::loginOnly(const QString &resp)
    {
       pApiClient->SetCookie(s);
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   create video info for use in overlay control
+//
+//! \author  Jo2003
+//! \date    23.05.2014
+//
+//! \param   checkVod (bool) [default: true] take care for VOD as well
+//
+//! \return  info string
+//---------------------------------------------------------------------------
+QString Recorder::createVideoInfo(bool checkVod)
+{
+   QString sInfo;
+
+   // update show info in overlay display ...
+   if ((showInfo.showType() == ShowInfo::VOD) && checkVod)
+   {
+      sInfo = QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName());
+   }
+   else
+   {
+      sInfo = QString("<b>%1:</b> %2 (%3 - %4)").arg(showInfo.chanName()).arg(showInfo.showName())
+            .arg(QDateTime::fromTime_t(showInfo.starts()).toString("H:mm"))
+            .arg(QDateTime::fromTime_t(showInfo.ends()).toString("H:mm"));
+   }
+
+   return sInfo;
 }
 
 /************************* History ***************************\

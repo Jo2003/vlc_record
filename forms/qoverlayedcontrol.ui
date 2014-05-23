@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>489</width>
-    <height>121</height>
+    <width>525</width>
+    <height>122</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -120,7 +120,7 @@ border: 2px solid #888;
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>491</x>
+        <x>524</x>
         <y>7</y>
         <width>156</width>
         <height>68</height>
@@ -260,9 +260,9 @@ border: 2px solid #888;
      <widget class="QTextEdit" name="textEdit">
       <property name="geometry">
        <rect>
-        <x>18</x>
+        <x>16</x>
         <y>122</y>
-        <width>441</width>
+        <width>491</width>
         <height>101</height>
        </rect>
       </property>
@@ -274,12 +274,12 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>7</x>
         <y>7</y>
-        <width>484</width>
+        <width>518</width>
         <height>116</height>
        </rect>
       </property>
@@ -291,7 +291,7 @@ p, li { white-space: pre-wrap; }
         <widget class="QFrame" name="controlFrame">
          <property name="minimumSize">
           <size>
-           <width>460</width>
+           <width>500</width>
            <height>114</height>
           </size>
          </property>
@@ -837,16 +837,49 @@ border: 1px solid gray;
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="hLayoutPosSlider" stretch="10,0,0">
+           <layout class="QHBoxLayout" name="hLayoutPosSlider" stretch="0,10,0">
             <property name="spacing">
-             <number>2</number>
+             <number>4</number>
             </property>
             <property name="leftMargin">
-             <number>9</number>
+             <number>12</number>
             </property>
             <property name="rightMargin">
-             <number>9</number>
+             <number>0</number>
             </property>
+            <item>
+             <widget class="QTimeLabel" name="labTime">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>66</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel#labTime {
+color: #aaa;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
+              <property name="text">
+               <string>0:00:00</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="QClickAndGoSlider" name="posSlider">
               <property name="enabled">
@@ -918,45 +951,26 @@ QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_3">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>2</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QTimeLabel" name="labTime">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
+             <widget class="QTimeLabel" name="labLength">
               <property name="minimumSize">
                <size>
-                <width>66</width>
+                <width>56</width>
                 <height>0</height>
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">QLabel#labTime {
+               <string notr="true">QLabel#labLength {
 color: #aaa;
 }</string>
               </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Plain</enum>
-              </property>
-              <property name="lineWidth">
-               <number>0</number>
-              </property>
               <property name="text">
-               <string> 0:00:00</string>
+               <string>0:00:00</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::AutoText</enum>
+              </property>
+              <property name="scaledContents">
+               <bool>false</bool>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -987,21 +1001,27 @@ color: #aaa;
              <widget class="QPushButton" name="pushInfo">
               <property name="minimumSize">
                <size>
-                <width>80</width>
+                <width>100</width>
                 <height>16</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>80</width>
+                <width>100</width>
                 <height>16</height>
                </size>
               </property>
               <property name="toolTip">
                <string>Additional Information</string>
               </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#pushInfo{
+color: #aaa;
+font-size: 12px;
+}</string>
+              </property>
               <property name="text">
-               <string/>
+               <string>Information</string>
               </property>
               <property name="icon">
                <iconset resource="../common.qrc">

@@ -1159,6 +1159,25 @@ void QFusionControl::addTimeLab (QTimeLabel *pLab)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   put length label under control
+//
+//! \author  Jo2003
+//! \date    23.05.2014
+//
+//! \param   pLab (QTimeLabel *) pointer to QLabel
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::addLengthLab (QTimeLabel *pLab)
+{
+   // no buffer display for this label ...
+   pLab->useBuffer(false);
+
+   _lengthLabVector.append(pLab);
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   set time string to all time labels
 //
 //! \author  Jo2003
@@ -1173,6 +1192,25 @@ void QFusionControl::setTime(quint64 time)
    for (int i = 0; i < _timeLabVector.count(); i++)
    {
       _timeLabVector.at(i)->setTime(time);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set time string to all length labels
+//
+//! \author  Jo2003
+//! \date    23.05.2014
+//
+//! \param   time new time value
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::setLength(quint64 time)
+{
+   for (int i = 0; i < _lengthLabVector.count(); i++)
+   {
+      _lengthLabVector.at(i)->setTime(time);
    }
 }
 
@@ -1209,6 +1247,7 @@ void QFusionControl::setBuff(int iPercent)
 void QFusionControl::disconnectLab()
 {
    _timeLabVector.clear();
+   _lengthLabVector.clear();
    _muteLabel.clear();
    _infoLabel.clear();
 }

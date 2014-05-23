@@ -30,21 +30,10 @@ class QClickAndGoSlider : public QSlider
    Q_OBJECT
 
 public:
-   QClickAndGoSlider ( QWidget * parent = 0 )
-      : QSlider(parent), _isVideo(false)
-   {
-      init();
-   }
+   QClickAndGoSlider ( QWidget * parent = 0 );
+   QClickAndGoSlider ( Qt::Orientation orientation, QWidget * parent = 0 );
 
-   QClickAndGoSlider ( Qt::Orientation orientation, QWidget * parent = 0 )
-      : QSlider(orientation, parent), _isVideo(false)
-   {
-      init();
-   }
-
-   virtual ~QClickAndGoSlider ()
-   {
-   }
+   virtual ~QClickAndGoSlider ();
 
    //---------------------------------------------------------------------------
    //
@@ -59,10 +48,7 @@ public:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   virtual void setHandleRangeVal(int i)
-   {
-      _iHandleRange = i;
-   }
+   virtual void setHandleRangeVal(int i);
 
    //---------------------------------------------------------------------------
    //
@@ -75,10 +61,7 @@ public:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   void setVideo (bool val)
-   {
-      _isVideo = val;
-   }
+   void setVideo (bool val);
 
 protected:
 
@@ -93,11 +76,7 @@ protected:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   void init ()
-   {
-      _iHandleRange = 80;
-      setMouseTracking(true);
-   }
+   void init ();
 
    //---------------------------------------------------------------------------
    //
@@ -110,53 +89,7 @@ protected:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   virtual void mouseMoveEvent(QMouseEvent * event)
-   {
-      // create additional tooltip when using
-      // as video slider ...
-      if (_isVideo)
-      {
-         int pos;
-         int range = maximum() - minimum();
-         int dif;
-         QString tt;
-
-         if (orientation() == Qt::Vertical)
-         {
-            pos = (range * (height() - event->y())) / height();
-         }
-         else
-         {
-            pos = (range * event->x()) / width();
-         }
-
-         // get time from slider handle and mouse position ...
-         QTime tpos = QTime(0, 0).addSecs(pos);
-         QTime npos = QTime(0, 0).addSecs(value() - minimum());
-
-         // remove old tooltip (if exists) ...
-         if (!QToolTip::text().isEmpty())
-         {
-            QToolTip::showText(mapToGlobal(QPoint(0, 0)), "", this);
-         }
-
-         // get difference between slider handle and mouse position ...
-         dif = npos.secsTo(tpos);
-
-
-         QTime dtime = QTime(0, 0).addSecs(abs(dif));
-
-         // create tooltip string ...
-         tt = QString("%1 %2 -> %3").arg((dif < 0) ? "-" : "+")
-               .arg(dtime.toString((abs(dif) < 3600) ? "m:ss" : "H:mm:ss"))
-               .arg(tpos.toString("H:mm:ss"));
-
-         // display tooltip ...
-         QToolTip::showText(mapToGlobal(event->pos()), tt, this);
-      }
-
-      QSlider::mouseMoveEvent(event);
-   }
+   virtual void mouseMoveEvent(QMouseEvent * event);
 
    //---------------------------------------------------------------------------
    //
@@ -169,47 +102,7 @@ protected:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   virtual void mousePressEvent (QMouseEvent * event)
-   {
-      // left click ...
-      if (event->button() == Qt::LeftButton)
-      {
-         int pos;
-         int range = maximum() - minimum();
-
-         if (orientation() == Qt::Vertical)
-         {
-            pos = minimum() + (range * (height() - event->y())) / height();
-         }
-         else
-         {
-            pos = minimum() + (range * event->x()) / width();
-         }
-
-         // make sure pos is in between minimum and maximum ...
-         pos = (pos < minimum()) ? minimum() : ((pos > maximum()) ? maximum() : pos);
-
-         // check if position is different from slider ...
-         /// Note: We must use a practical threshold value here.
-         /// So we use the range which should be handled by
-         /// the slider / _iHandleRange so we must not click at the 100%
-         /// right position to get the "old" normal
-         /// slider behavior.
-         if (abs(value() - pos) > (range / _iHandleRange))
-         {
-            setValue(pos);
-            emit sigClickNGo(pos);
-            event->accept();
-
-            // no further handling needed ...
-            return;
-         }
-      }
-
-      // not handled --> delegate ...
-      event->ignore();
-      QSlider::mousePressEvent(event);
-   }
+   virtual void mousePressEvent (QMouseEvent * event);
 
 private:
    int  _iHandleRange;
