@@ -707,6 +707,9 @@ void QFusionControl::addMuteBtn(QCheckBox *pChk)
 //---------------------------------------------------------------------------
 void QFusionControl::slotMute(bool val)
 {
+   // synchronize ...
+   setMute(val);
+
    emit sigMute(val);
 }
 
@@ -725,7 +728,10 @@ void QFusionControl::setMute(bool val)
 {
    for (int i = 0; i < _muteButton.count(); i++)
    {
-      _muteButton.at(i)->setChecked(val);
+      if (_muteButton.at(i)->isChecked() != val)
+      {
+         _muteButton.at(i)->setChecked(val);
+      }
    }
 }
 
