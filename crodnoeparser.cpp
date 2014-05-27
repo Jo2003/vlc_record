@@ -36,14 +36,13 @@ CRodnoeParser::CRodnoeParser(QObject * parent) : CApiXmlParser(parent)
 |  Author: Jo2003
 |  Description: parse channel list
 |
-|  Parameters: ref. to response, ref. to chanList, fixTime flag
+|  Parameters: ref. to response, ref. to chanList
 |
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
 int CRodnoeParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList,
-                                         bool bFixTime)
+                                         QVector<cparser::SChan> &chanList)
 {
    int              iRV = 0;
    QXmlStreamReader xml;
@@ -71,7 +70,7 @@ int CRodnoeParser::parseChannelList (const QString &sResp,
          if (xml.name() == "groups")
          {
             // go into next level and parse groups ...
-            parseGroups(xml, chanList, bFixTime);
+            parseGroups(xml, chanList);
          }
          break;
 
@@ -100,12 +99,11 @@ int CRodnoeParser::parseChannelList (const QString &sResp,
 |  Author: Jo2003
 |  Description: parse group part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|  Parameters: ref. to xml parser, ref. to chanList
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                    bool bFixTime)
+int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
@@ -162,7 +160,7 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
                chanList.push_back(groupEntry);
 
                // go into next level (channels)
-               parseChannels(xml, chanList, bFixTime);
+               parseChannels(xml, chanList);
             }
          }
          else
@@ -194,12 +192,11 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
 |  Author: Jo2003
 |  Description: parse channels part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|  Parameters: ref. to xml parser, ref. to chanList
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                     bool bFixTime)
+int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
 {
    QString                sUnknown;
    cparser::SChan         chanEntry;
@@ -291,12 +288,6 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
             chanEntry.sProgramm = QString("%1\n%2").arg(mResults.value("title")).arg(mResults.value("info"));
             chanEntry.uiStart   = mResults.value("begin").toUInt();
             chanEntry.uiEnd     = mResults.value("end").toUInt();
-
-            if (bFixTime)
-            {
-               fixTime(chanEntry.uiStart);
-               fixTime(chanEntry.uiEnd);
-            }
          }
          else if (xml.name() == "hide")
          {

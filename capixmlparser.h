@@ -16,7 +16,6 @@
 
 #include <QXmlStreamReader>
 #include <QRegExp>
-#include <QDateTime>
 #include <QStringList>
 
 #include "clogfile.h"

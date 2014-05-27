@@ -19,9 +19,9 @@
 #include "qftsettings.h"
 #include "qfusioncontrol.h"
 #include "qcustparser.h"
-#include "ctimeshift.h"
 #include "chtmlwriter.h"
 #include "qchannelmap.h"
+#include "qdatetimesyncro.h"
 
 #ifdef Q_WS_X11
    #include <X11/Xlib.h>
@@ -39,6 +39,9 @@ CVlcRecDB *pDb;
 // make show info global available ...
 CShowInfo showInfo;
 
+// we need syncronized time ...
+QDateTimeSyncro tmSync;
+
 // fusion control ...
 QFusionControl missionControl;
 
@@ -52,9 +55,6 @@ ApiParser   *pApiParser;
 // global translaters ...
 QTranslator *pAppTransl;
 QTranslator *pQtTransl;
-
-// global timeshift class ...
-CTimeShift *pTs;
 
 // global html writer ...
 CHtmlWriter *pHtml;
@@ -102,11 +102,10 @@ int main(int argc, char *argv[])
    pAppTransl = new QTranslator(&app);
    pQtTransl  = new QTranslator(&app);
    pFolders   = new CDirStuff(&app);
-   pTs        = new CTimeShift(&app);
    pHtml      = new CHtmlWriter(&app);
    pChanMap   = new QChannelMap();
 
-   if (pFolders && pAppTransl && pQtTransl && pTs && pHtml && pChanMap)
+   if (pFolders && pAppTransl && pQtTransl && pHtml && pChanMap)
    {
       if (pFolders->isInitialized ())
       {

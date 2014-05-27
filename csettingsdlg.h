@@ -68,7 +68,6 @@ public:
 
     bool UseProxy ();
     bool AllowEros ();
-    bool FixTime ();
     bool HideToSystray ();
     bool AskForRecFile ();
     bool TranslitRecFile ();

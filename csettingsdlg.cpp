@@ -14,7 +14,10 @@
 #include <QRadioButton>
 #include <QTranslator>
 #include "qcustparser.h"
-#include "ctimeshift.h"
+#include "qdatetimesyncro.h"
+
+// global synchronized timer ...
+extern QDateTimeSyncro tmSync;
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -36,8 +39,6 @@ extern ApiParser *pApiParser;
 extern QTranslator *pAppTransl;
 extern QTranslator *pQtTransl;
 
-// global timeshift class ...
-extern CTimeShift *pTs;
 
 /* -----------------------------------------------------------------\
 |  Method: CSettingsDlg / constructor
@@ -235,7 +236,6 @@ void CSettingsDlg::readSettings()
    // check boxes ...
    m_ui->useProxy->setCheckState((Qt::CheckState)pDb->intValue("UseProxy"));
    m_ui->checkAdult->setCheckState((Qt::CheckState)pDb->intValue("AllowAdult"));
-   m_ui->checkFixTime->setCheckState((Qt::CheckState)pDb->intValue("FixTime"));
    m_ui->checkHideToSystray->setCheckState((Qt::CheckState)pDb->intValue("TrayHide"));
    m_ui->checkAskForName->setCheckState((Qt::CheckState)pDb->intValue("AskRecFile"));
    m_ui->checkTranslit->setCheckState((Qt::CheckState)pDb->intValue("TranslitRecFile"));
@@ -526,7 +526,6 @@ void CSettingsDlg::on_pushSave_clicked()
 
    // check boxes ...
    pDb->setValue("UseProxy", (int)m_ui->useProxy->checkState());
-   pDb->setValue("FixTime", (int)m_ui->checkFixTime->checkState());
    pDb->setValue("TrayHide", (int)m_ui->checkHideToSystray->checkState());
    pDb->setValue("AskRecFile", (int)m_ui->checkAskForName->checkState());
    pDb->setValue("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
@@ -834,7 +833,7 @@ void CSettingsDlg::on_cbxBitRate_activated(int index)
 void CSettingsDlg::on_cbxTimeShift_activated(int index)
 {
    // store global ...
-   pTs->setTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
+   tmSync.setTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 
    emit sigSetTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 }
@@ -1181,11 +1180,6 @@ bool CSettingsDlg::AllowEros()
    return m_ui->checkAdult->isChecked();
 }
 
-bool CSettingsDlg::FixTime()
-{
-   return m_ui->checkFixTime->isChecked();
-}
-
 bool CSettingsDlg::HideToSystray()
 {
    return m_ui->checkHideToSystray->isChecked();
@@ -1426,7 +1420,7 @@ void CSettingsDlg::slotBuildChanManager(const QString &str)
 
    channelVector.clear();
 
-   if (!pApiParser->parseChannelList(str, channelVector, false))
+   if (!pApiParser->parseChannelList(str, channelVector))
    {
       m_ui->listHide->clear();
 

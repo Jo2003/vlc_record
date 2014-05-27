@@ -41,13 +41,11 @@ CStdJsonParser::CStdJsonParser(QObject * parent) : CApiParser(parent)
 //
 //! \param   sResp (const QString &) ref. to response string
 //! \param   chanList (QVector<cparser::SChan> &) data vector
-//! \param   bFixTime (bool) flag for time correction
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList,
-                                         bool bFixTime)
+                                         QVector<cparser::SChan> &chanList)
 {
 
    int                 iRV     = 0;
@@ -109,12 +107,6 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
                   chan.uiStart      = channObj.value("epg_start").toVariant().toUInt();
                   chan.uiEnd        = channObj.value("epg_end").toVariant().toUInt();
                   chan.bIsHidden    = channObj.value("hide").toVariant().toBool();
-
-                  if (bFixTime)
-                  {
-                     fixTime(chan.uiStart);
-                     fixTime(chan.uiEnd);
-                  }
 
                   QJsonArray  strParams = channObj.value("stream_params").toArray();
                   QJsonObject stpObj;

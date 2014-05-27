@@ -61,7 +61,6 @@
 #include "qexpirenotifydlg.h"
 #include "qstringfilterwidgetaction.h"
 #include "qwatchlistdlg.h"
-#include "ctimeshift.h"
 #include "qchannelmap.h"
 #include <QStackedLayout>
 #include "qvlcvideowidget.h"
@@ -139,6 +138,15 @@ public:
    Recorder(QWidget *parent = 0);
     ~Recorder();
 
+   // cache request for later use ...
+   typedef struct ReqItem {
+      ReqItem():bValid(false){}
+      bool            bValid;
+      CIptvDefs::EReq req;
+      QVariant        par_1;
+      QVariant        par_2;
+   } reqItem_t;
+
 public slots:
     virtual void show();
     void slotRestoreMinimized ();
@@ -192,6 +200,7 @@ private:
     QHlsControl                    *pHlsControl;
     QAuthDlg                        authDlg;
     QWaitWidget                     waitWidget;
+    reqItem_t                       reRequest;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -325,7 +334,6 @@ private slots:
     void slotPlayHls(const QString& s);
     void stopOnDemand();
     void slotVodLang(const QString &str);
-    void slotSSrvChgd (const QString &str);
 
 signals:
     void sigShow ();

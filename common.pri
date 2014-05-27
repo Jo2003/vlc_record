@@ -57,7 +57,6 @@ SOURCES += main.cpp \
     qnotifydlg.cpp \
     qupdatenotifydlg.cpp \
     qwatchlistdlg.cpp \
-    ctimeshift.cpp \
     chtmlwriter.cpp \
     qoverlayicon.cpp \
     qchannelmap.cpp \
@@ -68,7 +67,8 @@ SOURCES += main.cpp \
     qexpirenotifydlg.cpp \
     qauthdlg.cpp \
     qwaitwidget.cpp \
-    qclickandgoslider.cpp
+    qclickandgoslider.cpp \
+    qdatetimesyncro.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -115,7 +115,6 @@ HEADERS += recorder.h \
     qupdatenotifydlg.h \
     qstringfilterwidgetaction.h \
     qwatchlistdlg.h \
-    ctimeshift.h \
     chtmlwriter.h \
     qoverlayicon.h \
     qchannelmap.h \
@@ -128,7 +127,8 @@ HEADERS += recorder.h \
     qhlscontrol.h \
     qexpirenotifydlg.h \
     qauthdlg.h \
-    qwaitwidget.h
+    qwaitwidget.h \
+    qdatetimesyncro.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

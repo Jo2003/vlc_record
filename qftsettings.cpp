@@ -174,7 +174,6 @@ void QFTSettings::saveFTSettings()
 #else
    pDb->setValue("TargetDir",    tr("%1/Videos").arg(QDir::homePath()));
 #endif
-   pDb->setValue("FixTime",      (int)Qt::Checked);  // fix time
    pDb->setValue("PlayerModule", "5_libvlc.mod");    // default player module
 #ifdef _IS_OEM
    pDb->setValue("HttpCache",    3000);              // 3 sec. cache

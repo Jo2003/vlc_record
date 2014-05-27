@@ -43,7 +43,7 @@ public:
 
    // new functions for use with API ...
    virtual int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
-   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList);
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
    virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);

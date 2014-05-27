@@ -771,12 +771,28 @@ border: 1px solid gray;
              </spacer>
             </item>
             <item>
-             <widget class="QLabel" name="labSound">
+             <widget class="QCheckBox" name="checkMute">
+              <property name="styleSheet">
+               <string notr="true"> QCheckBox#checkMute {
+     spacing: 5px;
+ }
+
+QCheckBox#checkMute::indicator {
+     width:  24px;
+     height: 24px;
+}
+
+QCheckBox#checkMute::indicator:unchecked {
+     image: url(:/player/sound_on);
+}
+
+QCheckBox#checkMute::indicator:checked {
+     image: url(:/player/sound_off);
+}
+</string>
+              </property>
               <property name="text">
                <string/>
-              </property>
-              <property name="pixmap">
-               <pixmap resource="../common.qrc">:/player/sound_on</pixmap>
               </property>
              </widget>
             </item>
@@ -1002,13 +1018,13 @@ color: #aaa;
               <property name="minimumSize">
                <size>
                 <width>100</width>
-                <height>16</height>
+                <height>20</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>100</width>
-                <height>16</height>
+                <height>20</height>
                </size>
               </property>
               <property name="toolTip">

@@ -11,7 +11,6 @@
  *  $Id$
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
-#include <QDateTime>
 #include <QStringList>
 #include <QUrlQuery>
 #include "qwatchlistdlg.h"
@@ -19,17 +18,17 @@
 #include "templates.h"
 #include "small_helpers.h"
 #include "clogfile.h"
-#include "ctimeshift.h"
 #include "chtmlwriter.h"
+#include "qdatetimesyncro.h"
+
+// global syncronized time ...
+extern QDateTimeSyncro tmSync;
 
 // storage db ...
 extern CVlcRecDB *pDb;
 
 // for logging ...
 extern CLogFile VlcLog;
-
-// global timeshift class ...
-extern CTimeShift *pTs;
 
 // global html writer ...
 extern CHtmlWriter *pHtml;
@@ -145,7 +144,7 @@ void QWatchListDlg::buildWatchTab()
          line = "";
 
          // handle old / very new entries ...
-         if ((iRet = CSmallHelpers::archiveAvailable(vE.at(i).uiStart)) == -2)
+         if ((iRet = CSmallHelpers::archiveAvailable(vE.at(i).uiStart, tmSync)) == -2)
          {
             // old entries should be deleted already (cleanWatchList())
             // so this shouldn't happen ...
@@ -233,7 +232,7 @@ void QWatchListDlg::buildWatchTab()
          // there might be no end time ...
          len  = vE.at(i).uiEnd ? QString(" (%1)").arg(tr("%1 min.").arg((vE.at(i).uiEnd - vE.at(i).uiStart) / 60)) : "";
 
-         row  = pTs->fromGmtFormatted(vE.at(i).uiStart, "dd. MMM. yyyy, hh:mm") + len + "<br /> <br />" + act;
+         row  = tmSync.gmtToTsFormatted(vE.at(i).uiStart, "dd. MMM. yyyy, hh:mm") + len + "<br /> <br />" + act;
          row  = pHtml->tableCell(row , (i % 2) ? TMPL_A_STYLE : TMPL_B_STYLE);
          row += pHtml->tableCell(line, (i % 2) ? TMPL_A_STYLE : TMPL_B_STYLE);
 
@@ -336,7 +335,7 @@ int QWatchListDlg::count()
 //---------------------------------------------------------------------------
 int QWatchListDlg::cleanWatchList()
 {
-   uint      now       = QDateTime::currentDateTime().toTime_t();
+   uint      now       = tmSync.syncronizedTime_t();
    uint      uiArchLow = now - MAX_ARCHIV_AGE;   // no older than 2 weeks
    QSqlQuery q;
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>533</width>
-    <height>484</height>
+    <width>621</width>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -279,13 +279,6 @@
                </widget>
               </item>
              </layout>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="checkFixTime">
-              <property name="text">
-               <string>Try to fix time offset</string>
-              </property>
-             </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkAdvanced">
@@ -705,7 +698,16 @@ color: red;
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="margin">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
         <number>0</number>
        </property>
        <item>
@@ -763,7 +765,16 @@ color: red;
            <property name="spacing">
             <number>2</number>
            </property>
-           <property name="margin">
+           <property name="leftMargin">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>3</number>
+           </property>
+           <property name="rightMargin">
+            <number>3</number>
+           </property>
+           <property name="bottomMargin">
             <number>3</number>
            </property>
            <item>
@@ -843,8 +854,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>235</width>
-                     <height>192</height>
+                     <width>98</width>
+                     <height>28</height>
                     </rect>
                    </property>
                   </widget>
@@ -995,8 +1006,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>222</width>
-                     <height>134</height>
+                     <width>98</width>
+                     <height>489</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1181,7 +1192,6 @@ color: red;
   <tabstop>cbxTimeShift</tabstop>
   <tabstop>cbxLanguage</tabstop>
   <tabstop>pushDelLogos</tabstop>
-  <tabstop>checkFixTime</tabstop>
   <tabstop>checkAdvanced</tabstop>
   <tabstop>tableShortCuts</tabstop>
   <tabstop>btnResetShortcuts</tabstop>

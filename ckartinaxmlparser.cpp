@@ -36,14 +36,13 @@ CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : CApiXmlParser(parent)
 |  Author: Jo2003
 |  Description: parse channel list
 |
-|  Parameters: ref. to response, ref. to chanList, fixTime flag
+|  Parameters: ref. to response, ref. to chanList
 |
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList,
-                                         bool bFixTime)
+                                         QVector<cparser::SChan> &chanList)
 {
    int              iRV = 0;
    QXmlStreamReader xml;
@@ -62,7 +61,7 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
          if (xml.name() == "groups")
          {
             // go into next level and parse groups ...
-            parseGroups(xml, chanList, bFixTime);
+            parseGroups(xml, chanList);
          }
          break;
 
@@ -91,12 +90,11 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
 |  Author: Jo2003
 |  Description: parse group part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|  Parameters: ref. to xml parser, ref. to chanList
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                    bool bFixTime)
+int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
@@ -146,7 +144,7 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
                chanList.push_back(groupEntry);
 
                // go into next level (channels)
-               parseChannels(xml, chanList, bFixTime);
+               parseChannels(xml, chanList);
             }
          }
          else
@@ -178,12 +176,11 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
 |  Author: Jo2003
 |  Description: parse channels part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|  Parameters: ref. to xml parser, ref. to chanList
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                     bool bFixTime)
+int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
 {
    QString        sUnknown;
    cparser::SChan chanEntry;
@@ -253,11 +250,6 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.uiStart = xml.text().toString().toUInt();
-
-               if (bFixTime)
-               {
-                  fixTime(chanEntry.uiStart);
-               }
             }
          }
          else if (xml.name() == "epg_end")
@@ -265,11 +257,6 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.uiEnd = xml.text().toString().toUInt();
-
-               if (bFixTime)
-               {
-                  fixTime(chanEntry.uiEnd);
-               }
             }
          }
          else if (xml.name() == "hide")

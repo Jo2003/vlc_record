@@ -13,14 +13,15 @@
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "capiparser.h"
 #include <QColor>
-#include "ctimeshift.h"
 #include "small_helpers.h"
+#include "qdatetimesyncro.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
 
-// global timeshift class ...
-extern CTimeShift *pTs;
+// global syncronized timer ...
+extern QDateTimeSyncro tmSync;
+
 
 //---------------------------------------------------------------------------
 //
@@ -35,8 +36,6 @@ extern CTimeShift *pTs;
 //---------------------------------------------------------------------------
 CApiParser::CApiParser(QObject * parent) : QObject(parent)
 {
-   iOffset    = 0;
-
    // define some nice colors ...
    slAltColors << "#ef0000" << "#00ef00" << "#0000ef"
                << "#efef00" << "#ef00ef" << "#00efef"
@@ -76,73 +75,14 @@ CApiParser::~CApiParser()
 //---------------------------------------------------------------------------
 void CApiParser::checkTimeOffSet (const uint &uiSrvTime)
 {
-   /// Note:
-   /// This function is a little tricky ...
-   /// Try to find out the real difference between the
-   /// time kartina.tv assumes for us and the real time
-   /// running on this machine ...
-   /// Round offset to full 30 minutes (min. timezone step)
-
    // get difference between kartina.tv and our time ...
    int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t() - uiSrvTime);
 
-   // round offset to full timezone step ...
-   int iHalfHours = qRound ((double)iOffSec / (double)DEF_TZ_STEP);
-
-   if (iHalfHours)
+   if (abs(iOffSec) > 10)
    {
-      iOffset = iHalfHours * DEF_TZ_STEP;
+      tmSync.setOffset(iOffSec);
+      mInfo(tr("Set time offset to %1 seconds!").arg(iOffSec));
    }
-   else
-   {
-      iOffset = 0;
-   }
-
-   if (iOffset)
-   {
-      mInfo(tr("Set time offset to %1 seconds!").arg(iOffset));
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   fix time in channel list as sent from server
-//
-//! \author  Jo2003
-//! \date    15.04.2013
-//
-//! \param   uiSrvTime (uint &) ref. to time stamp
-//
-//! \return  0 --> unchanged; 1 --> fixed
-//---------------------------------------------------------------------------
-int CApiParser::fixTime (uint &uiTime)
-{
-   if (iOffset)
-   {
-      // add offset ...
-      // note that offset can be negative ...
-      uiTime += iOffset;
-
-      return 1;
-   }
-
-   return 0;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   return time offset
-//
-//! \author  Jo2003
-//! \date    17.04.2013
-//
-//! \param   --
-//
-//! \return  time offset in seconds
-//---------------------------------------------------------------------------
-int CApiParser::GetFixTime()
-{
-   return iOffset;
 }
 
 //---------------------------------------------------------------------------
@@ -346,7 +286,7 @@ int CApiParser::handleTsStuff(QVector<cparser::SChan> &chanList)
          /// Hack: if vTs.count() is 1 or 2: -> kartina.tv WITHOUT timeshift!
          if (!CSmallHelpers::inBetween(1, 2, chanList[i].vTs.count()))
          {
-            chanList[i].iTs        = pTs->timeShift() * 3600;
+            chanList[i].iTs        = tmSync.timeShift() * 3600;
             chanList[i].bHasTsInfo = true;
          }
       }

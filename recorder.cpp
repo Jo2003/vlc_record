@@ -18,6 +18,10 @@
 #include "qcustparser.h"
 #include "chtmlwriter.h"
 #include "qoverlayicon.h"
+#include "qdatetimesyncro.h"
+
+// global syncronized time ...
+extern QDateTimeSyncro tmSync;
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -44,9 +48,6 @@ extern ApiParser *pApiParser;
 // global translaters ...
 extern QTranslator *pAppTransl;
 extern QTranslator *pQtTransl;
-
-// global timeshift class ...
-extern CTimeShift *pTs;
 
 // global html writer ...
 extern CHtmlWriter *pHtml;
@@ -114,7 +115,7 @@ Recorder::Recorder(QWidget *parent)
    // init account info ...
    accountInfo.bHasArchive = false;
    accountInfo.bHasVOD     = false;
-   accountInfo.sExpires    = QDateTime::currentDateTime().toString(DEF_TIME_FORMAT);
+   accountInfo.sExpires    = tmSync.currentDateTimeSync().toString(DEF_TIME_FORMAT);
 
    // init genre info ...
    genreInfo.iCount        = 0;
@@ -277,6 +278,7 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigRec()), this, SLOT(slotRecord()));
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
+   connect (&missionControl, SIGNAL(sigMute(bool)), ui->player, SLOT(slotMute()));
 
 #ifdef _TASTE_IPTV_RECORD
    connect (pMnLangFilter, SIGNAL(triggered(QAction*)), this, SLOT(slotLangFilterChannelList(QAction*)));
@@ -622,6 +624,32 @@ void Recorder::on_pushSettings_clicked()
 
    if (Settings.exec() == QDialog::Accepted)
    {
+      // in case we're playing a stream we should continue it after
+      // settings took effect ...
+      // only takes effect when using internal player ...
+      if (vlcCtrl.withLibVLC() && (ePlayState == IncPlay::PS_PLAY))
+      {
+         if (showInfo.showType() == ShowInfo::Live)
+         {
+            // create request to get current channel ...
+            reRequest.bValid = true;
+            reRequest.req    = CIptvDefs::REQ_STREAM;
+            reRequest.par_1  = showInfo.channelId();
+            reRequest.par_2  = showInfo.pCode();
+         }
+         else if (showInfo.showType() == ShowInfo::Archive)
+         {
+            // create request to get current channel / position ...
+            quint64 pos = ui->player->getSilderPos();
+            QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
+
+            reRequest.bValid = true;
+            reRequest.req    = CIptvDefs::REQ_ARCHIV;
+            reRequest.par_1  = req;
+            reRequest.par_2  = showInfo.pCode();
+         }
+      }
+
       // if changes where saved, accept it here ...
       VlcLog.SetLogLevel(Settings.GetLogLevel());
 
@@ -754,7 +782,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                showInfo.setShowName(chan.sProgramm);
                showInfo.setStartTime(chan.uiStart);
                showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setDefAStream((int)chan.uiDefAud);
@@ -822,10 +850,9 @@ void Recorder::on_lineSearch_returnPressed()
 \----------------------------------------------------------------- */
 void Recorder::on_pushTimerRec_clicked()
 {
-   uint now = QDateTime::currentDateTime().toTime_t();
+   uint now = tmSync.syncronizedTime_t();
    int  cid = getCurrentCid();
 
-   // timeRec.SetRecInfo(now, now, -1);
    timeRec.SetRecInfo(now, now, cid);
    timeRec.exec();
 }
@@ -1178,7 +1205,7 @@ void Recorder::on_pushLive_clicked()
             showInfo.setShowType(ShowInfo::Live);
             showInfo.setShowName(chan.sProgramm);
             showInfo.setStartTime(chan.uiStart);
-            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+            showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
             showInfo.setEndTime(chan.uiEnd);
             showInfo.setPCode(secCodeDlg.passWd());
             showInfo.setPlayState(IncPlay::PS_PLAY);
@@ -1226,7 +1253,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                showInfo.setShowType(ShowInfo::Live);
                showInfo.setShowName(chan.sProgramm);
                showInfo.setStartTime(chan.uiStart);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
                showInfo.setEndTime(chan.uiEnd);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setPlayState(IncPlay::PS_PLAY);
@@ -1354,7 +1381,7 @@ void Recorder::slotPlay()
                showInfo.setShowName(chan.sProgramm);
                showInfo.setStartTime(chan.uiStart);
                showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+               showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setDefAStream((int)chan.uiDefAud);
@@ -1470,7 +1497,7 @@ void Recorder::slotRecord()
                   showInfo.setShowName(chan.sProgramm);
                   showInfo.setStartTime(chan.uiStart);
                   showInfo.setEndTime(chan.uiEnd);
-                  showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+                  showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
                   showInfo.setPCode(secCodeDlg.passWd());
                   showInfo.setPlayState(IncPlay::PS_RECORD);
                   showInfo.setDefAStream((int)chan.uiDefAud);
@@ -1671,12 +1698,9 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_LOGIN_ONLY, loginOnly(resp));
 
    ///////////////////////////////////////////////
-   // response for stream server changed ...
-   mkCase(CIptvDefs::REQ_SERVER, slotSSrvChgd(resp));
-
-   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
+   mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
    mkCase(CIptvDefs::REQ_REM_VOD_FAV, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SET_VOD_MANAGER, slotUnused(resp));
@@ -1981,14 +2005,14 @@ void Recorder::slotCookie (const QString &str)
 
       if (accountInfo.dtExpires.isValid())
       {
-         int iDaysTo = QDateTime::currentDateTime().daysTo(accountInfo.dtExpires);
+         int iDaysTo = tmSync.currentDateTimeSync().daysTo(accountInfo.dtExpires);
 
          // be sure to don't tell about negative days ... !
          if ((iDaysTo >= 0) && (iDaysTo <= 7))
          {
             qint64 llCheck = pDb->stringValue("ExpNextRemind").toLongLong();
 
-            if (QDateTime::currentDateTime().toTime_t() > llCheck)
+            if (tmSync.syncronizedTime_t() > llCheck)
             {
                QString content = tr("Your subscription will end in %1 day(s).<br />Visit %2 to renew it!")
                      .arg(iDaysTo)
@@ -2063,8 +2087,8 @@ void Recorder::slotCookie (const QString &str)
          mInfo(tr("Using following timeshift: %1").arg(actVal));
       }
 
-      // set timeshift to global ts class ...
-      pTs->setTimeShift(Settings.getTimeShift());
+      // set timeshift to global class ...
+      tmSync.setTimeShift(Settings.getTimeShift());
 
       // bitrate
       values.clear();
@@ -2129,7 +2153,7 @@ void Recorder::slotChanList (const QString &str)
 
    waitWidget.longWaitHide();
 
-   if (!pApiParser->parseChannelList(str, chanList, Settings.FixTime()))
+   if (!pApiParser->parseChannelList(str, chanList))
    {
       // handle timeshift stuff if needed ...
       pApiParser->handleTsStuff(chanList);
@@ -2176,7 +2200,7 @@ void Recorder::slotEPG(const QString &str)
 {
    QVector<cparser::SEpg> epg;
 
-   QDateTime   epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
+   QDateTime   epgTime = tmSync.currentDateTimeSync().addDays(iEpgOffset);
    QModelIndex idx     = ui->channelList->currentIndex();
 
    if (idx.isValid())
@@ -2204,6 +2228,14 @@ void Recorder::slotEPG(const QString &str)
 
             TouchPlayCtrlBtns();
             ui->channelList->setFocus(Qt::OtherFocusReason);
+
+            // EPG is there ... we might need
+            // to restart a stream ... ?!
+            if (reRequest.bValid)
+            {
+               reRequest.bValid = false;
+               pApiClient->queueRequest(reRequest.req, reRequest.par_1, reRequest.par_2);
+            }
 
             // update vod stuff only at startup ...
             if (accountInfo.bHasVOD)
@@ -2276,7 +2308,7 @@ void Recorder::slotEPGCurrent (const QString &str)
          // update EPG browser if needed ...
          if ((keyList.at(i) == ui->textEpg->GetCid()) && !iEpgOffset)
          {
-            if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < QDateTime::currentDateTime().date())
+            if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < tmSync.currentDateTimeSync().date())
             {
                // update EPG ...
                pApiClient->queueRequest(CIptvDefs::REQ_EPG, keyList.at(i));
@@ -2663,7 +2695,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 
    if (pChanMap->contains(cid, true))
    {
-      QDateTime epgTime  = QDateTime::currentDateTime().addDays(iEpgOffset);
+      QDateTime epgTime  = tmSync.currentDateTimeSync().addDays(iEpgOffset);
       int       iDay     = epgTime.date().dayOfWeek() - 1;
       int       iOffBack = iEpgOffset;
 
@@ -3641,7 +3673,7 @@ void Recorder::slotUpdateAnswer (const QString &str)
          bool   bDispl  = true;
 
          if ((updInfo.iMajor == iMajor) && (updInfo.iMinor == iMinor)
-             && ((llCheck == -1) || (QDateTime::currentDateTime().toTime_t() < llCheck)))
+             && ((llCheck == -1) || (tmSync.syncronizedTime_t() < llCheck)))
          {
             bDispl = false;
          }
@@ -3711,10 +3743,10 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
                else
                {
                   // channel map wasn't updated so far -> request update ...
-                  if ((showInfo.epgUpdTime() + EPG_UPD_TMOUT) < QDateTime::currentDateTime().toTime_t())
+                  if ((showInfo.epgUpdTime() + EPG_UPD_TMOUT) < tmSync.syncronizedTime_t())
                   {
                      // set timestamp ...
-                     showInfo.setEpgUpdTime(QDateTime::currentDateTime().toTime_t());
+                     showInfo.setEpgUpdTime(tmSync.syncronizedTime_t());
 
                      // make sure that next channel list update doesn't come to quick ...
                      Refresh.start(60000);
@@ -3939,7 +3971,7 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
    int             cid, i, iPos;
    cparser::SChan  chanEntry;
    QStringList     updChannels;
-   uint            now = QDateTime::currentDateTime().toTime_t();
+   uint            now = tmSync.syncronizedTime_t();
 
    for (i = 0; i < pModel->rowCount(); i++)
    {
@@ -4297,47 +4329,6 @@ void Recorder::slotStayOnTop(bool on)
    {
       stayOnTop(bStayOnTop);
       show();
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   stream server was changed [slot]
-//
-//! \author  Jo2003
-//! \date    19.05.2014
-//
-//! \param   str (const QString &) response string
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void Recorder::slotSSrvChgd(const QString &str)
-{
-   Q_UNUSED(str)
-
-   // only takes effect when using internal player ...
-   if (vlcCtrl.withLibVLC())
-   {
-      // in case a stream is played we should stop and restart so
-      // the new stream server takes effect ...
-
-      if (ePlayState == IncPlay::PS_PLAY)
-      {
-         if (showInfo.showType() == ShowInfo::Live)
-         {
-            // simply re-request live stream url ...
-            ui->player->silentStop();
-            pApiClient->queueRequest(CIptvDefs::REQ_STREAM, showInfo.channelId(), showInfo.pCode());
-         }
-         else if (showInfo.showType() == ShowInfo::Archive)
-         {
-            // request stream url taking care about the time it already runs ...
-            quint64 pos = ui->player->getSilderPos();
-            QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
-            ui->player->silentStop();
-            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
-         }
-      }
    }
 }
 
@@ -4903,7 +4894,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    int         iChanCount =  0;
    int         iLastChan  = -1;
    int         iPos;
-   uint        now = QDateTime::currentDateTime().toTime_t();
+   uint        now = tmSync.syncronizedTime_t();
    QModelIndex idx = ui->channelList->currentIndex();
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
@@ -5002,7 +4993,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             }
 
             // progress position ...
-            iPos = (int)(QDateTime::currentDateTime().toTime_t() - (chanlist[i].uiStart + chanlist[i].iTs));
+            iPos = (int)(tmSync.syncronizedTime_t() - (chanlist[i].uiStart + chanlist[i].iTs));
 
             // insert data ...
             pItem->setData(chanlist[i].iId,                       channellist::cidRole);
@@ -5046,7 +5037,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 //---------------------------------------------------------------------------
 QString Recorder::recFileName (const QString& name, QString &ext)
 {
-   QDateTime now      = QDateTime::currentDateTime();
+   QDateTime now      = tmSync.currentDateTimeSync();
    QString   fileName;
 
    // a good default ...

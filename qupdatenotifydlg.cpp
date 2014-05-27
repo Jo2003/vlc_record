@@ -15,7 +15,10 @@
 
 #include "cvlcrecdb.h"
 
-#include <QDateTime>
+#include "qdatetimesyncro.h"
+
+// global syncronized time ...
+extern QDateTimeSyncro tmSync;
 
 // db storage class ...
 extern CVlcRecDB *pDb;
@@ -112,7 +115,7 @@ void QUpdateNotifyDlg::on_btnRemind_clicked()
 
    if (llOffs != -1)
    {
-      llOffs = QDateTime::currentDateTime().toTime_t() + (llOffs * 3600 * 24);
+      llOffs = tmSync.syncronizedTime_t() + (llOffs * 3600 * 24);
    }
 
    pDb->setValue("UpdMinor"    , _iMinor);

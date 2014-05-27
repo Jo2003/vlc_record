@@ -13,7 +13,10 @@
 #include "crodnoeclient.h"
 #include "small_helpers.h"
 #include "qcustparser.h"
-#include "ctimeshift.h"
+#include "qdatetimesyncro.h"
+
+// global syncronized timer ...
+extern QDateTimeSyncro tmSync;
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -763,7 +766,7 @@ void CRodnoeClient::GetEPG(int iChanID, int iOffset)
 {
    mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
 
-   QDateTime dt(QDate::currentDate().addDays(iOffset));
+   QDateTime dt(tmSync.currentDateTimeSync().date().addDays(iOffset));
 
    q_post((int)CIptvDefs::REQ_EPG, sApiUrl + "get_epg",
           QString("cid=%1&from_uts=%2&hours=24&time_shift=%3").arg(iChanID).arg(dt.toTime_t()).arg(pTs->timeShift()));

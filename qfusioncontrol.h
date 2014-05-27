@@ -20,6 +20,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QMutex>
+#include <QCheckBox>
 
 #include "qclickandgoslider.h"
 #include "qtimelabel.h"
@@ -72,6 +73,7 @@ public:
    void addTimeLab (QTimeLabel *pLab);
    void addLengthLab (QTimeLabel *pLab);
    void addMuteLab (QLabel *pLab);
+   void addMuteBtn (QCheckBox *pChk);
    void enableBtn (bool enable, eBtnRole role);
    void setVolSliderPosition (int vol);
    void setVolume (int vol);
@@ -92,6 +94,7 @@ public:
    void setBuff(int iPercent);
    void btnSetIcon (const QIcon &icon, eBtnRole role);
    void setMutePixmap (const QPixmap &pix);
+   bool muted();
 
    // video display format comboboxes ...
    void addVidFormCbx (QComboBoxEx *cbx, eVidForCbxRole role);
@@ -106,8 +109,8 @@ public:
    void addInfoLab (QMoveHandle *pLab);
    void setVideoInfo(const QString &str);
    void setLength(quint64 time);
+   void setMute(bool val);
 
-   
 signals:
    void sigVolSliderMoved (int vol);
    void sigPlay ();
@@ -124,6 +127,7 @@ signals:
    void sigPosSliderValueChanged (int pos);
    void sigAspectCurrentIndexChanged (int pos);
    void sigCropCurrentIndexChanged (int pos);
+   void sigMute (bool val);
 
 protected:
    void disconnectBtn ();
@@ -131,6 +135,7 @@ protected:
    void disconnectCbx ();
    void disconnectCng ();
    void disconnectLab ();
+   void disconnectMute ();
    
 public slots:
 
@@ -153,6 +158,7 @@ private slots:
    void slotAddPopup ();
    void slotRemPopup ();
    void slotSaveVideoFormat ();
+   void slotMute (bool val);
 
 private:
    // volume slider ...
@@ -168,6 +174,10 @@ private:
    QVector<QPushButton *>       _frmtBtnVector;
    QVector<QPushButton *>       _scrShtBtnVector;
    QVector<QPushButton *>       _wndModBtnVector;
+
+   // check boxes ...
+   QVector<QCheckBox *>         _muteButton;
+
 
    // time jump combobox ...
    QVector<QComboBoxEx *>       _jumpCbxVector;
