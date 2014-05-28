@@ -4128,8 +4128,6 @@ void Recorder::slotTriggeredLogout()
 //---------------------------------------------------------------------------
 void Recorder::slotFilterChannelList(QString filter)
 {
-   pFilterMenu->hide();
-
    QChanList                 cl, tmpCl;
    QGrpVector::ConstIterator cit;
    cparser::SChan            grp, chan;

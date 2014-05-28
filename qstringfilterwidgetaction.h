@@ -20,6 +20,7 @@
 #include <QLabel>
 #include <QEvent>
 #include <QPushButton>
+#include <QTimer>
 
 //---------------------------------------------------------------------------
 //! \class   QStringFilterWidgetAction
@@ -44,9 +45,12 @@ public:
    //! \return  --
    //---------------------------------------------------------------------------
    QStringFilterWidgetAction(QObject *parent = 0)
-      : QWidgetAction(parent), _lab(NULL), _line(NULL), _ok(NULL)
+      : QWidgetAction(parent), _lab(NULL), _line(NULL)
    {
+      _tCheck.setSingleShot(true);
+      _tCheck.setInterval(500);
 
+      connect(&_tCheck, SIGNAL(timeout()), this, SLOT(slotFilter()));
    }
 
    //---------------------------------------------------------------------------
@@ -85,7 +89,7 @@ public:
 private:
    QLabel      *_lab;
    QLineEdit   *_line;
-   QPushButton *_ok;
+   QTimer       _tCheck;
 
 protected:
    //---------------------------------------------------------------------------
@@ -106,24 +110,16 @@ protected:
 
       _lab           = new QLabel(tr("Channel filter: "), w);
       _line          = new QLineEdit(w);
-      _ok            = new QPushButton(QIcon(":/app/set"), "", w);
-
-      _ok->setMinimumSize(24, 24);
-      _ok->setMaximumSize(24, 24);
-      _ok->setIconSize(QSize(16, 16));
-      _ok->setFlat(true);
 
       l->setSpacing(2);
       l->setMargin(4);
 
       l->addWidget(_lab);
       l->addWidget(_line, 10);
-      l->addWidget(_ok);
 
       w->setLayout(l);
 
-      connect(_ok  , SIGNAL(clicked())      , this, SLOT(slotFilter()));
-      connect(_line, SIGNAL(returnPressed()), this, SLOT(slotFilter()));
+      connect(_line, SIGNAL(textEdited(QString)), &_tCheck, SLOT(start()));
 
       return w;
    }
