@@ -24,9 +24,6 @@ extern QCustParser *pCustomization;
 // log file functions ...
 extern CLogFile VlcLog;
 
-// global timeshift class ...
-extern CTimeShift *pTs;
-
 /*-----------------------------------------------------------------------------\
 | Function:    CRodnoeClient / constructor
 |
