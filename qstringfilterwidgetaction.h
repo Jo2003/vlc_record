@@ -120,6 +120,7 @@ protected:
       w->setLayout(l);
 
       connect(_line, SIGNAL(textEdited(QString)), &_tCheck, SLOT(start()));
+      connect(_line, SIGNAL(returnPressed()), parent, SLOT(hide()));
 
       return w;
    }
