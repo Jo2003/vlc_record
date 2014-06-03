@@ -37,10 +37,15 @@ extern CLogFile VlcLog;
 QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
    QNetworkAccessManager(parent)
 {
-   bCSet = false;
-   bBusy = false;
+   // we need this for online state ...
+   _pNetConfMgr = new QNetworkConfigurationManager (this);
+
+   bCSet        = false;
+   bBusy        = false;
+   bOnline      = _pNetConfMgr->isOnline();
 
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
+   connect(_pNetConfMgr, SIGNAL(onlineStateChanged(bool)), this, SLOT(isOnline(bool)));
 }
 
 //---------------------------------------------------------------------------
@@ -187,21 +192,27 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
 
    if (sStbSerial.isEmpty())
    {
-      foreach(QNetworkInterface netInterface, QNetworkInterface::allInterfaces())
+      foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces())
       {
-         // Return only the first non-loopback MAC Address
-         if (!(netInterface.flags() & QNetworkInterface::IsLoopBack)
-             && (netInterface.flags() & QNetworkInterface::IsUp))
+         if (interface.flags().testFlag(QNetworkInterface::IsUp)
+            && (!interface.flags().testFlag(QNetworkInterface::IsLoopBack)))
          {
-            QString ifName = netInterface.name();
-            sStbSerial     = netInterface.hardwareAddress();
+            foreach (QNetworkAddressEntry entry, interface.addressEntries())
+            {
+               if(entry.ip().protocol() == QAbstractSocket::IPv4Protocol)
+               {
+                  mInfo(tr("Interface: '%1'; MAC: %2; IP: %3")
+                        .arg(interface.name())
+                        .arg(interface.hardwareAddress())
+                        .arg(entry.ip().toString()));
 
-            mInfo(tr("Using interface %1 (%2) ...").arg(ifName).arg(sStbSerial));
-            break;
+                  sStbSerial = interface.hardwareAddress();
+               }
+            }
          }
       }
    }
-   
+
    if (!sStbSerial.isEmpty())
    {
       // set stb serial ...
@@ -425,7 +436,7 @@ void QIptvCtrlClient::workOffQueue()
    reqObj.eHttpReqType = E_REQ_UNKN;
 
    // pending requests ... ?
-   if (!bBusy)
+   if (!bBusy && bOnline)
    {
       // something to do ... ?
       mtxCmdQueue.lock();
@@ -483,4 +494,40 @@ void QIptvCtrlClient::requeue(bool withLogin)
       // try to handle request ...
       workOffQueue();
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   slot to be called if online state changes
+//
+//! \author  Jo2003
+//! \date    03.06.2014
+//
+//! \param   o [in] (bool) online flag
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::isOnline(bool o)
+{
+   mInfo(tr("Online state changed: %1 --> %2").arg(bOnline).arg(o));
+   bOnline = o;
+
+   if (bOnline)
+   {
+      workOffQueue();
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   return online state
+//
+//! \author  Jo2003
+//! \date    03.06.2014
+//
+//! \return  true -> online, false -> offline
+//---------------------------------------------------------------------------
+bool QIptvCtrlClient::isOnline()
+{
+   return bOnline;
 }

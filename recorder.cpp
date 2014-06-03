@@ -487,39 +487,11 @@ void Recorder::closeEvent(QCloseEvent *event)
 
    if (bAccept)
    {
-      // close help dialog ..
-      pHelp->close();
-
-      // We want to close program, store all needed values ...
-      // Note: putting this function in destructor doesn't work!
-      if (eCurDMode == Ui::DM_NORMAL)
-      {
-         savePositions();
-      }
-
-      // save font size and favorites ...
-      Settings.SetCustFontSize(iFontSzChg);
-      Settings.SaveFavourites(lFavourites);
-
-      // save channel and epg position ...
-      Settings.saveChannel(getCurrentCid());
-      Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
-
-      // clear shortcuts ...
-      ClearShortCuts ();
-
-      // clean favourites ...
-      lFavourites.clear();
-      HandleFavourites();
-
-      // delete context menu stuff ...
-      CleanContextMenu();
-
-      // are we authenticated ... ?
-      if (pApiClient->cookieSet())
+      // are we authenticated ... and online?
+      if (pApiClient->cookieSet() && pApiClient->isOnline())
       {
          // logout from kartina ...
-          QTimer::singleShot(200, this, SLOT(slotTriggeredLogout()));
+         QTimer::singleShot(200, this, SLOT(slotTriggeredLogout()));
 
          // ignore event here ...
          // we'll close app in logout slot ...
@@ -527,7 +499,34 @@ void Recorder::closeEvent(QCloseEvent *event)
       }
       else
       {
-         // no logout needed ...
+         // close help dialog ..
+         pHelp->close();
+
+         // We want to close program, store all needed values ...
+         // Note: putting this function in destructor doesn't work!
+         if (eCurDMode == Ui::DM_NORMAL)
+         {
+            savePositions();
+         }
+
+         // save font size and favorites ...
+         Settings.SetCustFontSize(iFontSzChg);
+         Settings.SaveFavourites(lFavourites);
+
+         // save channel and epg position ...
+         Settings.saveChannel(getCurrentCid());
+         Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
+
+         // clear shortcuts ...
+         ClearShortCuts ();
+
+         // clean favourites ...
+         lFavourites.clear();
+         HandleFavourites();
+
+         // delete context menu stuff ...
+         CleanContextMenu();
+
          // close programm right now ...
          event->accept();
       }
@@ -4026,7 +4025,7 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
       }
    }
 
-   if (!updChannels.isEmpty())
+   if (!updChannels.isEmpty() && pApiClient->isOnline())
    {
       pApiClient->queueRequest(CIptvDefs::REQ_EPG_CURRENT, updChannels.join(","));
    }

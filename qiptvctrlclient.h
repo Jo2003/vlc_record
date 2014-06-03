@@ -18,6 +18,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QNetworkConfiguration>
+#include <QNetworkConfigurationManager>
 #include <QNetworkInterface>
 #include <QVariant>
 #include <QMetaEnum>
@@ -122,10 +123,13 @@ public:
    virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
 
+   bool isOnline ();
+
 private:
    QVariant          cookies;
    bool              bCSet;
    bool              bBusy;
+   bool              bOnline;
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
    QString           sStbSerial;
@@ -134,6 +138,7 @@ private:
 #ifdef __TRACE
    Iptv              iptv;
 #endif
+   QNetworkConfigurationManager* _pNetConfMgr;
 
 protected:
    QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
@@ -152,6 +157,7 @@ public slots:
 
 private slots:
    void slotResponse(QNetworkReply* reply);
+   void isOnline(bool o);
 };
 
 #endif // __20130315_QIPTVCTRLCLIENT_H
