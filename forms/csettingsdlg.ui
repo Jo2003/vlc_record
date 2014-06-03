@@ -126,7 +126,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="55,45">
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
          <property name="spacing">
           <number>2</number>
          </property>
@@ -136,6 +136,9 @@
             <string>Server Settings</string>
            </property>
            <layout class="QFormLayout" name="formLayout_3">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="labStreamServer">
               <property name="text">
@@ -229,6 +232,9 @@
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <layout class="QFormLayout" name="formLayout">
+              <property name="fieldGrowthPolicy">
+               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+              </property>
               <property name="horizontalSpacing">
                <number>6</number>
               </property>
@@ -275,6 +281,26 @@
                 </property>
                 <property name="autoRaise">
                  <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="spinBoxFontDelta">
+                <property name="readOnly">
+                 <bool>false</bool>
+                </property>
+                <property name="minimum">
+                 <number>-10</number>
+                </property>
+                <property name="maximum">
+                 <number>10</number>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_24">
+                <property name="text">
+                 <string>Adapt Font Size:</string>
                 </property>
                </widget>
               </item>

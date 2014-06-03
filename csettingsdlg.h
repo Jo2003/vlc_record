@@ -83,8 +83,6 @@ public:
 
     void  SaveSplitterSizes (const QString &name, const QList<int> &sz);
     QList<int> GetSplitterSizes (const QString &name, bool *ok = NULL);
-    int   GetCustFontSize ();
-    void  SetCustFontSize (int iSize);
     void  SaveFavourites (const QList<int> &favList);
     QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<cparser::SSrv>& vSrvList, const QString& sActSrv);
@@ -111,6 +109,8 @@ public:
 
     void setUser(const QString& str);
     void setPasswd(const QString& str);
+    int  getFontDelta ();
+    void setFontDelta (int i);
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -124,6 +124,7 @@ private:
     QVector<cparser::SChan>      channelVector;
     QVector<cparser::SVodRate>   vodRatesVector;
     const cparser::SAccountInfo *pAccountInfo;
+    bool                         bSettingsRead;
 
 signals:
     void sigReloadLogos ();
@@ -131,6 +132,7 @@ signals:
     void sigSetBitRate (int iRate);
     void sigSetBuffer (int iBuffer);
     void sigSetTimeShift (int iShift);
+    void sigFontDeltaChgd (int i);
 
 private slots:
     void on_btnResetShortcuts_clicked();
@@ -151,6 +153,7 @@ private slots:
     void on_linePasswd_returnPressed();
     void on_cbxLanguage_currentIndexChanged(const QString &lng);
     void on_cbxLanguage_activated(const QString &lng);
+    void on_spinBoxFontDelta_valueChanged(int arg1);
 
 public slots:
     void slotSplashStateChgd (bool bChecked);

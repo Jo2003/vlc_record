@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1063</width>
+    <width>1088</width>
     <height>571</height>
    </rect>
   </property>
@@ -563,125 +563,6 @@ border-top: 0px;
                     <property name="bottomMargin">
                      <number>4</number>
                     </property>
-                    <item>
-                     <widget class="QFrame" name="frTextsize">
-                      <property name="minimumSize">
-                       <size>
-                        <width>120</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="frameShape">
-                       <enum>QFrame::Panel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Sunken</enum>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_9">
-                       <property name="spacing">
-                        <number>2</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="topMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>2</number>
-                       </property>
-                       <property name="bottomMargin">
-                        <number>2</number>
-                       </property>
-                       <item>
-                        <widget class="QPushButton" name="btnFontSmaller">
-                         <property name="minimumSize">
-                          <size>
-                           <width>20</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>20</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string/>
-                         </property>
-                         <property name="icon">
-                          <iconset resource="../common.qrc">
-                           <normaloff>:/app/zoom-out</normaloff>:/app/zoom-out</iconset>
-                         </property>
-                         <property name="iconSize">
-                          <size>
-                           <width>16</width>
-                           <height>16</height>
-                          </size>
-                         </property>
-                         <property name="autoDefault">
-                          <bool>false</bool>
-                         </property>
-                         <property name="flat">
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="labTextSize">
-                         <property name="styleSheet">
-                          <string notr="true">QLabel#labTextSize {
-font-weight: bold;
-color: white;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>Textsize</string>
-                         </property>
-                         <property name="alignment">
-                          <set>Qt::AlignCenter</set>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QPushButton" name="btnFontLarger">
-                         <property name="minimumSize">
-                          <size>
-                           <width>20</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>20</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                         <property name="text">
-                          <string/>
-                         </property>
-                         <property name="icon">
-                          <iconset resource="../common.qrc">
-                           <normaloff>:/app/zoom-in</normaloff>:/app/zoom-in</iconset>
-                         </property>
-                         <property name="iconSize">
-                          <size>
-                           <width>16</width>
-                           <height>16</height>
-                          </size>
-                         </property>
-                         <property name="autoDefault">
-                          <bool>false</bool>
-                         </property>
-                         <property name="flat">
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </item>
                     <item>
                      <widget class="QLabel" name="labSearch">
                       <property name="styleSheet">
@@ -1760,8 +1641,6 @@ border-top: 0px;
   <tabstop>pushFwd</tabstop>
   <tabstop>pushTimerRec</tabstop>
   <tabstop>textEpgShort</tabstop>
-  <tabstop>btnFontSmaller</tabstop>
-  <tabstop>btnFontLarger</tabstop>
   <tabstop>lineSearch</tabstop>
   <tabstop>btnSearch</tabstop>
   <tabstop>pushSettings</tabstop>

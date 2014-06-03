@@ -307,6 +307,7 @@ Recorder::Recorder(QWidget *parent)
    connect (&Settings,     SIGNAL(sigSetTimeShift(int)), this, SLOT(slotSetTimeShift(int)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
+   connect (&Settings,     SIGNAL(sigFontDeltaChgd(int)), this, SLOT(slotChgFontSize(int)));
    if (Settings.HideToSystray() && QSystemTrayIcon::isSystemTrayAvailable())
    {
       connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
@@ -509,8 +510,7 @@ void Recorder::closeEvent(QCloseEvent *event)
             savePositions();
          }
 
-         // save font size and favorites ...
-         Settings.SetCustFontSize(iFontSzChg);
+         // save favorites ...
          Settings.SaveFavourites(lFavourites);
 
          // save channel and epg position ...
@@ -857,7 +857,7 @@ void Recorder::on_pushTimerRec_clicked()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnFontSmaller_clicked
+|  Method: slotFontSmaller [slot]
 |  Begin: 02.02.2010 / 15:05:00
 |  Author: Jo2003
 |  Description: reduce font size in epg view
@@ -866,26 +866,19 @@ void Recorder::on_pushTimerRec_clicked()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::on_btnFontSmaller_clicked()
+void Recorder::slotFontSmaller()
 {
-   QFont f;
-   ui->textEpg->ReduceFont();
-   ui->textEpgShort->ReduceFont();
-   ui->vodBrowser->ReduceFont();
+   int i = Settings.getFontDelta();
 
-   f = ui->channelList->font();
-   f.setPointSize(f.pointSize() - 1);
-   ui->channelList->setFont(f);
-
-   f = ui->cbxChannelGroup->font();
-   f.setPointSize(f.pointSize() - 1);
-   ui->cbxChannelGroup->setFont(f);
-
-   iFontSzChg --;
+   if (i > -10)
+   {
+      i--;
+      Settings.setFontDelta(i);
+   }
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnFontLarger_clicked
+|  Method: slotFontLarger
 |  Begin: 02.02.2010 / 15:05:00
 |  Author: Jo2003
 |  Description: enlarge font size in epg view
@@ -894,22 +887,14 @@ void Recorder::on_btnFontSmaller_clicked()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::on_btnFontLarger_clicked()
+void Recorder::slotFontLarger()
 {
-   QFont f;
-   ui->textEpg->EnlargeFont();
-   ui->textEpgShort->EnlargeFont();
-   ui->vodBrowser->EnlargeFont();
-
-   f = ui->channelList->font();
-   f.setPointSize(f.pointSize() + 1);
-   ui->channelList->setFont(f);
-
-   f = ui->cbxChannelGroup->font();
-   f.setPointSize(f.pointSize() + 1);
-   ui->cbxChannelGroup->setFont(f);
-
-   iFontSzChg ++;
+   int i = Settings.getFontDelta();
+   if (i < 10)
+   {
+      i++;
+      Settings.setFontDelta(i);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -4291,6 +4276,33 @@ void Recorder::slotVodLang(const QString &str)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   change font size [slot]
+//
+//! \author  Jo2003
+//! \date    21.08.2013
+//
+//! \param   i [in] (int) font size change to normal
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotChgFontSize(int i)
+{
+   QFont f;
+   ui->textEpg->ChangeFontSize(i);
+   ui->textEpgShort->ChangeFontSize(i);
+   ui->vodBrowser->ChangeFontSize(i);
+
+   f = ui->channelList->font();
+   f.setPointSize(f.pointSize() + i);
+   ui->channelList->setFont(f);
+
+   f = ui->cbxChannelGroup->font();
+   f.setPointSize(f.pointSize() + i);
+   ui->cbxChannelGroup->setFont(f);
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   update overlay number for watchlist button icon [slot]
 //
 //! \author  Jo2003
@@ -4366,8 +4378,8 @@ void Recorder::fillShortCutTab()
       {tr("Settings"),             this,       SLOT(on_pushSettings_clicked()),   "ALT+O"},
       {tr("About"),                this,       SLOT(on_pushAbout_clicked()),      "ALT+I"},
       {tr("Search EPG"),           this,       SLOT(on_btnSearch_clicked()),      "CTRL+F"},
-      {tr("Text Size +"),          this,       SLOT(on_btnFontLarger_clicked()),  "ALT++"},
-      {tr("Text Size -"),          this,       SLOT(on_btnFontSmaller_clicked()), "ALT+-"},
+      {tr("Text Size +"),          this,       SLOT(slotFontLarger()),            "ALT++"},
+      {tr("Text Size -"),          this,       SLOT(slotFontSmaller()),           "ALT+-"},
       {tr("Quit"),                 this,       SLOT(close()),                     "ALT+Q"},
       {tr("Toggle Aspect Ratio"),  ui->player, SLOT(slotToggleAspectRatio()),     "ALT+A"},
       {tr("Toggle Crop Geometry"), ui->player, SLOT(slotToggleCropGeometry()),    "ALT+C"},
@@ -4450,26 +4462,8 @@ void Recorder::initDialog ()
       pDb->removeSetting("IsMaximized");
    }
 
-   // -------------------------------------------
-   // set font size to last used
-   // -------------------------------------------
-   iFontSzChg = Settings.GetCustFontSize();
-
-   if (iFontSzChg)
-   {
-      QFont f;
-      ui->textEpg->ChangeFontSize(iFontSzChg);
-      ui->textEpgShort->ChangeFontSize(iFontSzChg);
-      ui->vodBrowser->ChangeFontSize(iFontSzChg);
-
-      f = ui->channelList->font();
-      f.setPointSize(f.pointSize() + iFontSzChg);
-      ui->channelList->setFont(f);
-
-      f = ui->cbxChannelGroup->font();
-      f.setPointSize(f.pointSize() + iFontSzChg);
-      ui->cbxChannelGroup->setFont(f);
-   }
+   // font size ...
+   slotChgFontSize(Settings.getFontDelta());
 
    // -------------------------------------------
    // set splitter sizes as last used

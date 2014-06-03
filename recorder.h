@@ -252,8 +252,8 @@ private slots:
     void on_cbxGenre_activated(int index);
     void on_cbxLastOrBest_activated(int index);
     void on_cbxVodLang_activated(int index);
-    void on_btnFontSmaller_clicked();
-    void on_btnFontLarger_clicked();
+    void slotFontSmaller();
+    void slotFontLarger();
     void slotStop();
     void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
@@ -334,6 +334,7 @@ private slots:
     void slotPlayHls(const QString& s);
     void stopOnDemand();
     void slotVodLang(const QString &str);
+    void slotChgFontSize (int i);
 
 signals:
     void sigShow ();

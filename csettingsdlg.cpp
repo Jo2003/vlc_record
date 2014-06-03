@@ -52,7 +52,7 @@ extern QTranslator *pQtTransl;
 \----------------------------------------------------------------- */
 CSettingsDlg::CSettingsDlg(QWidget *parent) :
     QDialog(parent),
-    m_ui(new Ui::CSettingsDlg)
+    m_ui(new Ui::CSettingsDlg), bSettingsRead(false)
 {
    m_ui->setupUi(this);
    pAccountInfo    = NULL;
@@ -332,6 +332,12 @@ void CSettingsDlg::readSettings()
    {
       m_ui->checkHideToSystray->setDisabled(true);
    }
+
+   // font size ...
+   m_ui->spinBoxFontDelta->setValue(pDb->intValue("CustFontSz"));
+
+   // mark settings as read ...
+   bSettingsRead = true;
 }
 
 /* -----------------------------------------------------------------\
@@ -997,36 +1003,6 @@ QList<int> CSettingsDlg::GetFavourites(bool *ok)
    }
 
    return lFav;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: SetCustFontSize
-|  Begin: 18.02.2010 / 11:22:39
-|  Author: Jo2003
-|  Description: save customized font size
-|
-|  Parameters: font size change value
-|
-|  Returns:  --
-\----------------------------------------------------------------- */
-void CSettingsDlg::SetCustFontSize(int iSize)
-{
-   pDb->setValue("CustFontSz", iSize);
-}
-
-/* -----------------------------------------------------------------\
-|  Method: GetCustFontSize
-|  Begin: 18.02.2010 / 11:22:39
-|  Author: Jo2003
-|  Description: get customized font size
-|
-|  Parameters: --
-|
-|  Returns:  font size change value
-\----------------------------------------------------------------- */
-int CSettingsDlg::GetCustFontSize()
-{
-   return pDb->intValue("CustFontSz");
 }
 
 /* -----------------------------------------------------------------\
@@ -1938,7 +1914,63 @@ void CSettingsDlg::setPasswd(const QString& str)
    m_ui->linePass->setText(str);
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   get font size delta
+//
+//! \author  Jo2003
+//! \date    03.06.2014
+//
+//! \param   --
+//
+//! \return  font size delta
+//---------------------------------------------------------------------------
+int CSettingsDlg::getFontDelta()
+{
+   return m_ui->spinBoxFontDelta->value();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set font size delta
+//
+//! \author  Jo2003
+//! \date    03.06.2014
+//
+//! \param   i [in] (int) new size difference
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::setFontDelta(int i)
+{
+   m_ui->spinBoxFontDelta->setValue(i);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   font delta was changed -> tell about
+//
+//! \author  Jo2003
+//! \date    03.06.2014
+//
+//! \param   arg1 [in] (int) new size difference
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::on_spinBoxFontDelta_valueChanged (int arg1)
+{
+   if (bSettingsRead)
+   {
+      // get delta ...
+      int delta = arg1 - pDb->intValue("CustFontSz");
+
+      // font size ...
+      pDb->setValue("CustFontSz", arg1);
+
+      emit sigFontDeltaChgd(delta);
+   }
+}
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
-
