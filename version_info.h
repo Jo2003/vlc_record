@@ -25,7 +25,7 @@
 
 #define VERSION_MAJOR "2"
 #define VERSION_MINOR "69"
-#define BETA_EXT      "B5"
+#define BETA_EXT      "B7"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -33,6 +33,13 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2014-06-03: Version 2.69B7
+| - many small changes in overlay control
+| - click'n'go slider has a position tooltip
+| - channel filter works while typing in
+| - no API requests will be sent when network is offline
+| - text size change now put intpo settings dialog
+|
 | 2014-05-20: Version 2.69B5
 | - added various message boxes if:
 |    + account soon ends
@@ -44,7 +51,7 @@
 | - add timing information to video slider
 | - change skip button to fast forward / backward
 | - add minutes label to time chooser
-| 
+|
 | 2014-01-26: Version 2.68RC1
 | - updated help and language files
 | - when exiting fullscreen restore previous display mode
