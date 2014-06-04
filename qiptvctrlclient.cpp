@@ -39,13 +39,14 @@ QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
 {
    // we need this for online state ...
    _pNetConfMgr = new QNetworkConfigurationManager (this);
-
    bCSet        = false;
    bBusy        = false;
-   bOnline      = _pNetConfMgr->isOnline();
+   bOnline      = false;
 
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
-   connect(_pNetConfMgr, SIGNAL(onlineStateChanged(bool)), this, SLOT(isOnline(bool)));
+   connect(_pNetConfMgr, SIGNAL(configurationChanged(QNetworkConfiguration)), this, SLOT(configChgd(QNetworkConfiguration)));
+
+   startConnectionCheck();
 }
 
 //---------------------------------------------------------------------------
@@ -130,6 +131,11 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
          // nothing to do here ...
          break;
 
+      // connection check successfully!
+      case Iptv::chkconn:
+         setOnline(true);
+         break;
+
       default:
          emit sigErr(iReqId, tr("Error, unknown request type: %1!")
                      .arg(iReqType), -1);
@@ -138,20 +144,27 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
    }
    else
    {
+      if (iReqType == (int)Iptv::chkconn)
+      {
+         setOnline(false);
+      }
+      else if (bOnline)
+      {
 #ifdef _IS_OEM
-      // in case of OEM we should remove the API server string from
-      // error messages ...
-      QString sErr = reply->errorString();
-      QUrl    sUrl = reply->request().url();
+         // in case of OEM we should remove the API server string from
+         // error messages ...
+         QString sErr = reply->errorString();
+         QUrl    sUrl = reply->request().url();
 
-      sErr.remove(sUrl.host());
-      sErr = sErr.simplified();
+         sErr.remove(sUrl.host());
+         sErr = sErr.simplified();
 
-      emit sigErr(iReqId, sErr, (int)reply->error());
+         emit sigErr(iReqId, sErr, (int)reply->error());
 
 #else
-      emit sigErr(iReqId, reply->errorString(), (int)reply->error());
+         emit sigErr(iReqId, reply->errorString(), (int)reply->error());
 #endif // _IS_OEM
+      }
    }
 
    // mark for deletion ...
@@ -192,25 +205,7 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
 
    if (sStbSerial.isEmpty())
    {
-      foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces())
-      {
-         if (interface.flags().testFlag(QNetworkInterface::IsUp)
-            && (!interface.flags().testFlag(QNetworkInterface::IsLoopBack)))
-         {
-            foreach (QNetworkAddressEntry entry, interface.addressEntries())
-            {
-               if(entry.ip().protocol() == QAbstractSocket::IPv4Protocol)
-               {
-                  mInfo(tr("Interface: '%1'; MAC: %2; IP: %3")
-                        .arg(interface.name())
-                        .arg(interface.hardwareAddress())
-                        .arg(entry.ip().toString()));
-
-                  sStbSerial = interface.hardwareAddress();
-               }
-            }
-         }
-      }
+      generateStbSerial();
    }
 
    if (!sStbSerial.isEmpty())
@@ -498,7 +493,7 @@ void QIptvCtrlClient::requeue(bool withLogin)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   slot to be called if online state changes
+//! \brief   to be called if online state changes
 //
 //! \author  Jo2003
 //! \date    03.06.2014
@@ -507,15 +502,85 @@ void QIptvCtrlClient::requeue(bool withLogin)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QIptvCtrlClient::isOnline(bool o)
+void QIptvCtrlClient::setOnline(bool o)
 {
-   mInfo(tr("Online state changed: %1 --> %2").arg(bOnline).arg(o));
-   bOnline = o;
-
-   if (bOnline)
+   if (o != bOnline)
    {
-      workOffQueue();
+      mInfo(tr("Online state changed: %1 --> %2").arg(bOnline).arg(o));
+      bOnline = o;
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   create STB serial from MAC address of the 1st active interface
+//
+//! \author  Jo2003
+//! \date    04.06.2014
+//
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::generateStbSerial()
+{
+   foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces())
+   {
+      if (interface.flags().testFlag(QNetworkInterface::IsUp)
+         && (!interface.flags().testFlag(QNetworkInterface::IsLoopBack)))
+      {
+         foreach (QNetworkAddressEntry entry, interface.addressEntries())
+         {
+            if(entry.ip().protocol() == QAbstractSocket::IPv4Protocol)
+            {
+               mInfo(tr("Interface: '%1'; MAC: %2; IP: %3")
+                     .arg(interface.name())
+                     .arg(interface.hardwareAddress())
+                     .arg(entry.ip().toString()));
+
+               sStbSerial = interface.hardwareAddress();
+            }
+
+            // no need to go on ...
+            if (!sStbSerial.isEmpty())
+            {
+               break;
+            }
+         }
+      }
+
+      // no need to go on ...
+      if (!sStbSerial.isEmpty())
+      {
+         break;
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   slot to be called if network config changes
+//
+//! \author  Jo2003
+//! \date    04.06.2014
+//
+//! \param   config [in] (const QNetworkConfiguration&) changed config
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::configChgd(const QNetworkConfiguration& config)
+{
+   mInfo(tr("network config '%1', id '%2' changed; state %3 -> check internet connection!")
+         .arg(config.name()).arg(config.identifier())
+         .arg(config.state()));
+
+   if (!config.state().testFlag(QNetworkConfiguration::Active))
+   {
+      // one network was set down ...
+      // make sure we send nothing as long we aren't sure
+      // the connection to the internet is up and running ...
+      setOnline(false);
+   }
+
+   // give a little time before sending request ...
+   QTimer::singleShot(1000, this, SLOT(startConnectionCheck()));
 }
 
 //---------------------------------------------------------------------------
@@ -530,4 +595,30 @@ void QIptvCtrlClient::isOnline(bool o)
 bool QIptvCtrlClient::isOnline()
 {
    return bOnline;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   check if we're connected to the internet
+//
+//! \author  Jo2003
+//! \date    04.06.2014
+//
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::startConnectionCheck()
+{
+   QNetworkReply  *pRep;
+
+   // check a well known site ...
+   QNetworkRequest req(QUrl("http://www.google.com"));
+
+   // no persistent connections ...
+   req.setRawHeader("Connection", "close");
+
+   // try to get site ...
+   if ((pRep = QNetworkAccessManager::get(req)) != NULL)
+   {
+      // mark reply as connection check ...
+      prepareReply(pRep, (int)CIptvDefs::REQ_UNKNOWN, Iptv::chkconn);
+   }
 }

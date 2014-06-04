@@ -25,6 +25,7 @@
 #include <QUrl>
 #include <QVector>
 #include <QMutex>
+#include <QTimer>
 
 #include "clogfile.h"
 
@@ -50,6 +51,7 @@ public:
       Stream,
       m3u,
       hls,
+      chkconn,  // connection check ...
       Unknown
    };
 
@@ -144,6 +146,8 @@ protected:
    QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
    QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
    void workOffQueue ();
+   void setOnline(bool o);
+   void generateStbSerial();
 
 signals:
    void sigStringResponse (int reqId, QString strResp);
@@ -157,7 +161,8 @@ public slots:
 
 private slots:
    void slotResponse(QNetworkReply* reply);
-   void isOnline(bool o);
+   void configChgd (const QNetworkConfiguration & config);
+   void startConnectionCheck ();
 };
 
 #endif // __20130315_QIPTVCTRLCLIENT_H
