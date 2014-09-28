@@ -12,9 +12,7 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "cmoidomxmlparser.h"
-
-// log file functions ...
-extern CLogFile VlcLog;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //
@@ -58,12 +56,10 @@ CMoiDomXmlParser::~CMoiDomXmlParser()
 //
 //! \param   xml (QXmlStreamReader &) ref. to xml reader
 //! \param   chanList (QVector<cparser::SChan> &) ref. to channel list
-//! \param   bFixTime (bool) should we fix time if(true)
 //
 //! \return  0
 //---------------------------------------------------------------------------
-int CMoiDomXmlParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                     bool bFixTime)
+int CMoiDomXmlParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
 {
    QString        sUnknown;
    cparser::SChan chanEntry;
@@ -133,11 +129,6 @@ int CMoiDomXmlParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCha
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.uiStart = xml.text().toString().toUInt();
-
-               if (bFixTime)
-               {
-                  fixTime(chanEntry.uiStart);
-               }
             }
          }
          else if (xml.name() == "epg_end")
@@ -145,11 +136,6 @@ int CMoiDomXmlParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCha
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.uiEnd = xml.text().toString().toUInt();
-
-               if (bFixTime)
-               {
-                  fixTime(chanEntry.uiEnd);
-               }
             }
          }
          else if (xml.name() == "hide")
