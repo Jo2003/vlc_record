@@ -12,16 +12,7 @@
  *
  *///------------------------- (c) 2014 by Jo2003  --------------------------
 #include "qexpirenotifydlg.h"
-
-#include "cvlcrecdb.h"
-
-#include "qdatetimesyncro.h"
-
-// global syncronized time ...
-extern QDateTimeSyncro tmSync;
-
-// db storage class ...
-extern CVlcRecDB *pDb;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //

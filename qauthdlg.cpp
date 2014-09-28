@@ -13,10 +13,7 @@
  *///------------------------- (c) 2014 by Jo2003  --------------------------
 #include "qauthdlg.h"
 #include "ui_qauthdlg.h"
-#include "cvlcrecdb.h"
-
-// global db storage class ...
-extern CVlcRecDB *pDb;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //

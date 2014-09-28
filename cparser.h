@@ -106,6 +106,9 @@ namespace cparser
       QString sImg;
       QString sDirector;
       QString sGenres;
+      QString sPgRating;
+      QString sImdbRating;
+      QString sKinopoiskRating;
       uint    uiLength;
       bool    bProtected;
       bool    bFavourit;

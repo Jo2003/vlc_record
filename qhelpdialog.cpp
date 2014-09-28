@@ -15,9 +15,6 @@
 #include "qhelpdialog.h"
 #include "ui_qhelpdialog.h"
 
-// for logging ...
-// extern CLogFile VlcLog;
-
 //---------------------------------------------------------------------------
 //
 //! \brief   constructs QHelpDialog object

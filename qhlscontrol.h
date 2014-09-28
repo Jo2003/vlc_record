@@ -18,7 +18,6 @@
 #include <QObject>
 #include <QTimer>
 #include <QFile>
-#include "cdirstuff.h"
 
 #define DEF_STREAM_FIFO (pFolders->getTmpFolder() + "/_hlsFifo")
 

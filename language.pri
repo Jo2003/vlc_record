@@ -10,15 +10,6 @@ isEmpty(QMAKE_LUPDATE) {
     else:QMAKE_LUPDATE = $$[QT_INSTALL_BINS]/lupdate
 }
 
-# In case you get errors since lupdate.exe couldn't be started
-# this is due to user rights of Windows. In that case rename the
-# lupdate.exe to e.g. lwtf.exe and activate following block.
-# ... and sure, comment out the block above!
-# isEmpty(QMAKE_LUPDATE) {
-#    win32:QMAKE_LUPDATE = $$[QT_INSTALL_BINS]/lwtf.exe
-#    else:QMAKE_LUPDATE = $$[QT_INSTALL_BINS]/lupdate
-#}
-
 # create ts files, make sure to NOT delete them on clean!
 PRO_FILE = $$basename(TARGET).pro
 createts.input = PRO_FILE

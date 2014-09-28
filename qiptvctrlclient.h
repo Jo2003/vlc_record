@@ -26,8 +26,7 @@
 #include <QVector>
 #include <QMutex>
 #include <QTimer>
-
-#include "clogfile.h"
+#include <QDateTime>
 
 //---------------------------------------------------------------------------
 //! \class   Iptv
@@ -73,8 +72,9 @@ public:
    }
 };
 
-#define PROP_TYPE "type"
-#define PROP_ID   "id"
+#define PROP_TYPE   "type"
+#define PROP_ID     "id"
+#define PROP_REQ_NO "reqno"
 
 //---------------------------------------------------------------------------
 //! \class   QIptvCtrlClient
@@ -112,6 +112,7 @@ public:
       QString        sUrl;
       QString        sContent;
       Iptv::eReqType eIptvReqType;
+      uint           uiTimeStamp;
    };
 
    explicit QIptvCtrlClient(QObject* parent = 0);
@@ -126,11 +127,11 @@ public:
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
 
    bool isOnline ();
+   bool busy();
 
 private:
    QVariant          cookies;
    bool              bCSet;
-   bool              bBusy;
    bool              bOnline;
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
@@ -141,21 +142,27 @@ private:
    Iptv              iptv;
 #endif
    QNetworkConfigurationManager* _pNetConfMgr;
+   QTimer            tWatchdog;
+   QTimer            tConncheck;
+   unsigned long     ulReqNo;
+   unsigned long     ulAckNo;
 
 protected:
    QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
    QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
-   void workOffQueue ();
+   void workOffQueue (const QString& caller = QString());
    void setOnline(bool o);
    void generateStbSerial();
+   bool stillOnlineOnError(QNetworkReply::NetworkError err);
 
 signals:
    void sigStringResponse (int reqId, QString strResp);
    void sigBinResponse (int reqId, QByteArray binResp);
-   void sigErr (int reqId, QString sErr, int iErr);
+   void sigApiErr (int reqId, QString sErr, int iErr);
 
    void sigM3u (int reqId, QString s);
    void sigHls (int reqId, QByteArray bHls);
+   void sigStateMessage (int, QString, int);
 
 public slots:
 
@@ -163,6 +170,8 @@ private slots:
    void slotResponse(QNetworkReply* reply);
    void configChgd (const QNetworkConfiguration & config);
    void startConnectionCheck ();
+   void slotReqTmout();
+   void slotAccessibilityChgd(QNetworkAccessManager::NetworkAccessibility acc);
 };
 
 #endif // __20130315_QIPTVCTRLCLIENT_H

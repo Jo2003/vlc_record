@@ -17,10 +17,13 @@
 #include <QWidgetAction>
 #include <QHBoxLayout>
 #include <QLineEdit>
+#include <QIcon>
+#include <QPixmap>
 #include <QLabel>
 #include <QEvent>
 #include <QPushButton>
 #include <QTimer>
+#include <QMenu>
 
 //---------------------------------------------------------------------------
 //! \class   QStringFilterWidgetAction
@@ -55,22 +58,6 @@ public:
 
    //---------------------------------------------------------------------------
    //
-   //! \brief   clear filter string
-   //
-   //! \author  Jo2003
-   //! \date    29.07.2013
-   //
-   //! \param   --
-   //
-   //! \return  --
-   //---------------------------------------------------------------------------
-   void cleanFilter()
-   {
-      _line->clear();
-   }
-
-   //---------------------------------------------------------------------------
-   //
    //! \brief   set focus to line and place cursor at the end of text
    //
    //! \author  Jo2003
@@ -90,6 +77,9 @@ private:
    QLabel      *_lab;
    QLineEdit   *_line;
    QTimer       _tCheck;
+   QPushButton *_btnClean;
+   QWidget     *_me;
+   QWidget     *_parent;
 
 protected:
    //---------------------------------------------------------------------------
@@ -105,24 +95,34 @@ protected:
    //---------------------------------------------------------------------------
    virtual QWidget* createWidget (QWidget * parent)
    {
-      QWidget     *w = new QWidget(parent);
-      QHBoxLayout *l = new QHBoxLayout();
+      _parent = parent;
 
-      _lab           = new QLabel(tr("Channel filter: "), w);
-      _line          = new QLineEdit(w);
+      QHBoxLayout *l = new QHBoxLayout();
+      QPixmap     pix(":/app/del");
+      QIcon       ico(pix.scaled(24, 24));
+
+      _me            = new QWidget(parent);
+      _lab           = new QLabel(tr("Channel filter: "), _me);
+      _line          = new QLineEdit(_me);
+      _btnClean      = new QPushButton(ico, "", _me);
+      _btnClean->setFlat(true);
+      _btnClean->setGeometry(QRect(0, 0, 32, 32));
+      _btnClean->setToolTip(tr("Reset filter"));
 
       l->setSpacing(2);
       l->setMargin(4);
 
       l->addWidget(_lab);
       l->addWidget(_line, 10);
+      l->addWidget(_btnClean);
 
-      w->setLayout(l);
+      _me->setLayout(l);
 
       connect(_line, SIGNAL(textEdited(QString)), &_tCheck, SLOT(start()));
       connect(_line, SIGNAL(returnPressed()), parent, SLOT(hide()));
+      connect(_btnClean, SIGNAL(clicked()), this, SLOT(cleanFilter()));
 
-      return w;
+      return _me;
    }
 
    //---------------------------------------------------------------------------
@@ -176,6 +176,26 @@ private slots:
       // slot is reached only if we've created
       // control elements already ...
       emit sigFilter(_line->text());
+   }
+
+public slots:
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   clear filter string
+   //
+   //! \author  Jo2003
+   //! \date    29.07.2013
+   //
+   //! \param   --
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void cleanFilter()
+   {
+      _line->clear();
+      emit sigFilter("");
+      lineFocus();
+      // _parent->hide();
    }
 
 signals:

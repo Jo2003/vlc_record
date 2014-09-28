@@ -18,13 +18,10 @@
 #include <QString>
 #include <QFileInfo>
 #include <QRegExp>
-#include "clogfile.h"
 #include "templates.h"
 #include "defdef.h"
-#include "cdirstuff.h"
 #include "csettingsdlg.h"
 #include "cpixloader.h"
-#include "api_inc.h"
 
 /********************************************************************\
 |  Class: CVodBrowser

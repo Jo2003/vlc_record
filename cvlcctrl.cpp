@@ -10,12 +10,7 @@
 | $Id$
 \*************************************************************/
 #include "cvlcctrl.h"
-
-// logging stuff ...
-extern CLogFile VlcLog;
-
-// for folders ...
-extern CDirStuff *pFolders;
+#include "externals_inc.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CVlcCtrl / constructor

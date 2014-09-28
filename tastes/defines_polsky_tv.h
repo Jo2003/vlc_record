@@ -12,7 +12,7 @@
 #ifndef __012412__DEFINES_POLSKY_TV_H
    #define __012412__DEFINES_POLSKY_TV_H
 
-#include <QtGlobal>
+#include <more_polsky_translations.h>
 
 #define APP_NAME      "Polsky.TV"
 #define UPD_CHECK_URL "http://rt.coujo.de/polsky_tv_ver.xml"

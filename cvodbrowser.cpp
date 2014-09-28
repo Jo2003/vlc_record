@@ -11,17 +11,9 @@
 |
 \=============================================================================*/
 #include "cvodbrowser.h"
-#include "chtmlwriter.h"
 #include <QUrl>
 #include <QUrlQuery>
-
-extern CLogFile VlcLog;
-
-// for folders ...
-extern CDirStuff *pFolders;
-
-// global html writer ...
-extern CHtmlWriter *pHtml;
+#include "externals_inc.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CVodBrowser / constructor
@@ -239,7 +231,7 @@ void CVodBrowser::slotSetBufferedHtml()
 void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 {
    int       i;
-   QString   img, content, tab, title, link, page, tok;
+   QString   img, content, tab, title, link, page, tok, back;
    QUrl      url;
    QUrlQuery q;
    QFileInfo info(sInfo.sImg);
@@ -250,18 +242,32 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    // save length in seconds ...
    _uiLength = sInfo.uiLength * 60;
 
+   // back link ...
+   url.clear();
+   url.setPath("videothek");
+   q.clear();
+   q.addQueryItem("action", "backtolist");
+   url.setQuery(q);
+   
+   link  = pHtml->link(url.toEncoded(), tr("Back"));
+   link  = "[ " + link + " ]";
+   back  = pHtml->div(link, "", "center");
+
    // create source url for image ...
    img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
 
    // add image ...
-   content  = pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, VOD_POSTER_HEIGHT,
+   content = pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, VOD_POSTER_HEIGHT,
                            TMPL_IMG_RFLOAT, sInfo.sName);
 
    // add headline ...
-   content += pHtml->htmlTag("h3", sInfo.sName) + "&nbsp;&nbsp;&nbsp;";
+   content += pHtml->htmlTag("h3", QString("%1&nbsp;&nbsp;&nbsp;").arg(sInfo.sName));
 
    // create short from content ...
    _shortContent = content;
+
+   // prepend back link ...
+   content = back + content;
 
    // add favorite link ...
    if (sInfo.bFavourit)
@@ -300,10 +306,48 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    content       += tok;
    _shortContent += tok;
 
-   // add country, year and length ...
-   tok            = pHtml->htmlTag("p", QString("%1 %2, %3 %4").arg(sInfo.sCountry).arg(sInfo.sYear).arg(sInfo.uiLength).arg(tr("min.")), "color: #888;");
+   // add country, year  ...
+   tok = QString("%1 %2").arg(sInfo.sCountry).arg(sInfo.sYear);
+
+   // add length ...
+   if (sInfo.uiLength != 0)
+   {
+      tok += QString(", %1 %2").arg(sInfo.uiLength).arg(tr("min."));
+   }
+
+   // add rating...
+   if (!sInfo.sPgRating.isEmpty())
+   {
+      tok += QString(", %1: %2").arg(tr("Rating")).arg(sInfo.sPgRating);
+   }
+
+   tok  = pHtml->htmlTag("p", tok, "color: #888;");
    content       += tok;
    _shortContent += tok;
+
+   tok = "";
+
+   if (!sInfo.sImdbRating.isEmpty())
+   {
+      tok = tr("IMDB: %1").arg(sInfo.sImdbRating);
+   }
+
+   if (!sInfo.sKinopoiskRating.isEmpty())
+   {
+      if (!tok.isEmpty())
+      {
+         tok += "; ";
+      }
+
+      tok += tr("Kinopoisk: %1").arg(sInfo.sKinopoiskRating);
+   }
+
+   if (!tok.isEmpty())
+   {
+      tok  = pHtml->htmlTag("p", tok, "color: #880;");
+      content       += tok;
+      _shortContent += tok;
+   }
 
    // add director ...
    tok            = pHtml->htmlTag("p", tr("Director: %1").arg(sInfo.sDirector), "color: #800;");
@@ -369,15 +413,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    content += pHtml->htmlTag("p", tab);
 
    // back link ...
-   url.clear();
-   url.setPath("videothek");
-   q.clear();
-   q.addQueryItem("action", "backtolist");
-   url.setQuery(q);
-
-   link     = pHtml->link(url.toEncoded(), tr("Back"));
-   link     = "[ " + link + " ]";
-   content += pHtml->div(link, "", "center");
+   content += back;
 
    page          = pHtml->htmlPage(content, tr("Video Details"), TMPL_VOD_BODY);
    _shortContent = pHtml->oneCellPage(_shortContent, TMPL_ONE_CELL);

@@ -20,6 +20,8 @@
 #include <QRegExp>
 #include <QMap>
 #include <QDir>
+#include <QFile>
+
 
 #include "defdef.h"
 
@@ -50,6 +52,7 @@ public:
    const QString& getTmpFolder ();
    bool  isInitialized ();
    void  setAppName(const QString& name);
+   bool  portable();
 
 protected:
    int initDirectories (bool bCreate);
@@ -70,6 +73,7 @@ private:
    QString                sTmpFolder;
    QMap<QString, QString> mSysEnv;
    int                    iInitState;
+   bool                   bPortable;
 };
 
 #endif // __032210__CDIRSTUFF_H

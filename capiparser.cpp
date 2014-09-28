@@ -15,13 +15,7 @@
 #include <QColor>
 #include "small_helpers.h"
 #include "qdatetimesyncro.h"
-
-// log file functions ...
-extern CLogFile VlcLog;
-
-// global syncronized timer ...
-extern QDateTimeSyncro tmSync;
-
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //

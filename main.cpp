@@ -22,6 +22,8 @@
 #include "chtmlwriter.h"
 #include "qchannelmap.h"
 #include "qdatetimesyncro.h"
+#include "qstatemessage.h"
+#include "cdirstuff.h"
 
 #ifdef Q_WS_X11
    #include <X11/Xlib.h>
@@ -62,6 +64,9 @@ CHtmlWriter *pHtml;
 // global channel map ...
 QChannelMap *pChanMap;
 
+// global state message engine ...
+QStateMessage *pStateMsg;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -80,10 +85,10 @@ int main(int argc, char *argv[])
    XInitThreads();
 #endif
 
-   // qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
-   // qRegisterMetaType<QLangVector>("QLangVector");
+   qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
+   qRegisterMetaType<QLangVector>("QLangVector");
 
-#if ((defined Q_OS_MACX) && (QT_VERSION < 0x050200))
+#ifdef Q_OS_MACX
    if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )
    {
        // fix Mac OS X 10.9 (mavericks) font issue
@@ -104,6 +109,7 @@ int main(int argc, char *argv[])
    pFolders   = new CDirStuff(&app);
    pHtml      = new CHtmlWriter(&app);
    pChanMap   = new QChannelMap();
+   pStateMsg  = new QStateMessage(); // will be parented in recorder.cpp::Recorder()!
 
    if (pFolders && pAppTransl && pQtTransl && pHtml && pChanMap)
    {

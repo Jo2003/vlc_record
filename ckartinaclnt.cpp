@@ -12,12 +12,7 @@
 \=============================================================================*/
 #include "ckartinaclnt.h"
 #include "qcustparser.h"
-
-// global customization class ...
-extern QCustParser *pCustomization;
-
-// log file functions ...
-extern CLogFile VlcLog;
+#include "externals_inc.h"
 
 /*-----------------------------------------------------------------------------\
 | Function:    CKartinaClnt / constructor
@@ -41,7 +36,7 @@ CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
 
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
-   connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
+   connect(this, SIGNAL(sigApiErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
 
    setObjectName("CKartinaClnt");
 }
@@ -197,6 +192,9 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          break;
       case CIptvDefs::REQ_EPG:
          GetEPG(par_1.toInt(), par_2.toInt());
+         break;
+      case CIptvDefs::REQ_EPG_EXT:
+         GetEPG(par_1.toInt(), par_2.toInt(), true);
          break;
       case CIptvDefs::REQ_SERVER:
          SetServer(par_1.toString());
@@ -402,6 +400,12 @@ void CKartinaClnt::GetChannelList (const QString &secCode)
       // normal channel list request ...
       req = QString("show=all&protect_code=%1").arg(secCode);
    }
+#ifdef _TASTE_CHITRAM_TV
+   else
+   {
+      req = "icon=1";
+   }
+#endif // _TASTE_CHITRAM_TV
 
    // request channel list or channel list for settings ...
    q_post((secCode == "") ? (int)CIptvDefs::REQ_CHANNELLIST : (int)CIptvDefs::REQ_CHANLIST_ALL,
@@ -611,13 +615,13 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetEPG(int iChanID, int iOffset)
+void CKartinaClnt::GetEPG(int iChanID, int iOffset, bool bExtEPG)
 {
    mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
 
    QDate now = QDate::currentDate().addDays(iOffset);
 
-   q_get((int)CIptvDefs::REQ_EPG, sApiUrl + QString("epg?cid=%1&day=%2")
+   q_get((int)(bExtEPG ? CIptvDefs::REQ_EPG_EXT : CIptvDefs::REQ_EPG), sApiUrl + QString("epg?cid=%1&day=%2")
        .arg(iChanID).arg(now.toString("ddMMyy")));
 }
 

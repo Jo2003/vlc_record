@@ -18,7 +18,6 @@
 #include <QRegExp>
 #include <QStringList>
 
-#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 #include "capiparser.h"

@@ -12,9 +12,7 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "capixmlparser.h"
-
-// log file functions ...
-extern CLogFile VlcLog;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //

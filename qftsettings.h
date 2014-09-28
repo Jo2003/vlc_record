@@ -18,9 +18,7 @@
 #include <QTranslator>
 #include <QVector>
 
-#include "cvlcrecdb.h"
 #include "defdef.h"
-#include "cdirstuff.h"
 
 namespace Ui {
     class QFTSettings;

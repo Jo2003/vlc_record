@@ -13,14 +13,8 @@
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qoverlayedcontrol.h"
 #include "ui_qoverlayedcontrol.h"
-#include "qfusioncontrol.h"
-#include "cshowinfo.h"
 #include "defdef.h"
-
-// fusion control ...
-extern QFusionControl missionControl;
-
-extern CShowInfo showInfo;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //

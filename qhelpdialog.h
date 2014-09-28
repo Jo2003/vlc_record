@@ -25,8 +25,6 @@
 #include <QFileInfo>
 #include <QScrollBar>
 
-// #include "clogfile.h"
-
 // -----------------------------------------------
 // namespace ...
 // -----------------------------------------------

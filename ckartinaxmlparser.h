@@ -16,7 +16,6 @@
 #include <QXmlStreamReader>
 #include <QRegExp>
 
-#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 #include "capixmlparser.h"

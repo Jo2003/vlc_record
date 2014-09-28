@@ -12,10 +12,9 @@
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qfusioncontrol.h"
-#include "clogfile.h"
 #include "small_helpers.h"
+#include "externals_inc.h"
 
-extern CLogFile VlcLog;
 
 /////////////////////////////////////////////////////////////////////////////
 /// signal docu
@@ -771,7 +770,7 @@ bool QFusionControl::muted()
 //---------------------------------------------------------------------------
 void QFusionControl::disconnectMute()
 {
-   disconnect(this, SLOT(slotMute(int)));
+   disconnect(this, SLOT(slotMute(bool)));
    _muteButton.clear();
 }
 
@@ -1353,6 +1352,7 @@ void QFusionControl::disconnectLab()
    _lengthLabVector.clear();
    _muteLabel.clear();
    _infoLabel.clear();
+   _tarTimeLabel.clear();
 }
 
 //---------------------------------------------------------------------------
@@ -1369,6 +1369,41 @@ void QFusionControl::disconnectLab()
 void QFusionControl::addMuteLab(QLabel *pLab)
 {
    _muteLabel.append(pLab);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   put target time label under control
+//
+//! \author  Jo2003
+//! \date    17.09.2014
+//
+//! \param   pLab pointer to QLabel
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::addTargetTimeLabel(QLabel *pLab)
+{
+   _tarTimeLabel.append(pLab);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set target time string to all related labels
+//
+//! \author  Jo2003
+//! \date    17.09.2014
+//
+//! \param   s [in] (const QString&) string to set
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::setTargetTime(const QString &s)
+{
+   for (int i = 0; i < _tarTimeLabel.count(); i++)
+   {
+      _tarTimeLabel.at(i)->setText(s);
+   }
 }
 
 //---------------------------------------------------------------------------

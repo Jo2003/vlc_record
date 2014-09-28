@@ -40,6 +40,7 @@ public:
       REQ_STREAM,
       REQ_TIMESHIFT,
       REQ_EPG,
+      REQ_EPG_EXT,
       REQ_SERVER,
       REQ_HTTPBUFF,
       REQ_ARCHIV,

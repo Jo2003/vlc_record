@@ -18,7 +18,6 @@
 #include <QRegExp>
 
 #include "qiptvctrlclient.h"
-#include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
 
@@ -64,7 +63,7 @@ protected:
    void SetBitRate (int iRate);
    void GetBitRate ();
    void SetHttpBuffer (int iTime);
-   void GetEPG (int iChanID, int iOffset = 0);
+   void GetEPG (int iChanID, int iOffset = 0, bool bExtEPG = false);
    void GetVideos (const QString &sPrepared);
    void GetVideoInfo (int iVodID, const QString &secCode = QString());
    void setChanHide (const QString &cids, const QString &secCode);

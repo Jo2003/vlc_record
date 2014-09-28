@@ -14,9 +14,6 @@
 #include "qfavframe.h"
 #include <QMimeData>
 
-// log file functions ...
-extern CLogFile VlcLog;
-
 //---------------------------------------------------------------------------
 //! \fn      sigAddFav
 //! \brief   signal will be emitted if we have to add a favourite

@@ -25,7 +25,7 @@
 
 #define VERSION_MAJOR "2"
 #define VERSION_MINOR "69"
-#define BETA_EXT      "B8"
+#define BETA_EXT      "B20"
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -33,6 +33,67 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2014-09-19: Version 2.69B20
+| - add the possibility to use extended translation
+|   using defines
+|
+| 2014-ß9-18: Version 2.69B19
+| - bugfix: when pausing -> play timer wasn't started
+|
+| 2014-ß9-18: Version 2.69B18
+| - show jump time as overlay
+| - create pixmap from overlay text to get an outline
+| - remove target time label from GUI
+|
+| 2014-09-17: Version 2.69B17
+| - reduce blocking time when spooling is active (as possible)
+| - in case of non existing archive let the user decide
+|   if he wants to force new value or revert to last settings
+| - spooling time can be re-triggered with time update
+|
+| 2014-09-05: Version 2.69B16
+| - change icons for mute checkbox to make it more visible
+| - archive not available is shown now for 7 seconds
+|
+| 2014-09-04: Version 2.69B15
+| - bugfix for broken image download chain in case of missing
+|   image
+|
+| 2014-09-01: Version 2.69B14
+| - supports portable version (check for file .portable)
+|
+| 2014-08-28: Version 2.69B13
+| - add extended EPG (might be disabled in advanced settings)
+|
+| 2014-08-08: Version 2.69B12
+| - add advertising LCD page
+| - add network state change message
+| - use 90 min as ad block for seen videos
+| - devide between network error and API error
+|   (equal error numbers lead to strange behavior)
+| - show network state message only when parent window exists
+|
+| 2014-08-06: Version 2.69B11
+| - use externals_inc.h to include global stuff
+| - VOD search now searches automated without the need
+|   to click on search button
+| - add clear button on channel filter and VOD search
+| - advanced ad handling for VOD
+| - make status message engine
+| - add back link also on top
+|
+| 2014-08-05: Version 2.69B10
+| - add status message system
+| - when spooling in archive make sure new position is already
+|   available in archive (if not, use status message)
+| - fix a problem with click'n'go slider and time tooltip
+|
+| 2014-08-01: Version 2.69B9
+| - better handle network errors
+| - position slider shows timing information also when left
+|   mouse button is pressed
+| - shoe rating in video info
+|
 | 2014-06-04: Version 2.69B8
 | - do not use isOnline stuff from QNetworkConfigurationManager
 |   since it doesn't take care about virtual interfaces

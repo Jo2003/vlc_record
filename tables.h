@@ -55,6 +55,13 @@
       "PRIMARY KEY(\"cid\"),"\
       "UNIQUE(\"cid\"))"
 
+#define TAB_VIDEO_SEEN \
+"CREATE TABLE \"vodseen\" ("\
+      "\"videoid\"  INTEGER NOT NULL,"\
+      "\"t_stamp\"  unsigned int(10) NOT NULL,"\
+      "PRIMARY KEY(\"videoid\"),"\
+      "UNIQUE(\"videoid\"))"
+
 #endif // __130610_TABLES_H
 /************************* History ***************************\
 | $Log$

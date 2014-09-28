@@ -25,6 +25,7 @@
 CDirStuff::CDirStuff(QObject *parent) : QObject(parent)
 {
    iInitState = -1;
+   bPortable  = false;
 
    if(!fillSysEnvMap())
    {
@@ -104,17 +105,36 @@ int CDirStuff::initDirectories(bool bCreate)
    int iRV = 0;
    QMap<QString, QString>::const_iterator cit;
    QDir    helpDir;
+   QString homeFolder;
 
    sBinName   = QFileInfo(QApplication::applicationFilePath()).baseName();
    cit        = mSysEnv.constFind(DATA_DIR_ENV);
 
-   if (cit != mSysEnv.constEnd())
+   // app folder
+   sAppDir    = QApplication::applicationDirPath();
+
+   // check for portable version ...
+   if (QFile(QString("%1/%2").arg(sAppDir).arg(PORTABLE_MARKER)).exists())
+   {
+      bPortable = true;
+   }
+
+   if (bPortable)
+   {
+      homeFolder = QString("%1/%2").arg(sAppDir).arg(PORTABLE_DATA_DIR);
+   }
+   else
+   {
+      homeFolder = (cit != mSysEnv.constEnd()) ? (*cit) : "";
+   }
+
+   if (homeFolder != "")
    {
 #ifdef Q_OS_WIN32
-      sDataDir   = QString("%1/%2").arg(*cit).arg((sAppName == "" ) ? sBinName : sAppName);
+      sDataDir   = QString("%1/%2").arg(homeFolder).arg((sAppName == "" ) ? sBinName : sAppName);
       sDataDir.replace("\\", "/");
 #else
-      sDataDir   = QString("%1/%2").arg(*cit).arg("." + ((sAppName == "" ) ? sBinName : sAppName));
+      sDataDir   = QString("%1/%2").arg(homeFolder).arg("." + ((sAppName == "" ) ? sBinName : sAppName));
 #endif
       sLogoDir   = QString("%1/%2").arg(sDataDir).arg(LOGO_DIR);
       sVodPixDir = QString("%1/%2").arg(sDataDir).arg(VOD_DIR);
@@ -148,9 +168,6 @@ int CDirStuff::initDirectories(bool bCreate)
 
    // temp folder ...
    sTmpFolder = QDir::tempPath();
-
-   // app folder
-   sAppDir    = QApplication::applicationDirPath();
 
    // qt languages dir ...
    sQtLangDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
@@ -283,7 +300,7 @@ int CDirStuff::initDirectories(bool bCreate)
 \----------------------------------------------------------------- */
 void CDirStuff::setAppName(const QString &name)
 {
-   sAppName = name;
+   sAppName   = name;
    iInitState = initDirectories(true);
 }
 
@@ -466,6 +483,20 @@ bool CDirStuff::isInitialized()
 const QString&  CDirStuff::getTmpFolder()
 {
    return sTmpFolder;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   is portable version running?
+//
+//! \author  Jo2003
+//! \date    15.03.2013
+//
+//! \return  true -> is portable; false -> non portable version
+//---------------------------------------------------------------------------
+bool CDirStuff::portable()
+{
+   return bPortable;
 }
 
 /************************* History ***************************\

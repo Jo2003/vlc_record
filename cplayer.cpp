@@ -1,4 +1,4 @@
-/*********************** Information *************************\
+﻿/*********************** Information *************************\
 | $HeadURL$
 |
 | Author: Jo2003
@@ -11,25 +11,8 @@
 \*************************************************************/
 
 #include "cplayer.h"
-
 #include "ui_cplayer.h"
-
-#include "qfusioncontrol.h"
-
-// fusion control ...
-extern QFusionControl missionControl;
-
-// log file functions ...
-extern CLogFile VlcLog;
-
-// storage db ...
-extern CVlcRecDB *pDb;
-
-// global showinfo class ...
-extern CShowInfo showInfo;
-
-// global api client class ...
-extern ApiClient *pApiClient;
+#include "externals_inc.h"
 
 // help macros to let QSlider support GMT values ...
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
@@ -40,6 +23,7 @@ QMutex                       CPlayer::_mtxEvt;
 float                        CPlayer::_flBuffPrt = 0.0;
 const char*                  CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
 const char*                  CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
+libvlc_media_t*              CPlayer::_pCurrentMedia;
 
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
@@ -59,13 +43,15 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    pVlcInstance     = NULL;
    pMedialistPlayer = NULL;
    pMediaList       = NULL;
-   pEMPlay          = NULL;
    pSettings        = NULL;
+   videoMediaItem   = NULL;
+   addMediaItem     = NULL;
    bSpoolPending    = true;
    bOmitNextEvent   = false;
    bScanAuTrk       = true;
    uiDuration       = (uint)-1;
    ulLibvlcVersion  = 0;
+   libPlayState     = IncPlay::PS_WTF;
    QStringList slKey;
    uint i;
 
@@ -113,10 +99,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.vidFormCbxClear(QFusionControl::CBX_CROP);
    missionControl.vidFormCbxInsertValues(0, slKey, QFusionControl::CBX_CROP);
 
-   // set aspect shot timer to single shot ...
-   tAspectShot.setSingleShot (true);
-   tAspectShot.setInterval (2500);
-
    // poll for state change events with 250ms interval ...
    tEventPoll.setInterval(250);
 
@@ -139,9 +121,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    // connect slider timer with slider position slot ...
    connect(&sliderTimer, SIGNAL(timeout()), this, SLOT(slotUpdateSlider()));
 
-   // connect aspect shot timer with aspect change function ...
-   connect(&tAspectShot, SIGNAL(timeout()), this, SLOT(slotStoredAspectCrop()));
-
    // connect slider click'n'Go ...
    connect(&missionControl, SIGNAL(sigPosClickNGo(int)), this, SLOT(slotSliderPosChanged()));
    connect(&missionControl, SIGNAL(sigPosSliderReleased()), this, SLOT(slotSliderPosChanged()));
@@ -157,6 +136,8 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    connect(this, SIGNAL(sigAudioTracks(QLangVector)), ui->videoWidget, SLOT(slotUpdLangVector(QLangVector)));
    connect(ui->videoWidget, SIGNAL(sigDeinterlace(bool)), this, SLOT(slotDeinterlace(bool)));
    connect(ui->videoWidget, SIGNAL(sigNewATrack(int)), this, SLOT(slotChangeATrack(int)));
+
+   connect (this, SIGNAL(sigStateMessage(int,QString,int)), pStateMsg, SLOT(showMessage(int,QString,int)));
 
    // update position slider every second ...
    sliderTimer.start(1000);
@@ -299,11 +280,12 @@ void CPlayer::setSettings(CSettingsDlg *pDlg)
 \----------------------------------------------------------------- */
 int CPlayer::initPlayer(const QString &sOpts)
 {
-   int          iRV     = -1;
-   int          i;
-   int          iEventCount;
-   int          argc    = 0;
-   QStringList  slOpts;
+   int                     iRV     = -1;
+   int                     i;
+   int                     iEventCount;
+   int                     argc    = 0;
+   QStringList             slOpts;
+   libvlc_event_manager_t *pEvtMgr;
 
    vArgs.clear();
 
@@ -400,7 +382,7 @@ int CPlayer::initPlayer(const QString &sOpts)
             libvlc_media_list_player_set_media_player (pMedialistPlayer, pMediaPlayer);
 
             // get event manager ...
-            if ((pEMPlay = libvlc_media_player_event_manager(pMediaPlayer)) != NULL)
+            if ((pEvtMgr = libvlc_media_player_event_manager(pMediaPlayer)) != NULL)
             {
                // if we've got the event manager, register for some events ...
                libvlc_event_type_t eventsMediaPlayer[] = {
@@ -410,7 +392,8 @@ int CPlayer::initPlayer(const QString &sOpts)
                   libvlc_MediaPlayerPaused,
                   libvlc_MediaPlayerStopped,
                   libvlc_MediaPlayerEndReached,
-                  libvlc_MediaPlayerBuffering
+                  libvlc_MediaPlayerBuffering,
+                  libvlc_MediaPlayerVout,
                };
 
                // so far so good ...
@@ -419,7 +402,26 @@ int CPlayer::initPlayer(const QString &sOpts)
                iEventCount = sizeof(eventsMediaPlayer) / sizeof(*eventsMediaPlayer);
                for (i = 0; i < iEventCount; i++)
                {
-                  iRV |= libvlc_event_attach(pEMPlay, eventsMediaPlayer[i],
+                  iRV |= libvlc_event_attach(pEvtMgr, eventsMediaPlayer[i],
+                                            eventCallback, NULL);
+               }
+            }
+
+            // get event manager ...
+            if ((pEvtMgr = libvlc_media_list_player_event_manager(pMedialistPlayer)) != NULL)
+            {
+               // if we've got the event manager, register for some events ...
+               libvlc_event_type_t eventsMediaPlayer[] = {
+                  libvlc_MediaListPlayerNextItemSet,
+               };
+
+               // so far so good ...
+               iRV = 0;
+
+               iEventCount = sizeof(eventsMediaPlayer) / sizeof(*eventsMediaPlayer);
+               for (i = 0; i < iEventCount; i++)
+               {
+                  iRV |= libvlc_event_attach(pEvtMgr, eventsMediaPlayer[i],
                                             eventCallback, NULL);
                }
             }
@@ -504,11 +506,67 @@ void CPlayer::slotChangeVolumeDelta(const bool up)
 \----------------------------------------------------------------- */
 int CPlayer::play()
 {
-   int  iRV    = 0;
+   int  iRV     = 0;
+   bool bToggle = true;
 
    if (pMedialistPlayer)
    {
-      libvlc_media_list_player_play (pMedialistPlayer);
+      if (showInfo.canCtrlStream())
+      {
+         // go from pause into play ...
+         if (((tPaused.elapsed() / 1000) > PAUSE_WORKS_FOR_SECS) && (pauseResume.id > -1))
+         {
+            // we can not resume play because connection might be stopped
+            // so we request a new stream ...
+            bToggle = false;
+
+            mInfo(tr("Resume after longer pause ..."));
+
+            if (pauseResume.bArch)
+            {
+               // matching position is requested already here ...
+
+               // trigger request for the old stream position ...
+               QString req = QString("cid=%1&gmt=%2")
+                            .arg(pauseResume.id).arg(pauseResume.timeStamp);
+
+               // mark spooling as active ...
+               bSpoolPending = true;
+
+               enableDisablePlayControl (false);
+
+               // save jump time ...
+               showInfo.setLastJumpTime(pauseResume.timeStamp);
+
+               emit sigStopOnDemand();
+
+               enableDisablePlayControl (false);
+
+               emit sigStopOnDemand();
+
+               pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+
+               // mark as unused ...
+               pauseResume.id = -1;
+            }
+            else
+            {
+               // position can't be requested here ...
+               pApiClient->queueRequest(CIptvDefs::REQ_GETVODURL, pauseResume.id, showInfo.pCode());
+
+               // so we mark the id to be recognized in playMedia() ...
+               pauseResume.id = PAUSE_RESUME_VOD;
+            }
+         }
+      }
+
+      if (bToggle)
+      {
+         // mark as unused ...
+         pauseResume.id = -1;
+
+         libvlc_media_list_player_play (pMedialistPlayer);
+      }
    }
 
    return iRV;
@@ -584,6 +642,13 @@ int CPlayer::pause()
 
    if (pMedialistPlayer && showInfo.canCtrlStream())
    {
+      // go from play into pause ...
+      mInfo(tr("Prepare for long time resume ..."));
+      pauseResume.bArch     = (showInfo.showType() == ShowInfo::Archive);
+      pauseResume.timeStamp = pauseResume.bArch ? (timer.pos() - 5) : (libvlc_media_player_get_time (pMediaPlayer) / 1000);
+      pauseResume.id        = pauseResume.bArch ? showInfo.channelId() : showInfo.vodId();
+      tPaused.start();
+
       libvlc_media_list_player_pause(pMedialistPlayer);
    }
 
@@ -609,6 +674,9 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
    QStringList                 lArgs;
    QStringList::const_iterator cit;
    bool                        bLocal = false;
+
+   // reset internal play state ...
+   libPlayState = IncPlay::PS_WTF;
 
    // reset play timer stuff ...
    timer.reset();
@@ -666,9 +734,12 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
          sMrl.replace('\\', '/');
       }
 
-      if ((p_md = libvlc_media_new_location(pVlcInstance, QUrl::toPercentEncoding(sMrl, "/:?&=%@"))) != NULL)
+      if ((p_md = libvlc_media_new_location(pVlcInstance, QUrl::toPercentEncoding(sMrl, "/:?&=%@+,"))) != NULL)
       {
          mInfo(tr("Media successfully created from MRL:\n --> %1").arg(sMrl));
+
+         // store pointer to main video ...
+         videoMediaItem = p_md;
 
          // do we use GPU acceleration ... ?
          if (pSettings->useGpuAcc())
@@ -714,6 +785,19 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
             sMrl = QString(":ipv4-timeout=%1").arg(10 * 1000); // 10 sec. timeout for ipv4 connections
             mInfo(tr("Add MRL Option: %1").arg(sMrl));
             libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+            ///////////////////////////////////////////////////////////////////////////
+            // resume play from a longer VOD pause
+            ///////////////////////////////////////////////////////////////////////////
+            if (pauseResume.id == PAUSE_RESUME_VOD)
+            {
+               sMrl = QString(":start-time=%1").arg(pauseResume.timeStamp);
+               mInfo(tr("Add MRL Option: %1").arg(sMrl));
+               libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+               // mark as unused ...
+               pauseResume.id = -1;
+            }
          }
 
          ///////////////////////////////////////////////////////////////////////////
@@ -815,12 +899,15 @@ int CPlayer::addAd()
    QString         adUrl  = showInfo.adUrl();
    QString         sOpt;
 
-   if ((adUrl != "") && (showInfo.showType() == ShowInfo::VOD) && pSettings->showAds())
+   if ((adUrl != "") && (showInfo.showType() == ShowInfo::VOD) && pSettings->showAds() && !showInfo.noAd())
    {
       mInfo(tr("Prepend Ad (Url):\n  --> %1").arg(adUrl));
       if ((p_mdad = libvlc_media_new_location(pVlcInstance, adUrl.toUtf8().constData())) != NULL)
       {
-         sOpt = QString(":http-caching=%1").arg(pSettings->GetBufferTime());
+         // cache add media item ...
+         addMediaItem = p_mdad;
+
+         sOpt = QString(":network-caching=%1").arg(pSettings->GetBufferTime());
          mInfo(tr("Add MRL Option: %1").arg(sOpt));
          libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
 
@@ -1001,7 +1088,12 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
 
    // store event type so the event poller can handle it...
    CPlayer::_mtxEvt.lock();
-   if (ev->type != libvlc_MediaPlayerBuffering)
+   if (ev->type == libvlc_MediaListPlayerNextItemSet)
+   {
+      CPlayer::_pCurrentMedia = ev->u.media_list_player_next_item_set.item;
+      CPlayer::_eventQueue.append(ev->type);
+   }
+   else if (ev->type != libvlc_MediaPlayerBuffering)
    {
       CPlayer::_eventQueue.append(ev->type);
    }
@@ -1067,21 +1159,55 @@ void CPlayer::slotEventPoll()
 
             // no way to go on ... prepare to use a new instance of libVLC
             cleanupLibVLC();
+
+            libPlayState = IncPlay::PS_ERROR;
+            break;
+
+         // TRACK CHANGED ...
+         case libvlc_MediaListPlayerNextItemSet:
+            if (!showInfo.noAd())
+            {
+               // check for main feature ...
+               if (CPlayer::_pCurrentMedia == videoMediaItem)
+               {
+                  // enable spooling ...
+                  bSpoolPending = false;
+                  // emit sigStateMessage((int)QStateMessage::INFO, tr("Found Main Video Track!!"));
+               }
+            }
             break;
 
          // opening media ...
          case libvlc_MediaPlayerOpening:
             mInfo("libvlc_MediaPlayerOpening ...");
             emit sigPlayState((int)IncPlay::PS_OPEN);
+
+            libPlayState = IncPlay::PS_OPEN;
             break;
 
          // playing media ...
          case libvlc_MediaPlayerPlaying:
             mInfo("libvlc_MediaPlayerPlaying ...");
-            emit sigPlayState((int)IncPlay::PS_PLAY);
-            tAspectShot.start();
-            startPlayTimer();
-            initSlider();
+            if (!showInfo.noAd() && (CPlayer::_pCurrentMedia == addMediaItem))
+            {
+               emit sigPlayState((int)IncPlay::PS_ADVERTISING);
+            }
+            else
+            {
+               emit sigPlayState((int)IncPlay::PS_PLAY);
+            }
+
+            // restart play-timer only after pause ...
+            if (libPlayState == IncPlay::PS_PAUSE)
+            {
+               startPlayTimer();
+            }
+            else
+            {
+               // init slider only at initial play ...
+               initSlider();
+            }
+            libPlayState = IncPlay::PS_PLAY;
             break;
 
          // player paused ...
@@ -1089,6 +1215,7 @@ void CPlayer::slotEventPoll()
             mInfo("libvlc_MediaPlayerPaused ...");
             emit sigPlayState((int)IncPlay::PS_PAUSE);
             pausePlayTimer();
+            libPlayState = IncPlay::PS_PAUSE;
             break;
 
          // player stopped ...
@@ -1097,6 +1224,7 @@ void CPlayer::slotEventPoll()
             emit sigPlayState((int)IncPlay::PS_STOP);
             resetBuffPercent();
             stopPlayTimer();
+            libPlayState = IncPlay::PS_STOP;
             break;
 
          // end of media reached ...
@@ -1104,6 +1232,14 @@ void CPlayer::slotEventPoll()
             mInfo("libvlc_MediaPlayerEndReached ...");
             emit sigPlayState((int)IncPlay::PS_END);
             stopPlayTimer();
+            libPlayState = IncPlay::PS_END;
+            break;
+
+         // showing video ...
+         case libvlc_MediaPlayerVout:
+            mInfo("libvlc_MediaPlayerVout ...");
+            slotStoredAspectCrop();
+            startPlayTimer();
             break;
 
          default:
@@ -1300,28 +1436,37 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
          // get new gmt value ...
          pos = timer.pos() + iSeconds;
 
-         // trigger request for the new stream position ...
-         QString req = QString("cid=%1&gmt=%2")
-                          .arg(showInfo.channelId()).arg(pos);
-
-         // mark spooling as active ...
-         bSpoolPending = true;
-
-         enableDisablePlayControl (false);
-
-         // save jump time ...
-         showInfo.setLastJumpTime(pos);
-
-         emit sigStopOnDemand();
-
-         pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
-
-         // do we reach another show?
-         if ((pos < mToGmt(missionControl.posMinimum()))
-             || (pos > mToGmt(missionControl.posMaximum())))
+         // make sure archive is already available for this time ...
+         if (pos > (tmSync.syncronizedTime_t() - ARCHIV_OFFSET))
          {
-            // yes --> update show info ...
-            emit sigCheckArchProg(pos);
+            QString s = pHtml->htmlTag("b", tr("Archive is not yet available for this time!"));
+            emit sigStateMessage((int)QStateMessage::S_WARNING, s, 7000);
+         }
+         else
+         {
+            // trigger request for the new stream position ...
+            QString req = QString("cid=%1&gmt=%2")
+                             .arg(showInfo.channelId()).arg(pos);
+
+            // mark spooling as active ...
+            bSpoolPending = true;
+
+            enableDisablePlayControl (false);
+
+            // save jump time ...
+            showInfo.setLastJumpTime(pos);
+
+            emit sigStopOnDemand();
+
+            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+
+            // do we reach another show?
+            if ((pos < mToGmt(missionControl.posMinimum()))
+                || (pos > mToGmt(missionControl.posMaximum())))
+            {
+               // yes --> update show info ...
+               emit sigCheckArchProg(pos);
+            }
          }
       }
    }
@@ -1395,7 +1540,11 @@ void CPlayer::slotStoredAspectCrop ()
          bool    bErr = false;
 
          // enable spooling again ...
-         bSpoolPending = false;
+         if ((showInfo.showType() != ShowInfo::VOD) || showInfo.noAd())
+         {
+            bSpoolPending = false;
+         }
+
          enableDisablePlayControl (true);
 
          if(!pDb->aspect(showInfo.channelId(), sAspect, sCrop))
@@ -1481,9 +1630,15 @@ void CPlayer::slotSliderPosChanged()
       {
          position = mToGmt(position);
 
-         // check if slider position is in 10 sec. limit ...
-         if (abs(position - timer.pos()) <= 10)
+         // make sure archive is already available for this time ...
+         if (position > (tmSync.syncronizedTime_t() - ARCHIV_OFFSET))
          {
+            QString s = pHtml->htmlTag("b", tr("Archive is not yet available for this time!"));
+            emit sigStateMessage((int)QStateMessage::S_WARNING, s, 7000);
+         }
+         else if (abs(position - timer.pos()) <= 10)
+         {
+            // check if slider position is in 10 sec. limit ...
             mInfo(tr("Ignore slightly slider position change..."));
          }
          else
@@ -1549,13 +1704,19 @@ void CPlayer::slotPositionChanged(int value)
 \----------------------------------------------------------------- */
 void CPlayer::enableDisablePlayControl (bool bEnable)
 {
-   if (bEnable && showInfo.canCtrlStream())
+   if (bEnable && showInfo.canCtrlStream() && !bSpoolPending)
    {
       missionControl.enablePosSlider(true);
+      missionControl.enableJumpBox(true);
+      missionControl.enableBtn(true, QFusionControl::BTN_FWD);
+      missionControl.enableBtn(true, QFusionControl::BTN_BWD);
    }
    else
    {
       missionControl.enablePosSlider(false);
+      missionControl.enableJumpBox(false);
+      missionControl.enableBtn(false, QFusionControl::BTN_FWD);
+      missionControl.enableBtn(false, QFusionControl::BTN_BWD);
    }
 }
 
@@ -1604,7 +1765,7 @@ void CPlayer::initSlider()
 }
 
 /* -----------------------------------------------------------------\
-|  Method: getSilderPos
+|  Method: getSliderPos
 |  Begin: 07.01.2011 / 10:20
 |  Author: Jo2003
 |  Description: get slider position
@@ -1613,9 +1774,16 @@ void CPlayer::initSlider()
 |
 |  Returns: gmt of slider position
 \----------------------------------------------------------------- */
-uint CPlayer::getSilderPos ()
+uint CPlayer::getSliderPos ()
 {
-   return mToGmt(missionControl.posValue());
+   if (!isPositionable())
+   {
+      return mToGmt(missionControl.posValue());
+   }
+   else
+   {
+      return missionControl.posValue();
+   }
 }
 
 /* -----------------------------------------------------------------\

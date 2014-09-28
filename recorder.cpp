@@ -11,49 +11,10 @@
 \*************************************************************/
 #include "recorder.h"
 #include "small_helpers.h"
-
 #include "ui_recorder_inc.h"
-
-#include "qfusioncontrol.h"
-#include "qcustparser.h"
-#include "chtmlwriter.h"
 #include "qoverlayicon.h"
-#include "qdatetimesyncro.h"
+#include "externals_inc.h"
 
-// global syncronized time ...
-extern QDateTimeSyncro tmSync;
-
-// global customization class ...
-extern QCustParser *pCustomization;
-
-// fusion control ...
-extern QFusionControl missionControl;
-
-// for logging ...
-extern CLogFile VlcLog;
-
-// for folders ...
-extern CDirStuff *pFolders;
-
-// global showinfo class ...
-extern CShowInfo showInfo;
-
-// global rec db ...
-extern CVlcRecDB *pDb;
-
-// global client api classes ...
-extern ApiClient *pApiClient;
-extern ApiParser *pApiParser;
-
-// global translaters ...
-extern QTranslator *pAppTransl;
-extern QTranslator *pQtTransl;
-
-// global html writer ...
-extern CHtmlWriter *pHtml;
-
-// gloabl channel map ...
-extern QChannelMap *pChanMap;
 
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
@@ -82,9 +43,10 @@ Recorder::Recorder(QWidget *parent)
    ui->vMainLayout->addLayout(stackedLayout);
    eCurDMode = Ui::DM_NORMAL;
    eOldDMode = Ui::DM_NORMAL;
+   m_iJumpValue = 0;
 
    // set (customized) windows title ...
-   setWindowTitle(pCustomization->strVal("APP_NAME"));
+   setWindowTitle(QString("%1%2").arg(pCustomization->strVal("APP_NAME")).arg(pFolders->portable() ? tr(" - Portable Edition") : ""));
 
 #ifndef _HAS_VOD_LANG
    // hide vod language stuff if needed ...
@@ -102,6 +64,18 @@ Recorder::Recorder(QWidget *parent)
    pWatchList    =  NULL;
    pHlsControl   =  NULL;
    bStayOnTop    =  false;
+
+   // vod search timer ....
+   m_tVodSearch.setSingleShot(true);
+   m_tVodSearch.setInterval(666);
+
+   // time jump timer ...
+   m_tTimeJump.setSingleShot(true);
+   m_tTimeJump.setInterval(1500);
+
+   // state message stuff ...
+   pStateMsg->setParent(this, Qt::Window | Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+   pStateMsg->hide();
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,     QFusionControl::BTN_PLAY);
@@ -328,6 +302,14 @@ Recorder::Recorder(QWidget *parent)
    connect (pApiClient, SIGNAL(sigHls(int,QByteArray)), pHlsControl, SLOT(slotStreamTokResp(int,QByteArray)));
    connect (pHlsControl, SIGNAL(sigPlay(QString)), this, SLOT(slotPlayHls(QString)));
    connect (ui->player, SIGNAL(sigStopOnDemand()), this, SLOT(stopOnDemand()));
+
+   // new VOD search ...
+   connect (ui->lineVodSearch, SIGNAL(textEdited(QString)), &m_tVodSearch, SLOT(start()));
+   connect (&m_tVodSearch,     SIGNAL(timeout()), this, SLOT(slotDoVodSearch()));
+   connect (&m_tTimeJump,      SIGNAL(timeout()), this, SLOT(slotFinallyJump()));
+
+   // overlay display ...
+   connect (this, SIGNAL(sigOverlay(QString,int)), ui->player->getVideoWidget(), SLOT(slotDisplayOverlay(QString,int)));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -639,7 +621,7 @@ void Recorder::on_pushSettings_clicked()
          else if (showInfo.showType() == ShowInfo::Archive)
          {
             // create request to get current channel / position ...
-            quint64 pos = ui->player->getSilderPos();
+            quint64 pos = ui->player->getSliderPos();
             QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
 
             reRequest.bValid = true;
@@ -910,8 +892,8 @@ void Recorder::slotFontLarger()
 void Recorder::on_cbxGenre_activated(int index)
 {
    // check for vod favourites ...
-   QString   sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-   int       iGid  = ui->cbxGenre->itemData(index).toInt();
+   QString sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int     iGid  = ui->cbxGenre->itemData(index).toInt();
    QUrlQuery q;
 
    if (sType == "vodfav")
@@ -955,7 +937,7 @@ void Recorder::on_cbxLastOrBest_activated(int index)
    }
    else
    {
-      int       iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+      int  iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
       QUrlQuery q;
 
       q.addQueryItem("type", sType);
@@ -1000,7 +982,7 @@ void Recorder::on_cbxVodLang_activated(int index)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_btnVodSearch_clicked [slot]
+|  Method: slotDoVodSearch [slot]
 |  Begin: 23.12.2010 / 9:10
 |  Author: Jo2003
 |  Description: search in vod
@@ -1009,18 +991,18 @@ void Recorder::on_cbxVodLang_activated(int index)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::on_btnVodSearch_clicked()
+void Recorder::slotDoVodSearch()
 {
-   int       iGid;
-   QString   sType;
+   int  iGid;
    QUrlQuery q;
 
+   // since searching on server takes long, search only if there are more the 1 letters ...
+   if ((ui->lineVodSearch->text() != "") && (ui->lineVodSearch->text().length() > 1))
+   {
 #ifdef _HAS_VOD_LANG
-   q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+      q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
 #endif // _HAS_VOD_LANG
 
-   if (ui->lineVodSearch->text() != "")
-   {
       q.addQueryItem("type", "text");
 
       // when searching show up to 100 results ...
@@ -1033,29 +1015,15 @@ void Recorder::on_btnVodSearch_clicked()
       {
          q.addQueryItem("genre", QString::number(iGid));
       }
+
+      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
+
+      ui->lineVodSearch->setDisabled(true);
    }
-   else
+   else if (ui->lineVodSearch->text().isEmpty())
    {
-      // no text means normal list ...
-      iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-      sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-
-      // make sure type is supported ...
-      if (sType == "vodfav")
-      {
-         sType = "last";
-         ui->cbxLastOrBest->setCurrentIndex(0);
-      }
-
-      q.addQueryItem("type", sType);
-
-      if (iGid != -1)
-      {
-         q.addQueryItem("genre", QString::number(iGid));
-      }
+      on_btnCleanVodSearch_clicked();
    }
-
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
 }
 
 /* -----------------------------------------------------------------\
@@ -1074,8 +1042,8 @@ void Recorder::on_cbxSites_activated(int index)
    if ((index + 1) != genreInfo.iPage)
    {
       QUrlQuery q;
-      QString   sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-      int       iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+      QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+      int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
 
       q.addQueryItem("type", sType);
       q.addQueryItem("page", QString::number(index + 1));
@@ -1106,9 +1074,9 @@ void Recorder::on_cbxSites_activated(int index)
 void Recorder::on_btnPrevSite_clicked()
 {
    QUrlQuery q;
-   QString   sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-   int       iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-   int       iPage  = ui->cbxSites->currentIndex() + 1;
+   QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   int     iPage  = ui->cbxSites->currentIndex() + 1;
 
    q.addQueryItem("type", sType);
    q.addQueryItem("page", QString::number(iPage - 1));
@@ -1138,9 +1106,9 @@ void Recorder::on_btnPrevSite_clicked()
 void Recorder::on_btnNextSite_clicked()
 {
    QUrlQuery q;
-   QString   sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-   int       iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-   int       iPage  = ui->cbxSites->currentIndex() + 1;
+   QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+   int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   int     iPage  = ui->cbxSites->currentIndex() + 1;
 
    q.addQueryItem("type", sType);
    q.addQueryItem("page", QString::number(iPage + 1));
@@ -1305,6 +1273,50 @@ void Recorder::on_pushWatchList_clicked()
    pWatchList->exec();
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   clean VOD search line
+//
+//! \author  Jo2003
+//! \date    07.08.2013
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::on_btnCleanVodSearch_clicked()
+{
+   int      iGid;
+   QString   sType;
+   QUrlQuery q;
+
+#ifdef _HAS_VOD_LANG
+   q.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
+#endif // _HAS_VOD_LANG
+
+   ui->lineVodSearch->clear();
+
+   // no text means normal list ...
+   iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+   sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+
+   // make sure type is supported ...
+   if (sType == "vodfav")
+   {
+      sType = "last";
+      ui->cbxLastOrBest->setCurrentIndex(0);
+   }
+
+   q.addQueryItem("type", sType);
+
+   if (iGid != -1)
+   {
+      q.addQueryItem("genre", QString::number(iGid));
+   }
+
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, q.query());
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
@@ -1443,7 +1455,7 @@ void Recorder::slotRecord()
          if (AllowAction(IncPlay::PS_RECORD))
          {
             // archive play active ...
-            uint    gmt = ui->player->getSilderPos ();
+            uint    gmt = ui->player->getSliderPos ();
             QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
 
             showInfo.setPlayState(IncPlay::PS_RECORD);
@@ -1512,11 +1524,26 @@ void Recorder::slotRecord()
 \----------------------------------------------------------------- */
 void Recorder::slotBwd()
 {
-   // we have minutes but need seconds --> x 60!!!
-   int iJmpVal = missionControl.getJumpValue() * 60;
+   int iNewPos = 0;
+   QTime tm(0, 0, 0);
 
-   // jump ...
-   ui->player->slotTimeJumpRelative(-iJmpVal);
+   // we have minutes but need seconds --> x 60!!!
+   m_iJumpValue -= missionControl.getJumpValue() * 60;
+
+   // compute new position after time jump ...
+   iNewPos  = missionControl.posValue() - missionControl.posMinimum();
+   iNewPos += m_iJumpValue;
+
+   tm = tm.addSecs(iNewPos);
+
+   QString s = QString("%1%2 %3. -> %4")
+         .arg((m_iJumpValue >= 0) ? "+" : "").arg(m_iJumpValue / 60)
+         .arg(tr("min")).arg(tm.toString("H:mm:ss"));
+
+   emit sigOverlay(s, 1000);
+
+   // (re-)trigger jump timer
+   m_tTimeJump.start();
 }
 
 /* -----------------------------------------------------------------\
@@ -1531,12 +1558,45 @@ void Recorder::slotBwd()
 \----------------------------------------------------------------- */
 void Recorder::slotFwd()
 {
-   // we have minutes but need seconds --> x 60!!!
-   int iJmpVal = missionControl.getJumpValue() * 60;
+   int iNewPos = 0;
+   QTime tm(0, 0, 0);
 
-   // jump ...
-   ui->player->slotTimeJumpRelative(iJmpVal);
+   // we have minutes but need seconds --> x 60!!!
+   m_iJumpValue += missionControl.getJumpValue() * 60;
+
+   // compute new position after time jump ...
+   iNewPos  = missionControl.posValue() - missionControl.posMinimum();
+   iNewPos += m_iJumpValue;
+
+   tm = tm.addSecs(iNewPos);
+
+   QString s = QString("%1%2 %3. -> %4")
+         .arg((m_iJumpValue >= 0) ? "+" : "").arg(m_iJumpValue / 60)
+         .arg(tr("min")).arg(tm.toString("H:mm:ss"));
+
+   emit sigOverlay(s, 1000);
+
+   // (re-)trigger jump timer
+   m_tTimeJump.start();
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   make time jump [slot]
+//
+//! \author  Jo2003
+//! \date    17.09.2014
+//
+//---------------------------------------------------------------------------
+void Recorder::slotFinallyJump()
+{
+   // jump ...
+   ui->player->slotTimeJumpRelative(m_iJumpValue);
+   m_iJumpValue = 0;
+
+   emit sigOverlay("", 1000);
+}
+
 
 /* -----------------------------------------------------------------\
 |  Method: show [slot]
@@ -1604,6 +1664,11 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    // Fills EPG browser and triggers the load
    // of VOD genres (if there in account info).
    mkCase(CIptvDefs::REQ_EPG, slotEPG(resp));
+
+   ///////////////////////////////////////////////
+   // Fills EPG browser and triggers the load
+   // of VOD genres (if there in account info).
+   mkCase(CIptvDefs::REQ_EPG_EXT, slotEPG(resp, true));
 
    ///////////////////////////////////////////////
    // update channel map with following info
@@ -1729,7 +1794,8 @@ void Recorder::slotUnused(const QString &str)
 \----------------------------------------------------------------- */
 void Recorder::slotKartinaErr (QString str, int req, int err)
 {
-   bool bSilent = false;
+   bool bSilent                  = false;
+   IncPlay::ePlayStates psBackup = ePlayState;
 
 #ifdef _USE_QJSON
    // Note: when using json, error isn't parsed correctly!
@@ -1850,6 +1916,9 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
 
    if ((CIptvDefs::EErr)err == CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE)
    {
+      // restore play state as it was before ...
+      ePlayState = psBackup;
+
       // Show must go on:
       // Make silent relogin and try last sent request
       pApiClient->requeue(true);
@@ -1883,7 +1952,7 @@ void Recorder::slotLogout(const QString &str)
    }
 
    mInfo(tr("logout done ..."));
-   QDialog::accept ();
+   QDialog::close();
 }
 
 /* -----------------------------------------------------------------\
@@ -1998,9 +2067,23 @@ void Recorder::slotCookie (const QString &str)
 
             if (tmSync.syncronizedTime_t() > llCheck)
             {
+#ifdef __OWN_BUY_REMINDER
+               // make sure tab text is translated as needed
+               QString content;
+
+               content = pAppTransl->translate("ownBuyReminder", __OWN_BUY_REMINDER);
+
+               if (content.isEmpty())
+               {
+                  content = __OWN_BUY_REMINDER;
+               }
+
+               content = content.arg(iDaysTo);
+#else
                QString content = tr("Your subscription will end in %1 day(s).<br />Visit %2 to renew it!")
                      .arg(iDaysTo)
                      .arg(pCustomization->strVal("COMPANY_LINK"));
+#endif // __OWN_BUY_REMINDER
 
                expNotifier.setNotifyContent(pHtml->htmlPage(content, "Account Info"));
                expNotifier.exec();
@@ -2180,8 +2263,12 @@ void Recorder::slotChanList (const QString &str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotEPG(const QString &str)
+void Recorder::slotEPG(const QString &str, bool bExtEpg)
 {
+#ifndef _EXT_EPG
+   Q_UNUSED(bExtEpg)
+#endif // _EXT_EPG
+
    QVector<cparser::SEpg> epg;
 
    QDateTime   epgTime = tmSync.currentDateTimeSync().addDays(iEpgOffset);
@@ -2194,13 +2281,33 @@ void Recorder::slotEPG(const QString &str)
 
       if (!pApiParser->parseEpg(str, epg))
       {
+#ifdef _EXT_EPG
+         // extended EPG will prepend entries from the day before ...
+         if (Settings.extEpg())
+         {
+            if (!bExtEpg)
+            {
+               // buffer epg entry and request EPG one day before ...
+               epgBuff = epg;
+               pApiClient->queueRequest(CIptvDefs::REQ_EPG_EXT, cid, iEpgOffset - 1);
+               return;
+            }
+            else
+            {
+               // append todays epg ...
+               epg += epgBuff;
+            }
+         }
+#endif // _EXT_EPG
+
          cparser::SChan chan;
 
          if (!pChanMap->entry(cid, chan))
          {
             ui->textEpg->DisplayEpg(epg, chan.sName,
                                     cid, epgTime.toTime_t(),
-                                    accountInfo.bHasArchive ? chan.bHasArchive : false, chan.iTs);
+                                    accountInfo.bHasArchive ? chan.bHasArchive : false,
+                                    chan.iTs, Settings.extEpg());
 
             // fill epg control ...
             icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
@@ -3220,6 +3327,9 @@ void Recorder::slotGotVideos(const QString &str, bool bVodFavs)
       touchVodNavBar(gInfo);
       ui->vodBrowser->displayVodList (vVodList, sGenre);
    }
+
+   ui->lineVodSearch->setEnabled(true);
+   ui->lineVodSearch->setFocus();
 }
 
 /* -----------------------------------------------------------------\
@@ -3238,6 +3348,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
    QString action = q.queryItemValue("action");
    bool ok        = false;
    int  id        = 0;
+   int  videoId   = 0;
 
    // check password ...
    if (q.queryItemValue("pass_protect").toInt())
@@ -3307,7 +3418,8 @@ void Recorder::slotVodAnchor(const QUrl &link)
          iDwnReqId = -1;
       }
 
-      id = q.queryItemValue("vid").toInt();
+      id      = q.queryItemValue("vid").toInt();
+      videoId = q.queryItemValue("video_id").toInt();
 
       showInfo.cleanShowInfo();
       showInfo.setShowName(ui->vodBrowser->getName());
@@ -3317,6 +3429,7 @@ void Recorder::slotVodAnchor(const QUrl &link)
       showInfo.setVodId(id);
       showInfo.setStartTime(0);
       showInfo.setEndTime(ui->vodBrowser->getLength());
+      showInfo.setNoAd(pDb->videoSeen(videoId));
 
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
@@ -4523,6 +4636,7 @@ void Recorder::savePositions()
    Settings.SaveSplitterSizes("spVChanEpg", ui->vSplitterChanEpg->sizes());
    Settings.SaveSplitterSizes("spVChanEpgPlay", ui->vSplitterChanEpgPlay->sizes());
    Settings.SaveSplitterSizes("spHPlay", ui->hSplitterPlayer ->sizes());
+   mInfo(tr("Positions saved ..."));
 }
 
 /* -----------------------------------------------------------------\

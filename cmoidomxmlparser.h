@@ -31,7 +31,7 @@ public:
    virtual ~CMoiDomXmlParser();
 
 protected:
-   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList);
    virtual uint parseATracks(QXmlStreamReader &xml);
 };
 

@@ -12,7 +12,7 @@
 #ifndef __012412__DEFINES_KARTINA_TV_H
    #define __012412__DEFINES_KARTINA_TV_H
 
-#include <QtGlobal>
+#include <more_kartina_translations.h>
 
 #define APP_NAME      "Kartina.TV"
 #define UPD_CHECK_URL "http://rt.coujo.de/kartina_tv_ver.xml"
@@ -23,4 +23,3 @@
 #define VERSION_APPENDIX
 
 #endif // __012412__DEFINES_KARTINA_TV_H
-

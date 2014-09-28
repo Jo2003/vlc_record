@@ -27,6 +27,7 @@ namespace IncPlay
       PS_RECORD,
       PS_TIMER_RECORD,
       PS_TIMER_STBY,
+      PS_ADVERTISING,
       PS_WTF    = 255 // ;-)
    };
 }

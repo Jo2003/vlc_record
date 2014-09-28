@@ -20,8 +20,6 @@
 #include <QDropEvent>
 #include <QDataStream>
 #include <QMap>
-
-#include "clogfile.h"
 #include "qchanlistdelegate.h"
 
 typedef QMap<int, QVariant> QModelItemMap;

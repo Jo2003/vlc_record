@@ -23,16 +23,11 @@
 #include <QMutex>
 
 #include <vlc/vlc.h>
-
-#include "cvlcrecdb.h"
-#include "clogfile.h"
 #include "playstates.h"
 #include "defdef.h"
 #include "qtimerex.h"
-#include "cshowinfo.h"
 #include "csettingsdlg.h"
 #include "qvlcvideowidget.h"
-#include "api_inc.h"
 
 //===================================================================
 // namespace
@@ -40,6 +35,17 @@
 namespace Ui
 {
    class CPlayer;
+}
+
+namespace Player
+{
+   struct SPauseResume
+   {
+      SPauseResume() :timeStamp(0),id(-1),bArch(false){}
+      ulong timeStamp;
+      int   id;
+      bool  bArch;
+   };
 }
 
 /********************************************************************\
@@ -65,7 +71,7 @@ public:
    void setSettings (CSettingsDlg *pDlg);
    bool isPositionable();
    void initSlider ();
-   uint getSilderPos();
+   uint getSliderPos();
    QVlcVideoWidget* getAndRemoveVideoWidget();
    void  addAndEmbedVideoWidget();
    ulong libvlcVersion();
@@ -78,6 +84,7 @@ public:
    static QMutex                       _mtxEvt;
    static float                        _flBuffPrt;
    static void eventCallback (const libvlc_event_t *ev, void *userdata);
+   static libvlc_media_t              *_pCurrentMedia;
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -91,12 +98,13 @@ protected:
 private:
    Ui::CPlayer                 *ui;
    QTimer                       sliderTimer;
-   QTimer                       tAspectShot;
    QTimer                       tEventPoll;
    QTimerEx                     timer;
+   QTime                        tPaused;
+   libvlc_media_t              *videoMediaItem;
+   libvlc_media_t              *addMediaItem;
    libvlc_instance_t           *pVlcInstance;
    libvlc_media_player_t       *pMediaPlayer;
-   libvlc_event_manager_t      *pEMPlay;
    libvlc_media_list_player_t  *pMedialistPlayer;
    libvlc_media_list_t         *pMediaList;
    CSettingsDlg                *pSettings;
@@ -108,6 +116,8 @@ private:
    QVector<QByteArray>          vArgs;
    bool                         bScanAuTrk;
    QLangVector                  vAudTrk;
+   Player::SPauseResume         pauseResume;
+   IncPlay::ePlayStates         libPlayState;
 
 private slots:
    void slotPositionChanged(int value);
@@ -151,6 +161,7 @@ signals:
    void sigBuffPercent(int);
    void sigAudioTracks(QLangVector);
    void sigStopOnDemand();
+   void sigStateMessage(int, const QString&, int);
 };
 
 #endif /* __022410__CPLAYER_H */

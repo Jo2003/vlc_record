@@ -18,7 +18,6 @@
 #include <QRegExp>
 
 #include "qiptvctrlclient.h"
-#include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
 

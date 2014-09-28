@@ -13,21 +13,9 @@
  *///------------------------- (c) 2011 by Jo2003  --------------------------
 #include "qftsettings.h"
 #include "ui_qftsettings.h"
-#include "qcustparser.h"
 #include <QRegExp>
 
-// global customization class ...
-extern QCustParser *pCustomization;
-
-// for folders ...
-extern CDirStuff *pFolders;
-
-// storage db ...
-extern CVlcRecDB *pDb;
-
-// global translaters ...
-extern QTranslator *pAppTransl;
-extern QTranslator *pQtTransl;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //
@@ -175,11 +163,7 @@ void QFTSettings::saveFTSettings()
    pDb->setValue("TargetDir",    tr("%1/Videos").arg(QDir::homePath()));
 #endif
    pDb->setValue("PlayerModule", "5_libvlc.mod");    // default player module
-#ifdef _IS_OEM
    pDb->setValue("HttpCache",    3000);              // 3 sec. cache
-#else
-   pDb->setValue("HttpCache",    8000);              // 8 sec. cache
-#endif // _IS_OEM
    pDb->setValue("UpdateCheck",  (int)Qt::Checked);  // check for updates
    pDb->setValue("2ClickPlay",   (int)Qt::Checked);  // double click on channel list starts player
    pDb->setValue("LogLevel",     3);                 // log everything

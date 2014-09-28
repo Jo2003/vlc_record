@@ -21,7 +21,6 @@
 #include <QTimer>
 #include <QUrl>
 
-#include "clogfile.h"
 #include "defdef.h"
 
 /*=============================================================================\

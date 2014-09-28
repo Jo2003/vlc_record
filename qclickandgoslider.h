@@ -107,6 +107,7 @@ protected:
 private:
    int  _iHandleRange;
    bool _isVideo;
+   int  _clickedPosition;
 
 signals:
    // special signal so we know for sure how to handle...

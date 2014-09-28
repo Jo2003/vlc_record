@@ -24,10 +24,7 @@
 #include "templates.h"
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
-#include "cdirstuff.h"
-#include "cshowinfo.h"
 #include "cstreamloader.h"
-#include "api_inc.h"
 #include "qhlscontrol.h"
 
 //===================================================================

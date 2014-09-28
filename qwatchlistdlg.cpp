@@ -17,21 +17,7 @@
 #include "ui_qwatchlistdlg.h"
 #include "templates.h"
 #include "small_helpers.h"
-#include "clogfile.h"
-#include "chtmlwriter.h"
-#include "qdatetimesyncro.h"
-
-// global syncronized time ...
-extern QDateTimeSyncro tmSync;
-
-// storage db ...
-extern CVlcRecDB *pDb;
-
-// for logging ...
-extern CLogFile VlcLog;
-
-// global html writer ...
-extern CHtmlWriter *pHtml;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //

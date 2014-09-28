@@ -21,7 +21,6 @@
 #include <QFile>
 #include <QVariant>
 
-#include "cdirstuff.h"
 #include "cparser.h"
 
 #define VLC_REC_DB "vlcrec.db.sqlite"
@@ -85,7 +84,9 @@ public:
    int        delWatchEntry (int cid, uint uiGmt);
    int        setDefAStream (int cid, int idx);
    int        defAStream (int cid);
-
+   int        markVod (int videoId);
+   bool       videoSeen (int videoId);
+   void       cleanVodSeen ();
 
 protected:
    int checkDb();

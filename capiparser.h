@@ -18,7 +18,6 @@
 #include <QDateTime>
 #include <QStringList>
 
-#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 

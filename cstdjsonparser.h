@@ -23,7 +23,6 @@
 #include <QJsonValue>
 #include <QJsonParseError>
 
-#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 #include "capiparser.h"

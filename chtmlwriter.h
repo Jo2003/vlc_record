@@ -17,6 +17,8 @@
 #include <QObject>
 #include <QString>
 
+#include "cparser.h"
+
 //---------------------------------------------------------------------------
 //! \class   CHtmlWriter
 //! \date    13.08.2013
@@ -46,6 +48,7 @@ public:
    QString div(const QString &content, const QString& style = QString(), const QString& align = QString());
    QString oneCellPage (const QString& content, const QString& style = QString());
    QString createTooltip (const QString& name, const QString& prog, uint start, uint end, int ts = 0, const QString& style = QString());
+   QString createBitrateTsTable (const QVector<cparser::STimeShift>& v);
 };
 
 #endif // __20130809_CHTMLWRITER_H

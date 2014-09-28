@@ -12,17 +12,7 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qhlscontrol.h"
-#include "api_inc.h"
-#include "clogfile.h"
-
-// global client api classes ...
-extern ApiClient *pApiClient;
-
-// for logging ...
-extern CLogFile VlcLog;
-
-// global folders ...
-extern CDirStuff *pFolders;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //

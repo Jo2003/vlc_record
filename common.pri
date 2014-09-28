@@ -17,13 +17,27 @@ INCLUDEPATH += .
 CONFIG += shared
 
 # -------------------------------------
+# support C++11
+# Depending on your compiler you
+# have to use different options
+# to enable C++11
+# MinGW for used for Qt4 needs
+# -std=c++0x!
+# For Qt5 you should use:
+# CONFIG += c++11
+# -------------------------------------
+#win32: QMAKE_CXXFLAGS += -std=c++11
+#else:mac: QMAKE_CXXFLAGS += -std=c++11
+#else:unix: QMAKE_CXXFLAGS += -std=c++11
+
+# -------------------------------------
 # program version
 # -------------------------------------
 PROGMAJ=2
 PROGMIN=69
 
 # here you can enable traces ...
-# DEFINES += __TRACE
+DEFINES += __TRACE
 
 SOURCES += main.cpp \
     recorder.cpp \
@@ -68,7 +82,8 @@ SOURCES += main.cpp \
     qauthdlg.cpp \
     qwaitwidget.cpp \
     qclickandgoslider.cpp \
-    qdatetimesyncro.cpp
+    qdatetimesyncro.cpp \
+    qstatemessage.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -128,7 +143,9 @@ HEADERS += recorder.h \
     qexpirenotifydlg.h \
     qauthdlg.h \
     qwaitwidget.h \
-    qdatetimesyncro.h
+    qdatetimesyncro.h \
+    qstatemessage.h \
+    externals_inc.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -142,7 +159,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/cplayer.ui \
     forms/recorder_inc.ui \
     forms/qauthdlg.ui \
-    forms/qwaitwidget.ui
+    forms/qwaitwidget.ui \
+    forms/qstatemessage.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
@@ -205,6 +223,8 @@ else:unix {
    OTHER_FILES += create_install_mak.sh \
                   documentation/create_qthelp.sh
    QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
+#   LIBS += -L/home/joergn/libvlc \
+#        -Wl,-rpath lib
 }
 
 #############

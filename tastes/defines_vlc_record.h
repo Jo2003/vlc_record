@@ -12,7 +12,7 @@
 #ifndef __012412__DEFINES_VLC_RECORD_H
    #define __012412__DEFINES_VLC_RECORD_H
 
-#include <QtGlobal>
+#include <more_kartina_translations.h>
 
 #define APP_NAME      "VLC-Record"
 #define UPD_CHECK_URL "http://rt.coujo.de/vlc_record_ver.xml"

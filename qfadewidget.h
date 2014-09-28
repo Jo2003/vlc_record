@@ -84,6 +84,7 @@ public:
       _fOpaqueMaster = fOpaque;
    }
 
+public slots:
    //---------------------------------------------------------------------------
    //
    //! \brief   start fade out

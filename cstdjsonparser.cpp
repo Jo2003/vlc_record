@@ -12,9 +12,7 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "cstdjsonparser.h"
-
-// log file functions ...
-extern CLogFile VlcLog;
+#include "externals_inc.h"
 
 //---------------------------------------------------------------------------
 //
@@ -99,7 +97,7 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
 #ifdef _TASTE_CHITRAM_TV
                   // due to resource problems chitram.tv hasn't so far
                   // normal channel icons ...
-                  chan.sIcon        = QString("/dune/chitram/images_v3/s%1.7.png").arg(chan.iId);
+                  chan.sIcon        = channObj.value("big_icon").toString();
 #else
                   chan.sIcon        = channObj.value("icon").toString();
 #endif // _TASTE_CHITRAM_TV
@@ -532,6 +530,9 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
    vidInfo.sImg       = "";
    vidInfo.sName      = "";
    vidInfo.sYear      = "";
+   vidInfo.sPgRating        = "";
+   vidInfo.sImdbRating      = "";
+   vidInfo.sKinopoiskRating = "";
    vidInfo.uiLength   = 0;
    vidInfo.uiVidId    = 0;
    vidInfo.bProtected = false;
@@ -545,18 +546,21 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
       {
          QJsonObject filmObj = jsonDoc.object().value("film").toObject();
 
-         vidInfo.sActors    = filmObj.value("actors").toString();
-         vidInfo.sCountry   = filmObj.value("country").toString();
-         vidInfo.sDescr     = filmObj.value("description").toString();
-         vidInfo.sDirector  = filmObj.value("director").toString();
-         vidInfo.sImg       = filmObj.value("poster").toString();
-         vidInfo.sName      = filmObj.value("name").toString();
-         vidInfo.sYear      = filmObj.value("year").toString();
-         vidInfo.sGenres    = filmObj.value("genre_str").toString();
-         vidInfo.uiLength   = filmObj.value("lenght").toVariant().toUInt();
-         vidInfo.uiVidId    = filmObj.value("id").toVariant().toUInt();
-         vidInfo.bFavourit  = filmObj.value("favorite").toVariant().toBool();
-         vidInfo.bProtected = filmObj.value("pass_protect").toVariant().toBool();
+         vidInfo.sActors          = filmObj.value("actors").toString();
+         vidInfo.sCountry         = filmObj.value("country").toString();
+         vidInfo.sDescr           = filmObj.value("description").toString();
+         vidInfo.sDirector        = filmObj.value("director").toString();
+         vidInfo.sImg             = filmObj.value("poster").toString();
+         vidInfo.sName            = filmObj.value("name").toString();
+         vidInfo.sYear            = filmObj.value("year").toString();
+         vidInfo.sGenres          = filmObj.value("genre_str").toString();
+         vidInfo.uiLength         = filmObj.value("lenght").toVariant().toUInt();
+         vidInfo.uiVidId          = filmObj.value("id").toVariant().toUInt();
+         vidInfo.bFavourit        = filmObj.value("favorite").toVariant().toBool();
+         vidInfo.bProtected       = filmObj.value("pass_protect").toVariant().toBool();
+         vidInfo.sPgRating        = filmObj.value("rate_mpaa").toString();
+         vidInfo.sImdbRating      = filmObj.value("rate_imdb").toString();
+         vidInfo.sKinopoiskRating = filmObj.value("rate_kinopoisk").toString();
 
          QJsonArray  videos = filmObj.value("videos").toArray();
          QJsonObject vidObj;

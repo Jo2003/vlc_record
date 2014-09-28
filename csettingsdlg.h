@@ -20,13 +20,11 @@
 #include <QTimer>
 #include <QSystemTrayIcon>
 
-#include "cvlcrecdb.h"
-#include "clogfile.h"
 #include "defdef.h"
-#include "cdirstuff.h"
 #include "cshortcutex.h"
 #include "cshortcutgrabber.h"
-#include "api_inc.h"
+#include "clogfile.h"
+#include "cparser.h"
 
 //===================================================================
 // namespace
@@ -76,6 +74,7 @@ public:
     bool doubleClickToPlay();
     bool useGpuAcc();
     bool showAds();
+    bool extEpg();
 
     int GetProxyPort ();
     int GetBufferTime ();
@@ -114,6 +113,7 @@ public:
 
 protected:
     virtual void changeEvent(QEvent *e);
+    bool checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const QString& what);
 
 private:
     Ui::CSettingsDlg  *m_ui;
@@ -125,6 +125,8 @@ private:
     QVector<cparser::SVodRate>   vodRatesVector;
     const cparser::SAccountInfo *pAccountInfo;
     bool                         bSettingsRead;
+    int                          m_iServerBitrate;
+    int                          m_iServerTimeShift;
 
 signals:
     void sigReloadLogos ();

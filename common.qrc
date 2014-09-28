@@ -83,4 +83,9 @@
         <file alias="unlocked">resources/lock_open.png</file>
         <file alias="locked">resources/lock_closed.png</file>
     </qresource>
+    <qresource prefix="/status">
+        <file alias="s_info">resources/state_info.png</file>
+        <file alias="s_warn">resources/state_warning.png</file>
+        <file alias="s_error">resources/state_error.png</file>
+    </qresource>
 </RCC>

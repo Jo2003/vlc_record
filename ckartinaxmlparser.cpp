@@ -11,9 +11,7 @@
 |
 \=============================================================================*/
 #include "ckartinaxmlparser.h"
-
-// log file functions ...
-extern CLogFile VlcLog;
+#include "externals_inc.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CKartinaXMLParser / constructor

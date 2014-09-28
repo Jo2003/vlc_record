@@ -12,32 +12,8 @@
 #include "csettingsdlg.h"
 #include "ui_csettingsdlg.h"
 #include <QRadioButton>
-#include <QTranslator>
-#include "qcustparser.h"
-#include "qdatetimesyncro.h"
-
-// global synchronized timer ...
-extern QDateTimeSyncro tmSync;
-
-// global customization class ...
-extern QCustParser *pCustomization;
-
-// log file functions ...
-extern CLogFile VlcLog;
-
-// for folders ...
-extern CDirStuff *pFolders;
-
-// storage db ...
-extern CVlcRecDB *pDb;
-
-// global client api classes ...
-extern ApiClient *pApiClient;
-extern ApiParser *pApiParser;
-
-// global translaters ...
-extern QTranslator *pAppTransl;
-extern QTranslator *pQtTransl;
+#include <QMessageBox>
+#include "externals_inc.h"
 
 
 /* -----------------------------------------------------------------\
@@ -69,6 +45,8 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       connect(pShortVerbLevel, SIGNAL(activated()), this, SLOT(slotEnableVlcVerbLine()));
    }
 
+   m_iServerBitrate   = -1;
+   m_iServerTimeShift = -1;
 
    // set company name for login data ...
    QString s = m_ui->groupAccount->title();
@@ -106,6 +84,14 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       m_ui->lineApiServer->setVisible(false);
    }
 #endif
+
+#ifndef _EXT_EPG
+   m_ui->checkExtEPG->setVisible(false);
+#else
+   #ifndef __MY_EXT_EPG
+   m_ui->checkExtEPG->setText(tr("EPG day starts at 0:00"));
+   #endif // __MY_EXT_EPG
+#endif // _EXT_EPG
 
    // fill in values ...
    readSettings();
@@ -251,6 +237,17 @@ void CSettingsDlg::readSettings()
       m_ui->checkAds->setCheckState(Qt::Checked);
    }
 
+#ifdef _EXT_EPG
+   m_ui->checkExtEPG->setCheckState((Qt::CheckState)pDb->intValue("ExtEPG", &iErr));
+
+   // value doesn't exist in database ...
+   if (iErr)
+   {
+      // enable by default ...
+      m_ui->checkExtEPG->setCheckState(Qt::Checked);
+   }
+#endif // _EXT_EPG
+
    m_ui->check2ClicksToPlay->setCheckState((Qt::CheckState)pDb->intValue("2ClickPlay", &iErr));
 
    // value doesn't exist in database ...
@@ -365,7 +362,9 @@ void CSettingsDlg::changeEvent(QEvent *e)
           int iDeiIdx = m_ui->cbxDeintlMode->currentIndex();
 
           m_ui->retranslateUi(this);
-
+#if (defined _EXT_EPG && !defined __MY_EXT_EPG)
+          m_ui->checkExtEPG->setText(tr("EPG day starts at 0:00"));
+#endif
           // re-set index to comboboxes ...
           m_ui->cbxLanguage->setCurrentIndex(iLanIdx);
           m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
@@ -381,6 +380,78 @@ void CSettingsDlg::changeEvent(QEvent *e)
     default:
        break;
     }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   check if chosen bitrate and timeshift makes sende
+//
+//! \author  Jo2003
+//! \date    14.09.2014
+//
+//! \param   iBitRate [in] (int) chosen bitrate
+//! \param   iTimeShift [in] (int) chosen timeshift
+//! \param   what [in] (const QString &) what to check
+//
+//! \return  true -> emit changed signal; false -> don't emit
+//---------------------------------------------------------------------------
+bool CSettingsDlg::checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const QString &what)
+{
+   bool bSendSig = true;
+
+   if ((showInfo.playState() == IncPlay::PS_PLAY)
+       && (showInfo.showType() == ShowInfo::Archive))
+   {
+      // get informaion about the channel from showinfo
+      int     cid = showInfo.channelId();
+      bool    bArchHasTs = false;
+      QString msg;
+      QMap<int, QString> brMap;
+      brMap[320]  = tr("Mobile");
+      brMap[900]  = tr("Eco");
+      brMap[1500] = tr("Standard");
+      brMap[2500] = tr("Premium");
+
+      if (pChanMap->contains(cid))
+      {
+         cparser::SChan chan = pChanMap->value(cid);
+
+         for (int i = 0; ((i < chan.vTs.count()) && !bArchHasTs); i ++)
+         {
+            if ((chan.vTs.at(i).iTimeShift == iTimeShift)
+                && (chan.vTs.at(i).iBitRate == iBitRate))
+            {
+               bArchHasTs = true;
+            }
+         }
+
+         if (!bArchHasTs)
+         {
+            QMessageBox::StandardButton btn;
+            msg  = tr("The archive for channel '%1' isn't available in your combination of bitrate (%2) and timeshift (%3)!")
+                  .arg(showInfo.chanName()).arg(brMap[iBitRate]).arg(iTimeShift);
+            msg += "<br>";
+            msg += tr("Following table shows the available combinations:");
+            msg += pHtml->createBitrateTsTable(chan.vTs);
+            msg += "<br> <br>";
+            msg += pHtml->htmlTag("b", tr("Do you want to activate the new %1? The player will switch to 'Live' then.").arg(what));
+
+            btn = QMessageBox::information(this, tr("Information"), msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+            if (btn == QMessageBox::No)
+            {
+               bSendSig = false;
+            }
+            else if (btn == QMessageBox::Yes)
+            {
+               // emulate Live show ...
+               showInfo.setShowType(ShowInfo::Live);
+            }
+         }
+      }
+   }
+
+   return bSendSig;
 }
 
 /* -----------------------------------------------------------------\
@@ -540,6 +611,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
+   pDb->setValue("ExtEPG", (int)m_ui->checkExtEPG->checkState());
 
 #ifndef _HAS_VOD_MANAGER
    /////////////////////////////////////////////////////////////////////////////
@@ -692,6 +764,9 @@ void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
    QVector<int>::const_iterator cit;
    QString sName;
 
+   // backup bitrate ...
+   m_iServerBitrate = iActrate;
+
    if (!vValues.isEmpty())
    {
       m_ui->cbxBitRate->clear();
@@ -764,6 +839,8 @@ void CSettingsDlg::fillTimeShiftCbx(const QVector<int> &vVals, int iAct)
    int iCount  = 0;
    QVector<int>::const_iterator cit;
 
+   m_iServerTimeShift = iAct;
+
    if (!vVals.isEmpty())
    {
       m_ui->cbxTimeShift->clear();
@@ -823,7 +900,86 @@ void CSettingsDlg::on_cbxStreamServer_activated(int index)
 \----------------------------------------------------------------- */
 void CSettingsDlg::on_cbxBitRate_activated(int index)
 {
-   emit sigSetBitRate(m_ui->cbxBitRate->itemData(index).toInt());
+   int  br       = m_ui->cbxBitRate->itemData(index).toInt();
+   int  i;
+   bool bSendSig = true;
+
+   if ((showInfo.playState() == IncPlay::PS_PLAY)
+       && (showInfo.showType() == ShowInfo::Archive))
+   {
+      // get informaion about the channel from showinfo
+      int     cid = showInfo.channelId();
+      bool    bArchHasBitrate = false;
+      QString msg;
+      QVector<int> brAvail;
+      QMap<int, QString> brMap;
+      brMap[320]  = tr("Mobile");
+      brMap[900]  = tr("Eco");
+      brMap[1500] = tr("Standard");
+      brMap[2500] = tr("Premium");
+
+      if (pChanMap->contains(cid))
+      {
+         cparser::SChan chan = pChanMap->value(cid);
+
+         for (i = 0; i < chan.vTs.count(); i ++)
+         {
+            if (chan.vTs.at(i).iTimeShift  == 100) // API hack!
+            {
+               brAvail.append(chan.vTs.at(i).iBitRate);
+
+               if (chan.vTs.at(i).iBitRate == br)
+               {
+                  bArchHasBitrate = true;
+               }
+            }
+         }
+
+         if (!bArchHasBitrate)
+         {
+            QMessageBox::StandardButton btn;
+            msg  = tr("The archive for channel '%1' isn't available in the bitrate '%2'!")
+                  .arg(showInfo.chanName()).arg(brMap[br]);
+            msg += "<br> <br>";
+            msg += tr("Following bitrates are available:");
+            msg += "<br>";
+
+            for (i = 0; i < brAvail.count(); i++)
+            {
+               msg += QString("%1, ").arg(brMap.value(brAvail.at(i)));
+            }
+
+            msg += "<br> <br>";
+            msg += pHtml->htmlTag("b", tr("Do you want to activate the new bitrate? The player will switch to 'Live' then."));
+
+            btn = QMessageBox::information(this, tr("Information"), msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+
+            if (btn == QMessageBox::No)
+            {
+               bSendSig = false;
+            }
+            else if (btn == QMessageBox::Yes)
+            {
+               // emulate Live show ...
+               showInfo.setShowType(ShowInfo::Live);
+            }
+         }
+      }
+   }
+
+   if (!bSendSig)
+   {
+      // return to the default bitrate ...
+      if ((index = m_ui->cbxBitRate->findData(m_iServerBitrate)) != -1)
+      {
+         m_ui->cbxBitRate->setCurrentIndex(index);
+      }
+   }
+   else
+   {
+      m_iServerBitrate = br;
+      emit sigSetBitRate(br);
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -838,10 +994,37 @@ void CSettingsDlg::on_cbxBitRate_activated(int index)
 \----------------------------------------------------------------- */
 void CSettingsDlg::on_cbxTimeShift_activated(int index)
 {
-   // store global ...
-   tmSync.setTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
+   int  ts    = m_ui->cbxTimeShift->itemData(index).toInt();
+   /*
+    * Maybe later we will add this check here as well ...
+    *
+   int  br    = m_ui->cbxBitRate->itemData(m_ui->cbxBitRate->currentIndex()).toInt();
+   bool bSend = checkBitrateAndTimeShift(br, ts, tr("timeshift"));
 
-   emit sigSetTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
+   if (!bSend)
+   {
+      // return to the default timeshift ...
+      if ((index = m_ui->cbxTimeShift->findData(m_iServerTimeShift)) != -1)
+      {
+         m_ui->cbxTimeShift->setCurrentIndex(index);
+      }
+   }
+   else
+   {
+      m_iServerTimeShift = ts;
+
+      // store global ...
+      tmSync.setTimeShift(ts);
+      emit sigSetTimeShift(ts);
+   }
+   */
+
+   m_iServerTimeShift = ts;
+
+   // store global ...
+   tmSync.setTimeShift(ts);
+   emit sigSetTimeShift(ts);
+
 }
 
 /* -----------------------------------------------------------------\
@@ -1257,6 +1440,11 @@ bool CSettingsDlg::useGpuAcc()
 bool CSettingsDlg::showAds()
 {
    return m_ui->checkAds->isChecked();
+}
+
+bool CSettingsDlg::extEpg()
+{
+   return m_ui->checkExtEPG->isChecked();
 }
 
 uint CSettingsDlg::libVlcVerboseLevel()

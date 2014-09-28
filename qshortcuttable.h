@@ -17,7 +17,6 @@
 #include <QTableWidget>
 #include <QVector>
 
-#include "cvlcrecdb.h"
 #include "cshortcutgrabber.h"
 
 //---------------------------------------------------------------------------

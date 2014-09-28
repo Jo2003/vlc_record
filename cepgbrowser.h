@@ -15,7 +15,6 @@
 #include <QTextBrowser>
 #include <QMap>
 #include "templates.h"
-#include "clogfile.h"
 #include "defdef.h"
 #include "api_inc.h"
 
@@ -47,7 +46,8 @@ public:
     CEpgBrowser(QWidget *parent = 0);
     void DisplayEpg(QVector<cparser::SEpg> epglist,
                     const QString &sName, int iChanID,
-                    uint uiGmt, bool bHasArchiv, int iTs);
+                    uint uiGmt, bool bHasArchiv, int iTs,
+                    bool bExt);
 
     void recreateEpg ();
 
@@ -62,11 +62,14 @@ public:
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());
     QString createHtmlCode();
+    void scrollTo();
 
 private:
     int                    _iTs;
     int                    iCid;
     bool                   bArchive;
+    bool                   bExtEPG;
+    bool                   hasCurrent;
     uint                   uiTime;
     QString                sChanName;
     QMap<uint, epg::SShow> mProgram;

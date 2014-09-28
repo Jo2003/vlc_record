@@ -12,15 +12,7 @@
 #include "cshowinfo.h"
 #include "templates.h"
 #include "small_helpers.h"
-#include "chtmlwriter.h"
-#include "qchannelmap.h"
-
-// global html writer ...
-extern CHtmlWriter *pHtml;
-
-// global channel map ..
-extern QChannelMap *pChanMap;
-
+#include "externals_inc.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CShowInfo / constructor
@@ -63,6 +55,7 @@ void CShowInfo::cleanShowInfo()
    uiJumpTime     = 0;
    bStreamLoader  = false;
    bHls           = false;
+   bNoAd          = false;
    ulLastEpgUpd   = 0;
    iDefAStream    = 0;
    epgMap.clear();
@@ -654,6 +647,21 @@ void CShowInfo::setDefAStream(int idx)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   disable ads for this video?
+//
+//! \author  Jo2003
+//! \date    06.08.2014
+//
+//! \param   a [in] (bool) disable if true
+//
+//---------------------------------------------------------------------------
+void CShowInfo::setNoAd(bool a)
+{
+   bNoAd = a;
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   get default audio track index
 //
 //! \author  Jo2003
@@ -666,6 +674,22 @@ void CShowInfo::setDefAStream(int idx)
 const int &CShowInfo::defAStream()
 {
    return iDefAStream;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   disable ads for this video?
+//
+//! \author  Jo2003
+//! \date    06.08.2014
+//
+//! \param   --
+//
+//! \return  true -> disable; false -> show ads
+//---------------------------------------------------------------------------
+bool CShowInfo::noAd()
+{
+   return bNoAd;
 }
 
 /************************* History ***************************\

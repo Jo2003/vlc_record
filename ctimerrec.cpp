@@ -11,30 +11,8 @@
 \*************************************************************/
 #include "ctimerrec.h"
 #include "ui_ctimerrec.h"
-#include "qchannelmap.h"
 #include <QFileInfo>
-#include "qdatetimesyncro.h"
-
-// global synchronized timer ...
-extern QDateTimeSyncro tmSync;
-
-// logging stuff ...
-extern CLogFile VlcLog;
-
-// for folders ...
-extern CDirStuff *pFolders;
-
-// storage db ...
-extern CVlcRecDB *pDb;
-
-// global showinfo class ...
-extern CShowInfo showInfo;
-
-// global client api classes ...
-extern ApiClient *pApiClient;
-extern ApiParser *pApiParser;
-
-extern QChannelMap *pChanMap;
+#include "externals_inc.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor

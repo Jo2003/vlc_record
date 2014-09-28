@@ -410,3 +410,58 @@ QString CHtmlWriter::createTooltip (const QString &name, const QString &prog, ui
 
    return oneCellPage(s, style.isEmpty() ? TMPL_ONE_CELL : style);
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   create a table bitrate and timeshift info
+//
+//! \author  Jo2003
+//! \date    14.09.2014
+//
+//! \param   v (const QVector<cparser::STimeShift> &) data vector
+//
+//! \return  html code of tag
+//---------------------------------------------------------------------------
+QString CHtmlWriter::createBitrateTsTable(const QVector<cparser::STimeShift> &v)
+{
+   QString                  tab;
+   QString                  row;
+   QMap<int, QVector<int> > dataMap;
+   QMap<int, QVector<int> >::iterator it;
+   int i;
+
+   for (i = 0; i < v.count(); i++)
+   {
+      dataMap[v.at(i).iTimeShift].append(v.at(i).iBitRate);
+   }
+
+   if ((it = dataMap.find(100)) != dataMap.end())
+   {
+      // delete 100 timeshift ...
+      dataMap.erase(it);
+   }
+
+   row  = tableHead(tr("Timeshift"), "", 1, "center");
+   row += tableHead(tr("Mobile"),    "", 1, "center");
+   row += tableHead(tr("Eco"),       "", 1, "center");
+   row += tableHead(tr("Standard"),  "", 1, "center");
+   row += tableHead(tr("Premium"),   "", 1, "center");
+
+   tab = tableRow(row);
+
+   QList<int> keys = dataMap.keys();
+
+   for (i = 0; i < keys.size(); i++)
+   {
+      row  = tableCell(QString::number(keys.at(i)), "", 1, "center");
+      row += tableCell((dataMap[keys.at(i)].contains(320)  ? tr("+") : tr("-")), "", 1, "center");
+      row += tableCell((dataMap[keys.at(i)].contains(900)  ? tr("+") : tr("-")), "", 1, "center");
+      row += tableCell((dataMap[keys.at(i)].contains(1500) ? tr("+") : tr("-")), "", 1, "center");
+      row += tableCell((dataMap[keys.at(i)].contains(2500) ? tr("+") : tr("-")), "", 1, "center");
+      tab += tableRow(row);
+   }
+
+   tab = QString("<br> <br>") + table(tab);
+
+   return tab;
+}

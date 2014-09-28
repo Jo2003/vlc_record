@@ -20,7 +20,6 @@
 #include <QVector>
 #include <QTimer>
 
-#include "cvlcrecdb.h"
 #include "defdef.h"
 
 namespace Ui {

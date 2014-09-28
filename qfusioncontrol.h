@@ -73,6 +73,7 @@ public:
    void addTimeLab (QTimeLabel *pLab);
    void addLengthLab (QTimeLabel *pLab);
    void addMuteLab (QLabel *pLab);
+   void addTargetTimeLabel(QLabel *pLab);
    void addMuteBtn (QCheckBox *pChk);
    void enableBtn (bool enable, eBtnRole role);
    void setVolSliderPosition (int vol);
@@ -92,6 +93,7 @@ public:
    int  posValue ();
    void setTime (quint64 time);
    void setBuff(int iPercent);
+   void setTargetTime (const QString& s);
    void btnSetIcon (const QIcon &icon, eBtnRole role);
    void setMutePixmap (const QPixmap &pix);
    bool muted();
@@ -136,7 +138,7 @@ protected:
    void disconnectCng ();
    void disconnectLab ();
    void disconnectMute ();
-   
+
 public slots:
 
 private slots:
@@ -191,6 +193,9 @@ private:
 
    // mute label ...
    QVector<QLabel *>            _muteLabel;
+
+   // target time label
+   QVector<QLabel *>            _tarTimeLabel;
 
    // program info label ...
    QVector<QMoveHandle *>       _infoLabel;

@@ -72,6 +72,7 @@ public:
    void setEpgUpdTime (ulong ts);
    void updWithChanEntry (ulong ulTime, const cparser::SChan &entry);
    void setDefAStream(int idx);
+   void setNoAd (bool a);
 
    // get values ...
    const QString &showName();
@@ -92,6 +93,7 @@ public:
    ulong epgUpdTime();
    int   autoUpdate(uint uiTime);
    const int& defAStream();
+   bool noAd();
 
 signals:
    void sigHtmlDescr (const QString& s);
@@ -112,6 +114,7 @@ private:
    t_EpgMap             epgMap;
    bool                 bStreamLoader;
    bool                 bHls;
+   bool                 bNoAd;
    ulong                ulLastEpgUpd;
    int                  iDefAStream;
 };

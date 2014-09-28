@@ -21,12 +21,10 @@
 #include <QFile>
 #include <QFileInfo>
 
-#include "clogfile.h"
 #include "defdef.h"
 #include "templates.h"
 #include "ctranslit.h"
 #include "playstates.h"
-#include "cdirstuff.h"
 
 namespace vlcctrl
 {

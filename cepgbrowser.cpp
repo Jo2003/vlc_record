@@ -13,17 +13,7 @@
 #include <QUrlQuery>
 #include "cepgbrowser.h"
 #include "small_helpers.h"
-#include "chtmlwriter.h"
-#include "qdatetimesyncro.h"
-
-// global syncronized timer ...
-extern QDateTimeSyncro tmSync;
-
-// log file functions ...
-extern CLogFile VlcLog;
-
-// global html writer ...
-extern CHtmlWriter *pHtml;
+#include "externals_inc.h"
 
 /* -----------------------------------------------------------------\
 |  Method: CEpgBrowser / constructor
@@ -50,22 +40,23 @@ CEpgBrowser::CEpgBrowser(QWidget *parent) :
 |  Description: display EPG entries
 |
 |  Parameters: list of entries, channel name, channel id,
-|              timestamp, archiv flag, timeshift
+|              timestamp, archiv flag, timeshift, external epg flag
 |
 |  Returns: --
 \----------------------------------------------------------------- */
 void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
                              const QString &sName, int iChanID, uint uiGmt,
-                             bool bHasArchiv, int iTs)
+                             bool bHasArchiv, int iTs, bool bExt)
 {
    epg::SShow actShow;
 
    // store values ...
-   sChanName = sName;
-   iCid      = iChanID;
-   uiTime    = uiGmt;
-   bArchive  = bHasArchiv;
-   _iTs      = iTs;
+   sChanName  = sName;
+   iCid       = iChanID;
+   uiTime     = uiGmt;
+   bArchive   = bHasArchiv;
+   _iTs       = iTs;
+   bExtEPG    = bExt;
 
    // clear program map ...
    mProgram.clear();
@@ -91,7 +82,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
 
    clear();
    setHtml(createHtmlCode());
-   scrollToAnchor("nowPlaying");
+   scrollTo();
 }
 
 /* -----------------------------------------------------------------\
@@ -109,7 +100,7 @@ void CEpgBrowser::recreateEpg()
 {
    clear();
    setHtml(createHtmlCode());
-   scrollToAnchor("nowPlaying");
+   scrollTo();
 }
 
 /* -----------------------------------------------------------------\
@@ -124,28 +115,36 @@ void CEpgBrowser::recreateEpg()
 \----------------------------------------------------------------- */
 QString CEpgBrowser::createHtmlCode()
 {
-   QString    tab, row, page, sHeadLine, timeCell, img, progCell, buttons;
-   QDateTime  dtStartThis, dtStartNext;
-   QUrl       url;
+   QString     tab, row, page, sHeadLine, timeCell, img, progCell, buttons;
+   const char* rowStyle;
+   QDateTime   dtStartThis, dtStartNext;
+   QUrl        url;
    QUrlQuery  q;
-   bool       bMark;
-   epg::SShow actShow;
-   int        i, iAa;
+   bool        bMark;
+   bool        bGray;
+   epg::SShow  actShow;
+   int         i, iAa, iFs = 0;
    QMap<uint, epg::SShow>::const_iterator cit;
 
+   // reset current marker ...
+   hasCurrent = false;
 
-   // create headline (table head) ...
-   sHeadLine = QString("%1 - %2")
-               .arg(sChanName)
-               .arg(QDateTime::fromTime_t(uiTime).toString("dd. MMM. yyyy"));
+   // create compare times ...
+   QDateTime dayStart(QDateTime::fromTime_t(uiTime).date());
 
-   // mInfo(tr("Creating EPG html for \"%1\" with timeshift %2s!").arg(sChanName).arg(_iTs));
+   if (!bExtEPG)
+   {
+      // create headline (table head) ...
+      sHeadLine = QString("%1 - %2")
+                  .arg(sChanName)
+                  .arg(QDateTime::fromTime_t(uiTime).toString("dd. MMM. yyyy"));
 
-   // create table head ...
-   row = pHtml->tableHead(sHeadLine, TMPL_TH_STYLE, 2);
+      // create table head ...
+      row = pHtml->tableHead(sHeadLine, TMPL_TH_STYLE, 2);
 
-   // wrap in row ...
-   tab = pHtml->tableRow(row);
+      // wrap in row ...
+      tab = pHtml->tableRow(row);
+   }
 
    if (mProgram.isEmpty())
    {
@@ -156,10 +155,39 @@ QString CEpgBrowser::createHtmlCode()
    {
       for (cit = mProgram.constBegin(), i = 0; cit != mProgram.constEnd(); cit++, i++)
       {
+         timeCell    = "";
          buttons     = "";
          actShow     = *cit;
          bMark       = false;
+         bGray       = false;
          dtStartThis = QDateTime::fromTime_t(actShow.uiStart + _iTs);
+
+         // special handling for extended EPG ...
+         if (bExtEPG)
+         {
+#ifdef __MY_EXT_EPG
+            // don't show entries older then 22:00 last day ...
+            if (dtStartThis < dayStart.addSecs(-EXT_EPG_TIME))
+            {
+               continue;
+            }
+
+            // all what is not today should be marked gray ...
+            if ((dtStartThis < dayStart) || (dtStartThis > dayStart.addDays(1)))
+            {
+               bGray = true;
+#else
+            if ((dtStartThis < dayStart) || (dtStartThis > dayStart.addDays(1)))
+            {
+               continue;
+#endif // __MY_EXT_EPG
+            }
+            else if (iFs == 0)
+            {
+               // mark first show for scrolling ...
+               iFs = 1;
+            }
+         }
 
          // find out if we should mark the time ...
          if (actShow.uiEnd)
@@ -172,8 +200,27 @@ QString CEpgBrowser::createHtmlCode()
             bMark       = NowRunning(dtStartThis);
          }
 
-         timeCell  = bMark ? pHtml->simpleTag("a", "name='nowPlaying'") : "";
-         timeCell += dtStartThis.toString("hh:mm") + "<hr>";
+         if (bMark)
+         {
+            // when creating current program cell it shouldn't be gray!
+            bGray      = false;
+
+            // add anchor ...
+            timeCell   = pHtml->simpleTag("a", "name='nowPlaying'");
+
+            // set current marker ...
+            hasCurrent = true;
+         }
+
+         // add anchor for first show of day ...
+         if (iFs == 1)
+         {
+            iFs        = -1;
+            timeCell  += pHtml->simpleTag("a", "name='firstShowOfDay'");
+         }
+
+         // add time ...
+         timeCell += pHtml->span(dtStartThis.toString("hh:mm"), bGray ? "color: #888;" : "color: black;") + "<hr>";
 
          // timer record stuff ...
          if (dtStartThis > tmSync.currentDateTimeSync())
@@ -248,15 +295,29 @@ QString CEpgBrowser::createHtmlCode()
 
          timeCell += pHtml->htmlTag("div", buttons, "white-space: pre;");
 
-         progCell = actShow.sShowName;
+         progCell = pHtml->span(actShow.sShowName, bGray ? "color: #888;" : "color: black;");
 
          if (actShow.sShowDescr != "")
          {
-            progCell += "<br />" + pHtml->span(actShow.sShowDescr, "color: #666");
+            progCell += "<br />" + pHtml->span(actShow.sShowDescr, bGray ? "color: #888;" : "color: #666;");
          }
 
-         row  = pHtml->tableCell(timeCell, bMark ? TMPL_CUR_STYLE : ((i % 2) ? TMPL_B_STYLE : TMPL_A_STYLE));
-         row += pHtml->tableCell(progCell, bMark ? TMPL_CUR_STYLE : ((i % 2) ? TMPL_B_STYLE : TMPL_A_STYLE));
+         // check which row style to use ...
+         if (bMark)
+         {
+            rowStyle = TMPL_CUR_STYLE;
+         }
+         else if (bGray)
+         {
+            rowStyle = (i % 2) ? TMPL_B_STYLE_GRAY : TMPL_A_STYLE_GRAY;
+         }
+         else
+         {
+            rowStyle = (i % 2) ? TMPL_B_STYLE : TMPL_A_STYLE;
+         }
+
+         row  = pHtml->tableCell(timeCell, rowStyle);
+         row += pHtml->tableCell(progCell, rowStyle);
 
          // wrap in table row ...
          tab += pHtml->tableRow(row);
@@ -270,6 +331,26 @@ QString CEpgBrowser::createHtmlCode()
    page = pHtml->htmlPage(tab, "EPG Table");
 
    return page;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   scroll either to current show or start of day
+//
+//! \author  Jo2003
+//! \date    28.08.2014
+//
+//---------------------------------------------------------------------------
+void CEpgBrowser::scrollTo()
+{
+   if (hasCurrent)
+   {
+      scrollToAnchor("nowPlaying");
+   }
+   else
+   {
+      scrollToAnchor("firstShowOfDay");
+   }
 }
 
 /* -----------------------------------------------------------------\
@@ -357,7 +438,7 @@ void CEpgBrowser::EnlargeFont()
    QFont epgFont = font();
    epgFont.setPointSize(epgFont.pointSize() + 1);
    setFont(epgFont);
-   scrollToAnchor("nowPlaying");
+   scrollTo();
 }
 
 /* -----------------------------------------------------------------\
@@ -375,7 +456,7 @@ void CEpgBrowser::ReduceFont()
    QFont epgFont = font();
    epgFont.setPointSize(epgFont.pointSize() - 1);
    setFont(epgFont);
-   scrollToAnchor("nowPlaying");
+   scrollTo();
 }
 
 /* -----------------------------------------------------------------\
@@ -393,7 +474,7 @@ void CEpgBrowser::ChangeFontSize(int iSz)
    QFont epgFont = font();
    epgFont.setPointSize(epgFont.pointSize() + iSz);
    setFont(epgFont);
-   scrollToAnchor("nowPlaying");
+   scrollTo();
 }
 
 /************************* History ***************************\

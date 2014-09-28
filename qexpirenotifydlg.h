@@ -15,6 +15,7 @@
    #define __20130619_QEXPIRENOTIFYDLG_H
 
 #include "qnotifydlg.h"
+#include <QEvent>
 
 //---------------------------------------------------------------------------
 //! \class   QExpireNotifyDlg
