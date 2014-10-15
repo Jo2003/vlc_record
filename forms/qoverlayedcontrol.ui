@@ -1,0 +1,1142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QOverlayedControl</class>
+ <widget class="QWidget" name="QOverlayedControl">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>525</width>
+    <height>122</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* style sheet for overlay widget ... */
+QWidget#QOverlayControl {
+   background-color: transparent;
+}
+
+/* style ALL comboboxes in this widget ...*/
+QComboBox {
+   margin: 2px;
+   border: 2px solid gray;
+   border-radius: 4px;
+   padding: 1px 6px 1px 3px;
+   font-weight: bold;
+}
+
+QComboBox:enabled {
+   color: #eee;
+   background-color: rgb(59, 54, 66);
+}
+
+QComboBox:!enabled {
+   color: #ccc;
+   background-color: #888;
+}
+
+QComboBox::drop-down {
+   width: 16px;
+   border-left-color: #888;
+   border-left-width: 1px;
+   border-left-style: solid;
+   border-top-right-radius: 4px;
+   border-bottom-right-radius: 4px;
+}
+
+QComboBox::drop-down:enabled {
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+   stop:0 #313163,
+   stop:0.3  #60609A,
+   stop:0.67 #39395B,
+   stop:1 black);
+}
+
+QComboBox::drop-down:!enabled {
+   background-color: #555;
+}
+
+QComboBox::down-arrow {
+   width: 11px;
+   height: 11px;
+}
+
+QComboBox::down-arrow:enabled {
+   image: url(:/player/down_arrow);
+}
+
+QComboBox::down-arrow:!enabled {
+   image: url(:/player/down_arrow_disabled);
+}
+
+QComboBox QAbstractItemView {
+   background-color:  rgb(59, 54, 66);
+   color: white;
+   selection-background-color: #fc0;
+   selection-color: rgb(59, 54, 66);
+}
+</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="styleFrame">
+     <property name="styleSheet">
+      <string notr="true">QFrame#styleFrame {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #303060,
+stop:0.3 #101020,
+stop:1 #202040);
+border-radius: 10px;
+border: 2px solid #888;
+};
+</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QWidget" name="layoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>524</x>
+        <y>7</y>
+        <width>156</width>
+        <height>68</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QLabel" name="labAspect">
+           <property name="minimumSize">
+            <size>
+             <width>24</width>
+             <height>14</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>24</width>
+             <height>14</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../common.qrc">:/player/white_aspect</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labCrop">
+           <property name="minimumSize">
+            <size>
+             <width>14</width>
+             <height>14</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>14</width>
+             <height>14</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../common.qrc">:/player/white_crop</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <widget class="QComboBoxEx" name="cbxAspect">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Aspect</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBoxEx" name="cbxCrop">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Crop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnSaveAspectCrop">
+         <property name="minimumSize">
+          <size>
+           <width>22</width>
+           <height>22</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>22</width>
+           <height>22</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Save Video Format</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../common.qrc">
+           <normaloff>:/app/save</normaloff>:/app/save</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="geometry">
+       <rect>
+        <x>16</x>
+        <y>122</y>
+        <width>491</width>
+        <height>101</height>
+       </rect>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>7</y>
+        <width>518</width>
+        <height>116</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="controlFrame">
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>114</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>460</width>
+           <height>114</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <property name="lineWidth">
+          <number>0</number>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutCaption">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
+            <property name="topMargin">
+             <number>4</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushHide">
+              <property name="minimumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>14</width>
+                <height>14</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/player/move-handle</normaloff>:/player/move-handle</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>6</width>
+                <height>6</height>
+               </size>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QMoveHandle" name="labMoveHandle">
+              <property name="styleSheet">
+               <string notr="true">QLabel {
+color: white;
+border-radius: 3px;
+border: 1px solid gray;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <property name="lineWidth">
+               <number>1</number>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnWindowed">
+              <property name="minimumSize">
+               <size>
+                <width>18</width>
+                <height>18</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>18</width>
+                <height>18</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Minimal Interface</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>:/player/from_wnd</normaloff>:/player/from_wnd</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnFullScreen">
+              <property name="minimumSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Toggle Fullscreen</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/player/leave-fullscreen</normaloff>:/player/leave-fullscreen</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>12</width>
+                <height>12</height>
+               </size>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutExtControl">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="leftMargin">
+             <number>9</number>
+            </property>
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushPlay">
+              <property name="maximumSize">
+               <size>
+                <width>26</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Play selected Channel</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/app/play</normaloff>:/app/play</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushRecord">
+              <property name="maximumSize">
+               <size>
+                <width>26</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Record selected Channel</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/app/record</normaloff>:/app/record</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushStop">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>26</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Stop Player</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/app/stop</normaloff>:/app/stop</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnScrShot">
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Screenshot</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/app/cam</normaloff>:/app/cam</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>20</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="shortcut">
+               <string>Ctrl+S</string>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushBwd">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>26</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Jump Backward</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/app/bwd</normaloff>:/app/bwd</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBoxEx" name="cbxTimeJumpVal">
+              <property name="minimumSize">
+               <size>
+                <width>70</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Time Jump Value in minutes</string>
+              </property>
+              <item>
+               <property name="text">
+                <string>1 min</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>2 min</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>3 min</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>4 min</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>5 min</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>10 min</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushFwd">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>26</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Jump Forward</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/app/fwd</normaloff>:/app/fwd</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkMute">
+              <property name="styleSheet">
+               <string notr="true"> QCheckBox#checkMute {
+     spacing: 5px;
+ }
+
+QCheckBox#checkMute::indicator {
+     width:  24px;
+     height: 24px;
+}
+
+QCheckBox#checkMute::indicator:unchecked {
+     image: url(:/player/sound_on);
+}
+
+QCheckBox#checkMute::indicator:checked {
+     image: url(:/player/sound_off);
+}
+</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QClickAndGoSlider" name="volSlider">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider::groove:horizontal {
+   border: 1px solid #999999;
+   height: 5px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(48, 144, 22, 255), stop:0.490566 rgba(255, 242, 53, 255), stop:1 rgba(255, 0, 0, 255));
+   margin: 2px 0;
+}
+
+ QSlider::handle:horizontal {
+     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee,     stop:0.7 grey, stop:1 #dedede);
+     border: 1px solid #5c5c5c;
+     width: 4px;
+     margin: -5px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+     border-radius: 2px;
+ }
+</string>
+              </property>
+              <property name="maximum">
+               <number>200</number>
+              </property>
+              <property name="pageStep">
+               <number>0</number>
+              </property>
+              <property name="value">
+               <number>100</number>
+              </property>
+              <property name="sliderPosition">
+               <number>100</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="invertedControls">
+               <bool>false</bool>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::NoTicks</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="hLayoutPosSlider" stretch="0,10,0">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QTimeLabel" name="labTime">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>66</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel#labTime {
+color: #aaa;
+}</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <property name="lineWidth">
+               <number>0</number>
+              </property>
+              <property name="text">
+               <string>0:00:00</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QClickAndGoSlider" name="posSlider">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QSlider::groove:horizontal {
+   background-color: #555;
+   height:           10px;
+   border-radius:    3px;
+}
+
+QSlider::handle:horizontal {
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #727272, stop:0.15 white, stop:0.75 white, stop:1 #888);
+   border: 1px solid #5c5c5c;
+   border-radius: 3px;
+   width:         4px;
+   margin:       -6px 0;
+ }
+
+QSlider::handle:horizontal:disabled {
+   border: 0;
+   width:  0;
+   margin: 0;
+ }
+
+QSlider::handle:horizontal:pressed, QSlider::handle:horizontal:hover {
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #002255, stop:0.15 #8ec6e9, stop:0.75 #8ec6e9, stop:1 #003366);
+   border-color:     #003366;
+}
+
+QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
+   background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #bacbdb, stop:0.280 #5077ae, stop:0.281 #406da6, stop:0.660 #b9ddf3, stop:0.950 #88bbe8, stop:0.951 #84b4da, stop:1 #84b4da);
+   border: 1px solid #1e4785;
+   border-radius:    3px;
+}
+</string>
+              </property>
+              <property name="maximum">
+               <number>1000</number>
+              </property>
+              <property name="pageStep">
+               <number>0</number>
+              </property>
+              <property name="value">
+               <number>0</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTimeLabel" name="labLength">
+              <property name="minimumSize">
+               <size>
+                <width>56</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel#labLength {
+color: #aaa;
+}</string>
+              </property>
+              <property name="text">
+               <string>0:00:00</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::AutoText</enum>
+              </property>
+              <property name="scaledContents">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushInfo">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="toolTip">
+               <string>Additional Information</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton#pushInfo{
+color: #aaa;
+font-size: 12px;
+}</string>
+              </property>
+              <property name="text">
+               <string>Information</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/png/info_open</normaloff>:/png/info_open</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>10</width>
+                <height>10</height>
+               </size>
+              </property>
+              <property name="flat">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushExt">
+         <property name="minimumSize">
+          <size>
+           <width>16</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Additional Settings</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../common.qrc">
+           <normaloff>:/png/open</normaloff>:/png/open</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>10</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QComboBoxEx</class>
+   <extends>QComboBox</extends>
+   <header>qcomboboxex.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QClickAndGoSlider</class>
+   <extends>QSlider</extends>
+   <header>qclickandgoslider.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QTimeLabel</class>
+   <extends>QLabel</extends>
+   <header>qtimelabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QMoveHandle</class>
+   <extends>QLabel</extends>
+   <header>qmovehandle.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../common.qrc"/>
+ </resources>
+ <connections/>
+</ui>

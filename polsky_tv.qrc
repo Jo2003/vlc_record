@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/unbranded/main">
+        <file alias="icon">resources/polsky_tv.png</file>
+        <file alias="live">resources/polskytv_live.png</file>
+    </qresource>
+    <qresource prefix="/unbranded/video">
+        <file alias="logo">resources/polsky_tv.png</file>
+    </qresource>
+</RCC>

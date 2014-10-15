@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/unbranded/main">
+        <file alias="live">resources/kartina_live_128x128.png</file>
+        <file alias="icon">resources/chitram_tv.png</file>
+    </qresource>
+    <qresource prefix="/unbranded/video">
+        <file alias="logo">resources/chitram_back.png</file>
+    </qresource>
+</RCC>

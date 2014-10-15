@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/lcd">
+        <file alias="blank">resources/lcd_blank.png</file>
+        <file alias="buffer">resources/lcd_buffer.png</file>
+        <file alias="end">resources/lcd_end.png</file>
+        <file alias="error">resources/lcd_error.png</file>
+        <file alias="open">resources/lcd_open.png</file>
+        <file alias="pause">resources/lcd_pause.png</file>
+        <file alias="play">resources/lcd_play.png</file>
+        <file alias="ready">resources/lcd_ready.png</file>
+        <file alias="rec">resources/lcd_rec.png</file>
+        <file alias="stop">resources/lcd_stop.png</file>
+        <file alias="timer_rec">resources/lcd_timer_rec.png</file>
+        <file alias="timer_stby">resources/lcd_timer_stby.png</file>
+        <file alias="add">resources/LCD_adv.png</file>
+    </qresource>
+</RCC>
