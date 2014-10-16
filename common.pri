@@ -16,6 +16,12 @@ INCLUDEPATH += .
 # build shared !
 CONFIG += shared
 
+contains(QMAKE_HOST.arch, x86_64) {
+    DEFINES += __ARCH__X86_64
+} else {
+    DEFINES += __ARCH__I386
+}
+
 # -------------------------------------
 # support C++11
 # Depending on your compiler you
