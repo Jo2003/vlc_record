@@ -4330,7 +4330,7 @@ or by phone:
 &lt;tr&gt;&lt;td&gt;Or using Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:polsky.tv&apos;&gt;polsky.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </source>
-        <translation>&lt;b&gt;Ihr Abonnement läuft in %1 Tagen aus!&lt;/b&gt;&lt;br&gt;
+        <translation type="unfinished">&lt;b&gt;Ihr Abonnement läuft in %1 Tagen aus!&lt;/b&gt;&lt;br&gt;
 Sie können es auf folgender Webseite erneuern: &lt;a href=&apos;http://polsky.tv/shop.htm&apos;&gt;http://polsky.tv&lt;/a&gt;.&lt;br&gt;
 Oder nutzen Sie das Telefon:
 &lt;table&gt;

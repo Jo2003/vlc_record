@@ -42,6 +42,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2014-10-23: Version 2.70
+| - add another brandung
+|
 | 2014-10-16: Version 2.70RC2
 | - cosmetic changes on version information
 |

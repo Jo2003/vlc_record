@@ -4301,7 +4301,7 @@ or by phone:
 &lt;tr&gt;&lt;td&gt;Or using Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:polsky.tv&apos;&gt;polsky.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </source>
-        <translation>&lt;b&gt;Abonament kończy się w %1 dzień/dni!&lt;/b&gt;&lt;br&gt;
+        <translation type="unfinished">&lt;b&gt;Abonament kończy się w %1 dzień/dni!&lt;/b&gt;&lt;br&gt;
 Można odnowić subskrypcję na poniższej stronie: &lt;a href=&apos;http://polsky.tv/shop.htm&apos;&gt;http://polsky.tv&lt;/a&gt;.&lt;br&gt;
 lub telefonicznie:
 &lt;table&gt;

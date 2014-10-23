@@ -36,6 +36,8 @@
    #include <defines_chitram_tv.h>
 #elif defined _TASTE_TELEPROM
    #include <defines_teleprom.h>
+#elif defined _TASTE_IDC_TB
+   #include <defines_idc_tv.h>
 #else
    #include <defines_vlc_record.h>
 #endif // _TASTE_XXX

@@ -16,12 +16,6 @@ INCLUDEPATH += .
 # build shared !
 CONFIG += shared
 
-contains(QMAKE_HOST.arch, x86_64) {
-    DEFINES += __ARCH__X86_64
-} else {
-    DEFINES += __ARCH__I386
-}
-
 # -------------------------------------
 # support C++11
 # Depending on your compiler you
@@ -228,6 +222,13 @@ else:mac {
    QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
 }
 else:unix {
+
+   contains(QMAKE_HOST.arch, x86_64) {
+      DEFINES += __ARCH__X86_64
+   } else {
+      DEFINES += __ARCH__I386
+   }
+
    LIBS += -lX11
    OTHER_FILES += create_install_mak.sh \
                   documentation/create_qthelp.sh

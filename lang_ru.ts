@@ -2926,11 +2926,16 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="cvodbrowser.cpp" line="332"/>
+        <source>Filmweb: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodbrowser.cpp" line="334"/>
         <source>Kinopoisk: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="406"/>
+        <location filename="cvodbrowser.cpp" line="409"/>
         <source>Video Details</source>
         <translation>Информации о видео</translation>
     </message>
@@ -2945,12 +2950,12 @@ or start time is later than end time!</source>
         <translation>мин.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="343"/>
+        <location filename="cvodbrowser.cpp" line="346"/>
         <source>Director: %1</source>
         <translation>Режиссер: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="348"/>
+        <location filename="cvodbrowser.cpp" line="351"/>
         <source>With: %1</source>
         <translation>В ролях: %1</translation>
     </message>
@@ -2965,7 +2970,7 @@ or start time is later than end time!</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="361"/>
+        <location filename="cvodbrowser.cpp" line="364"/>
         <source>Part %1</source>
         <translation>Часть %1</translation>
     </message>
@@ -2975,12 +2980,12 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="380"/>
+        <location filename="cvodbrowser.cpp" line="383"/>
         <source>Play Movie ...</source>
         <translation>Просмотр фильма ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="391"/>
+        <location filename="cvodbrowser.cpp" line="394"/>
         <source>Record Movie ...</source>
         <translation>Запись фильма ...</translation>
     </message>
@@ -3919,7 +3924,7 @@ dataDir: %1
         <location filename="recorder.cpp" line="2083"/>
         <source>Your subscription will end in %1 day(s).&lt;br /&gt;Visit %2 to renew it!</source>
         <oldsource>Your abonnoment will expire in %1 day(s).&lt;br /&gt;Visit the web page of %2 to extend your subscription!</oldsource>
-        <translation>Ваша подписка истекает через %1 дня/дней.&lt;br /&gt;Посетите %2 продлевать её!</translation>
+        <translation>Ваш абонемент заканчивается через %1 дня/дней.&lt;br /&gt;Посетите %2 чтобы продлевать его!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="49"/>
@@ -4294,7 +4299,6 @@ dataDir: %1
 <context>
     <name>ownBuyReminder</name>
     <message>
-        <location filename="tastes/more_kartina_translations.h" line="19"/>
         <source>&lt;b&gt;Your subscription ends in %1 day(s).&lt;/b&gt;&lt;br&gt;
 You can renew your subscription at following site: 
 &lt;a href=&apos;http://kartina.tv/shop&apos;&gt;http://kartina.tv/shop&lt;/a&gt;,&lt;br&gt;
@@ -4308,7 +4312,7 @@ or by phone:
 &lt;tr&gt;&lt;td&gt;Or using Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </source>
-        <translation>&lt;b&gt;Ваша подписка истекает через %1 дня/дней!&lt;/b&gt;&lt;br&gt;
+        <translation type="obsolete">&lt;b&gt;Ваша подписка истекает через %1 дня/дней!&lt;/b&gt;&lt;br&gt;
 Купить подписку можно на сайте KartinaTV (&lt;a href=&apos;http://kartina.tv/shop/&apos;&gt;http://kartina.tv/shop/&lt;/a&gt;),&lt;br&gt;
 а также по телефону:
 &lt;table&gt;
