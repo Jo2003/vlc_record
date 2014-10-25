@@ -24,6 +24,7 @@ float                        CPlayer::_flBuffPrt = 0.0;
 const char*                  CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
 const char*                  CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
 libvlc_media_t*              CPlayer::_pCurrentMedia;
+bool                         CPlayer::_bVoutSent = false;
 
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
@@ -48,6 +49,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    addMediaItem     = NULL;
    bSpoolPending    = true;
    bOmitNextEvent   = false;
+   _bVoutHandled    = false;
    bScanAuTrk       = true;
    uiDuration       = (uint)-1;
    ulLibvlcVersion  = 0;
@@ -678,6 +680,10 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
    // reset internal play state ...
    libPlayState = IncPlay::PS_WTF;
 
+   // vout not yet sent ...
+   _bVoutSent    = false;
+   _bVoutHandled = false;
+
    // reset play timer stuff ...
    timer.reset();
    timer.setOffset(showInfo.lastJump() ? showInfo.lastJump() : showInfo.starts());
@@ -1104,6 +1110,13 @@ void CPlayer::eventCallback(const libvlc_event_t *ev, void *userdata)
    {
       // store buffer percents ...
       CPlayer::_flBuffPrt = ev->u.media_player_buffering.new_cache;
+
+      // emulate VOUT event since it isn't sent all the time
+      if (!CPlayer::_bVoutSent && (CPlayer::_flBuffPrt > 37.5))
+      {
+         CPlayer::_bVoutSent = true;
+         CPlayer::_eventQueue.append(libvlc_MediaPlayerVout);
+      }
    }
    CPlayer::_mtxEvt.unlock();
 }
@@ -1285,10 +1298,18 @@ void CPlayer::slotEventPoll()
             break;
 
          // showing video ...
+         // this event might be emulated since it isn't sent
+         // e.g. when recording a video...
          case libvlc_MediaPlayerVout:
-            mInfo(tr("libvlc_MediaPlayerVout ... with buffer %1").arg(buffPercent));
-            slotStoredAspectCrop();
-            startPlayTimer();
+            // might be handled already ...
+            _bVoutSent = true;
+            if (!_bVoutHandled)
+            {
+               _bVoutHandled = true;
+               mInfo(tr("libvlc_MediaPlayerVout ... with buffer %1").arg(buffPercent));
+               slotStoredAspectCrop();
+               startPlayTimer();
+            }
             break;
 
          default:

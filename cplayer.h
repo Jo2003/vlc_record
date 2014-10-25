@@ -95,6 +95,7 @@ public:
    static float                        _flBuffPrt;
    static void eventCallback (const libvlc_event_t *ev, void *userdata);
    static libvlc_media_t              *_pCurrentMedia;
+   static bool                         _bVoutSent;
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -129,6 +130,7 @@ private:
    Player::SPauseResume         pauseResume;
    IncPlay::ePlayStates         libPlayState;
    Player::SErrHelper           errHelper;
+   bool                         _bVoutHandled;
 
 private slots:
    void slotPositionChanged(int value);
