@@ -58,6 +58,8 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 
 #ifdef ENABLE_AD_SWITCH
    m_ui->checkAds->setEnabled(true);
+#else
+   m_ui->checkAds->hide();
 #endif // ENABLE_AD_SWITCH
 
 #ifndef _HAS_VOD_MANAGER
@@ -620,7 +622,8 @@ void CSettingsDlg::on_pushSave_clicked()
 
    // combo boxes ...
    pDb->setValue("Language", m_ui->cbxLanguage->currentText());
-   pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt());
+   int idx = m_ui->cbxBufferSeconds->currentIndex();
+   pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->itemData((idx == -1) ? 0 : idx).toInt());
    pDb->setValue("LogLevel", m_ui->cbxLogLevel->currentIndex());
    pDb->setValue("PlayerModule", m_ui->cbxPlayerMod->currentText());
    pDb->setValue("DeintlMode", m_ui->cbxDeintlMode->currentText());
@@ -1323,6 +1326,12 @@ QString CSettingsDlg::getDeinlMode()
    return m_ui->cbxDeintlMode->currentText();
 }
 
+QString CSettingsDlg::getStreamServer()
+{
+   int idx = m_ui->cbxStreamServer->currentIndex();
+   return m_ui->cbxStreamServer->itemData((idx == -1) ? 0 : idx).toString();
+}
+
 bool CSettingsDlg::UseProxy ()
 {
    return m_ui->useProxy->isChecked();
@@ -1365,7 +1374,8 @@ vlclog::eLogLevel CSettingsDlg::GetLogLevel()
 
 int CSettingsDlg::GetBufferTime()
 {
-   return m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt();
+   int idx = m_ui->cbxBufferSeconds->currentIndex();
+   return m_ui->cbxBufferSeconds->itemData((idx == -1) ? 0 : idx).toInt();
 }
 
 QString CSettingsDlg::GetShutdownCmd()
@@ -1380,7 +1390,8 @@ bool CSettingsDlg::DisableSplashScreen()
 
 int  CSettingsDlg::GetBitRate()
 {
-   return m_ui->cbxBitRate->currentText().toInt();
+   int idx = m_ui->cbxBitRate->currentIndex();
+   return m_ui->cbxBitRate->itemData((idx == -1) ? 0 : idx).toInt();
 }
 
 QString CSettingsDlg::GetAPIServer()
@@ -1390,15 +1401,8 @@ QString CSettingsDlg::GetAPIServer()
 
 int CSettingsDlg::getTimeShift()
 {
-   int idx;
-   if ((idx = m_ui->cbxTimeShift->currentIndex()) != -1)
-   {
-      return m_ui->cbxTimeShift->itemData(idx).toInt();
-   }
-   else
-   {
-      return 0;
-   }
+   int idx = m_ui->cbxTimeShift->currentIndex();
+   return m_ui->cbxTimeShift->itemData((idx == -1) ? 0 : idx).toInt();
 }
 
 void CSettingsDlg::saveChannel(int cid)
@@ -2089,11 +2093,105 @@ void CSettingsDlg::setUser(const QString& str)
 //
 //! \param   str (const QString&) new password
 //
-//! \return  --
 //---------------------------------------------------------------------------
 void CSettingsDlg::setPasswd(const QString& str)
 {
    m_ui->linePass->setText(str);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set API server from outsite
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   str [in] (const QString&) new server
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::setApiSrv(const QString &str)
+{
+   m_ui->lineApiServer->setText(str);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set active stream server
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   str [in] (const QString&) new server
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::setActiveStreamServer(const QString &str)
+{
+   int idx = m_ui->cbxStreamServer->findData(str);
+
+   if (idx > -1)
+   {
+      m_ui->cbxStreamServer->setCurrentIndex(idx);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set active time shift
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   val [in] (int) new timeshift
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::setActiveTimeshift(int val)
+{
+   int idx = m_ui->cbxTimeShift->findData(val);
+
+   if (idx > -1)
+   {
+      m_ui->cbxTimeShift->setCurrentIndex(idx);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set active bitrate
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   val [in] (int) new bitrate
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::setActiveBitrate(int val)
+{
+   int idx = m_ui->cbxBitRate->findData(val) ;
+
+   if (idx > -1)
+   {
+      m_ui->cbxBitRate->setCurrentIndex(idx);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set active buffer time
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   val [in] (int) new time
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::setActiveBuffer(int val)
+{
+   int idx = m_ui->cbxBufferSeconds->findData(val);
+
+   if (idx > -1)
+   {
+      m_ui->cbxBufferSeconds->setCurrentIndex(idx);
+   }
 }
 
 //---------------------------------------------------------------------------

@@ -21,6 +21,7 @@
    #define __ARCH ""
 #endif
 
+
 #if defined Q_OS_WIN32
    #define MY_BUILD_SYS "Windows"
 #elif defined Q_OS_LINUX
@@ -33,7 +34,7 @@
 
 #define VERSION_MAJOR "2"
 #define VERSION_MINOR "70"
-// #define BETA_EXT      "B20"
+// #define BETA_EXT      "B3"
 #define BETA_EXT
 
 #define __MY__VERSION__ \
@@ -42,11 +43,8 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
-| 2014-10-23: Version 2.70
-| - add another brandung
-|
-| 2014-10-16: Version 2.70RC2
-| - cosmetic changes on version information
+| 2014-10-16: Version 2.70xV3
+| - add service and statistics for polsky.tv
 |
 | 2014-10-09: Version 2.70RC1
 | - adapt build system for better debian packages

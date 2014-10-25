@@ -837,3 +837,77 @@ int CStdJsonParser::parseVodLang(const QString &sResp, QVodLangMap &lMap)
 
    return iRV;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse service settings
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   sResp [in] (const QString &) ref. to response string
+//! \param   servset [out] (cparser::ServiceSettings &) ref. to settings
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int CStdJsonParser::parseService(const QString &sResp, cparser::ServiceSettings &servset)
+{
+   int  iRV = 0;
+   bool bOk = false;
+   QtJson::JsonObject obj;
+
+   obj = QtJson::parse(sResp, bOk).toMap();
+
+   if (bOk)
+   {
+      if (obj.contains("server_address"))
+      {
+         servset.apiServer = obj.value("server_address").toString();
+      }
+
+      if (obj.contains("login"))
+      {
+         servset.login = obj.value("login").toString();
+      }
+
+      if (obj.contains("password"))
+      {
+         servset.pass = obj.value("password").toString();
+      }
+
+      if (obj.contains("stats_on"))
+      {
+         servset.stats = obj.value("stats_on").toInt();
+      }
+
+      if (obj.contains("buffering"))
+      {
+         servset.buffering = obj.value("buffering").toInt();
+      }
+
+      if (obj.contains("bitrate"))
+      {
+         servset.bitrate = obj.value("bitrate").toInt();
+      }
+
+      if (obj.contains("timeshift"))
+      {
+         servset.timeShift = obj.value("timeshift").toInt();
+      }
+
+      if (obj.contains("stream_server"))
+      {
+         servset.strServer = obj.value("stream_server").toString();
+      }
+   }
+   else
+   {
+      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                    tr("QtJson parser error in %1 %2():%3")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+      iRV = -1;
+   }
+
+   return iRV;
+}

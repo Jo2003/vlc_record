@@ -152,6 +152,19 @@ namespace cparser
       uint    uiEnd;
       QString sShow;
    };
+
+   struct ServiceSettings {
+      ServiceSettings():timeShift(-1), bitrate(-1), buffering(-1), stats(0), handled(false){}
+      QString login;
+      QString pass;
+      QString apiServer;
+      QString strServer;
+      int     timeShift;
+      int     bitrate;
+      int     buffering;
+      int     stats;
+      bool    handled;
+   };
 }
 
 // make life easier ...

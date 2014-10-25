@@ -79,6 +79,8 @@ protected:
    int  checkResponse (const QString &sResp, QString& sCleanResp);
    virtual void getVodLang();
    const QString& apiUrl();
+   void statsService(const QString& stats);
+   void statsOnly(const QString& stats);
 
 private:
    QString   sUsr;

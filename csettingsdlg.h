@@ -63,6 +63,7 @@ public:
     QString GetCookie ();
     QString GetAPIServer ();
     QString getDeinlMode ();
+    QString getStreamServer();
 
     bool UseProxy ();
     bool AllowEros ();
@@ -108,6 +109,13 @@ public:
 
     void setUser(const QString& str);
     void setPasswd(const QString& str);
+    void setApiSrv(const QString& str);
+
+    void setActiveStreamServer(const QString& str);
+    void setActiveTimeshift(int val);
+    void setActiveBitrate(int val);
+    void setActiveBuffer(int val);
+
     int  getFontDelta ();
     void setFontDelta (int i);
 

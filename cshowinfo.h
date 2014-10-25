@@ -50,6 +50,9 @@ public:
    // constructor ...
    CShowInfo(QObject *parent = 0);
 
+   // create string from prog type
+   static QString progType2String(ShowInfo::eProgType t);
+
    // clean showInfo ...
    void cleanShowInfo();
 
@@ -65,7 +68,8 @@ public:
    void setHtmlDescr (const QString &descr);
    void setAdUrl(const QString &adUrl);
    void setPCode (const QString &code);
-   void setVodId (int id);
+   void setVodFileId (int id);
+   void setVideoId (int id);
    void setEpgMap(const t_EpgMap &map);
    void useStreamLoader (bool bUse);
    void useHls (bool bUse);
@@ -89,7 +93,8 @@ public:
    bool  canCtrlStream();
    bool  streamLoader();
    bool  isHls();
-   const int& vodId();
+   const int& vodFileId();
+   const int& videoId();
    ulong epgUpdTime();
    int   autoUpdate(uint uiTime);
    const int& defAStream();
@@ -110,7 +115,8 @@ private:
    QString              sDescr;
    QString              sAdUrl;
    QString              sPCode;
-   int                  iVodId;
+   int                  iVodFileId;
+   int                  iVideoId;
    t_EpgMap             epgMap;
    bool                 bStreamLoader;
    bool                 bHls;

@@ -26,6 +26,7 @@
 #include "chtmlwriter.h"
 #include "qchannelmap.h"
 #include "qstatemessage.h"
+#include "qwatchstats.h"
 
 // global syncronized time ...
 extern QDateTimeSyncro tmSync;
@@ -64,5 +65,8 @@ extern QChannelMap *pChanMap;
 
 // global state message engine ...
 extern QStateMessage *pStateMsg;
+
+// global watch statistics
+extern QWatchStats* pWatchStats;
 
 #endif // __20140806_EXTERNALS_INC_H

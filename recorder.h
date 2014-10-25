@@ -199,6 +199,8 @@ private:
     reqItem_t                       reRequest;
     QVector<cparser::SEpg>          epgBuff;
     QTimer                          m_tTimeJump;
+    QTimer                          m_tServiceTimeout;
+    cparser::ServiceSettings        servSettings;
     int                             m_iJumpValue;
 
 protected:
@@ -334,6 +336,7 @@ private slots:
     void slotVodLang(const QString &str);
     void slotChgFontSize (int i);
     void slotFinallyJump();
+    void slotService(const QString& s = QString());
 
     void on_btnCleanVodSearch_clicked();
 

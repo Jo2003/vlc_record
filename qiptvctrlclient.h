@@ -106,28 +106,30 @@ public:
    };
 
    struct SRequest {
-      SRequest():eHttpReqType(E_REQ_UNKN),iReqId(-1),eIptvReqType(Iptv::Unknown){}
+      SRequest():eHttpReqType(E_REQ_UNKN),iReqId(-1),eIptvReqType(Iptv::Unknown),uiTimeStamp(0),json(false){}
       EHttpReqType   eHttpReqType;
       int            iReqId;
       QString        sUrl;
       QString        sContent;
       Iptv::eReqType eIptvReqType;
       uint           uiTimeStamp;
+      bool           json;
    };
 
    explicit QIptvCtrlClient(QObject* parent = 0);
    virtual ~QIptvCtrlClient();
 
-   virtual void q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String);
+   virtual void q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String, bool isJson = false);
    virtual void q_get(int iReqId, const QString& url, Iptv::eReqType t_req = Iptv::String);
 
    void requeue(bool withLogin = false);
 
-   virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
+   virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req, bool json);
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
 
    bool isOnline ();
    bool busy();
+   const QString& getStbSerial();
 
 private:
    QVariant          cookies;
@@ -148,7 +150,7 @@ private:
    unsigned long     ulAckNo;
 
 protected:
-   QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
+   QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1, bool json = false);
    QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
    void workOffQueue (const QString& caller = QString());
    void setOnline(bool o);

@@ -57,7 +57,8 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _placePanel          = new QTimer(this);
    _tOverlay            = new QTimer(this);
 
-   _render->setMouseTracking(true);
+   // _render->setMouseTracking(true);
+   _render->setAttribute(Qt::WA_TransparentForMouseEvents);
    _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
    _render->setStyleSheet("QWidget#renderView {"
@@ -1003,7 +1004,13 @@ void QVlcVideoWidget::slotDisplayOverlay(const QString &s, int iTimeOutMs)
       if ((_labOverlay = new QLabel(_render, f)) != NULL)
       {
          _labOverlay->setAttribute(Qt::WA_TranslucentBackground);
-         _labOverlay->setAttribute(Qt::WA_ShowWithoutActivating);
+#ifdef Q_OS_MAC
+         if(!isFullScreen() && !_extFullScreen)
+#endif //
+         {
+            _labOverlay->setAttribute(Qt::WA_ShowWithoutActivating);
+         }
+         _labOverlay->setAttribute(Qt::WA_TransparentForMouseEvents);
          _labOverlay->setObjectName("overlay");
          _labOverlay->setStyleSheet("QLabel#overlay {color: white; font-weight: bold; background-color: transparent;}");
 

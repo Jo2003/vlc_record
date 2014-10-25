@@ -86,7 +86,8 @@ SOURCES += main.cpp \
     qwaitwidget.cpp \
     qclickandgoslider.cpp \
     qdatetimesyncro.cpp \
-    qstatemessage.cpp
+    qstatemessage.cpp \
+    qwatchstats.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -148,7 +149,8 @@ HEADERS += recorder.h \
     qwaitwidget.h \
     qdatetimesyncro.h \
     qstatemessage.h \
-    externals_inc.h
+    externals_inc.h \
+    qwatchstats.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -224,9 +226,9 @@ else:mac {
 else:unix {
 
    contains(QMAKE_HOST.arch, x86_64) {
-      DEFINES += __ARCH__X86_64
+       DEFINES += __ARCH__X86_64
    } else {
-      DEFINES += __ARCH__I386
+       DEFINES += __ARCH__I386
    }
 
    LIBS += -lX11

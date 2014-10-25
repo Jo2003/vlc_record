@@ -249,12 +249,13 @@ bool QIptvCtrlClient::stillOnlineOnError(QNetworkReply::NetworkError err)
 //! \param   req (QNetworkRequest&) ref. to request
 //! \param   url (const QString&) url used for the post request
 //! \param   iSize (int) optional, content size in bytes (when using post)
+//! \param   json [in] (bool) is this json request
 //
 //! \return  ref. to QNetworkRequest as given as param
 //---------------------------------------------------------------------------
 QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
                                                  const QString& url,
-                                                 int iSize)
+                                                 int iSize, bool json)
 {
    // set request url ...
    req.setUrl(QUrl(url));
@@ -277,7 +278,14 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
    }
 
    // set content type ...
-   req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+   if (json)
+   {
+      req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+   }
+   else
+   {
+      req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+   }
 
    // set content length if given (used on post requests only) ...
    if (iSize != -1)
@@ -330,12 +338,13 @@ QNetworkReply* QIptvCtrlClient::prepareReply(QNetworkReply* rep, int iReqId, Ipt
 //! \param   url (const QString&) url used for the post request
 //! \param   content (const QString&) data to be posted
 //! \param   t_req (Iptv::eReqType) type of request
+//! \param   json [in] (bool) conent is json
 //
 //! \return  pointer to network reply
 //---------------------------------------------------------------------------
 QNetworkReply* QIptvCtrlClient::post(int iReqId, const QString& url,
                                      const QString& content,
-                                     Iptv::eReqType t_req)
+                                     Iptv::eReqType t_req, bool json)
 {
    QNetworkReply*  pReply;
    QNetworkRequest req;
@@ -347,6 +356,7 @@ QNetworkReply* QIptvCtrlClient::post(int iReqId, const QString& url,
    lastRequest.iReqId       = iReqId;
    lastRequest.sContent     = content;
    lastRequest.sUrl         = url;
+   lastRequest.json         = json;
 
    if ((t_req == Iptv::Login)
        && (lastRequest.iReqId != (int)CIptvDefs::REQ_LOGIN_ONLY))
@@ -355,14 +365,32 @@ QNetworkReply* QIptvCtrlClient::post(int iReqId, const QString& url,
       lastLogin.iReqId = (int)CIptvDefs::REQ_LOGIN_ONLY;
    }
 
-   prepareRequest(req, url, data.toEncoded().size());
+   if (json)
+   {
+      prepareRequest(req, url, content.toUtf8().size(), json);
+   }
+   else
+   {
+      prepareRequest(req, url, data.toEncoded().size());
+   }
+
+
 
 #ifdef __TRACE
    mInfo(tr("id=%1, type='%2', url='%3', data='%4'")
          .arg(iReqId).arg(iptv.reqName(t_req)).arg(url).arg(content));
 #endif // __TRACE
 
-   if ((pReply = QNetworkAccessManager::post(req, data.toEncoded())) != NULL)
+   if (json)
+   {
+      pReply = QNetworkAccessManager::post(req, content.toUtf8());
+   }
+   else
+   {
+      pReply = QNetworkAccessManager::post(req, data.toEncoded());
+   }
+
+   if (pReply != NULL)
    {
       prepareReply(pReply, iReqId, t_req);
    }
@@ -395,6 +423,7 @@ QNetworkReply* QIptvCtrlClient::get(int iReqId, const QString& url,
    lastRequest.iReqId       = iReqId;
    lastRequest.sContent     = "";
    lastRequest.sUrl         = url;
+   lastRequest.json         = false;
 
    if ((t_req == Iptv::Login)
       && (lastRequest.iReqId != (int)CIptvDefs::REQ_LOGIN_ONLY))
@@ -429,10 +458,11 @@ QNetworkReply* QIptvCtrlClient::get(int iReqId, const QString& url,
 //! \param   url (const QString&) url used for the get request
 //! \param   content (const QString&) data to be posted
 //! \param   t_req (Iptv::eReqType) type of request
+//! \param   isJson [in] (bool) is request a json string?
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QIptvCtrlClient::q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req)
+void QIptvCtrlClient::q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req, bool isJson)
 {
    SRequest reqObj;
    reqObj.eHttpReqType = E_REQ_POST;
@@ -441,6 +471,7 @@ void QIptvCtrlClient::q_post(int iReqId, const QString& url, const QString& cont
    reqObj.sContent     = content;
    reqObj.sUrl         = url;
    reqObj.uiTimeStamp  = QDateTime::currentDateTime().toTime_t();
+   reqObj.json         = isJson;
 
    // add request to command queue ...
    mtxCmdQueue.lock();
@@ -473,6 +504,7 @@ void QIptvCtrlClient::q_get(int iReqId, const QString& url, Iptv::eReqType t_req
    reqObj.sContent     = "";
    reqObj.sUrl         = url;
    reqObj.uiTimeStamp  = QDateTime::currentDateTime().toTime_t();
+   reqObj.json         = false;
 
    // add request to command queue ...
    mtxCmdQueue.lock();
@@ -536,7 +568,7 @@ void QIptvCtrlClient::workOffQueue(const QString& caller)
       if (reqObj.eHttpReqType == E_REQ_POST)
       {
          // handle queued post request; set busy state when call succeeds  ...
-         post(reqObj.iReqId, reqObj.sUrl, reqObj.sContent, reqObj.eIptvReqType);
+         post(reqObj.iReqId, reqObj.sUrl, reqObj.sContent, reqObj.eIptvReqType, reqObj.json);
       }
       else if (reqObj.eHttpReqType == E_REQ_GET)
       {
@@ -760,6 +792,20 @@ bool QIptvCtrlClient::isOnline()
 bool QIptvCtrlClient::busy()
 {
    return (ulAckNo != ulReqNo);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   return stb serial
+//
+//! \author  Jo2003
+//! \date    01.08.2014
+//
+//! \return  serial string
+//---------------------------------------------------------------------------
+const QString &QIptvCtrlClient::getStbSerial()
+{
+   return sStbSerial;
 }
 
 //---------------------------------------------------------------------------

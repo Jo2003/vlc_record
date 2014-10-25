@@ -74,6 +74,8 @@ public:
       REQ_GET_ALANG,
       REQ_VOD_LANG,
       REQ_LOGIN_ONLY,
+      REQ_STATS_SERVICE,
+      REQ_STATS_ONLY,
       REQ_UNKNOWN = 255
    };
 

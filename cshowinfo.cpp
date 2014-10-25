@@ -29,6 +29,32 @@ CShowInfo::CShowInfo(QObject *parent) : QObject(parent)
    cleanShowInfo();
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   get string from prog type
+//
+//! \author  Jo2003
+//! \date    02.12.2013
+//
+//! \param   t [in] (ShowInfo::eProgType) program type
+//
+//! \return  string related to program type
+//---------------------------------------------------------------------------
+QString CShowInfo::progType2String(ShowInfo::eProgType t)
+{
+#define mkCase(__x__) case __x__: s = #__x__; break
+   QString s;
+   switch(t)
+   {
+      mkCase(ShowInfo::Archive);
+      mkCase(ShowInfo::Live);
+      mkCase(ShowInfo::VOD);
+      default: break;
+   }
+   return s;
+#undef mkCase
+}
+
 /* -----------------------------------------------------------------\
 |  Method: cleanShowInfo
 |  Begin: 11.05.2012
@@ -47,7 +73,8 @@ void CShowInfo::cleanShowInfo()
    sAdUrl         = "";
    sPCode         = "";
    iChannelId     = -1;
-   iVodId         = -1;
+   iVodFileId     = -1;
+   iVideoId       = -1;
    ePlayState     = IncPlay::PS_STOP;
    eShowType      = ShowInfo::Live;
    uiStart        = 0;
@@ -182,7 +209,7 @@ void CShowInfo::setShowType(ShowInfo::eProgType type)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setVodId
+|  Method: setVodFileId
 |  Begin: 04.11.2011
 |  Author: Jo2003
 |  Description: stores the VOD id
@@ -191,9 +218,24 @@ void CShowInfo::setShowType(ShowInfo::eProgType type)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CShowInfo::setVodId(int id)
+void CShowInfo::setVodFileId(int id)
 {
-   iVodId = id;
+   iVodFileId = id;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set video id
+//
+//! \author  Jo2003
+//! \date    15.10.2014
+//
+//! \param   id [in] (int) video id
+//
+//---------------------------------------------------------------------------
+void CShowInfo::setVideoId(int id)
+{
+   iVideoId = id;
 }
 
 /* -----------------------------------------------------------------\
@@ -478,9 +520,23 @@ const ShowInfo::eProgType &CShowInfo::showType()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const int &CShowInfo::vodId()
+const int &CShowInfo::vodFileId()
 {
-   return iVodId;
+   return iVodFileId;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get video id
+//
+//! \author  Jo2003
+//! \date    15.10.2014
+//
+//! \return  video id
+//---------------------------------------------------------------------------
+const int &CShowInfo::videoId()
+{
+   return iVideoId;
 }
 
 /* -----------------------------------------------------------------\

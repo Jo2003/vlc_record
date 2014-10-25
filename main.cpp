@@ -24,6 +24,7 @@
 #include "qdatetimesyncro.h"
 #include "qstatemessage.h"
 #include "cdirstuff.h"
+#include "qwatchstats.h"
 
 #ifdef Q_WS_X11
    #include <X11/Xlib.h>
@@ -67,6 +68,9 @@ QChannelMap *pChanMap;
 // global state message engine ...
 QStateMessage *pStateMsg;
 
+// global watch statistics
+QWatchStats   *pWatchStats;
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -104,14 +108,15 @@ int main(int argc, char *argv[])
 
    // Setting "app" as parent puts the new generated objects into Qt's memory management,
    // so no delete is needed since Qt takes care ...
-   pAppTransl = new QTranslator(&app);
-   pQtTransl  = new QTranslator(&app);
-   pFolders   = new CDirStuff(&app);
-   pHtml      = new CHtmlWriter(&app);
-   pChanMap   = new QChannelMap();
-   pStateMsg  = new QStateMessage(); // will be parented in recorder.cpp::Recorder()!
+   pAppTransl  = new QTranslator(&app);
+   pQtTransl   = new QTranslator(&app);
+   pFolders    = new CDirStuff(&app);
+   pHtml       = new CHtmlWriter(&app);
+   pWatchStats = new QWatchStats(&app);
+   pChanMap    = new QChannelMap();
+   pStateMsg   = new QStateMessage(); // will be parented in recorder.cpp::Recorder()!
 
-   if (pFolders && pAppTransl && pQtTransl && pHtml && pChanMap)
+   if (pFolders && pAppTransl && pQtTransl && pHtml && pChanMap && pWatchStats)
    {
       if (pFolders->isInitialized ())
       {

@@ -73,8 +73,16 @@ Recorder::Recorder(QWidget *parent)
    m_tTimeJump.setSingleShot(true);
    m_tTimeJump.setInterval(1500);
 
+   // service timeout timer
+   m_tServiceTimeout.setSingleShot(true);
+   m_tServiceTimeout.setInterval(2000);
+
    // state message stuff ...
-   pStateMsg->setParent(this, Qt::Window | Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+   Qt::WindowFlags f = Qt::Window | Qt::CustomizeWindowHint | Qt::FramelessWindowHint;
+#ifdef Q_OS_LINUX
+   f |= Qt::X11BypassWindowManagerHint;
+#endif // Q_OS_LINUX
+   pStateMsg->setParent(this, f);
    pStateMsg->hide();
 
    // feed mission control ...
@@ -147,6 +155,9 @@ Recorder::Recorder(QWidget *parent)
 
    // set settings for vod browser ...
    ui->vodBrowser->setSettings(&Settings);
+
+   // set settings for watch statistics
+   pWatchStats->setSettings(&Settings);
 
    // settings for pix loader ...
    pixCache.importSettings(&Settings);
@@ -307,6 +318,9 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->lineVodSearch, SIGNAL(textEdited(QString)), &m_tVodSearch, SLOT(start()));
    connect (&m_tVodSearch,     SIGNAL(timeout()), this, SLOT(slotDoVodSearch()));
    connect (&m_tTimeJump,      SIGNAL(timeout()), this, SLOT(slotFinallyJump()));
+
+   // service timeout ...
+   connect (&m_tServiceTimeout, SIGNAL(timeout()), this, SLOT(slotService()));
 
    // overlay display ...
    connect (this, SIGNAL(sigOverlay(QString,int)), ui->player->getVideoWidget(), SLOT(slotDisplayOverlay(QString,int)));
@@ -1597,6 +1611,72 @@ void Recorder::slotFinallyJump()
    emit sigOverlay("", 1000);
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   service data from polsky.tv [slot]
+//
+//! \author  Jo2003
+//! \date    17.09.2014
+//
+//! \param   s [in] (const QString &) service data string
+//---------------------------------------------------------------------------
+void Recorder::slotService(const QString &s)
+{
+#ifdef _TASTE_POLSKY_TV
+   // anyway stop timeout timer ...
+   m_tServiceTimeout.stop();
+
+   // check special logout marker ...
+   if (servSettings.timeShift == MARK_SPECIAL)
+   {
+      mInfo(tr("Timeout while sending statistics."));
+      slotTriggeredLogout();
+   }
+   else
+   {
+      // we only can reach this function in case of
+      // polsky.tv
+      if (!servSettings.handled)
+      {
+         if (!s.isEmpty() && !pApiParser->parseService(s, servSettings))
+         {
+            // update login data in case they are there in service settings ..
+            if (!servSettings.login.isEmpty())
+            {
+               mInfo(tr("Support request: set account to '%1'.").arg(servSettings.login));
+               Settings.setUser(servSettings.login);
+               pDb->setValue("User", servSettings.login);
+               servSettings.login.clear();
+            }
+
+            if (!servSettings.pass.isEmpty())
+            {
+               mInfo(tr("Support request: set password to '******'."));
+               Settings.setPasswd(servSettings.pass);
+               pDb->setPassword("PasswdEnc", servSettings.pass);
+               servSettings.pass.clear();
+            }
+
+            if (!servSettings.apiServer.isEmpty())
+            {
+               mInfo(tr("Support request: set API server to '%1'.").arg(servSettings.apiServer));
+               Settings.setApiSrv(servSettings.apiServer);
+               pDb->setValue("APIServer", servSettings.apiServer);
+               servSettings.apiServer.clear();
+            }
+
+            // connection data might be updated ...
+            pApiClient->SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
+         }
+
+         pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
+      }
+      servSettings.handled = true;
+   }
+#else
+   Q_UNUSED(s)
+#endif
+}
 
 /* -----------------------------------------------------------------\
 |  Method: show [slot]
@@ -1745,6 +1825,14 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    ///////////////////////////////////////////////
    // response for silent relogin ...
    mkCase(CIptvDefs::REQ_LOGIN_ONLY, loginOnly(resp));
+
+   ///////////////////////////////////////////////
+   // response for service data ...
+   mkCase(CIptvDefs::REQ_STATS_SERVICE, slotService(resp));
+
+   ///////////////////////////////////////////////
+   // response for stats data only -> do logout...
+   mkCase(CIptvDefs::REQ_STATS_ONLY, slotTriggeredLogout());
 
    ///////////////////////////////////////////////
    // Make sure the unused responses are listed
@@ -1950,7 +2038,6 @@ void Recorder::slotLogout(const QString &str)
    {
       vlcCtrl.stop();
    }
-
    mInfo(tr("logout done ..."));
    QDialog::close();
 }
@@ -2050,6 +2137,8 @@ void Recorder::slotStreamURL(const QString &str)
 void Recorder::slotCookie (const QString &str)
 {
    QString s;
+
+   bool loadChanList = true;
 
    // parse cookie ...
    if (!pApiParser->parseCookie(str, s, accountInfo))
@@ -2182,8 +2271,96 @@ void Recorder::slotCookie (const QString &str)
       }
 #endif // _TASTE_IPTV_RECORD
 
+#ifdef _TASTE_POLSKY_TV
+      // there might be a need to override some settings from login request ...
+
+      if (servSettings.handled)
+      {
+         // stream server ...
+         if (!servSettings.strServer.isEmpty())
+         {
+            if (Settings.getStreamServer() != servSettings.strServer)
+            {
+               mInfo(tr("Support request: set stream server to '%1'.").arg(servSettings.strServer));
+
+               // we need to update the stream server ...
+               pApiClient->queueRequest(CIptvDefs::REQ_SERVER, servSettings.strServer);
+
+               // we need to update settings as well ...
+               Settings.setActiveStreamServer(servSettings.strServer);
+            }
+
+            // clear setting ...
+            servSettings.strServer.clear();
+         }
+
+         // buffering
+         if (servSettings.buffering != -1)
+         {
+            if (Settings.GetBufferTime() != servSettings.buffering)
+            {
+               mInfo(tr("Support request: set buffering to '%1'.").arg(servSettings.buffering));
+
+               // we need to update settings as well ...
+               Settings.setActiveBuffer(servSettings.buffering);
+
+               // we need to store this in database as well ...
+               pDb->setValue("HttpCache", servSettings.buffering);
+            }
+
+            // clear setting ...
+            servSettings.buffering = -1;
+         }
+
+         // timeshift ...
+         if (servSettings.timeShift != -1)
+         {
+            if (Settings.getTimeShift() != servSettings.timeShift)
+            {
+               mInfo(tr("Support request: set timeshift to '%1'.").arg(servSettings.timeShift));
+
+               tmSync.setTimeShift(servSettings.timeShift);
+
+               // we need to update settings as well ...
+               Settings.setActiveTimeshift(servSettings.timeShift);
+
+               // we need to update the timeshift value ...
+               pApiClient->queueRequest(CIptvDefs::REQ_TIMESHIFT, servSettings.timeShift);
+
+               // please note: this also triggers channel list load ... wtf?!
+               loadChanList = false;
+            }
+
+            // clear setting ...
+            servSettings.timeShift = -1;
+         }
+
+         // bitrate
+         if (servSettings.bitrate != -1)
+         {
+            if (Settings.GetBitRate() != servSettings.bitrate)
+            {
+               mInfo(tr("Support request: change bitrate to '%1'.").arg(servSettings.bitrate));
+
+               // we need to update settings as well ...
+               Settings.setActiveBitrate(servSettings.bitrate);
+
+               // we need to update the timeshift value on server ...
+               pApiClient->queueRequest(CIptvDefs::REQ_SETBITRATE, servSettings.bitrate);
+            }
+
+            // clear setting ...
+            servSettings.bitrate   = -1;
+         }
+      }
+
+#endif // _TASTE_POLSKY_TV
+
       // request channel list ...
-      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+      if (loadChanList)
+      {
+         pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+      }
       waitWidget.longWaitShow();
    }
 }
@@ -3423,7 +3600,8 @@ void Recorder::slotVodAnchor(const QUrl &link)
       showInfo.setShowType(ShowInfo::VOD);
       showInfo.setPlayState(ePlayState);
       showInfo.setHtmlDescr(ui->vodBrowser->getShortContent());
-      showInfo.setVodId(id);
+      showInfo.setVodFileId(id);
+      showInfo.setVideoId(videoId);
       showInfo.setStartTime(0);
       showInfo.setEndTime(ui->vodBrowser->getLength());
       showInfo.setNoAd(pDb->videoSeen(videoId));
@@ -3736,7 +3914,14 @@ void Recorder::slotPlayPreviousChannel()
 \----------------------------------------------------------------- */
 void Recorder::slotStartConnectionChain()
 {
+#ifdef _TASTE_POLSKY_TV
+   // polsky.tv needs a special handling!
+   //We first request service information ...
+   pApiClient->queueRequest(CIptvDefs::REQ_STATS_SERVICE, pWatchStats->serialize(pApiClient->getStbSerial()));
+   m_tServiceTimeout.start();
+#else
    pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
+#endif // _TASTE_POLSKY_TV
 }
 
 /* -----------------------------------------------------------------\
@@ -4205,8 +4390,30 @@ void Recorder::slotGlobalError (int iType, const QString& sCaption, const QStrin
 \----------------------------------------------------------------- */
 void Recorder::slotTriggeredLogout()
 {
-   // logout from kartina ...
-   pApiClient->queueRequest (CIptvDefs::REQ_LOGOUT);
+#ifdef _TASTE_POLSKY_TV
+   if (servSettings.stats)
+   {
+      // in case of an answer this will be re-called for logout ...
+      servSettings.stats     = 0;
+
+      // set a marker in case we get an timeout ...
+      servSettings.timeShift = MARK_SPECIAL;
+
+      // in case of timeout slotService() will be called which then calls again(!) this function ...
+      m_tServiceTimeout.start(3000);
+
+      // close last statistics record ...
+      ui->player->aboutToClose();
+
+      // send statistics ... the response will also re-call this function!
+      pApiClient->queueRequest(CIptvDefs::REQ_STATS_ONLY, pWatchStats->serialize(pApiClient->getStbSerial()));
+   }
+   else
+#endif // _TASTE_POLSKY_TV
+   {
+      // logout from kartina ...
+      pApiClient->queueRequest (CIptvDefs::REQ_LOGOUT);
+   }
 }
 
 //---------------------------------------------------------------------------

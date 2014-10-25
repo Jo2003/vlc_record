@@ -46,6 +46,15 @@ namespace Player
       int   id;
       bool  bArch;
    };
+
+   struct SErrHelper
+   {
+      SErrHelper():errCount(0), lastBuffer(0), enabled(false){}
+      QString mrl;
+      int     errCount;
+      int     lastBuffer;
+      bool    enabled;
+   };
 }
 
 /********************************************************************\
@@ -77,6 +86,7 @@ public:
    ulong libvlcVersion();
    void resetBuffPercent();
    QVlcVideoWidget*& getVideoWidget();
+   void aboutToClose();
 
    static QVector<libvlc_event_type_t> _eventQueue;
    static const char*                  _pAspect[];
@@ -118,6 +128,7 @@ private:
    QLangVector                  vAudTrk;
    Player::SPauseResume         pauseResume;
    IncPlay::ePlayStates         libPlayState;
+   Player::SErrHelper           errHelper;
 
 private slots:
    void slotPositionChanged(int value);

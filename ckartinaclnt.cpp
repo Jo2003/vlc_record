@@ -172,6 +172,7 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
       case CIptvDefs::REQ_COOKIE:
       case CIptvDefs::REQ_LOGOUT:
       case CIptvDefs::REQ_UPDATE_CHECK:
+      case CIptvDefs::REQ_STATS_SERVICE:
          break;
       default:
          iRet = -1;
@@ -278,6 +279,12 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          break;
       case CIptvDefs::REQ_VOD_LANG:
          getVodLang();
+         break;
+      case CIptvDefs::REQ_STATS_SERVICE:
+         statsService(par_1.toString());
+         break;
+      case CIptvDefs::REQ_STATS_ONLY:
+         statsOnly(par_1.toString());
          break;
       default:
          iRet = -1;
@@ -1080,6 +1087,56 @@ int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 const QString& CKartinaClnt::apiUrl()
 {
    return sApiUrl;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   send / request statistics + service
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   stats [in] (const QString &) statistics as JSON string
+//
+//---------------------------------------------------------------------------
+void CKartinaClnt::statsService(const QString &stats)
+{
+   QRegExp rx("^[^.]*\\.(.*)$");
+   QString sHost = "http://service.polsky.tv/api/json/stats";
+
+   if (rx.indexIn(QUrl(sApiUrl).host()) > -1)
+   {
+      sHost = QString("http://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
+   }
+
+   q_post(CIptvDefs::REQ_STATS_SERVICE,
+          sHost,
+          stats, Iptv::String, true);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   send / request statistics + service
+//
+//! \author  Jo2003
+//! \date    16.10.2014
+//
+//! \param   stats [in] (const QString &) statistics as JSON string
+//
+//---------------------------------------------------------------------------
+void CKartinaClnt::statsOnly(const QString &stats)
+{
+   QRegExp rx("^[^.]*\\.(.*)$");
+   QString sHost = "http://service.polsky.tv/api/json/stats";
+
+   if (rx.indexIn(QUrl(sApiUrl).host()) > -1)
+   {
+      sHost = QString("http://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
+   }
+
+   q_post(CIptvDefs::REQ_STATS_ONLY,
+          sHost,
+          stats, Iptv::String, true);
 }
 
 /* -----------------------------------------------------------------\
