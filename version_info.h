@@ -33,9 +33,9 @@
 #endif
 
 #define VERSION_MAJOR "2"
-#define VERSION_MINOR "70"
-// #define BETA_EXT      "B3"
-#define BETA_EXT
+#define VERSION_MINOR "71"
+#define BETA_EXT      "B2"
+// #define BETA_EXT
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -43,8 +43,20 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2014-10-26: Version 2.71B2
+| - prepare a bugfix release with following changes:
+|   + Make sure video context menu can be activated on Mac
+|     -> make render widget transparent for mouse events -> fixed
+|   + Click'n'Go slider stays still on record (VLC doesn't send
+|     VOUT event on record) -> emulate event -> fixed
+|   + No status messages on Linux due to missing X11 bypass
+|     -> fixed
+|   + No fullscreen on doubleclick on Linux when render widget
+|     is transparent for mouse events -> catch
+|     and count single clicks -> fixed
+|
 | 2014-10-16: Version 2.70xV3
-| - add service and statistics for polsky.tv
+| - add service and statistics for OEMs
 |
 | 2014-10-09: Version 2.70RC1
 | - adapt build system for better debian packages

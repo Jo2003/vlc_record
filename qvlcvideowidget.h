@@ -90,7 +90,12 @@ public:
    void raiseRender();
 
 protected:
+#ifndef Q_OS_LINUX
+   /// Double click doesn't work on Linux in case
+   /// our render widget is transparent for mouse events.
+   /// Another nice bug in Qt.
    virtual void mouseDoubleClickEvent(QMouseEvent *event);
+#endif // Q_OS_LINUX
    virtual void mouseMoveEvent(QMouseEvent *event);
    virtual void mousePressEvent(QMouseEvent *event);
    virtual void wheelEvent(QWheelEvent *event);
@@ -109,6 +114,10 @@ private:
    QTimer                 *_mouseHide;
    QTimer                 *_placePanel;
    QTimer                 *_tOverlay;
+#ifdef Q_OS_LINUX
+   /// timer to emulate double click on Linux
+   QTimer                 *_tDoubleClick;
+#endif // Q_OS_LINUX
    QVector<CShortcutEx *> *_shortcuts;
    bool                    _extFullScreen;
    QOverlayedControl      *_ctrlPanel;

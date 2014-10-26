@@ -56,8 +56,12 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _mouseHide           = new QTimer(this);
    _placePanel          = new QTimer(this);
    _tOverlay            = new QTimer(this);
-
-   // _render->setMouseTracking(true);
+#ifdef Q_OS_LINUX
+   /// double click emulator on Linux only
+   _tDoubleClick        = new QTimer(this);
+   _tDoubleClick->setSingleShot(true);
+   _tDoubleClick->setInterval(500);
+#endif // Q_OS_LINUX
    _render->setAttribute(Qt::WA_TransparentForMouseEvents);
    _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
@@ -182,12 +186,15 @@ WId QVlcVideoWidget::widgetId()
 //
 //! \return  --
 //---------------------------------------------------------------------------
+#ifndef Q_OS_LINUX
+/// workaround for Qt bug. Have a look at mousePressEvent() below for details!
 void QVlcVideoWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
    emit fullScreen();
 
    QWidget::mouseDoubleClickEvent(event);
 }
+#endif // Q_OS_LINUX
 
 //---------------------------------------------------------------------------
 //
@@ -250,7 +257,27 @@ void QVlcVideoWidget::mousePressEvent(QMouseEvent *event)
       QApplication::restoreOverrideCursor();
       emit rightClick(event->globalPos());
    }
-
+#ifdef Q_OS_LINUX
+   /// When making render widget transparent for mouse
+   /// clicks we are not able to catch any double
+   /// click event on Linux (wtf?)!
+   /// So we catch single left clicks and try to find
+   /// out if this is a double click!
+   /// Another piece of shit in this code!
+   else if(event->button() == Qt::LeftButton)
+   {
+      if(!_tDoubleClick->isActive())
+      {
+         _tDoubleClick->start();
+      }
+      else
+      {
+         mInfo(tr("Emulate double click!"));
+         _tDoubleClick->stop();
+         emit fullScreen();
+      }
+   }
+#endif // Q_OS_LINUX
    QWidget::mousePressEvent(event);
 }
 
