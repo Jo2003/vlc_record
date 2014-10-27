@@ -13,6 +13,7 @@
 #include "ckartinaclnt.h"
 #include "qcustparser.h"
 #include "externals_inc.h"
+#include <QSslConfiguration>
 
 /*-----------------------------------------------------------------------------\
 | Function:    CKartinaClnt / constructor
@@ -37,8 +38,30 @@ CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
    connect(this, SIGNAL(sigApiErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
+   connect(this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(slotSslError(QNetworkReply*,QList<QSslError>)));
 
    setObjectName("CKartinaClnt");
+
+#ifdef SERVICE_CERTIFICATE
+   QSslConfiguration config = QSslConfiguration::defaultConfiguration();
+   config.setPeerVerifyMode(QSslSocket::VerifyNone);
+   QSslConfiguration::setDefaultConfiguration(config);
+
+   /*
+   QSslConfiguration config = QSslConfiguration::defaultConfiguration();
+   config.setProtocol(QSsl::SecureProtocols);
+   QList<QSslCertificate> certList = config.caCertificates();
+   certList.append(QSslCertificate(QByteArray(SERVICE_CERTIFICATE)));
+   foreach(QSslCertificate cert, certList)
+   {
+      mInfo(tr("Info: %1, valid: %2").arg(cert.issuerInfo(QSslCertificate::Organization)).arg(cert.isValid()));
+   }
+   config.setCaCertificates(certList);
+   QSslConfiguration::setDefaultConfiguration(config);
+   */
+
+   // QSslSocket::addDefaultCaCertificate(QSslCertificate(QByteArray(SERVICE_CERTIFICATE)));
+#endif // SERVICE_CERTIFICATE
 }
 
 /*-----------------------------------------------------------------------------\
@@ -145,6 +168,28 @@ void CKartinaClnt::slotBinResponse (int reqId, QByteArray binResp)
 void CKartinaClnt::slotErr (int iReqId, QString sErr, int iErr)
 {
    emit sigError(sErr, iReqId, iErr);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle SSL error from service server [slot]
+//
+//! \author  Jo2003
+//! \date    15.03.2013
+//
+//! \param   pReply [in] (QNetworkReply *) reply which caused the error
+//! \param   elist [in]  (QList<QSslError>) list of SSL errors
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CKartinaClnt::slotSslError(QNetworkReply *pReply, QList<QSslError> elist)
+{
+   mInfo(tr("SSL Error while calling %1!").arg(pReply->request().url().toString()));
+   for (int i = 0; i < elist.count(); i++)
+   {
+      mInfo(elist[i].errorString());
+   }
+   // pReply->ignoreSslErrors();
 }
 
 /////////////////////////////////////////////////////////////////////////////////

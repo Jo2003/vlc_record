@@ -16,6 +16,7 @@
 #include <QString>
 #include <QDate>
 #include <QRegExp>
+#include <QSslError>
 
 #include "qiptvctrlclient.h"
 #include "defdef.h"
@@ -38,11 +39,8 @@ class CKartinaClnt : public QIptvCtrlClient
 public:
    explicit CKartinaClnt(QObject *parent = 0);
    virtual ~CKartinaClnt();
-
    void SetData(const QString &host, const QString &usr, const QString &pw, const QString& lang = "");
-
    int  queueRequest(CIptvDefs::EReq req, const QVariant& par_1 = QVariant(), const QVariant& par_2 = QVariant());
-
    void fillErrorMap();
    bool cookieSet();
    void SetCookie (const QString &cookie);
@@ -97,6 +95,7 @@ protected slots:
    virtual void slotStringResponse (int reqId, QString strResp);
    void slotBinResponse (int reqId, QByteArray binResp);
    void slotErr (int iReqId, QString sErr, int iErr);
+   void slotSslError (QNetworkReply *pReply, QList<QSslError> elist);
 
 signals:
    void sigError (QString str, int req, int err);

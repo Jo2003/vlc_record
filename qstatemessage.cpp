@@ -150,3 +150,18 @@ void QStateMessage::showMessage(const QIcon& icon, const QString &msg, int iTmOu
       fadeIn();
    }
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   shows a status message [slot]
+//
+//! \author  Jo2003
+//! \date    27.10.2014
+//
+//! \param   msg [in] (const QString&) message text
+//
+//---------------------------------------------------------------------------
+void QStateMessage::showMessage(const QString &msg)
+{
+   showMessage((int)QStateMessage::S_INFO, msg);
+}

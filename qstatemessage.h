@@ -64,6 +64,7 @@ public:
 public slots:
    void showMessage (int icon, const QString& msg, int iTmOut = -1);
    void showMessage (const QIcon &icon, const QString& msg, int iTmOut = -1);
+   void showMessage (const QString& msg);
 
 private:
    Ui::QStateMessage *ui;
