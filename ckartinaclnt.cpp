@@ -1172,11 +1172,11 @@ void CKartinaClnt::statsService(const QString &stats)
 void CKartinaClnt::statsOnly(const QString &stats)
 {
    QRegExp rx("^[^.]*\\.(.*)$");
-   QString sHost = "http://service.polsky.tv/api/json/stats";
+   QString sHost = "https://service.polsky.tv/api/json/stats";
 
    if (rx.indexIn(QUrl(sApiUrl).host()) > -1)
    {
-      sHost = QString("http://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
+      sHost = QString("https://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
    }
 
    q_post(CIptvDefs::REQ_STATS_ONLY,
