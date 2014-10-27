@@ -3548,44 +3548,49 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="431"/>
+        <location filename="qvlcvideowidget.cpp" line="277"/>
+        <source>Emulate double click!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qvlcvideowidget.cpp" line="460"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="748"/>
+        <location filename="qvlcvideowidget.cpp" line="777"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="767"/>
+        <location filename="qvlcvideowidget.cpp" line="796"/>
         <source>Minimal Interface</source>
         <oldsource>Minimal Mode</oldsource>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="771"/>
+        <location filename="qvlcvideowidget.cpp" line="800"/>
         <source>Enable</source>
         <translation>Включать</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="785"/>
+        <location filename="qvlcvideowidget.cpp" line="814"/>
         <source>Stay on top</source>
         <translation>Закрепление окна</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="808"/>
+        <location filename="qvlcvideowidget.cpp" line="837"/>
         <source>Show Control Panel</source>
         <translation>Показать панель управления</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="842"/>
+        <location filename="qvlcvideowidget.cpp" line="871"/>
         <source>Audio Streams</source>
         <translation>Аудио-дорожка</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="855"/>
+        <location filename="qvlcvideowidget.cpp" line="884"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>

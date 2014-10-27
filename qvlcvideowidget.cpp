@@ -61,7 +61,11 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _tDoubleClick        = new QTimer(this);
    _tDoubleClick->setSingleShot(true);
    _tDoubleClick->setInterval(500);
-#endif // Q_OS_LINUX
+#elif defined Q_OS_WIN
+   /// Strange! On Windows WA_TransparentForMouseEvents alone doesn't
+   /// work. So we need to enable mouse tracking.
+   _render->setMouseTracking(true);
+#endif // Q_OS_WIN
    _render->setAttribute(Qt::WA_TransparentForMouseEvents);
    _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
