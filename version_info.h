@@ -34,8 +34,8 @@
 
 #define VERSION_MAJOR "2"
 #define VERSION_MINOR "71"
-#define BETA_EXT      "B2"
-// #define BETA_EXT
+// #define BETA_EXT      "B2"
+#define BETA_EXT
 
 #define __MY__VERSION__ \
    VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
@@ -43,6 +43,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2014-10-30: Version 2.71RC1
+| - no changes since last beta
+|
 | 2014-10-26: Version 2.71B2
 | - prepare a bugfix release with following changes:
 |   + Make sure video context menu can be activated on Mac

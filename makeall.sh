@@ -2,9 +2,8 @@
 
 CUSTOMS="vlc-record kartina_tv polsky_tv"
 
-sudo rm -f *.deb
-
 for i in $CUSTOMS; do
+	rm -rf ../${i}_2.*
 	qmake $i.pro
 	make clean
 	make -j4 release
