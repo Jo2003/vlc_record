@@ -41,27 +41,6 @@ CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
    connect(this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(slotSslError(QNetworkReply*,QList<QSslError>)));
 
    setObjectName("CKartinaClnt");
-
-#ifdef SERVICE_CERTIFICATE
-   QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-   config.setPeerVerifyMode(QSslSocket::VerifyNone);
-   QSslConfiguration::setDefaultConfiguration(config);
-
-   /*
-   QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-   config.setProtocol(QSsl::SecureProtocols);
-   QList<QSslCertificate> certList = config.caCertificates();
-   certList.append(QSslCertificate(QByteArray(SERVICE_CERTIFICATE)));
-   foreach(QSslCertificate cert, certList)
-   {
-      mInfo(tr("Info: %1, valid: %2").arg(cert.issuerInfo(QSslCertificate::Organization)).arg(cert.isValid()));
-   }
-   config.setCaCertificates(certList);
-   QSslConfiguration::setDefaultConfiguration(config);
-   */
-
-   // QSslSocket::addDefaultCaCertificate(QSslCertificate(QByteArray(SERVICE_CERTIFICATE)));
-#endif // SERVICE_CERTIFICATE
 }
 
 /*-----------------------------------------------------------------------------\
@@ -189,7 +168,6 @@ void CKartinaClnt::slotSslError(QNetworkReply *pReply, QList<QSslError> elist)
    {
       mInfo(elist[i].errorString());
    }
-   // pReply->ignoreSslErrors();
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -1147,11 +1125,11 @@ const QString& CKartinaClnt::apiUrl()
 void CKartinaClnt::statsService(const QString &stats)
 {
    QRegExp rx("^[^.]*\\.(.*)$");
-   QString sHost = "https://service.polsky.tv/api/json/stats";
+   QString sHost = "http://service.polsky.tv/api/json/stats";
 
    if (rx.indexIn(QUrl(sApiUrl).host()) > -1)
    {
-      sHost = QString("https://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
+      sHost = QString("http://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
    }
 
    q_post(CIptvDefs::REQ_STATS_SERVICE,
@@ -1172,11 +1150,11 @@ void CKartinaClnt::statsService(const QString &stats)
 void CKartinaClnt::statsOnly(const QString &stats)
 {
    QRegExp rx("^[^.]*\\.(.*)$");
-   QString sHost = "https://service.polsky.tv/api/json/stats";
+   QString sHost = "http://service.polsky.tv/api/json/stats";
 
    if (rx.indexIn(QUrl(sApiUrl).host()) > -1)
    {
-      sHost = QString("https://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
+      sHost = QString("http://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
    }
 
    q_post(CIptvDefs::REQ_STATS_ONLY,
