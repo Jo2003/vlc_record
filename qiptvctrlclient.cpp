@@ -824,8 +824,10 @@ void QIptvCtrlClient::startConnectionCheck()
    {
       QNetworkReply  *pRep;
 
-      // check a well known site ...
-      QNetworkRequest req(QUrl("http://www.google.com"));
+      // use API URL for connection check ...
+      QUrl url(QString("%1%2").arg(sApiUrl).arg("getinfo?info=servertime"));
+
+      QNetworkRequest req(url);
 
       // no persistent connections ...
       req.setRawHeader("Connection", "close");

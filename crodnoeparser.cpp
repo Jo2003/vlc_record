@@ -251,7 +251,6 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
          {
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
-               chanEntry.bHasTsInfo = true;
                chanEntry.iTs        = xml.text().toString().toInt();
             }
          }

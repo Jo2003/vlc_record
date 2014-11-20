@@ -82,7 +82,6 @@ protected:
 private:
    QString   sUsr;
    QString   sPw;
-   QString   sApiUrl;
    QString   sCookie;
    QErrorMap errMap;
    CIptvDefs karTrace;

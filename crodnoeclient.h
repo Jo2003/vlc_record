@@ -88,7 +88,6 @@ protected:
 private:
    QString   sUsr;
    QString   sPw;
-   QString   sApiUrl;
    QString   sCookie;
    QString   sLang;
    QErrorMap errMap;

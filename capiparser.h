@@ -50,7 +50,7 @@ public:
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg) = 0;
    virtual int parseError (const QString& sResp, QString& sMsg, int& eCode) = 0;
    virtual int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
-   virtual int handleTsStuff(QVector<cparser::SChan> &chanList);
+   virtual int handleTsStuff(QVector<cparser::SChan> &chanList, int bitRate);
    virtual int parseVodLang(const QString &sResp, QVodLangMap &lMap);
 
 protected:

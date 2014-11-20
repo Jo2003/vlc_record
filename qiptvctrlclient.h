@@ -157,6 +157,9 @@ protected:
    void generateStbSerial();
    bool stillOnlineOnError(QNetworkReply::NetworkError err);
 
+   // needed for connection check ...
+   QString sApiUrl;
+
 signals:
    void sigStringResponse (int reqId, QString strResp);
    void sigBinResponse (int reqId, QByteArray binResp);

@@ -16,6 +16,15 @@
 #include "externals_inc.h"
 #include "QTime"
 
+#ifdef __CHANLIST_TIMES_ARE_GMT
+   #define mFillChanListTs    chanlist[i].iTs
+   #define mUpdChanListTs     chanEntry.iTs
+#else
+   #warning Channel List Times not given in GMT if timeshift is active!
+   #define mFillChanListTs    0
+   #define mUpdChanListTs     0
+#endif // __CHANLIST_TIMES_ARE_GMT
+
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
 |  Begin: 19.01.2010 / 16:01:44
@@ -2399,8 +2408,10 @@ void Recorder::slotChanList (const QString &str)
 
    if (!pApiParser->parseChannelList(str, chanList))
    {
+#ifndef _TASTE_IPTV_RECORD
       // handle timeshift stuff if needed ...
-      pApiParser->handleTsStuff(chanList);
+      pApiParser->handleTsStuff(chanList, Settings.GetBitRate());
+#endif // _TASTE_IPTV_RECORD
 
       pChanMap->fillFromChannelList(chanList);
 
@@ -2545,6 +2556,28 @@ void Recorder::slotEPGCurrent (const QString &str)
 
    if (!pApiParser->parseEpgCurrent(str, currentEpg))
    {
+#ifdef __TRACE
+      QCurrentMap::const_iterator cit;
+
+      for(cit = currentEpg.constBegin(); cit != currentEpg.constEnd(); cit++)
+      {
+         chanMapEntry = pChanMap->value(cit.key(), true);
+
+         mInfo(tr("%1 (%2) Timeshift: %3")
+               .arg(chanMapEntry.sName)
+               .arg(chanMapEntry.iId)
+               .arg(chanMapEntry.iTs));
+
+         foreach (cparser::SEpgCurrent c, cit.value())
+         {
+            mInfo(tr("%1: %2 (%3)")
+                  .arg(c.sShow)
+                  .arg(tmSync.tsToGmtFormatted(c.uiStart, "hh:mm:ss", 0))
+                  .arg(tmSync.tsToGmtFormatted(c.uiStart, "hh:mm:ss", (chanMapEntry.iTs / 3600))));
+         }
+      }
+#endif // __TRACE
+
       QList<int> keyList = currentEpg.keys();
 
       for (i = 0; i < keyList.count(); i++)
@@ -4266,13 +4299,13 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
             if (cidList.isEmpty())
             {
                // no new shows, simply update progress position ...
-               iPos = (int)(now - (chanEntry.uiStart + chanEntry.iTs));
+               iPos = (int)(now - (chanEntry.uiStart + mUpdChanListTs));
 
                // update progress ...
                pItem->setData(iPos, channellist::posRole);
 
                // check if this channel needs an update ...
-               if ((chanEntry.uiEnd > 0) && (now > (chanEntry.uiEnd + chanEntry.iTs)))
+               if ((chanEntry.uiEnd > 0) && (now > (chanEntry.uiEnd + mUpdChanListTs)))
                {
                   // when we lately tried to update EPG for this ... ?
                   if ((pItem->data(channellist::lastEpgUpd).toUInt() + EPG_UPD_TMOUT) < now)
@@ -4296,8 +4329,8 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
                iPos = (int)(now - chanEntry.uiStart);
 
                pItem->setData(iPos,                                channellist::posRole);
-               pItem->setData(chanEntry.uiStart + chanEntry.iTs,   channellist::startRole);
-               pItem->setData(chanEntry.uiEnd   + chanEntry.iTs,   channellist::endRole);
+               pItem->setData(chanEntry.uiStart + mUpdChanListTs,  channellist::startRole);
+               pItem->setData(chanEntry.uiEnd   + mUpdChanListTs,  channellist::endRole);
                pItem->setData(chanEntry.sProgramm,                 channellist::progRole);
                pItem->setData(chanEntry.sName,                     channellist::nameRole);
             }
@@ -5310,15 +5343,15 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             }
 
             // progress position ...
-            iPos = (int)(tmSync.syncronizedTime_t() - (chanlist[i].uiStart + chanlist[i].iTs));
+            iPos = (int)(tmSync.syncronizedTime_t() - (chanlist[i].uiStart + mFillChanListTs));
 
             // insert data ...
             pItem->setData(chanlist[i].iId,                       channellist::cidRole);
             pItem->setData(sLine,                                 channellist::nameRole);
             pItem->setData(QIcon(icon),                           channellist::iconRole);
             pItem->setData(chanlist[i].sProgramm,                 channellist::progRole);
-            pItem->setData(chanlist[i].uiStart + chanlist[i].iTs, channellist::startRole);
-            pItem->setData(chanlist[i].uiEnd   + chanlist[i].iTs, channellist::endRole);
+            pItem->setData(chanlist[i].uiStart + mFillChanListTs, channellist::startRole);
+            pItem->setData(chanlist[i].uiEnd   + mFillChanListTs, channellist::endRole);
             pItem->setData(sLogoFile,                             channellist::logoFileRole);
             pItem->setData(iPos,                                  channellist::posRole);
             pItem->setData(now,                                   channellist::lastEpgUpd);

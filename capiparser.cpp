@@ -105,7 +105,6 @@ void CApiParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
    entry.uiEnd        = 0;
    entry.uiStart      = 0;
    entry.bIsHidden    = false;
-   entry.bHasTsInfo   = false;
    entry.iTs          = 0;
    entry.vTs.clear();
 }
@@ -265,24 +264,41 @@ bool CApiParser::ignoreGroup(cparser::SChan& grpEntry)
 //! \author  Jo2003
 //! \date    09.10.2013
 //
-//! \param   chanLlist (QVector<cparser::SChan> &) ref. to channel list
+//! \param   [in/out] chanLlist (QVector<cparser::SChan> &) ref. to channel list
+//! \param   [in] bitRate (int) current bitrate
 //
 //! \return  0
 //---------------------------------------------------------------------------
-int CApiParser::handleTsStuff(QVector<cparser::SChan> &chanList)
+int CApiParser::handleTsStuff (QVector<cparser::SChan> &chanList, int bitRate)
 {
+   bool bTs;
+
    for (int i = 0; i < chanList.count(); i ++)
    {
-      // mInfo(tr("%1 ts count: %2").arg(chanList[i].sName).arg(chanList[i].vTs.count()));
-
-      if (!chanList[i].bHasTsInfo)
+      if (!chanList[i].bIsGroup)
       {
-         /// Hack: if vTs.count() is 1 or 2: -> kartina.tv WITHOUT timeshift!
-         if (!CSmallHelpers::inBetween(1, 2, chanList[i].vTs.count()))
+         // preset!
+         chanList[i].iTs = 0;
+         bTs             = false;
+
+         foreach (cparser::STimeShift ts, chanList[i].vTs)
          {
-            chanList[i].iTs        = tmSync.timeShift() * 3600;
-            chanList[i].bHasTsInfo = true;
+            if (   (ts.iBitRate   == bitRate)
+                && (ts.iTimeShift == tmSync.timeShift()))
+            {
+               chanList[i].iTs = tmSync.timeShift() * 3600;
+               bTs             = true;
+               break;
+            }
          }
+
+#ifdef __TRACE
+         if (!bTs)
+         {
+            mInfo(tr("%1(%4) doesn't support timeshift %2 with bitrate %3 ...")
+                  .arg(chanList[i].sName).arg(tmSync.timeShift()).arg(bitRate).arg(chanList[i].iId));
+         }
+#endif // __TRACE
       }
    }
 

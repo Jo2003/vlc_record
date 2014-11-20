@@ -33,7 +33,7 @@ namespace cparser
    {
       SChan():uiStart(0),uiEnd(0),uiDefAud(0),iTs(0),iId(0),bIsVideo(false),
          bIsProtected(false),bHasArchive(false),bIsGroup(false),
-         bIsHidden(false),bHasTsInfo(false){}
+         bIsHidden(false){}
       QString sName;
       QString sProgramm;
       QString sIcon;
@@ -47,7 +47,6 @@ namespace cparser
       bool    bHasArchive;
       bool    bIsGroup;
       bool    bIsHidden;
-      bool    bHasTsInfo;
       QVector<cparser::STimeShift> vTs;
    };
 
