@@ -34,9 +34,9 @@ case $APPNAME in
 esac
 
 # get version info from version_info.h header ...
-MAJORVER=`sed -n 's/^#define[ \t]*VERSION_MAJOR[^0-9]*\([0-9]+\).*/\1/p' version_info.h`
-MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]*\([0-9]+\).*/\1/p' version_info.h`
-BUILDVER=`sed -n 's/^#define[ \t]*VERSION_BUILD[^0-9]*\([0-9]+\).*/\1/p' version_info.h`
+MAJORVER=`sed -n 's/^#define[ \t]*VERSION_MAJOR[^0-9]*\([0-9]*\).*/\1/p' version_info.h`
+MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]*\([0-9]*\).*/\1/p' version_info.h`
+BUILDVER=`sed -n 's/^#define[ \t]*VERSION_BUILD[^0-9]*\([0-9]*\).*/\1/p' version_info.h`
 BETAEXT=`sed -n 's/^#define[ \t]*BETA_EXT[^0-9B]*\([^"]*\).*/\1/p' version_info.h`
 DATESTR=`date +%Y%m%d`
 
