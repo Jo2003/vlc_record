@@ -345,6 +345,7 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
 #endif // _USE_QJSON
    sCookie        = "";
 
+   // since API server was set we can start connection check...
    startConnectionCheck();
 }
 

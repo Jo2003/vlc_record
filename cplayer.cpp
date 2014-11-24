@@ -1208,14 +1208,22 @@ void CPlayer::slotEventPoll()
 
          // TRACK CHANGED ...
          case libvlc_MediaListPlayerNextItemSet:
+            mInfo(tr("libvlc_MediaListPlayerNextItemSet"));
+
+            // when starting a new item, vout
+            // for the new item wasn't handled yet...
+            _bVoutSent    = false;
+            _bVoutHandled = false;
+
             if (!showInfo.noAd())
             {
                // check for main feature ...
                if (CPlayer::_pCurrentMedia == videoMediaItem)
                {
+                  mInfo(tr("Main feature reached!"));
+
                   // enable spooling ...
                   bSpoolPending = false;
-                  // emit sigStateMessage((int)QStateMessage::INFO, tr("Found Main Video Track!!"));
                }
             }
             break;
