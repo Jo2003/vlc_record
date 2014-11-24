@@ -3975,16 +3975,18 @@ void Recorder::slotUpdateAnswer (const QString &str)
    if (!pApiParser->parseUpdInfo(str, updInfo))
    {
       // compare version ...
-      if ((updInfo.iMinor > atoi(VERSION_MINOR))
-         && (updInfo.iMajor == atoi(VERSION_MAJOR))
-         && (updInfo.sUrl != ""))
+      if (    ((updInfo.iMajor > VERSION_MAJOR)
+           || ((updInfo.iMajor == VERSION_MAJOR) && (updInfo.iMinor > VERSION_MINOR))
+           || ((updInfo.iMajor == VERSION_MAJOR) && (updInfo.iMinor == VERSION_MINOR) && (updInfo.iBuild > VERSION_BUILD)))
+         && !updInfo.sUrl.isEmpty())
       {
          int    iMinor  = pDb->intValue("UpdMinor");
          int    iMajor  = pDb->intValue("UpdMajor");
+         int    iBuild  = pDb->intValue("UpdBuild");
          qint64 llCheck = pDb->stringValue("UpdNextCheck").toLongLong();
          bool   bDispl  = true;
 
-         if ((updInfo.iMajor == iMajor) && (updInfo.iMinor == iMinor)
+         if ((updInfo.iMajor == iMajor) && (updInfo.iMinor == iMinor) && (updInfo.iBuild == iBuild)
              && ((llCheck == -1) || (tmSync.syncronizedTime_t() < llCheck)))
          {
             bDispl = false;
@@ -3997,7 +3999,7 @@ void Recorder::slotUpdateAnswer (const QString &str)
                   .arg(pCustomization->strVal("APP_NAME"))
                   .arg(pHtml->link(updInfo.sUrl, tr("here")));
 
-            updNotifier.setUpdateData(pHtml->htmlPage(content, "Update Info"), updInfo.iMinor, updInfo.iMajor);
+            updNotifier.setUpdateData(pHtml->htmlPage(content, "Update Info"), updInfo);
             updNotifier.exec();
          }
       }

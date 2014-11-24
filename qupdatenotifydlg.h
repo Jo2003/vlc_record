@@ -15,7 +15,7 @@
    #define __20130619_QUPDATENOTIFYDLG_H
 
 #include "qnotifydlg.h"
-#include <QEvent>
+#include "cparser.h"
 
 //---------------------------------------------------------------------------
 //! \class   QUpdateNotifyDlg
@@ -30,7 +30,7 @@ class QUpdateNotifyDlg : public QNotifyDlg
 public:
    explicit QUpdateNotifyDlg(QWidget *parent = 0);
    ~QUpdateNotifyDlg();
-   void setUpdateData(const QString &str, int minor, int major);
+   void setUpdateData(const QString &str, const cparser::SUpdInfo& updInfo);
    
 protected:
    virtual void changeEvent(QEvent *e);
@@ -42,6 +42,7 @@ public slots:
 private:
    int _iMinor;
    int _iMajor;
+   int _iBuild;
 };
 
 #endif // __20130619_QUPDATENOTIFYDLG_H

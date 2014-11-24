@@ -139,6 +139,7 @@ int CApiParser::parseUpdInfo(const QString &sResp, cparser::SUpdInfo &updInfo)
    // clear updInfo struct ...
    updInfo.iMajor   = 0;
    updInfo.iMinor   = 0;
+   updInfo.iBuild   = 0;
    updInfo.sVersion = "";
    updInfo.sUrl     = "";
 
@@ -166,6 +167,13 @@ int CApiParser::parseUpdInfo(const QString &sResp, cparser::SUpdInfo &updInfo)
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                updInfo.iMinor = xml.text().toString().toInt();
+            }
+         }
+         else if ((xml.name() == "build") && bStarted)
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+               updInfo.iBuild = xml.text().toString().toInt();
             }
          }
          else if ((xml.name() == "string_version") && bStarted)

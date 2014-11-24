@@ -135,6 +135,7 @@ namespace cparser
       QString                sVersion;
       int                    iMajor;
       int                    iMinor;
+      int                    iBuild;
       QString                sUrl;
    };
 

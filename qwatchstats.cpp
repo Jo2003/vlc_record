@@ -161,7 +161,7 @@ void QWatchStats::playEnds(int iErrCount)
 QString QWatchStats::serialize(const QString& devId)
 {
    WStats::StatsEntry entry;
-   QString fwVersion = VERSION_MAJOR "." VERSION_MINOR BETA_EXT;
+   QString fwVersion = __APP_VSERSION_STRING(VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD) BETA_EXT;
 
    entry["server_address"]   = mpSettings->GetAPIServer();
    entry["account_number"]   = mpSettings->GetUser();

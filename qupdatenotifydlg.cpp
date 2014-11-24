@@ -111,6 +111,7 @@ void QUpdateNotifyDlg::on_btnRemind_clicked()
 
    pDb->setValue("UpdMinor"    , _iMinor);
    pDb->setValue("UpdMajor"    , _iMajor);
+   pDb->setValue("UpdBuild"    , _iBuild);
    pDb->setValue("UpdNextCheck", llOffs);
 
    accept();
@@ -123,16 +124,17 @@ void QUpdateNotifyDlg::on_btnRemind_clicked()
 //! \author  Jo2003
 //! \date    19.06.2013
 //
-//! \param   --
+//! \param   updInfo [in] (const cparser::SUpdInfo &) update info struct
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QUpdateNotifyDlg::setUpdateData(const QString &str, int minor, int major)
+void QUpdateNotifyDlg::setUpdateData(const QString &str, const cparser::SUpdInfo &updInfo)
 {
    setNotifyContent(str);
 
-   _iMinor = minor;
-   _iMajor = major;
+   _iMinor = updInfo.iMinor;
+   _iMajor = updInfo.iMajor;
+   _iBuild = updInfo.iBuild;
 }
 
 //---------------------------------------------------------------------------
@@ -151,6 +153,7 @@ void QUpdateNotifyDlg::slotNotifyLinkClicked(QUrl url)
    // remove update stuff from DB ...
    pDb->removeSetting("UpdMinor");
    pDb->removeSetting("UpdMajor");
+   pDb->removeSetting("UpdBuild");
    pDb->removeSetting("UpdNextCheck");
 
    QNotifyDlg::slotNotifyLinkClicked(url);

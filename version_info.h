@@ -32,13 +32,20 @@
    #define MY_BUILD_SYS "unknown"
 #endif
 
-#define VERSION_MAJOR "2"
-#define VERSION_MINOR "71"
-// #define BETA_EXT      "B2"
+#define VERSION_MAJOR 2
+#define VERSION_MINOR 71
+#define VERSION_BUILD 0
 #define BETA_EXT
 
+#define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
+
+#define STR_HELPER(x) #x
+#define __APP_VSERSION_STRING(__major__, __minor__, __build__) \
+   STR_HELPER(__major__) "." STR_HELPER(__minor__) "." STR_HELPER(__build__)
+
+
 #define __MY__VERSION__ \
-   VERSION_MAJOR "." VERSION_MINOR BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
+   __APP_VSERSION_STRING(VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD) BETA_EXT " - " MY_BUILD_SYS ", built at " __DATE__
 
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
