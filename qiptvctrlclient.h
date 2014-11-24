@@ -170,11 +170,11 @@ signals:
    void sigStateMessage (int, QString, int);
 
 public slots:
+   void startConnectionCheck ();
 
 private slots:
    void slotResponse(QNetworkReply* reply);
    void configChgd (const QNetworkConfiguration & config);
-   void startConnectionCheck ();
    void slotReqTmout();
    void slotAccessibilityChgd(QNetworkAccessManager::NetworkAccessibility acc);
 };

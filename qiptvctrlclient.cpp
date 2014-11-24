@@ -61,8 +61,6 @@ QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
    connect(&tWatchdog, SIGNAL(timeout()), this, SLOT(slotReqTmout()));
    connect(&tConncheck, SIGNAL(timeout()), this, SLOT(startConnectionCheck()));
    connect(this, SIGNAL(sigStateMessage(int,QString,int)), pStateMsg, SLOT(showMessage(int,QString,int)));
-
-   startConnectionCheck();
 }
 
 //---------------------------------------------------------------------------
@@ -826,6 +824,8 @@ void QIptvCtrlClient::startConnectionCheck()
 
       // use API URL for connection check ...
       QUrl url(QString("%1%2").arg(sApiUrl).arg("getinfo?info=servertime"));
+
+      mInfo(tr("Start connection check: %1").arg(url.toString()));
 
       QNetworkRequest req(url);
 

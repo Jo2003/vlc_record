@@ -344,6 +344,8 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
    sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_XML_PATH"));
 #endif // _USE_QJSON
    sCookie        = "";
+
+   startConnectionCheck();
 }
 
 /*-----------------------------------------------------------------------------\
