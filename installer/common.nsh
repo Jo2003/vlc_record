@@ -7,7 +7,7 @@
 ; General
 
   ; Version information ...
-  !define STR_VERSION "2.${VER_MINOR}-${DATESTRING}"
+  !define STR_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_BUILD}${BETA_EXT}-${DATESTRING}"
 
   ;Name and file
   Name "${APPNAME} ${STR_VERSION}"
