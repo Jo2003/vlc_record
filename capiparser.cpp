@@ -306,6 +306,8 @@ int CApiParser::handleTsStuff (QVector<cparser::SChan> &chanList, int bitRate)
             mInfo(tr("%1(%4) doesn't support timeshift %2 with bitrate %3 ...")
                   .arg(chanList[i].sName).arg(tmSync.timeShift()).arg(bitRate).arg(chanList[i].iId));
          }
+#else
+         (void)bTs;
 #endif // __TRACE
       }
    }

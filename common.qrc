@@ -78,6 +78,9 @@
     <qresource prefix="/vod">
         <file alias="is_fav">resources/heart_red.png</file>
         <file alias="not_fav">resources/heart_gray.png</file>
+        <file alias="hd">resources/vod_quality_hd.png</file>
+        <file alias="sd">resources/vod_quality_sd.png</file>
+        <file alias="eco">resources/vod_quality_tv.png</file>
     </qresource>
     <qresource prefix="/access">
         <file alias="unlocked">resources/lock_open.png</file>

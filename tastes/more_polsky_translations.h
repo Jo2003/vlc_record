@@ -17,17 +17,8 @@
 #ifndef __OWN_BUY_REMINDER
    #define __OWN_BUY_REMINDER \
       QT_TRANSLATE_NOOP("ownBuyReminder", \
-         "<b>Your subscription ends in %1 day(s).</b><br>\n" \
-         "You can renew your subscription at following site: \n" \
-         "<a href='http://polsky.tv/shop.html'>http://polsky.tv</a>,<br>\n" \
-         "or by phone:\n" \
-         "<table>\n" \
-         "<tr><td>International:</td><td align='right'>+49 611 945 88 200</td></tr>\n" \
-         "<tr><td>Germany:</td><td align='right'>0611 945 88 200</td></tr>\n" \
-         "<tr><td>USA:</td><td align='right'>1 347 767 67 55</td></tr>\n" \
-         "<tr><td>Or using Skype:</td><td align='right'>" \
-         "<a href='callto:polsky.tv'>polsky.tv</a></td></tr>\n" \
-         "</table>\n")
+         "<b>Your subscription will expire in %1 day(s)!</b><br>\n" \
+         "To extend it please place a new order.\n")
 #endif // __OWN_BUY_REMINDER
 
 #endif // MORE_POLSKY_TRANSLATIONS_H

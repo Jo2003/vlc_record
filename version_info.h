@@ -33,7 +33,7 @@
 #endif
 
 #define VERSION_MAJOR 2
-#define VERSION_MINOR 71
+#define VERSION_MINOR 72
 #define VERSION_BUILD 0
 #define BETA_EXT
 
@@ -50,6 +50,13 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2014-11-25: Version 2.72.0
+| - add 3rd version number for bugfix releases
+| - add icons for video quality in vod browser
+| - bugfix: Position slider in VOD doesn't become active after
+|   showing ad
+|
 | 2014-10-30: Version 2.71RC1
 | - no changes since last beta
 |

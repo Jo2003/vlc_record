@@ -367,8 +367,27 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       tok   = pHtml->tableCell(title, "padding: 3px;");
 
       // add codec ...
-      title = QString("(%1; %2)").arg(sInfo.vVodFiles[i].sFormat).arg(sInfo.vVodFiles[i].sCodec);
-      title = pHtml->span(title, "color: #888");
+      title = QString("%1 / %2").arg(sInfo.vVodFiles[i].sFormat).arg(sInfo.vVodFiles[i].sCodec);
+
+      if (sInfo.vVodFiles[i].sFormat == "tv")
+      {
+         title = pHtml->image(":/vod/eco", 18, 18, "", title);
+      }
+      else if (sInfo.vVodFiles[i].sFormat == "dvd")
+      {
+         title = pHtml->image(":/vod/sd", 18, 18, "", title);
+      }
+      else if ((sInfo.vVodFiles[i].sFormat == "fullhd") || (sInfo.vVodFiles[i].sFormat == "hd"))
+      {
+         title = pHtml->image(":/vod/hd", 18, 18, "", title);
+      }
+      else
+      {
+         title = pHtml->span(QString("(%1)").arg(title), "color: #888");
+      }
+
+      // title = QString("(%1; %2)").arg(sInfo.vVodFiles[i].sFormat).arg(sInfo.vVodFiles[i].sCodec);
+      // title = pHtml->span(title, "color: #888");
 
       tok  += pHtml->tableCell(title, "padding: 3px;");
 
