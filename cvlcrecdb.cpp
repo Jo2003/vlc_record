@@ -245,12 +245,10 @@ int CVlcRecDB::deleteDb()
 |
 |  Parameters: channel id, ref. for aspect, ref. for crop
 |
-|  Returns: 0 --> ok
-|          -1 --> error
+|  Returns: 0
 \----------------------------------------------------------------- */
 int CVlcRecDB::aspect(int iCid, QString &sAspect, QString &sCrop)
 {
-   int       iRV = 0;
    QSqlQuery query;
    query.prepare("SELECT asp, crop FROM aspect WHERE cid=?");
    query.addBindValue(iCid);
@@ -262,10 +260,12 @@ int CVlcRecDB::aspect(int iCid, QString &sAspect, QString &sCrop)
    }
    else
    {
-      iRV = -1;
+      // if not found return std as default.
+      sAspect = "std";
+      sCrop   = "std";
    }
 
-   return iRV;
+   return 0;
 }
 
 /* -----------------------------------------------------------------\
