@@ -885,10 +885,15 @@ void QVlcVideoWidget::touchContextMenu()
             // filter doesn't match so give it a understandable name ...
             name = tr("Audio %1").arg(i + 1);
          }
-
+#ifndef Q_OS_LINUX
          // create context menu entry ...
          pAct = pSubm->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), name);
-
+#else
+         // linux doesn't support icons on context menu within this context ...
+         pAct = pSubm->addAction(name);
+         pAct->setCheckable(true);
+         pAct->setChecked(_langVector.at(i).current);
+#endif
          // prepare data ...
          contAct.actType = vlcvid::ACT_ChgLang;
          contAct.actName = _langVector.at(i).desc;
