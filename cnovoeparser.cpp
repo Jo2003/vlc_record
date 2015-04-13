@@ -146,12 +146,45 @@ int CNovoeParser::parseChannelList (const QString &sResp,
 int CNovoeParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
                                      QString &sActIp)
 {
-   // Entries in server list are faked only -> ignore them!
-   Q_UNUSED(sResp)
-   vSrv.clear();
-   sActIp = "";
+   int  iRV = 0;
+   bool bOk = false;
+   cparser::SSrv   srv;
+   QVariantMap     contentMap, nestedMap;
 
-   return 0;
+   contentMap = QtJson::parse(sResp, bOk).toMap();
+
+   // clear server list ...
+   vSrv.clear();
+
+   contentMap = QtJson::parse(sResp, bOk).toMap();
+
+   if (bOk)
+   {
+      nestedMap = contentMap.value("settings").toMap();
+      nestedMap = nestedMap.value("stream_server").toMap();
+
+      sActIp    = nestedMap.value("value").toString();
+
+      foreach (const QVariant& lSrv, nestedMap.value("list").toList())
+      {
+         QVariantMap mSrv = lSrv.toMap();
+
+         srv.sIp   = mSrv.value("ip").toString();
+         srv.sName = mSrv.value("desc").toString();
+
+         vSrv.append(srv);
+      }
+   }
+   else
+   {
+      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                    tr("QtJson parser error in %1 %2():%3")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+      iRV = -1;
+   }
+
+   return iRV;
 }
 
 //---------------------------------------------------------------------------
