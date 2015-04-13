@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qvlcvideowidget.h $
  *
  *  @file     qvlcvideowidget.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     08.02.2012
  *
- *  $Id$
+ *  $Id: qvlcvideowidget.h 1501 2015-03-04 09:05:27Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20120208_QVLCVIDEOWIDGET_H
@@ -24,8 +24,8 @@
 #include <QVector>
 #include <QAction>
 #include <QMutex>
-#include <QLabel>
 
+#include "clogfile.h"
 #include "cshortcutex.h"
 #include "qoverlayedcontrol.h"
 
@@ -128,7 +128,6 @@ private:
    QLangVector             _langVector;
    QMutex                  _mtxLv;
    vlcvid::ePanelPos       _lastPos;
-   QLabel                 *_labOverlay;
 
 signals:
    void fullScreen();
@@ -150,8 +149,6 @@ public slots:
    void slotMouseLeavesPanel ();
    void slotWheel(bool w);
    void slotUpdLangVector(QLangVector lv);
-   void slotDestroyOverlay();
-   void slotDisplayOverlay (const QString& s, int iTimeOutMs);
 
 private slots:
    void slotCustContextMenu(QPoint pt);

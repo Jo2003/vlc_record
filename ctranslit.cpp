@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/ctranslit.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 08.02.2010 / 10:50:35
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: ctranslit.cpp 82 2010-02-24 08:11:05Z Olenka.Joerg $
 \*************************************************************/
 #include "ctranslit.h"
 

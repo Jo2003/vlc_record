@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cdirstuff.h $
 |
 | Author: Jo2003
 |
 | Begin: 22.03.2010 / 08:45:22
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cdirstuff.h 1267 2013-12-17 13:55:47Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __032210__CDIRSTUFF_H
    #define __032210__CDIRSTUFF_H
@@ -20,8 +20,6 @@
 #include <QRegExp>
 #include <QMap>
 #include <QDir>
-#include <QFile>
-
 
 #include "defdef.h"
 
@@ -52,7 +50,6 @@ public:
    const QString& getTmpFolder ();
    bool  isInitialized ();
    void  setAppName(const QString& name);
-   bool  portable();
 
 protected:
    int initDirectories (bool bCreate);
@@ -73,7 +70,6 @@ private:
    QString                sTmpFolder;
    QMap<QString, QString> mSysEnv;
    int                    iInitState;
-   bool                   bPortable;
 };
 
 #endif // __032210__CDIRSTUFF_H

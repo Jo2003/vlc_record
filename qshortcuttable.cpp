@@ -1,6 +1,6 @@
 /*------------------------------ Information --------------------------*/ /**
 *
-*  $HeadURL$
+*  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qshortcuttable.cpp $
 *
 *  @file   qshortcuttable.cpp
 *
@@ -8,11 +8,13 @@
 *
 *  @date   06.04.2011 / 9:25
 *
-*  $Id$
+*  $Id: qshortcuttable.cpp 497 2011-04-06 09:48:07Z Olenka.Joerg $
 *
 */ //------------------------------------------------------------------------
 #include "qshortcuttable.h"
-#include "externals_inc.h"
+
+// storage db ...
+extern CVlcRecDB *pDb;
 
 //---------------------------------------------------------------------------
 //

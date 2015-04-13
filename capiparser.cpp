@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/capiparser.cpp $
  *
  *  @file     capiparser.cpp
  *
@@ -8,14 +8,19 @@
  *
  *  @date     17.04.2013
  *
- *  $Id$
+ *  $Id: capiparser.cpp 1495 2015-02-20 13:48:22Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "capiparser.h"
 #include <QColor>
+#include "ctimeshift.h"
 #include "small_helpers.h"
-#include "qdatetimesyncro.h"
-#include "externals_inc.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
 
 //---------------------------------------------------------------------------
 //
@@ -30,6 +35,8 @@
 //---------------------------------------------------------------------------
 CApiParser::CApiParser(QObject * parent) : QObject(parent)
 {
+   iOffset    = 0;
+
    // define some nice colors ...
    slAltColors << "#ef0000" << "#00ef00" << "#0000ef"
                << "#efef00" << "#ef00ef" << "#00efef"
@@ -69,14 +76,73 @@ CApiParser::~CApiParser()
 //---------------------------------------------------------------------------
 void CApiParser::checkTimeOffSet (const uint &uiSrvTime)
 {
+   /// Note:
+   /// This function is a little tricky ...
+   /// Try to find out the real difference between the
+   /// time kartina.tv assumes for us and the real time
+   /// running on this machine ...
+   /// Round offset to full 30 minutes (min. timezone step)
+
    // get difference between kartina.tv and our time ...
    int iOffSec    = (int)(QDateTime::currentDateTime().toTime_t() - uiSrvTime);
 
-   if (abs(iOffSec) > 10)
+   // round offset to full timezone step ...
+   int iHalfHours = qRound ((double)iOffSec / (double)DEF_TZ_STEP);
+
+   if (iHalfHours)
    {
-      tmSync.setOffset(iOffSec);
-      mInfo(tr("Set time offset to %1 seconds!").arg(iOffSec));
+      iOffset = iHalfHours * DEF_TZ_STEP;
    }
+   else
+   {
+      iOffset = 0;
+   }
+
+   if (iOffset)
+   {
+      mInfo(tr("Set time offset to %1 seconds!").arg(iOffset));
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   fix time in channel list as sent from server
+//
+//! \author  Jo2003
+//! \date    15.04.2013
+//
+//! \param   uiSrvTime (uint &) ref. to time stamp
+//
+//! \return  0 --> unchanged; 1 --> fixed
+//---------------------------------------------------------------------------
+int CApiParser::fixTime (uint &uiTime)
+{
+   if (iOffset)
+   {
+      // add offset ...
+      // note that offset can be negative ...
+      uiTime += iOffset;
+
+      return 1;
+   }
+
+   return 0;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   return time offset
+//
+//! \author  Jo2003
+//! \date    17.04.2013
+//
+//! \param   --
+//
+//! \return  time offset in seconds
+//---------------------------------------------------------------------------
+int CApiParser::GetFixTime()
+{
+   return iOffset;
 }
 
 //---------------------------------------------------------------------------
@@ -105,6 +171,7 @@ void CApiParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
    entry.uiEnd        = 0;
    entry.uiStart      = 0;
    entry.bIsHidden    = false;
+   entry.bHasTsInfo   = false;
    entry.iTs          = 0;
    entry.vTs.clear();
 }
@@ -272,43 +339,24 @@ bool CApiParser::ignoreGroup(cparser::SChan& grpEntry)
 //! \author  Jo2003
 //! \date    09.10.2013
 //
-//! \param   [in/out] chanLlist (QVector<cparser::SChan> &) ref. to channel list
-//! \param   [in] bitRate (int) current bitrate
+//! \param   chanLlist (QVector<cparser::SChan> &) ref. to channel list
 //
 //! \return  0
 //---------------------------------------------------------------------------
-int CApiParser::handleTsStuff (QVector<cparser::SChan> &chanList, int bitRate)
+int CApiParser::handleTsStuff(QVector<cparser::SChan> &chanList)
 {
-   bool bTs;
-
    for (int i = 0; i < chanList.count(); i ++)
    {
-      if (!chanList[i].bIsGroup)
+      // mInfo(tr("%1 ts count: %2").arg(chanList[i].sName).arg(chanList[i].vTs.count()));
+
+      if (!chanList[i].bHasTsInfo)
       {
-         // preset!
-         chanList[i].iTs = 0;
-         bTs             = false;
-
-         foreach (cparser::STimeShift ts, chanList[i].vTs)
+         /// Hack: if vTs.count() is 1 or 2: -> kartina.tv WITHOUT timeshift!
+         if (!CSmallHelpers::inBetween(1, 2, chanList[i].vTs.count()))
          {
-            if (   (ts.iBitRate   == bitRate)
-                && (ts.iTimeShift == tmSync.timeShift()))
-            {
-               chanList[i].iTs = tmSync.timeShift() * 3600;
-               bTs             = true;
-               break;
-            }
+            chanList[i].iTs        = pTs->timeShift() * 3600;
+            chanList[i].bHasTsInfo = true;
          }
-
-#ifdef __TRACE
-         if (!bTs)
-         {
-            mInfo(tr("%1(%4) doesn't support timeshift %2 with bitrate %3 ...")
-                  .arg(chanList[i].sName).arg(tmSync.timeShift()).arg(bitRate).arg(chanList[i].iId));
-         }
-#else
-         (void)bTs;
-#endif // __TRACE
       }
    }
 

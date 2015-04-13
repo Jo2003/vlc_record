@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/caboutdialog.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:13:41
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: caboutdialog.cpp 1265 2013-12-13 14:40:16Z Olenka.Joerg $
 \*************************************************************/
 #include "caboutdialog.h"
 #include "ui_caboutdialog.h"

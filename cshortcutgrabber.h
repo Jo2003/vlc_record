@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cshortcutgrabber.h $
 |
 | Author: Jo2003
 |
 | Begin: 11.02.2011 / 15:00
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cshortcutgrabber.h 496 2011-04-06 09:33:25Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __11022001_CSHORTCUTGRABBER_H
    #define __11022001_CSHORTCUTGRABBER_H

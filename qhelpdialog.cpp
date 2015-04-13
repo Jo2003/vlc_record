@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qhelpdialog.cpp $
  *
  *  @file     qhelpdialog.cpp
  *
@@ -8,12 +8,15 @@
  *
  *  @date     06.07.2012
  *
- *  $Id$
+ *  $Id: qhelpdialog.cpp 847 2012-07-26 12:46:06Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 
 #include "qhelpdialog.h"
 #include "ui_qhelpdialog.h"
+
+// for logging ...
+// extern CLogFile VlcLog;
 
 //---------------------------------------------------------------------------
 //

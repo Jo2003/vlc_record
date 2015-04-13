@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cparser.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 25.03.2013
 |
-| $Id$
+| $Id: cparser.h 1495 2015-02-20 13:48:22Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20130325_CPARSER_H
@@ -33,7 +33,7 @@ namespace cparser
    {
       SChan():uiStart(0),uiEnd(0),uiDefAud(0),iTs(0),iId(0),bIsVideo(false),
          bIsProtected(false),bHasArchive(false),bIsGroup(false),
-         bIsHidden(false){}
+         bIsHidden(false),bHasTsInfo(false){}
       QString sName;
       QString sProgramm;
       QString sIcon;
@@ -47,6 +47,7 @@ namespace cparser
       bool    bHasArchive;
       bool    bIsGroup;
       bool    bIsHidden;
+      bool    bHasTsInfo;
       QVector<cparser::STimeShift> vTs;
    };
 
@@ -105,9 +106,6 @@ namespace cparser
       QString sImg;
       QString sDirector;
       QString sGenres;
-      QString sPgRating;
-      QString sImdbRating;
-      QString sKinopoiskRating;
       uint    uiLength;
       bool    bProtected;
       bool    bFavourit;
@@ -151,19 +149,6 @@ namespace cparser
       uint    uiStart;
       uint    uiEnd;
       QString sShow;
-   };
-
-   struct ServiceSettings {
-      ServiceSettings():timeShift(-1), bitrate(-1), buffering(-1), stats(0), handled(false){}
-      QString login;
-      QString pass;
-      QString apiServer;
-      QString strServer;
-      int     timeShift;
-      int     bitrate;
-      int     buffering;
-      int     stats;
-      bool    handled;
    };
 }
 

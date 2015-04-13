@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qcustparser.h $
  *
  *  @file     qcustparser.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     26.03.2013
  *
- *  $Id$
+ *  $Id: qcustparser.h 1053 2013-03-26 09:04:35Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20120910_QCUSTPARSER_H
@@ -19,7 +19,8 @@
 #include <QXmlStreamReader>
 #include <QDir>
 #include <QResource>
-#include <QMap>
+
+#include "cdirstuff.h"
 
 //---------------------------------------------------------------------------
 //! \class   QCustParser

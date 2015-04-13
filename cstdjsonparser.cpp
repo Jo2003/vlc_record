@@ -1,6 +1,6 @@
 ﻿/*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cstdjsonparser.cpp $
  *
  *  @file     cstdjsonparser.cpp
  *
@@ -8,11 +8,13 @@
  *
  *  @date     15.04.2013
  *
- *  $Id$
+ *  $Id: cstdjsonparser.cpp 1303 2014-03-27 15:51:56Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "cstdjsonparser.h"
-#include "externals_inc.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 //---------------------------------------------------------------------------
 //
@@ -39,11 +41,13 @@ CStdJsonParser::CStdJsonParser(QObject * parent) : CApiParser(parent)
 //
 //! \param   sResp (const QString &) ref. to response string
 //! \param   chanList (QVector<cparser::SChan> &) data vector
+//! \param   bFixTime (bool) flag for time correction
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
 int CStdJsonParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList)
+                                         QVector<cparser::SChan> &chanList,
+                                         bool bFixTime)
 {
    int  iRV = 0;
    bool bOk = false;
@@ -90,7 +94,7 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
 #ifdef _TASTE_CHITRAM_TV
                // due to resource problems chitram.tv hasn't so far
                // normal channel icons ...
-               chan.sIcon        = mChannel.value("big_icon").toString();
+               chan.sIcon        = QString("/dune/chitram/images_v3/s%1.7.png").arg(chan.iId);
 #else
                chan.sIcon        = mChannel.value("icon").toString();
 #endif // _TASTE_CHITRAM_TV
@@ -98,6 +102,12 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
                chan.uiStart      = mChannel.value("epg_start").toUInt();
                chan.uiEnd        = mChannel.value("epg_end").toUInt();
                chan.bIsHidden    = mChannel.value("hide").toBool();
+
+               if (bFixTime)
+               {
+                  fixTime(chan.uiStart);
+                  fixTime(chan.uiEnd);
+               }
 
                foreach (const QVariant& lParam, mChannel.value("stream_params").toList())
                {
@@ -472,20 +482,17 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
    cparser::SVodFileInfo fInfo;
 
    // init struct ...
-   vidInfo.sActors          = "";
-   vidInfo.sCountry         = "";
-   vidInfo.sDescr           = "";
-   vidInfo.sDirector        = "";
-   vidInfo.sImg             = "";
-   vidInfo.sName            = "";
-   vidInfo.sYear            = "";
-   vidInfo.sPgRating        = "";
-   vidInfo.sImdbRating      = "";
-   vidInfo.sKinopoiskRating = "";
-   vidInfo.uiLength         = 0;
-   vidInfo.uiVidId          = 0;
-   vidInfo.bProtected       = false;
-   vidInfo.bFavourit        = false;
+   vidInfo.sActors    = "";
+   vidInfo.sCountry   = "";
+   vidInfo.sDescr     = "";
+   vidInfo.sDirector  = "";
+   vidInfo.sImg       = "";
+   vidInfo.sName      = "";
+   vidInfo.sYear      = "";
+   vidInfo.uiLength   = 0;
+   vidInfo.uiVidId    = 0;
+   vidInfo.bProtected = false;
+   vidInfo.bFavourit  = false;
    vidInfo.vVodFiles.clear();
 
    contentMap = QtJson::parse(sResp, bOk).toMap();
@@ -494,21 +501,18 @@ int CStdJsonParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vid
    {
       contentMap = contentMap.value("film").toMap();
 
-      vidInfo.sActors          = contentMap.value("actors").toString();
-      vidInfo.sCountry         = contentMap.value("country").toString();
-      vidInfo.sDescr           = contentMap.value("description").toString();
-      vidInfo.sDirector        = contentMap.value("director").toString();
-      vidInfo.sImg             = contentMap.value("poster").toString();
-      vidInfo.sName            = contentMap.value("name").toString();
-      vidInfo.sYear            = contentMap.value("year").toString();
-      vidInfo.sGenres          = contentMap.value("genre_str").toString();
-      vidInfo.uiLength         = contentMap.value("lenght").toUInt();
-      vidInfo.uiVidId          = contentMap.value("id").toUInt();
-      vidInfo.bFavourit        = contentMap.value("favorite").toBool();
-      vidInfo.bProtected       = contentMap.value("pass_protect").toBool();
-      vidInfo.sPgRating        = contentMap.value("rate_mpaa").toString();
-      vidInfo.sImdbRating      = contentMap.value("rate_imdb").toString();
-      vidInfo.sKinopoiskRating = contentMap.value("rate_kinopoisk").toString();
+      vidInfo.sActors    = contentMap.value("actors").toString();
+      vidInfo.sCountry   = contentMap.value("country").toString();
+      vidInfo.sDescr     = contentMap.value("description").toString();
+      vidInfo.sDirector  = contentMap.value("director").toString();
+      vidInfo.sImg       = contentMap.value("poster").toString();
+      vidInfo.sName      = contentMap.value("name").toString();
+      vidInfo.sYear      = contentMap.value("year").toString();
+      vidInfo.sGenres    = contentMap.value("genre_str").toString();
+      vidInfo.uiLength   = contentMap.value("lenght").toUInt();
+      vidInfo.uiVidId    = contentMap.value("id").toUInt();
+      vidInfo.bFavourit  = contentMap.value("favorite").toBool();
+      vidInfo.bProtected = contentMap.value("pass_protect").toBool();
 
       foreach (const QVariant& lVideo, contentMap.value("videos").toList())
       {
@@ -824,80 +828,6 @@ int CStdJsonParser::parseVodLang(const QString &sResp, QVodLangMap &lMap)
       {
          QVariantMap mRow = lRow.toMap();
          lMap.insert(mRow.value("name").toString(), mRow.value("lang").toString());
-      }
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
-
-      iRV = -1;
-   }
-
-   return iRV;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   parse service settings
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   sResp [in] (const QString &) ref. to response string
-//! \param   servset [out] (cparser::ServiceSettings &) ref. to settings
-//
-//! \return  0 --> ok; -1 --> any error
-//---------------------------------------------------------------------------
-int CStdJsonParser::parseService(const QString &sResp, cparser::ServiceSettings &servset)
-{
-   int  iRV = 0;
-   bool bOk = false;
-   QtJson::JsonObject obj;
-
-   obj = QtJson::parse(sResp, bOk).toMap();
-
-   if (bOk)
-   {
-      if (obj.contains("server_address"))
-      {
-         servset.apiServer = obj.value("server_address").toString();
-      }
-
-      if (obj.contains("login"))
-      {
-         servset.login = obj.value("login").toString();
-      }
-
-      if (obj.contains("password"))
-      {
-         servset.pass = obj.value("password").toString();
-      }
-
-      if (obj.contains("stats_on"))
-      {
-         servset.stats = obj.value("stats_on").toInt();
-      }
-
-      if (obj.contains("buffering"))
-      {
-         servset.buffering = obj.value("buffering").toInt();
-      }
-
-      if (obj.contains("bitrate"))
-      {
-         servset.bitrate = obj.value("bitrate").toInt();
-      }
-
-      if (obj.contains("timeshift"))
-      {
-         servset.timeShift = obj.value("timeshift").toInt();
-      }
-
-      if (obj.contains("stream_server"))
-      {
-         servset.strServer = obj.value("stream_server").toString();
       }
    }
    else

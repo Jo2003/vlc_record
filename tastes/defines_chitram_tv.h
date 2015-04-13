@@ -1,18 +1,18 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/tastes/defines_chitram_tv.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 09:19:48
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_chitram_tv.h 1290 2014-01-28 12:16:02Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __20140128__DEFINES_CHITRAM_TV_H
    #define __20140128__DEFINES_CHITRAM_TV_H
 
-#include <more_chitram_translations.h>
+#include <QtGlobal>
 
 #define APP_NAME      "Chitram.TV"
 #define UPD_CHECK_URL "http://rt.coujo.de/chitram_tv_ver.xml"
@@ -27,8 +27,6 @@
    #define TMPL_TAB_STYLE  "color: black; background-color: #AC905E; width: 100%;"
    #define TMPL_A_STYLE    "color: black; background-color: #FFF4DE; padding: 3px;"
    #define TMPL_B_STYLE    "color: black; background-color: #FFEDCB; padding: 3px;"
-   #define TMPL_A_STYLE_GRAY "color: black; background-color: rgb(240, 240, 240); padding: 3px;"
-   #define TMPL_B_STYLE_GRAY "color: black; background-color: rgb(220, 220, 220); padding: 3px;"
    #define TMPL_INNER_TAB  "color: black; background-color: #FFEDCB; padding: 5px;"
    #define TMPL_TH_STYLE   "color: white; background-color: #AC905E; padding: 3px; font: bold; text-align: center; vertical-align: middle;"
    #define TMPL_CUR_STYLE  "color: black; background-color: #FFC85B; padding: 3px;"

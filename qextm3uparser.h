@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qextm3uparser.h $
  *
  *  @file     qextm3uparser.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     12.12.2013
  *
- *  $Id$
+ *  $Id: qextm3uparser.h 1267 2013-12-17 13:55:47Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20131212_QEXTM3UPARSER_H

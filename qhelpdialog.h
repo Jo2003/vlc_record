@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qhelpdialog.h $
  *
  *  @file     qhelpdialog.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     06.07.2012
  *
- *  $Id$
+ *  $Id: qhelpdialog.h 794 2012-07-10 10:18:42Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20120706_QHELPDIALOG_H
@@ -24,6 +24,8 @@
 #include <QDesktopServices>
 #include <QFileInfo>
 #include <QScrollBar>
+
+// #include "clogfile.h"
 
 // -----------------------------------------------
 // namespace ...

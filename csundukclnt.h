@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/csundukclnt.h $
  *
  *  @file     csundukclnt.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     12.12.2013
  *
- *  $Id$
+ *  $Id: csundukclnt.h 1263 2013-12-12 20:10:34Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20131212_CSUNDUKCLNT_H

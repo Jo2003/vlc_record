@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cvodbrowser.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: Monday, January 04, 2010 16:11:14
 |
-| $Id$
+| $Id: cvodbrowser.h 1188 2013-08-28 10:48:01Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __21122010_CVODBROWSER_H
@@ -18,10 +18,13 @@
 #include <QString>
 #include <QFileInfo>
 #include <QRegExp>
+#include "clogfile.h"
 #include "templates.h"
 #include "defdef.h"
+#include "cdirstuff.h"
 #include "csettingsdlg.h"
 #include "cpixloader.h"
+#include "api_inc.h"
 
 /********************************************************************\
 |  Class: CVodBrowser
@@ -47,7 +50,6 @@ public:
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();
     const QString& getShortContent ();
-    uint  getLength();
     void setSettings (CSettingsDlg *pDlg);
 
 protected:
@@ -60,7 +62,6 @@ private:
     QString        _name;
     QString        _shortContent;
     QString        _contentBuffer;
-    uint           _uiLength;
     CSettingsDlg  *pSettings;
     CPixLoader    *pPixCache;
 };

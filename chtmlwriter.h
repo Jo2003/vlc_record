@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/chtmlwriter.h $
  *
  *  @file     chtmlwriter.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     09.08.2013
  *
- *  $Id$
+ *  $Id: chtmlwriter.h 1213 2013-10-11 12:29:36Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130809_CHTMLWRITER_H
@@ -16,8 +16,6 @@
 
 #include <QObject>
 #include <QString>
-
-#include "cparser.h"
 
 //---------------------------------------------------------------------------
 //! \class   CHtmlWriter
@@ -48,7 +46,6 @@ public:
    QString div(const QString &content, const QString& style = QString(), const QString& align = QString());
    QString oneCellPage (const QString& content, const QString& style = QString());
    QString createTooltip (const QString& name, const QString& prog, uint start, uint end, int ts = 0, const QString& style = QString());
-   QString createBitrateTsTable (const QVector<cparser::STimeShift>& v);
 };
 
 #endif // __20130809_CHTMLWRITER_H

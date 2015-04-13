@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/capixmlparser.cpp $
  *
  *  @file     capixmlparser.cpp
  *
@@ -8,11 +8,13 @@
  *
  *  @date     18.04.2013
  *
- *  $Id$
+ *  $Id: capixmlparser.cpp 1084 2013-04-18 10:24:09Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "capixmlparser.h"
-#include "externals_inc.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 //---------------------------------------------------------------------------
 //

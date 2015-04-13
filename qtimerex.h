@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qtimerex.h $
  *
  *  @file     qtimeerex.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     18.12.2012
  *
- *  $Id$
+ *  $Id: qtimerex.h 996 2012-12-18 18:31:27Z Olenka.Joerg@gmail.com $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20121217_QTIMEREX_H

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qcomboboxex.h $
  *
  *  @file     qcomboboxex.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     03.12.2012
  *
- *  $Id$
+ *  $Id: qcomboboxex.h 958 2012-12-03 15:01:07Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20121203_QCOMBOBOXEX_H

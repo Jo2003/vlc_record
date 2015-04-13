@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qoverlayedcontrol.cpp $
  *
  *  @file     qoverlayedcontrol.cpp
  *
@@ -8,13 +8,16 @@
  *
  *  @date     09.11.2012
  *
- *  $Id$
+ *  $Id: qoverlayedcontrol.cpp 1284 2014-01-23 12:41:27Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qoverlayedcontrol.h"
 #include "ui_qoverlayedcontrol.h"
+#include "qfusioncontrol.h"
 #include "defdef.h"
-#include "externals_inc.h"
+
+// fusion control ...
+extern QFusionControl missionControl;
 
 //---------------------------------------------------------------------------
 //
@@ -32,8 +35,7 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    QFadeWidget(parent, f),
    ui(new Ui::QOverlayedControl),
    _offset(0, 0),
-   _mouseOverMoveHandle(false),
-   _pAnimation(NULL)
+   _mouseOverMoveHandle(false)
 {
    ui->setupUi(this);
 
@@ -52,25 +54,14 @@ QOverlayedControl::QOverlayedControl(QWidget *parent, Qt::WindowFlags f) :
    missionControl.addJumpBox(ui->cbxTimeJumpVal);
    missionControl.addVolSlider(ui->volSlider);
    missionControl.addTimeLab(ui->labTime);
-   missionControl.addLengthLab(ui->labLength);
+   missionControl.addMuteLab(ui->labSound);
    missionControl.addInfoLab(ui->labMoveHandle);
-   missionControl.addMuteBtn(ui->checkMute);
 
    missionControl.addVidFormCbx(ui->cbxAspect, QFusionControl::CBX_ASPECT);
    missionControl.addVidFormCbx(ui->cbxCrop, QFusionControl::CBX_CROP);
 
    connect (ui->labMoveHandle, SIGNAL(mouseEnters()), this, SLOT(slotMouseEntersMoveHandle()));
    connect (ui->labMoveHandle, SIGNAL(mouseLeabes()), this, SLOT(slotMouseLeavesMoveHandle()));
-
-   // animation stuff for extended settings and information ...
-   _pAnimation = new QPropertyAnimation (this, "geometry");
-   _pAnimation->setDuration(175);
-
-   // resize to optimized size ...
-   resize(__PANEL_WIDTH_STD, __PANEL_HEIGHT_STD);
-
-   // make sure showinfo is updated in info part ...
-   connect (&showInfo, SIGNAL(sigHtmlDescr(QString)), ui->textEdit, SLOT(setHtml(QString)));
 }
 
 //---------------------------------------------------------------------------
@@ -303,11 +294,11 @@ void QOverlayedControl::chgWindowed (bool on)
 {
    if (on)
    {
-      ui->btnWindowed->setIcon(QIcon(":player/from_wnd_panel"));
+      ui->btnWindowed->setIcon(QIcon(":/player/from_wnd_panel"));
    }
    else
    {
-      ui->btnWindowed->setIcon(QIcon(":player/to_wnd_panel"));
+      ui->btnWindowed->setIcon(QIcon(":/player/to_wnd_panel"));
    }
 }
 
@@ -326,88 +317,10 @@ void QOverlayedControl::chgFullscreen (bool on)
 {
    if (on)
    {
-      ui->btnFullScreen->setIcon(QIcon(":player/leave-fullscreen"));
+      ui->btnFullScreen->setIcon(QIcon(":/player/leave-fullscreen"));
    }
    else
    {
-      ui->btnFullScreen->setIcon(QIcon(":player/fullscreen"));
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   extend / reduce button clicked
-//
-//! \author  Jo2003
-//! \date    19.05.2014
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QOverlayedControl::on_pushExt_clicked()
-{
-   if (_pAnimation->state() != QAbstractAnimation::Running)
-   {
-      QRect geo   = geometry();
-      QRect trg   = geo;
-
-      _pAnimation->setStartValue(geo);
-
-      if (_dState & SHOW_EXT)
-      {
-         trg.setWidth(__PANEL_WIDTH_STD);
-         _pAnimation->setEndValue(trg);
-         _pAnimation->start();
-         ui->pushExt->setIcon(QIcon(":png/open"));
-      }
-      else
-      {
-         trg.setWidth(__PANEL_WIDTH_EXT);
-         _pAnimation->setEndValue(trg);
-         _pAnimation->start();
-         ui->pushExt->setIcon(QIcon(":png/close"));
-      }
-
-      _dState ^= SHOW_EXT;
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   show / hide additional information
-//
-//! \author  Jo2003
-//! \date    20.05.2014
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QOverlayedControl::on_pushInfo_clicked()
-{
-   if (_pAnimation->state() != QAbstractAnimation::Running)
-   {
-      QRect geo   = geometry();
-      QRect trg   = geo;
-
-      _pAnimation->setStartValue(geo);
-
-      if (_dState & SHOW_INF)
-      {
-         trg.setHeight(__PANEL_HEIGHT_STD);
-         _pAnimation->setEndValue(trg);
-         _pAnimation->start();
-         ui->pushInfo->setIcon(QIcon(":png/info_open"));
-      }
-      else
-      {
-         trg.setHeight(__PANEL_HEIGHT_INF);
-         _pAnimation->setEndValue(trg);
-         _pAnimation->start();
-         ui->pushInfo->setIcon(QIcon(":png/info_close"));
-      }
-
-      _dState ^= SHOW_INF;
+      ui->btnFullScreen->setIcon(QIcon(":/player/fullscreen"));
    }
 }

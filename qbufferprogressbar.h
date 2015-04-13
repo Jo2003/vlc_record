@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qbufferprogressbar.h $
  *
  *  @file     qbufferprogressbar.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     19.04.2013
  *
- *  $Id$
+ *  $Id: qbufferprogressbar.h 1091 2013-04-21 12:01:31Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20130419_QBUFFERPROGRESSBAR_H

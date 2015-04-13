@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/recorder.h $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:59:00
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: recorder.h 1299 2014-02-12 14:00:23Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011910__RECORDER_H
    #define __011910__RECORDER_H
@@ -46,22 +46,25 @@
 #include "cvlcctrl.h"
 #include "ctranslit.h"
 #include "cfavaction.h"
+#include "cdirstuff.h"
 #include "cshortcutex.h"
+#include "cshowinfo.h"
 #include "cstreamloader.h"
 #include "qchanlistdelegate.h"
 #include "cepgbrowser.h"
 #include "qseccodedlg.h"
 #include "qhelpdialog.h"
 #include "qrecordtimerwidget.h"
+#include "api_inc.h"
 #include "qupdatenotifydlg.h"
 #include "qexpirenotifydlg.h"
 #include "qstringfilterwidgetaction.h"
 #include "qwatchlistdlg.h"
+#include "ctimeshift.h"
+#include "qchannelmap.h"
 #include <QStackedLayout>
 #include "qvlcvideowidget.h"
 #include "qhlscontrol.h"
-#include "qauthdlg.h"
-#include "qwaitwidget.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -133,15 +136,6 @@ public:
    Recorder(QWidget *parent = 0);
     ~Recorder();
 
-   // cache request for later use ...
-   typedef struct ReqItem {
-      ReqItem():bValid(false){}
-      bool            bValid;
-      CIptvDefs::EReq req;
-      QVariant        par_1;
-      QVariant        par_2;
-   } reqItem_t;
-
 public slots:
     virtual void show();
     void slotRestoreMinimized ();
@@ -153,7 +147,6 @@ private:
     QSecCodeDlg                     secCodeDlg;
     CStreamLoader                   streamLoader;
     QTimer                          Refresh;
-    QTimer                          m_tVodSearch;
     CPixLoader                      pixCache;
     int                             iEpgOffset;
     QTabBar                        *pEpgNavbar;
@@ -194,14 +187,6 @@ private:
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
-    QAuthDlg                        authDlg;
-    QWaitWidget                     waitWidget;
-    reqItem_t                       reRequest;
-    QVector<cparser::SEpg>          epgBuff;
-    QTimer                          m_tTimeJump;
-    QTimer                          m_tServiceTimeout;
-    cparser::ServiceSettings        servSettings;
-    int                             m_iJumpValue;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -234,8 +219,6 @@ protected:
     void toggleFullscreen();
     int  check4PlayList (const QString& sUrl, const QString& sName = QString());
     QString recFileName (const QString& name, QString& ext);
-    void loginOnly(const QString& resp);
-    QString createVideoInfo(bool checkVod = true);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
@@ -248,12 +231,12 @@ private slots:
     void slotFwd();
     void slotToggleFullscreen();
     void slotWindowed();
-    void slotDoVodSearch();
+    void on_btnVodSearch_clicked();
     void on_cbxGenre_activated(int index);
     void on_cbxLastOrBest_activated(int index);
     void on_cbxVodLang_activated(int index);
-    void slotFontSmaller();
-    void slotFontLarger();
+    void on_btnFontSmaller_clicked();
+    void on_btnFontLarger_clicked();
     void slotStop();
     void on_pushTimerRec_clicked();
     void on_lineSearch_returnPressed();
@@ -273,7 +256,7 @@ private slots:
     void on_channelList_clicked(QModelIndex index);
     void on_pushFilter_clicked();
     void slotChanList (const QString &str);
-    void slotEPG(const QString &str, bool bExtEpg = false);
+    void slotEPG(const QString &str);
     void slotEPGCurrent (const QString &str);
     void slotStreamURL (const QString &str);
     void slotArchivURL (const QString &str);
@@ -334,11 +317,6 @@ private slots:
     void slotPlayHls(const QString& s);
     void stopOnDemand();
     void slotVodLang(const QString &str);
-    void slotChgFontSize (int i);
-    void slotFinallyJump();
-    void slotService(const QString& s = QString());
-
-    void on_btnCleanVodSearch_clicked();
 
 signals:
     void sigShow ();
@@ -354,7 +332,6 @@ signals:
     void sigLockParentalManager();
     void sigWindowed(int);
     void sigWLRecEnded();
-    void sigOverlay (const QString& s, int iTmOut);
 };
 
 #endif /* __011910__RECORDER_H */

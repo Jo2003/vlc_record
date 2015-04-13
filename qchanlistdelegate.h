@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qchanlistdelegate.h $
 |
 | Author: Jo2003
 |
 | Begin: 22.03.2011 / 12:20
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: qchanlistdelegate.h 1044 2013-03-20 14:43:26Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __032211_QCHANLISTDELEGATE_H
    #define __032211_QCHANLISTDELEGATE_H

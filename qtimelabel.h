@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qtimelabel.h $
  *
  *  @file     qtimelabel.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     27.02.2012
  *
- *  $Id$
+ *  $Id: qtimelabel.h 1171 2013-08-11 10:02:12Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20120227_QTIMELABEL_H

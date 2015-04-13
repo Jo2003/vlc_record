@@ -1,18 +1,40 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/ctimerrec.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 24.01.2010 / 15:41:34
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: ctimerrec.cpp 1275 2013-12-19 12:33:03Z Olenka.Joerg $
 \*************************************************************/
 #include "ctimerrec.h"
 #include "ui_ctimerrec.h"
+#include "ctimeshift.h"
+#include "qchannelmap.h"
 #include <QFileInfo>
-#include "externals_inc.h"
+
+// logging stuff ...
+extern CLogFile VlcLog;
+
+// for folders ...
+extern CDirStuff *pFolders;
+
+// storage db ...
+extern CVlcRecDB *pDb;
+
+// global showinfo class ...
+extern CShowInfo showInfo;
+
+// global client api classes ...
+extern ApiClient *pApiClient;
+extern ApiParser *pApiParser;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
+
+extern QChannelMap *pChanMap;
 
 /* -----------------------------------------------------------------\
 |  Method: CTimerRec / constructor
@@ -213,13 +235,13 @@ void CTimerRec::SetRecInfo (uint uiStart, uint uiEnd, int cid, const QString &na
    uiEdtId = INVALID_ID;
 
    // helper ...
-   QString s = iTs ? QString::number(tmSync.timeShift()) : "0";
+   QString s = iTs ? QString::number(pTs->timeShift()) : "0";
 
    // set timeshift stuff ...
    if (iTs)
    {
-      uiStart = tmSync.gmtToTs(uiStart);
-      uiEnd   = tmSync.gmtToTs(uiEnd);
+      uiStart = pTs->fromGmt(uiStart);
+      uiEnd   = pTs->fromGmt(uiEnd);
    }
 
    QDateTime dtStart = QDateTime::fromTime_t(uiStart - TIMER_REC_OFFSET);
@@ -374,8 +396,8 @@ void CTimerRec::on_btnSet_clicked()
             {
                (*it).cid        = r_ui->cbxChannel->itemData(r_ui->cbxChannel->currentIndex()).toInt();
                (*it).iTimeShift = r_ui->cbxTimeShift->currentText().toInt();
-               (*it).uiStart    = tmSync.tsToGmt(r_ui->dtEdtStart->dateTime().toTime_t(), (*it).iTimeShift);
-               (*it).uiEnd      = tmSync.tsToGmt(r_ui->dtEdtEnd->dateTime().toTime_t(), (*it).iTimeShift);
+               (*it).uiStart    = pTs->toGmt(r_ui->dtEdtStart->dateTime().toTime_t(), (*it).iTimeShift);
+               (*it).uiEnd      = pTs->toGmt(r_ui->dtEdtEnd->dateTime().toTime_t(), (*it).iTimeShift);
                (*it).sName      = r_ui->edtName->text();
 
                // leave id and record state untouched ...
@@ -396,8 +418,8 @@ void CTimerRec::on_btnSet_clicked()
             rec::SRecEntry entry;
             entry.cid        = r_ui->cbxChannel->itemData(r_ui->cbxChannel->currentIndex()).toInt();
             entry.iTimeShift = r_ui->cbxTimeShift->currentText().toInt();
-            entry.uiStart    = tmSync.tsToGmt(r_ui->dtEdtStart->dateTime().toTime_t(), entry.iTimeShift);
-            entry.uiEnd      = tmSync.tsToGmt(r_ui->dtEdtEnd->dateTime().toTime_t(), entry.iTimeShift);
+            entry.uiStart    = pTs->toGmt(r_ui->dtEdtStart->dateTime().toTime_t(), entry.iTimeShift);
+            entry.uiEnd      = pTs->toGmt(r_ui->dtEdtEnd->dateTime().toTime_t(), entry.iTimeShift);
             entry.sName      = r_ui->edtName->text();
             entry.eState     = rec::REC_READY;
 
@@ -484,8 +506,8 @@ int CTimerRec::AddRow(const rec::SRecEntry &entry)
    uint              uiStart, uiEnd;
 
    // convert times from GMT ...
-   uiStart = tmSync.gmtToTs(entry.uiStart, entry.iTimeShift);
-   uiEnd   = tmSync.gmtToTs(entry.uiEnd  , entry.iTimeShift);
+   uiStart = pTs->fromGmt(entry.uiStart, entry.iTimeShift);
+   uiEnd   = pTs->fromGmt(entry.uiEnd  , entry.iTimeShift);
 
    // prepare cell flags ...
    flags = Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled;
@@ -605,8 +627,8 @@ int CTimerRec::SanityCheck(const QDateTime &start, const QDateTime &end, uint ui
       {
          if ((uiUpdId == INVALID_ID) || (uiUpdId != JobList[i].id))
          {
-            uiStart = tmSync.gmtToTs(JobList[i].uiStart, JobList[i].iTimeShift);
-            uiEnd   = tmSync.gmtToTs(JobList[i].uiEnd  , JobList[i].iTimeShift);
+            uiStart = pTs->fromGmt(JobList[i].uiStart, JobList[i].iTimeShift);
+            uiEnd   = pTs->fromGmt(JobList[i].uiEnd  , JobList[i].iTimeShift);
 
                // start this between start/end other ...
             if (((start.toTime_t() >= uiStart) && (start.toTime_t() <= uiEnd))
@@ -663,11 +685,11 @@ void CTimerRec::on_tableRecordEntries_cellDoubleClicked(int row, int column)
          uint when;
 
          // start ...
-         when = tmSync.gmtToTs((*cit).uiStart, (*cit).iTimeShift);
+         when = pTs->fromGmt((*cit).uiStart, (*cit).iTimeShift);
          r_ui->dtEdtStart->setDateTime(QDateTime::fromTime_t(when));
 
          // end ...
-         when = tmSync.gmtToTs((*cit).uiEnd, (*cit).iTimeShift);
+         when = pTs->fromGmt((*cit).uiEnd, (*cit).iTimeShift);
          r_ui->dtEdtEnd->setDateTime(QDateTime::fromTime_t(when));
 
          // channel ...
@@ -773,15 +795,15 @@ void CTimerRec::slotRecTimer()
       }
       else
       {
-         uint now = tmSync.syncronizedTime_t();
+         uint now = QDateTime::currentDateTime().toTime_t();
          uint start, end;
 
          QMap<uint, rec::SRecEntry>::iterator it = JobList.begin();
 
          while (it != JobList.end())
          {
-            start = tmSync.gmtToTs((*it).uiStart, (*it).iTimeShift);
-            end   = tmSync.gmtToTs((*it).uiEnd  , (*it).iTimeShift);
+            start = pTs->fromGmt((*it).uiStart, (*it).iTimeShift);
+            end   = pTs->fromGmt((*it).uiEnd  , (*it).iTimeShift);
 
             if (now >= end)
             {

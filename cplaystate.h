@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cplaystate.h $
 |
 | Author: Jo2003
 |
 | Begin: 24.02.2010 / 10:41:34
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cplaystate.h 203 2010-04-09 12:18:00Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __030410__CPLAYSTATE_H
    #define __030410__CPLAYSTATE_H

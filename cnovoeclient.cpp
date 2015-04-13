@@ -1,17 +1,23 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cnovoeclient.cpp $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: Monday, January 04, 2010 16:13:58
 |
-| $Id$
+| $Id: cnovoeclient.cpp 1212 2013-09-26 13:07:54Z Olenka.Joerg $
 |
 \=============================================================================*/
 #include "cnovoeclient.h"
-#include "externals_inc.h"
+#include "qcustparser.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 /*-----------------------------------------------------------------------------\
 | Function:    CNovoeClient / constructor
@@ -35,7 +41,7 @@ CNovoeClient::CNovoeClient(QObject *parent) :QIptvCtrlClient(parent)
 
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
-   connect(this, SIGNAL(sigApiErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
+   connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
 
    setObjectName("CNovoeClient");
 }
@@ -1017,30 +1023,18 @@ int CNovoeClient::checkResponse (const QString &sResp, QString &sCleanResp)
    // store clean string in private variable ...
    sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);
 
+   QRegExp rx("<message>(.*)</message>[ \t\n\r]*"
+              "<code>(.*)</code>");
+
    // quick'n'dirty error check ...
    if (sCleanResp.contains("<error>"))
    {
-      QString msg;
-      QRegExp rx;
-
-      // for sure we have an error here ...
-      iRV = -1;
-
-      rx.setPattern("<code>(.*)</code>");
-
       if (rx.indexIn(sCleanResp) > -1)
       {
-         iRV = rx.cap(1).toInt();
+         iRV = rx.cap(2).toInt();
+
+         sCleanResp = errMap.contains((CIptvDefs::EErr)iRV) ? errMap[(CIptvDefs::EErr)iRV] : rx.cap(1);
       }
-
-      rx.setPattern("<message>(.*)</message>");
-
-      if (rx.indexIn(sCleanResp) > -1)
-      {
-         msg = rx.cap(1);
-      }
-
-      sCleanResp = errMap.contains((CIptvDefs::EErr)iRV) ? errMap[(CIptvDefs::EErr)iRV] : msg;
    }
 #endif // _USE_QJSON
    return iRV;

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qhlscontrol.h $
  *
  *  @file     qhlscontrol.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     16.12.2013
  *
- *  $Id$
+ *  $Id: qhlscontrol.h 1277 2013-12-20 10:46:06Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20131216_QHLSCONTROL_H
@@ -18,6 +18,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QFile>
+#include "cdirstuff.h"
 
 #define DEF_STREAM_FIFO (pFolders->getTmpFolder() + "/_hlsFifo")
 

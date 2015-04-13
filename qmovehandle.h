@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qmovehandle.h $
  *
  *  @file     qmovehandle.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     29.11.2012
  *
- *  $Id$
+ *  $Id: qmovehandle.h 967 2012-12-05 10:01:24Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20121129_QMOVEHANDLE_H

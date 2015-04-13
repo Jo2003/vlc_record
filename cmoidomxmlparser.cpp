@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cmoidomxmlparser.cpp $
  *
  *  @file     cmoidomxmlparser.cpp
  *
@@ -8,7 +8,7 @@
  *
  *  @date     02.12.2013
  *
- *  $Id$
+ *  $Id: cmoidomxmlparser.cpp 1252 2013-12-02 19:07:04Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "cmoidomxmlparser.h"

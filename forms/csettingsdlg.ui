@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>544</height>
+    <width>533</width>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -126,7 +126,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="55,45">
          <property name="spacing">
           <number>2</number>
          </property>
@@ -136,9 +136,6 @@
             <string>Server Settings</string>
            </property>
            <layout class="QFormLayout" name="formLayout_3">
-            <property name="fieldGrowthPolicy">
-             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="labStreamServer">
               <property name="text">
@@ -232,9 +229,6 @@
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <item>
              <layout class="QFormLayout" name="formLayout">
-              <property name="fieldGrowthPolicy">
-               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-              </property>
               <property name="horizontalSpacing">
                <number>6</number>
               </property>
@@ -284,27 +278,14 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="1">
-               <widget class="QSpinBox" name="spinBoxFontDelta">
-                <property name="readOnly">
-                 <bool>false</bool>
-                </property>
-                <property name="minimum">
-                 <number>-10</number>
-                </property>
-                <property name="maximum">
-                 <number>10</number>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_24">
-                <property name="text">
-                 <string>Adapt Font Size:</string>
-                </property>
-               </widget>
-              </item>
              </layout>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkFixTime">
+              <property name="text">
+               <string>Try to fix time offset</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkAdvanced">
@@ -707,13 +688,6 @@ color: red;
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
-           <widget class="QCheckBox" name="checkExtEPG">
-            <property name="text">
-             <string>EPG day starts at 0:00</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>
@@ -731,16 +705,7 @@ color: red;
        <property name="spacing">
         <number>0</number>
        </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
+       <property name="margin">
         <number>0</number>
        </property>
        <item>
@@ -798,16 +763,7 @@ color: red;
            <property name="spacing">
             <number>2</number>
            </property>
-           <property name="leftMargin">
-            <number>3</number>
-           </property>
-           <property name="topMargin">
-            <number>3</number>
-           </property>
-           <property name="rightMargin">
-            <number>3</number>
-           </property>
-           <property name="bottomMargin">
+           <property name="margin">
             <number>3</number>
            </property>
            <item>
@@ -887,8 +843,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>98</width>
-                     <height>28</height>
+                     <width>235</width>
+                     <height>192</height>
                     </rect>
                    </property>
                   </widget>
@@ -1039,8 +995,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>98</width>
-                     <height>489</height>
+                     <width>222</width>
+                     <height>134</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1225,6 +1181,7 @@ color: red;
   <tabstop>cbxTimeShift</tabstop>
   <tabstop>cbxLanguage</tabstop>
   <tabstop>pushDelLogos</tabstop>
+  <tabstop>checkFixTime</tabstop>
   <tabstop>checkAdvanced</tabstop>
   <tabstop>tableShortCuts</tabstop>
   <tabstop>btnResetShortcuts</tabstop>

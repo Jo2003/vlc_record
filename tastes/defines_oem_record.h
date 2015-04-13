@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/tastes/defines_oem_record.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 09:19:48
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_oem_record.h 1265 2013-12-13 14:40:16Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __012412__DEFINES_OEM_RECORD_H
    #define __012412__DEFINES_OEM_RECORD_H

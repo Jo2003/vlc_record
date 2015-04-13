@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qfusioncontrol.cpp $
  *
  *  @file     qfusioncontrol.cpp
  *
@@ -8,13 +8,14 @@
  *
  *  @date     23.11.2012
  *
- *  $Id$
+ *  $Id: qfusioncontrol.cpp 1224 2013-11-26 11:01:15Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qfusioncontrol.h"
+#include "clogfile.h"
 #include "small_helpers.h"
-#include "externals_inc.h"
 
+extern CLogFile VlcLog;
 
 /////////////////////////////////////////////////////////////////////////////
 /// signal docu
@@ -254,7 +255,6 @@ void QFusionControl::disconnectCtrls()
    disconnectCng();
    disconnectLab();
    disconnectCbx();
-   disconnectMute();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -673,108 +673,6 @@ void QFusionControl::disconnectBtn()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-/// mute checkbox region ...
-/////////////////////////////////////////////////////////////////////////////
-
-//---------------------------------------------------------------------------
-//
-//! \brief   put mute checkbox under control, make connections
-//
-//! \author  Jo2003
-//! \date    26.05.2014
-//
-//! \param   pChk (QCheckBox *) pointer to mute checkbox
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::addMuteBtn(QCheckBox *pChk)
-{
-   connect (pChk, SIGNAL(clicked(bool)), this, SLOT(slotMute(bool)));
-   _muteButton.append(pChk);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   one checkbox was muted -> emit mute signal
-//
-//! \author  Jo2003
-//! \date    26.05.2014
-//
-//! \param   val (bool) muted or not
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::slotMute(bool val)
-{
-   // synchronize ...
-   setMute(val);
-
-   emit sigMute(val);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set mute state on all controls
-//
-//! \author  Jo2003
-//! \date    26.05.2014
-//
-//! \param   val (bool) muted or not
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::setMute(bool val)
-{
-   for (int i = 0; i < _muteButton.count(); i++)
-   {
-      if (_muteButton.at(i)->isChecked() != val)
-      {
-         _muteButton.at(i)->setChecked(val);
-      }
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   get mute state
-//
-//! \author  Jo2003
-//! \date    26.05.2014
-//
-//! \param   --
-//
-//! \return  true or false
-//---------------------------------------------------------------------------
-bool QFusionControl::muted()
-{
-   bool bRv = false;
-
-   if (!_muteButton.isEmpty())
-   {
-      bRv = _muteButton.at(0)->isChecked();
-   }
-
-   return bRv;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   cleanup for mute controls
-//
-//! \author  Jo2003
-//! \date    26.05.2014
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::disconnectMute()
-{
-   disconnect(this, SLOT(slotMute(bool)));
-   _muteButton.clear();
-}
-
-/////////////////////////////////////////////////////////////////////////////
 /// volume slider region ...
 /////////////////////////////////////////////////////////////////////////////
 
@@ -985,8 +883,7 @@ int QFusionControl::getJumpValue()
    if (!_jumpCbxVector.isEmpty())
    {
       // all jump boxes should be synchronized ...
-      QString t = _jumpCbxVector.at(0)->currentText();
-      iRV =   t.split(" ").at(0).toInt(&ok);
+      iRV = _jumpCbxVector.at(0)->currentText().toInt(&ok);
    }
 
    return (ok ? iRV : -1);
@@ -1031,10 +928,6 @@ void QFusionControl::addCngSlider (QClickAndGoSlider *pSli)
    connect (pSli, SIGNAL(sigClickNGo(int)), this, SLOT(slotClickNGo(int)));
    connect (pSli, SIGNAL(sliderReleased()), this, SLOT(slotPosSliderReleased()));
    connect (pSli, SIGNAL(valueChanged(int)), this, SLOT(slotPosSliderValueChanged(int)));
-
-   // set as video slider ...
-   pSli->setVideo(true);
-
    _cngSliderVector.append(pSli);
 }
 
@@ -1261,25 +1154,6 @@ void QFusionControl::addTimeLab (QTimeLabel *pLab)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   put length label under control
-//
-//! \author  Jo2003
-//! \date    23.05.2014
-//
-//! \param   pLab (QTimeLabel *) pointer to QLabel
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::addLengthLab (QTimeLabel *pLab)
-{
-   // no buffer display for this label ...
-   pLab->useBuffer(false);
-
-   _lengthLabVector.append(pLab);
-}
-
-//---------------------------------------------------------------------------
-//
 //! \brief   set time string to all time labels
 //
 //! \author  Jo2003
@@ -1294,25 +1168,6 @@ void QFusionControl::setTime(quint64 time)
    for (int i = 0; i < _timeLabVector.count(); i++)
    {
       _timeLabVector.at(i)->setTime(time);
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set time string to all length labels
-//
-//! \author  Jo2003
-//! \date    23.05.2014
-//
-//! \param   time new time value
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::setLength(quint64 time)
-{
-   for (int i = 0; i < _lengthLabVector.count(); i++)
-   {
-      _lengthLabVector.at(i)->setTime(time);
    }
 }
 
@@ -1349,10 +1204,8 @@ void QFusionControl::setBuff(int iPercent)
 void QFusionControl::disconnectLab()
 {
    _timeLabVector.clear();
-   _lengthLabVector.clear();
    _muteLabel.clear();
    _infoLabel.clear();
-   _tarTimeLabel.clear();
 }
 
 //---------------------------------------------------------------------------
@@ -1369,41 +1222,6 @@ void QFusionControl::disconnectLab()
 void QFusionControl::addMuteLab(QLabel *pLab)
 {
    _muteLabel.append(pLab);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   put target time label under control
-//
-//! \author  Jo2003
-//! \date    17.09.2014
-//
-//! \param   pLab pointer to QLabel
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::addTargetTimeLabel(QLabel *pLab)
-{
-   _tarTimeLabel.append(pLab);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set target time string to all related labels
-//
-//! \author  Jo2003
-//! \date    17.09.2014
-//
-//! \param   s [in] (const QString&) string to set
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void QFusionControl::setTargetTime(const QString &s)
-{
-   for (int i = 0; i < _tarTimeLabel.count(); i++)
-   {
-      _tarTimeLabel.at(i)->setText(s);
-   }
 }
 
 //---------------------------------------------------------------------------

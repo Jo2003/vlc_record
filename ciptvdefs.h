@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/ciptvdefs.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 25.03.2013
 |
-| $Id$
+| $Id: ciptvdefs.h 1495 2015-02-20 13:48:22Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20130325_CIPTVDEFS_H
@@ -40,7 +40,6 @@ public:
       REQ_STREAM,
       REQ_TIMESHIFT,
       REQ_EPG,
-      REQ_EPG_EXT,
       REQ_SERVER,
       REQ_HTTPBUFF,
       REQ_ARCHIV,
@@ -73,9 +72,7 @@ public:
       REQ_CL_LANG,
       REQ_GET_ALANG,
       REQ_VOD_LANG,
-      REQ_LOGIN_ONLY,
-      REQ_STATS_SERVICE,
-      REQ_STATS_ONLY,
+      REQ_NOOP,
       REQ_UNKNOWN = 255
    };
 

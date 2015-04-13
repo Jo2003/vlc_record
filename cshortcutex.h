@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cshortcutex.h $
 |
 | Author: Jo2003
 |
 | Begin: 22.03.2010 / 08:45:22
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cshortcutex.h 447 2011-03-25 11:04:08Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __032410__CMYSHORTCUT_H
    #define __032410__CMYSHORTCUT_H

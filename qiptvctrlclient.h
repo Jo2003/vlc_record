@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qiptvctrlclient.h $
  *
  *  @file     qiptvctrlclient.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     15.03.2013
  *
- *  $Id$
+ *  $Id: qiptvctrlclient.h 1495 2015-02-20 13:48:22Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130315_QIPTVCTRLCLIENT_H
@@ -17,16 +17,13 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QNetworkConfiguration>
-#include <QNetworkConfigurationManager>
-#include <QNetworkInterface>
 #include <QVariant>
 #include <QMetaEnum>
 #include <QUrl>
 #include <QVector>
 #include <QMutex>
-#include <QTimer>
-#include <QDateTime>
+
+#include "clogfile.h"
 
 //---------------------------------------------------------------------------
 //! \class   Iptv
@@ -50,7 +47,7 @@ public:
       Stream,
       m3u,
       hls,
-      chkconn,  // connection check ...
+      noop,
       Unknown
    };
 
@@ -72,9 +69,8 @@ public:
    }
 };
 
-#define PROP_TYPE   "type"
-#define PROP_ID     "id"
-#define PROP_REQ_NO "reqno"
+#define PROP_TYPE "type"
+#define PROP_ID   "id"
 
 //---------------------------------------------------------------------------
 //! \class   QIptvCtrlClient
@@ -106,77 +102,49 @@ public:
    };
 
    struct SRequest {
-      SRequest():eHttpReqType(E_REQ_UNKN),iReqId(-1),eIptvReqType(Iptv::Unknown),uiTimeStamp(0),json(false){}
       EHttpReqType   eHttpReqType;
       int            iReqId;
       QString        sUrl;
       QString        sContent;
       Iptv::eReqType eIptvReqType;
-      uint           uiTimeStamp;
-      bool           json;
    };
 
    explicit QIptvCtrlClient(QObject* parent = 0);
    virtual ~QIptvCtrlClient();
 
-   virtual void q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String, bool isJson = false);
+   virtual void q_post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req = Iptv::String);
    virtual void q_get(int iReqId, const QString& url, Iptv::eReqType t_req = Iptv::String);
 
-   void requeue(bool withLogin = false);
-
-   virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req, bool json);
+   virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
-
-   bool isOnline ();
-   bool busy();
-   const QString& getStbSerial();
 
 private:
    QVariant          cookies;
    bool              bCSet;
-   bool              bOnline;
+   bool              bBusy;
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
-   QString           sStbSerial;
-   SRequest          lastRequest;
-   SRequest          lastLogin;
 #ifdef __TRACE
    Iptv              iptv;
 #endif
-   QNetworkConfigurationManager* _pNetConfMgr;
-   QTimer            tWatchdog;
-   QTimer            tConncheck;
-   unsigned long     ulReqNo;
-   unsigned long     ulAckNo;
 
 protected:
-   QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1, bool json = false);
+   QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
    QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
-   void workOffQueue (const QString& caller = QString());
-   void setOnline(bool o);
-   void generateStbSerial();
-   bool stillOnlineOnError(QNetworkReply::NetworkError err);
-
-   // needed for connection check ...
-   QString sApiUrl;
+   void workOffQueue ();
 
 signals:
    void sigStringResponse (int reqId, QString strResp);
    void sigBinResponse (int reqId, QByteArray binResp);
-   void sigApiErr (int reqId, QString sErr, int iErr);
+   void sigErr (int reqId, QString sErr, int iErr);
 
    void sigM3u (int reqId, QString s);
    void sigHls (int reqId, QByteArray bHls);
-   void sigStateMessage (int, QString, int);
 
 public slots:
-   void startConnectionCheck ();
 
 private slots:
    void slotResponse(QNetworkReply* reply);
-   void configChgd (const QNetworkConfiguration & config);
-   void slotReqTmout();
-   void slotAccessibilityChgd(QNetworkAccessManager::NetworkAccessibility acc);
 };
 
 #endif // __20130315_QIPTVCTRLCLIENT_H

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cstdjsonparser.h $
  *
  *  @file     cstdjsonparser.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     15.04.2013
  *
- *  $Id$
+ *  $Id: cstdjsonparser.h 1291 2014-01-28 15:03:17Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130415_CSTDJSONPARSER_H
@@ -18,6 +18,7 @@
 #include <QtJson>
 #include <QVariantMap>
 
+#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 #include "capiparser.h"
@@ -37,7 +38,7 @@ public:
 
    // new functions for use with API ...
    virtual int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
-   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList);
+   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
    virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
@@ -50,7 +51,6 @@ public:
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
    virtual int parseError (const QString& sResp, QString& sMsg, int& eCode);
    virtual int parseVodLang(const QString &sResp, QVodLangMap &lMap);
-   virtual int parseService(const QString &sResp, cparser::ServiceSettings &servset);
 };
 
 #endif // __20130415_CSTDJSONPARSER_H

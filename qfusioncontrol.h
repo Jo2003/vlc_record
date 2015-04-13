@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qfusioncontrol.h $
  *
  *  @file     qfusioncontrol.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     23.11.2012
  *
- *  $Id$
+ *  $Id: qfusioncontrol.h 1224 2013-11-26 11:01:15Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20121123_QFUSIONCONTROL_H
@@ -20,7 +20,6 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QMutex>
-#include <QCheckBox>
 
 #include "qclickandgoslider.h"
 #include "qtimelabel.h"
@@ -71,10 +70,7 @@ public:
    void addJumpBox (QComboBoxEx *pBox);
    void addCngSlider (QClickAndGoSlider *pSli);
    void addTimeLab (QTimeLabel *pLab);
-   void addLengthLab (QTimeLabel *pLab);
    void addMuteLab (QLabel *pLab);
-   void addTargetTimeLabel(QLabel *pLab);
-   void addMuteBtn (QCheckBox *pChk);
    void enableBtn (bool enable, eBtnRole role);
    void setVolSliderPosition (int vol);
    void setVolume (int vol);
@@ -93,10 +89,8 @@ public:
    int  posValue ();
    void setTime (quint64 time);
    void setBuff(int iPercent);
-   void setTargetTime (const QString& s);
    void btnSetIcon (const QIcon &icon, eBtnRole role);
    void setMutePixmap (const QPixmap &pix);
-   bool muted();
 
    // video display format comboboxes ...
    void addVidFormCbx (QComboBoxEx *cbx, eVidForCbxRole role);
@@ -110,9 +104,8 @@ public:
    bool isPopupActive ();
    void addInfoLab (QMoveHandle *pLab);
    void setVideoInfo(const QString &str);
-   void setLength(quint64 time);
-   void setMute(bool val);
 
+   
 signals:
    void sigVolSliderMoved (int vol);
    void sigPlay ();
@@ -129,7 +122,6 @@ signals:
    void sigPosSliderValueChanged (int pos);
    void sigAspectCurrentIndexChanged (int pos);
    void sigCropCurrentIndexChanged (int pos);
-   void sigMute (bool val);
 
 protected:
    void disconnectBtn ();
@@ -137,8 +129,7 @@ protected:
    void disconnectCbx ();
    void disconnectCng ();
    void disconnectLab ();
-   void disconnectMute ();
-
+   
 public slots:
 
 private slots:
@@ -160,7 +151,6 @@ private slots:
    void slotAddPopup ();
    void slotRemPopup ();
    void slotSaveVideoFormat ();
-   void slotMute (bool val);
 
 private:
    // volume slider ...
@@ -177,10 +167,6 @@ private:
    QVector<QPushButton *>       _scrShtBtnVector;
    QVector<QPushButton *>       _wndModBtnVector;
 
-   // check boxes ...
-   QVector<QCheckBox *>         _muteButton;
-
-
    // time jump combobox ...
    QVector<QComboBoxEx *>       _jumpCbxVector;
 
@@ -189,13 +175,9 @@ private:
 
    // timer label ...
    QVector<QTimeLabel *>        _timeLabVector;
-   QVector<QTimeLabel *>        _lengthLabVector;
 
    // mute label ...
    QVector<QLabel *>            _muteLabel;
-
-   // target time label
-   QVector<QLabel *>            _tarTimeLabel;
 
    // program info label ...
    QVector<QMoveHandle *>       _infoLabel;

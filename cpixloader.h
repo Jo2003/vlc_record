@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cpixloader.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:16:25
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cpixloader.h 1215 2013-11-11 09:56:46Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011810__PIXLOADER_H
    #define __011810__PIXLOADER_H

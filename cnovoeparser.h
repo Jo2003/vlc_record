@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cnovoeparser.h $
  *
  *  @file     cnovoeparser.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     15.04.2013
  *
- *  $Id$
+ *  $Id: cnovoeparser.h 1158 2013-08-01 10:10:02Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130612_CNOVOEPARSER_H
@@ -30,7 +30,7 @@ public:
    CNovoeParser(QObject * parent = 0);
 
    // new functions for use with API ...
-   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList);
+   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
    virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);

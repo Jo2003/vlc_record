@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/csettingsdlg.h $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:41:34
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: csettingsdlg.h 1150 2013-07-26 13:56:13Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011910__CSETTINGSDLG_H
    #define __011910__CSETTINGSDLG_H
@@ -20,11 +20,13 @@
 #include <QTimer>
 #include <QSystemTrayIcon>
 
+#include "cvlcrecdb.h"
+#include "clogfile.h"
 #include "defdef.h"
+#include "cdirstuff.h"
 #include "cshortcutex.h"
 #include "cshortcutgrabber.h"
-#include "clogfile.h"
-#include "cparser.h"
+#include "api_inc.h"
 
 //===================================================================
 // namespace
@@ -63,10 +65,10 @@ public:
     QString GetCookie ();
     QString GetAPIServer ();
     QString getDeinlMode ();
-    QString getStreamServer();
 
     bool UseProxy ();
     bool AllowEros ();
+    bool FixTime ();
     bool HideToSystray ();
     bool AskForRecFile ();
     bool TranslitRecFile ();
@@ -75,7 +77,6 @@ public:
     bool doubleClickToPlay();
     bool useGpuAcc();
     bool showAds();
-    bool extEpg();
 
     int GetProxyPort ();
     int GetBufferTime ();
@@ -83,6 +84,8 @@ public:
 
     void  SaveSplitterSizes (const QString &name, const QList<int> &sz);
     QList<int> GetSplitterSizes (const QString &name, bool *ok = NULL);
+    int   GetCustFontSize ();
+    void  SetCustFontSize (int iSize);
     void  SaveFavourites (const QList<int> &favList);
     QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<cparser::SSrv>& vSrvList, const QString& sActSrv);
@@ -107,21 +110,8 @@ public:
     QByteArray getGeometry();
     int setLanguage (const QString& lng);
 
-    void setUser(const QString& str);
-    void setPasswd(const QString& str);
-    void setApiSrv(const QString& str);
-
-    void setActiveStreamServer(const QString& str);
-    void setActiveTimeshift(int val);
-    void setActiveBitrate(int val);
-    void setActiveBuffer(int val);
-
-    int  getFontDelta ();
-    void setFontDelta (int i);
-
 protected:
     virtual void changeEvent(QEvent *e);
-    bool checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const QString& what);
 
 private:
     Ui::CSettingsDlg  *m_ui;
@@ -132,9 +122,6 @@ private:
     QVector<cparser::SChan>      channelVector;
     QVector<cparser::SVodRate>   vodRatesVector;
     const cparser::SAccountInfo *pAccountInfo;
-    bool                         bSettingsRead;
-    int                          m_iServerBitrate;
-    int                          m_iServerTimeShift;
 
 signals:
     void sigReloadLogos ();
@@ -142,7 +129,6 @@ signals:
     void sigSetBitRate (int iRate);
     void sigSetBuffer (int iBuffer);
     void sigSetTimeShift (int iShift);
-    void sigFontDeltaChgd (int i);
 
 private slots:
     void on_btnResetShortcuts_clicked();
@@ -163,7 +149,6 @@ private slots:
     void on_linePasswd_returnPressed();
     void on_cbxLanguage_currentIndexChanged(const QString &lng);
     void on_cbxLanguage_activated(const QString &lng);
-    void on_spinBoxFontDelta_valueChanged(int arg1);
 
 public slots:
     void slotSplashStateChgd (bool bChecked);

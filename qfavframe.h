@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qfavframe.h $
  *
  *  @file     qfavframe.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     14.06.2012
  *
- *  $Id$
+ *  $Id: qfavframe.h 759 2012-06-14 13:36:38Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20120614_QFAVFRAME_H
@@ -20,6 +20,8 @@
 #include <QDropEvent>
 #include <QDataStream>
 #include <QMap>
+
+#include "clogfile.h"
 #include "qchanlistdelegate.h"
 
 typedef QMap<int, QVariant> QModelItemMap;

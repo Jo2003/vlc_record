@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/crodnoeclient.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 19.03.2013
 |
-| $Id$
+| $Id: crodnoeclient.h 1495 2015-02-20 13:48:22Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20130319_CRODNOECLIENT_H
@@ -16,8 +16,10 @@
 #include <QString>
 #include <QDate>
 #include <QRegExp>
+#include <QTimer>
 
 #include "qiptvctrlclient.h"
+#include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
 
@@ -88,15 +90,18 @@ protected:
 private:
    QString   sUsr;
    QString   sPw;
+   QString   sApiUrl;
    QString   sCookie;
    QString   sLang;
    QErrorMap errMap;
    CIptvDefs karTrace;
    QString   sChanListBuffer;
    QString   sLangFilter;
+   QTimer    tPing;
 
 public slots:
    void slotDownImg(const QString& url);
+   void slotPing();
 
 private slots:
    void slotStringResponse (int reqId, QString strResp);

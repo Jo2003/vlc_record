@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/tastes/defines_iptv_record.h $
 |
 | Author: Jo2003
 |
 | Begin: 19.03.2013
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_iptv_record.h 1265 2013-12-13 14:40:16Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __20130319__DEFINES_IPTV_RECORD_H
    #define __20130319__DEFINES_IPTV_RECORD_H

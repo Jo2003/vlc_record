@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qchannelmap.h $
  *
  *  @file     qchannelmap.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     10.10.2013
  *
- *  $Id$
+ *  $Id: qchannelmap.h 1214 2013-10-22 12:00:27Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20131010_QCHANNELMAP_H

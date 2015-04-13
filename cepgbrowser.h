@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cepgbrowser.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:05:56
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cepgbrowser.h 1213 2013-10-11 12:29:36Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011810__CEPGBROWSER_H
    #define __011810__CEPGBROWSER_H
@@ -15,6 +15,7 @@
 #include <QTextBrowser>
 #include <QMap>
 #include "templates.h"
+#include "clogfile.h"
 #include "defdef.h"
 #include "api_inc.h"
 
@@ -46,8 +47,7 @@ public:
     CEpgBrowser(QWidget *parent = 0);
     void DisplayEpg(QVector<cparser::SEpg> epglist,
                     const QString &sName, int iChanID,
-                    uint uiGmt, bool bHasArchiv, int iTs,
-                    bool bExt);
+                    uint uiGmt, bool bHasArchiv, int iTs);
 
     void recreateEpg ();
 
@@ -62,14 +62,11 @@ public:
 protected:
     bool NowRunning (const QDateTime &startThis, const QDateTime &startNext = QDateTime());
     QString createHtmlCode();
-    void scrollTo();
 
 private:
     int                    _iTs;
     int                    iCid;
     bool                   bArchive;
-    bool                   bExtEPG;
-    bool                   hasCurrent;
     uint                   uiTime;
     QString                sChanName;
     QMap<uint, epg::SShow> mProgram;

@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/playstates.h $
 |
 | Author: Jo2003
 |
 | Begin: 24.02.2010 / 10:41:34
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg@gmail.com $
 |
-| $Id$
+| $Id: playstates.h 636 2012-02-09 20:16:16Z Olenka.Joerg@gmail.com $
 \*************************************************************/
 #ifndef __030410__PLAYSTATES_H
    #define __030410__PLAYSTATES_H
@@ -27,7 +27,6 @@ namespace IncPlay
       PS_RECORD,
       PS_TIMER_RECORD,
       PS_TIMER_STBY,
-      PS_ADVERTISING,
       PS_WTF    = 255 // ;-)
    };
 }

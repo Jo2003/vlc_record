@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qwatchlistdlg.cpp $
  *
  *  @file     qwatchlistdlg.cpp
  *
@@ -8,15 +8,30 @@
  *
  *  @date     06.08.2013
  *
- *  $Id$
+ *  $Id: qwatchlistdlg.cpp 1238 2013-11-27 15:15:56Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
+#include <QDateTime>
 #include <QStringList>
 #include "qwatchlistdlg.h"
 #include "ui_qwatchlistdlg.h"
 #include "templates.h"
 #include "small_helpers.h"
-#include "externals_inc.h"
+#include "clogfile.h"
+#include "ctimeshift.h"
+#include "chtmlwriter.h"
+
+// storage db ...
+extern CVlcRecDB *pDb;
+
+// for logging ...
+extern CLogFile VlcLog;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
 
 //---------------------------------------------------------------------------
 //
@@ -128,7 +143,7 @@ void QWatchListDlg::buildWatchTab()
          line = "";
 
          // handle old / very new entries ...
-         if ((iRet = CSmallHelpers::archiveAvailable(vE.at(i).uiStart, tmSync)) == -2)
+         if ((iRet = CSmallHelpers::archiveAvailable(vE.at(i).uiStart)) == -2)
          {
             // old entries should be deleted already (cleanWatchList())
             // so this shouldn't happen ...
@@ -209,7 +224,7 @@ void QWatchListDlg::buildWatchTab()
          // there might be no end time ...
          len  = vE.at(i).uiEnd ? QString(" (%1)").arg(tr("%1 min.").arg((vE.at(i).uiEnd - vE.at(i).uiStart) / 60)) : "";
 
-         row  = tmSync.gmtToTsFormatted(vE.at(i).uiStart, "dd. MMM. yyyy, hh:mm") + len + "<br /> <br />" + act;
+         row  = pTs->fromGmtFormatted(vE.at(i).uiStart, "dd. MMM. yyyy, hh:mm") + len + "<br /> <br />" + act;
          row  = pHtml->tableCell(row , (i % 2) ? TMPL_A_STYLE : TMPL_B_STYLE);
          row += pHtml->tableCell(line, (i % 2) ? TMPL_A_STYLE : TMPL_B_STYLE);
 
@@ -310,7 +325,7 @@ int QWatchListDlg::count()
 //---------------------------------------------------------------------------
 int QWatchListDlg::cleanWatchList()
 {
-   uint      now       = tmSync.syncronizedTime_t();
+   uint      now       = QDateTime::currentDateTime().toTime_t();
    uint      uiArchLow = now - MAX_ARCHIV_AGE;   // no older than 2 weeks
    QSqlQuery q;
 

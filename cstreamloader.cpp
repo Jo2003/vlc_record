@@ -1,17 +1,19 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cstreamloader.cpp $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 4.12.2010 / 18:55
 |
-| $Id$
+| $Id: cstreamloader.cpp 896 2012-09-05 06:28:04Z Olenka.Joerg $
 |
 \=============================================================================*/
 #include "cstreamloader.h"
-#include "externals_inc.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 /*-----------------------------------------------------------------------------\
 | Function:    CStreamLoader / constructor

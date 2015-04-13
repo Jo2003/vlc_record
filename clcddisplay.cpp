@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/clcddisplay.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 01.04.2010 / 14:21:44
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: clcddisplay.cpp 871 2012-08-10 12:35:55Z Olenka.Joerg $
 \*************************************************************/
 #include "clcddisplay.h"
 
@@ -310,9 +310,6 @@ void CLCDDisplay::loadImage(lcd::eState state)
       break;
    case lcd::TIMER_STBY:
       lcdImg.load(":/lcd/timer_stby");
-      break;
-   case lcd::SHOW_ADV:
-      lcdImg.load(":/lcd/add");
       break;
    case lcd::BLANK:
    case lcd::WTF:

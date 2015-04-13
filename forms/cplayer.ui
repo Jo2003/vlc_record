@@ -20,16 +20,7 @@
    <property name="spacing">
     <number>3</number>
    </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>0</number>
    </property>
    <item>
@@ -166,28 +157,12 @@
       </spacer>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkMute">
-       <property name="styleSheet">
-        <string notr="true"> QCheckBox#checkMute {
-     spacing: 5px;
- }
-
-QCheckBox#checkMute::indicator {
-     width:  24px;
-     height: 24px;
-}
-
-QCheckBox#checkMute::indicator:unchecked {
-     image: url(:/player/sound_on);
-}
-
-QCheckBox#checkMute::indicator:checked {
-     image: url(:/player/sound_off);
-}
-</string>
-       </property>
+      <widget class="QLabel" name="labSound">
        <property name="text">
         <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="../common.qrc">:/player/sound_on</pixmap>
        </property>
       </widget>
      </item>
@@ -321,43 +296,10 @@ QCheckBox#checkMute::indicator:checked {
     <widget class="QVlcVideoWidget" name="videoWidget" native="true"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,10,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="10,0,0">
      <property name="spacing">
-      <number>4</number>
+      <number>2</number>
      </property>
-     <item>
-      <widget class="QTimeLabel" name="labPos">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>66</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QLabel#labPos {
-color: white;
-}</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>0</number>
-       </property>
-       <property name="text">
-        <string> 0:00:00</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QClickAndGoSlider" name="posSlider">
        <property name="enabled">
@@ -429,20 +371,45 @@ QSlider::sub-page:horizontal, QSlider::sub-page:horizontal:disabled {
       </widget>
      </item>
      <item>
-      <widget class="QTimeLabel" name="labLength">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>2</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QTimeLabel" name="labPos">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="minimumSize">
         <size>
-         <width>60</width>
+         <width>66</width>
          <height>0</height>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">QLabel#labLength {
+        <string notr="true">QLabel#labPos {
 color: white;
 }</string>
        </property>
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
        <property name="text">
-        <string>0:00:00</string>
+        <string> 0:00:00</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/crodnoeparser.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 19.03.2013
 |
-| $Id$
+| $Id: crodnoeparser.h 1252 2013-12-02 19:07:04Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20130319_CRODNOEPARSER_H
@@ -18,6 +18,7 @@
 #include <QDateTime>
 #include <QStringList>
 
+#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 #include "capixmlparser.h"
@@ -38,7 +39,7 @@ public:
 
    // new functions for use with API ...
    virtual int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
-   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList);
+   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
    virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
@@ -52,8 +53,8 @@ public:
    virtual int parseAStreams (const QString& sResp, QStringList &sl);
 
 protected:
-   virtual int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList);
-   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList);
+   virtual int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
    virtual int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
 
 private:

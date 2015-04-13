@@ -1,18 +1,18 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/tastes/defines_polsky_tv.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 09:19:48
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_polsky_tv.h 1265 2013-12-13 14:40:16Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __012412__DEFINES_POLSKY_TV_H
    #define __012412__DEFINES_POLSKY_TV_H
 
-#include <more_polsky_translations.h>
+#include <QtGlobal>
 
 #define APP_NAME      "Polsky.TV"
 #define UPD_CHECK_URL "http://rt.coujo.de/polsky_tv_ver.xml"

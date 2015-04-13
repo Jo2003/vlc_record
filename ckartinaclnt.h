@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/ckartinaclnt.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: Monday, January 04, 2010 16:11:14
 |
-| $Id$
+| $Id: ckartinaclnt.h 1291 2014-01-28 15:03:17Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __201004161114_CKARTINACLNT_H
@@ -16,9 +16,9 @@
 #include <QString>
 #include <QDate>
 #include <QRegExp>
-#include <QSslError>
 
 #include "qiptvctrlclient.h"
+#include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
 
@@ -39,8 +39,11 @@ class CKartinaClnt : public QIptvCtrlClient
 public:
    explicit CKartinaClnt(QObject *parent = 0);
    virtual ~CKartinaClnt();
+
    void SetData(const QString &host, const QString &usr, const QString &pw, const QString& lang = "");
+
    int  queueRequest(CIptvDefs::EReq req, const QVariant& par_1 = QVariant(), const QVariant& par_2 = QVariant());
+
    void fillErrorMap();
    bool cookieSet();
    void SetCookie (const QString &cookie);
@@ -61,7 +64,7 @@ protected:
    void SetBitRate (int iRate);
    void GetBitRate ();
    void SetHttpBuffer (int iTime);
-   void GetEPG (int iChanID, int iOffset = 0, bool bExtEPG = false);
+   void GetEPG (int iChanID, int iOffset = 0);
    void GetVideos (const QString &sPrepared);
    void GetVideoInfo (int iVodID, const QString &secCode = QString());
    void setChanHide (const QString &cids, const QString &secCode);
@@ -77,12 +80,11 @@ protected:
    int  checkResponse (const QString &sResp, QString& sCleanResp);
    virtual void getVodLang();
    const QString& apiUrl();
-   void statsService(const QString& stats);
-   void statsOnly(const QString& stats);
 
 private:
    QString   sUsr;
    QString   sPw;
+   QString   sApiUrl;
    QString   sCookie;
    QErrorMap errMap;
    CIptvDefs karTrace;
@@ -94,7 +96,6 @@ protected slots:
    virtual void slotStringResponse (int reqId, QString strResp);
    void slotBinResponse (int reqId, QByteArray binResp);
    void slotErr (int iReqId, QString sErr, int iErr);
-   void slotSslError (QNetworkReply *pReply, QList<QSslError> elist);
 
 signals:
    void sigError (QString str, int req, int err);

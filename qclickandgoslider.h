@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qclickandgoslider.h $
  *
  *  @file     qclickandgoslider.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     16.02.2012
  *
- *  $Id$
+ *  $Id: qclickandgoslider.h 1216 2013-11-11 15:06:57Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20120216_QCLICKANDGOSLIDER_H
@@ -16,8 +16,6 @@
 
 #include <QSlider>
 #include <QMouseEvent>
-#include <QToolTip>
-#include <QTime>
 
 //---------------------------------------------------------------------------
 //! \class   QClickAndGoSlider
@@ -30,10 +28,22 @@ class QClickAndGoSlider : public QSlider
    Q_OBJECT
 
 public:
-   QClickAndGoSlider ( QWidget * parent = 0 );
-   QClickAndGoSlider ( Qt::Orientation orientation, QWidget * parent = 0 );
+   QClickAndGoSlider ( QWidget * parent = 0 )
+      : QSlider(parent)
+   {
+      _iHandleRange = 80;
+   }
 
-   virtual ~QClickAndGoSlider ();
+   QClickAndGoSlider ( Qt::Orientation orientation, QWidget * parent = 0 )
+      : QSlider(orientation, parent)
+   {
+      _iHandleRange = 80;
+   }
+
+   virtual ~QClickAndGoSlider ()
+   {
+      _iHandleRange = 80;
+   }
 
    //---------------------------------------------------------------------------
    //
@@ -48,48 +58,12 @@ public:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   virtual void setHandleRangeVal(int i);
-
-   //---------------------------------------------------------------------------
-   //
-   //! \brief   set video flag
-   //
-   //! \author  Jo2003
-   //! \date    19.05.2014
-   //
-   //! \param   val (bool) new value
-   //
-   //! \return  --
-   //---------------------------------------------------------------------------
-   void setVideo (bool val);
+   virtual void setHandleRangeVal(int i)
+   {
+      _iHandleRange = i;
+   }
 
 protected:
-
-   //---------------------------------------------------------------------------
-   //
-   //! \brief   set handle range and mouse tracking
-   //
-   //! \author  Jo2003
-   //! \date    19.05.2014
-   //
-   //! \param   --
-   //
-   //! \return  --
-   //---------------------------------------------------------------------------
-   void init ();
-
-   //---------------------------------------------------------------------------
-   //
-   //! \brief   show special tooltip with timing information
-   //
-   //! \author  Jo2003
-   //! \date    19.05.2014
-   //
-   //! \param   event (QMouseEvent *) pointer to mous event
-   //
-   //! \return  --
-   //---------------------------------------------------------------------------
-   virtual void mouseMoveEvent(QMouseEvent * event);
 
    //---------------------------------------------------------------------------
    //
@@ -102,12 +76,50 @@ protected:
    //
    //! \return  --
    //---------------------------------------------------------------------------
-   virtual void mousePressEvent (QMouseEvent * event);
+   virtual void mousePressEvent (QMouseEvent * event)
+   {
+      // left click ...
+      if (event->button() == Qt::LeftButton)
+      {
+         int pos;
+         int range = maximum() - minimum();
+
+         if (orientation() == Qt::Vertical)
+         {
+            pos = minimum() + (range * (height() - event->y())) / height();
+         }
+         else
+         {
+            pos = minimum() + (range * event->x()) / width();
+         }
+
+         // make sure pos is in between minimum and maximum ...
+         pos = (pos < minimum()) ? minimum() : ((pos > maximum()) ? maximum() : pos);
+
+         // check if position is different from slider ...
+         /// Note: We must use a practical threshold value here.
+         /// So we use the range which should be handled by
+         /// the slider / _iHandleRange so we must not click at the 100%
+         /// right position to get the "old" normal
+         /// slider behavior.
+         if (abs(value() - pos) > (range / _iHandleRange))
+         {
+            setValue(pos);
+            emit sigClickNGo(pos);
+            event->accept();
+
+            // no further handling needed ...
+            return;
+         }
+      }
+
+      // not handled --> delegate ...
+      event->ignore();
+      QSlider::mousePressEvent(event);
+   }
 
 private:
-   int  _iHandleRange;
-   bool _isVideo;
-   int  _clickedPosition;
+   int _iHandleRange;
 
 signals:
    // special signal so we know for sure how to handle...

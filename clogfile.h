@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/clogfile.h $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:34:39
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: clogfile.h 880 2012-08-14 13:50:59Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011910__CLOGFILE_H
    #define __011910__CLOGFILE_H

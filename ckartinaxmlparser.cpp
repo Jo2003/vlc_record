@@ -1,17 +1,19 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/ckartinaxmlparser.cpp $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: Tuesday, January 05, 2010 07:54:59
 |
-| $Id$
+| $Id: ckartinaxmlparser.cpp 1299 2014-02-12 14:00:23Z Olenka.Joerg $
 |
 \=============================================================================*/
 #include "ckartinaxmlparser.h"
-#include "externals_inc.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 /* -----------------------------------------------------------------\
 |  Method: CKartinaXMLParser / constructor
@@ -34,13 +36,14 @@ CKartinaXMLParser::CKartinaXMLParser(QObject * parent) : CApiXmlParser(parent)
 |  Author: Jo2003
 |  Description: parse channel list
 |
-|  Parameters: ref. to response, ref. to chanList
+|  Parameters: ref. to response, ref. to chanList, fixTime flag
 |
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
 int CKartinaXMLParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList)
+                                         QVector<cparser::SChan> &chanList,
+                                         bool bFixTime)
 {
    int              iRV = 0;
    QXmlStreamReader xml;
@@ -59,7 +62,7 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
          if (xml.name() == "groups")
          {
             // go into next level and parse groups ...
-            parseGroups(xml, chanList);
+            parseGroups(xml, chanList, bFixTime);
          }
          break;
 
@@ -88,11 +91,12 @@ int CKartinaXMLParser::parseChannelList (const QString &sResp,
 |  Author: Jo2003
 |  Description: parse group part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList
+|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
+int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+                                    bool bFixTime)
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
@@ -142,7 +146,7 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
                chanList.push_back(groupEntry);
 
                // go into next level (channels)
-               parseChannels(xml, chanList);
+               parseChannels(xml, chanList, bFixTime);
             }
          }
          else
@@ -174,11 +178,12 @@ int CKartinaXMLParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SCha
 |  Author: Jo2003
 |  Description: parse channels part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList
+|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
+int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+                                     bool bFixTime)
 {
    QString        sUnknown;
    cparser::SChan chanEntry;
@@ -248,6 +253,11 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.uiStart = xml.text().toString().toUInt();
+
+               if (bFixTime)
+               {
+                  fixTime(chanEntry.uiStart);
+               }
             }
          }
          else if (xml.name() == "epg_end")
@@ -255,6 +265,11 @@ int CKartinaXMLParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SCh
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.uiEnd = xml.text().toString().toUInt();
+
+               if (bFixTime)
+               {
+                  fixTime(chanEntry.uiEnd);
+               }
             }
          }
          else if (xml.name() == "hide")

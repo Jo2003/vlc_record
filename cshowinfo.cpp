@@ -1,18 +1,26 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cshowinfo.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 24.02.2010 / 10:41:34
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cshowinfo.cpp 1267 2013-12-17 13:55:47Z Olenka.Joerg $
 \*************************************************************/
 #include "cshowinfo.h"
 #include "templates.h"
 #include "small_helpers.h"
-#include "externals_inc.h"
+#include "chtmlwriter.h"
+#include "qchannelmap.h"
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
+
+// global channel map ..
+extern QChannelMap *pChanMap;
+
 
 /* -----------------------------------------------------------------\
 |  Method: CShowInfo / constructor
@@ -27,32 +35,6 @@
 CShowInfo::CShowInfo(QObject *parent) : QObject(parent)
 {
    cleanShowInfo();
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   get string from prog type
-//
-//! \author  Jo2003
-//! \date    02.12.2013
-//
-//! \param   t [in] (ShowInfo::eProgType) program type
-//
-//! \return  string related to program type
-//---------------------------------------------------------------------------
-QString CShowInfo::progType2String(ShowInfo::eProgType t)
-{
-#define mkCase(__x__) case __x__: s = #__x__; break
-   QString s;
-   switch(t)
-   {
-      mkCase(ShowInfo::Archive);
-      mkCase(ShowInfo::Live);
-      mkCase(ShowInfo::VOD);
-      default: break;
-   }
-   return s;
-#undef mkCase
 }
 
 /* -----------------------------------------------------------------\
@@ -73,8 +55,7 @@ void CShowInfo::cleanShowInfo()
    sAdUrl         = "";
    sPCode         = "";
    iChannelId     = -1;
-   iVodFileId     = -1;
-   iVideoId       = -1;
+   iVodId         = -1;
    ePlayState     = IncPlay::PS_STOP;
    eShowType      = ShowInfo::Live;
    uiStart        = 0;
@@ -82,7 +63,6 @@ void CShowInfo::cleanShowInfo()
    uiJumpTime     = 0;
    bStreamLoader  = false;
    bHls           = false;
-   bNoAd          = false;
    ulLastEpgUpd   = 0;
    iDefAStream    = 0;
    epgMap.clear();
@@ -209,7 +189,7 @@ void CShowInfo::setShowType(ShowInfo::eProgType type)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: setVodFileId
+|  Method: setVodId
 |  Begin: 04.11.2011
 |  Author: Jo2003
 |  Description: stores the VOD id
@@ -218,24 +198,9 @@ void CShowInfo::setShowType(ShowInfo::eProgType type)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CShowInfo::setVodFileId(int id)
+void CShowInfo::setVodId(int id)
 {
-   iVodFileId = id;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set video id
-//
-//! \author  Jo2003
-//! \date    15.10.2014
-//
-//! \param   id [in] (int) video id
-//
-//---------------------------------------------------------------------------
-void CShowInfo::setVideoId(int id)
-{
-   iVideoId = id;
+   iVodId = id;
 }
 
 /* -----------------------------------------------------------------\
@@ -251,7 +216,6 @@ void CShowInfo::setVideoId(int id)
 void CShowInfo::setHtmlDescr(const QString &descr)
 {
    sDescr = descr;
-   emit sigHtmlDescr(sDescr);
 }
 
 /* -----------------------------------------------------------------\
@@ -520,23 +484,9 @@ const ShowInfo::eProgType &CShowInfo::showType()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const int &CShowInfo::vodFileId()
+const int &CShowInfo::vodId()
 {
-   return iVodFileId;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   get video id
-//
-//! \author  Jo2003
-//! \date    15.10.2014
-//
-//! \return  video id
-//---------------------------------------------------------------------------
-const int &CShowInfo::videoId()
-{
-   return iVideoId;
+   return iVodId;
 }
 
 /* -----------------------------------------------------------------\
@@ -703,21 +653,6 @@ void CShowInfo::setDefAStream(int idx)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   disable ads for this video?
-//
-//! \author  Jo2003
-//! \date    06.08.2014
-//
-//! \param   a [in] (bool) disable if true
-//
-//---------------------------------------------------------------------------
-void CShowInfo::setNoAd(bool a)
-{
-   bNoAd = a;
-}
-
-//---------------------------------------------------------------------------
-//
 //! \brief   get default audio track index
 //
 //! \author  Jo2003
@@ -730,22 +665,6 @@ void CShowInfo::setNoAd(bool a)
 const int &CShowInfo::defAStream()
 {
    return iDefAStream;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   disable ads for this video?
-//
-//! \author  Jo2003
-//! \date    06.08.2014
-//
-//! \param   --
-//
-//! \return  true -> disable; false -> show ads
-//---------------------------------------------------------------------------
-bool CShowInfo::noAd()
-{
-   return bNoAd;
 }
 
 /************************* History ***************************\

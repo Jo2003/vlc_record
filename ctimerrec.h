@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/ctimerrec.h $
 |
 | Author: Jo2003
 |
 | Begin: 24.01.2010 / 15:41:34
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: ctimerrec.h 1273 2013-12-19 09:25:39Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __012410__CTIMERREC_H
    #define __012410__CTIMERREC_H
@@ -24,7 +24,10 @@
 #include "templates.h"
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
+#include "cdirstuff.h"
+#include "cshowinfo.h"
 #include "cstreamloader.h"
+#include "api_inc.h"
 #include "qhlscontrol.h"
 
 //===================================================================

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/capixmlparser.h $
  *
  *  @file     capixmlparser.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     18.04.2013
  *
- *  $Id$
+ *  $Id: capixmlparser.h 1148 2013-07-24 14:27:14Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130418_CAPIXMLPARSER_H
@@ -16,8 +16,10 @@
 
 #include <QXmlStreamReader>
 #include <QRegExp>
+#include <QDateTime>
 #include <QStringList>
 
+#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 #include "capiparser.h"
