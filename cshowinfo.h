@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cshowinfo.h $
 |
 | Author: Jo2003
 |
 | Begin: 15.06.2010 / 16:41:34
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cshowinfo.h 1492 2015-02-18 14:14:37Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __150610_CSHOWINFO_H
    #define __150610_CSHOWINFO_H
@@ -50,9 +50,6 @@ public:
    // constructor ...
    CShowInfo(QObject *parent = 0);
 
-   // create string from prog type
-   static QString progType2String(ShowInfo::eProgType t);
-
    // clean showInfo ...
    void cleanShowInfo();
 
@@ -68,15 +65,13 @@ public:
    void setHtmlDescr (const QString &descr);
    void setAdUrl(const QString &adUrl);
    void setPCode (const QString &code);
-   void setVodFileId (int id);
-   void setVideoId (int id);
+   void setVodId (int id);
    void setEpgMap(const t_EpgMap &map);
    void useStreamLoader (bool bUse);
    void useHls (bool bUse);
    void setEpgUpdTime (ulong ts);
    void updWithChanEntry (ulong ulTime, const cparser::SChan &entry);
    void setDefAStream(int idx);
-   void setNoAd (bool a);
 
    // get values ...
    const QString &showName();
@@ -93,15 +88,10 @@ public:
    bool  canCtrlStream();
    bool  streamLoader();
    bool  isHls();
-   const int& vodFileId();
-   const int& videoId();
+   const int& vodId();
    ulong epgUpdTime();
    int   autoUpdate(uint uiTime);
    const int& defAStream();
-   bool noAd();
-
-signals:
-   void sigHtmlDescr (const QString& s);
 
 private:
    QString              sShowName;
@@ -115,12 +105,10 @@ private:
    QString              sDescr;
    QString              sAdUrl;
    QString              sPCode;
-   int                  iVodFileId;
-   int                  iVideoId;
+   int                  iVodId;
    t_EpgMap             epgMap;
    bool                 bStreamLoader;
    bool                 bHls;
-   bool                 bNoAd;
    ulong                ulLastEpgUpd;
    int                  iDefAStream;
 };

@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/tables.h $
 |
 | Author: Jo2003
 |
 | Begin: 13.06.2010 / 14:50:35
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: tables.h 1254 2013-12-03 08:35:13Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __130610_TABLES_H
    #define __130610_TABLES_H
@@ -54,13 +54,6 @@
       "\"aidx\"  INTEGER NOT NULL,"\
       "PRIMARY KEY(\"cid\"),"\
       "UNIQUE(\"cid\"))"
-
-#define TAB_VIDEO_SEEN \
-"CREATE TABLE \"vodseen\" ("\
-      "\"videoid\"  INTEGER NOT NULL,"\
-      "\"t_stamp\"  unsigned int(10) NOT NULL,"\
-      "PRIMARY KEY(\"videoid\"),"\
-      "UNIQUE(\"videoid\"))"
 
 #endif // __130610_TABLES_H
 /************************* History ***************************\

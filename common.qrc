@@ -28,7 +28,6 @@
         <file alias="watchlist">resources/watchlist.png</file>
         <file alias="cam">resources/photo_camera.png</file>
         <file alias="cam2">resources/camera.png</file>
-        <file alias="wait">resources/wait_ani.gif</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
@@ -53,10 +52,6 @@
         <file alias="no_logo">resources/no_logo.png</file>
         <file alias="remember">resources/page_add.png</file>
         <file alias="remove">resources/del_sm.png</file>
-        <file alias="close">resources/close_ext.png</file>
-        <file alias="open">resources/open_ext.png</file>
-        <file alias="info_close">resources/close_info.png</file>
-        <file alias="info_open">resources/open_info.png</file>
     </qresource>
     <qresource prefix="/player">
         <file alias="sound_on">resources/sound.png</file>
@@ -78,17 +73,9 @@
     <qresource prefix="/vod">
         <file alias="is_fav">resources/heart_red.png</file>
         <file alias="not_fav">resources/heart_gray.png</file>
-        <file alias="hd">resources/vod_quality_hd.png</file>
-        <file alias="sd">resources/vod_quality_sd.png</file>
-        <file alias="eco">resources/vod_quality_tv.png</file>
     </qresource>
     <qresource prefix="/access">
         <file alias="unlocked">resources/lock_open.png</file>
         <file alias="locked">resources/lock_closed.png</file>
-    </qresource>
-    <qresource prefix="/status">
-        <file alias="s_info">resources/state_info.png</file>
-        <file alias="s_warn">resources/state_warning.png</file>
-        <file alias="s_error">resources/state_error.png</file>
     </qresource>
 </RCC>

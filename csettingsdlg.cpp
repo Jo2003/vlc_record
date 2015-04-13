@@ -1,20 +1,43 @@
 ﻿/*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/csettingsdlg.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:43:08
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: csettingsdlg.cpp 1500 2015-03-04 08:55:58Z Olenka.Joerg $
 \*************************************************************/
 #include "csettingsdlg.h"
 #include "ui_csettingsdlg.h"
 #include <QRadioButton>
-#include <QMessageBox>
-#include "externals_inc.h"
+#include <QTranslator>
+#include "qcustparser.h"
+#include "ctimeshift.h"
 
+// global customization class ...
+extern QCustParser *pCustomization;
+
+// log file functions ...
+extern CLogFile VlcLog;
+
+// for folders ...
+extern CDirStuff *pFolders;
+
+// storage db ...
+extern CVlcRecDB *pDb;
+
+// global client api classes ...
+extern ApiClient *pApiClient;
+extern ApiParser *pApiParser;
+
+// global translaters ...
+extern QTranslator *pAppTransl;
+extern QTranslator *pQtTransl;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
 
 /* -----------------------------------------------------------------\
 |  Method: CSettingsDlg / constructor
@@ -28,12 +51,13 @@
 \----------------------------------------------------------------- */
 CSettingsDlg::CSettingsDlg(QWidget *parent) :
     QDialog(parent),
-    m_ui(new Ui::CSettingsDlg), bSettingsRead(false)
+    m_ui(new Ui::CSettingsDlg)
 {
    m_ui->setupUi(this);
    pAccountInfo    = NULL;
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
+   pDefAudio       = new CShortcutEx(QKeySequence("CTRL+SHIFT+L"), this);
 
    if (pShortApiServer)
    {
@@ -45,8 +69,10 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
       connect(pShortVerbLevel, SIGNAL(activated()), this, SLOT(slotEnableVlcVerbLine()));
    }
 
-   m_iServerBitrate   = -1;
-   m_iServerTimeShift = -1;
+   if (pDefAudio)
+   {
+      connect(pDefAudio, SIGNAL(activated()), this, SLOT(slotEnableDefAudioLine()));
+   }
 
    // set company name for login data ...
    QString s = m_ui->groupAccount->title();
@@ -58,8 +84,6 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 
 #ifdef ENABLE_AD_SWITCH
    m_ui->checkAds->setEnabled(true);
-#else
-   m_ui->checkAds->hide();
 #endif // ENABLE_AD_SWITCH
 
 #ifndef _HAS_VOD_MANAGER
@@ -87,9 +111,8 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    }
 #endif
 
-#ifndef _EXT_EPG
-   m_ui->checkExtEPG->setVisible(false);
-#endif // _EXT_EPG
+   // bitrate boxes
+   touchBitRateCBXs();
 
    // fill in values ...
    readSettings();
@@ -220,6 +243,7 @@ void CSettingsDlg::readSettings()
    // check boxes ...
    m_ui->useProxy->setCheckState((Qt::CheckState)pDb->intValue("UseProxy"));
    m_ui->checkAdult->setCheckState((Qt::CheckState)pDb->intValue("AllowAdult"));
+   m_ui->checkFixTime->setCheckState((Qt::CheckState)pDb->intValue("FixTime"));
    m_ui->checkHideToSystray->setCheckState((Qt::CheckState)pDb->intValue("TrayHide"));
    m_ui->checkAskForName->setCheckState((Qt::CheckState)pDb->intValue("AskRecFile"));
    m_ui->checkTranslit->setCheckState((Qt::CheckState)pDb->intValue("TranslitRecFile"));
@@ -235,16 +259,13 @@ void CSettingsDlg::readSettings()
       m_ui->checkAds->setCheckState(Qt::Checked);
    }
 
-#ifdef _EXT_EPG
-   m_ui->checkExtEPG->setCheckState((Qt::CheckState)pDb->intValue("ExtEPG", &iErr));
+   // default audio language ...
+   m_ui->lineALang->setText(pDb->stringValue("aLang", &iErr));
 
-   // value doesn't exist in database ...
    if (iErr)
    {
-      // enable by default ...
-      m_ui->checkExtEPG->setCheckState(Qt::Checked);
+      m_ui->lineALang->setText("ru");
    }
-#endif // _EXT_EPG
 
    m_ui->check2ClicksToPlay->setCheckState((Qt::CheckState)pDb->intValue("2ClickPlay", &iErr));
 
@@ -297,6 +318,9 @@ void CSettingsDlg::readSettings()
    iIdx = m_ui->cbxBufferSeconds->findData(pDb->intValue("HttpCache"));
    m_ui->cbxBufferSeconds->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
+   iIdx = m_ui->cbxStreamFormat->findData(pDb->intValue("StreamFormat"));
+   m_ui->cbxStreamFormat->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
+
    m_ui->cbxLogLevel->setCurrentIndex((int)pDb->intValue("LogLevel"));
 
    // deinterlace mode ...
@@ -327,12 +351,6 @@ void CSettingsDlg::readSettings()
    {
       m_ui->checkHideToSystray->setDisabled(true);
    }
-
-   // font size ...
-   m_ui->spinBoxFontDelta->setValue(pDb->intValue("CustFontSz"));
-
-   // mark settings as read ...
-   bSettingsRead = true;
 }
 
 /* -----------------------------------------------------------------\
@@ -371,83 +389,12 @@ void CSettingsDlg::changeEvent(QEvent *e)
           // set company name ...
           QString s = m_ui->groupAccount->title();
           m_ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
+          touchBitRateCBXs();
        }
        break;
     default:
        break;
     }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   check if chosen bitrate and timeshift makes sende
-//
-//! \author  Jo2003
-//! \date    14.09.2014
-//
-//! \param   iBitRate [in] (int) chosen bitrate
-//! \param   iTimeShift [in] (int) chosen timeshift
-//! \param   what [in] (const QString &) what to check
-//
-//! \return  true -> emit changed signal; false -> don't emit
-//---------------------------------------------------------------------------
-bool CSettingsDlg::checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const QString &what)
-{
-   bool bSendSig = true;
-
-   if ((showInfo.playState() == IncPlay::PS_PLAY)
-       && (showInfo.showType() == ShowInfo::Archive))
-   {
-      // get informaion about the channel from showinfo
-      int     cid = showInfo.channelId();
-      bool    bArchHasTs = false;
-      QString msg;
-      QMap<int, QString> brMap;
-      brMap[320]  = tr("Mobile");
-      brMap[900]  = tr("Eco");
-      brMap[1500] = tr("Standard");
-      brMap[2500] = tr("Premium");
-
-      if (pChanMap->contains(cid))
-      {
-         cparser::SChan chan = pChanMap->value(cid);
-
-         for (int i = 0; ((i < chan.vTs.count()) && !bArchHasTs); i ++)
-         {
-            if ((chan.vTs.at(i).iTimeShift == iTimeShift)
-                && (chan.vTs.at(i).iBitRate == iBitRate))
-            {
-               bArchHasTs = true;
-            }
-         }
-
-         if (!bArchHasTs)
-         {
-            QMessageBox::StandardButton btn;
-            msg  = tr("The archive for channel '%1' isn't available in your combination of bitrate (%2) and timeshift (%3)!")
-                  .arg(showInfo.chanName()).arg(brMap[iBitRate]).arg(iTimeShift);
-            msg += "<br>";
-            msg += tr("Following table shows the available combinations:");
-            msg += pHtml->createBitrateTsTable(chan.vTs);
-            msg += "<br> <br>";
-            msg += pHtml->htmlTag("b", tr("Do you want to activate the new %1? The player will switch to 'Live' then.").arg(what));
-
-            btn = QMessageBox::information(this, tr("Information"), msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-
-            if (btn == QMessageBox::No)
-            {
-               bSendSig = false;
-            }
-            else if (btn == QMessageBox::Yes)
-            {
-               // emulate Live show ...
-               showInfo.setShowType(ShowInfo::Live);
-            }
-         }
-      }
-   }
-
-   return bSendSig;
 }
 
 /* -----------------------------------------------------------------\
@@ -504,6 +451,26 @@ void CSettingsDlg::slotEnableVlcVerbLine()
    else
    {
       m_ui->lineVlcVerbose->setEnabled(true);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   enable / disable default audio line
+//
+//! \author  Jo2003
+//! \date    04.03.2015
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::slotEnableDefAudioLine()
+{
+   if (m_ui->lineALang->isEnabled())
+   {
+      m_ui->lineALang->setEnabled(false);
+   }
+   else
+   {
+      m_ui->lineALang->setEnabled(true);
    }
 }
 
@@ -596,9 +563,11 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("ShutdwnCmd", m_ui->lineShutdown->text());
    pDb->setValue("APIServer", m_ui->lineApiServer->text());
    pDb->setValue("libVlcLogLevel", m_ui->lineVlcVerbose->text());
+   pDb->setValue("aLang", m_ui->lineALang->text());
 
    // check boxes ...
    pDb->setValue("UseProxy", (int)m_ui->useProxy->checkState());
+   pDb->setValue("FixTime", (int)m_ui->checkFixTime->checkState());
    pDb->setValue("TrayHide", (int)m_ui->checkHideToSystray->checkState());
    pDb->setValue("AskRecFile", (int)m_ui->checkAskForName->checkState());
    pDb->setValue("TranslitRecFile", (int)m_ui->checkTranslit->checkState());
@@ -607,7 +576,6 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
-   pDb->setValue("ExtEPG", (int)m_ui->checkExtEPG->checkState());
 
 #ifndef _HAS_VOD_MANAGER
    /////////////////////////////////////////////////////////////////////////////
@@ -622,11 +590,11 @@ void CSettingsDlg::on_pushSave_clicked()
 
    // combo boxes ...
    pDb->setValue("Language", m_ui->cbxLanguage->currentText());
-   int idx = m_ui->cbxBufferSeconds->currentIndex();
-   pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->itemData((idx == -1) ? 0 : idx).toInt());
+   pDb->setValue("HttpCache", m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt());
    pDb->setValue("LogLevel", m_ui->cbxLogLevel->currentIndex());
    pDb->setValue("PlayerModule", m_ui->cbxPlayerMod->currentText());
    pDb->setValue("DeintlMode", m_ui->cbxDeintlMode->currentText());
+   pDb->setValue("StreamFormat", m_ui->cbxStreamFormat->currentIndex());
 
    // short cuts ...
    CShortCutGrabber *pGrab;
@@ -746,77 +714,52 @@ void CSettingsDlg::SetStreamServerCbx (const QVector<cparser::SSrv> &vSrvList, c
 
 /* -----------------------------------------------------------------\
 |  Method: SetBitrateCbx
-|  Begin: 14.01.2011 / 14:15
+|  Begin: 22.11.2014
 |  Author: Jo2003
-|  Description: fill / mark combobox for bitrate
+|  Description: mark comboboxes for bitrate
 |
-|  Parameters: ref. to bitrate vector, act bitrate
+|  Parameters: ref. to bitrate map
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
+void CSettingsDlg::SetBitrateCbx (const QMap<cparser::BitrateType, QString> &currVals)
 {
-   int iActIdx = 0;
-   int iCount  = 0;
-   QVector<int>::const_iterator cit;
-   QString sName;
+   int idx;
 
-   // backup bitrate ...
-   m_iServerBitrate = iActrate;
-
-   if (!vValues.isEmpty())
+   if (currVals.contains(cparser::BT_LIVE_SD))
    {
-      m_ui->cbxBitRate->clear();
-
-      // add all available bitrates ...
-      for (cit = vValues.constBegin(); cit != vValues.constEnd(); cit++)
+      idx = m_ui->cbxBitRateLiveSD->findData(currVals.value(cparser::BT_LIVE_SD));
+      if (idx != -1)
       {
-         // build name ...
-         switch (*cit)
-         {
-         case 320:
-            sName = tr("Mobile");
-            break;
-
-         case 900:
-            sName = tr("Eco");
-            break;
-
-         case 1500:
-            sName = tr("Standard");
-            break;
-
-         case 2500:
-            sName = tr("Premium");
-            break;
-
-         default:
-            sName = tr("%1 Kbit/s").arg(*cit);
-            break;
-         }
-
-         m_ui->cbxBitRate->addItem(sName, QVariant(*cit));
-
-         if (*cit == iActrate)
-         {
-            iActIdx = iCount;
-         }
-
-         iCount ++;
+         m_ui->cbxBitRateLiveSD->setCurrentIndex(idx);
       }
-
-      // mark active rate ...
-      m_ui->cbxBitRate->setCurrentIndex(iActIdx);
    }
 
-   // make sure the box isn't touched if there is only one entry ...
-   if (vValues.count() < 2)
+   if (currVals.contains(cparser::BT_LIVE_HD))
    {
-      m_ui->cbxBitRate->setDisabled(true);
+      idx = m_ui->cbxBitRateLiveHD->findData(currVals.value(cparser::BT_LIVE_HD));
+      if (idx != -1)
+      {
+         m_ui->cbxBitRateLiveHD->setCurrentIndex(idx);
+      }
    }
-   else
+
+   if (currVals.contains(cparser::BT_ARCH_SD))
    {
-      m_ui->cbxBitRate->setEnabled(true);
+      idx = m_ui->cbxBitRateArchSD->findData(currVals.value(cparser::BT_ARCH_SD));
+      if (idx != -1)
+      {
+         m_ui->cbxBitRateArchSD->setCurrentIndex(idx);
+      }
+   }
+
+   if (currVals.contains(cparser::BT_ARCH_HD))
+   {
+      idx = m_ui->cbxBitRateArchHD->findData(currVals.value(cparser::BT_ARCH_HD));
+      if (idx != -1)
+      {
+         m_ui->cbxBitRateArchHD->setCurrentIndex(idx);
+      }
    }
 }
 
@@ -835,8 +778,6 @@ void CSettingsDlg::fillTimeShiftCbx(const QVector<int> &vVals, int iAct)
    int iActIdx = 0;
    int iCount  = 0;
    QVector<int>::const_iterator cit;
-
-   m_iServerTimeShift = iAct;
 
    if (!vVals.isEmpty())
    {
@@ -886,7 +827,7 @@ void CSettingsDlg::on_cbxStreamServer_activated(int index)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: on_cbxBitRate_activated
+|  Method: on_cbxBitRateLiveSD_activated
 |  Begin: 14.09.2011 / 09:40
 |  Author: Jo2003
 |  Description: set bitrate
@@ -895,88 +836,54 @@ void CSettingsDlg::on_cbxStreamServer_activated(int index)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::on_cbxBitRate_activated(int index)
+void CSettingsDlg::on_cbxBitRateLiveSD_activated(int index)
 {
-   int  br       = m_ui->cbxBitRate->itemData(index).toInt();
-   int  i;
-   bool bSendSig = true;
+   emit sigSetBitRate((int)cparser::BT_LIVE_SD, m_ui->cbxBitRateLiveSD->itemData(index).toString());
+}
 
-   if ((showInfo.playState() == IncPlay::PS_PLAY)
-       && (showInfo.showType() == ShowInfo::Archive))
-   {
-      // get informaion about the channel from showinfo
-      int     cid = showInfo.channelId();
-      bool    bArchHasBitrate = false;
-      QString msg;
-      QVector<int> brAvail;
-      QMap<int, QString> brMap;
-      brMap[320]  = tr("Mobile");
-      brMap[900]  = tr("Eco");
-      brMap[1500] = tr("Standard");
-      brMap[2500] = tr("Premium");
+/* -----------------------------------------------------------------\
+|  Method: on_cbxBitRateLiveHD_activated
+|  Begin: 14.09.2011 / 09:40
+|  Author: Jo2003
+|  Description: set bitrate
+|
+|  Parameters: actual index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_cbxBitRateLiveHD_activated(int index)
+{
+   emit sigSetBitRate((int)cparser::BT_LIVE_HD, m_ui->cbxBitRateLiveHD->itemData(index).toString());
+}
 
-      if (pChanMap->contains(cid))
-      {
-         cparser::SChan chan = pChanMap->value(cid);
+/* -----------------------------------------------------------------\
+|  Method: on_cbxBitRateArchSD_activated
+|  Begin: 14.09.2011 / 09:40
+|  Author: Jo2003
+|  Description: set bitrate
+|
+|  Parameters: actual index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_cbxBitRateArchSD_activated(int index)
+{
+   emit sigSetBitRate((int)cparser::BT_ARCH_SD, m_ui->cbxBitRateArchSD->itemData(index).toString());
+}
 
-         for (i = 0; i < chan.vTs.count(); i ++)
-         {
-            if (chan.vTs.at(i).iTimeShift  == 100) // API hack!
-            {
-               brAvail.append(chan.vTs.at(i).iBitRate);
-
-               if (chan.vTs.at(i).iBitRate == br)
-               {
-                  bArchHasBitrate = true;
-               }
-            }
-         }
-
-         if (!bArchHasBitrate)
-         {
-            QMessageBox::StandardButton btn;
-            msg  = tr("The archive for channel '%1' isn't available in the bitrate '%2'!")
-                  .arg(showInfo.chanName()).arg(brMap[br]);
-            msg += "<br> <br>";
-            msg += tr("Following bitrates are available:");
-            msg += "<br>";
-
-            for (i = 0; i < brAvail.count(); i++)
-            {
-               msg += QString("%1, ").arg(brMap.value(brAvail.at(i)));
-            }
-
-            msg += "<br> <br>";
-            msg += pHtml->htmlTag("b", tr("Do you want to activate the new bitrate? The player will switch to 'Live' then."));
-
-            btn = QMessageBox::information(this, tr("Information"), msg, QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-
-            if (btn == QMessageBox::No)
-            {
-               bSendSig = false;
-            }
-            else if (btn == QMessageBox::Yes)
-            {
-               // emulate Live show ...
-               showInfo.setShowType(ShowInfo::Live);
-            }
-         }
-      }
-   }
-
-   if (!bSendSig)
-   {
-      // return to the default bitrate ...
-      if ((index = m_ui->cbxBitRate->findData(m_iServerBitrate)) != -1)
-      {
-         m_ui->cbxBitRate->setCurrentIndex(index);
-      }
-   }
-   else
-   {
-      m_iServerBitrate = br;
-      emit sigSetBitRate(br);
-   }
+/* -----------------------------------------------------------------\
+|  Method: on_cbxBitRateArchHD_activated
+|  Begin: 14.09.2011 / 09:40
+|  Author: Jo2003
+|  Description: set bitrate
+|
+|  Parameters: actual index
+|
+|  Returns: --
+\----------------------------------------------------------------- */
+void CSettingsDlg::on_cbxBitRateArchHD_activated(int index)
+{
+   emit sigSetBitRate((int)cparser::BT_ARCH_HD, m_ui->cbxBitRateArchHD->itemData(index).toString());
 }
 
 /* -----------------------------------------------------------------\
@@ -991,37 +898,10 @@ void CSettingsDlg::on_cbxBitRate_activated(int index)
 \----------------------------------------------------------------- */
 void CSettingsDlg::on_cbxTimeShift_activated(int index)
 {
-   int  ts    = m_ui->cbxTimeShift->itemData(index).toInt();
-   /*
-    * Maybe later we will add this check here as well ...
-    *
-   int  br    = m_ui->cbxBitRate->itemData(m_ui->cbxBitRate->currentIndex()).toInt();
-   bool bSend = checkBitrateAndTimeShift(br, ts, tr("timeshift"));
-
-   if (!bSend)
-   {
-      // return to the default timeshift ...
-      if ((index = m_ui->cbxTimeShift->findData(m_iServerTimeShift)) != -1)
-      {
-         m_ui->cbxTimeShift->setCurrentIndex(index);
-      }
-   }
-   else
-   {
-      m_iServerTimeShift = ts;
-
-      // store global ...
-      tmSync.setTimeShift(ts);
-      emit sigSetTimeShift(ts);
-   }
-   */
-
-   m_iServerTimeShift = ts;
-
    // store global ...
-   tmSync.setTimeShift(ts);
-   emit sigSetTimeShift(ts);
+   pTs->setTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 
+   emit sigSetTimeShift(m_ui->cbxTimeShift->itemData(index).toInt());
 }
 
 /* -----------------------------------------------------------------\
@@ -1186,6 +1066,36 @@ QList<int> CSettingsDlg::GetFavourites(bool *ok)
 }
 
 /* -----------------------------------------------------------------\
+|  Method: SetCustFontSize
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: save customized font size
+|
+|  Parameters: font size change value
+|
+|  Returns:  --
+\----------------------------------------------------------------- */
+void CSettingsDlg::SetCustFontSize(int iSize)
+{
+   pDb->setValue("CustFontSz", iSize);
+}
+
+/* -----------------------------------------------------------------\
+|  Method: GetCustFontSize
+|  Begin: 18.02.2010 / 11:22:39
+|  Author: Jo2003
+|  Description: get customized font size
+|
+|  Parameters: --
+|
+|  Returns:  font size change value
+\----------------------------------------------------------------- */
+int CSettingsDlg::GetCustFontSize()
+{
+   return pDb->intValue("CustFontSz");
+}
+
+/* -----------------------------------------------------------------\
 |  Method: GetCookie
 |  Begin: 03.03.2010 / 12:22:39
 |  Author: Jo2003
@@ -1326,10 +1236,9 @@ QString CSettingsDlg::getDeinlMode()
    return m_ui->cbxDeintlMode->currentText();
 }
 
-QString CSettingsDlg::getStreamServer()
+QString CSettingsDlg::getStreamType()
 {
-   int idx = m_ui->cbxStreamServer->currentIndex();
-   return m_ui->cbxStreamServer->itemData((idx == -1) ? 0 : idx).toString();
+   return m_ui->cbxStreamFormat->currentText();
 }
 
 bool CSettingsDlg::UseProxy ()
@@ -1340,6 +1249,11 @@ bool CSettingsDlg::UseProxy ()
 bool CSettingsDlg::AllowEros()
 {
    return m_ui->checkAdult->isChecked();
+}
+
+bool CSettingsDlg::FixTime()
+{
+   return m_ui->checkFixTime->isChecked();
 }
 
 bool CSettingsDlg::HideToSystray()
@@ -1374,8 +1288,7 @@ vlclog::eLogLevel CSettingsDlg::GetLogLevel()
 
 int CSettingsDlg::GetBufferTime()
 {
-   int idx = m_ui->cbxBufferSeconds->currentIndex();
-   return m_ui->cbxBufferSeconds->itemData((idx == -1) ? 0 : idx).toInt();
+   return m_ui->cbxBufferSeconds->itemData(m_ui->cbxBufferSeconds->currentIndex()).toInt();
 }
 
 QString CSettingsDlg::GetShutdownCmd()
@@ -1388,12 +1301,6 @@ bool CSettingsDlg::DisableSplashScreen()
    return (pDb->intValue("NoSplash")) ? true : false;
 }
 
-int  CSettingsDlg::GetBitRate()
-{
-   int idx = m_ui->cbxBitRate->currentIndex();
-   return m_ui->cbxBitRate->itemData((idx == -1) ? 0 : idx).toInt();
-}
-
 QString CSettingsDlg::GetAPIServer()
 {
    return m_ui->lineApiServer->text();
@@ -1401,8 +1308,15 @@ QString CSettingsDlg::GetAPIServer()
 
 int CSettingsDlg::getTimeShift()
 {
-   int idx = m_ui->cbxTimeShift->currentIndex();
-   return m_ui->cbxTimeShift->itemData((idx == -1) ? 0 : idx).toInt();
+   int idx;
+   if ((idx = m_ui->cbxTimeShift->currentIndex()) != -1)
+   {
+      return m_ui->cbxTimeShift->itemData(idx).toInt();
+   }
+   else
+   {
+      return 0;
+   }
 }
 
 void CSettingsDlg::saveChannel(int cid)
@@ -1425,6 +1339,11 @@ QString CSettingsDlg::lastEpgDay()
    return pDb->stringValue("epgDay");
 }
 
+QString CSettingsDlg::aLang()
+{
+   return m_ui->lineALang->text();
+}
+
 bool CSettingsDlg::doubleClickToPlay()
 {
    return m_ui->check2ClicksToPlay->isChecked();
@@ -1438,11 +1357,6 @@ bool CSettingsDlg::useGpuAcc()
 bool CSettingsDlg::showAds()
 {
    return m_ui->checkAds->isChecked();
-}
-
-bool CSettingsDlg::extEpg()
-{
-   return m_ui->checkExtEPG->isChecked();
 }
 
 uint CSettingsDlg::libVlcVerboseLevel()
@@ -1582,7 +1496,7 @@ void CSettingsDlg::slotBuildChanManager(const QString &str)
 
    channelVector.clear();
 
-   if (!pApiParser->parseChannelList(str, channelVector))
+   if (!pApiParser->parseChannelList(str, channelVector, false))
    {
       m_ui->listHide->clear();
 
@@ -2070,187 +1984,67 @@ int CSettingsDlg::setLanguage(const QString &lng)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   set username from outsite
+//! \brief   create / translate bitrate comboboxes
 //
 //! \author  Jo2003
-//! \date    30.04.2014
+//! \date    22.11.2014
 //
-//! \param   str (const QString&) new username
-//
-//! \return  --
 //---------------------------------------------------------------------------
-void CSettingsDlg::setUser(const QString& str)
+void CSettingsDlg::touchBitRateCBXs()
 {
-   m_ui->lineUsr->setText(str);
+   int idx;
+
+   idx = m_ui->cbxBitRateLiveSD->currentIndex();
+   m_ui->cbxBitRateLiveSD->clear();
+   m_ui->cbxBitRateLiveSD->insertItem(0, tr("Standard"), QVariant("Standart"));
+   m_ui->cbxBitRateLiveSD->insertItem(1, tr("Eco"), QVariant("Economy"));
+   m_ui->cbxBitRateLiveSD->insertItem(2, tr("Auto"), QVariant("Automatic"));
+   m_ui->cbxBitRateLiveSD->setCurrentIndex(idx);
+
+   idx = m_ui->cbxBitRateLiveHD->currentIndex();
+   m_ui->cbxBitRateLiveHD->clear();
+   m_ui->cbxBitRateLiveHD->insertItem(0, tr("Standard"), QVariant("Standart"));
+   m_ui->cbxBitRateLiveHD->insertItem(1, tr("Eco"), QVariant("Economy"));
+   m_ui->cbxBitRateLiveHD->insertItem(2, tr("Auto"), QVariant("Automatic"));
+   m_ui->cbxBitRateLiveHD->setCurrentIndex(idx);
+
+   idx = m_ui->cbxBitRateArchSD->currentIndex();
+   m_ui->cbxBitRateArchSD->clear();
+   m_ui->cbxBitRateArchSD->insertItem(0, tr("Standard"), QVariant("Standart"));
+   m_ui->cbxBitRateArchSD->insertItem(1, tr("Eco"), QVariant("Economy"));
+   m_ui->cbxBitRateArchSD->setCurrentIndex(idx);
+
+   idx = m_ui->cbxBitRateArchHD->currentIndex();
+   m_ui->cbxBitRateArchHD->clear();
+   m_ui->cbxBitRateArchHD->insertItem(0, tr("Standard"), QVariant("Standart"));
+   m_ui->cbxBitRateArchHD->insertItem(1, tr("Eco"), QVariant("Economy"));
+   m_ui->cbxBitRateArchHD->setCurrentIndex(idx);
 }
 
 //---------------------------------------------------------------------------
 //
-//! \brief   set password from outsite
+//! \brief   create a warning un unsupported stream type
 //
 //! \author  Jo2003
-//! \date    30.04.2014
+//! \date    22.11.2014
 //
-//! \param   str (const QString&) new password
+//! \param   arg1 (const QString&) stream type value
 //
 //---------------------------------------------------------------------------
-void CSettingsDlg::setPasswd(const QString& str)
+void CSettingsDlg::on_cbxStreamFormat_activated(const QString &arg1)
 {
-   m_ui->linePass->setText(str);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set API server from outsite
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   str [in] (const QString&) new server
-//
-//---------------------------------------------------------------------------
-void CSettingsDlg::setApiSrv(const QString &str)
-{
-   m_ui->lineApiServer->setText(str);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set active stream server
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   str [in] (const QString&) new server
-//
-//---------------------------------------------------------------------------
-void CSettingsDlg::setActiveStreamServer(const QString &str)
-{
-   int idx = m_ui->cbxStreamServer->findData(str);
-
-   if (idx > -1)
+   if ((arg1 == "hds") || (arg1 == "rtsp"))
    {
-      m_ui->cbxStreamServer->setCurrentIndex(idx);
+      QMessageBox::warning(this, tr("Warning!"),
+                           tr("<b>Please note:</b><br>"
+                              "&quot;%1&quot; might not be supported by the VLC player library at all!")
+                           .arg(arg1));
    }
-}
 
-//---------------------------------------------------------------------------
-//
-//! \brief   set active time shift
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   val [in] (int) new timeshift
-//
-//---------------------------------------------------------------------------
-void CSettingsDlg::setActiveTimeshift(int val)
-{
-   int idx = m_ui->cbxTimeShift->findData(val);
-
-   if (idx > -1)
-   {
-      m_ui->cbxTimeShift->setCurrentIndex(idx);
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set active bitrate
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   val [in] (int) new bitrate
-//
-//---------------------------------------------------------------------------
-void CSettingsDlg::setActiveBitrate(int val)
-{
-   int idx = m_ui->cbxBitRate->findData(val) ;
-
-   if (idx > -1)
-   {
-      m_ui->cbxBitRate->setCurrentIndex(idx);
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set active buffer time
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   val [in] (int) new time
-//
-//---------------------------------------------------------------------------
-void CSettingsDlg::setActiveBuffer(int val)
-{
-   int idx = m_ui->cbxBufferSeconds->findData(val);
-
-   if (idx > -1)
-   {
-      m_ui->cbxBufferSeconds->setCurrentIndex(idx);
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   get font size delta
-//
-//! \author  Jo2003
-//! \date    03.06.2014
-//
-//! \param   --
-//
-//! \return  font size delta
-//---------------------------------------------------------------------------
-int CSettingsDlg::getFontDelta()
-{
-   return m_ui->spinBoxFontDelta->value();
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set font size delta
-//
-//! \author  Jo2003
-//! \date    03.06.2014
-//
-//! \param   i [in] (int) new size difference
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void CSettingsDlg::setFontDelta(int i)
-{
-   m_ui->spinBoxFontDelta->setValue(i);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   font delta was changed -> tell about
-//
-//! \author  Jo2003
-//! \date    03.06.2014
-//
-//! \param   arg1 [in] (int) new size difference
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void CSettingsDlg::on_spinBoxFontDelta_valueChanged (int arg1)
-{
-   if (bSettingsRead)
-   {
-      // get delta ...
-      int delta = arg1 - pDb->intValue("CustFontSz");
-
-      // font size ...
-      pDb->setValue("CustFontSz", arg1);
-
-      emit sigFontDeltaChgd(delta);
-   }
+   emit sigStreamProto(arg1);
 }
 
 /************************* History ***************************\
 | $Log$
 \*************************************************************/
+

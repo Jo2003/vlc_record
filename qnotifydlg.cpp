@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qnotifydlg.cpp $
  *
  *  @file     qnotifydlg.cpp
  *
@@ -8,7 +8,7 @@
  *
  *  @date     19.06.2013
  *
- *  $Id$
+ *  $Id: qnotifydlg.cpp 1299 2014-02-12 14:00:23Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qnotifydlg.h"

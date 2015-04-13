@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cvlcrecdb.h $
 |
 | Author: Jo2003
 |
 | Begin: 13.06.2010 / 14:50:35
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cvlcrecdb.h 1252 2013-12-02 19:07:04Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __120610_VLC_REC_DB_H
    #define __120610_VLC_REC_DB_H
@@ -21,6 +21,7 @@
 #include <QFile>
 #include <QVariant>
 
+#include "cdirstuff.h"
 #include "cparser.h"
 
 #define VLC_REC_DB "vlcrec.db.sqlite"
@@ -84,9 +85,7 @@ public:
    int        delWatchEntry (int cid, uint uiGmt);
    int        setDefAStream (int cid, int idx);
    int        defAStream (int cid);
-   int        markVod (int videoId);
-   bool       videoSeen (int videoId);
-   void       cleanVodSeen ();
+
 
 protected:
    int checkDb();

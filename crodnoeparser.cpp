@@ -1,17 +1,19 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/crodnoeparser.cpp $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 19.03.2013
 |
-| $Id$
+| $Id: crodnoeparser.cpp 1500 2015-03-04 08:55:58Z Olenka.Joerg $
 |
 \=============================================================================*/
 #include "crodnoeparser.h"
-#include "externals_inc.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 /* -----------------------------------------------------------------\
 |  Method: CRodnoeParser / constructor
@@ -34,13 +36,14 @@ CRodnoeParser::CRodnoeParser(QObject * parent) : CApiXmlParser(parent)
 |  Author: Jo2003
 |  Description: parse channel list
 |
-|  Parameters: ref. to response, ref. to chanList
+|  Parameters: ref. to response, ref. to chanList, fixTime flag
 |
 |  Returns: 0 --> ok
 |        else --> any error
 \----------------------------------------------------------------- */
 int CRodnoeParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList)
+                                         QVector<cparser::SChan> &chanList,
+                                         bool bFixTime)
 {
    int              iRV = 0;
    QXmlStreamReader xml;
@@ -68,7 +71,7 @@ int CRodnoeParser::parseChannelList (const QString &sResp,
          if (xml.name() == "groups")
          {
             // go into next level and parse groups ...
-            parseGroups(xml, chanList);
+            parseGroups(xml, chanList, bFixTime);
          }
          break;
 
@@ -97,11 +100,12 @@ int CRodnoeParser::parseChannelList (const QString &sResp,
 |  Author: Jo2003
 |  Description: parse group part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList
+|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
+int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+                                    bool bFixTime)
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
@@ -158,7 +162,7 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
                chanList.push_back(groupEntry);
 
                // go into next level (channels)
-               parseChannels(xml, chanList);
+               parseChannels(xml, chanList, bFixTime);
             }
          }
          else
@@ -190,11 +194,12 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
 |  Author: Jo2003
 |  Description: parse channels part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList
+|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
-int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList)
+int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
+                                     bool bFixTime)
 {
    QString                sUnknown;
    cparser::SChan         chanEntry;
@@ -251,6 +256,7 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
          {
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
+               chanEntry.bHasTsInfo = true;
                chanEntry.iTs        = xml.text().toString().toInt();
             }
          }
@@ -285,6 +291,12 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
             chanEntry.sProgramm = QString("%1\n%2").arg(mResults.value("title")).arg(mResults.value("info"));
             chanEntry.uiStart   = mResults.value("begin").toUInt();
             chanEntry.uiEnd     = mResults.value("end").toUInt();
+
+            if (bFixTime)
+            {
+               fixTime(chanEntry.uiStart);
+               fixTime(chanEntry.uiEnd);
+            }
          }
          else if (xml.name() == "hide")
          {
@@ -310,7 +322,7 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                uint idx = (uint)slATracks.indexOf(xml.text().toString());
-               chanEntry.uiDefAud = (idx == (uint)-1) ? 0 : idx;
+               chanEntry.iDefAud = (idx == (uint)-1) ? 0 : idx;
             }
          }
          else

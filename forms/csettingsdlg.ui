@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>544</height>
+    <width>620</width>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -126,10 +126,85 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
-         <property name="spacing">
-          <number>2</number>
-         </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QGroupBox" name="groupBRLive">
+           <property name="title">
+            <string>Live Bitrate</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,9,1,9">
+            <item>
+             <widget class="QLabel" name="label_24">
+              <property name="text">
+               <string>SD:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbxBitRateLiveSD">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_26">
+              <property name="text">
+               <string>HD:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbxBitRateLiveHD">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupBRArch">
+           <property name="title">
+            <string>Archive Bitrate</string>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,9,1,9">
+            <item>
+             <widget class="QLabel" name="label_25">
+              <property name="text">
+               <string>SD:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbxBitRateArchSD">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>HD:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbxBitRateArchHD">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,5">
          <item>
           <widget class="QGroupBox" name="groupStreamServer">
            <property name="title">
@@ -159,42 +234,23 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="labBitRate">
-              <property name="text">
-               <string>Bitrate:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QComboBox" name="cbxBitRate">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>Standard</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="2" column="0">
              <widget class="QLabel" name="labBuffer">
               <property name="text">
                <string>Buffer (sec.):</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="1" column="1">
              <widget class="QComboBox" name="cbxBufferSeconds"/>
             </item>
-            <item row="3" column="0">
+            <item row="2" column="0">
              <widget class="QLabel" name="label_16">
               <property name="text">
                <string>Timeshift: </string>
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
+            <item row="2" column="1">
              <widget class="QComboBox" name="cbxTimeShift">
               <property name="enabled">
                <bool>false</bool>
@@ -229,84 +285,72 @@
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_2">
-            <item>
-             <layout class="QFormLayout" name="formLayout">
-              <property name="fieldGrowthPolicy">
-               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Language: </string>
               </property>
-              <property name="horizontalSpacing">
-               <number>6</number>
-              </property>
-              <property name="verticalSpacing">
-               <number>6</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_10">
-                <property name="text">
-                 <string>Language: </string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QComboBox" name="cbxLanguage"/>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_12">
-                <property name="text">
-                 <string>Reload Logos:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QToolButton" name="pushDelLogos">
-                <property name="minimumSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="text">
-                 <string>&amp;reload Logos</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="../common.qrc">
-                  <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>24</width>
-                  <height>24</height>
-                 </size>
-                </property>
-                <property name="autoRaise">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QSpinBox" name="spinBoxFontDelta">
-                <property name="readOnly">
-                 <bool>false</bool>
-                </property>
-                <property name="minimum">
-                 <number>-10</number>
-                </property>
-                <property name="maximum">
-                 <number>10</number>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="label_24">
-                <property name="text">
-                 <string>Adapt Font Size:</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             </widget>
             </item>
-            <item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="cbxLanguage"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_29">
+              <property name="text">
+               <string>Audio Language: </string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="lineALang">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Reload Logos:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QToolButton" name="pushDelLogos">
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>&amp;reload Logos</string>
+              </property>
+              <property name="icon">
+               <iconset resource="../common.qrc">
+                <normaloff>:/app/reload</normaloff>:/app/reload</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="autoRaise">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkFixTime">
+              <property name="text">
+               <string>Try to fix time offset</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0" colspan="2">
              <widget class="QCheckBox" name="checkAdvanced">
               <property name="text">
                <string>Enable Advanced Settings</string>
@@ -708,11 +752,39 @@ color: red;
            </widget>
           </item>
           <item row="8" column="1">
-           <widget class="QCheckBox" name="checkExtEPG">
-            <property name="text">
-             <string>EPG day starts at 0:00</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_13">
+            <item>
+             <widget class="QLabel" name="label_28">
+              <property name="text">
+               <string>Stream Protocol:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cbxStreamFormat">
+              <item>
+               <property name="text">
+                <string>mpegts / hls</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>hds</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>rtsp</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>hls</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -1220,11 +1292,9 @@ color: red;
   <tabstop>lineVLC</tabstop>
   <tabstop>pushVLC</tabstop>
   <tabstop>cbxStreamServer</tabstop>
-  <tabstop>cbxBitRate</tabstop>
   <tabstop>cbxBufferSeconds</tabstop>
   <tabstop>cbxTimeShift</tabstop>
-  <tabstop>cbxLanguage</tabstop>
-  <tabstop>pushDelLogos</tabstop>
+  <tabstop>checkFixTime</tabstop>
   <tabstop>checkAdvanced</tabstop>
   <tabstop>tableShortCuts</tabstop>
   <tabstop>btnResetShortcuts</tabstop>

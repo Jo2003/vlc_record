@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qhlscontrol.cpp $
  *
  *  @file     qhlscontrol.cpp
  *
@@ -8,11 +8,21 @@
  *
  *  @date     16.12.2013
  *
- *  $Id$
+ *  $Id: qhlscontrol.cpp 1277 2013-12-20 10:46:06Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qhlscontrol.h"
-#include "externals_inc.h"
+#include "api_inc.h"
+#include "clogfile.h"
+
+// global client api classes ...
+extern ApiClient *pApiClient;
+
+// for logging ...
+extern CLogFile VlcLog;
+
+// global folders ...
+extern CDirStuff *pFolders;
 
 //---------------------------------------------------------------------------
 //

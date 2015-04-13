@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qfavframe.cpp $
  *
  *  @file     qfavframe.cpp
  *
@@ -8,10 +8,13 @@
  *
  *  @date     14.06.2012
  *
- *  $Id$
+ *  $Id: qfavframe.cpp 759 2012-06-14 13:36:38Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qfavframe.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 //---------------------------------------------------------------------------
 //! \fn      sigAddFav

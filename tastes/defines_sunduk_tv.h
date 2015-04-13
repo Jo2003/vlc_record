@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/tastes/defines_sunduk_tv.h $
 |
 | Author: Jo2003
 |
 | Begin: 12.12.2013
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_sunduk_tv.h 1472 2014-11-22 17:28:28Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __20131212__DEFINES_SUNDUK_TV_H
    #define __20131212__DEFINES_SUNDUK_TV_H
@@ -22,6 +22,8 @@
 #define COMPANY_LINK  "<a href='http://www.sunduk.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 #define ApiClient      CSundukClnt
+
+#define APPLICATION_SHORTCUT "sdk"
 
 #endif // __20131212__DEFINES_SUNDUK_TV_H
 

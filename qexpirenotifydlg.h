@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qexpirenotifydlg.h $
  *
  *  @file     qexpirenotifydlg.h
  *
@@ -8,14 +8,13 @@
  *
  *  @date     12.02.2014
  *
- *  $Id$
+ *  $Id: qexpirenotifydlg.h 1299 2014-02-12 14:00:23Z Olenka.Joerg $
  *
  *///------------------------- (c) 2014 by Jo2003  --------------------------
 #ifndef __20130619_QEXPIRENOTIFYDLG_H
    #define __20130619_QEXPIRENOTIFYDLG_H
 
 #include "qnotifydlg.h"
-#include <QEvent>
 
 //---------------------------------------------------------------------------
 //! \class   QExpireNotifyDlg

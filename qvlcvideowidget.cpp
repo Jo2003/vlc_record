@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qvlcvideowidget.cpp $
  *
  *  @file     qvlcvideowidget.cpp
  *
@@ -8,7 +8,7 @@
  *
  *  @date     08.02.2012
  *
- *  $Id$
+ *  $Id: qvlcvideowidget.cpp 1505 2015-03-04 09:57:41Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qvlcvideowidget.h"
@@ -18,10 +18,14 @@
 #include <QStackedLayout>
 #include <QPixmap>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPainterPath>
-#include <QBrush>
-#include "externals_inc.h"
+
+#include "qfusioncontrol.h"
+
+// fusion control ...
+extern QFusionControl missionControl;
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 //---------------------------------------------------------------------------
 //
@@ -46,8 +50,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _bWindowed(false),
    _bCPanelIfWnd(true),
    _contextMenu(NULL),
-   _lastPos(vlcvid::Pos_Ukwn),
-   _labOverlay(NULL)
+   _lastPos(vlcvid::Pos_Ukwn)
 {
    setMouseTracking(true);
 
@@ -55,7 +58,6 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _render              = new QWidget(this);
    _mouseHide           = new QTimer(this);
    _placePanel          = new QTimer(this);
-   _tOverlay            = new QTimer(this);
 #ifdef Q_OS_LINUX
    /// double click emulator on Linux only
    _tDoubleClick        = new QTimer(this);
@@ -97,9 +99,6 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    // use own context menu ...
    setContextMenuPolicy (Qt::CustomContextMenu);
 
-   // overlay destroy timer ...
-   _tOverlay->setSingleShot(true);
-
    // fill context menu ...
    _contextMenu = new QMenu(this);
    touchContextMenu();
@@ -115,8 +114,6 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
 
    // all content menu actions handled by one slot ...
    connect (_contextMenu, SIGNAL(triggered(QAction*)), this, SLOT(slotContentActionTriggered(QAction*)));
-
-   connect (_tOverlay, SIGNAL(timeout()), this, SLOT(slotDestroyOverlay()));
 }
 
 //---------------------------------------------------------------------------
@@ -583,7 +580,7 @@ void QVlcVideoWidget::slotPositionCtrlPanel()
             QRect            rect = pDesc->screenGeometry(_render);
 
             int x = rect.width() / 2 - _ctrlPanel->width() / 2;
-            int y = rect.height() - (int)((float)__PANEL_HEIGHT_INF * 1.1);
+            int y = rect.height() - (int)((float)_ctrlPanel->height() * 1.33);
 
             _ctrlPanel->setGeometry(x, y, _ctrlPanel->width(), _ctrlPanel->height());
          }
@@ -993,150 +990,6 @@ void QVlcVideoWidget::slotUpdLangVector(QLangVector lv)
    _langVector = lv;
    _mtxLv.unlock();
    touchContextMenu();
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   hide and destroy overlay label
-//
-//! \author  Jo2003
-//! \date    18.09.2014
-//
-//---------------------------------------------------------------------------
-void QVlcVideoWidget::slotDestroyOverlay()
-{
-   if (_labOverlay != NULL)
-   {
-      _labOverlay->hide();
-      delete _labOverlay;
-      _labOverlay = NULL;
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   create, place and display overlay label
-//
-//! \author  Jo2003
-//! \date    18.09.2014
-//
-//! \param   s [in] (const QString &) string to display
-//! \param   iTimeOutMs [in] (int) timeout in ms
-//
-//---------------------------------------------------------------------------
-void QVlcVideoWidget::slotDisplayOverlay(const QString &s, int iTimeOutMs)
-{
-   // hide existing overlay ...
-   slotDestroyOverlay();
-
-   if (!s.isEmpty())
-   {
-      // window flags for overlay widgets ...
-      Qt::WindowFlags f = Qt::Window | Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
-#ifdef Q_OS_LINUX
-      f |= Qt::X11BypassWindowManagerHint;
-#endif // Q_OS_LINUX
-
-      if ((_labOverlay = new QLabel(_render, f)) != NULL)
-      {
-         _labOverlay->setAttribute(Qt::WA_TranslucentBackground);
-#ifdef Q_OS_MAC
-         if(!isFullScreen() && !_extFullScreen)
-#endif //
-         {
-            _labOverlay->setAttribute(Qt::WA_ShowWithoutActivating);
-         }
-         _labOverlay->setAttribute(Qt::WA_TransparentForMouseEvents);
-         _labOverlay->setObjectName("overlay");
-         _labOverlay->setStyleSheet("QLabel#overlay {color: white; font-weight: bold; background-color: transparent;}");
-
-         /// The following code to display the string looks a little
-         /// overdozed. We could simply display the text. But to make it better
-         /// readable we need an outline around the text!
-         /// So we create a pixmap from the text which has a thin gray outline.
-
-         // topleft point of layout rectangle, mapped from parent to global.
-         QPoint x(_render->mapToGlobal(_render->geometry().topLeft()));
-
-         // create the whole layout rectangle ...
-         QRect pos(x.x(), x.y(),
-                   _render->geometry().width(),
-                   _render->geometry().height());
-
-         _labOverlay->setGeometry(pos);
-
-         // align content top left  ...
-         _labOverlay->setAlignment(Qt::AlignRight | Qt::AlignBottom);
-
-         // get current font from label ...
-         QFont f(_labOverlay->font());
-
-         // resize it to fit the picture size ...
-         f.setPixelSize(pos.height() / 15);
-
-         // set it to bold ...
-         f.setBold(true);
-
-         // create font metrics from changed font...
-         QFontMetrics fm(f);
-
-         // create a pixmap slightly larger than the bounding rectangle of our text
-         QPixmap pic(fm.boundingRect(s).size().width() + 20, fm.boundingRect(s).size().height() + 20);
-
-         // fill transparent backround ...
-         pic.fill(Qt::transparent);
-
-         // create a painter for the pixmap ...
-         QPainter     painter(&pic);
-
-         // enable antialiasing to make it look better ...
-         painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
-
-         // create a pen for the outline ...
-         QPen         pen;
-
-         // outline color dark gray ...
-         pen.setColor(QColor("#202020"));
-
-         // set width dependent on font size ...
-         pen.setWidthF((qreal)f.pixelSize() / 23.0);
-
-         // create a painter path to be used to draw the text ...
-         QPainterPath path;
-
-         // create the path with font and text ...
-         path.addText(QPointF(3.0, fm.ascent() + 3.0), f, s);
-
-         // set pen ...
-         painter.setPen(pen);
-
-         // brush is white ...
-         painter.setBrush(QBrush(QColor(Qt::white)));
-
-         // create painted text with outline from painter path
-         painter.drawPath(path);
-
-         // set pixmap to label ...
-         _labOverlay->setPixmap(pic);
-
-         // finally show text ...
-         _labOverlay->show();
-
-         // trigger destroy timer ...
-         _tOverlay->start(iTimeOutMs);
-
-#if defined Q_OS_LINUX || defined Q_OS_MAC
-         if(isFullScreen() || _extFullScreen)
-         {
-            // without forcing focus and raising
-            // control panel there is no way to
-            // re-trigger time jump ...
-            _ctrlPanel->setFocus(Qt::OtherFocusReason);
-            _ctrlPanel->raise();
-         }
-#endif // Q_OS_LINUX
-      }
-   }
 }
 
 //---------------------------------------------------------------------------

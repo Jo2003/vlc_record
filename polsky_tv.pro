@@ -1,9 +1,7 @@
 DEFINES += _TASTE_POLSKY_TV \
-           _HAS_VOD_MANAGER \
-           _EXT_EPG
+           _HAS_VOD_MANAGER
 RESOURCES += polsky_tv.qrc
-HEADERS += tastes/defines_polsky_tv.h \
-           tastes/more_polsky_translations.h
+HEADERS += tastes/defines_polsky_tv.h
 WINICO = polsky_tv.ico
 TRANSLATIONS = lang_de.ts \
                lang_pl.ts

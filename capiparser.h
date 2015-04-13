@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/capiparser.h $
  *
  *  @file     capiparser.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     17.04.2013
  *
- *  $Id$
+ *  $Id: capiparser.h 1471 2014-11-22 16:08:14Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130417_CAPIPARSER_H
@@ -18,6 +18,7 @@
 #include <QDateTime>
 #include <QStringList>
 
+#include "clogfile.h"
 #include "defdef.h"
 #include "cparser.h"
 
@@ -34,12 +35,15 @@ class CApiParser : public QObject
 public:
    CApiParser(QObject * parent = 0);
    virtual ~CApiParser();
+   virtual int fixTime (uint &uiTime);
+   virtual int GetFixTime ();
 
    // new functions for use with API ...
    virtual int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf) = 0;
-   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList) = 0;
+   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime) = 0;
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList) = 0;
    virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal) = 0;
+   virtual int parseBitrates(const QString& sResp, QMap<cparser::BitrateType, QString>& vals) = 0;
    virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp) = 0;
    virtual int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo) = 0;
    virtual int parseUrl (const QString& sResp, QString& sUrl) = 0;
@@ -50,7 +54,7 @@ public:
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg) = 0;
    virtual int parseError (const QString& sResp, QString& sMsg, int& eCode) = 0;
    virtual int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
-   virtual int handleTsStuff(QVector<cparser::SChan> &chanList, int bitRate);
+   virtual int handleTsStuff(QVector<cparser::SChan> &chanList);
    virtual int parseVodLang(const QString &sResp, QVodLangMap &lMap);
 
 protected:
@@ -60,6 +64,7 @@ protected:
    virtual bool ignoreGroup(cparser::SChan& grpEntry);
 
 private:
+   int         iOffset;
    QStringList slAltColors;
 
 signals:

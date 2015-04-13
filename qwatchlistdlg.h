@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qwatchlistdlg.h $
  *
  *  @file     qwatchlistdlg.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     06.08.2013
  *
- *  $Id$
+ *  $Id: qwatchlistdlg.h 1238 2013-11-27 15:15:56Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130806_QWATCHLISTDLG_H
@@ -20,6 +20,7 @@
 #include <QVector>
 #include <QTimer>
 
+#include "cvlcrecdb.h"
 #include "defdef.h"
 
 namespace Ui {

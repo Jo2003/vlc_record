@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qtimerex.h $
  *
  *  @file     qtimeerex.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     18.12.2012
  *
- *  $Id$
+ *  $Id: qtimerex.h 1492 2015-02-18 14:14:37Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20121217_QTIMEREX_H
@@ -80,7 +80,7 @@ public:
    {
       uiOffset = uiOffs;
    }
-   
+
    //---------------------------------------------------------------------------
    //
    //! \brief   get position + offset
@@ -95,6 +95,21 @@ public:
    uint pos ()
    {
       return uiElapsed + uiOffset;
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   set position
+   //
+   //! \author  Jo2003
+   //! \date    18.12.2012
+   //
+   //! \param   uiPos new position
+   //
+   //---------------------------------------------------------------------------
+   void setPos(uint uiPos)
+   {
+      uiElapsed = uiPos;
    }
    
 public slots:

@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/clcddisplay.h $
 |
 | Author: Jo2003
 |
 | Begin: 01.04.2010 / 14:21:44
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: clcddisplay.h 871 2012-08-10 12:35:55Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __040110__CLCDDISPLAY_H
    #define __040110__CLCDDISPLAY_H
@@ -40,7 +40,6 @@ namespace lcd
       STOP       = IncPlay::PS_STOP,
       TIMER_REC  = IncPlay::PS_TIMER_RECORD,
       TIMER_STBY = IncPlay::PS_TIMER_STBY,
-      SHOW_ADV   = IncPlay::PS_ADVERTISING,
       BLANK,
       WTF = 255
    };

@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cpixloader.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:17:24
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cpixloader.cpp 1215 2013-11-11 09:56:46Z Olenka.Joerg $
 \*************************************************************/
 #include "cpixloader.h"
 #include "defdef.h"

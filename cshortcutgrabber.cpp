@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cshortcutgrabber.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 11.02.2011 / 15:00
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cshortcutgrabber.cpp 496 2011-04-06 09:33:25Z Olenka.Joerg $
 \*************************************************************/
 #include "cshortcutgrabber.h"
 

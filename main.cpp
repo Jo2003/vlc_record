@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/main.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:57:06
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: main.cpp 1275 2013-12-19 12:33:03Z Olenka.Joerg $
 \*************************************************************/
 #include <QtGui/QApplication>
 #include <QTranslator>
@@ -19,12 +19,9 @@
 #include "qftsettings.h"
 #include "qfusioncontrol.h"
 #include "qcustparser.h"
+#include "ctimeshift.h"
 #include "chtmlwriter.h"
 #include "qchannelmap.h"
-#include "qdatetimesyncro.h"
-#include "qstatemessage.h"
-#include "cdirstuff.h"
-#include "qwatchstats.h"
 
 #ifdef Q_WS_X11
    #include <X11/Xlib.h>
@@ -42,9 +39,6 @@ CVlcRecDB *pDb;
 // make show info global available ...
 CShowInfo showInfo;
 
-// we need syncronized time ...
-QDateTimeSyncro tmSync;
-
 // fusion control ...
 QFusionControl missionControl;
 
@@ -59,17 +53,14 @@ ApiParser   *pApiParser;
 QTranslator *pAppTransl;
 QTranslator *pQtTransl;
 
+// global timeshift class ...
+CTimeShift *pTs;
+
 // global html writer ...
 CHtmlWriter *pHtml;
 
 // global channel map ...
 QChannelMap *pChanMap;
-
-// global state message engine ...
-QStateMessage *pStateMsg;
-
-// global watch statistics
-QWatchStats   *pWatchStats;
 
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
@@ -108,15 +99,14 @@ int main(int argc, char *argv[])
 
    // Setting "app" as parent puts the new generated objects into Qt's memory management,
    // so no delete is needed since Qt takes care ...
-   pAppTransl  = new QTranslator(&app);
-   pQtTransl   = new QTranslator(&app);
-   pFolders    = new CDirStuff(&app);
-   pHtml       = new CHtmlWriter(&app);
-   pWatchStats = new QWatchStats(&app);
-   pChanMap    = new QChannelMap();
-   pStateMsg   = new QStateMessage(); // will be parented in recorder.cpp::Recorder()!
+   pAppTransl = new QTranslator(&app);
+   pQtTransl  = new QTranslator(&app);
+   pFolders   = new CDirStuff(&app);
+   pTs        = new CTimeShift(&app);
+   pHtml      = new CHtmlWriter(&app);
+   pChanMap   = new QChannelMap();
 
-   if (pFolders && pAppTransl && pQtTransl && pHtml && pChanMap && pWatchStats)
+   if (pFolders && pAppTransl && pQtTransl && pTs && pHtml && pChanMap)
    {
       if (pFolders->isInitialized ())
       {

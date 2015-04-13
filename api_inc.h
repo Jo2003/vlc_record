@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/api_inc.h $
  *
  *  @file     api_inc.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     15.04.2013
  *
- *  $Id$
+ *  $Id: api_inc.h 1303 2014-03-27 15:51:56Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130416_API_INC_H

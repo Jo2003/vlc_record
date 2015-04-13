@@ -5,14 +5,11 @@
 
 ;------------------------------
 ; define versions ...
-!define VER_MAJOR   "2"
-!define VER_MINOR   "72"
-!define VER_BUILD   "0"
-!define BETA_EXT    ""
+!define VER_MINOR   "68"
 
 ;------------------------------
 ; path defines ...
-!define LIBVLCFW "..\..\libVLC2.1.5"
+!define LIBVLCFW "..\..\libVLC2.0.8"
 !define SRCDIR ".."
 !define QTLIBS "..\..\qtlibs-485"
 

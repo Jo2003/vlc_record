@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qfadewidget.h $
  *
  *  @file     qfadewidget.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     26.11.2013
  *
- *  $Id$
+ *  $Id: qfadewidget.h 1275 2013-12-19 12:33:03Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20131125_QFADEWIDGET_H
@@ -43,7 +43,7 @@ public:
    QFadeWidget(QWidget* parent = 0, Qt::WindowFlags f = 0)
       : QWidget(parent, f)
    {
-      _fOpaqueMaster = 0.85;
+      _fOpaqueMaster = 0.75;
       _fOpaque       = 0.0;
 
       // transparent background ...
@@ -84,7 +84,6 @@ public:
       _fOpaqueMaster = fOpaque;
    }
 
-public slots:
    //---------------------------------------------------------------------------
    //
    //! \brief   start fade out

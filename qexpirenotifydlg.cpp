@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qexpirenotifydlg.cpp $
  *
  *  @file     qexpirenotifydlg.cpp
  *
@@ -8,11 +8,17 @@
  *
  *  @date     12.02.2014
  *
- *  $Id$
+ *  $Id: qexpirenotifydlg.cpp 1299 2014-02-12 14:00:23Z Olenka.Joerg $
  *
  *///------------------------- (c) 2014 by Jo2003  --------------------------
 #include "qexpirenotifydlg.h"
-#include "externals_inc.h"
+
+#include "cvlcrecdb.h"
+
+#include <QDateTime>
+
+// db storage class ...
+extern CVlcRecDB *pDb;
 
 //---------------------------------------------------------------------------
 //
@@ -100,7 +106,7 @@ void QExpireNotifyDlg::on_btnRemind_clicked()
 
    if (llOffs != -1)
    {
-      llOffs = tmSync.syncronizedTime_t() + (llOffs * 3600 * 24);
+      llOffs = QDateTime::currentDateTime().toTime_t() + (llOffs * 3600 * 24);
    }
 
    pDb->setValue("ExpNextRemind", llOffs);

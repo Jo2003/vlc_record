@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qchanlistdelegate.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 22.03.2011 / 12:20
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: qchanlistdelegate.cpp 1294 2014-01-29 10:03:13Z Olenka.Joerg $
 \*************************************************************/
 #include "qchanlistdelegate.h"
 #include "small_helpers.h"

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qrecordtimerwidget.cpp $
  *
  *  @file     qrecordtimerwidget.cpp
  *
@@ -8,7 +8,7 @@
  *
  *  @date     09.12.2012
  *
- *  $Id$
+ *  $Id: qrecordtimerwidget.cpp 1238 2013-11-27 15:15:56Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qrecordtimerwidget.h"

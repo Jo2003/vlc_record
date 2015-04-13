@@ -1,6 +1,6 @@
 ﻿/*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cnovoeparser.cpp $
  *
  *  @file     cnovoeparser.cpp
  *
@@ -8,11 +8,13 @@
  *
  *  @date     15.04.2013
  *
- *  $Id$
+ *  $Id: cnovoeparser.cpp 1158 2013-08-01 10:10:02Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "cnovoeparser.h"
-#include "externals_inc.h"
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 //---------------------------------------------------------------------------
 //
@@ -39,11 +41,13 @@ CNovoeParser::CNovoeParser(QObject * parent) : CStdJsonParser(parent)
 //
 //! \param   sResp (const QString &) ref. to response string
 //! \param   chanList (QVector<cparser::SChan> &) data vector
+//! \param   bFixTime (bool) flag for time correction
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
 int CNovoeParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList)
+                                         QVector<cparser::SChan> &chanList,
+                                         bool bFixTime)
 {
    int  iRV = 0;
    bool bOk = false;
@@ -92,6 +96,12 @@ int CNovoeParser::parseChannelList (const QString &sResp,
                chan.sProgramm    = mChannel.value("epg_progname").toString();
                chan.uiStart      = mChannel.value("epg_start").toUInt();
                chan.uiEnd        = mChannel.value("epg_end").toUInt();
+
+               if (bFixTime)
+               {
+                  fixTime(chan.uiStart);
+                  fixTime(chan.uiEnd);
+               }
 
                foreach (const QVariant& lParam, mChannel.value("stream_params").toList())
                {

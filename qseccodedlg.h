@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qseccodedlg.h $
  *
  *  @file     qseccodedlg.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     30.05.2012
  *
- *  $Id$
+ *  $Id: qseccodedlg.h 752 2012-06-06 13:23:58Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20120530_QSECCODEDLG_H

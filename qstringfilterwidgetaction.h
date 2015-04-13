@@ -1,6 +1,6 @@
 /*------------------------------ Infor mation ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qstringfilterwidgetaction.h $
  *
  *  @file     qstringfilterwidgetaction.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     29.07.2013
  *
- *  $Id$
+ *  $Id: qstringfilterwidgetaction.h 1161 2013-08-02 09:19:31Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130729_QSTRINGFILTERWIDGETACTION_H
@@ -17,13 +17,9 @@
 #include <QWidgetAction>
 #include <QHBoxLayout>
 #include <QLineEdit>
-#include <QIcon>
-#include <QPixmap>
 #include <QLabel>
 #include <QEvent>
 #include <QPushButton>
-#include <QTimer>
-#include <QMenu>
 
 //---------------------------------------------------------------------------
 //! \class   QStringFilterWidgetAction
@@ -48,12 +44,25 @@ public:
    //! \return  --
    //---------------------------------------------------------------------------
    QStringFilterWidgetAction(QObject *parent = 0)
-      : QWidgetAction(parent), _lab(NULL), _line(NULL)
+      : QWidgetAction(parent), _lab(NULL), _line(NULL), _ok(NULL)
    {
-      _tCheck.setSingleShot(true);
-      _tCheck.setInterval(500);
 
-      connect(&_tCheck, SIGNAL(timeout()), this, SLOT(slotFilter()));
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   clear filter string
+   //
+   //! \author  Jo2003
+   //! \date    29.07.2013
+   //
+   //! \param   --
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void cleanFilter()
+   {
+      _line->clear();
    }
 
    //---------------------------------------------------------------------------
@@ -76,10 +85,7 @@ public:
 private:
    QLabel      *_lab;
    QLineEdit   *_line;
-   QTimer       _tCheck;
-   QPushButton *_btnClean;
-   QWidget     *_me;
-   QWidget     *_parent;
+   QPushButton *_ok;
 
 protected:
    //---------------------------------------------------------------------------
@@ -95,34 +101,31 @@ protected:
    //---------------------------------------------------------------------------
    virtual QWidget* createWidget (QWidget * parent)
    {
-      _parent = parent;
-
+      QWidget     *w = new QWidget(parent);
       QHBoxLayout *l = new QHBoxLayout();
-      QPixmap     pix(":/app/del");
-      QIcon       ico(pix.scaled(24, 24));
 
-      _me            = new QWidget(parent);
-      _lab           = new QLabel(tr("Channel filter: "), _me);
-      _line          = new QLineEdit(_me);
-      _btnClean      = new QPushButton(ico, "", _me);
-      _btnClean->setFlat(true);
-      _btnClean->setGeometry(QRect(0, 0, 32, 32));
-      _btnClean->setToolTip(tr("Reset filter"));
+      _lab           = new QLabel(tr("Channel filter: "), w);
+      _line          = new QLineEdit(w);
+      _ok            = new QPushButton(QIcon(":/app/set"), "", w);
+
+      _ok->setMinimumSize(24, 24);
+      _ok->setMaximumSize(24, 24);
+      _ok->setIconSize(QSize(16, 16));
+      _ok->setFlat(true);
 
       l->setSpacing(2);
       l->setMargin(4);
 
       l->addWidget(_lab);
       l->addWidget(_line, 10);
-      l->addWidget(_btnClean);
+      l->addWidget(_ok);
 
-      _me->setLayout(l);
+      w->setLayout(l);
 
-      connect(_line, SIGNAL(textEdited(QString)), &_tCheck, SLOT(start()));
-      connect(_line, SIGNAL(returnPressed()), parent, SLOT(hide()));
-      connect(_btnClean, SIGNAL(clicked()), this, SLOT(cleanFilter()));
+      connect(_ok  , SIGNAL(clicked())      , this, SLOT(slotFilter()));
+      connect(_line, SIGNAL(returnPressed()), this, SLOT(slotFilter()));
 
-      return _me;
+      return w;
    }
 
    //---------------------------------------------------------------------------
@@ -176,26 +179,6 @@ private slots:
       // slot is reached only if we've created
       // control elements already ...
       emit sigFilter(_line->text());
-   }
-
-public slots:
-   //---------------------------------------------------------------------------
-   //
-   //! \brief   clear filter string
-   //
-   //! \author  Jo2003
-   //! \date    29.07.2013
-   //
-   //! \param   --
-   //
-   //! \return  --
-   //---------------------------------------------------------------------------
-   void cleanFilter()
-   {
-      _line->clear();
-      emit sigFilter("");
-      lineFocus();
-      // _parent->hide();
    }
 
 signals:

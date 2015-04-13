@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cvlcctrl.h $
 |
 | Author: Jo2003
 |
 | Begin: 01.02.2010 / 10:50:35
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cvlcctrl.h 1023 2013-02-28 09:52:49Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __020110__CVLCCTRL_H
    #define __020110__CVLCCTRL_H
@@ -21,10 +21,12 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include "clogfile.h"
 #include "defdef.h"
 #include "templates.h"
 #include "ctranslit.h"
 #include "playstates.h"
+#include "cdirstuff.h"
 
 namespace vlcctrl
 {

@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/tastes/defines_moidom_tv.h $
 |
 | Author: Jo2003
 |
 | Begin: 31.01.2013
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_moidom_tv.h 1265 2013-12-13 14:40:16Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __310113__DEFINES_MOIDOM_TV_H
    #define __310113__DEFINES_MOIDOM_TV_H

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qupdatenotifydlg.cpp $
  *
  *  @file     qupdatenotifydlg.cpp
  *
@@ -8,11 +8,17 @@
  *
  *  @date     19.06.2013
  *
- *  $Id$
+ *  $Id: qupdatenotifydlg.cpp 1478 2014-11-24 11:27:43Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qupdatenotifydlg.h"
-#include "externals_inc.h"
+
+#include "cvlcrecdb.h"
+
+#include <QDateTime>
+
+// db storage class ...
+extern CVlcRecDB *pDb;
 
 //---------------------------------------------------------------------------
 //
@@ -106,7 +112,7 @@ void QUpdateNotifyDlg::on_btnRemind_clicked()
 
    if (llOffs != -1)
    {
-      llOffs = tmSync.syncronizedTime_t() + (llOffs * 3600 * 24);
+      llOffs = QDateTime::currentDateTime().toTime_t() + (llOffs * 3600 * 24);
    }
 
    pDb->setValue("UpdMinor"    , _iMinor);

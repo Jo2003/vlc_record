@@ -8,11 +8,12 @@
  *
  *  @date     26.03.2013
  *
- *  $Id$
+ *  $Id: qcustparser.cpp 1223 2013-11-22 08:05:33Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qcustparser.h"
-#include "externals_inc.h"
+
+extern CDirStuff *pFolders;
 
 //---------------------------------------------------------------------------
 //

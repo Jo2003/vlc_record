@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cdirstuff.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 22.03.2010 / 08:45:22
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cdirstuff.cpp 1267 2013-12-17 13:55:47Z Olenka.Joerg $
 \*************************************************************/
 #include "cdirstuff.h"
 #include <QLibraryInfo>
@@ -25,7 +25,6 @@
 CDirStuff::CDirStuff(QObject *parent) : QObject(parent)
 {
    iInitState = -1;
-   bPortable  = false;
 
    if(!fillSysEnvMap())
    {
@@ -105,36 +104,17 @@ int CDirStuff::initDirectories(bool bCreate)
    int iRV = 0;
    QMap<QString, QString>::const_iterator cit;
    QDir    helpDir;
-   QString homeFolder;
 
    sBinName   = QFileInfo(QApplication::applicationFilePath()).baseName();
    cit        = mSysEnv.constFind(DATA_DIR_ENV);
 
-   // app folder
-   sAppDir    = QApplication::applicationDirPath();
-
-   // check for portable version ...
-   if (QFile(QString("%1/%2").arg(sAppDir).arg(PORTABLE_MARKER)).exists())
-   {
-      bPortable = true;
-   }
-
-   if (bPortable)
-   {
-      homeFolder = QString("%1/%2").arg(sAppDir).arg(PORTABLE_DATA_DIR);
-   }
-   else
-   {
-      homeFolder = (cit != mSysEnv.constEnd()) ? (*cit) : "";
-   }
-
-   if (homeFolder != "")
+   if (cit != mSysEnv.constEnd())
    {
 #ifdef Q_OS_WIN32
-      sDataDir   = QString("%1/%2").arg(homeFolder).arg((sAppName == "" ) ? sBinName : sAppName);
+      sDataDir   = QString("%1/%2").arg(*cit).arg((sAppName == "" ) ? sBinName : sAppName);
       sDataDir.replace("\\", "/");
 #else
-      sDataDir   = QString("%1/%2").arg(homeFolder).arg("." + ((sAppName == "" ) ? sBinName : sAppName));
+      sDataDir   = QString("%1/%2").arg(*cit).arg("." + ((sAppName == "" ) ? sBinName : sAppName));
 #endif
       sLogoDir   = QString("%1/%2").arg(sDataDir).arg(LOGO_DIR);
       sVodPixDir = QString("%1/%2").arg(sDataDir).arg(VOD_DIR);
@@ -168,6 +148,9 @@ int CDirStuff::initDirectories(bool bCreate)
 
    // temp folder ...
    sTmpFolder = QDir::tempPath();
+
+   // app folder
+   sAppDir    = QApplication::applicationDirPath();
 
    // qt languages dir ...
    sQtLangDir = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
@@ -254,19 +237,7 @@ int CDirStuff::initDirectories(bool bCreate)
    if (rx.indexIn(sAppDir) > -1)
    {
       // found bin section --> create path names ...
-#ifdef __PORTABLE
-      // language path ...
-      sLangDir   = QString("%1/share/%2").arg(rx.cap(1)).arg(LANG_DIR);
 
-      // modules path ...
-      sModDir    = QString("%1/share/%2").arg(rx.cap(1)).arg(MOD_DIR);
-
-      // docu folder ...
-      sDocDir    = QString("%1/share/%2").arg(rx.cap(1)).arg(DOC_DIR);
-
-      // resources folder ...
-      sResDir    = QString("%1/share/%2").arg(rx.cap(1)).arg(RES_DIR);
-#else
       // language path ...
       sLangDir   = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(sBinName).arg(LANG_DIR);
 
@@ -278,7 +249,6 @@ int CDirStuff::initDirectories(bool bCreate)
 
       // resources folder ...
       sResDir    = QString("%1/share/%2/%3").arg(rx.cap(1)).arg(sBinName).arg(RES_DIR);
-#endif //__PORTABLE
    }
    else
    {
@@ -313,7 +283,7 @@ int CDirStuff::initDirectories(bool bCreate)
 \----------------------------------------------------------------- */
 void CDirStuff::setAppName(const QString &name)
 {
-   sAppName   = name;
+   sAppName = name;
    iInitState = initDirectories(true);
 }
 
@@ -496,20 +466,6 @@ bool CDirStuff::isInitialized()
 const QString&  CDirStuff::getTmpFolder()
 {
    return sTmpFolder;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   is portable version running?
-//
-//! \author  Jo2003
-//! \date    15.03.2013
-//
-//! \return  true -> is portable; false -> non portable version
-//---------------------------------------------------------------------------
-bool CDirStuff::portable()
-{
-   return bPortable;
 }
 
 /************************* History ***************************\

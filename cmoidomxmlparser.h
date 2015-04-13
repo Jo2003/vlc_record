@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cmoidomxmlparser.h $
  *
  *  @file     cmoidomxmlparser.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     02.12.2013
  *
- *  $Id$
+ *  $Id: cmoidomxmlparser.h 1252 2013-12-02 19:07:04Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20131202_CMOIDOMXMLPARSER_H

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qupdatenotifydlg.h $
  *
  *  @file     qupdatenotifydlg.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     19.06.2013
  *
- *  $Id$
+ *  $Id: qupdatenotifydlg.h 1478 2014-11-24 11:27:43Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #ifndef __20130619_QUPDATENOTIFYDLG_H

@@ -1,16 +1,21 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cvlcctrl.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 01.02.2010 / 10:50:35
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: cvlcctrl.cpp 1023 2013-02-28 09:52:49Z Olenka.Joerg $
 \*************************************************************/
 #include "cvlcctrl.h"
-#include "externals_inc.h"
+
+// logging stuff ...
+extern CLogFile VlcLog;
+
+// for folders ...
+extern CDirStuff *pFolders;
 
 /* -----------------------------------------------------------------\
 |  Method: CVlcCtrl / constructor

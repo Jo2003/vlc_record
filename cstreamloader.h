@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cstreamloader.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 4.12.2010 / 18:55
 |
-| $Id$
+| $Id: cstreamloader.h 871 2012-08-10 12:35:55Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20101214185500_CSTREAMLOADER_H
@@ -21,6 +21,7 @@
 #include <QTimer>
 #include <QUrl>
 
+#include "clogfile.h"
 #include "defdef.h"
 
 /*=============================================================================\

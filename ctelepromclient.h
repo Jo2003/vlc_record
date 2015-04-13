@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/ctelepromclient.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 27.03.2014
 |
-| $Id$
+| $Id: ctelepromclient.h 1303 2014-03-27 15:51:56Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20140327_CTELEPROMCLIENT_H
@@ -18,6 +18,7 @@
 #include <QRegExp>
 
 #include "qiptvctrlclient.h"
+#include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
 
@@ -82,6 +83,7 @@ protected:
 private:
    QString   sUsr;
    QString   sPw;
+   QString   sApiUrl;
    QString   sCookie;
    QErrorMap errMap;
    CIptvDefs karTrace;

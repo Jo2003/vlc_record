@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/caboutdialog.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 16:12:40
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: caboutdialog.h 1265 2013-12-13 14:40:16Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011810__CABOUTDIALOG_H
    #define __011810__CABOUTDIALOG_H

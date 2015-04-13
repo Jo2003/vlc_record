@@ -1,6 +1,6 @@
 /*------------------------------ Information --------------------------*/ /**
 *
-*  $HeadURL$
+*  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qshortcuttable.h $
 *
 *  @file   qshortcuttable.h
 *
@@ -8,7 +8,7 @@
 *
 *  @date   06.04.2011 / 9:14
 *
-*  $Id$
+*  $Id: qshortcuttable.h 497 2011-04-06 09:48:07Z Olenka.Joerg $
 *
 */ //------------------------------------------------------------------------
 #ifndef __060411__QSHORTCUTTABLE_H
@@ -17,6 +17,7 @@
 #include <QTableWidget>
 #include <QVector>
 
+#include "cvlcrecdb.h"
 #include "cshortcutgrabber.h"
 
 //---------------------------------------------------------------------------

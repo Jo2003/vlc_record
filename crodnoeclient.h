@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/crodnoeclient.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 19.03.2013
 |
-| $Id$
+| $Id: crodnoeclient.h 1152 2013-07-29 12:45:53Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20130319_CRODNOECLIENT_H
@@ -18,6 +18,7 @@
 #include <QRegExp>
 
 #include "qiptvctrlclient.h"
+#include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
 
@@ -88,6 +89,7 @@ protected:
 private:
    QString   sUsr;
    QString   sPw;
+   QString   sApiUrl;
    QString   sCookie;
    QString   sLang;
    QErrorMap errMap;

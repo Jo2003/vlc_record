@@ -1,6 +1,7 @@
 DEFINES += _TASTE_SUNDUK_TV \
            _HAS_VOD_MANAGER \
-           _IS_OEM
+           _IS_OEM \
+		   __VLC_FOR_HLS
 RESOURCES += kartina_tv.qrc
 
 WINICO = kartina_tv.ico

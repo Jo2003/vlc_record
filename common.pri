@@ -17,30 +17,13 @@ INCLUDEPATH += .
 CONFIG += shared
 
 # -------------------------------------
-# support C++11
-# Depending on your compiler you
-# have to use different options
-# to enable C++11
-# MinGW for used for Qt4 needs
-# -std=c++0x!
-# For Qt5 you should use:
-# CONFIG += c++11
-# -------------------------------------
-#win32: QMAKE_CXXFLAGS += -std=c++11
-#else:mac: QMAKE_CXXFLAGS += -std=c++11
-#else:unix: QMAKE_CXXFLAGS += -std=c++11
-
-# -------------------------------------
 # program version
 # -------------------------------------
 PROGMAJ=2
-PROGMIN=72
+PROGMIN=69
 
 # here you can enable traces ...
 # DEFINES += __TRACE
-
-# this flag will be checked on linux only!
-# DEFINES += __PORTABLE
 
 SOURCES += main.cpp \
     recorder.cpp \
@@ -74,6 +57,7 @@ SOURCES += main.cpp \
     qnotifydlg.cpp \
     qupdatenotifydlg.cpp \
     qwatchlistdlg.cpp \
+    ctimeshift.cpp \
     chtmlwriter.cpp \
     qoverlayicon.cpp \
     qchannelmap.cpp \
@@ -81,13 +65,7 @@ SOURCES += main.cpp \
     qvlcvideowidget.cpp \
     cplayer.cpp \
     qhlscontrol.cpp \
-    qexpirenotifydlg.cpp \
-    qauthdlg.cpp \
-    qwaitwidget.cpp \
-    qclickandgoslider.cpp \
-    qdatetimesyncro.cpp \
-    qstatemessage.cpp \
-    qwatchstats.cpp
+    qexpirenotifydlg.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -134,6 +112,7 @@ HEADERS += recorder.h \
     qupdatenotifydlg.h \
     qstringfilterwidgetaction.h \
     qwatchlistdlg.h \
+    ctimeshift.h \
     chtmlwriter.h \
     qoverlayicon.h \
     qchannelmap.h \
@@ -144,13 +123,7 @@ HEADERS += recorder.h \
     qclickandgoslider.h \
     qtimelabel.h \
     qhlscontrol.h \
-    qexpirenotifydlg.h \
-    qauthdlg.h \
-    qwaitwidget.h \
-    qdatetimesyncro.h \
-    qstatemessage.h \
-    externals_inc.h \
-    qwatchstats.h
+    qexpirenotifydlg.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -162,10 +135,7 @@ FORMS += forms/csettingsdlg.ui \
     forms/qnotifydlg.ui \
     forms/qwatchlistdlg.ui \
     forms/cplayer.ui \
-    forms/recorder_inc.ui \
-    forms/qauthdlg.ui \
-    forms/qwaitwidget.ui \
-    forms/qstatemessage.ui
+    forms/recorder_inc.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
@@ -224,23 +194,10 @@ else:mac {
    QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
 }
 else:unix {
-
-   contains(QMAKE_HOST.arch, x86_64) {
-       DEFINES += __ARCH__X86_64
-   } else {
-       DEFINES += __ARCH__I386
-   }
-
    LIBS += -lX11
    OTHER_FILES += create_install_mak.sh \
                   documentation/create_qthelp.sh
    QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
-
-   contains(DEFINES,__PORTABLE) {
-        LIBS += -Wl,-rpath ../lib
-   }
-#   LIBS += -L/home/joergn/libvlc \
-#        -Wl,-rpath lib
 }
 
 #############

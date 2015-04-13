@@ -1,29 +1,58 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/recorder.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 16:01:09
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: recorder.cpp 1509 2015-03-04 11:26:51Z Olenka.Joerg $
 \*************************************************************/
 #include "recorder.h"
 #include "small_helpers.h"
-#include "ui_recorder_inc.h"
-#include "qoverlayicon.h"
-#include "externals_inc.h"
-#include "QTime"
 
-#ifdef __CHANLIST_TIMES_ARE_GMT
-   #define mFillChanListTs    chanlist[i].iTs
-   #define mUpdChanListTs     chanEntry.iTs
-#else
-   #warning Channel List Times not given in GMT if timeshift is active!
-   #define mFillChanListTs    0
-   #define mUpdChanListTs     0
-#endif // __CHANLIST_TIMES_ARE_GMT
+#include "ui_recorder_inc.h"
+
+#include "qfusioncontrol.h"
+#include "qcustparser.h"
+#include "chtmlwriter.h"
+#include "qoverlayicon.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
+
+// fusion control ...
+extern QFusionControl missionControl;
+
+// for logging ...
+extern CLogFile VlcLog;
+
+// for folders ...
+extern CDirStuff *pFolders;
+
+// global showinfo class ...
+extern CShowInfo showInfo;
+
+// global rec db ...
+extern CVlcRecDB *pDb;
+
+// global client api classes ...
+extern ApiClient *pApiClient;
+extern ApiParser *pApiParser;
+
+// global translaters ...
+extern QTranslator *pAppTransl;
+extern QTranslator *pQtTransl;
+
+// global timeshift class ...
+extern CTimeShift *pTs;
+
+// global html writer ...
+extern CHtmlWriter *pHtml;
+
+// gloabl channel map ...
+extern QChannelMap *pChanMap;
 
 /* -----------------------------------------------------------------\
 |  Method: Recorder / constructor
@@ -52,16 +81,9 @@ Recorder::Recorder(QWidget *parent)
    ui->vMainLayout->addLayout(stackedLayout);
    eCurDMode = Ui::DM_NORMAL;
    eOldDMode = Ui::DM_NORMAL;
-   m_iJumpValue = 0;
 
    // set (customized) windows title ...
-   setWindowTitle(QString("%1%2").arg(pCustomization->strVal("APP_NAME")).arg(pFolders->portable() ? tr(" - Portable Edition") : ""));
-
-#ifndef _HAS_VOD_LANG
-   // hide vod language stuff if needed ...
-   ui->cbxVodLang->hide();
-   ui->labVodLang->hide();
-#endif // _HAS_VOD_LANG
+   setWindowTitle(pCustomization->strVal("APP_NAME"));
 
    ePlayState    =  IncPlay::PS_WTF;
    iEpgOffset    =  0;
@@ -73,26 +95,6 @@ Recorder::Recorder(QWidget *parent)
    pWatchList    =  NULL;
    pHlsControl   =  NULL;
    bStayOnTop    =  false;
-
-   // vod search timer ....
-   m_tVodSearch.setSingleShot(true);
-   m_tVodSearch.setInterval(666);
-
-   // time jump timer ...
-   m_tTimeJump.setSingleShot(true);
-   m_tTimeJump.setInterval(1500);
-
-   // service timeout timer
-   m_tServiceTimeout.setSingleShot(true);
-   m_tServiceTimeout.setInterval(2000);
-
-   // state message stuff ...
-   Qt::WindowFlags f = Qt::Window | Qt::CustomizeWindowHint | Qt::FramelessWindowHint;
-#ifdef Q_OS_LINUX
-   f |= Qt::X11BypassWindowManagerHint;
-#endif // Q_OS_LINUX
-   pStateMsg->setParent(this, f);
-   pStateMsg->hide();
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,     QFusionControl::BTN_PLAY);
@@ -106,7 +108,7 @@ Recorder::Recorder(QWidget *parent)
    // init account info ...
    accountInfo.bHasArchive = false;
    accountInfo.bHasVOD     = false;
-   accountInfo.sExpires    = tmSync.currentDateTimeSync().toString(DEF_TIME_FORMAT);
+   accountInfo.sExpires    = QDateTime::currentDateTime().toString(DEF_TIME_FORMAT);
 
    // init genre info ...
    genreInfo.iCount        = 0;
@@ -144,6 +146,10 @@ Recorder::Recorder(QWidget *parent)
    pMnLangFilter = pFilterMenu->addMenu(tr("Language Filter"));
 #endif // _TASTE_IPTV_RECORD
 
+#ifdef _TASTE_SUNDUK_TV
+   pApiClient->slotStrProto(Settings.getStreamType());
+#endif // _TASTE_SUNDUK_TV
+
    // watch list ...
    pWatchList = new QWatchListDlg (this);
 
@@ -164,9 +170,6 @@ Recorder::Recorder(QWidget *parent)
 
    // set settings for vod browser ...
    ui->vodBrowser->setSettings(&Settings);
-
-   // set settings for watch statistics
-   pWatchStats->setSettings(&Settings);
 
    // settings for pix loader ...
    pixCache.importSettings(&Settings);
@@ -272,11 +275,14 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigRec()), this, SLOT(slotRecord()));
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
-   connect (&missionControl, SIGNAL(sigMute(bool)), ui->player, SLOT(slotMute()));
 
 #ifdef _TASTE_IPTV_RECORD
    connect (pMnLangFilter, SIGNAL(triggered(QAction*)), this, SLOT(slotLangFilterChannelList(QAction*)));
 #endif // _TASTE_IPTV_RECORD
+
+#ifdef _TASTE_SUNDUK_TV
+   connect (&Settings,     SIGNAL(sigStreamProto(QString)), pApiClient, SLOT(slotStrProto(QString)));
+#endif // _TASTE_SUNDUK_TV
    connect (pWatchList,    SIGNAL(sigClick(QUrl)), this, SLOT(slotWlClick(QUrl)));
    connect (pWatchList,    SIGNAL(sigUpdCount()), this, SLOT(slotUpdWatchListCount()));
    connect (pFilterWidget, SIGNAL(sigFilter(QString)), this, SLOT(slotFilterChannelList(QString)));
@@ -297,11 +303,10 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->textEpg,   SIGNAL(anchorClicked(QUrl)), this, SLOT(slotEpgAnchor(QUrl)));
    connect (&Settings,     SIGNAL(sigReloadLogos()), this, SLOT(slotReloadLogos()));
    connect (&Settings,     SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
-   connect (&Settings,     SIGNAL(sigSetBitRate(int)), this, SLOT(slotSetBitrate(int)));
+   connect (&Settings,     SIGNAL(sigSetBitRate(int, QString)), this, SLOT(slotSetBitrate(int, QString)));
    connect (&Settings,     SIGNAL(sigSetTimeShift(int)), this, SLOT(slotSetTimeShift(int)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
-   connect (&Settings,     SIGNAL(sigFontDeltaChgd(int)), this, SLOT(slotChgFontSize(int)));
    if (Settings.HideToSystray() && QSystemTrayIcon::isSystemTrayAvailable())
    {
       connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
@@ -322,17 +327,6 @@ Recorder::Recorder(QWidget *parent)
    connect (pApiClient, SIGNAL(sigHls(int,QByteArray)), pHlsControl, SLOT(slotStreamTokResp(int,QByteArray)));
    connect (pHlsControl, SIGNAL(sigPlay(QString)), this, SLOT(slotPlayHls(QString)));
    connect (ui->player, SIGNAL(sigStopOnDemand()), this, SLOT(stopOnDemand()));
-
-   // new VOD search ...
-   connect (ui->lineVodSearch, SIGNAL(textEdited(QString)), &m_tVodSearch, SLOT(start()));
-   connect (&m_tVodSearch,     SIGNAL(timeout()), this, SLOT(slotDoVodSearch()));
-   connect (&m_tTimeJump,      SIGNAL(timeout()), this, SLOT(slotFinallyJump()));
-
-   // service timeout ...
-   connect (&m_tServiceTimeout, SIGNAL(timeout()), this, SLOT(slotService()));
-
-   // overlay display ...
-   connect (this, SIGNAL(sigOverlay(QString,int)), ui->player->getVideoWidget(), SLOT(slotDisplayOverlay(QString,int)));
 
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
@@ -493,11 +487,39 @@ void Recorder::closeEvent(QCloseEvent *event)
 
    if (bAccept)
    {
-      // are we authenticated ... and online?
-      if (pApiClient->cookieSet() && pApiClient->isOnline())
+      // close help dialog ..
+      pHelp->close();
+
+      // We want to close program, store all needed values ...
+      // Note: putting this function in destructor doesn't work!
+      if (eCurDMode == Ui::DM_NORMAL)
+      {
+         savePositions();
+      }
+
+      // save font size and favorites ...
+      Settings.SetCustFontSize(iFontSzChg);
+      Settings.SaveFavourites(lFavourites);
+
+      // save channel and epg position ...
+      Settings.saveChannel(getCurrentCid());
+      Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
+
+      // clear shortcuts ...
+      ClearShortCuts ();
+
+      // clean favourites ...
+      lFavourites.clear();
+      HandleFavourites();
+
+      // delete context menu stuff ...
+      CleanContextMenu();
+
+      // are we authenticated ... ?
+      if (pApiClient->cookieSet())
       {
          // logout from kartina ...
-         QTimer::singleShot(200, this, SLOT(slotTriggeredLogout()));
+          QTimer::singleShot(200, this, SLOT(slotTriggeredLogout()));
 
          // ignore event here ...
          // we'll close app in logout slot ...
@@ -505,33 +527,7 @@ void Recorder::closeEvent(QCloseEvent *event)
       }
       else
       {
-         // close help dialog ..
-         pHelp->close();
-
-         // We want to close program, store all needed values ...
-         // Note: putting this function in destructor doesn't work!
-         if (eCurDMode == Ui::DM_NORMAL)
-         {
-            savePositions();
-         }
-
-         // save favorites ...
-         Settings.SaveFavourites(lFavourites);
-
-         // save channel and epg position ...
-         Settings.saveChannel(getCurrentCid());
-         Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
-
-         // clear shortcuts ...
-         ClearShortCuts ();
-
-         // clean favourites ...
-         lFavourites.clear();
-         HandleFavourites();
-
-         // delete context menu stuff ...
-         CleanContextMenu();
-
+         // no logout needed ...
          // close programm right now ...
          event->accept();
       }
@@ -628,32 +624,6 @@ void Recorder::on_pushSettings_clicked()
 
    if (Settings.exec() == QDialog::Accepted)
    {
-      // in case we're playing a stream we should continue it after
-      // settings took effect ...
-      // only takes effect when using internal player ...
-      if (vlcCtrl.withLibVLC() && (ePlayState == IncPlay::PS_PLAY))
-      {
-         if (showInfo.showType() == ShowInfo::Live)
-         {
-            // create request to get current channel ...
-            reRequest.bValid = true;
-            reRequest.req    = CIptvDefs::REQ_STREAM;
-            reRequest.par_1  = showInfo.channelId();
-            reRequest.par_2  = showInfo.pCode();
-         }
-         else if (showInfo.showType() == ShowInfo::Archive)
-         {
-            // create request to get current channel / position ...
-            quint64 pos = ui->player->getSliderPos();
-            QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
-
-            reRequest.bValid = true;
-            reRequest.req    = CIptvDefs::REQ_ARCHIV;
-            reRequest.par_1  = req;
-            reRequest.par_2  = showInfo.pCode();
-         }
-      }
-
       // if changes where saved, accept it here ...
       VlcLog.SetLogLevel(Settings.GetLogLevel());
 
@@ -786,10 +756,10 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                showInfo.setShowName(chan.sProgramm);
                showInfo.setStartTime(chan.uiStart);
                showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setDefAStream((int)chan.uiDefAud);
+               showInfo.setDefAStream(chan.iDefAud);
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
@@ -854,15 +824,16 @@ void Recorder::on_lineSearch_returnPressed()
 \----------------------------------------------------------------- */
 void Recorder::on_pushTimerRec_clicked()
 {
-   uint now = tmSync.syncronizedTime_t();
+   uint now = QDateTime::currentDateTime().toTime_t();
    int  cid = getCurrentCid();
 
+   // timeRec.SetRecInfo(now, now, -1);
    timeRec.SetRecInfo(now, now, cid);
    timeRec.exec();
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotFontSmaller [slot]
+|  Method: on_btnFontSmaller_clicked
 |  Begin: 02.02.2010 / 15:05:00
 |  Author: Jo2003
 |  Description: reduce font size in epg view
@@ -871,19 +842,26 @@ void Recorder::on_pushTimerRec_clicked()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotFontSmaller()
+void Recorder::on_btnFontSmaller_clicked()
 {
-   int i = Settings.getFontDelta();
+   QFont f;
+   ui->textEpg->ReduceFont();
+   ui->textEpgShort->ReduceFont();
+   ui->vodBrowser->ReduceFont();
 
-   if (i > -10)
-   {
-      i--;
-      Settings.setFontDelta(i);
-   }
+   f = ui->channelList->font();
+   f.setPointSize(f.pointSize() - 1);
+   ui->channelList->setFont(f);
+
+   f = ui->cbxChannelGroup->font();
+   f.setPointSize(f.pointSize() - 1);
+   ui->cbxChannelGroup->setFont(f);
+
+   iFontSzChg --;
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotFontLarger
+|  Method: on_btnFontLarger_clicked
 |  Begin: 02.02.2010 / 15:05:00
 |  Author: Jo2003
 |  Description: enlarge font size in epg view
@@ -892,14 +870,22 @@ void Recorder::slotFontSmaller()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotFontLarger()
+void Recorder::on_btnFontLarger_clicked()
 {
-   int i = Settings.getFontDelta();
-   if (i < 10)
-   {
-      i++;
-      Settings.setFontDelta(i);
-   }
+   QFont f;
+   ui->textEpg->EnlargeFont();
+   ui->textEpgShort->EnlargeFont();
+   ui->vodBrowser->EnlargeFont();
+
+   f = ui->channelList->font();
+   f.setPointSize(f.pointSize() + 1);
+   ui->channelList->setFont(f);
+
+   f = ui->cbxChannelGroup->font();
+   f.setPointSize(f.pointSize() + 1);
+   ui->cbxChannelGroup->setFont(f);
+
+   iFontSzChg ++;
 }
 
 /* -----------------------------------------------------------------\
@@ -927,10 +913,8 @@ void Recorder::on_cbxGenre_activated(int index)
    }
 
    url.addQueryItem("type", sType);
-
-#ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
+   url.addQueryItem("nums", "20");
+   url.addQueryItem("vod_type", ui->cbxVodType->itemData(ui->cbxVodType->currentIndex()).toString());
 
    if (iGid != -1)
    {
@@ -964,15 +948,14 @@ void Recorder::on_cbxLastOrBest_activated(int index)
       QUrl url;
 
       url.addQueryItem("type", sType);
+      url.addQueryItem("nums", "20");
 
       if (iGid != -1)
       {
          url.addQueryItem("genre", QString::number(iGid));
       }
 
-#ifdef _HAS_VOD_LANG
-      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
+      url.addQueryItem("vod_type", ui->cbxVodType->itemData(ui->cbxVodType->currentIndex()).toString());
 
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
    }
@@ -980,7 +963,7 @@ void Recorder::on_cbxLastOrBest_activated(int index)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   VOD language was changed -> request videos
+//! \brief   VOD Type was changed -> request videos
 //
 //! \author  Jo2003
 //! \date    28.01.2014
@@ -989,13 +972,13 @@ void Recorder::on_cbxLastOrBest_activated(int index)
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void Recorder::on_cbxVodLang_activated(int index)
+void Recorder::on_cbxVodType_activated(int index)
 {
    int  iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
 
    QUrl url;
    url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(index).toString());
+   url.addQueryItem("vod_type", ui->cbxVodType->itemData(index).toString());
    url.addQueryItem("nums", "20");
    if (iGid != -1)
    {
@@ -1005,7 +988,7 @@ void Recorder::on_cbxVodLang_activated(int index)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: slotDoVodSearch [slot]
+|  Method: on_btnVodSearch_clicked [slot]
 |  Begin: 23.12.2010 / 9:10
 |  Author: Jo2003
 |  Description: search in vod
@@ -1014,18 +997,16 @@ void Recorder::on_cbxVodLang_activated(int index)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotDoVodSearch()
+void Recorder::on_btnVodSearch_clicked()
 {
-   int  iGid;
-   QUrl url;
+   int     iGid;
+   QString sType;
+   QUrl    url;
 
-   // since searching on server takes long, search only if there are more the 1 letters ...
-   if ((ui->lineVodSearch->text() != "") && (ui->lineVodSearch->text().length() > 1))
+   url.addQueryItem("vod_type", ui->cbxVodType->itemData(ui->cbxVodType->currentIndex()).toString());
+
+   if (ui->lineVodSearch->text() != "")
    {
-#ifdef _HAS_VOD_LANG
-      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
-
       url.addQueryItem("type", "text");
 
       // when searching show up to 100 results ...
@@ -1038,15 +1019,29 @@ void Recorder::slotDoVodSearch()
       {
          url.addQueryItem("genre", QString::number(iGid));
       }
-
-      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
-
-      ui->lineVodSearch->setDisabled(true);
    }
-   else if (ui->lineVodSearch->text().isEmpty())
+   else
    {
-      on_btnCleanVodSearch_clicked();
+      // no text means normal list ...
+      iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
+      sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
+
+      // make sure type is supported ...
+      if (sType == "vodfav")
+      {
+         sType = "last";
+         ui->cbxLastOrBest->setCurrentIndex(0);
+      }
+
+      url.addQueryItem("type", sType);
+
+      if (iGid != -1)
+      {
+         url.addQueryItem("genre", QString::number(iGid));
+      }
    }
+
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /* -----------------------------------------------------------------\
@@ -1069,11 +1064,9 @@ void Recorder::on_cbxSites_activated(int index)
       int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
 
       url.addQueryItem("type", sType);
+      url.addQueryItem("nums", "20");
       url.addQueryItem("page", QString::number(index + 1));
-
-#ifdef _HAS_VOD_LANG
-      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
+      url.addQueryItem("vod_type", ui->cbxVodType->itemData(ui->cbxVodType->currentIndex()).toString());
 
       if (iGenre != -1)
       {
@@ -1102,11 +1095,9 @@ void Recorder::on_btnPrevSite_clicked()
    int     iPage  = ui->cbxSites->currentIndex() + 1;
 
    url.addQueryItem("type", sType);
+   url.addQueryItem("nums", "20");
    url.addQueryItem("page", QString::number(iPage - 1));
-
-#ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
+   url.addQueryItem("vod_type", ui->cbxVodType->itemData(ui->cbxVodType->currentIndex()).toString());
 
    if (iGenre != -1)
    {
@@ -1134,11 +1125,9 @@ void Recorder::on_btnNextSite_clicked()
    int     iPage  = ui->cbxSites->currentIndex() + 1;
 
    url.addQueryItem("type", sType);
+   url.addQueryItem("nums", "20");
    url.addQueryItem("page", QString::number(iPage + 1));
-
-#ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
+   url.addQueryItem("vod_type", ui->cbxVodType->itemData(ui->cbxVodType->currentIndex()).toString());
 
    if (iGenre != -1)
    {
@@ -1180,11 +1169,11 @@ void Recorder::on_pushLive_clicked()
             showInfo.setShowType(ShowInfo::Live);
             showInfo.setShowName(chan.sProgramm);
             showInfo.setStartTime(chan.uiStart);
-            showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
+            showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
             showInfo.setEndTime(chan.uiEnd);
             showInfo.setPCode(secCodeDlg.passWd());
             showInfo.setPlayState(IncPlay::PS_PLAY);
-            showInfo.setDefAStream((int)chan.uiDefAud);
+            showInfo.setDefAStream(chan.iDefAud);
             showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
             TouchPlayCtrlBtns(false);
@@ -1228,11 +1217,11 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                showInfo.setShowType(ShowInfo::Live);
                showInfo.setShowName(chan.sProgramm);
                showInfo.setStartTime(chan.uiStart);
-               showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                showInfo.setEndTime(chan.uiEnd);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setDefAStream((int)chan.uiDefAud);
+               showInfo.setDefAStream(chan.iDefAud);
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
@@ -1296,50 +1285,6 @@ void Recorder::on_pushWatchList_clicked()
    pWatchList->exec();
 }
 
-//---------------------------------------------------------------------------
-//
-//! \brief   clean VOD search line
-//
-//! \author  Jo2003
-//! \date    07.08.2013
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void Recorder::on_btnCleanVodSearch_clicked()
-{
-   int     iGid;
-   QString sType;
-   QUrl    url;
-
-#ifdef _HAS_VOD_LANG
-   url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
-
-   ui->lineVodSearch->clear();
-
-   // no text means normal list ...
-   iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-   sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-
-   // make sure type is supported ...
-   if (sType == "vodfav")
-   {
-      sType = "last";
-      ui->cbxLastOrBest->setCurrentIndex(0);
-   }
-
-   url.addQueryItem("type", sType);
-
-   if (iGid != -1)
-   {
-      url.addQueryItem("genre", QString::number(iGid));
-   }
-
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
@@ -1400,10 +1345,10 @@ void Recorder::slotPlay()
                showInfo.setShowName(chan.sProgramm);
                showInfo.setStartTime(chan.uiStart);
                showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
+               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setDefAStream((int)chan.uiDefAud);
+               showInfo.setDefAStream(chan.iDefAud);
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
@@ -1478,7 +1423,7 @@ void Recorder::slotRecord()
          if (AllowAction(IncPlay::PS_RECORD))
          {
             // archive play active ...
-            uint    gmt = ui->player->getSliderPos ();
+            uint    gmt = ui->player->getSilderPos ();
             QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(gmt);
 
             showInfo.setPlayState(IncPlay::PS_RECORD);
@@ -1516,10 +1461,10 @@ void Recorder::slotRecord()
                   showInfo.setShowName(chan.sProgramm);
                   showInfo.setStartTime(chan.uiStart);
                   showInfo.setEndTime(chan.uiEnd);
-                  showInfo.setLastJumpTime(tmSync.syncronizedTime_t());
+                  showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
                   showInfo.setPCode(secCodeDlg.passWd());
                   showInfo.setPlayState(IncPlay::PS_RECORD);
-                  showInfo.setDefAStream((int)chan.uiDefAud);
+                  showInfo.setDefAStream(chan.iDefAud);
                   showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                   TouchPlayCtrlBtns(false);
@@ -1547,26 +1492,11 @@ void Recorder::slotRecord()
 \----------------------------------------------------------------- */
 void Recorder::slotBwd()
 {
-   int iNewPos = 0;
-   QTime tm(0, 0, 0);
-
    // we have minutes but need seconds --> x 60!!!
-   m_iJumpValue -= missionControl.getJumpValue() * 60;
+   int iJmpVal = missionControl.getJumpValue() * 60;
 
-   // compute new position after time jump ...
-   iNewPos  = missionControl.posValue() - missionControl.posMinimum();
-   iNewPos += m_iJumpValue;
-
-   tm = tm.addSecs(iNewPos);
-
-   QString s = QString("%1%2 %3. -> %4")
-         .arg((m_iJumpValue >= 0) ? "+" : "").arg(m_iJumpValue / 60)
-         .arg(tr("min")).arg(tm.toString("H:mm:ss"));
-
-   emit sigOverlay(s, 1000);
-
-   // (re-)trigger jump timer
-   m_tTimeJump.start();
+   // jump ...
+   ui->player->slotTimeJumpRelative(-iJmpVal);
 }
 
 /* -----------------------------------------------------------------\
@@ -1581,110 +1511,11 @@ void Recorder::slotBwd()
 \----------------------------------------------------------------- */
 void Recorder::slotFwd()
 {
-   int iNewPos = 0;
-   QTime tm(0, 0, 0);
-
    // we have minutes but need seconds --> x 60!!!
-   m_iJumpValue += missionControl.getJumpValue() * 60;
+   int iJmpVal = missionControl.getJumpValue() * 60;
 
-   // compute new position after time jump ...
-   iNewPos  = missionControl.posValue() - missionControl.posMinimum();
-   iNewPos += m_iJumpValue;
-
-   tm = tm.addSecs(iNewPos);
-
-   QString s = QString("%1%2 %3. -> %4")
-         .arg((m_iJumpValue >= 0) ? "+" : "").arg(m_iJumpValue / 60)
-         .arg(tr("min")).arg(tm.toString("H:mm:ss"));
-
-   emit sigOverlay(s, 1000);
-
-   // (re-)trigger jump timer
-   m_tTimeJump.start();
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   make time jump [slot]
-//
-//! \author  Jo2003
-//! \date    17.09.2014
-//
-//---------------------------------------------------------------------------
-void Recorder::slotFinallyJump()
-{
    // jump ...
-   ui->player->slotTimeJumpRelative(m_iJumpValue);
-   m_iJumpValue = 0;
-
-   emit sigOverlay("", 1000);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   service data from polsky.tv [slot]
-//
-//! \author  Jo2003
-//! \date    17.09.2014
-//
-//! \param   s [in] (const QString &) service data string
-//---------------------------------------------------------------------------
-void Recorder::slotService(const QString &s)
-{
-#ifdef _TASTE_POLSKY_TV
-   // anyway stop timeout timer ...
-   m_tServiceTimeout.stop();
-
-   // check special logout marker ...
-   if (servSettings.timeShift == MARK_SPECIAL)
-   {
-      mInfo(tr("Timeout while sending statistics."));
-      slotTriggeredLogout();
-   }
-   else
-   {
-      // we only can reach this function in case of
-      // polsky.tv
-      if (!servSettings.handled)
-      {
-         if (!s.isEmpty() && !pApiParser->parseService(s, servSettings))
-         {
-            // update login data in case they are there in service settings ..
-            if (!servSettings.login.isEmpty())
-            {
-               mInfo(tr("Support request: set account to '%1'.").arg(servSettings.login));
-               Settings.setUser(servSettings.login);
-               pDb->setValue("User", servSettings.login);
-               servSettings.login.clear();
-            }
-
-            if (!servSettings.pass.isEmpty())
-            {
-               mInfo(tr("Support request: set password to '******'."));
-               Settings.setPasswd(servSettings.pass);
-               pDb->setPassword("PasswdEnc", servSettings.pass);
-               servSettings.pass.clear();
-            }
-
-            if (!servSettings.apiServer.isEmpty())
-            {
-               mInfo(tr("Support request: set API server to '%1'.").arg(servSettings.apiServer));
-               Settings.setApiSrv(servSettings.apiServer);
-               pDb->setValue("APIServer", servSettings.apiServer);
-               servSettings.apiServer.clear();
-            }
-
-            // connection data might be updated ...
-            pApiClient->SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
-         }
-
-         pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
-      }
-      servSettings.handled = true;
-   }
-#else
-   Q_UNUSED(s)
-#endif
+   ui->player->slotTimeJumpRelative(iJmpVal);
 }
 
 /* -----------------------------------------------------------------\
@@ -1755,11 +1586,6 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_EPG, slotEPG(resp));
 
    ///////////////////////////////////////////////
-   // Fills EPG browser and triggers the load
-   // of VOD genres (if there in account info).
-   mkCase(CIptvDefs::REQ_EPG_EXT, slotEPG(resp, true));
-
-   ///////////////////////////////////////////////
    // update channel map with following info
    mkCase(CIptvDefs::REQ_EPG_CURRENT, slotEPGCurrent (resp));
 
@@ -1828,25 +1654,12 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_GET_ALANG, slotALang(resp));
 
    ///////////////////////////////////////////////
-   // response for available VOD languages (where supported) ...
-   mkCase(CIptvDefs::REQ_VOD_LANG, slotVodLang(resp));
-
-   ///////////////////////////////////////////////
-   // response for silent relogin ...
-   mkCase(CIptvDefs::REQ_LOGIN_ONLY, loginOnly(resp));
-
-   ///////////////////////////////////////////////
-   // response for service data ...
-   mkCase(CIptvDefs::REQ_STATS_SERVICE, slotService(resp));
-
-   ///////////////////////////////////////////////
-   // response for stats data only -> do logout...
-   mkCase(CIptvDefs::REQ_STATS_ONLY, slotTriggeredLogout());
+   // response for available vod types (for filtering) ...
+   mkCase(CIptvDefs::REQ_GET_VODTYPES, slotVodTypes(resp));
 
    ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
-   mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
    mkCase(CIptvDefs::REQ_REM_VOD_FAV, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SET_VOD_MANAGER, slotUnused(resp));
@@ -1856,6 +1669,7 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_GETBITRATE, slotUnused(resp));
    mkCase(CIptvDefs::REQ_GETTIMESHIFT, slotUnused(resp));
    mkCase(CIptvDefs::REQ_GET_SERVER, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_HTTPBUFF, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SET_LANGUAGE, slotUnused(resp));
    default:
@@ -1891,8 +1705,7 @@ void Recorder::slotUnused(const QString &str)
 \----------------------------------------------------------------- */
 void Recorder::slotKartinaErr (QString str, int req, int err)
 {
-   bool bSilent                  = false;
-   IncPlay::ePlayStates psBackup = ePlayState;
+   bool bSilent = false;
 
 #ifdef _USE_QJSON
    // Note: when using json, error isn't parsed correctly!
@@ -1935,24 +1748,6 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    // special error handling for special errors ...
    switch ((CIptvDefs::EErr)err)
    {
-   case CIptvDefs::ERR_AUTHENTICATION:
-      // no need to display another error ...
-      bSilent = true;
-
-      // delete the cookie ...
-      pApiClient->SetCookie("");
-
-      // ask for authentication data ...
-      if (authDlg.exec() == QDialog::Accepted)
-      {
-         // connection data might be updated ...
-         pApiClient->SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
-
-         // complete relogin!
-         pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
-      }
-      break;
-
    case CIptvDefs::ERR_WRONG_PCODE:
       showInfo.setPCode("");
       secCodeDlg.slotClearPasswd();
@@ -1988,6 +1783,7 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    case CIptvDefs::ERR_LOGIN_INCORRECT:
    case CIptvDefs::ERR_CONTRACT_INACTIVE:
    case CIptvDefs::ERR_CONTRACT_PAUSED:
+   case CIptvDefs::ERR_AUTHENTICATION:
 
       // and delete the cookie ...
       pApiClient->SetCookie("");
@@ -2009,16 +1805,6 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
                             .arg(pCustomization->strVal("COMPANY_NAME"))
                             .arg(str)
                             .arg(err));
-   }
-
-   if ((CIptvDefs::EErr)err == CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE)
-   {
-      // restore play state as it was before ...
-      ePlayState = psBackup;
-
-      // Show must go on:
-      // Make silent relogin and try last sent request
-      pApiClient->requeue(true);
    }
 
    TouchPlayCtrlBtns();
@@ -2047,8 +1833,9 @@ void Recorder::slotLogout(const QString &str)
    {
       vlcCtrl.stop();
    }
+
    mInfo(tr("logout done ..."));
-   QDialog::close();
+   QDialog::accept ();
 }
 
 /* -----------------------------------------------------------------\
@@ -2147,8 +1934,6 @@ void Recorder::slotCookie (const QString &str)
 {
    QString s;
 
-   bool loadChanList = true;
-
    // parse cookie ...
    if (!pApiParser->parseCookie(str, s, accountInfo))
    {
@@ -2156,32 +1941,18 @@ void Recorder::slotCookie (const QString &str)
 
       if (accountInfo.dtExpires.isValid())
       {
-         int iDaysTo = tmSync.currentDateTimeSync().daysTo(accountInfo.dtExpires);
+         int iDaysTo = QDateTime::currentDateTime().daysTo(accountInfo.dtExpires);
 
          // be sure to don't tell about negative days ... !
          if ((iDaysTo >= 0) && (iDaysTo <= 7))
          {
             qint64 llCheck = pDb->stringValue("ExpNextRemind").toLongLong();
 
-            if (tmSync.syncronizedTime_t() > llCheck)
+            if (QDateTime::currentDateTime().toTime_t() > llCheck)
             {
-#ifdef __OWN_BUY_REMINDER
-               // make sure tab text is translated as needed
-               QString content;
-
-               content = pAppTransl->translate("ownBuyReminder", __OWN_BUY_REMINDER);
-
-               if (content.isEmpty())
-               {
-                  content = __OWN_BUY_REMINDER;
-               }
-
-               content = content.arg(iDaysTo);
-#else
                QString content = tr("Your subscription will end in %1 day(s).<br />Visit %2 to renew it!")
                      .arg(iDaysTo)
                      .arg(pCustomization->strVal("COMPANY_LINK"));
-#endif // __OWN_BUY_REMINDER
 
                expNotifier.setNotifyContent(pHtml->htmlPage(content, "Account Info"));
                expNotifier.exec();
@@ -2252,16 +2023,15 @@ void Recorder::slotCookie (const QString &str)
          mInfo(tr("Using following timeshift: %1").arg(actVal));
       }
 
-      // set timeshift to global class ...
-      tmSync.setTimeShift(Settings.getTimeShift());
+      // set timeshift to global ts class ...
+      pTs->setTimeShift(Settings.getTimeShift());
 
       // bitrate
-      values.clear();
-      actVal = -1;
-      if (!pApiParser->parseSetting(str, "bitrate", values, actVal))
+      QMap<cparser::BitrateType, QString> brMap;
+      if (!pApiParser->parseBitrates(str, brMap))
       {
-         Settings.SetBitrateCbx(values, actVal);
-         mInfo (tr("Using Bitrate %1 kbit/s ...").arg(actVal));
+         Settings.SetBitrateCbx(brMap);
+         mInfo (tr("Using Bitrate %1 ...").arg(actVal));
       }
 
       // stream server
@@ -2280,97 +2050,8 @@ void Recorder::slotCookie (const QString &str)
       }
 #endif // _TASTE_IPTV_RECORD
 
-#ifdef _TASTE_POLSKY_TV
-      // there might be a need to override some settings from login request ...
-
-      if (servSettings.handled)
-      {
-         // stream server ...
-         if (!servSettings.strServer.isEmpty())
-         {
-            if (Settings.getStreamServer() != servSettings.strServer)
-            {
-               mInfo(tr("Support request: set stream server to '%1'.").arg(servSettings.strServer));
-
-               // we need to update the stream server ...
-               pApiClient->queueRequest(CIptvDefs::REQ_SERVER, servSettings.strServer);
-
-               // we need to update settings as well ...
-               Settings.setActiveStreamServer(servSettings.strServer);
-            }
-
-            // clear setting ...
-            servSettings.strServer.clear();
-         }
-
-         // buffering
-         if (servSettings.buffering != -1)
-         {
-            if (Settings.GetBufferTime() != servSettings.buffering)
-            {
-               mInfo(tr("Support request: set buffering to '%1'.").arg(servSettings.buffering));
-
-               // we need to update settings as well ...
-               Settings.setActiveBuffer(servSettings.buffering);
-
-               // we need to store this in database as well ...
-               pDb->setValue("HttpCache", servSettings.buffering);
-            }
-
-            // clear setting ...
-            servSettings.buffering = -1;
-         }
-
-         // timeshift ...
-         if (servSettings.timeShift != -1)
-         {
-            if (Settings.getTimeShift() != servSettings.timeShift)
-            {
-               mInfo(tr("Support request: set timeshift to '%1'.").arg(servSettings.timeShift));
-
-               tmSync.setTimeShift(servSettings.timeShift);
-
-               // we need to update settings as well ...
-               Settings.setActiveTimeshift(servSettings.timeShift);
-
-               // we need to update the timeshift value ...
-               pApiClient->queueRequest(CIptvDefs::REQ_TIMESHIFT, servSettings.timeShift);
-
-               // please note: this also triggers channel list load ... wtf?!
-               loadChanList = false;
-            }
-
-            // clear setting ...
-            servSettings.timeShift = -1;
-         }
-
-         // bitrate
-         if (servSettings.bitrate != -1)
-         {
-            if (Settings.GetBitRate() != servSettings.bitrate)
-            {
-               mInfo(tr("Support request: change bitrate to '%1'.").arg(servSettings.bitrate));
-
-               // we need to update settings as well ...
-               Settings.setActiveBitrate(servSettings.bitrate);
-
-               // we need to update the timeshift value on server ...
-               pApiClient->queueRequest(CIptvDefs::REQ_SETBITRATE, servSettings.bitrate);
-            }
-
-            // clear setting ...
-            servSettings.bitrate   = -1;
-         }
-      }
-
-#endif // _TASTE_POLSKY_TV
-
       // request channel list ...
-      if (loadChanList)
-      {
-         pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
-      }
-      waitWidget.longWaitShow();
+      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
    }
 }
 
@@ -2404,14 +2085,10 @@ void Recorder::slotChanList (const QString &str)
 {
    QChanList chanList;
 
-   waitWidget.longWaitHide();
-
-   if (!pApiParser->parseChannelList(str, chanList))
+   if (!pApiParser->parseChannelList(str, chanList, Settings.FixTime()))
    {
-#ifndef _TASTE_IPTV_RECORD
       // handle timeshift stuff if needed ...
-      pApiParser->handleTsStuff(chanList, Settings.GetBitRate());
-#endif // _TASTE_IPTV_RECORD
+      pApiParser->handleTsStuff(chanList);
 
       pChanMap->fillFromChannelList(chanList);
 
@@ -2451,15 +2128,11 @@ void Recorder::slotChanList (const QString &str)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotEPG(const QString &str, bool bExtEpg)
+void Recorder::slotEPG(const QString &str)
 {
-#ifndef _EXT_EPG
-   Q_UNUSED(bExtEpg)
-#endif // _EXT_EPG
-
    QVector<cparser::SEpg> epg;
 
-   QDateTime   epgTime = tmSync.currentDateTimeSync().addDays(iEpgOffset);
+   QDateTime   epgTime = QDateTime::currentDateTime().addDays(iEpgOffset);
    QModelIndex idx     = ui->channelList->currentIndex();
 
    if (idx.isValid())
@@ -2469,33 +2142,13 @@ void Recorder::slotEPG(const QString &str, bool bExtEpg)
 
       if (!pApiParser->parseEpg(str, epg))
       {
-#ifdef _EXT_EPG
-         // extended EPG will prepend entries from the day before ...
-         if (Settings.extEpg())
-         {
-            if (!bExtEpg)
-            {
-               // buffer epg entry and request EPG one day before ...
-               epgBuff = epg;
-               pApiClient->queueRequest(CIptvDefs::REQ_EPG_EXT, cid, iEpgOffset - 1);
-               return;
-            }
-            else
-            {
-               // append todays epg ...
-               epg += epgBuff;
-            }
-         }
-#endif // _EXT_EPG
-
          cparser::SChan chan;
 
          if (!pChanMap->entry(cid, chan))
          {
             ui->textEpg->DisplayEpg(epg, chan.sName,
                                     cid, epgTime.toTime_t(),
-                                    accountInfo.bHasArchive ? chan.bHasArchive : false,
-                                    chan.iTs, Settings.extEpg());
+                                    accountInfo.bHasArchive ? chan.bHasArchive : false, chan.iTs);
 
             // fill epg control ...
             icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
@@ -2507,14 +2160,6 @@ void Recorder::slotEPG(const QString &str, bool bExtEpg)
 
             TouchPlayCtrlBtns();
             ui->channelList->setFocus(Qt::OtherFocusReason);
-
-            // EPG is there ... we might need
-            // to restart a stream ... ?!
-            if (reRequest.bValid)
-            {
-               reRequest.bValid = false;
-               pApiClient->queueRequest(reRequest.req, reRequest.par_1, reRequest.par_2);
-            }
 
             // update vod stuff only at startup ...
             if (accountInfo.bHasVOD)
@@ -2556,28 +2201,6 @@ void Recorder::slotEPGCurrent (const QString &str)
 
    if (!pApiParser->parseEpgCurrent(str, currentEpg))
    {
-#ifdef __TRACE
-      QCurrentMap::const_iterator cit;
-
-      for(cit = currentEpg.constBegin(); cit != currentEpg.constEnd(); cit++)
-      {
-         chanMapEntry = pChanMap->value(cit.key(), true);
-
-         mInfo(tr("%1 (%2) Timeshift: %3")
-               .arg(chanMapEntry.sName)
-               .arg(chanMapEntry.iId)
-               .arg(chanMapEntry.iTs));
-
-         foreach (cparser::SEpgCurrent c, cit.value())
-         {
-            mInfo(tr("%1: %2 (%3)")
-                  .arg(c.sShow)
-                  .arg(tmSync.tsToGmtFormatted(c.uiStart, "hh:mm:ss", 0))
-                  .arg(tmSync.tsToGmtFormatted(c.uiStart, "hh:mm:ss", (chanMapEntry.iTs / 3600))));
-         }
-      }
-#endif // __TRACE
-
       QList<int> keyList = currentEpg.keys();
 
       for (i = 0; i < keyList.count(); i++)
@@ -2609,7 +2232,7 @@ void Recorder::slotEPGCurrent (const QString &str)
          // update EPG browser if needed ...
          if ((keyList.at(i) == ui->textEpg->GetCid()) && !iEpgOffset)
          {
-            if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < tmSync.currentDateTimeSync().date())
+            if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < QDateTime::currentDateTime().date())
             {
                // update EPG ...
                pApiClient->queueRequest(CIptvDefs::REQ_EPG, keyList.at(i));
@@ -2697,7 +2320,7 @@ void Recorder::slotWlClick(QUrl url)
             showInfo.setPlayState(ePlayState);
             showInfo.setLastJumpTime(0);
             showInfo.setPCode(secCodeDlg.passWd());
-            showInfo.setDefAStream((int)chan.uiDefAud);
+            showInfo.setDefAStream(chan.iDefAud);
 
             showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
                                                           QString("%1\n%2").arg(sl.at(0)).arg((sl.count() > 1) ? sl.at(1) : ""),
@@ -2816,7 +2439,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             showInfo.setPlayState(ePlayState);
             showInfo.setLastJumpTime(0);
             showInfo.setPCode(secCodeDlg.passWd());
-            showInfo.setDefAStream((int)sChan.uiDefAud);
+            showInfo.setDefAStream(sChan.iDefAud);
 
             showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
                                                           QString("%1\n%2").arg(sEpg.sShowName).arg(sEpg.sShowDescr),
@@ -2994,7 +2617,7 @@ void Recorder::slotDayTabChanged(int iIdx)
 
    if (pChanMap->contains(cid, true))
    {
-      QDateTime epgTime  = tmSync.currentDateTimeSync().addDays(iEpgOffset);
+      QDateTime epgTime  = QDateTime::currentDateTime().addDays(iEpgOffset);
       int       iDay     = epgTime.date().dayOfWeek() - 1;
       int       iOffBack = iEpgOffset;
 
@@ -3053,9 +2676,9 @@ void Recorder::slotSetSServer(QString sIp)
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void Recorder::slotSetBitrate(int iRate)
+void Recorder::slotSetBitrate(int brType, QString sVal)
 {
-   pApiClient->queueRequest(CIptvDefs::REQ_SETBITRATE, iRate);
+   pApiClient->queueRequest(CIptvDefs::REQ_SETBITRATE, brType, sVal);
 }
 
 /* -----------------------------------------------------------------\
@@ -3500,17 +3123,8 @@ void Recorder::slotGotVodGenres(const QString &str)
 
    ui->cbxGenre->setCurrentIndex(0);
 
-#ifdef _HAS_VOD_LANG
-   // before asking for vidoes get a list of available languages ...
-   pApiClient->queueRequest(CIptvDefs::REQ_VOD_LANG);
-
-#else
-   // trigger video load ...
-   QUrl url;
-   url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
-   url.addQueryItem("nums", "20");
-   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
-#endif // _HAS_VOD_LANG
+   // trigger vod type load ...
+   pApiClient->queueRequest(CIptvDefs::REQ_GET_VODTYPES);
 }
 
 /* -----------------------------------------------------------------\
@@ -3535,9 +3149,6 @@ void Recorder::slotGotVideos(const QString &str, bool bVodFavs)
       touchVodNavBar(gInfo);
       ui->vodBrowser->displayVodList (vVodList, sGenre);
    }
-
-   ui->lineVodSearch->setEnabled(true);
-   ui->lineVodSearch->setFocus();
 }
 
 /* -----------------------------------------------------------------\
@@ -3555,7 +3166,6 @@ void Recorder::slotVodAnchor(const QUrl &link)
    QString action = link.queryItemValue("action");
    bool ok        = false;
    int  id        = 0;
-   int  videoId   = 0;
 
    // check password ...
    if (link.queryItemValue("pass_protect").toInt())
@@ -3625,26 +3235,32 @@ void Recorder::slotVodAnchor(const QUrl &link)
          iDwnReqId = -1;
       }
 
-      id      = link.queryItemValue("vid").toInt();
-      videoId = link.queryItemValue("video_id").toInt();
+      id = link.queryItemValue("vid").toInt();
+
+      QUrl dst;
+      dst.addQueryItem("vid", link.queryItemValue("vid"));
+      dst.addQueryItem("seccode", secCodeDlg.passWd());
+
+      if (link.hasEncodedQueryItem("format"))
+      {
+         dst.addQueryItem("format", link.queryItemValue("format"));
+      }
 
       showInfo.cleanShowInfo();
       showInfo.setShowName(ui->vodBrowser->getName());
       showInfo.setShowType(ShowInfo::VOD);
       showInfo.setPlayState(ePlayState);
       showInfo.setHtmlDescr(ui->vodBrowser->getShortContent());
-      showInfo.setVodFileId(id);
-      showInfo.setVideoId(videoId);
+      showInfo.setVodId(id);
       showInfo.setStartTime(0);
-      showInfo.setEndTime(ui->vodBrowser->getLength());
-      showInfo.setNoAd(pDb->videoSeen(videoId));
+      showInfo.setEndTime(link.queryItemValue("length").toInt());
 
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
 
       stopOnDemand();
 
-      pApiClient->queueRequest(CIptvDefs::REQ_GETVODURL, id, secCodeDlg.passWd());
+      pApiClient->queueRequest(CIptvDefs::REQ_GETVODURL_EX, dst);
    }
 }
 
@@ -3947,14 +3563,7 @@ void Recorder::slotPlayPreviousChannel()
 \----------------------------------------------------------------- */
 void Recorder::slotStartConnectionChain()
 {
-#ifdef _TASTE_POLSKY_TV
-   // polsky.tv needs a special handling!
-   //We first request service information ...
-   pApiClient->queueRequest(CIptvDefs::REQ_STATS_SERVICE, pWatchStats->serialize(pApiClient->getStbSerial()));
-   m_tServiceTimeout.start();
-#else
    pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
-#endif // _TASTE_POLSKY_TV
 }
 
 /* -----------------------------------------------------------------\
@@ -3987,7 +3596,7 @@ void Recorder::slotUpdateAnswer (const QString &str)
          bool   bDispl  = true;
 
          if ((updInfo.iMajor == iMajor) && (updInfo.iMinor == iMinor) && (updInfo.iBuild == iBuild)
-             && ((llCheck == -1) || (tmSync.syncronizedTime_t() < llCheck)))
+             && ((llCheck == -1) || (QDateTime::currentDateTime().toTime_t() < llCheck)))
          {
             bDispl = false;
          }
@@ -4057,10 +3666,10 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
                else
                {
                   // channel map wasn't updated so far -> request update ...
-                  if ((showInfo.epgUpdTime() + EPG_UPD_TMOUT) < tmSync.syncronizedTime_t())
+                  if ((showInfo.epgUpdTime() + EPG_UPD_TMOUT) < QDateTime::currentDateTime().toTime_t())
                   {
                      // set timestamp ...
-                     showInfo.setEpgUpdTime(tmSync.syncronizedTime_t());
+                     showInfo.setEpgUpdTime(QDateTime::currentDateTime().toTime_t());
 
                      // make sure that next channel list update doesn't come to quick ...
                      Refresh.start(60000);
@@ -4087,7 +3696,7 @@ void Recorder::slotCheckArchProg(ulong ulArcGmt)
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
       // update show info in overlay display ...
-      missionControl.setVideoInfo(createVideoInfo(false));
+      missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
 
       // done ...
       emit sigShowInfoUpdated();
@@ -4285,7 +3894,7 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
    int             cid, i, iPos;
    cparser::SChan  chanEntry;
    QStringList     updChannels;
-   uint            now = tmSync.syncronizedTime_t();
+   uint            now = QDateTime::currentDateTime().toTime_t();
 
    for (i = 0; i < pModel->rowCount(); i++)
    {
@@ -4301,13 +3910,13 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
             if (cidList.isEmpty())
             {
                // no new shows, simply update progress position ...
-               iPos = (int)(now - (chanEntry.uiStart + mUpdChanListTs));
+               iPos = (int)(now - (chanEntry.uiStart + chanEntry.iTs));
 
                // update progress ...
                pItem->setData(iPos, channellist::posRole);
 
                // check if this channel needs an update ...
-               if ((chanEntry.uiEnd > 0) && (now > (chanEntry.uiEnd + mUpdChanListTs)))
+               if ((chanEntry.uiEnd > 0) && (now > (chanEntry.uiEnd + chanEntry.iTs)))
                {
                   // when we lately tried to update EPG for this ... ?
                   if ((pItem->data(channellist::lastEpgUpd).toUInt() + EPG_UPD_TMOUT) < now)
@@ -4331,8 +3940,8 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
                iPos = (int)(now - chanEntry.uiStart);
 
                pItem->setData(iPos,                                channellist::posRole);
-               pItem->setData(chanEntry.uiStart + mUpdChanListTs,  channellist::startRole);
-               pItem->setData(chanEntry.uiEnd   + mUpdChanListTs,  channellist::endRole);
+               pItem->setData(chanEntry.uiStart + chanEntry.iTs,   channellist::startRole);
+               pItem->setData(chanEntry.uiEnd   + chanEntry.iTs,   channellist::endRole);
                pItem->setData(chanEntry.sProgramm,                 channellist::progRole);
                pItem->setData(chanEntry.sName,                     channellist::nameRole);
             }
@@ -4340,7 +3949,7 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
       }
    }
 
-   if (!updChannels.isEmpty() && pApiClient->isOnline())
+   if (!updChannels.isEmpty())
    {
       pApiClient->queueRequest(CIptvDefs::REQ_EPG_CURRENT, updChannels.join(","));
    }
@@ -4425,30 +4034,8 @@ void Recorder::slotGlobalError (int iType, const QString& sCaption, const QStrin
 \----------------------------------------------------------------- */
 void Recorder::slotTriggeredLogout()
 {
-#ifdef _TASTE_POLSKY_TV
-   if (servSettings.stats)
-   {
-      // in case of an answer this will be re-called for logout ...
-      servSettings.stats     = 0;
-
-      // set a marker in case we get an timeout ...
-      servSettings.timeShift = MARK_SPECIAL;
-
-      // in case of timeout slotService() will be called which then calls again(!) this function ...
-      m_tServiceTimeout.start(3000);
-
-      // close last statistics record ...
-      ui->player->aboutToClose();
-
-      // send statistics ... the response will also re-call this function!
-      pApiClient->queueRequest(CIptvDefs::REQ_STATS_ONLY, pWatchStats->serialize(pApiClient->getStbSerial()));
-   }
-   else
-#endif // _TASTE_POLSKY_TV
-   {
-      // logout from kartina ...
-      pApiClient->queueRequest (CIptvDefs::REQ_LOGOUT);
-   }
+   // logout from kartina ...
+   pApiClient->queueRequest (CIptvDefs::REQ_LOGOUT);
 }
 
 //---------------------------------------------------------------------------
@@ -4464,6 +4051,8 @@ void Recorder::slotTriggeredLogout()
 //---------------------------------------------------------------------------
 void Recorder::slotFilterChannelList(QString filter)
 {
+   pFilterMenu->hide();
+
    QChanList                 cl, tmpCl;
    QGrpVector::ConstIterator cit;
    cparser::SChan            grp, chan;
@@ -4592,69 +4181,6 @@ void Recorder::slotALang(const QString &str)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   server response for available VOD languages
-//
-//! \author  Jo2003
-//! \date    28.01.2014
-//
-//! \param   str (QString) server response with VOD languages
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void Recorder::slotVodLang(const QString &str)
-{
-   QVodLangMap lMap;
-
-   if (!pApiParser->parseVodLang(str, lMap))
-   {
-      ui->cbxVodLang->clear();
-
-      // fill vod lang combobox ...
-      QVodLangMap::const_iterator cit;
-      for (cit = lMap.constBegin(); cit != lMap.constEnd(); cit++)
-      {
-         ui->cbxVodLang->addItem(cit.key(), cit.value());
-      }
-
-      // request videos ...
-      // trigger video load ...
-      QUrl url;
-      url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
-      url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-      url.addQueryItem("nums", "20");
-      pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   change font size [slot]
-//
-//! \author  Jo2003
-//! \date    21.08.2013
-//
-//! \param   i [in] (int) font size change to normal
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void Recorder::slotChgFontSize(int i)
-{
-   QFont f;
-   ui->textEpg->ChangeFontSize(i);
-   ui->textEpgShort->ChangeFontSize(i);
-   ui->vodBrowser->ChangeFontSize(i);
-
-   f = ui->channelList->font();
-   f.setPointSize(f.pointSize() + i);
-   ui->channelList->setFont(f);
-
-   f = ui->cbxChannelGroup->font();
-   f.setPointSize(f.pointSize() + i);
-   ui->cbxChannelGroup->setFont(f);
-}
-
-//---------------------------------------------------------------------------
-//
 //! \brief   update overlay number for watchlist button icon [slot]
 //
 //! \author  Jo2003
@@ -4738,8 +4264,8 @@ void Recorder::fillShortCutTab()
       {tr("Settings"),             this,       SLOT(on_pushSettings_clicked()),   "ALT+O"},
       {tr("About"),                this,       SLOT(on_pushAbout_clicked()),      "ALT+I"},
       {tr("Search EPG"),           this,       SLOT(on_btnSearch_clicked()),      "CTRL+F"},
-      {tr("Text Size +"),          this,       SLOT(slotFontLarger()),            "ALT++"},
-      {tr("Text Size -"),          this,       SLOT(slotFontSmaller()),           "ALT+-"},
+      {tr("Text Size +"),          this,       SLOT(on_btnFontLarger_clicked()),  "ALT++"},
+      {tr("Text Size -"),          this,       SLOT(on_btnFontSmaller_clicked()), "ALT+-"},
       {tr("Quit"),                 this,       SLOT(close()),                     "ALT+Q"},
       {tr("Toggle Aspect Ratio"),  ui->player, SLOT(slotToggleAspectRatio()),     "ALT+A"},
       {tr("Toggle Crop Geometry"), ui->player, SLOT(slotToggleCropGeometry()),    "ALT+C"},
@@ -4822,8 +4348,26 @@ void Recorder::initDialog ()
       pDb->removeSetting("IsMaximized");
    }
 
-   // font size ...
-   slotChgFontSize(Settings.getFontDelta());
+   // -------------------------------------------
+   // set font size to last used
+   // -------------------------------------------
+   iFontSzChg = Settings.GetCustFontSize();
+
+   if (iFontSzChg)
+   {
+      QFont f;
+      ui->textEpg->ChangeFontSize(iFontSzChg);
+      ui->textEpgShort->ChangeFontSize(iFontSzChg);
+      ui->vodBrowser->ChangeFontSize(iFontSzChg);
+
+      f = ui->channelList->font();
+      f.setPointSize(f.pointSize() + iFontSzChg);
+      ui->channelList->setFont(f);
+
+      f = ui->cbxChannelGroup->font();
+      f.setPointSize(f.pointSize() + iFontSzChg);
+      ui->cbxChannelGroup->setFont(f);
+   }
 
    // -------------------------------------------
    // set splitter sizes as last used
@@ -4857,6 +4401,9 @@ void Recorder::initDialog ()
    fillShortCutTab();
    InitShortCuts ();
 
+
+
+
    // check for program updates ...
    pApiClient->queueRequest(CIptvDefs::REQ_UPDATE_CHECK, pCustomization->strVal("UPD_CHECK_URL"));
 
@@ -4883,7 +4430,6 @@ void Recorder::savePositions()
    Settings.SaveSplitterSizes("spVChanEpg", ui->vSplitterChanEpg->sizes());
    Settings.SaveSplitterSizes("spVChanEpgPlay", ui->vSplitterChanEpgPlay->sizes());
    Settings.SaveSplitterSizes("spHPlay", ui->hSplitterPlayer ->sizes());
-   mInfo(tr("Positions saved ..."));
 }
 
 /* -----------------------------------------------------------------\
@@ -5246,7 +4792,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    int         iChanCount =  0;
    int         iLastChan  = -1;
    int         iPos;
-   uint        now = tmSync.syncronizedTime_t();
+   uint        now = QDateTime::currentDateTime().toTime_t();
    QModelIndex idx = ui->channelList->currentIndex();
 
    iRowGroup = ui->cbxChannelGroup->currentIndex();
@@ -5345,15 +4891,15 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             }
 
             // progress position ...
-            iPos = (int)(tmSync.syncronizedTime_t() - (chanlist[i].uiStart + mFillChanListTs));
+            iPos = (int)(QDateTime::currentDateTime().toTime_t() - (chanlist[i].uiStart + chanlist[i].iTs));
 
             // insert data ...
             pItem->setData(chanlist[i].iId,                       channellist::cidRole);
             pItem->setData(sLine,                                 channellist::nameRole);
             pItem->setData(QIcon(icon),                           channellist::iconRole);
             pItem->setData(chanlist[i].sProgramm,                 channellist::progRole);
-            pItem->setData(chanlist[i].uiStart + mFillChanListTs, channellist::startRole);
-            pItem->setData(chanlist[i].uiEnd   + mFillChanListTs, channellist::endRole);
+            pItem->setData(chanlist[i].uiStart + chanlist[i].iTs, channellist::startRole);
+            pItem->setData(chanlist[i].uiEnd   + chanlist[i].iTs, channellist::endRole);
             pItem->setData(sLogoFile,                             channellist::logoFileRole);
             pItem->setData(iPos,                                  channellist::posRole);
             pItem->setData(now,                                   channellist::lastEpgUpd);
@@ -5389,7 +4935,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 //---------------------------------------------------------------------------
 QString Recorder::recFileName (const QString& name, QString &ext)
 {
-   QDateTime now      = tmSync.currentDateTimeSync();
+   QDateTime now      = QDateTime::currentDateTime();
    QString   fileName;
 
    // a good default ...
@@ -5485,7 +5031,14 @@ int Recorder::StartVlcRec (const QString &sURL, const QString &sChannel)
          ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
          // update show info in overlay display ...
-         missionControl.setVideoInfo (createVideoInfo());
+         if (showInfo.showType() == ShowInfo::VOD)
+         {
+             missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
+         }
+         else
+         {
+            missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+         }
 
          vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
       }
@@ -5551,7 +5104,14 @@ int Recorder::StartVlcPlay (const QString &sURL)
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
       // update show info in overlay display ...
-      missionControl.setVideoInfo (createVideoInfo());
+      if (showInfo.showType() == ShowInfo::VOD)
+      {
+          missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
+      }
+      else
+      {
+         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+      }
 
       vlcpid = vlcCtrl.start(sCmdLine, -1, Settings.DetachPlayer(), ePlayState);
    }
@@ -5591,7 +5151,14 @@ void Recorder::StartStreamDownload (const QString &sURL, const QString &sName, c
       ui->textEpgShort->setHtml(showInfo.htmlDescr());
 
       // update show info in overlay display ...
-      missionControl.setVideoInfo (createVideoInfo());
+      if (showInfo.showType() == ShowInfo::VOD)
+      {
+         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName()));
+      }
+      else
+      {
+         missionControl.setVideoInfo(QString("<b>%1:</b> %2").arg(showInfo.chanName()).arg(showInfo.showName()));
+      }
 
       streamLoader.downloadStream (sURL, QString("%1.%2").arg(fileName).arg(sFileExt),
                                    Settings.GetBufferTime ());
@@ -6455,55 +6022,38 @@ void Recorder::stopOnDemand()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   handle silent relogin
+//! \brief   fill vod types cbx
 //
 //! \author  Jo2003
-//! \date    06.05.2014
+//! \date    04.03.2015
 //
-//! \param   resp (const QString&) ref. to response
+//! \param   [in] str (const QString&) response
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void Recorder::loginOnly(const QString &resp)
+void Recorder::slotVodTypes(const QString &str)
 {
-   QString s;
-   cparser::SAccountInfo aInfo;
+   QVodLangMap lMap;
 
-   // parse cookie ...
-   if (!pApiParser->parseCookie(resp, s, aInfo))
+   if (pApiParser->parseVodFilter(str, lMap) == 0)
    {
-      pApiClient->SetCookie(s);
-   }
-}
+      int i = 0;
+      ui->cbxVodType->clear();
+      ui->cbxVodType->insertItem(i++, tr("All"), QString("all"));
 
-//---------------------------------------------------------------------------
-//
-//! \brief   create video info for use in overlay control
-//
-//! \author  Jo2003
-//! \date    23.05.2014
-//
-//! \param   checkVod (bool) [default: true] take care for VOD as well
-//
-//! \return  info string
-//---------------------------------------------------------------------------
-QString Recorder::createVideoInfo(bool checkVod)
-{
-   QString sInfo;
+      for(QVodLangMap::Iterator it = lMap.begin(); it != lMap.end(); it ++)
+      {
+         ui->cbxVodType->insertItem(i++, it.value(), it.key());
+      }
 
-   // update show info in overlay display ...
-   if ((showInfo.showType() == ShowInfo::VOD) && checkVod)
-   {
-      sInfo = QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName());
-   }
-   else
-   {
-      sInfo = QString("<b>%1:</b> %2 (%3 - %4)").arg(showInfo.chanName()).arg(showInfo.showName())
-            .arg(QDateTime::fromTime_t(showInfo.starts()).toString("H:mm"))
-            .arg(QDateTime::fromTime_t(showInfo.ends()).toString("H:mm"));
+      ui->cbxVodType->setCurrentIndex(0);
    }
 
-   return sInfo;
+   QUrl url;
+   url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
+   url.addQueryItem("vod_type", ui->cbxVodType->itemData(ui->cbxVodType->currentIndex()).toString());
+   url.addQueryItem("nums", "20");
+   pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, QString(url.encodedQuery()));
 }
 
 /************************* History ***************************\

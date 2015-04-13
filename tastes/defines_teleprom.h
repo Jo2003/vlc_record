@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/tastes/defines_teleprom.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 09:19:48
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_teleprom.h 1303 2014-03-27 15:51:56Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __20140327__DEFINES_TELEPROM_H
    #define __20140327__DEFINES_TELEPROM_H

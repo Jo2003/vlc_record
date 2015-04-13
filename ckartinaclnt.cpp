@@ -1,19 +1,24 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/ckartinaclnt.cpp $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: Monday, January 04, 2010 16:13:58
 |
-| $Id$
+| $Id: ckartinaclnt.cpp 1471 2014-11-22 16:08:14Z Olenka.Joerg $
 |
 \=============================================================================*/
 #include "ckartinaclnt.h"
 #include "qcustparser.h"
-#include "externals_inc.h"
-#include <QSslConfiguration>
+#include "cparser.h"
+
+// global customization class ...
+extern QCustParser *pCustomization;
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 /*-----------------------------------------------------------------------------\
 | Function:    CKartinaClnt / constructor
@@ -37,8 +42,7 @@ CKartinaClnt::CKartinaClnt(QObject *parent) :QIptvCtrlClient(parent)
 
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
-   connect(this, SIGNAL(sigApiErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
-   connect(this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(slotSslError(QNetworkReply*,QList<QSslError>)));
+   connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
 
    setObjectName("CKartinaClnt");
 }
@@ -149,27 +153,6 @@ void CKartinaClnt::slotErr (int iReqId, QString sErr, int iErr)
    emit sigError(sErr, iReqId, iErr);
 }
 
-//---------------------------------------------------------------------------
-//
-//! \brief   handle SSL error from service server [slot]
-//
-//! \author  Jo2003
-//! \date    15.03.2013
-//
-//! \param   pReply [in] (QNetworkReply *) reply which caused the error
-//! \param   elist [in]  (QList<QSslError>) list of SSL errors
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void CKartinaClnt::slotSslError(QNetworkReply *pReply, QList<QSslError> elist)
-{
-   mInfo(tr("SSL Error while calling %1!").arg(pReply->request().url().toString()));
-   for (int i = 0; i < elist.count(); i++)
-   {
-      mInfo(elist[i].errorString());
-   }
-}
-
 /////////////////////////////////////////////////////////////////////////////////
 
 /* -----------------------------------------------------------------\
@@ -195,7 +178,6 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
       case CIptvDefs::REQ_COOKIE:
       case CIptvDefs::REQ_LOGOUT:
       case CIptvDefs::REQ_UPDATE_CHECK:
-      case CIptvDefs::REQ_STATS_SERVICE:
          break;
       default:
          iRet = -1;
@@ -216,9 +198,6 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          break;
       case CIptvDefs::REQ_EPG:
          GetEPG(par_1.toInt(), par_2.toInt());
-         break;
-      case CIptvDefs::REQ_EPG_EXT:
-         GetEPG(par_1.toInt(), par_2.toInt(), true);
          break;
       case CIptvDefs::REQ_SERVER:
          SetServer(par_1.toString());
@@ -265,7 +244,7 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          GetBitRate();
          break;
       case CIptvDefs::REQ_SETBITRATE:
-         SetBitRate(par_1.toInt());
+         SetBitRate(par_1.toInt(), par_2.toString());
          break;
       case CIptvDefs::REQ_SETCHAN_HIDE:
          setChanHide(par_1.toString(), par_2.toString());
@@ -303,12 +282,6 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
       case CIptvDefs::REQ_VOD_LANG:
          getVodLang();
          break;
-      case CIptvDefs::REQ_STATS_SERVICE:
-         statsService(par_1.toString());
-         break;
-      case CIptvDefs::REQ_STATS_ONLY:
-         statsOnly(par_1.toString());
-         break;
       default:
          iRet = -1;
          break;
@@ -344,9 +317,6 @@ void CKartinaClnt::SetData(const QString &host, const QString &usr,
    sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_XML_PATH"));
 #endif // _USE_QJSON
    sCookie        = "";
-
-   // since API server was set we can start connection check...
-   startConnectionCheck();
 }
 
 /*-----------------------------------------------------------------------------\
@@ -433,12 +403,6 @@ void CKartinaClnt::GetChannelList (const QString &secCode)
       // normal channel list request ...
       req = QString("show=all&protect_code=%1").arg(secCode);
    }
-#ifdef _TASTE_CHITRAM_TV
-   else
-   {
-      req = "icon=1";
-   }
-#endif // _TASTE_CHITRAM_TV
 
    // request channel list or channel list for settings ...
    q_post((secCode == "") ? (int)CIptvDefs::REQ_CHANNELLIST : (int)CIptvDefs::REQ_CHANLIST_ALL,
@@ -557,12 +521,33 @@ void CKartinaClnt::GetBitRate()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::SetBitRate(int iRate)
+void CKartinaClnt::SetBitRate(int brType, QString sVal)
 {
-   mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
+   mInfo(tr("Set BitRate #%1 to %2 ...").arg(brType).arg(sVal));
+   QString cont;
 
-   q_post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
-               QString("var=bitrate&val=%1").arg(iRate));
+   switch ((cparser::BitrateType)brType)
+   {
+   case cparser::BT_LIVE_SD:
+      cont = QString("var=bitrate&val=%1").arg(sVal);
+      break;
+   case cparser::BT_LIVE_HD:
+      cont = QString("var=bitratehd&val=%1").arg(sVal);
+      break;
+   case cparser::BT_ARCH_SD:
+      cont = QString("var=archivebitratesd&val=%1").arg(sVal);
+      break;
+   case cparser::BT_ARCH_HD:
+      cont = QString("var=archivebitratehd&val=%1").arg(sVal);
+      break;
+   default:
+      break;
+   }
+
+   if (!cont.isEmpty())
+   {
+      q_post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set", cont);
+   }
 }
 
 /*-----------------------------------------------------------------------------\
@@ -648,13 +633,13 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::GetEPG(int iChanID, int iOffset, bool bExtEPG)
+void CKartinaClnt::GetEPG(int iChanID, int iOffset)
 {
    mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
 
    QDate now = QDate::currentDate().addDays(iOffset);
 
-   q_get((int)(bExtEPG ? CIptvDefs::REQ_EPG_EXT : CIptvDefs::REQ_EPG), sApiUrl + QString("epg?cid=%1&day=%2")
+   q_get((int)CIptvDefs::REQ_EPG, sApiUrl + QString("epg?cid=%1&day=%2")
        .arg(iChanID).arg(now.toString("ddMMyy")));
 }
 
@@ -1071,30 +1056,18 @@ int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
    // store clean string in private variable ...
    sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);
 
+   QRegExp rx("<message>(.*)</message>[ \t\n\r]*"
+              "<code>(.*)</code>");
+
    // quick'n'dirty error check ...
    if (sCleanResp.contains("<error>"))
    {
-      QString msg;
-      QRegExp rx;
-
-      // for sure we have an error here ...
-      iRV = -1;
-
-      rx.setPattern("<code>(.*)</code>");
-
       if (rx.indexIn(sCleanResp) > -1)
       {
-         iRV = rx.cap(1).toInt();
+         iRV = rx.cap(2).toInt();
+
+         sCleanResp = errMap.contains((CIptvDefs::EErr)iRV) ? errMap[(CIptvDefs::EErr)iRV] : rx.cap(1);
       }
-
-      rx.setPattern("<message>(.*)</message>");
-
-      if (rx.indexIn(sCleanResp) > -1)
-      {
-         msg = rx.cap(1);
-      }
-
-      sCleanResp = errMap.contains((CIptvDefs::EErr)iRV) ? errMap[(CIptvDefs::EErr)iRV] : msg;
    }
 #endif // _USE_QJSON
    return iRV;
@@ -1113,56 +1086,6 @@ int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 const QString& CKartinaClnt::apiUrl()
 {
    return sApiUrl;
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   send / request statistics + service
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   stats [in] (const QString &) statistics as JSON string
-//
-//---------------------------------------------------------------------------
-void CKartinaClnt::statsService(const QString &stats)
-{
-   QRegExp rx("^[^.]*\\.(.*)$");
-   QString sHost = "http://service.polsky.tv/api/json/stats";
-
-   if (rx.indexIn(QUrl(sApiUrl).host()) > -1)
-   {
-      sHost = QString("http://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
-   }
-
-   q_post(CIptvDefs::REQ_STATS_SERVICE,
-          sHost,
-          stats, Iptv::String, true);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   send / request statistics + service
-//
-//! \author  Jo2003
-//! \date    16.10.2014
-//
-//! \param   stats [in] (const QString &) statistics as JSON string
-//
-//---------------------------------------------------------------------------
-void CKartinaClnt::statsOnly(const QString &stats)
-{
-   QRegExp rx("^[^.]*\\.(.*)$");
-   QString sHost = "http://service.polsky.tv/api/json/stats";
-
-   if (rx.indexIn(QUrl(sApiUrl).host()) > -1)
-   {
-      sHost = QString("http://service.%1%2stats").arg(rx.cap(1)).arg(pCustomization->strVal("API_JSON_PATH"));
-   }
-
-   q_post(CIptvDefs::REQ_STATS_ONLY,
-          sHost,
-          stats, Iptv::String, true);
 }
 
 /* -----------------------------------------------------------------\

@@ -1,31 +1,22 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/version_info.h $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 16:23:07
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: version_info.h 1509 2015-03-04 11:26:51Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011910__VERSION_INFO_H
    #define __011910__VERSION_INFO_H
 #include <QtGlobal>
 
-#ifdef __ARCH__I386
-   #define __ARCH "i386"
-#elif defined __ARCH__X86_64
-   #define __ARCH "x86_64"
-#else
-   #define __ARCH ""
-#endif
-
-
 #if defined Q_OS_WIN32
    #define MY_BUILD_SYS "Windows"
 #elif defined Q_OS_LINUX
-   #define MY_BUILD_SYS "Linux " __ARCH
+   #define MY_BUILD_SYS "Linux (x86)"
 #elif defined Q_OS_MAC
    #define MY_BUILD_SYS "Mac"
 #else
@@ -33,9 +24,9 @@
 #endif
 
 #define VERSION_MAJOR 2
-#define VERSION_MINOR 72
-#define VERSION_BUILD 0
-#define BETA_EXT
+#define VERSION_MINOR 69
+#define VERSION_BUILD 2
+#define BETA_EXT      ""
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,120 +41,16 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2015-03-04: Version 2.69.2
+| - set default audio language to ru
+|   (change in settings CTRL+SHIFT+L)
+| - bugfixes of videowidget merged from 2.70
+| - get vod types filter content from API server
 |
-| 2014-11-25: Version 2.72.0
-| - add 3rd version number for bugfix releases
-| - add icons for video quality in vod browser
-| - bugfix: Position slider in VOD doesn't become active after
-|   showing ad
-|
-| 2014-10-30: Version 2.71RC1
-| - no changes since last beta
-|
-| 2014-10-26: Version 2.71B2
-| - prepare a bugfix release with following changes:
-|   + Make sure video context menu can be activated on Mac
-|     -> make render widget transparent for mouse events -> fixed
-|   + Click'n'Go slider stays still on record (VLC doesn't send
-|     VOUT event on record) -> emulate event -> fixed
-|   + No status messages on Linux due to missing X11 bypass
-|     -> fixed
-|   + No fullscreen on doubleclick on Linux when render widget
-|     is transparent for mouse events -> catch
-|     and count single clicks -> fixed
-|
-| 2014-10-16: Version 2.70xV3
-| - add service and statistics for OEMs
-|
-| 2014-10-09: Version 2.70RC1
-| - adapt build system for better debian packages
-| - small changes in font size for click'n'go slider
-|
-| 2014-09-19: Version 2.69B20
-| - add the possibility to use extended translation
-|   using defines
-|
-| 2014-ß9-18: Version 2.69B19
-| - bugfix: when pausing -> play timer wasn't started
-|
-| 2014-ß9-18: Version 2.69B18
-| - show jump time as overlay
-| - create pixmap from overlay text to get an outline
-| - remove target time label from GUI
-|
-| 2014-09-17: Version 2.69B17
-| - reduce blocking time when spooling is active (as possible)
-| - in case of non existing archive let the user decide
-|   if he wants to force new value or revert to last settings
-| - spooling time can be re-triggered with time update
-|
-| 2014-09-05: Version 2.69B16
-| - change icons for mute checkbox to make it more visible
-| - archive not available is shown now for 7 seconds
-|
-| 2014-09-04: Version 2.69B15
-| - bugfix for broken image download chain in case of missing
-|   image
-|
-| 2014-09-01: Version 2.69B14
-| - supports portable version (check for file .portable)
-|
-| 2014-08-28: Version 2.69B13
-| - add extended EPG (might be disabled in advanced settings)
-|
-| 2014-08-08: Version 2.69B12
-| - add advertising LCD page
-| - add network state change message
-| - use 90 min as ad block for seen videos
-| - devide between network error and API error
-|   (equal error numbers lead to strange behavior)
-| - show network state message only when parent window exists
-|
-| 2014-08-06: Version 2.69B11
-| - use externals_inc.h to include global stuff
-| - VOD search now searches automated without the need
-|   to click on search button
-| - add clear button on channel filter and VOD search
-| - advanced ad handling for VOD
-| - make status message engine
-| - add back link also on top
-|
-| 2014-08-05: Version 2.69B10
-| - add status message system
-| - when spooling in archive make sure new position is already
-|   available in archive (if not, use status message)
-| - fix a problem with click'n'go slider and time tooltip
-|
-| 2014-08-01: Version 2.69B9
-| - better handle network errors
-| - position slider shows timing information also when left
-|   mouse button is pressed
-| - shoe rating in video info
-|
-| 2014-06-04: Version 2.69B8
-| - do not use isOnline stuff from QNetworkConfigurationManager
-|   since it doesn't take care about virtual interfaces
-| - when network config was changed a internet connection
-|   check is done
-|
-| 2014-06-03: Version 2.69B7
-| - many small changes in overlay control
-| - click'n'go slider has a position tooltip
-| - channel filter works while typing in
-| - no API requests will be sent when network is offline
-| - text size change now put into settings dialog
-|
-| 2014-05-20: Version 2.69B5
-| - added various message boxes if:
-|    + account soon ends
-|    + load of channel list takes longer
-|    + authentication problem
-|    + multiple account usage
-| - fix a glitch in vlc window context menu
-| - animate overlay control to show / hide additional info / settings
-| - add timing information to video slider
-| - change skip button to fast forward / backward
-| - add minutes label to time chooser
+| 2015-02-25: Version 2.69.1
+| - add build part to version number
+| - supports format choise within serials
+| - supports extended bitrate choise in settings
 |
 | 2014-01-26: Version 2.68RC1
 | - updated help and language files

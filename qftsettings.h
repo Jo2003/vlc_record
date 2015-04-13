@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qftsettings.h $
  *
  *  @file     qftsettings.h
  *
@@ -8,7 +8,7 @@
  *
  *  @date     13.09.2011
  *
- *  $Id$
+ *  $Id: qftsettings.h 1148 2013-07-24 14:27:14Z Olenka.Joerg $
  *
  *///------------------------- (c) 2011 by Jo2003  --------------------------
 #ifndef __20110913_QFTSETTINGS_H
@@ -18,7 +18,9 @@
 #include <QTranslator>
 #include <QVector>
 
+#include "cvlcrecdb.h"
 #include "defdef.h"
+#include "cdirstuff.h"
 
 namespace Ui {
     class QFTSettings;

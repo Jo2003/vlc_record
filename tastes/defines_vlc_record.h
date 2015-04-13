@@ -1,18 +1,18 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/tastes/defines_vlc_record.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 09:19:48
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defines_vlc_record.h 1265 2013-12-13 14:40:16Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __012412__DEFINES_VLC_RECORD_H
    #define __012412__DEFINES_VLC_RECORD_H
 
-#include <more_kartina_translations.h>
+#include <QtGlobal>
 
 #define APP_NAME      "VLC-Record"
 #define UPD_CHECK_URL "http://rt.coujo.de/vlc_record_ver.xml"

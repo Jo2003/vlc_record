@@ -1,13 +1,13 @@
 /*=============================================================================\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/cnovoeclient.h $
 |
 | Author: Jo2003
 |
-| last changed by: $Author$
+| last changed by: $Author: Olenka.Joerg $
 |
 | Begin: 12.06.2013
 |
-| $Id$
+| $Id: cnovoeclient.h 1117 2013-06-26 08:49:16Z Olenka.Joerg $
 |
 \=============================================================================*/
 #ifndef __20130612_CNOVOECLIENT_H
@@ -18,6 +18,7 @@
 #include <QRegExp>
 
 #include "qiptvctrlclient.h"
+#include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
 
@@ -82,6 +83,7 @@ protected:
 private:
    QString   sUsr;
    QString   sPw;
+   QString   sApiUrl;
    QString   sCookie;
    QErrorMap errMap;
    CIptvDefs karTrace;

@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qoverlayicon.cpp $
  *
  *  @file     qoverlayicon.cpp
  *
@@ -8,7 +8,7 @@
  *
  *  @date     21.08.2013
  *
- *  $Id$
+ *  $Id: qoverlayicon.cpp 1184 2013-08-21 12:00:45Z Olenka.Joerg $
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include "qoverlayicon.h"

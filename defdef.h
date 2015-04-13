@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/defdef.h $
 |
 | Author: Jo2003
 |
 | Begin: 18.01.2010 / 09:19:48
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: defdef.h 1510 2015-03-04 11:31:20Z Olenka.Joerg $
 \*************************************************************/
 #ifndef __011810__DEFDEF_H
    #define __011810__DEFDEF_H
@@ -36,8 +36,6 @@
    #include <defines_chitram_tv.h>
 #elif defined _TASTE_TELEPROM
    #include <defines_teleprom.h>
-#elif defined _TASTE_IDC_TB
-   #include <defines_idc_tv.h>
 #else
    #include <defines_vlc_record.h>
 #endif // _TASTE_XXX
@@ -110,7 +108,7 @@
 #define INVALID_ID        0xFFFFFFFF      // mark an id as invalid
 #define TIMER_STBY_TIME   30              // 30 sec. before we should start record
 #define MAX_NAME_LEN      10              // max. length of show name
-#define ARCHIV_OFFSET     1800            // 30 minutes after show start, archiv should be available
+#define ARCHIV_OFFSET     0               // archive available with 0 seconds
 #define MAX_ARCHIV_AGE    1209000         // < 2 weeks in seconds
 #define MAX_NO_FAVOURITES 10              // max. number of favourites ...
 #define MIN_CACHE_SIZE    5000000         // < 5 MB ...
@@ -121,14 +119,6 @@
 #define MAX_LVLC_ARGS     16              // max arguments to give to libVLC at creation
 #define VOD_POSTER_WIDTH  120             // picture size for VOD (width)
 #define VOD_POSTER_HEIGHT 170             // picture size for VOD (height)
-#define HTTP_REQ_TIMEOUT  90000           // 90 seconds (this should be enough)
-#define PAUSE_WORKS_FOR_SECS 300          // we assume pause works well for up to 5 minutes ...
-#define PAUSE_RESUME_VOD    -2899         // any uncommon number ....
-#define ADBLOCK_ACTIVE    5400            // one and a half hour ...
-#define EXT_EPG_TIME      7200            // time to include from day before ...
-#define PORTABLE_MARKER   ".portable"     // mark release as portable ...
-#define PORTABLE_DATA_DIR "portable_data" // data folder for portable version
-#define MARK_SPECIAL      (-2899)         // mark something special
 
 // a namespace for translators ...
 namespace Msg

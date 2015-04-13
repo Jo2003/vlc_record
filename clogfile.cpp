@@ -1,13 +1,13 @@
 /*********************** Information *************************\
-| $HeadURL$
+| $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/clogfile.cpp $
 |
 | Author: Jo2003
 |
 | Begin: 19.01.2010 / 15:35:41
 |
-| Last edited by: $Author$
+| Last edited by: $Author: Olenka.Joerg $
 |
-| $Id$
+| $Id: clogfile.cpp 881 2012-08-14 13:57:22Z Olenka.Joerg $
 \*************************************************************/
 #include "clogfile.h"
 #include "defdef.h"

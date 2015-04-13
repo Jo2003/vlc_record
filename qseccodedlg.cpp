@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL$
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qseccodedlg.cpp $
  *
  *  @file     qseccodedlg.cpp
  *
@@ -8,7 +8,7 @@
  *
  *  @date     30.05.2012
  *
- *  $Id$
+ *  $Id: qseccodedlg.cpp 752 2012-06-06 13:23:58Z Olenka.Joerg $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #include "qseccodedlg.h"

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1088</width>
+    <width>1064</width>
     <height>571</height>
    </rect>
   </property>
@@ -47,9 +47,6 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
-      <property name="spacing">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QSplitter" name="vSplitterChanEpgPlay">
         <property name="styleSheet">
@@ -567,6 +564,125 @@ border-top: 0px;
                      <number>4</number>
                     </property>
                     <item>
+                     <widget class="QFrame" name="frTextsize">
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::Panel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Sunken</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_9">
+                       <property name="spacing">
+                        <number>2</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>2</number>
+                       </property>
+                       <item>
+                        <widget class="QPushButton" name="btnFontSmaller">
+                         <property name="minimumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="../common.qrc">
+                           <normaloff>:/app/zoom-out</normaloff>:/app/zoom-out</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>16</width>
+                           <height>16</height>
+                          </size>
+                         </property>
+                         <property name="autoDefault">
+                          <bool>false</bool>
+                         </property>
+                         <property name="flat">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="labTextSize">
+                         <property name="styleSheet">
+                          <string notr="true">QLabel#labTextSize {
+font-weight: bold;
+color: white;
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Textsize</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="btnFontLarger">
+                         <property name="minimumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="../common.qrc">
+                           <normaloff>:/app/zoom-in</normaloff>:/app/zoom-in</iconset>
+                         </property>
+                         <property name="iconSize">
+                          <size>
+                           <width>16</width>
+                           <height>16</height>
+                          </size>
+                         </property>
+                         <property name="autoDefault">
+                          <bool>false</bool>
+                         </property>
+                         <property name="flat">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
                      <widget class="QLabel" name="labSearch">
                       <property name="styleSheet">
                        <string notr="true">QLabel#labSearch {
@@ -591,6 +707,9 @@ color: white;
                        <string notr="true">QLineEdit#lineSearch {
   color: #800;   
   font: bold;
+   background-image: url(:/app/search);
+   background-repeat: no-repeat;
+   background-position: LEFT;
    border: 1px inset;
    border-color: #555;
  }</string>
@@ -666,14 +785,14 @@ color: white;
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,8,0,8,0,0,0,0,0">
              <item>
-              <widget class="QLabel" name="labVodLang">
+              <widget class="QLabel" name="labVodType">
                <property name="text">
-                <string>Lang.:</string>
+                <string>Type:</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cbxVodLang"/>
+              <widget class="QComboBox" name="cbxVodType"/>
              </item>
              <item>
               <widget class="QLabel" name="labGenre">
@@ -819,6 +938,9 @@ color: white;
                 <string notr="true">QLineEdit#lineVodSearch {
   color: #800;   
   font: bold;
+   background-image: url(:/app/search);
+   background-repeat: no-repeat;
+   background-position: LEFT;
    border: 1px inset;
    border-color: #555;
  }</string>
@@ -826,13 +948,7 @@ color: white;
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="btnCleanVodSearch">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
+              <widget class="QPushButton" name="btnVodSearch">
                <property name="minimumSize">
                 <size>
                  <width>32</width>
@@ -850,13 +966,16 @@ color: white;
                </property>
                <property name="icon">
                 <iconset resource="../common.qrc">
-                 <normaloff>:/app/del</normaloff>:/app/del</iconset>
+                 <normaloff>:/app/find</normaloff>:/app/find</iconset>
                </property>
                <property name="iconSize">
                 <size>
                  <width>24</width>
                  <height>24</height>
                 </size>
+               </property>
+               <property name="autoDefault">
+                <bool>false</bool>
                </property>
                <property name="flat">
                 <bool>true</bool>
@@ -1138,7 +1257,7 @@ border-top: 0px;
                   <widget class="QComboBoxEx" name="cbxTimeJumpVal">
                    <property name="minimumSize">
                     <size>
-                     <width>75</width>
+                     <width>50</width>
                      <height>0</height>
                     </size>
                    </property>
@@ -1147,32 +1266,32 @@ border-top: 0px;
                    </property>
                    <item>
                     <property name="text">
-                     <string>1 min</string>
+                     <string>1</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>2 min</string>
+                     <string>2</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>3 min</string>
+                     <string>3</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>4 min</string>
+                     <string>4</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>5 min</string>
+                     <string>5</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>10 min</string>
+                     <string>10</string>
                     </property>
                    </item>
                   </widget>
@@ -1596,11 +1715,6 @@ border-top: 0px;
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QComboBoxEx</class>
-   <extends>QComboBox</extends>
-   <header>qcomboboxex.h</header>
-  </customwidget>
-  <customwidget>
    <class>CEpgBrowser</class>
    <extends>QTextBrowser</extends>
    <header>cepgbrowser.h</header>
@@ -1627,6 +1741,11 @@ border-top: 0px;
    <header>qfavframe.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>QComboBoxEx</class>
+   <extends>QComboBox</extends>
+   <header>qcomboboxex.h</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>tabEpgVod</tabstop>
@@ -1641,6 +1760,8 @@ border-top: 0px;
   <tabstop>pushFwd</tabstop>
   <tabstop>pushTimerRec</tabstop>
   <tabstop>textEpgShort</tabstop>
+  <tabstop>btnFontSmaller</tabstop>
+  <tabstop>btnFontLarger</tabstop>
   <tabstop>lineSearch</tabstop>
   <tabstop>btnSearch</tabstop>
   <tabstop>pushSettings</tabstop>
@@ -1653,10 +1774,11 @@ border-top: 0px;
   <tabstop>btnNextSite</tabstop>
   <tabstop>vodBrowser</tabstop>
   <tabstop>lineVodSearch</tabstop>
+  <tabstop>btnVodSearch</tabstop>
  </tabstops>
  <resources>
-  <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
+  <include location="../common.qrc"/>
  </resources>
  <connections>
   <connection>
