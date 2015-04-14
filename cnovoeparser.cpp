@@ -1,4 +1,4 @@
-﻿/*------------------------------ Information ---------------------------*//**
+/*------------------------------ Information ---------------------------*//**
  *
  *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/cnovoeparser.cpp $
  *
@@ -169,7 +169,7 @@ int CNovoeParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv
       {
          QVariantMap mSrv = lSrv.toMap();
 
-         srv.sIp   = mSrv.value("ip").toString();
+         srv.sIp   = mSrv.value("id").toString();
          srv.sName = mSrv.value("desc").toString();
 
          vSrv.append(srv);
@@ -184,7 +184,7 @@ int CNovoeParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv
       iRV = -1;
    }
 
-   return iRV;
+   return iRV
 }
 
 //---------------------------------------------------------------------------
