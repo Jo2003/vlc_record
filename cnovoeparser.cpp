@@ -184,7 +184,7 @@ int CNovoeParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv
       iRV = -1;
    }
 
-   return iRV
+   return iRV;
 }
 
 //---------------------------------------------------------------------------
