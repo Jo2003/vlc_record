@@ -105,7 +105,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="capiparser.cpp" line="306"/>
         <source>%1(%4) doesn&apos;t support timeshift %2 with bitrate %3 ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -118,10 +118,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>CEpgBrowser</name>
-    <message>
-        <source>Ar.</source>
-        <translation type="obsolete">R.</translation>
-    </message>
     <message>
         <location filename="cepgbrowser.cpp" line="149"/>
         <source>No information available!</source>
@@ -239,7 +235,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="166"/>
         <source>SSL Error while calling %1!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="428"/>
@@ -1026,11 +1022,6 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <source>Archive is not yet available for this time!</source>
-        <comment>color: #036</comment>
-        <translation type="obsolete">Этот фрагмент еще недоступен в архиве!</translation>
-    </message>
-    <message>
         <location filename="cplayer.cpp" line="879"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
@@ -1054,17 +1045,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="1211"/>
         <source>libvlc_MediaListPlayerNextItemSet</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="1223"/>
         <source>Main feature reached!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="1317"/>
         <source>libvlc_MediaPlayerVout ... with buffer %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="1324"/>
@@ -1699,10 +1690,6 @@ p, li { white-space: pre-wrap; }
         <translation>%1 Кбит/с</translation>
     </message>
     <message>
-        <source>bitrate</source>
-        <translation type="obsolete">битрейт</translation>
-    </message>
-    <message>
         <location filename="csettingsdlg.cpp" line="1647"/>
         <source>blood</source>
         <translation>кровь</translation>
@@ -1737,10 +1724,6 @@ p, li { white-space: pre-wrap; }
         <location filename="csettingsdlg.cpp" line="427"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in your combination of bitrate (%2) and timeshift (%3)!</source>
         <translation>Архив канала &apos;%1&apos; не доступен в комбинации: Битрейт (%2) и задержка (%3)!</translation>
-    </message>
-    <message>
-        <source>timeshift</source>
-        <translation type="obsolete">Задержка</translation>
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="1684"/>
@@ -1992,10 +1975,6 @@ To change the parent code make sure:
         <translation>Порт:</translation>
     </message>
     <message>
-        <source>Try to fix time offset</source>
-        <translation type="obsolete">Синхронизировать время</translation>
-    </message>
-    <message>
         <location filename="forms/csettingsdlg.ui" line="1066"/>
         <source>Parent Code: </source>
         <translation>Родительский пароль: </translation>
@@ -2113,10 +2092,6 @@ To change the parent code make sure:
         <location filename="forms/csettingsdlg.ui" line="640"/>
         <source>yadif2x</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Extended daily EPG</source>
-        <translation type="obsolete">Расширенный телегид</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="728"/>
@@ -2954,7 +2929,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="cvodbrowser.cpp" line="332"/>
         <source>Filmweb: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cvodbrowser.cpp" line="334"/>
@@ -2962,7 +2937,7 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="409"/>
+        <location filename="cvodbrowser.cpp" line="428"/>
         <source>Video Details</source>
         <translation>Информации о видео</translation>
     </message>
@@ -3007,12 +2982,12 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="383"/>
+        <location filename="cvodbrowser.cpp" line="402"/>
         <source>Play Movie ...</source>
         <translation>Просмотр фильма ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="394"/>
+        <location filename="cvodbrowser.cpp" line="413"/>
         <source>Record Movie ...</source>
         <translation>Запись фильма ...</translation>
     </message>
@@ -3292,7 +3267,7 @@ or start time is later than end time!</source>
     <message>
         <location filename="qiptvctrlclient.cpp" line="828"/>
         <source>Start connection check: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qiptvctrlclient.cpp" line="865"/>
@@ -3536,10 +3511,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QUpdateNotifyDlg</name>
     <message>
-        <source>Remind me: </source>
-        <translation type="obsolete">Напомнить: </translation>
-    </message>
-    <message>
         <location filename="qupdatenotifydlg.cpp" line="31"/>
         <location filename="qupdatenotifydlg.cpp" line="73"/>
         <source>Update Notification</source>
@@ -3575,7 +3546,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="qvlcvideowidget.cpp" line="279"/>
         <source>Emulate double click!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qvlcvideowidget.cpp" line="462"/>
@@ -3922,10 +3893,6 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <source>Information</source>
-        <translation type="obsolete">Информация</translation>
-    </message>
-    <message>
         <location filename="recorder.cpp" line="2252"/>
         <source>Using following timeshift: %1</source>
         <translation></translation>
@@ -3972,22 +3939,22 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="1641"/>
         <source>Timeout while sending statistics.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1655"/>
         <source>Support request: set account to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1663"/>
         <source>Support request: set password to &apos;******&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1671"/>
         <source>Support request: set API server to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2075"/>
@@ -3997,32 +3964,32 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="2293"/>
         <source>Support request: set stream server to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2311"/>
         <source>Support request: set buffering to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2329"/>
         <source>Support request: set timeshift to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2352"/>
         <source>Support request: change bitrate to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2566"/>
         <source>%1 (%2) Timeshift: %3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2573"/>
         <source>%1: %2 (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3092"/>
@@ -4259,10 +4226,6 @@ dataDir: %1
         <translation>Страница: </translation>
     </message>
     <message>
-        <source>Textsize</source>
-        <translation type="obsolete">Шрифт</translation>
-    </message>
-    <message>
         <location filename="forms/recorder_inc.ui" line="651"/>
         <location filename="recorder.cpp" line="3642"/>
         <location filename="recorder.cpp" line="6497"/>
@@ -4384,8 +4347,46 @@ dataDir: %1
     </message>
 </context>
 <context>
+    <name>infoWindowContent</name>
+    <message>
+        <location filename="tastes/more_kartina_translations.h" line="37"/>
+        <source>&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
+Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;North America:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;United Kingdom:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Israel:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;All countries:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;, &lt;a href=&apos;callto:support.kartina.tv&apos;&gt;support.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</source>
+        <oldsource>&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
+Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;North America:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;United Kingdom:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Israel:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;All countries:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;zakaz.kartina.tv, support.kartina.tv&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</oldsource>
+        <translation>&lt;b&gt;Kartina.TV&lt;/b&gt; - телевидение в любой точке мира.&lt;br /&gt;
+Заказ абонементов и ТВ-приставок, техническая поддержка и консультация на &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt;, а также круглосуточно по телефонам:
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;Все страны:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Россия:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+7 800 77 58 329&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Германия:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;069 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Сев. Америка:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Израиль:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Великобритания:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;, &lt;a href=&apos;callto:support.kartina.tv&apos;&gt;support.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</translation>
+    </message>
+</context>
+<context>
     <name>ownBuyReminder</name>
     <message>
+        <location filename="tastes/more_kartina_translations.h" line="19"/>
         <source>&lt;b&gt;Your subscription ends in %1 day(s).&lt;/b&gt;&lt;br&gt;
 You can renew your subscription at following site: 
 &lt;a href=&apos;http://kartina.tv/shop&apos;&gt;http://kartina.tv/shop&lt;/a&gt;,&lt;br&gt;
@@ -4399,7 +4400,7 @@ or by phone:
 &lt;tr&gt;&lt;td&gt;Or using Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </source>
-        <translation type="obsolete">&lt;b&gt;Ваша подписка истекает через %1 дня/дней!&lt;/b&gt;&lt;br&gt;
+        <translation>&lt;b&gt;Ваша подписка истекает через %1 дня/дней!&lt;/b&gt;&lt;br&gt;
 Купить подписку можно на сайте KartinaTV (&lt;a href=&apos;http://kartina.tv/shop/&apos;&gt;http://kartina.tv/shop/&lt;/a&gt;),&lt;br&gt;
 а также по телефону:
 &lt;table&gt;

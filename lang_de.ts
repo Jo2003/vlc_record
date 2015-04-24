@@ -119,10 +119,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CEpgBrowser</name>
     <message>
-        <source>Ar.</source>
-        <translation type="obsolete">Ar.</translation>
-    </message>
-    <message>
         <location filename="cepgbrowser.cpp" line="149"/>
         <source>No information available!</source>
         <oldsource>Sorry, no information available!</oldsource>
@@ -1026,11 +1022,6 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <source>Archive is not yet available for this time!</source>
-        <comment>color: #036</comment>
-        <translation type="obsolete">Das Archiv ist für diesen Zeitpunkt noch nicht verfügbar!</translation>
-    </message>
-    <message>
         <location filename="cplayer.cpp" line="879"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
@@ -1699,10 +1690,6 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <source>bitrate</source>
-        <translation type="obsolete">Bitrate</translation>
-    </message>
-    <message>
         <location filename="csettingsdlg.cpp" line="1647"/>
         <source>blood</source>
         <translation>blut</translation>
@@ -1988,10 +1975,6 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
         <translation></translation>
     </message>
     <message>
-        <source>Try to fix time offset</source>
-        <translation type="obsolete">Versuche Zeitkorrektur</translation>
-    </message>
-    <message>
         <location filename="forms/csettingsdlg.ui" line="1066"/>
         <source>Parent Code: </source>
         <translation>Eltern-Code: </translation>
@@ -2109,10 +2092,6 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
         <location filename="forms/csettingsdlg.ui" line="640"/>
         <source>yadif2x</source>
         <translation></translation>
-    </message>
-    <message>
-        <source>Extended daily EPG</source>
-        <translation type="obsolete">Erweitertes EPG</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="728"/>
@@ -3532,10 +3511,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QUpdateNotifyDlg</name>
     <message>
-        <source>Remind me: </source>
-        <translation type="obsolete">Erinnere mich: </translation>
-    </message>
-    <message>
         <location filename="qupdatenotifydlg.cpp" line="31"/>
         <location filename="qupdatenotifydlg.cpp" line="73"/>
         <source>Update Notification</source>
@@ -4253,10 +4228,6 @@ dataDir: %1
         <translation>Seite: </translation>
     </message>
     <message>
-        <source>Textsize</source>
-        <translation type="obsolete">Textgröße</translation>
-    </message>
-    <message>
         <location filename="forms/recorder_inc.ui" line="651"/>
         <location filename="recorder.cpp" line="3642"/>
         <location filename="recorder.cpp" line="6497"/>
@@ -4378,8 +4349,42 @@ dataDir: %1
     </message>
 </context>
 <context>
+    <name>infoWindowContent</name>
+    <message>
+        <location filename="tastes/more_kartina_translations.h" line="37"/>
+        <source>&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
+Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;North America:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;United Kingdom:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Israel:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;All countries:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;, &lt;a href=&apos;callto:support.kartina.tv&apos;&gt;support.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</source>
+        <oldsource>&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
+Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;North America:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;United Kingdom:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Israel:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;All countries:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;zakaz.kartina.tv, support.kartina.tv&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+</oldsource>
+        <translation>&lt;b&gt;Kartina.TV&lt;/b&gt; - Fernsehen überall auf der Welt.&lt;br /&gt;
+Bestellung von Abos und TV-Boxen sowie technischer Support und Beratung auf &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; und unter Hotline-Rufnummern rund um die Uhr:
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;Weltweit:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Deutschland:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;069 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;, &lt;a href=&apos;callto:support.kartina.tv&apos;&gt;support.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</translation>
+    </message>
+</context>
+<context>
     <name>ownBuyReminder</name>
     <message>
+        <location filename="tastes/more_kartina_translations.h" line="19"/>
         <source>&lt;b&gt;Your subscription ends in %1 day(s).&lt;/b&gt;&lt;br&gt;
 You can renew your subscription at following site: 
 &lt;a href=&apos;http://kartina.tv/shop&apos;&gt;http://kartina.tv/shop&lt;/a&gt;,&lt;br&gt;
@@ -4393,7 +4398,7 @@ or by phone:
 &lt;tr&gt;&lt;td&gt;Or using Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </source>
-        <translation type="obsolete">&lt;b&gt;Ihr Abonnement läuft in %1 Tagen aus!&lt;/b&gt;&lt;br&gt;
+        <translation>&lt;b&gt;Ihr Abonnement läuft in %1 Tagen aus!&lt;/b&gt;&lt;br&gt;
 Sie können es auf folgender Webseite erneuern: &lt;a href=&apos;http://kartina.tv/shop&apos;&gt;http://kartina.tv/shop&lt;/a&gt;.&lt;br&gt;
 Oder nutzen Sie das Telefon:
 &lt;table&gt;
@@ -4406,38 +4411,6 @@ Oder nutzen Sie das Telefon:
 &lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Your subscription ends in %1 day(s).&lt;/b&gt;&lt;br&gt;
-You can renew your subscription at following site: 
-&lt;a href=&apos;http://polsky.tv/shop.html&apos;&gt;http://polsky.tv&lt;/a&gt;,&lt;br&gt;
-or by phone:
-&lt;table&gt;
-&lt;tr&gt;&lt;td&gt;International:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 611 945 88 200&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Germany:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0611 945 88 200&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;USA:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;1 347 767 67 55&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Or using Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:polsky.tv&apos;&gt;polsky.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-</source>
-        <translation type="obsolete">&lt;b&gt;Ihr Abonnement läuft in %1 Tagen aus!&lt;/b&gt;&lt;br&gt;
-Sie können es auf folgender Webseite erneuern: &lt;a href=&apos;http://polsky.tv/shop.htm&apos;&gt;http://polsky.tv&lt;/a&gt;.&lt;br&gt;
-Oder nutzen Sie das Telefon:
-&lt;table&gt;
-&lt;tr&gt;&lt;td&gt;International:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 611 945 88 200&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Deutschland:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0611 945 88 200&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;USA:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;1 347 767 67 55&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Oder nutzen Sie Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;
-&lt;a href=&apos;callto:polsky.tv&apos;&gt;polsky.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-</translation>
-    </message>
-    <message>
-        <location filename="tastes/more_polsky_translations.h" line="19"/>
-        <source>&lt;b&gt;Your subscription will expire in %1 day(s)!&lt;/b&gt;&lt;br&gt;
-To extend it please place a new order.
-</source>
-        <translation>&lt;b&gt;Ihr Abonnement endet in %1 Tag(en)!&lt;/b&gt;&lt;br&gt;
-Bitte erneuern Sie es, wenn Sie den Service weiter nutzen wollen.</translation>
     </message>
 </context>
 </TS>
