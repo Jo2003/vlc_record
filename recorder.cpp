@@ -5457,7 +5457,7 @@ void Recorder::HandleFavourites()
          connect (pFavBtn[i], SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotFavBtnContext(QPoint)));
 
          // add button to layout ...
-         ui->gLayoutFav->addWidget(pFavBtn[i], i / (MAX_NO_FAVOURITES / 2), i % (MAX_NO_FAVOURITES / 2), Qt::AlignCenter);
+         ui->gLayoutFav->addWidget(pFavBtn[i], i / MAX_FAV_IN_ROW, i % MAX_FAV_IN_ROW, Qt::AlignCenter);
       }
       else
       {
