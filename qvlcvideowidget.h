@@ -15,6 +15,8 @@
    #define __20120208_QVLCVIDEOWIDGET_H
 
 #include <QWidget>
+// #include <QTextBrowser>
+#include <QLabel>
 #include <QTimer>
 #include <QMouseEvent>
 #include <QWheelEvent>
@@ -78,7 +80,7 @@ Q_DECLARE_METATYPE(QLangVector)
 //! \author  Jo2003
 //! \brief   a widget to handle VLC video display
 //---------------------------------------------------------------------------
-class QVlcVideoWidget : public QWidget
+class QVlcVideoWidget : public QLabel
 {
     Q_OBJECT
 

@@ -3544,49 +3544,49 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QVlcVideoWidget</name>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="279"/>
+        <location filename="qvlcvideowidget.cpp" line="325"/>
         <source>Emulate double click!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="462"/>
+        <location filename="qvlcvideowidget.cpp" line="508"/>
         <source>Activate shortcut: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="779"/>
+        <location filename="qvlcvideowidget.cpp" line="825"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="798"/>
+        <location filename="qvlcvideowidget.cpp" line="844"/>
         <source>Minimal Interface</source>
         <oldsource>Minimal Mode</oldsource>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="802"/>
+        <location filename="qvlcvideowidget.cpp" line="848"/>
         <source>Enable</source>
         <translation>Включать</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="816"/>
+        <location filename="qvlcvideowidget.cpp" line="862"/>
         <source>Stay on top</source>
         <translation>Закрепление окна</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="839"/>
+        <location filename="qvlcvideowidget.cpp" line="885"/>
         <source>Show Control Panel</source>
         <translation>Показать панель управления</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="873"/>
+        <location filename="qvlcvideowidget.cpp" line="919"/>
         <source>Audio Streams</source>
         <translation>Аудио-дорожка</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="886"/>
+        <location filename="qvlcvideowidget.cpp" line="932"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
@@ -4350,27 +4350,31 @@ dataDir: %1
     <name>infoWindowContent</name>
     <message>
         <location filename="tastes/more_kartina_translations.h" line="37"/>
-        <source>&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
-Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:
-&lt;table&gt;
-&lt;tr&gt;&lt;td&gt;North America:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;United Kingdom:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Israel:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;All countries:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;, &lt;a href=&apos;callto:support.kartina.tv&apos;&gt;support.kartina.tv&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;
+        <source>&lt;table width=&apos;%1&apos;&gt;
+&lt;tr&gt;&lt;td colspan=&apos;2&apos;&gt;
+&lt;img src=&apos;branding:video/logo_small&apos; /&gt;&lt;br /&gt;
+&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
+Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;North America:&lt;/td&gt;&lt;td&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;United Kingdom:&lt;/td&gt;&lt;td&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Israel:&lt;/td&gt;&lt;td&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;All countries:&lt;/td&gt;&lt;td&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td&gt;&lt;nowrap&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;, &lt;a href=&apos;callto:support.kartina.tv&apos;&gt;support.kartina.tv&lt;/a&gt;&lt;/nowrap&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </source>
-        <oldsource>&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
-Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:
-&lt;table&gt;
+        <oldsource>&lt;table width=&apos;%1&apos;&gt;
+&lt;tr&gt;&lt;td colspan=&apos;2&apos;&gt;
+&lt;img src=&apos;branding:video/logo_small&apos; /&gt;&lt;br /&gt;
+&lt;b&gt;Kartina.TV&lt;/b&gt; - television around the world.&lt;br /&gt;
+Order subscription and receiver, contact technical support and get answers at &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt; or call our 24-hour hotline:&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;North America:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+1 888 827 0606&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;United Kingdom:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;0800 048 83 93&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;Israel:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;072-2454300&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;All countries:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;zakaz.kartina.tv, support.kartina.tv&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Skype:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;&lt;nowrap&gt;&lt;a href=&apos;callto:zakaz.kartina.tv&apos;&gt;zakaz.kartina.tv&lt;/a&gt;, &lt;a href=&apos;callto:support.kartina.tv&apos;&gt;support.kartina.tv&lt;/a&gt;&lt;/nowrap&gt;&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 </oldsource>
-        <translation>&lt;b&gt;Kartina.TV&lt;/b&gt; - телевидение в любой точке мира.&lt;br /&gt;
+        <translation type="unfinished">&lt;b&gt;Kartina.TV&lt;/b&gt; - телевидение в любой точке мира.&lt;br /&gt;
 Заказ абонементов и ТВ-приставок, техническая поддержка и консультация на &lt;a href=&quot;http://www.kartina.tv&quot;&gt;www.kartina.tv&lt;/a&gt;, а также круглосуточно по телефонам:
 &lt;table&gt;
 &lt;tr&gt;&lt;td&gt;Все страны:&lt;/td&gt;&lt;td align=&apos;right&apos;&gt;+49 69 8484540&lt;/td&gt;&lt;/tr&gt;

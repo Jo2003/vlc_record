@@ -35,7 +35,7 @@
 //! \return  --
 //---------------------------------------------------------------------------
 QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
-   QWidget(parent),
+   QLabel(parent),
    _render(NULL),
    _mouseHide(0),
    _placePanel(0),
@@ -50,6 +50,30 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _labOverlay(NULL)
 {
    setMouseTracking(true);
+   setOpenExternalLinks(true);
+
+#ifndef __INFO_WINDOW_CONTENT
+   setStyleSheet("QWidget#videoWidget {"
+                 "background-color: black;"
+                 "background-image: url(branding:video/logo);"
+                 "background-repeat: no-repeat;"
+                 "background-position: center middle;}");
+#else
+   setStyleSheet("QWidget#videoWidget {background-color: black;}");
+   QString sContent = QString(__INFO_WINDOW_CONTENT).arg(460);
+   QString sCss     = QString(
+         "<html>"
+         "<head>"
+         "<title>Order Info</title>"
+         "<style>\n"
+         "body{background-color: black;color:white;}\n"
+         "a:link, a:hover, a:active, a:visited {color:#800;}\n"
+         ".centered table{text-align: left;}\n"
+         "</style>"
+         "</head><body><center><div class='centered'>%1</div></center></body></html>").arg(sContent);
+   setWordWrap(true);
+   setText(sCss);
+#endif
 
    QVBoxLayout *pLayout = new QVBoxLayout();
    _render              = new QWidget(this);
@@ -67,14 +91,36 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _render->setMouseTracking(true);
 #endif // Q_OS_WIN
    _render->setAttribute(Qt::WA_TransparentForMouseEvents);
-   _render->setAutoFillBackground(true);
+   _render->setAttribute(Qt::WA_TranslucentBackground);
+   _render->setWindowOpacity(0.0);
+   // _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
+/*
+#ifndef __INFO_WINDOW_CONTENT
    _render->setStyleSheet("QWidget#renderView {"
                           "background-color: black;"
                           "background-image: url(branding:video/logo);"
                           "background-repeat: no-repeat;"
                           "background-position: center middle;}");
 
+#else
+   _render->setStyleSheet("QWidget#renderView {background-color: black;}");
+
+   QString sContent = QString(__INFO_WINDOW_CONTENT).arg(400);
+   QString sCss = QString(
+         "<html>"
+         "<head>"
+         "<title>Testpage</title>"
+         "<style>\n"
+         "body{background-color: black;color:white;}\n"
+         "a:link, a:hover, a:active, a:visited {color:#800;}\n"
+         ".centered table{text-align: left;}\n"
+         "</style>"
+         "</head><body><center><div class='centered'>%1</div></center></body></html>").arg(sContent);
+   _render->setWordWrap(true);
+   _render->setText(sCss);
+#endif
+*/
    pLayout->setMargin(0);
    pLayout->addWidget(_render);
    setLayout(pLayout);
