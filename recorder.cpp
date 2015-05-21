@@ -5799,7 +5799,7 @@ void Recorder::HandleFavourites()
    }
 
    // re-create all buttons ...
-   for (i = 0; i < lFavourites.count(); i++)
+   for (i = 0; ((i < lFavourites.count()) && (i < MAX_NO_FAVOURITES)); i++)
    {
       pFavBtn[i] = new QToolButton (this);
       pFavAct[i] = new CFavAction (this);

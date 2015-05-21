@@ -37,7 +37,6 @@
       QT_TRANSLATE_NOOP("infoWindowContent", \
          "<table width='%1'>\n"\
             "<tr><td colspan='2'>\n"\
-               "<img src='branding:video/logo_small' /><br />\n"\
                "<b>Kartina.TV</b> - television around the world.<br />\n"\
                "Order subscription and receiver, contact technical support "\
                "and get answers at <a href=\"http://www.kartina.tv\">www.kartina.tv</a> "\

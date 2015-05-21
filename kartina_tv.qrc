@@ -5,6 +5,6 @@
     </qresource>
     <qresource prefix="/unbranded/video">
         <file alias="logo">resources/kartina_tv.png</file>
-        <file alias="logo_small">resources/kartina_tv_small.png</file>
+        <file alias="logo_transp">resources/kartina_transp.png</file>
     </qresource>
 </RCC>

@@ -59,15 +59,20 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
                  "background-repeat: no-repeat;"
                  "background-position: center middle;}");
 #else
-   setStyleSheet("QWidget#videoWidget {background-color: black;}");
-   QString sContent = QString(__INFO_WINDOW_CONTENT).arg(460);
+   setStyleSheet("QWidget#videoWidget {"
+                 "background-color: black;"
+                 "background-image: url(branding:video/logo_transp);"
+                 "background-repeat: no-repeat;"
+                 "background-position: center middle;}");
+
+   QString sContent = QString(pAppTransl->translate("infoWindowContent", __INFO_WINDOW_CONTENT)).arg(480);
    QString sCss     = QString(
          "<html>"
          "<head>"
          "<title>Order Info</title>"
          "<style>\n"
          "body{background-color: black;color:white;}\n"
-         "a:link, a:hover, a:active, a:visited {color:#800;}\n"
+         "a:link, a:hover, a:active, a:visited {color:#9ff;}\n"
          ".centered table{text-align: left;}\n"
          "</style>"
          "</head><body><center><div class='centered'>%1</div></center></body></html>").arg(sContent);
