@@ -91,6 +91,8 @@ public:
    WId widgetId();
    void raiseRender();
 
+   void updateContent (int delta);
+
 protected:
 #ifndef Q_OS_LINUX
    /// Double click doesn't work on Linux in case

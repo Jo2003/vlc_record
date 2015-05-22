@@ -130,7 +130,6 @@
 #define PORTABLE_MARKER   ".portable"     // mark release as portable ...
 #define PORTABLE_DATA_DIR "portable_data" // data folder for portable version
 #define MARK_SPECIAL      (-2899)         // mark something special
-
 // a namespace for translators ...
 namespace Msg
 {

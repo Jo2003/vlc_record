@@ -4651,6 +4651,8 @@ void Recorder::slotChgFontSize(int i)
    f = ui->cbxChannelGroup->font();
    f.setPointSize(f.pointSize() + i);
    ui->cbxChannelGroup->setFont(f);
+
+   ui->player->getVideoWidget()->updateContent(i);
 }
 
 //---------------------------------------------------------------------------

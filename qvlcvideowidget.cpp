@@ -52,34 +52,6 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    setMouseTracking(true);
    setOpenExternalLinks(true);
 
-#ifndef __INFO_WINDOW_CONTENT
-   setStyleSheet("QWidget#videoWidget {"
-                 "background-color: black;"
-                 "background-image: url(branding:video/logo);"
-                 "background-repeat: no-repeat;"
-                 "background-position: center middle;}");
-#else
-   setStyleSheet("QWidget#videoWidget {"
-                 "background-color: black;"
-                 "background-image: url(branding:video/logo_transp);"
-                 "background-repeat: no-repeat;"
-                 "background-position: center middle;}");
-
-   QString sContent = QString(pAppTransl->translate("infoWindowContent", __INFO_WINDOW_CONTENT)).arg(480);
-   QString sCss     = QString(
-         "<html>"
-         "<head>"
-         "<title>Order Info</title>"
-         "<style>\n"
-         "body{background-color: black;color:white;}\n"
-         "a:link, a:hover, a:active, a:visited {color:#9ff;}\n"
-         ".centered table{text-align: left;}\n"
-         "</style>"
-         "</head><body><center><div class='centered'>%1</div></center></body></html>").arg(sContent);
-   setWordWrap(true);
-   setText(sCss);
-#endif
-
    QVBoxLayout *pLayout = new QVBoxLayout();
    _render              = new QWidget(this);
    _mouseHide           = new QTimer(this);
@@ -89,7 +61,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    /// double click emulator on Linux only
    _tDoubleClick        = new QTimer(this);
    _tDoubleClick->setSingleShot(true);
-   _tDoubleClick->setInterval(500);
+   _tDoubleClick->setInterval(300);
 #elif defined Q_OS_WIN
    /// Strange! On Windows WA_TransparentForMouseEvents alone doesn't
    /// work. So we need to enable mouse tracking.
@@ -98,34 +70,7 @@ QVlcVideoWidget::QVlcVideoWidget(QWidget *parent) :
    _render->setAttribute(Qt::WA_TransparentForMouseEvents);
    _render->setAttribute(Qt::WA_TranslucentBackground);
    _render->setWindowOpacity(0.0);
-   // _render->setAutoFillBackground(true);
    _render->setObjectName("renderView");
-/*
-#ifndef __INFO_WINDOW_CONTENT
-   _render->setStyleSheet("QWidget#renderView {"
-                          "background-color: black;"
-                          "background-image: url(branding:video/logo);"
-                          "background-repeat: no-repeat;"
-                          "background-position: center middle;}");
-
-#else
-   _render->setStyleSheet("QWidget#renderView {background-color: black;}");
-
-   QString sContent = QString(__INFO_WINDOW_CONTENT).arg(400);
-   QString sCss = QString(
-         "<html>"
-         "<head>"
-         "<title>Testpage</title>"
-         "<style>\n"
-         "body{background-color: black;color:white;}\n"
-         "a:link, a:hover, a:active, a:visited {color:#800;}\n"
-         ".centered table{text-align: left;}\n"
-         "</style>"
-         "</head><body><center><div class='centered'>%1</div></center></body></html>").arg(sContent);
-   _render->setWordWrap(true);
-   _render->setText(sCss);
-#endif
-*/
    pLayout->setMargin(0);
    pLayout->addWidget(_render);
    setLayout(pLayout);
@@ -206,6 +151,7 @@ void QVlcVideoWidget::changeEvent(QEvent *event)
    case QEvent::LanguageChange:
       // retranslate context menu ...
       touchContextMenu();
+      updateContent(0);
       break;
    default:
       break;
@@ -593,6 +539,56 @@ void QVlcVideoWidget::raiseRender()
    {
       _render->raise();
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   update content of video widget back
+//
+//! \author  Jo2003
+//! \date    21.05.2015
+//! \param   [in] int font delta
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::updateContent(int delta)
+{
+#ifndef __INFO_WINDOW_CONTENT
+   Q_UNUSED(delta)
+   setStyleSheet("QWidget#videoWidget {"
+                 "background-color: black;"
+                 "background-image: url(branding:video/logo);"
+                 "background-repeat: no-repeat;"
+                 "background-position: center middle;}");
+#else
+   clear();
+   QFont f = font();
+   f.setPointSize(f.pointSize() + delta);
+   setFont(f);
+
+   setStyleSheet("QWidget#videoWidget {"
+                 "background-color: black;"
+                 "background-image: url(branding:video/logo_transp);"
+                 "background-repeat: no-repeat;"
+                 "background-position: center middle;}");
+
+   QString sContent = pAppTransl->translate("infoWindowContent", __INFO_WINDOW_CONTENT);
+   QString sCss;
+
+   if (sContent.isEmpty())
+   {
+      sContent = __INFO_WINDOW_CONTENT;
+   }
+
+   sContent = sContent.arg(f.pointSize() * 40);
+   sContent = QString("<center><div class='centered'>%1</div></center>").arg(sContent);
+   sCss     = "body{background-color: black;color:white;}\n"
+              "a:link, a:hover, a:active, a:visited {color:#9ff;}\n"
+              ".centered table{text-align: left;}\n";
+
+   setWordWrap(true);
+   setText(pHtml->htmlPage(sContent, "Order Info", sCss));
+#endif
 }
 
 //---------------------------------------------------------------------------
