@@ -11,16 +11,8 @@
 \*************************************************************/
 #include "caboutdialog.h"
 #include "ui_caboutdialog.h"
+#include "externals_inc.h"
 
-#include "qcustparser.h"
-#include "chtmlwriter.h"
-#include "templates.h"
-
-// global customization class ...
-extern QCustParser *pCustomization;
-
-// global html writer ...
-extern CHtmlWriter *pHtml;
 
 /* -----------------------------------------------------------------\
 |  Method: CAboutDialog / constructor
@@ -38,6 +30,9 @@ CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires) :
 {
    ui->setupUi(this);
    FillInfo(sExpires);
+#ifdef __INFO_WINDOW_CONTENT
+   addOrderInfo();
+#endif // __INFO_WINDOW_CONTENT
    ui->textBrowser->setHtml(strAbout);
 }
 
@@ -165,6 +160,52 @@ void CAboutDialog::FillInfo(QString sExpires)
                            tr("Donate some $ and / or &euro; at Paypal for my work."), "", linkcss) + "<br /> <br />";
    strAbout += tr("Thank you,") + "<br />&nbsp;&nbsp;&nbsp;J&ouml;rg";
    strAbout  = pHtml->htmlPage(strAbout);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   add order information in first tab
+//
+//! \author  Jo2003
+//! \date    27.05.2015
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CAboutDialog::addOrderInfo()
+{
+   QWidget*      pOrderWidgetTab = new QWidget;
+   QHBoxLayout*  pLayout         = new QHBoxLayout;
+   QTextBrowser* pContent        = new QTextBrowser;
+   QString       sContent        = pAppTransl->translate("infoWindowContent", __INFO_WINDOW_CONTENT);
+   QString       sCss;
+
+   if (sContent.isEmpty())
+   {
+      sContent = __INFO_WINDOW_CONTENT;
+   }
+
+   // CSS
+   sCss   = "body{background-color: rgb(255, 254, 212); color: #151515;}";
+   sCss  += "a{text-decoration: underline; color: #0482FE;}";
+
+   // table width ...
+   sContent = sContent.arg("98%");
+
+   sContent = pHtml->htmlPage(sContent, tr("Order Info"), sCss);
+
+   // add order content ...
+   pContent->setHtml(sContent);
+
+   // make sure browser can be opened ...
+   pContent->setOpenExternalLinks(true);
+
+   // add widget to layout and create new tab ...
+   pLayout->addWidget(pContent);
+   pOrderWidgetTab->setLayout(pLayout);
+   ui->tabWidget->insertTab(0, pOrderWidgetTab, tr("Order Info"));
+
+   // set active tab
+   ui->tabWidget->setCurrentIndex(0);
 }
 
 /************************* History ***************************\

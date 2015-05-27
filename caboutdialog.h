@@ -41,6 +41,7 @@ public:
 protected:
     virtual void changeEvent(QEvent *e);
     void FillInfo (QString sExpires);
+    void addOrderInfo();
 
 private:
     Ui::CAboutDialog *ui;

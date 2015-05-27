@@ -9,12 +9,17 @@
         <translation>О программе...</translation>
     </message>
     <message>
-        <location filename="forms/caboutdialog.ui" line="37"/>
+        <location filename="forms/caboutdialog.ui" line="31"/>
+        <source>About this program</source>
+        <translation>О программе</translation>
+    </message>
+    <message>
+        <location filename="forms/caboutdialog.ui" line="47"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;About&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <oldsource>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;About&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -23,64 +28,70 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/caboutdialog.ui" line="51"/>
+        <location filename="forms/caboutdialog.ui" line="65"/>
         <source>Don&apos;t show on startup</source>
         <translation>Не показывать при запуске</translation>
     </message>
     <message>
-        <location filename="forms/caboutdialog.ui" line="73"/>
+        <location filename="forms/caboutdialog.ui" line="87"/>
         <source>&amp;Thank you!</source>
         <translation>&amp;Спасибо!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="116"/>
+        <location filename="caboutdialog.cpp" line="111"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="123"/>
+        <location filename="caboutdialog.cpp" line="118"/>
         <source>libVLC:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="129"/>
+        <location filename="caboutdialog.cpp" line="124"/>
         <source>Author:</source>
         <translation>Автор:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="135"/>
+        <location filename="caboutdialog.cpp" line="130"/>
         <source>Project Site:</source>
         <translation>Сайт проекта:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="140"/>
+        <location filename="caboutdialog.cpp" line="135"/>
         <source>Inspired by:</source>
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="150"/>
+        <location filename="caboutdialog.cpp" line="145"/>
         <source>Account expires:</source>
         <translation>Пакет истекает:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="165"/>
+        <location filename="caboutdialog.cpp" line="160"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="162"/>
+        <location filename="caboutdialog.cpp" line="157"/>
         <source>This program is free software!</source>
         <oldsource>&lt;b&gt;This program is free software!&lt;/b&gt;</oldsource>
         <translation>Эта программа является бесплатной!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="163"/>
+        <location filename="caboutdialog.cpp" line="194"/>
+        <location filename="caboutdialog.cpp" line="210"/>
+        <source>Order Info</source>
+        <translation>Как подключить</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="158"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если она Вам понравилась, Вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="166"/>
+        <location filename="caboutdialog.cpp" line="161"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
@@ -3554,39 +3565,39 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="839"/>
+        <location filename="qvlcvideowidget.cpp" line="826"/>
         <source>Deinterlacing</source>
         <oldsource>Deinterlacing Video</oldsource>
         <translation>Деинтерлейсинг</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="858"/>
+        <location filename="qvlcvideowidget.cpp" line="845"/>
         <source>Minimal Interface</source>
         <oldsource>Minimal Mode</oldsource>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="862"/>
+        <location filename="qvlcvideowidget.cpp" line="849"/>
         <source>Enable</source>
         <translation>Включать</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="876"/>
+        <location filename="qvlcvideowidget.cpp" line="863"/>
         <source>Stay on top</source>
         <translation>Закрепление окна</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="899"/>
+        <location filename="qvlcvideowidget.cpp" line="886"/>
         <source>Show Control Panel</source>
         <translation>Показать панель управления</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="933"/>
+        <location filename="qvlcvideowidget.cpp" line="920"/>
         <source>Audio Streams</source>
         <translation>Аудио-дорожка</translation>
     </message>
     <message>
-        <location filename="qvlcvideowidget.cpp" line="946"/>
+        <location filename="qvlcvideowidget.cpp" line="933"/>
         <source>Audio %1</source>
         <translation>Аудио %1</translation>
     </message>
