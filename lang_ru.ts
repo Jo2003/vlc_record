@@ -83,7 +83,7 @@ p, li { white-space: pre-wrap; }
         <location filename="caboutdialog.cpp" line="194"/>
         <location filename="caboutdialog.cpp" line="210"/>
         <source>Order Info</source>
-        <translation>Как подключить</translation>
+        <translation>Инф. для подключения</translation>
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="158"/>
