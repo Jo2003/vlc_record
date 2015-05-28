@@ -81,7 +81,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="194"/>
-        <location filename="caboutdialog.cpp" line="210"/>
+        <location filename="caboutdialog.cpp" line="205"/>
         <source>Order Info</source>
         <translation>Bestellinfo</translation>
     </message>
@@ -2968,7 +2968,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="428"/>
+        <location filename="cvodbrowser.cpp" line="432"/>
         <source>Video Details</source>
         <translation></translation>
     </message>
@@ -2993,12 +2993,12 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="402"/>
+        <location filename="cvodbrowser.cpp" line="406"/>
         <source>Play Movie ...</source>
         <translation>Film abspielen ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="413"/>
+        <location filename="cvodbrowser.cpp" line="417"/>
         <source>Record Movie ...</source>
         <translation>Film aufzeichnen ...</translation>
     </message>

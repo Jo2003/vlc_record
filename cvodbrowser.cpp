@@ -381,6 +381,10 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       {
          title = pHtml->image(":/vod/hd", 18, 18, "", title);
       }
+      else if (sInfo.vVodFiles[i].sFormat == "3d")
+      {
+         title = pHtml->image(":/vod/3d", 18, 18, "", title);
+      }
       else
       {
          title = pHtml->span(QString("(%1)").arg(title), "color: #888");

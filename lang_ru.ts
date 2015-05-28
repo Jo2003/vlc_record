@@ -81,7 +81,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="194"/>
-        <location filename="caboutdialog.cpp" line="210"/>
+        <location filename="caboutdialog.cpp" line="205"/>
         <source>Order Info</source>
         <translation>Инф. для подключения</translation>
     </message>
@@ -2948,7 +2948,7 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="428"/>
+        <location filename="cvodbrowser.cpp" line="432"/>
         <source>Video Details</source>
         <translation>Информации о видео</translation>
     </message>
@@ -2993,12 +2993,12 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="402"/>
+        <location filename="cvodbrowser.cpp" line="406"/>
         <source>Play Movie ...</source>
         <translation>Просмотр фильма ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="413"/>
+        <location filename="cvodbrowser.cpp" line="417"/>
         <source>Record Movie ...</source>
         <translation>Запись фильма ...</translation>
     </message>
