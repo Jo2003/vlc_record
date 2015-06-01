@@ -21,8 +21,8 @@
 // bugfix for not working no sleep mode on Mac
 #ifdef Q_OS_MAC
    #include "macNoSleep.h"
-   #define mMAC_NO_SLEEP { int yy = macNoSleep(); mInfo(CPlayer::tr("Start NO-SLEEP-MODE: %1").arg(yy));}
-   #define mMAC_AL_SLEEP { int yy = macSleep();   mInfo(CPlayer::tr("End NO-SLEEP-MODE: %1").arg(yy));  }
+   #define mMAC_NO_SLEEP { int yy = macNoSleep(); mInfo(CPlayer::tr("Start NO-SLEEP-MODE: %1").arg((yy == 0) ? "OK" : "ERROR"));}
+   #define mMAC_AL_SLEEP { int yy = macSleep();   mInfo(CPlayer::tr("End NO-SLEEP-MODE: %1").arg((yy == 0) ? "OK" : "ERROR")));  }
 #else
    #define mMAC_NO_SLEEP
    #define mMAC_AL_SLEEP
