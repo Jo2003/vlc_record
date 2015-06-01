@@ -18,6 +18,15 @@
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
 
+#ifdef Q_OS_MAC
+   #include "macNoSleep.h"
+   #define mMAC_NO_SLEEP { int yy = macNoSleep(); mInfo(tr("Start no-sleep-mode: %1").arg(yy));  }
+   #define mMAC_AL_SLEEP { int yy = macSleep();   mInfo(tr("Start can-sleep-mode: %1").arg(yy)); }
+#else
+   #define mMAC_NO_SLEEP
+   #define mMAC_AL_SLEEP
+#endif // Q_OS_MAC
+
 QVector<libvlc_event_type_t> CPlayer::_eventQueue;
 QMutex                       CPlayer::_mtxEvt;
 float                        CPlayer::_flBuffPrt = 0.0;
@@ -1204,6 +1213,7 @@ void CPlayer::slotEventPoll()
 
             libPlayState = IncPlay::PS_ERROR;
             errHelper.errCount ++;
+            mMAC_AL_SLEEP;
             break;
 
          // TRACK CHANGED ...
@@ -1276,6 +1286,7 @@ void CPlayer::slotEventPoll()
                initSlider();
             }
             libPlayState = IncPlay::PS_PLAY;
+            mMAC_NO_SLEEP;
             break;
 
          // player paused ...
@@ -1284,6 +1295,7 @@ void CPlayer::slotEventPoll()
             emit sigPlayState((int)IncPlay::PS_PAUSE);
             pausePlayTimer();
             libPlayState = IncPlay::PS_PAUSE;
+            mMAC_AL_SLEEP;
             break;
 
          // player stopped ...
@@ -1294,6 +1306,7 @@ void CPlayer::slotEventPoll()
             stopPlayTimer();
             libPlayState = IncPlay::PS_STOP;
             pWatchStats->playEnds(errHelper.errCount);
+            mMAC_AL_SLEEP;
             break;
 
          // end of media reached ...
@@ -1303,6 +1316,7 @@ void CPlayer::slotEventPoll()
             stopPlayTimer();
             libPlayState = IncPlay::PS_END;
             pWatchStats->playEnds(errHelper.errCount);
+            mMAC_AL_SLEEP;
             break;
 
          // showing video ...

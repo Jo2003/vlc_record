@@ -50,6 +50,8 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2015-05-28: Version t.b.d.
+| - add missing 3d format icon
 |
 | 2014-11-25: Version 2.72.0
 | - add 3rd version number for bugfix releases

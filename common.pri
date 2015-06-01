@@ -206,6 +206,9 @@ win32 {
     LIBS += -Llib
 }
 else:mac {
+   HEADERS += $$PWD/macNoSleep.h
+   OBJECTIVE_SOURCES += $$PWD/macNoSleep.mm
+
    OTHER_FILES += create_mac_bundle.sh \
                   release/create_dmg.sh
    INCLUDEPATH += mac/include
