@@ -819,12 +819,14 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
             }
          }
 
+#ifndef Q_OS_MAC /// bugfix used for Mac no sleep mode \sa macNoSleep.h / .mm
          ///////////////////////////////////////////////////////////////////////////
          // screensaver stuff ...
          ///////////////////////////////////////////////////////////////////////////
          sMrl = ":disable-screensaver";
          mInfo(tr("Add MRL Option: %1").arg(sMrl));
          libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+#endif // Q_OS_MAC
 
          ///////////////////////////////////////////////////////////////////////////
          // default audio track stuff ...
