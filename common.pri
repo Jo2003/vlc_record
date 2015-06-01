@@ -223,7 +223,7 @@ else:mac {
    CONFIG(release,debug|release):appcleanhook.target = Makefile.Release
    QMAKE_EXTRA_TARGETS += appcleanhook
 
-   LIBS += -L./mac/lib
+   LIBS += -L./mac/lib -framework IOKit -framework Foundation
    QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
 }
 else:unix {

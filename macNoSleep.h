@@ -1,5 +1,18 @@
-#ifndef MACNOSLEEP_H
-   #define MACNOSLEEP_H
+/*------------------------------ Information ---------------------------*//**
+ *
+ *  $HeadURL$
+ *
+ *  @file     macNoSleep.h
+ *
+ *  @author   Jo2003
+ *
+ *  @date     01.06.2015
+ *
+ *  $Id$
+ *
+ *///------------------------- (c) 2015 by Jo2003  --------------------------
+#ifndef __20150601_MACNOSLEEP_H
+   #define __20150601_MACNOSLEEP_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,4 +55,4 @@ int macNoSleepActive();
 }
 #endif
 
-#endif // MACNOSLEEP_H
+#endif // __20150601_MACNOSLEEP_H

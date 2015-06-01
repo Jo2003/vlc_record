@@ -1,12 +1,27 @@
+/*------------------------------ Information ---------------------------*//**
+ *
+ *  $HeadURL$
+ *
+ *  @file     macNoSleep.mm
+ *
+ *  @author   Jo2003
+ *
+ *  @date     01.06.2015
+ *
+ *  $Id$
+ *
+ *///------------------------- (c) 2015 by Jo2003  --------------------------
 #include "macNoSleep.h"
 
 #import <IOKit/pwr_mgt/IOPMLib.h>
 
+
+// global variables
 static IOPMAssertionID assertionID;
 static bool bNoSleepActive = false;
 
-//  NOTE: IOPMAssertionCreateWithName limits the string to 128 characters.
-static CFStringRef* reasonForActivity = CFSTR("VLC-Record plays video");
+// give a reason for no sleep mode
+static const __CFString* reasonForActivity = CFSTR("VLC-Record plays video");
 
 //---------------------------------------------------------------------------
 //

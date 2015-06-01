@@ -18,10 +18,11 @@
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
 
+// bugfix for not working no sleep mode on Mac
 #ifdef Q_OS_MAC
    #include "macNoSleep.h"
-   #define mMAC_NO_SLEEP { int yy = macNoSleep(); mInfo(tr("Start no-sleep-mode: %1").arg(yy));  }
-   #define mMAC_AL_SLEEP { int yy = macSleep();   mInfo(tr("Start can-sleep-mode: %1").arg(yy)); }
+   #define mMAC_NO_SLEEP { int yy = macNoSleep(); mInfo(CPlayer::tr("Start NO-SLEEP-MODE: %1").arg(yy));}
+   #define mMAC_AL_SLEEP { int yy = macSleep();   mInfo(CPlayer::tr("End NO-SLEEP-MODE: %1").arg(yy));  }
 #else
    #define mMAC_NO_SLEEP
    #define mMAC_AL_SLEEP
