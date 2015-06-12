@@ -1,4 +1,4 @@
-﻿/*********************** Information *************************\
+/*********************** Information *************************\
 | $HeadURL$
 |
 | Author: Jo2003
@@ -13,6 +13,10 @@
 #include "cplayer.h"
 #include "ui_cplayer.h"
 #include "externals_inc.h"
+
+#ifndef Q_OS_WIN
+   #include <unistd.h>
+#endif
 
 // help macros to let QSlider support GMT values ...
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
@@ -170,14 +174,44 @@ CPlayer::~CPlayer()
 {
    // stop timer ...
    sliderTimer.stop();
-   tEventPoll.stop();
 
    stop();
 
-   cleanupLibVLC(true);
+   slotTimedLibClean();
 
    delete ui;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   wait while stop reached ...
+//
+//! \author  Jo2003
+//! \date    12.06.2015
+//
+//---------------------------------------------------------------------------
+void CPlayer::slotTimedLibClean()
+{
+   int iCount = 0;
+   while (iCount++ < 10)
+   {
+      if ((libPlayState == IncPlay::PS_ERROR) || (libPlayState == IncPlay::PS_STOP) || (libPlayState == IncPlay::PS_WTF))
+      {
+         mInfo(tr("Ready for libVLC release ..."));
+         break;
+      }
+
+#ifdef Q_OS_WIN
+      Sleep(100);
+#else
+      usleep(100 * 1000);
+#endif
+   }
+
+   cleanupLibVLC(true);
+   tEventPoll.stop();
+}
+
 
 /* -----------------------------------------------------------------\
 |  Method: cleanupLibVLC
@@ -200,6 +234,8 @@ void CPlayer::cleanupLibVLC(bool bDestruct)
 
    if (pMediaPlayer)
    {
+      disconnectVideoWidget();
+
       libvlc_media_player_release (pMediaPlayer);
       pMediaPlayer = NULL;
    }
@@ -212,6 +248,7 @@ void CPlayer::cleanupLibVLC(bool bDestruct)
 
    if (pVlcInstance)
    {
+/*
 #ifdef Q_OS_MAC
       // releasing it on Mac leads to crash if you end the
       // player with running video ... no problem at all 'cause
@@ -225,9 +262,10 @@ void CPlayer::cleanupLibVLC(bool bDestruct)
          libvlc_release(pVlcInstance);
       }
 #else
+*/
       Q_UNUSED(bDestruct)
       libvlc_release(pVlcInstance);
-#endif
+// #endif
 
       pVlcInstance = NULL;
    }
@@ -2008,6 +2046,25 @@ void CPlayer::connectToVideoWidget()
    libvlc_media_player_set_nsobject(pMediaPlayer, (void *)ui->videoWidget->widgetId());
 #else
    libvlc_media_player_set_xwindow(pMediaPlayer, ui->videoWidget->widgetId());
+#endif
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   disconnect video widget
+//
+//! \author  Jo2003
+//! \date    12.06.2015
+//
+//---------------------------------------------------------------------------
+void CPlayer::disconnectVideoWidget()
+{
+#ifdef Q_OS_WIN
+   libvlc_media_player_set_hwnd (pMediaPlayer, 0);
+#elif defined Q_OS_MAC
+   libvlc_media_player_set_nsobject(pMediaPlayer, 0);
+#else
+   libvlc_media_player_set_xwindow(pMediaPlayer, 0);
 #endif
 }
 

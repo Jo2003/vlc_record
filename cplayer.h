@@ -101,10 +101,11 @@ protected:
    virtual void changeEvent(QEvent *e);
    void enableDisablePlayControl (bool bEnable);
    void connectToVideoWidget ();
+   void disconnectVideoWidget();
    int  addAd ();
    int  clearMediaList();
-   void cleanupLibVLC(bool bDestruct = false);
    QString aspectCropToString (const char *pFormat);
+   void cleanupLibVLC(bool bDestruct = false);
 
 private:
    Ui::CPlayer                 *ui;
@@ -144,6 +145,8 @@ private slots:
    void slotEventPoll();
    void slotFinallyPlays(int percent);
    void slotBtnSaveAspectCropClicked();
+   void slotTimedLibClean();
+
 
 public slots:
    int  playMedia (const QString &sCmdLine, const QString &sOpts);
