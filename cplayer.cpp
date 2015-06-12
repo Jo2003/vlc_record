@@ -171,11 +171,8 @@ CPlayer::~CPlayer()
 {
    // stop timer ...
    sliderTimer.stop();
-
-   stop();
-
+   tEventPoll.stop();
    slotTimedLibClean();
-
    delete ui;
 }
 
@@ -190,22 +187,29 @@ CPlayer::~CPlayer()
 void CPlayer::slotTimedLibClean()
 {
    int    iCount = 0;
-   while (iCount++ < 10)
-   {
-      if ((libPlayState == IncPlay::PS_ERROR) || (libPlayState == IncPlay::PS_STOP) || (libPlayState == IncPlay::PS_WTF))
-      {
-         mInfo(tr("Ready for libVLC release ..."));
-         break;
-      }
-      else
-      {
-         mInfo(tr("Wait for player to stop ..."));
-         CSmallHelpers::sleepMs(10);
-      }
-   }
+   libvlc_state_t state;
 
-   cleanupLibVLC(true);
-   tEventPoll.stop();
+   if (pVlcInstance && pMediaPlayer)
+   {
+      while (iCount++ < 10)
+      {
+         state = libvlc_media_player_get_state(pMediaPlayer);
+
+         if ((state == libvlc_Stopped) || (state == libvlc_Ended) || (state == libvlc_Error) || (state == libvlc_NothingSpecial))
+         {
+            mInfo(tr("Ready for libVLC release ..."));
+            break;
+         }
+         else
+         {
+            mInfo(tr("Wait for player to stop ..."));
+            stop();
+            CSmallHelpers::sleepMs(10);
+         }
+      }
+
+      cleanupLibVLC(true);
+   }
 }
 
 /* -----------------------------------------------------------------\
