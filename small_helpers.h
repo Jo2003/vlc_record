@@ -21,6 +21,8 @@
 #include <QDateTime>
 #include "defdef.h"
 #include "qdatetimesyncro.h"
+#include <unistd.h> // usleep
+
 
 #define __VLCRECORD_KEY "O20J03N05+v205+n1907#80730108"
 
@@ -284,6 +286,21 @@ public:
       }
 
       return iRet;
+   }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   sleep milly seconds
+   //
+   //! \author  Jo2003
+   //! \date    12.06.2015
+   //
+   //! \param   uiSleep (uint) sleep time in ms
+   //
+   //---------------------------------------------------------------------------
+   static void sleepMs(uint uiSleep)
+   {
+       usleep(uiSleep * 1000);
    }
 };
 

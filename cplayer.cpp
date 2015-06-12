@@ -13,10 +13,7 @@
 #include "cplayer.h"
 #include "ui_cplayer.h"
 #include "externals_inc.h"
-
-#ifndef Q_OS_WIN
-   #include <unistd.h>
-#endif
+#include "small_helpers.h"
 
 // help macros to let QSlider support GMT values ...
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
@@ -192,7 +189,7 @@ CPlayer::~CPlayer()
 //---------------------------------------------------------------------------
 void CPlayer::slotTimedLibClean()
 {
-   int iCount = 0;
+   int    iCount = 0;
    while (iCount++ < 10)
    {
       if ((libPlayState == IncPlay::PS_ERROR) || (libPlayState == IncPlay::PS_STOP) || (libPlayState == IncPlay::PS_WTF))
@@ -200,18 +197,16 @@ void CPlayer::slotTimedLibClean()
          mInfo(tr("Ready for libVLC release ..."));
          break;
       }
-
-#ifdef Q_OS_WIN
-      Sleep(100);
-#else
-      usleep(100 * 1000);
-#endif
+      else
+      {
+         mInfo(tr("Wait for player to stop ..."));
+         CSmallHelpers::sleepMs(10);
+      }
    }
 
    cleanupLibVLC(true);
    tEventPoll.stop();
 }
-
 
 /* -----------------------------------------------------------------\
 |  Method: cleanupLibVLC
