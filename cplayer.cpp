@@ -208,7 +208,7 @@ void CPlayer::slotTimedLibClean()
          }
       }
 
-      cleanupLibVLC(true);
+      cleanupLibVLC();
    }
 }
 
@@ -223,7 +223,7 @@ void CPlayer::slotTimedLibClean()
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CPlayer::cleanupLibVLC(bool bDestruct)
+void CPlayer::cleanupLibVLC()
 {
    if (pMediaList)
    {
@@ -247,25 +247,7 @@ void CPlayer::cleanupLibVLC(bool bDestruct)
 
    if (pVlcInstance)
    {
-/*
-#ifdef Q_OS_MAC
-      // releasing it on Mac leads to crash if you end the
-      // player with running video ... no problem at all 'cause
-      // we want release at program close!
-      if (bDestruct)
-      {
-         libvlc_retain(pVlcInstance);
-      }
-      else
-      {
-         libvlc_release(pVlcInstance);
-      }
-#else
-*/
-      Q_UNUSED(bDestruct)
       libvlc_release(pVlcInstance);
-// #endif
-
       pVlcInstance = NULL;
    }
 }

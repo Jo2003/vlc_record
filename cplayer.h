@@ -105,7 +105,7 @@ protected:
    int  addAd ();
    int  clearMediaList();
    QString aspectCropToString (const char *pFormat);
-   void cleanupLibVLC(bool bDestruct = false);
+   void cleanupLibVLC();
 
 private:
    Ui::CPlayer                 *ui;
