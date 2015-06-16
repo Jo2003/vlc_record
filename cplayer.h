@@ -12,7 +12,7 @@
 #ifndef __022410__CPLAYER_H
    #define __022410__CPLAYER_H
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QMessageBox>
 #include <QWidget>
 #include <QFrame>

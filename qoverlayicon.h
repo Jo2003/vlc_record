@@ -31,7 +31,6 @@ public:
    QOverlayIcon(const QIcon & other);
    QOverlayIcon(const QString & fileName);
    QOverlayIcon(QIconEngine * engine);
-   QOverlayIcon(QIconEngineV2 * engine);
 
    ~QOverlayIcon();
 

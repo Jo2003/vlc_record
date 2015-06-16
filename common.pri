@@ -1,17 +1,18 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-12-27T18:33:08
 # -------------------------------------------------
-QT += network \
+QT += widgets \
+    network \
     sql \
-    xml
-
-CONFIG += help
+    xml \
+    help
 
 # build debug and release ...
 CONFIG += debug_and_release \
     windows
 TEMPLATE = app
-INCLUDEPATH += .
+INCLUDEPATH += . \
+            qhttp
 
 # build shared !
 CONFIG += shared
@@ -295,3 +296,4 @@ contains(DEFINES, _USE_QJSON) {
 # translation stuff ...
 include (language.pri)
 
+include (qhttp/qhttp.pri)

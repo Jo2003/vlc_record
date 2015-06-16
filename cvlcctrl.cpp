@@ -45,6 +45,9 @@ CVlcCtrl::CVlcCtrl(const QString &path, QObject *parent) : QProcess(parent)
 
    connect (this, SIGNAL(stateChanged(QProcess::ProcessState)), this,
             SLOT(slotStateChanged(QProcess::ProcessState)));
+
+   connect (this, SIGNAL(sigOwnStateChanged(QProcess::ProcessState)), this,
+            SLOT(slotStateChanged(QProcess::ProcessState)));
 }
 
 /* -----------------------------------------------------------------\
@@ -626,17 +629,17 @@ void CVlcCtrl::slotLibVlcStateChange (int ps)
       switch(libVlcPlayState)
       {
       case IncPlay::PS_OPEN:
-         emit stateChanged(QProcess::Starting);
+         emit sigOwnStateChanged(QProcess::Starting);
          break;
 
       case IncPlay::PS_PLAY:
-         emit stateChanged(QProcess::Running);
+         emit sigOwnStateChanged(QProcess::Running);
          break;
 
       case IncPlay::PS_STOP:
       case IncPlay::PS_END:
       case IncPlay::PS_ERROR:
-         emit stateChanged(QProcess::NotRunning);
+         emit sigOwnStateChanged(QProcess::NotRunning);
          break;
 
       default:

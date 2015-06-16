@@ -12,7 +12,7 @@
 #ifndef __012410__CTIMERREC_H
    #define __012410__CTIMERREC_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 #include <QDateTime>
 #include <QTimer>
 #include <QVector>

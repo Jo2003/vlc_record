@@ -107,6 +107,7 @@ signals:
    void sigVlcStarts (int iState);
    void sigLibVlcPlayMedia (const QString &str, const QString &opts);
    void sigLibVlcStop ();
+   void sigOwnStateChanged (QProcess::ProcessState s);
 
 public slots:
 };

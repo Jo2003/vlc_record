@@ -12,7 +12,7 @@
 #ifndef __011910__CSETTINGSDLG_H
    #define __011910__CSETTINGSDLG_H
 
-#include <QtGui/QDialog>
+#include <QtWidgets/QDialog>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDir>
