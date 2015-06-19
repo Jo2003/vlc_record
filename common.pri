@@ -1,18 +1,31 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-12-27T18:33:08
 # -------------------------------------------------
-QT += widgets \
+QT += core \
     network \
     sql \
-    xml \
-    help
+    xml
+
+greaterThan(QT_MAJOR_VERSION, 4) {
+
+    QT += widgets \
+          help
+    DEFINES += __QT_5
+
+    INCLUDEPATH += qhttp
+}
+else {
+
+    CONFIG += help
+    DEFINES += __QT_4
+}
+
 
 # build debug and release ...
 CONFIG += debug_and_release \
     windows
 TEMPLATE = app
-INCLUDEPATH += . \
-            qhttp
+INCLUDEPATH += .
 
 # build shared !
 CONFIG += shared
@@ -151,7 +164,9 @@ HEADERS += recorder.h \
     qdatetimesyncro.h \
     qstatemessage.h \
     externals_inc.h \
-    qwatchstats.h
+    qwatchstats.h \
+    qurlex.h \
+    qtextbrowserex.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -296,4 +311,6 @@ contains(DEFINES, _USE_QJSON) {
 # translation stuff ...
 include (language.pri)
 
-include (qhttp/qhttp.pri)
+contains(DEFINES, __QT_5) {
+    include (qhttp/qhttp.pri)
+}

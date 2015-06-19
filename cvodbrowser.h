@@ -13,7 +13,7 @@
 #ifndef __21122010_CVODBROWSER_H
    #define __21122010_CVODBROWSER_H
 
-#include <QTextBrowser>
+#include "qtextbrowserex.h"
 #include <QVector>
 #include <QString>
 #include <QFileInfo>
@@ -30,7 +30,7 @@
 |  Description: browser for vod stuff
 |
 \********************************************************************/
-class CVodBrowser : public QTextBrowser
+class CVodBrowser : public QTextBrowserEx
 {
    Q_OBJECT
 

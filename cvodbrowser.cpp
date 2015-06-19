@@ -11,8 +11,7 @@
 |
 \=============================================================================*/
 #include "cvodbrowser.h"
-#include <QUrl>
-#include <QUrlQuery>
+#include "qurlex.h"
 #include "externals_inc.h"
 
 /* -----------------------------------------------------------------\
@@ -25,7 +24,7 @@
 |
 |  Returns:  --
 \----------------------------------------------------------------- */
-CVodBrowser::CVodBrowser(QWidget *parent) : QTextBrowser(parent)
+CVodBrowser::CVodBrowser(QWidget *parent) : QTextBrowserEx(parent)
 {
    pSettings   = NULL;
    pPixCache   = NULL;
@@ -156,8 +155,7 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
 {
    QString   img, title, cell;
    QFileInfo fi;
-   QUrl      url;
-   QUrlQuery urlq;
+   QUrlEx    url;
 
    // image ...
    fi.setFile(entry.sImg);
@@ -175,11 +173,9 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
 
    // create link url ...
    url.clear();
-   urlq.clear();
-   urlq.addQueryItem("action", "vod_info");
-   urlq.addQueryItem("vodid" , QString::number(entry.uiVidId));
-   urlq.addQueryItem("pass_protect", entry.bProtected ? "1" : "0");
-   url.setQuery(urlq);
+   url.addQueryItem("action", "vod_info");
+   url.addQueryItem("vodid" , QString::number(entry.uiVidId));
+   url.addQueryItem("pass_protect", entry.bProtected ? "1" : "0");
    url.setPath("videothek");
 
    // wrap image into link ...
@@ -234,8 +230,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 {
    int       i;
    QString   img, content, tab, title, link, page, tok, back;
-   QUrl      url;
-   QUrlQuery urlq;
+   QUrlEx    url;
    QFileInfo info(sInfo.sImg);
 
    // save name ...
@@ -246,9 +241,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 
    // back link ...
    url.clear();
-   urlq.clear();
-   urlq.addQueryItem("action", "backtolist");
-   url.setQuery(urlq);
+   url.addQueryItem("action", "backtolist");
    url.setPath("videothek");
 
    link  = pHtml->link(url.toEncoded(), tr("Back"));
@@ -276,11 +269,9 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    {
       // is favourite ...
       url.clear();
-      urlq.clear();
-      urlq.addQueryItem("action", "del_fav");
-      urlq.addQueryItem("vodid", QString::number(sInfo.uiVidId));
-      urlq.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
-      url.setQuery(urlq);
+      url.addQueryItem("action", "del_fav");
+      url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 
       img = pHtml->image(":/vod/is_fav", 20, 20, "", tr("Remove from favourites."));
@@ -289,11 +280,9 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    {
       // not a favourite ...
       url.clear();
-      urlq.clear();
-      urlq.addQueryItem("action", "add_fav");
-      urlq.addQueryItem("vodid", QString::number(sInfo.uiVidId));
-      urlq.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
-      url.setQuery(urlq);
+      url.addQueryItem("action", "add_fav");
+      url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 
       img = pHtml->image(":/vod/not_fav", 20, 20, "", tr("Add to favourites."));
@@ -409,12 +398,10 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 
       // add play button ...
       url.clear();
-      urlq.clear();
-      urlq.addQueryItem("action", "play");
-      urlq.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
-      urlq.addQueryItem("video_id", QString::number(sInfo.uiVidId));
-      urlq.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
-      url.setQuery(urlq);
+      url.addQueryItem("action", "play");
+      url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
+      url.addQueryItem("video_id", QString::number(sInfo.uiVidId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 
       img  = pHtml->image(":/png/play", 16, 16, "", tr("Play Movie ..."));
@@ -422,12 +409,10 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
 
       // add record button ...
       url.clear();
-      urlq.clear();
-      urlq.addQueryItem("action", "record");
-      urlq.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
-      urlq.addQueryItem("video_id", QString::number(sInfo.uiVidId));
-      urlq.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
-      url.setQuery(urlq);
+      url.addQueryItem("action", "record");
+      url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
+      url.addQueryItem("video_id", QString::number(sInfo.uiVidId));
+      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 
       img   = pHtml->image(":/png/record", 16, 16, "", tr("Record Movie ..."));

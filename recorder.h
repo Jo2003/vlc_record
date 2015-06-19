@@ -279,7 +279,7 @@ private slots:
     void slotArchivURL (const QString &str);
     void slotCookie (const QString &str);
     void slotTimeShift (const QString &str);
-    void slotEpgAnchor (const QUrl & link);
+    void slotEpgAnchor (const QUrlEx &link);
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);
     void slotSetSServer (QString sIp);
@@ -298,7 +298,7 @@ private slots:
     void slotDownloadStarted (int id, QString sFileName);
     void slotGotVodGenres (const QString &str);
     void slotGotVideos (const QString &str, bool bVodFavs = false);
-    void slotVodAnchor (const QUrl &link);
+    void slotVodAnchor (const QUrlEx &link);
     void slotGotVideoInfo (const QString &str);
     void slotVodURL(const QString &str);
     void slotSetBitrate (int iRate);
@@ -327,7 +327,7 @@ private slots:
     void slotFilterChannelList(QString filter);
     void slotLangFilterChannelList(QAction *pAct);
     void slotALang(const QString& str);
-    void slotWlClick(QUrl url);
+    void slotWlClick(QUrlEx url);
     void on_pushWatchList_clicked();
     void slotUpdWatchListCount();
     void slotStayOnTop(bool on);

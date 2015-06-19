@@ -12,7 +12,7 @@
 #ifndef __011810__CEPGBROWSER_H
    #define __011810__CEPGBROWSER_H
 
-#include <QTextBrowser>
+#include "qtextbrowserex.h"
 #include <QMap>
 #include "templates.h"
 #include "defdef.h"
@@ -38,7 +38,7 @@ namespace epg
 |  Description: textbrowser with epg functionality
 |
 \********************************************************************/
-class CEpgBrowser : public QTextBrowser
+class CEpgBrowser : public QTextBrowserEx
 {
    Q_OBJECT
 

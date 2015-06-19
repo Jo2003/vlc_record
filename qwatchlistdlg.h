@@ -16,10 +16,10 @@
 
 #include <QDialog>
 #include <QEvent>
-#include <QUrl>
 #include <QVector>
 #include <QTimer>
 
+#include "qurlex.h"
 #include "defdef.h"
 
 namespace Ui {
@@ -47,7 +47,7 @@ protected:
    virtual void changeEvent(QEvent *e);
 
 private slots:
-   void slotListAnchor(QUrl url);
+   void slotListAnchor(QUrlEx url);
    void on_pushRecordAll_clicked();
    void slotNextRec();
 
@@ -58,12 +58,12 @@ public slots:
 
 private:
    Ui::QWatchListDlg *ui;
-   bool          _bRecAll;
-   QVector<QUrl> _vUrls;
-   QTimer        _tGap;
+   bool            _bRecAll;
+   QVector<QUrlEx> _vUrls;
+   QTimer          _tGap;
 
 signals:
-   void sigClick(QUrl);
+   void sigClick(QUrlEx);
    void sigUpdCount();
    void sigRecordArchiveFor (uint uid, int iCid, uint uiStart, int iLength);
 };

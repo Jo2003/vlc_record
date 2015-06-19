@@ -12,7 +12,6 @@
  *
  *///------------------------- (c) 2013 by Jo2003  --------------------------
 #include <QStringList>
-#include <QUrlQuery>
 #include "qwatchlistdlg.h"
 #include "ui_qwatchlistdlg.h"
 #include "templates.h"
@@ -37,7 +36,7 @@ QWatchListDlg::QWatchListDlg(QWidget *parent) :
    ui->setupUi(this);
    _bRecAll = false;
    _tGap.setSingleShot(true);
-   connect(ui->txtWatchTab, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotListAnchor(QUrl)));
+   connect(ui->txtWatchTab, SIGNAL(anchorClickedEx(QUrlEx)), this, SLOT(slotListAnchor(QUrlEx)));
    connect(&_tGap, SIGNAL(timeout()), this, SLOT(slotNextRec()));
 }
 
@@ -103,8 +102,7 @@ void QWatchListDlg::buildWatchTab()
    QStringList sl;
    int i;
    QString page, row, tab, line, act, img, len;
-   QUrl url;
-   QUrlQuery urlq;
+   QUrlEx url;
 
    if (!_bRecAll)
    {
@@ -142,14 +140,12 @@ void QWatchListDlg::buildWatchTab()
 
             // build action links ...
             url.clear();
-            urlq.clear();
-            urlq.addQueryItem("action", "wl_play");
-            urlq.addQueryItem("cid"   , QString::number(vE.at(i).iId));
-            urlq.addQueryItem("start" , QString::number(vE.at(i).uiStart));
-            urlq.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
-            urlq.addQueryItem("chan"  , vE.at(i).sName);
-            urlq.addQueryItem("show"  , vE.at(i).sProgramm);
-            url.setQuery(urlq);
+            url.addQueryItem("action", "wl_play");
+            url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
+            url.addQueryItem("start" , QString::number(vE.at(i).uiStart));
+            url.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
+            url.addQueryItem("chan"  , vE.at(i).sName);
+            url.addQueryItem("show"  , vE.at(i).sProgramm);
             url.setPath("vlc-record");
 
             // play button ...
@@ -159,14 +155,12 @@ void QWatchListDlg::buildWatchTab()
             act = pHtml->link(url.toEncoded(), img) + "&nbsp;";
 
             url.clear();
-            urlq.clear();
-            urlq.addQueryItem("action", "wl_rec");
-            urlq.addQueryItem("cid"   , QString::number(vE.at(i).iId));
-            urlq.addQueryItem("start" , QString::number(vE.at(i).uiStart));
-            urlq.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
-            urlq.addQueryItem("chan"  , vE.at(i).sName);
-            urlq.addQueryItem("show"  , vE.at(i).sProgramm);
-            url.setQuery(urlq);
+            url.addQueryItem("action", "wl_rec");
+            url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
+            url.addQueryItem("start" , QString::number(vE.at(i).uiStart));
+            url.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
+            url.addQueryItem("chan"  , vE.at(i).sName);
+            url.addQueryItem("show"  , vE.at(i).sProgramm);
             url.setPath("vlc-record");
 
             // record button ...
@@ -178,7 +172,7 @@ void QWatchListDlg::buildWatchTab()
             if (!_bRecAll)
             {
                // tell we should stop at end ...
-               urlq.addQueryItem("stopatend", "1");
+               url.addQueryItem("stopatend", "1");
 
                // save url ...
                _vUrls.append(url);
@@ -187,11 +181,9 @@ void QWatchListDlg::buildWatchTab()
 
          // add delete link ...
          url.clear();
-         urlq.clear();
-         urlq.addQueryItem("action", "wl_del");
-         urlq.addQueryItem("cid"   , QString::number(vE.at(i).iId));
-         urlq.addQueryItem("gmt"   , QString::number(vE.at(i).uiStart));
-         url.setQuery(urlq);
+         url.addQueryItem("action", "wl_del");
+         url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
+         url.addQueryItem("gmt"   , QString::number(vE.at(i).uiStart));
          url.setPath("vlc-record");
 
          // delete button ...
@@ -251,15 +243,13 @@ void QWatchListDlg::buildWatchTab()
 //
 //! \return  --
 //---------------------------------------------------------------------------
-void QWatchListDlg::slotListAnchor(QUrl url)
+void QWatchListDlg::slotListAnchor(QUrlEx url)
 {
-   QUrlQuery urlq(url.query());
-
    // delete watch list entry ...
-   if (urlq.queryItemValue("action") == "wl_del")
+   if (url.queryItemValue("action") == "wl_del")
    {
-      int cid = urlq.queryItemValue("cid").toInt();
-      int gmt = urlq.queryItemValue("gmt").toUInt();
+      int cid = url.queryItemValue("cid").toInt();
+      int gmt = url.queryItemValue("gmt").toUInt();
 
       pDb->delWatchEntry(cid, gmt);
 

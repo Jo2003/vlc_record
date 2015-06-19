@@ -25,6 +25,7 @@
 #include "qstatemessage.h"
 #include "cdirstuff.h"
 #include "qwatchstats.h"
+#include "qurlex.h"
 
 #ifdef Q_WS_X11
    #include <X11/Xlib.h>
@@ -91,6 +92,7 @@ int main(int argc, char *argv[])
 
    qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
    qRegisterMetaType<QLangVector>("QLangVector");
+   qRegisterMetaType<QUrlEx>("QUrlEx");
 
 #ifdef Q_OS_MACX
    if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )

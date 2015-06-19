@@ -18,7 +18,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTextBrowser" name="txtWatchTab">
+    <widget class="QTextBrowserEx" name="txtWatchTab">
      <property name="styleSheet">
       <string notr="true"/>
      </property>
@@ -96,6 +96,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QTextBrowserEx</class>
+   <extends>QTextBrowser</extends>
+   <header>qtextbrowserex.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../common.qrc"/>
  </resources>

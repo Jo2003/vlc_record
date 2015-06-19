@@ -9,8 +9,7 @@
 |
 | $Id$
 \*************************************************************/
-#include <QUrl>
-#include <QUrlQuery>
+#include "qurlex.h"
 #include "cepgbrowser.h"
 #include "small_helpers.h"
 #include "externals_inc.h"
@@ -26,7 +25,7 @@
 |  Returns: --
 \----------------------------------------------------------------- */
 CEpgBrowser::CEpgBrowser(QWidget *parent) :
-    QTextBrowser(parent)
+    QTextBrowserEx(parent)
 {
    iCid = 0;
    _iTs = 0;
@@ -118,8 +117,7 @@ QString CEpgBrowser::createHtmlCode()
    QString     tab, row, page, sHeadLine, timeCell, img, progCell, buttons;
    const char* rowStyle;
    QDateTime   dtStartThis, dtStartNext;
-   QUrl        url;
-   QUrlQuery   urlq;
+   QUrlEx      url;
    bool        bMark;
    bool        bGray;
    epg::SShow  actShow;
@@ -227,13 +225,11 @@ QString CEpgBrowser::createHtmlCode()
          {
             // has not started so far ... add timer record link ...
             url.clear();
-            urlq.clear();
-            urlq.addQueryItem("action", "timerrec");
-            urlq.addQueryItem("cid"  , QString::number(iCid));
-            urlq.addQueryItem("start", QString::number(actShow.uiStart));
-            urlq.addQueryItem("end"  , QString::number(actShow.uiEnd));
+            url.addQueryItem("action", "timerrec");
+            url.addQueryItem("cid"  , QString::number(iCid));
+            url.addQueryItem("start", QString::number(actShow.uiStart));
+            url.addQueryItem("end"  , QString::number(actShow.uiEnd));
             url.setPath("vlc-record");
-            url.setQuery(urlq);
 
             // rec button ...
             img = pHtml->image(":/png/timer", 16, 16, "", tr("add timer record ..."));
@@ -249,12 +245,10 @@ QString CEpgBrowser::createHtmlCode()
             if (iAa == 1)
             {
                url.clear();
-               urlq.clear();
-               urlq.addQueryItem("action", "archivplay");
-               urlq.addQueryItem("cid", QString::number(iCid));
-               urlq.addQueryItem("gmt", QString::number(actShow.uiStart));
+               url.addQueryItem("action", "archivplay");
+               url.addQueryItem("cid", QString::number(iCid));
+               url.addQueryItem("gmt", QString::number(actShow.uiStart));
                url.setPath("vlc-record");
-               url.setQuery(urlq);
 
                // play button ...
                img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
@@ -263,12 +257,10 @@ QString CEpgBrowser::createHtmlCode()
                buttons += pHtml->link(url.toEncoded(), img) + "&nbsp;";
 
                url.clear();
-               urlq.clear();
-               urlq.addQueryItem("action", "archivrec");
-               urlq.addQueryItem("cid", QString::number(iCid));
-               urlq.addQueryItem("gmt", QString::number(actShow.uiStart));
+               url.addQueryItem("action", "archivrec");
+               url.addQueryItem("cid", QString::number(iCid));
+               url.addQueryItem("gmt", QString::number(actShow.uiStart));
                url.setPath("vlc-record");
-               url.setQuery(urlq);
 
                // rec button ...
                img = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
@@ -279,12 +271,10 @@ QString CEpgBrowser::createHtmlCode()
 
             // mark for later view ...
             url.clear();
-            urlq.clear();
-            urlq.addQueryItem("action", "remember");
-            urlq.addQueryItem("cid"  , QString::number(iCid));
-            urlq.addQueryItem("gmt"  , QString::number(actShow.uiStart));
+            url.addQueryItem("action", "remember");
+            url.addQueryItem("cid"  , QString::number(iCid));
+            url.addQueryItem("gmt"  , QString::number(actShow.uiStart));
             url.setPath("vlc-record");
-            url.setQuery(urlq);
 
             // remember button ...
             img = pHtml->image(":/png/remember", 16, 16, "", tr("add to watch list ..."));
