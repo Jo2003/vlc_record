@@ -12,7 +12,12 @@
 #ifndef __011910__RECORDER_H
    #define __011910__RECORDER_H
 
-#include <QtWidgets/QDialog>
+#ifdef __QT_5
+   #include <QtWidgets/QDialog>
+#else
+   #include <QtGui/QDialog>
+#endif
+
 #include <QString>
 #include <QFile>
 #include <QFileInfo>

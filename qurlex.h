@@ -56,7 +56,7 @@ public:
     QUrlEx() : QUrl(){}
     QUrlEx(const QString & url) : QUrl(url){}
     QUrlEx(const QUrl & other) :  QUrl(other){}
-    QUrlEx(const QString & url, ParsingMode parsingMode) : QUrl(url, ParsingMode){}
+    QUrlEx(const QString & url, QUrl::ParsingMode parsingMode) : QUrl(url, parsingMode){}
 
     virtual QString query() const
     {
