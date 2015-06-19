@@ -1,6 +1,7 @@
 #!/bin/bash
 
 NAME=${1}
+QTVER=${2}
 OFFNAME=""
 SSERVER=""
 ARCH=
@@ -58,6 +59,6 @@ cat << EOF >install.mak
 all: deb
 
 deb:
-	./create_deb.sh ${NAME} ${OFFNAME} ${MAJORVER}.${MINORVER}.${BUILDVER}${BETAEXT} ${SSERVER} ${ARCH}
+	./create_deb.sh ${NAME} ${OFFNAME} ${MAJORVER}.${MINORVER}.${BUILDVER}${BETAEXT} ${SSERVER} ${ARCH} ${QTVER}
 
 EOF

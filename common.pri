@@ -252,8 +252,9 @@ else:unix {
 
    LIBS += -lX11
    OTHER_FILES += create_install_mak.sh \
-                  documentation/create_qthelp.sh
-   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
+                  create_deb.sh
+
+   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET) $$QT_MAJOR_VERSION
 
    contains(DEFINES,__PORTABLE) {
         LIBS += -Wl,-rpath ../lib

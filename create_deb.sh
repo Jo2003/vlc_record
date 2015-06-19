@@ -12,10 +12,11 @@ OFF_NAME=${2}
 VER="${3}-$(date +%Y%m%d)"
 SERVICE=${4}
 ARCH=${5}
+QTVER=${6}
 BUILD_FOLDER="$(pwd)/../${BIN_NAME}_${VER}_${ARCH}"
 
 usage () {
-    echo "Usage: ${0} [binary name] [official name] [version] [Service] [arch]"
+    echo "Usage: ${0} [binary name] [official name] [version] [Service] [arch] [qt major version]"
 }
 
 create_folders() {
@@ -62,7 +63,19 @@ Section: video
 Priority: extra
 Architecture: ${ARCH}
 Installed-Size: $(($(du -b --max-depth=0 ${BUILD_FOLDER}/usr|gawk '{print $1}') / 1024))
+EOF
+
+if [ "${QTVER}" == "4" ] ; then
+    cat << EOF >> "${BUILD_FOLDER}/DEBIAN/control"
 Depends: gtk2-engines-pixbuf (>= 2.24.10), libqt4-help (>= 4:4.8.1), libqt4-network (>= 4:4.8.1), libqt4-sql-sqlite (>= 4:4.8.1), libqt4-xml (>= 4:4.8.1), libqtcore4 (>= 4:4.8.1), libqtgui4 (>= 4:4.8.1), libvlc5 (>= 2.0.8), vlc (>= 2.0.8), libc6 (>= 2.15)
+EOF
+else
+    cat << EOF >> "${BUILD_FOLDER}/DEBIAN/control"
+Depends: gtk2-engines-pixbuf (>= 2.24.10), libqt5help5 (>= 5:5.2.1), libqt5network5 (>= 5:5.2.1), libqt5sql5-sqlite (>= 5:5.2.1), libqt5xml5 (>= 5:5.2.1), libqt5core5a (>= 5:5.2.1), libqt5gui5 (>= 5:5.2.1), libvlc5 (>= 2.0.8), vlc (>= 2.0.8), libc6 (>= 2.15)
+EOF
+fi
+
+cat << EOF >> "${BUILD_FOLDER}/DEBIAN/control"
 Maintainer: Jo2003 <olenka.joerg@gmail.com>
 Description: IPTV program stream player for ${SERVICE}
  It uses the Qt framework as well as libVLC from VLC player.
@@ -125,7 +138,7 @@ For Olenka!
 EOF
 }
 
-if [ ${#} -lt 5 ] ; then
+if [ ${#} -lt 6 ] ; then
     usage
     exit 1
 fi
