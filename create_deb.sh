@@ -13,7 +13,7 @@ VER="${3}-$(date +%Y%m%d)"
 SERVICE=${4}
 ARCH=${5}
 QTVER=${6}
-BUILD_FOLDER="$(pwd)/../${BIN_NAME}_${VER}_${ARCH}"
+BUILD_FOLDER="$(pwd)/packages/${BIN_NAME}_${VER}_${ARCH}"
 
 usage () {
     echo "Usage: ${0} [binary name] [official name] [version] [Service] [arch] [qt major version]"

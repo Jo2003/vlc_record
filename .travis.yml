@@ -8,5 +8,7 @@ before_install: sudo apt-get install libqt4-dev libvlc-dev
 install: qmake-qt4 vlc-record.pro
 
 # build program
-script: make clean && make release
+script:
+ - make clean && make -j release
+ - sudo make -f install.mak
 
