@@ -2,7 +2,7 @@
 language: cpp
 
 # install qt4 developement environment
-before_install: sudo apt-get install qt4-dev
+before_install: sudo apt-get install libqt4-dev
 
 # create make files
 install: qmake-qt4 vlc-record.pro
