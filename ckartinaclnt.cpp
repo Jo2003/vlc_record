@@ -403,10 +403,11 @@ void CKartinaClnt::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&settings=all&softid=%3%4-%5")
+        QString("login=%1&pass=%2&settings=all&softid=%3%4-%5&cli_serial=%6")
             .arg(sUsr).arg(sPw)
             .arg(pCustomization->strVal("APPLICATION_SHORTCUT"))
-            .arg(OP_SYS).arg(SOFTID_DEVELOPER),
+            .arg(OP_SYS).arg(SOFTID_DEVELOPER)
+            .arg(getStbSerial()),
         Iptv::Login);
 }
 
@@ -480,7 +481,9 @@ void CKartinaClnt::GetServer()
 {
    mInfo(tr("Request Stream Server List ..."));
 
-   q_get((int)CIptvDefs::REQ_GET_SERVER, sApiUrl + "settings?var=stream_server");
+   q_get((int)CIptvDefs::REQ_GET_SERVER,
+         sApiUrl + QString("settings?var=stream_server&cli_serial=%1")
+         .arg(getStbSerial()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -500,7 +503,8 @@ void CKartinaClnt::GetTimeShift()
 {
    mInfo(tr("Request Time Shift ..."));
 
-   q_get((int)CIptvDefs::REQ_GETTIMESHIFT, sApiUrl + "settings?var=timeshift");
+   q_get((int)CIptvDefs::REQ_GETTIMESHIFT,
+         sApiUrl + QString("settings?var=timeshift&cli_serial=%1").arg(getStbSerial()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -521,7 +525,9 @@ void CKartinaClnt::SetTimeShift (int iHours)
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
    q_post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "settings_set",
-               QString("var=timeshift&val=%1").arg(iHours));
+               QString("var=timeshift&val=%1&cli_serial=%2")
+                  .arg(iHours)
+                  .arg(getStbSerial()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -541,7 +547,8 @@ void CKartinaClnt::GetBitRate()
 {
    mInfo(tr("Request Bit Rate ..."));
 
-   q_get((int)CIptvDefs::REQ_GETBITRATE, sApiUrl + "settings?var=bitrate");
+   q_get((int)CIptvDefs::REQ_GETBITRATE,
+         sApiUrl + QString("settings?var=bitrate&cli_serial=%1").arg(getStbSerial()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -562,7 +569,9 @@ void CKartinaClnt::SetBitRate(int iRate)
    mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
 
    q_post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
-               QString("var=bitrate&val=%1").arg(iRate));
+               QString("var=bitrate&val=%1&cli_serial=%2")
+               .arg(iRate)
+               .arg(getStbSerial()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -611,7 +620,9 @@ void CKartinaClnt::SetServer (const QString &sIp)
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
    q_post((int)CIptvDefs::REQ_SERVER, sApiUrl + "settings_set",
-               QString("var=stream_server&val=%1").arg(sIp));
+               QString("var=stream_server&val=%1&cli_serial=%2")
+               .arg(sIp)
+               .arg(getStbSerial()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -632,7 +643,9 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
    q_post((int)CIptvDefs::REQ_HTTPBUFF, sApiUrl + "settings_set",
-               QString("var=http_caching&val=%1").arg(iTime));
+               QString("var=http_caching&val=%1&cli_serial=%2")
+               .arg(iTime)
+               .arg(getStbSerial()));
 }
 
 /*-----------------------------------------------------------------------------\
