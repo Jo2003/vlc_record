@@ -9,6 +9,6 @@ install: qmake-qt4 vlc-record.pro
 
 # build program
 script:
- - make clean && make -j release
+ - make clean && make release
  - sudo make -f install.mak
 
