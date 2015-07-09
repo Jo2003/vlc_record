@@ -264,6 +264,9 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
    // no persistent connections ...
    req.setRawHeader("Connection", "close");
 
+   /*
+   Kartina APIv2 needs this parameter not in header, but as query item in QUrl!
+
    if (sStbSerial.isEmpty())
    {
       generateStbSerial();
@@ -274,6 +277,7 @@ QNetworkRequest &QIptvCtrlClient::prepareRequest(QNetworkRequest& req,
       // set stb serial ...
       req.setRawHeader("STB_SERIAL", sStbSerial.toUtf8());
    }
+   */
 
    // set content type ...
    if (json)
@@ -803,6 +807,11 @@ bool QIptvCtrlClient::busy()
 //---------------------------------------------------------------------------
 const QString &QIptvCtrlClient::getStbSerial()
 {
+   if (sStbSerial.isEmpty())
+   {
+      generateStbSerial();
+   }
+
    return sStbSerial;
 }
 
