@@ -898,27 +898,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CNovoeParser</name>
     <message>
-        <location filename="cnovoeparser.cpp" line="123"/>
-        <location filename="cnovoeparser.cpp" line="180"/>
-        <location filename="cnovoeparser.cpp" line="239"/>
-        <location filename="cnovoeparser.cpp" line="319"/>
-        <location filename="cnovoeparser.cpp" line="385"/>
-        <location filename="cnovoeparser.cpp" line="484"/>
+        <location filename="cnovoeparser.cpp" line="79"/>
+        <location filename="cnovoeparser.cpp" line="178"/>
+        <location filename="cnovoeparser.cpp" line="235"/>
+        <location filename="cnovoeparser.cpp" line="294"/>
+        <location filename="cnovoeparser.cpp" line="374"/>
+        <location filename="cnovoeparser.cpp" line="440"/>
+        <location filename="cnovoeparser.cpp" line="539"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="cnovoeparser.cpp" line="124"/>
-        <location filename="cnovoeparser.cpp" line="181"/>
-        <location filename="cnovoeparser.cpp" line="240"/>
-        <location filename="cnovoeparser.cpp" line="320"/>
-        <location filename="cnovoeparser.cpp" line="386"/>
-        <location filename="cnovoeparser.cpp" line="485"/>
+        <location filename="cnovoeparser.cpp" line="80"/>
+        <location filename="cnovoeparser.cpp" line="179"/>
+        <location filename="cnovoeparser.cpp" line="236"/>
+        <location filename="cnovoeparser.cpp" line="295"/>
+        <location filename="cnovoeparser.cpp" line="375"/>
+        <location filename="cnovoeparser.cpp" line="441"/>
+        <location filename="cnovoeparser.cpp" line="540"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cnovoeparser.cpp" line="468"/>
+        <location filename="cnovoeparser.cpp" line="523"/>
         <source>Update Entries for channel %1:
 </source>
         <translation></translation>
@@ -3717,12 +3719,12 @@ dataDir: %1
         <translation>Включить / Выключить Звук</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5810"/>
+        <location filename="recorder.cpp" line="5814"/>
         <source>Playing file &apos;%1&apos; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5816"/>
+        <location filename="recorder.cpp" line="5820"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
         <translation></translation>
     </message>

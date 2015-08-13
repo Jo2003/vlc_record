@@ -30,6 +30,7 @@ public:
    CNovoeParser(QObject * parent = 0);
 
    // new functions for use with API ...
+   virtual int parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf);
    virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);

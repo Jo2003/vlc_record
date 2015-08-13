@@ -5662,13 +5662,17 @@ void Recorder::retranslateShortcutTable()
 \----------------------------------------------------------------- */
 void Recorder::correctEpgOffset()
 {
+   // check how man days archive is available ...
+   int iDays = -((MAX_ARCHIV_AGE / (24 * 3600 )) + 1);
+
+   // up to 1 week into future ...
    if (iEpgOffset > 7)
    {
       iEpgOffset = 7;
    }
-   else if (iEpgOffset < -14)
+   else if (iEpgOffset < iDays)
    {
-      iEpgOffset = -14;
+      iEpgOffset = iDays;
    }
 }
 
