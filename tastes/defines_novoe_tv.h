@@ -28,4 +28,7 @@
 #define ApiClient             CNovoeClient
 #define ApiParser             CNovoeParser
 
+#define MAX_ARCHIV_AGE       2418600     // < 4 weeks in seconds
+#define MAX_NO_FAVOURITES    20          // max. number of favourites ...
+
 #endif // __20130626__DEFINES_NOVOE_TV_H

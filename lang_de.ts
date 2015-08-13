@@ -899,24 +899,26 @@ p, li { white-space: pre-wrap; }
     <name>CNovoeParser</name>
     <message>
         <location filename="cnovoeparser.cpp" line="123"/>
-        <location filename="cnovoeparser.cpp" line="206"/>
-        <location filename="cnovoeparser.cpp" line="286"/>
-        <location filename="cnovoeparser.cpp" line="352"/>
-        <location filename="cnovoeparser.cpp" line="451"/>
+        <location filename="cnovoeparser.cpp" line="180"/>
+        <location filename="cnovoeparser.cpp" line="239"/>
+        <location filename="cnovoeparser.cpp" line="319"/>
+        <location filename="cnovoeparser.cpp" line="385"/>
+        <location filename="cnovoeparser.cpp" line="484"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
         <location filename="cnovoeparser.cpp" line="124"/>
-        <location filename="cnovoeparser.cpp" line="207"/>
-        <location filename="cnovoeparser.cpp" line="287"/>
-        <location filename="cnovoeparser.cpp" line="353"/>
-        <location filename="cnovoeparser.cpp" line="452"/>
+        <location filename="cnovoeparser.cpp" line="181"/>
+        <location filename="cnovoeparser.cpp" line="240"/>
+        <location filename="cnovoeparser.cpp" line="320"/>
+        <location filename="cnovoeparser.cpp" line="386"/>
+        <location filename="cnovoeparser.cpp" line="485"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cnovoeparser.cpp" line="435"/>
+        <location filename="cnovoeparser.cpp" line="468"/>
         <source>Update Entries for channel %1:
 </source>
         <translation></translation>

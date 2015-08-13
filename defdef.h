@@ -109,9 +109,14 @@
 #define TIMER_STBY_TIME   30              // 30 sec. before we should start record
 #define MAX_NAME_LEN      10              // max. length of show name
 #define ARCHIV_OFFSET     900             // 15 minutes after show start, archiv should be available
-#define MAX_ARCHIV_AGE    1209000         // < 2 weeks in seconds
+#ifndef MAX_ARCHIV_AGE
+    #define MAX_ARCHIV_AGE    1209000     // < 2 weeks in seconds
+#endif // MAX_ARCHIV_AGE
+#ifndef MAX_NO_FAVOURITES
+    #define MAX_NO_FAVOURITES 10          // max. number of favourites ...
+#endif // MAX_NO_FAVOURITES
+
 #define MAX_FAV_IN_ROW    5               // number of favorites in row
-#define MAX_NO_FAVOURITES 10              // max. number of favourites ...
 #define MIN_CACHE_SIZE    5000000         // < 5 MB ...
 #define TIME_OFFSET       (35 * 365 * 24 * 3600) // make the slider handle gmt
 #define VIDEOS_PER_SITE   20              // number of videos / site
