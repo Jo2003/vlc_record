@@ -200,44 +200,16 @@ else:unix {
    QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
 }
 
-#############
-contains(DEFINES, _TASTE_IPTV_RECORD) {
-    message (Using alternative api client ...)
-    HEADERS += crodnoeclient.h \
-               crodnoeparser.h
-    SOURCES += crodnoeclient.cpp \
-               crodnoeparser.cpp
-} else:contains(DEFINES, _TASTE_NOVOE_TV) {
-   message (Using novoe api client ...)
-   HEADERS += cnovoeclient.h \
-              cnovoeparser.h
-   SOURCES += cnovoeclient.cpp \
-              cnovoeparser.cpp
-} else:contains(DEFINES, _TASTE_TELEPROM) {
-   message (Using teleprom api client ...)
-   HEADERS += ctelepromclient.h
-   SOURCES += ctelepromclient.cpp
-} else {
-   message (Using standard api client ...)
-   HEADERS += ckartinaclnt.h
-   SOURCES += ckartinaclnt.cpp
-}
-
-#############
-
-contains(DEFINES, _USE_QJSON) {
-   message (using QtJson parser ...)
-   include (qtjson/qtjson.pri)
-   SOURCES += cstdjsonparser.cpp
-   HEADERS += cstdjsonparser.h
-} else {
-   message (using XML parser ...)
-   !contains(DEFINES, _TASTE_IPTV_RECORD) {
-      SOURCES += ckartinaxmlparser.cpp
-      HEADERS += ckartinaxmlparser.h
-   }
-   SOURCES += capixmlparser.cpp
-   HEADERS += capixmlparser.h
+# in case no api is included use standard one ...
+!contains(DEFINES, __API_INCLUDED) {
+    message (Using standard api client ...)
+    HEADERS += ckartinaclnt.h
+    SOURCES += ckartinaclnt.cpp
+    
+    message (using QtJson parser ...)
+    include (qtjson/qtjson.pri)
+    SOURCES += cstdjsonparser.cpp
+    HEADERS += cstdjsonparser.h
 }
 
 # where the target should be stored ...

@@ -104,14 +104,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>CApiXmlParser</name>
-    <message>
-        <location filename="capixmlparser.cpp" line="119"/>
-        <source>Found unused element %1 ...</source>
-        <translation></translation>
-    </message>
-</context>
-<context>
     <name>CEpgBrowser</name>
     <message>
         <location filename="cepgbrowser.cpp" line="185"/>
@@ -504,53 +496,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CKartinaXMLParser</name>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="79"/>
-        <location filename="ckartinaxmlparser.cpp" line="496"/>
-        <location filename="ckartinaxmlparser.cpp" line="606"/>
-        <location filename="ckartinaxmlparser.cpp" line="672"/>
-        <location filename="ckartinaxmlparser.cpp" line="754"/>
-        <location filename="ckartinaxmlparser.cpp" line="840"/>
-        <location filename="ckartinaxmlparser.cpp" line="935"/>
-        <location filename="ckartinaxmlparser.cpp" line="1075"/>
-        <location filename="ckartinaxmlparser.cpp" line="1159"/>
-        <location filename="ckartinaxmlparser.cpp" line="1247"/>
-        <location filename="ckartinaxmlparser.cpp" line="1370"/>
         <source>Error in %1</source>
-        <translation>Ошибка в %1</translation>
+        <translation type="obsolete">Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="ckartinaxmlparser.cpp" line="80"/>
-        <location filename="ckartinaxmlparser.cpp" line="497"/>
-        <location filename="ckartinaxmlparser.cpp" line="607"/>
-        <location filename="ckartinaxmlparser.cpp" line="673"/>
-        <location filename="ckartinaxmlparser.cpp" line="755"/>
-        <location filename="ckartinaxmlparser.cpp" line="841"/>
-        <location filename="ckartinaxmlparser.cpp" line="936"/>
-        <location filename="ckartinaxmlparser.cpp" line="1076"/>
-        <location filename="ckartinaxmlparser.cpp" line="1160"/>
-        <location filename="ckartinaxmlparser.cpp" line="1248"/>
-        <location filename="ckartinaxmlparser.cpp" line="1371"/>
         <source>XML Error String: %1</source>
-        <translation>Ошибка XML строки: %1</translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="158"/>
-        <location filename="ckartinaxmlparser.cpp" line="293"/>
-        <location filename="ckartinaxmlparser.cpp" line="369"/>
-        <source>Found unused element %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="164"/>
-        <location filename="ckartinaxmlparser.cpp" line="299"/>
-        <source>Found unused child %1: %2 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ckartinaxmlparser.cpp" line="895"/>
-        <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
-        <oldsource>Got Genre %1, Count %2, Page %3, Total %4</oldsource>
-        <translation></translation>
+        <translation type="obsolete">Ошибка XML строки: %1</translation>
     </message>
 </context>
 <context>
@@ -1075,435 +1026,159 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CRodnoeClient</name>
     <message>
-        <location filename="crodnoeclient.cpp" line="93"/>
-        <source>Response for request &apos;%1&apos;:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="107"/>
-        <source>Request &apos;%2&apos; done!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="249"/>
-        <source>Patched channel list:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="442"/>
-        <source>We&apos;ve got following Cookie: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="460"/>
-        <source>Logout ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="479"/>
-        <source>Request Authentication ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="503"/>
-        <location filename="crodnoeclient.cpp" line="572"/>
-        <source>Request Channel List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="527"/>
-        <source>Request Channel List (language filtered) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="551"/>
-        <source>Request available audio streams ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="595"/>
-        <source>Request Stream Server List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="615"/>
-        <source>Request Time Shift ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="635"/>
-        <source>Set TimeShift to %1 hour(s) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="656"/>
-        <source>Request Bit Rate ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="676"/>
-        <source>Set BitRate to %1 kbit/s ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="697"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="725"/>
-        <source>Set Streaming Server to %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="746"/>
-        <source>Set Http Buffer to %1 msec. ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="767"/>
-        <source>Request EPG for Channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="790"/>
-        <source>Request Archiv URL ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="820"/>
-        <source>Request VOD Genres ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="840"/>
-        <source>Request Videos ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="860"/>
-        <source>Request Video info for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="887"/>
-        <source>Request Video Url for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="915"/>
-        <source>Hide channel(s) %1 from channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="938"/>
-        <source>Show channel(s) %1 in channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="961"/>
-        <source>Request VOD manager data ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="984"/>
-        <source>Set VOD manager data (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1007"/>
-        <source>Add VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1034"/>
-        <source>Remove VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1061"/>
-        <source>Get VOD favourites (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1080"/>
-        <source>Change parent code ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1103"/>
-        <source>EPG current for Channels: %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1121"/>
-        <source>Check for available updates ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1139"/>
-        <source>Download image ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1158"/>
-        <source>Noop Ping</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1174"/>
-        <source>Download radio list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1200"/>
-        <source>Get radio stream Url ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1219"/>
-        <source>Set interface language ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1303"/>
         <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
+        <translation type="obsolete">Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1304"/>
         <source>Incorrect request</source>
-        <translation>Неверный запрос</translation>
+        <translation type="obsolete">Неверный запрос</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1305"/>
         <source>Wrong login or password</source>
-        <translation>Неверный логин или пароль</translation>
+        <translation type="obsolete">Неверный логин или пароль</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1306"/>
         <source>Access denied</source>
-        <translation>Доступ запрещен</translation>
+        <translation type="obsolete">Доступ запрещен</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1307"/>
         <source>Login incorrect</source>
-        <translation>Неверный логин</translation>
+        <translation type="obsolete">Неверный логин</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1308"/>
         <source>Your contract is inactive</source>
-        <translation>Ваш договор неактивен</translation>
+        <translation type="obsolete">Ваш договор неактивен</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1309"/>
         <source>Your contract is paused</source>
-        <translation>Ваш договор приостановлен</translation>
+        <translation type="obsolete">Ваш договор приостановлен</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1310"/>
         <source>Channel not found or not allowed</source>
-        <translation>Канал не найден или не доступен</translation>
+        <translation type="obsolete">Канал не найден или не доступен</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1311"/>
         <source>Error in request: Bad parameters</source>
-        <translation>Ошибка в запросе: Неверный параметр</translation>
+        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1312"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation>Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
+        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1313"/>
         <source>Missing parameter (cid)</source>
-        <translation>Отсутствует параметр (cid)</translation>
+        <translation type="obsolete">Отсутствует параметр (cid)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1314"/>
         <source>Another client with your data logged in</source>
-        <translation>Ваш абонемент используется другим устройством</translation>
+        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1315"/>
         <source>Authentication error</source>
-        <translation>Ошибка идентификации</translation>
+        <translation type="obsolete">Ошибка идентификации</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1316"/>
         <source>Your package expired</source>
-        <translation>Ваша подписка истекла или ещё не активирована</translation>
+        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1317"/>
         <source>Unknown API function</source>
-        <translation>Неизвестная функция API</translation>
+        <translation type="obsolete">Неизвестная функция API</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1318"/>
         <source>Archive not available</source>
-        <translation>Архив не доступен</translation>
+        <translation type="obsolete">Архив не доступен</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1319"/>
         <source>Missing parameter (place)</source>
-        <translation>Отсутствует параметр (place)</translation>
+        <translation type="obsolete">Отсутствует параметр (place)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1320"/>
         <source>Missing parameter (name)</source>
-        <translation>Отсутствует параметр (name)</translation>
+        <translation type="obsolete">Отсутствует параметр (name)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1321"/>
         <source>Incorrect confirmation code</source>
-        <translation>Неверный код подтверждения</translation>
+        <translation type="obsolete">Неверный код подтверждения</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1322"/>
         <source>Current code is wrong</source>
-        <translation>Текущий код неверный</translation>
+        <translation type="obsolete">Текущий код неверный</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1323"/>
         <source>New code is wrong</source>
-        <translation>Новый код неверный</translation>
+        <translation type="obsolete">Новый код неверный</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1324"/>
         <source>Missing parameter (val)</source>
-        <translation>Отсутствует параметр (val)</translation>
+        <translation type="obsolete">Отсутствует параметр (val)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1325"/>
         <source>Value not allowed</source>
-        <translation>Значение не доступно</translation>
+        <translation type="obsolete">Значение не доступно</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1326"/>
         <source>Missing parameter</source>
-        <translation>Отсутствует параметр</translation>
+        <translation type="obsolete">Отсутствует параметр</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1327"/>
         <source>Missing parameter (id)</source>
-        <translation>Отсутствует параметр (id)</translation>
+        <translation type="obsolete">Отсутствует параметр (id)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1328"/>
         <source>Missing parameter (fileid)</source>
-        <translation>Отсутствует параметр (fileid)</translation>
+        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1329"/>
         <source>Missing parameter (type)</source>
-        <translation>Отсутствует параметр (type)</translation>
+        <translation type="obsolete">Отсутствует параметр (type)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1330"/>
         <source>Missing parameter (query)</source>
-        <translation>Отсутствует параметр (query)</translation>
+        <translation type="obsolete">Отсутствует параметр (query)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1331"/>
         <source>Bitrate not available</source>
-        <translation>Битрейт не доступен</translation>
+        <translation type="obsolete">Битрейт не доступен</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1332"/>
         <source>Service not available</source>
-        <translation>Сервис не доступен</translation>
+        <translation type="obsolete">Сервис не доступен</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1333"/>
         <source>Query limit exceeded</source>
-        <translation>Превышен лимит запроса</translation>
+        <translation type="obsolete">Превышен лимит запроса</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1334"/>
         <source>Rule already exists</source>
-        <translation>Правило уже существует</translation>
+        <translation type="obsolete">Правило уже существует</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1335"/>
-        <location filename="crodnoeclient.cpp" line="1336"/>
         <source>Missing parameter (cmd)</source>
-        <translation>Отсутствует параметр (cmd)</translation>
+        <translation type="obsolete">Отсутствует параметр (cmd)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1337"/>
         <source>Bad value (rate)</source>
-        <translation>Неверное значение рейтинга</translation>
+        <translation type="obsolete">Неверное значение рейтинга</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1338"/>
         <source>Can&apos;t find film</source>
-        <translation>Невозможно найти фильм</translation>
+        <translation type="obsolete">Невозможно найти фильм</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1339"/>
         <source>Film already added</source>
-        <translation>Этот фильм уже добавлен в список избранных</translation>
+        <translation type="obsolete">Этот фильм уже добавлен в список избранных</translation>
     </message>
 </context>
 <context>
     <name>CRodnoeParser</name>
     <message>
-        <location filename="crodnoeparser.cpp" line="88"/>
-        <location filename="crodnoeparser.cpp" line="531"/>
-        <location filename="crodnoeparser.cpp" line="649"/>
-        <location filename="crodnoeparser.cpp" line="715"/>
-        <location filename="crodnoeparser.cpp" line="809"/>
-        <location filename="crodnoeparser.cpp" line="895"/>
-        <location filename="crodnoeparser.cpp" line="990"/>
-        <location filename="crodnoeparser.cpp" line="1130"/>
-        <location filename="crodnoeparser.cpp" line="1223"/>
-        <location filename="crodnoeparser.cpp" line="1324"/>
-        <location filename="crodnoeparser.cpp" line="1447"/>
-        <location filename="crodnoeparser.cpp" line="1508"/>
         <source>Error in %1</source>
-        <translation>Ошибка в %1</translation>
+        <translation type="obsolete">Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="89"/>
-        <location filename="crodnoeparser.cpp" line="532"/>
-        <location filename="crodnoeparser.cpp" line="650"/>
-        <location filename="crodnoeparser.cpp" line="716"/>
-        <location filename="crodnoeparser.cpp" line="810"/>
-        <location filename="crodnoeparser.cpp" line="896"/>
-        <location filename="crodnoeparser.cpp" line="991"/>
-        <location filename="crodnoeparser.cpp" line="1131"/>
-        <location filename="crodnoeparser.cpp" line="1224"/>
-        <location filename="crodnoeparser.cpp" line="1325"/>
-        <location filename="crodnoeparser.cpp" line="1448"/>
-        <location filename="crodnoeparser.cpp" line="1509"/>
         <source>XML Error String: %1</source>
-        <translation>Ошибка XML строки: %1</translation>
-    </message>
-    <message>
-        <location filename="crodnoeparser.cpp" line="174"/>
-        <location filename="crodnoeparser.cpp" line="334"/>
-        <location filename="crodnoeparser.cpp" line="410"/>
-        <source>Found unused element %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeparser.cpp" line="180"/>
-        <location filename="crodnoeparser.cpp" line="340"/>
-        <source>Found unused child %1: %2 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeparser.cpp" line="950"/>
-        <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
-        <translation></translation>
+        <translation type="obsolete">Ошибка XML строки: %1</translation>
     </message>
 </context>
 <context>
@@ -2135,343 +1810,148 @@ To change the parent code make sure:
 <context>
     <name>CTelepromClient</name>
     <message>
-        <location filename="ctelepromclient.cpp" line="84"/>
-        <source>Response for request &apos;%1&apos;:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="98"/>
-        <source>Request &apos;%2&apos; done!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="328"/>
-        <source>We&apos;ve got following Cookie: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="346"/>
-        <source>Logout ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="366"/>
-        <source>Request Authentication ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="389"/>
-        <source>Request Channel List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="411"/>
-        <source>Request Stream Server List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="432"/>
-        <source>Request Time Shift ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="453"/>
-        <source>Set TimeShift to %1 hour(s) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="474"/>
-        <source>Request Bit Rate ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="495"/>
-        <source>Set BitRate to %1 kbit/s ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="516"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="544"/>
-        <source>Set Streaming Server to %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="565"/>
-        <source>Set Http Buffer to %1 msec. ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="586"/>
-        <source>Request EPG for Channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="609"/>
-        <source>Request Archiv URL ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="636"/>
-        <source>Request VOD Genres ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="656"/>
-        <source>Request Videos ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="685"/>
-        <source>Request Video info for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="712"/>
-        <source>Request Video Url for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="740"/>
-        <source>Hide channel(s) %1 from channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="763"/>
-        <source>Show channel(s) %1 in channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="786"/>
-        <source>Request VOD manager data ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="809"/>
-        <source>Set VOD manager data (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="832"/>
-        <source>Add VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="859"/>
-        <source>Remove VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="886"/>
-        <source>Get VOD favourites (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="905"/>
-        <source>Change parent code ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="928"/>
-        <source>EPG current for Channels: %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="947"/>
-        <source>Check for available updates ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="965"/>
-        <source>Download image ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="1046"/>
         <source>Unknown error</source>
-        <translation>Неизвестная ошибка</translation>
+        <translation type="obsolete">Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1047"/>
         <source>Incorrect request</source>
-        <translation>Неверный запрос</translation>
+        <translation type="obsolete">Неверный запрос</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1048"/>
         <source>Wrong login or password</source>
-        <translation>Неверный логин или пароль</translation>
+        <translation type="obsolete">Неверный логин или пароль</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1049"/>
         <source>Access denied</source>
-        <translation>Доступ запрещен</translation>
+        <translation type="obsolete">Доступ запрещен</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1050"/>
         <source>Login incorrect</source>
-        <translation>Неверный логин</translation>
+        <translation type="obsolete">Неверный логин</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1051"/>
         <source>Your contract is inactive</source>
-        <translation>Ваш договор неактивен</translation>
+        <translation type="obsolete">Ваш договор неактивен</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1052"/>
         <source>Your contract is paused</source>
-        <translation>Ваш договор приостановлен</translation>
+        <translation type="obsolete">Ваш договор приостановлен</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1053"/>
         <source>Channel not found or not allowed</source>
-        <translation>Канал не найден или не доступен</translation>
+        <translation type="obsolete">Канал не найден или не доступен</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1054"/>
         <source>Error in request: Bad parameters</source>
-        <translation>Ошибка в запросе: Неверный параметр</translation>
+        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1055"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation>Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
+        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1056"/>
         <source>Missing parameter (cid)</source>
-        <translation>Отсутствует параметр (cid)</translation>
+        <translation type="obsolete">Отсутствует параметр (cid)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1057"/>
         <source>Another client with your data logged in</source>
-        <translation>Ваш абонемент используется другим устройством</translation>
+        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1058"/>
         <source>Authentication error</source>
-        <translation>Ошибка идентификации</translation>
+        <translation type="obsolete">Ошибка идентификации</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1059"/>
         <source>Your package expired</source>
-        <translation>Ваша подписка истекла или ещё не активирована</translation>
+        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1060"/>
         <source>Unknown API function</source>
-        <translation>Неизвестная функция API</translation>
+        <translation type="obsolete">Неизвестная функция API</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1061"/>
         <source>Archive not available</source>
-        <translation>Архив не доступен</translation>
+        <translation type="obsolete">Архив не доступен</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1062"/>
         <source>Missing parameter (place)</source>
-        <translation>Отсутствует параметр (place)</translation>
+        <translation type="obsolete">Отсутствует параметр (place)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1063"/>
         <source>Missing parameter (name)</source>
-        <translation>Отсутствует параметр (name)</translation>
+        <translation type="obsolete">Отсутствует параметр (name)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1064"/>
         <source>Incorrect confirmation code</source>
-        <translation>Неверный код подтверждения</translation>
+        <translation type="obsolete">Неверный код подтверждения</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1065"/>
         <source>Current code is wrong</source>
-        <translation>Текущий код неверный</translation>
+        <translation type="obsolete">Текущий код неверный</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1066"/>
         <source>New code is wrong</source>
-        <translation>Новый код неверный</translation>
+        <translation type="obsolete">Новый код неверный</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1067"/>
         <source>Missing parameter (val)</source>
-        <translation>Отсутствует параметр (val)</translation>
+        <translation type="obsolete">Отсутствует параметр (val)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1068"/>
         <source>Value not allowed</source>
-        <translation>Значение не доступно</translation>
+        <translation type="obsolete">Значение не доступно</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1069"/>
         <source>Missing parameter</source>
-        <translation>Отсутствует параметр</translation>
+        <translation type="obsolete">Отсутствует параметр</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1070"/>
         <source>Missing parameter (id)</source>
-        <translation>Отсутствует параметр (id)</translation>
+        <translation type="obsolete">Отсутствует параметр (id)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1071"/>
         <source>Missing parameter (fileid)</source>
-        <translation>Отсутствует параметр (fileid)</translation>
+        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1072"/>
         <source>Missing parameter (type)</source>
-        <translation>Отсутствует параметр (type)</translation>
+        <translation type="obsolete">Отсутствует параметр (type)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1073"/>
         <source>Missing parameter (query)</source>
-        <translation>Отсутствует параметр (query)</translation>
+        <translation type="obsolete">Отсутствует параметр (query)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1074"/>
         <source>Bitrate not available</source>
-        <translation>Битрейт не доступен</translation>
+        <translation type="obsolete">Битрейт не доступен</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1075"/>
         <source>Service not available</source>
-        <translation>Сервис не доступен</translation>
+        <translation type="obsolete">Сервис не доступен</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1076"/>
         <source>Query limit exceeded</source>
-        <translation>Превышен лимит запроса</translation>
+        <translation type="obsolete">Превышен лимит запроса</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1077"/>
         <source>Rule already exists</source>
-        <translation>Правило уже существует</translation>
+        <translation type="obsolete">Правило уже существует</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1078"/>
-        <location filename="ctelepromclient.cpp" line="1079"/>
         <source>Missing parameter (cmd)</source>
-        <translation>Отсутствует параметр (cmd)</translation>
+        <translation type="obsolete">Отсутствует параметр (cmd)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1080"/>
         <source>Bad value (rate)</source>
-        <translation>Неверное значение рейтинга</translation>
+        <translation type="obsolete">Неверное значение рейтинга</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1081"/>
         <source>Can&apos;t find film</source>
-        <translation>Невозможно найти фильм</translation>
+        <translation type="obsolete">Невозможно найти фильм</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1082"/>
         <source>Film already added</source>
-        <translation>Этот фильм уже добавлен в список избранных</translation>
+        <translation type="obsolete">Этот фильм уже добавлен в список избранных</translation>
     </message>
 </context>
 <context>

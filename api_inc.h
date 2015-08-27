@@ -27,6 +27,9 @@
 #elif _TASTE_SUNDUK_TV
    #include "csundukclnt.h"
    #include "cstdjsonparser.h"
+#elif _TASTE_STALKER
+   #include "qstalkerparser.h"
+   #include "qstalkerclient.h"
 #elif _TASTE_TELEPROM
    #include "ctelepromclient.h"
    #include "cstdjsonparser.h"

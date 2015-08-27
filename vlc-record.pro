@@ -7,8 +7,5 @@ TRANSLATIONS = lang_de.ts \
 DEFINES += ENABLE_AD_SWITCH \
            _HAS_VOD_MANAGER
 
-# stuff for QJSON ...
-DEFINES     += _USE_QJSON
-
 # include common project (must be last) ...
 include (common.pri)

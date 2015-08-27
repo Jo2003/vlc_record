@@ -34,6 +34,8 @@
    #include <defines_sunduk_tv.h>
 #elif defined _TASTE_CHITRAM_TV
    #include <defines_chitram_tv.h>
+#elif defined _TASTE_STALKER
+   #include <defines_stalker.h>
 #elif defined _TASTE_TELEPROM
    #include <defines_teleprom.h>
 #else
