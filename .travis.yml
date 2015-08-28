@@ -5,7 +5,7 @@ language: cpp
 before_install: sudo apt-get install libqt4-dev libvlc-dev
 
 # create make files
-install: qmake-qt4 vlc-record.pro
+install: qmake-qt4 vlc-record.pro checkinstall
 
 # build program
 script:
