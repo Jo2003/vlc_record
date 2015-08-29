@@ -91,6 +91,27 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->checkExtEPG->setVisible(false);
 #endif // _EXT_EPG
 
+   StrStdDescr mData;
+   QStrStdMap  mTest;
+
+   mData.sName  = "DASH";
+   mData.sDescr = "DASH Descr.";
+   mTest["dash"] = mData;
+
+   mData.sName  = "UDT";
+   mData.sDescr = "UDT Descr.";
+   mTest["udt"] = mData;
+
+   mData.sName  = "HTTP";
+   mData.sDescr = "HTTP Descr.";
+   mTest["http"] = mData;
+
+   mData.sName  = "HLS";
+   mData.sDescr = "HLS Descr.";
+   mTest["hls"] = mData;
+
+   m_StrStdDlg.setStrStdData(mTest, "http");
+
    // fill in values ...
    readSettings();
 }
@@ -331,6 +352,9 @@ void CSettingsDlg::readSettings()
    // font size ...
    m_ui->spinBoxFontDelta->setValue(pDb->intValue("CustFontSz"));
 
+////////////////////////////////////////////
+   m_ui->pushStrStd->setText(m_StrStdDlg.getCurrName());
+////////////////////////////////////////////
    // mark settings as read ...
    bSettingsRead = true;
 }
@@ -2249,6 +2273,15 @@ void CSettingsDlg::on_spinBoxFontDelta_valueChanged (int arg1)
 
       emit sigFontDeltaChgd(delta);
    }
+}
+
+void CSettingsDlg::on_pushStrStd_clicked()
+{
+
+    if (m_StrStdDlg.exec() == QDialog::Accepted)
+    {
+        m_ui->pushStrStd->setText(m_StrStdDlg.getCurrName());
+    }
 }
 
 /************************* History ***************************\

@@ -84,6 +84,7 @@ private:
    QString   sUsr;
    QString   sPw;
    QString   sCookie;
+   QString   sLang;
    QErrorMap errMap;
    CIptvDefs karTrace;
 

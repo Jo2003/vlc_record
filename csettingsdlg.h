@@ -30,6 +30,7 @@
 #include "cshortcutgrabber.h"
 #include "clogfile.h"
 #include "cparser.h"
+#include "qstrstandarddlg.h"
 
 //===================================================================
 // namespace
@@ -140,6 +141,7 @@ private:
     bool                         bSettingsRead;
     int                          m_iServerBitrate;
     int                          m_iServerTimeShift;
+    QStrStandardDlg              m_StrStdDlg;
 
 signals:
     void sigReloadLogos ();
@@ -169,6 +171,8 @@ private slots:
     void on_cbxLanguage_currentIndexChanged(const QString &lng);
     void on_cbxLanguage_activated(const QString &lng);
     void on_spinBoxFontDelta_valueChanged(int arg1);
+
+    void on_pushStrStd_clicked();
 
 public slots:
     void slotSplashStateChgd (bool bChecked);

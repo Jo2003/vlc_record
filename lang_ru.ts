@@ -224,7 +224,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="481"/>
+        <location filename="ckartinaclnt.cpp" line="483"/>
         <source>Request Stream Server List ...</source>
         <oldsource>Request #%1 - Set Host to %2 ...</oldsource>
         <translation></translation>
@@ -249,317 +249,317 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="428"/>
+        <location filename="ckartinaclnt.cpp" line="430"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="461"/>
+        <location filename="ckartinaclnt.cpp" line="463"/>
         <source>Request available VOD languages ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="501"/>
+        <location filename="ckartinaclnt.cpp" line="505"/>
         <source>Request Time Shift ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="521"/>
+        <location filename="ckartinaclnt.cpp" line="526"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="542"/>
+        <location filename="ckartinaclnt.cpp" line="549"/>
         <source>Request Bit Rate ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="562"/>
+        <location filename="ckartinaclnt.cpp" line="570"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="583"/>
+        <location filename="ckartinaclnt.cpp" line="593"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="611"/>
+        <location filename="ckartinaclnt.cpp" line="621"/>
         <source>Set Streaming Server to %1 ...</source>
         <oldsource>Set Streaming Server to No %1 ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="632"/>
+        <location filename="ckartinaclnt.cpp" line="644"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="653"/>
+        <location filename="ckartinaclnt.cpp" line="667"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="676"/>
+        <location filename="ckartinaclnt.cpp" line="690"/>
         <source>Request Archiv URL ...</source>
         <oldsource>Request Archiv URL:
   --&gt; %1</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="703"/>
+        <location filename="ckartinaclnt.cpp" line="717"/>
         <source>Request VOD Genres ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="723"/>
+        <location filename="ckartinaclnt.cpp" line="737"/>
         <source>Request Videos ...</source>
         <oldsource>Request Videos for Genres %1...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="743"/>
+        <location filename="ckartinaclnt.cpp" line="757"/>
         <source>Request Video info for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="770"/>
+        <location filename="ckartinaclnt.cpp" line="784"/>
         <source>Request Video Url for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="798"/>
+        <location filename="ckartinaclnt.cpp" line="812"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="821"/>
+        <location filename="ckartinaclnt.cpp" line="835"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="844"/>
+        <location filename="ckartinaclnt.cpp" line="858"/>
         <source>Request VOD manager data ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="867"/>
+        <location filename="ckartinaclnt.cpp" line="881"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="890"/>
+        <location filename="ckartinaclnt.cpp" line="904"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="917"/>
+        <location filename="ckartinaclnt.cpp" line="931"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="944"/>
+        <location filename="ckartinaclnt.cpp" line="958"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="963"/>
+        <location filename="ckartinaclnt.cpp" line="977"/>
         <source>Change parent code ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="986"/>
+        <location filename="ckartinaclnt.cpp" line="1000"/>
         <source>EPG current for Channels: %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1005"/>
+        <location filename="ckartinaclnt.cpp" line="1019"/>
         <source>Check for available updates ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1023"/>
+        <location filename="ckartinaclnt.cpp" line="1037"/>
         <source>Download image ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1181"/>
+        <location filename="ckartinaclnt.cpp" line="1195"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1182"/>
+        <location filename="ckartinaclnt.cpp" line="1196"/>
         <source>Incorrect request</source>
         <translation>Неверный запрос</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1183"/>
+        <location filename="ckartinaclnt.cpp" line="1197"/>
         <source>Wrong login or password</source>
         <translation>Неверный логин или пароль</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1184"/>
+        <location filename="ckartinaclnt.cpp" line="1198"/>
         <source>Access denied</source>
         <translation>Доступ запрещен</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1185"/>
+        <location filename="ckartinaclnt.cpp" line="1199"/>
         <source>Login incorrect</source>
         <translation>Неверный логин</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1186"/>
+        <location filename="ckartinaclnt.cpp" line="1200"/>
         <source>Your contract is inactive</source>
         <translation>Ваш договор неактивен</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1187"/>
+        <location filename="ckartinaclnt.cpp" line="1201"/>
         <source>Your contract is paused</source>
         <translation>Ваш договор приостановлен</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1188"/>
+        <location filename="ckartinaclnt.cpp" line="1202"/>
         <source>Channel not found or not allowed</source>
         <translation>Канал не найден или не доступен</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1189"/>
+        <location filename="ckartinaclnt.cpp" line="1203"/>
         <source>Error in request: Bad parameters</source>
         <translation>Ошибка в запросе: Неверный параметр</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1190"/>
+        <location filename="ckartinaclnt.cpp" line="1204"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation>Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1191"/>
+        <location filename="ckartinaclnt.cpp" line="1205"/>
         <source>Missing parameter (cid)</source>
         <translation>Отсутствует параметр (cid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1192"/>
+        <location filename="ckartinaclnt.cpp" line="1206"/>
         <source>Another client with your data logged in</source>
         <translation>Ваш абонемент используется другим устройством</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1193"/>
+        <location filename="ckartinaclnt.cpp" line="1207"/>
         <source>Authentication error</source>
         <translation>Ошибка идентификации</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1194"/>
+        <location filename="ckartinaclnt.cpp" line="1208"/>
         <source>Your package expired</source>
         <translation>Ваша подписка истекла или ещё не активирована</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1195"/>
+        <location filename="ckartinaclnt.cpp" line="1209"/>
         <source>Unknown API function</source>
         <translation>Неизвестная функция API</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1196"/>
+        <location filename="ckartinaclnt.cpp" line="1210"/>
         <source>Archive not available</source>
         <translation>Архив не доступен</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1197"/>
+        <location filename="ckartinaclnt.cpp" line="1211"/>
         <source>Missing parameter (place)</source>
         <translation>Отсутствует параметр (place)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1198"/>
+        <location filename="ckartinaclnt.cpp" line="1212"/>
         <source>Missing parameter (name)</source>
         <translation>Отсутствует параметр (name)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1199"/>
+        <location filename="ckartinaclnt.cpp" line="1213"/>
         <source>Incorrect confirmation code</source>
         <translation>Неверный код подтверждения</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1200"/>
+        <location filename="ckartinaclnt.cpp" line="1214"/>
         <source>Current code is wrong</source>
         <translation>Текущий код неверный</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1201"/>
+        <location filename="ckartinaclnt.cpp" line="1215"/>
         <source>New code is wrong</source>
         <translation>Новый код неверный</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1202"/>
+        <location filename="ckartinaclnt.cpp" line="1216"/>
         <source>Missing parameter (val)</source>
         <translation>Отсутствует параметр (val)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1203"/>
+        <location filename="ckartinaclnt.cpp" line="1217"/>
         <source>Value not allowed</source>
         <translation>Значение не доступно</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1204"/>
+        <location filename="ckartinaclnt.cpp" line="1218"/>
         <source>Missing parameter</source>
         <translation>Отсутствует параметр</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1205"/>
+        <location filename="ckartinaclnt.cpp" line="1219"/>
         <source>Missing parameter (id)</source>
         <translation>Отсутствует параметр (id)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1206"/>
+        <location filename="ckartinaclnt.cpp" line="1220"/>
         <source>Missing parameter (fileid)</source>
         <translation>Отсутствует параметр (fileid)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1207"/>
+        <location filename="ckartinaclnt.cpp" line="1221"/>
         <source>Missing parameter (type)</source>
         <translation>Отсутствует параметр (type)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1208"/>
+        <location filename="ckartinaclnt.cpp" line="1222"/>
         <source>Missing parameter (query)</source>
         <translation>Отсутствует параметр (query)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1209"/>
+        <location filename="ckartinaclnt.cpp" line="1223"/>
         <source>Bitrate not available</source>
         <translation>Битрейт не доступен</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1210"/>
+        <location filename="ckartinaclnt.cpp" line="1224"/>
         <source>Service not available</source>
         <translation>Сервис не доступен</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1211"/>
+        <location filename="ckartinaclnt.cpp" line="1225"/>
         <source>Query limit exceeded</source>
         <translation>Превышен лимит запроса</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1212"/>
+        <location filename="ckartinaclnt.cpp" line="1226"/>
         <source>Rule already exists</source>
         <translation>Правило уже существует</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1213"/>
-        <location filename="ckartinaclnt.cpp" line="1214"/>
+        <location filename="ckartinaclnt.cpp" line="1227"/>
+        <location filename="ckartinaclnt.cpp" line="1228"/>
         <source>Missing parameter (cmd)</source>
         <translation>Отсутствует параметр (cmd)</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1215"/>
+        <location filename="ckartinaclnt.cpp" line="1229"/>
         <source>Bad value (rate)</source>
         <translation>Неверное значение рейтинга</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1216"/>
+        <location filename="ckartinaclnt.cpp" line="1230"/>
         <source>Can&apos;t find film</source>
         <translation>Невозможно найти фильм</translation>
     </message>
     <message>
-        <location filename="ckartinaclnt.cpp" line="1217"/>
+        <location filename="ckartinaclnt.cpp" line="1231"/>
         <source>Film already added</source>
         <translation>Этот фильм уже добавлен в список избранных</translation>
     </message>
@@ -1619,170 +1619,170 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CSettingsDlg</name>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="559"/>
+        <location filename="forms/csettingsdlg.ui" line="573"/>
         <source>Log disabled</source>
         <translation>Протокол выкл.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="564"/>
+        <location filename="forms/csettingsdlg.ui" line="578"/>
         <source>Log Errors only</source>
         <translation>Только протокол ошибок</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="569"/>
+        <location filename="forms/csettingsdlg.ui" line="583"/>
         <source>Log Errors and Warnings</source>
         <translation>Протокол ошибок и предупреждений</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="574"/>
+        <location filename="forms/csettingsdlg.ui" line="588"/>
         <source>Log everything</source>
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="528"/>
+        <location filename="csettingsdlg.cpp" line="552"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="523"/>
+        <location filename="csettingsdlg.cpp" line="547"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="430"/>
+        <location filename="csettingsdlg.cpp" line="454"/>
         <source>Following table shows the available combinations:</source>
         <translation>В таблице показаны доступные комбинации:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="433"/>
+        <location filename="csettingsdlg.cpp" line="457"/>
         <source>Do you want to activate the new %1? The player will switch to &apos;Live&apos; then.</source>
         <translation>Хотите ли Вы, активировать новый выбор? Проигрыватель будет переключен в живой режим.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="525"/>
+        <location filename="csettingsdlg.cpp" line="549"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="568"/>
+        <location filename="csettingsdlg.cpp" line="592"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="938"/>
+        <location filename="csettingsdlg.cpp" line="962"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;%2&apos;!</source>
         <oldsource>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;&apos;%2&apos;!</oldsource>
         <translation>Архив канала &apos;%1&apos; не доступен в битрейте &apos;%2&apos;!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="941"/>
+        <location filename="csettingsdlg.cpp" line="965"/>
         <source>Following bitrates are available:</source>
         <translation>Доступные битрейты:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="950"/>
+        <location filename="csettingsdlg.cpp" line="974"/>
         <source>Do you want to activate the new bitrate? The player will switch to &apos;Live&apos; then.</source>
         <translation>Хотите ли Вы, активировать новый битрейт? Проигрыватель будет переключен в живой режим.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="406"/>
-        <location filename="csettingsdlg.cpp" line="778"/>
-        <location filename="csettingsdlg.cpp" line="913"/>
+        <location filename="csettingsdlg.cpp" line="430"/>
+        <location filename="csettingsdlg.cpp" line="802"/>
+        <location filename="csettingsdlg.cpp" line="937"/>
         <source>Mobile</source>
         <translation>Мобильный</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="407"/>
-        <location filename="csettingsdlg.cpp" line="782"/>
-        <location filename="csettingsdlg.cpp" line="914"/>
+        <location filename="csettingsdlg.cpp" line="431"/>
+        <location filename="csettingsdlg.cpp" line="806"/>
+        <location filename="csettingsdlg.cpp" line="938"/>
         <source>Eco</source>
         <translation>Эко</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="156"/>
         <location filename="forms/csettingsdlg.ui" line="175"/>
-        <location filename="csettingsdlg.cpp" line="408"/>
-        <location filename="csettingsdlg.cpp" line="786"/>
-        <location filename="csettingsdlg.cpp" line="915"/>
+        <location filename="csettingsdlg.cpp" line="432"/>
+        <location filename="csettingsdlg.cpp" line="810"/>
+        <location filename="csettingsdlg.cpp" line="939"/>
         <source>Standard</source>
         <translation>Стандарт</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="409"/>
-        <location filename="csettingsdlg.cpp" line="790"/>
-        <location filename="csettingsdlg.cpp" line="916"/>
+        <location filename="csettingsdlg.cpp" line="433"/>
+        <location filename="csettingsdlg.cpp" line="814"/>
+        <location filename="csettingsdlg.cpp" line="940"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="794"/>
+        <location filename="csettingsdlg.cpp" line="818"/>
         <source>%1 Kbit/s</source>
         <oldsource>Bitrate: %1Kbit/s</oldsource>
         <translation>%1 Кбит/с</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1647"/>
+        <location filename="csettingsdlg.cpp" line="1671"/>
         <source>blood</source>
         <translation>кровь</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1648"/>
+        <location filename="csettingsdlg.cpp" line="1672"/>
         <source>violence</source>
         <translation>насилие</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1651"/>
+        <location filename="csettingsdlg.cpp" line="1675"/>
         <source>porn</source>
         <translation>порнография</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1652"/>
+        <location filename="csettingsdlg.cpp" line="1676"/>
         <source>horror</source>
         <translation>ужасы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1649"/>
-        <location filename="csettingsdlg.cpp" line="1650"/>
+        <location filename="csettingsdlg.cpp" line="1673"/>
+        <location filename="csettingsdlg.cpp" line="1674"/>
         <source>obscene</source>
         <translation>непристойности</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="713"/>
+        <location filename="forms/csettingsdlg.ui" line="727"/>
         <source>EPG day starts at 0:00</source>
         <translation>Телегид начинается в 0:00</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="427"/>
+        <location filename="csettingsdlg.cpp" line="451"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in your combination of bitrate (%2) and timeshift (%3)!</source>
         <translation>Архив канала &apos;%1&apos; не доступен в комбинации: Битрейт (%2) и задержка (%3)!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1684"/>
+        <location filename="csettingsdlg.cpp" line="1708"/>
         <source>hide</source>
         <translation>скрывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1685"/>
+        <location filename="csettingsdlg.cpp" line="1709"/>
         <source>show</source>
         <translation>показывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1686"/>
+        <location filename="csettingsdlg.cpp" line="1710"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1878"/>
+        <location filename="csettingsdlg.cpp" line="1902"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1957"/>
+        <location filename="csettingsdlg.cpp" line="1981"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1958"/>
+        <location filename="csettingsdlg.cpp" line="1982"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1814,15 +1814,15 @@ To change the parent code make sure:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="435"/>
-        <location filename="csettingsdlg.cpp" line="952"/>
-        <location filename="csettingsdlg.cpp" line="2009"/>
+        <location filename="csettingsdlg.cpp" line="459"/>
+        <location filename="csettingsdlg.cpp" line="976"/>
+        <location filename="csettingsdlg.cpp" line="2033"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2009"/>
-        <location filename="csettingsdlg.cpp" line="2010"/>
+        <location filename="csettingsdlg.cpp" line="2033"/>
+        <location filename="csettingsdlg.cpp" line="2034"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>
@@ -1843,7 +1843,7 @@ To change the parent code make sure:
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="43"/>
-        <location filename="forms/csettingsdlg.ui" line="482"/>
+        <location filename="forms/csettingsdlg.ui" line="496"/>
         <source>User: </source>
         <translation>Абонемент:</translation>
     </message>
@@ -1854,17 +1854,17 @@ To change the parent code make sure:
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="50"/>
-        <location filename="forms/csettingsdlg.ui" line="496"/>
+        <location filename="forms/csettingsdlg.ui" line="510"/>
         <source>Password: </source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1028"/>
+        <location filename="forms/csettingsdlg.ui" line="1024"/>
         <source>Allow Adult Channels</source>
         <translation>Разрешить каналы для взрослых</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="423"/>
+        <location filename="forms/csettingsdlg.ui" line="437"/>
         <source> Proxy Server </source>
         <translation>Прокси сервер</translation>
     </message>
@@ -1902,7 +1902,7 @@ To change the parent code make sure:
         <translation>Битрэйт:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="536"/>
+        <location filename="forms/csettingsdlg.ui" line="550"/>
         <source>Player Module:</source>
         <translation>Модуль проигрывателя:</translation>
     </message>
@@ -1942,139 +1942,139 @@ To change the parent code make sure:
         <translation>Язык: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="312"/>
+        <location filename="forms/csettingsdlg.ui" line="326"/>
         <source>Enable Advanced Settings</source>
         <oldsource>Enable Advacned Settings</oldsource>
         <translation>Вкл. допол. настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="417"/>
+        <location filename="forms/csettingsdlg.ui" line="431"/>
         <source>&amp;Advanced</source>
         <oldsource>Advanced</oldsource>
         <translation>&amp;Допол. настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="522"/>
+        <location filename="forms/csettingsdlg.ui" line="536"/>
         <source>API Server: </source>
         <translation>Сервер АПИ: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="546"/>
+        <location filename="forms/csettingsdlg.ui" line="560"/>
         <source>Log Level:</source>
         <translation>Уровень Протокола: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="703"/>
+        <location filename="forms/csettingsdlg.ui" line="717"/>
         <source>Show Ads</source>
         <translation>Показать рекламу</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="836"/>
+        <location filename="forms/csettingsdlg.ui" line="832"/>
         <source>Select Channels to hide:</source>
         <translation>Пометить каналы, чтобы скрыть:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="862"/>
+        <location filename="forms/csettingsdlg.ui" line="858"/>
         <source> VOD Manager </source>
         <oldsource>VOD Manager</oldsource>
         <translation>Менеджер видеотеки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1121"/>
+        <location filename="forms/csettingsdlg.ui" line="1117"/>
         <source>Save and E&amp;xit</source>
         <oldsource>Save and &amp;Exit</oldsource>
         <translation>Сохр&amp;анить и выйти</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="665"/>
+        <location filename="forms/csettingsdlg.ui" line="679"/>
         <source>Minimize to Systray</source>
         <translation>Сворачивать в трей</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="429"/>
+        <location filename="forms/csettingsdlg.ui" line="443"/>
         <source>Enable Proxy</source>
         <translation>Вкл. Прокси</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="442"/>
+        <location filename="forms/csettingsdlg.ui" line="456"/>
         <source>Address: </source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="456"/>
+        <location filename="forms/csettingsdlg.ui" line="470"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1066"/>
+        <location filename="forms/csettingsdlg.ui" line="1062"/>
         <source>Parent Code: </source>
         <translation>Родительский пароль: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="658"/>
+        <location filename="forms/csettingsdlg.ui" line="672"/>
         <source>Ask for Record Filename</source>
         <translation>Запрос файла записи</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="648"/>
+        <location filename="forms/csettingsdlg.ui" line="662"/>
         <source>Shutdown Command:</source>
         <translation>Команда отключения системы: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="679"/>
+        <location filename="forms/csettingsdlg.ui" line="693"/>
         <source>Translit Record Filename</source>
         <translation>Транслит файла записи</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="672"/>
+        <location filename="forms/csettingsdlg.ui" line="686"/>
         <source>Detach Player at startup</source>
         <oldsource>Detach Player on startup</oldsource>
         <translation>Отдели проигр. при запуске</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="325"/>
+        <location filename="forms/csettingsdlg.ui" line="339"/>
         <source>Sh&amp;ortcuts</source>
         <oldsource>Shortcuts</oldsource>
         <translation>Горячие &amp;клавиши</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="344"/>
+        <location filename="forms/csettingsdlg.ui" line="358"/>
         <source>Function</source>
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="349"/>
+        <location filename="forms/csettingsdlg.ui" line="363"/>
         <source>ShortCut</source>
         <translation>Комбинация клавиш</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="404"/>
+        <location filename="forms/csettingsdlg.ui" line="418"/>
         <source>Reset Shortcuts to default</source>
         <oldsource>Reset Shortcuts</oldsource>
         <translation>Вернуть стандартные настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="367"/>
+        <location filename="forms/csettingsdlg.ui" line="381"/>
         <source>Changes in shortcuts take effect only after restarting the program.</source>
         <translation>Изменения в горячих клавишах вступят в силу только после перезагрузки программы.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="516"/>
+        <location filename="forms/csettingsdlg.ui" line="530"/>
         <source>Advanced Settings</source>
         <translation>Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="686"/>
+        <location filename="forms/csettingsdlg.ui" line="700"/>
         <source>Doubleclick on channel list starts play</source>
         <translation>Двойной щелчок на списке каналов стартует плеер</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="693"/>
+        <location filename="forms/csettingsdlg.ui" line="707"/>
         <source>Use GPU for video decoding</source>
         <translation>GPU декодирует видео</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="597"/>
+        <location filename="forms/csettingsdlg.ui" line="611"/>
         <source>Deinterlacing Mode: </source>
         <oldsource>Deinterlace Mode: </oldsource>
         <translation>Режим деинтерлейсинга:</translation>
@@ -2085,120 +2085,130 @@ To change the parent code make sure:
         <translation>Изменить размер шрифта:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="605"/>
+        <location filename="forms/csettingsdlg.ui" line="310"/>
+        <source>Stream Standard: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/csettingsdlg.ui" line="317"/>
+        <source>PushButton</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/csettingsdlg.ui" line="619"/>
         <source>blend</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="610"/>
+        <location filename="forms/csettingsdlg.ui" line="624"/>
         <source>bob</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="615"/>
+        <location filename="forms/csettingsdlg.ui" line="629"/>
         <source>discard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="620"/>
+        <location filename="forms/csettingsdlg.ui" line="634"/>
         <source>linear</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="625"/>
+        <location filename="forms/csettingsdlg.ui" line="639"/>
         <source>mean</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="630"/>
+        <location filename="forms/csettingsdlg.ui" line="644"/>
         <source>x</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="635"/>
+        <location filename="forms/csettingsdlg.ui" line="649"/>
         <source>yadif</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="640"/>
+        <location filename="forms/csettingsdlg.ui" line="654"/>
         <source>yadif2x</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="728"/>
+        <location filename="forms/csettingsdlg.ui" line="742"/>
         <source>Parental &amp;Manager</source>
         <oldsource>Parental Manager</oldsource>
         <translation>&amp;Родительский контроль</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="756"/>
+        <location filename="forms/csettingsdlg.ui" line="761"/>
         <source>Please enter your parent code:</source>
         <oldsource>Please enter security code:</oldsource>
         <translation>Пожалуйста, введите родительский пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="772"/>
+        <location filename="forms/csettingsdlg.ui" line="777"/>
         <source>&amp;Enter Site</source>
         <oldsource>Enter Site</oldsource>
         <translation>Дос&amp;туп</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="818"/>
+        <location filename="forms/csettingsdlg.ui" line="814"/>
         <source> Channel Manager </source>
         <oldsource>Channel Manager</oldsource>
         <translation>Менеджер каналов</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="907"/>
+        <location filename="forms/csettingsdlg.ui" line="903"/>
         <source>Parent Code</source>
         <oldsource>Parental Code</oldsource>
         <translation>Родительский пароль</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="916"/>
+        <location filename="forms/csettingsdlg.ui" line="912"/>
         <source>Old Code:</source>
         <translation>Старый пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="923"/>
-        <location filename="forms/csettingsdlg.ui" line="940"/>
-        <location filename="forms/csettingsdlg.ui" line="957"/>
+        <location filename="forms/csettingsdlg.ui" line="919"/>
+        <location filename="forms/csettingsdlg.ui" line="936"/>
+        <location filename="forms/csettingsdlg.ui" line="953"/>
         <source>Number only (0 ... 9)!</source>
         <translation>Использовать только цифры (0 ... 9)!</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="933"/>
+        <location filename="forms/csettingsdlg.ui" line="929"/>
         <source>New Code:</source>
         <translation>Новый пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="950"/>
+        <location filename="forms/csettingsdlg.ui" line="946"/>
         <source>Confirm Code:</source>
         <translation>Подтвердите пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="982"/>
+        <location filename="forms/csettingsdlg.ui" line="978"/>
         <source>Chan&amp;ge</source>
         <oldsource>&amp;Change</oldsource>
         <translation>Смен&amp;ить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1007"/>
+        <location filename="forms/csettingsdlg.ui" line="1003"/>
         <source>Adult Channels</source>
         <translation>Каналы для взрослых</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1050"/>
+        <location filename="forms/csettingsdlg.ui" line="1046"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Please Note:&lt;/span&gt;&lt;br/&gt;If you insert the parental code below you&apos;re able to watch any adult channel without the need to insert the parent code. &lt;/p&gt;&lt;p&gt;Leaving this field blank you&apos;ll have to enter the parent code each time you want to watch an adult channel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Пожалуста, имейте в виду:&lt;/span&gt;&lt;br/&gt;Если Вы введете родительский пароль внизу, у Вас будет возможность смотреть любой канал для взрослых без необходимости ввода каждый раз родительского пароля. &lt;/p&gt;&lt;p&gt;Если Вы оставите это поле пустым, Вам будет необходимо вводитить родительский пароль каждый раз, когда Вы захотите смотреть канал для взрослых.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1166"/>
+        <location filename="forms/csettingsdlg.ui" line="1162"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1186"/>
+        <location filename="forms/csettingsdlg.ui" line="1182"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -3306,22 +3316,22 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="378"/>
+        <location filename="qiptvctrlclient.cpp" line="382"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;, data=&apos;%4&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="436"/>
+        <location filename="qiptvctrlclient.cpp" line="440"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="554"/>
+        <location filename="qiptvctrlclient.cpp" line="558"/>
         <source>Ignore old queued request ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="533"/>
+        <location filename="qiptvctrlclient.cpp" line="537"/>
         <source>called from %1(), busy(): %2, isOnline(): %3</source>
         <translation></translation>
     </message>
@@ -3331,57 +3341,57 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="613"/>
+        <location filename="qiptvctrlclient.cpp" line="617"/>
         <source>Prepend login request ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="621"/>
+        <location filename="qiptvctrlclient.cpp" line="625"/>
         <source>Append last sent request (which triggered error) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="648"/>
+        <location filename="qiptvctrlclient.cpp" line="652"/>
         <source>Network connection established!</source>
         <translation>Подключено к сети!</translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="648"/>
+        <location filename="qiptvctrlclient.cpp" line="652"/>
         <source>Error connecting to network!</source>
         <translation>Нет подключения к сети!</translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="650"/>
+        <location filename="qiptvctrlclient.cpp" line="654"/>
         <source>Online state changed: %1 --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="657"/>
+        <location filename="qiptvctrlclient.cpp" line="661"/>
         <source>Synchronize request counter and acknowledge: %1 &lt;--&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="682"/>
+        <location filename="qiptvctrlclient.cpp" line="686"/>
         <source>Interface: &apos;%1&apos;; MAC: %2; IP: %3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="719"/>
+        <location filename="qiptvctrlclient.cpp" line="723"/>
         <source>network config &apos;%1&apos;, id &apos;%2&apos; changed; state %3 -&gt; check internet connection!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="748"/>
+        <location filename="qiptvctrlclient.cpp" line="752"/>
         <source>Network accessibility changed: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="828"/>
+        <location filename="qiptvctrlclient.cpp" line="837"/>
         <source>Start connection check: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="865"/>
+        <location filename="qiptvctrlclient.cpp" line="874"/>
         <source>http request timed out!</source>
         <translation></translation>
     </message>
@@ -3592,6 +3602,14 @@ p, li { white-space: pre-wrap; }
         <location filename="forms/qstatemessage.ui" line="74"/>
         <source>Message</source>
         <translation></translation>
+    </message>
+</context>
+<context>
+    <name>QStrStandardDlg</name>
+    <message>
+        <location filename="forms/qstrstandarddlg.ui" line="14"/>
+        <source>Stream Standard</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

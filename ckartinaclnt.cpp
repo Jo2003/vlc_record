@@ -335,15 +335,15 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
 void CKartinaClnt::SetData(const QString &host, const QString &usr,
                            const QString &pw, const QString &lang)
 {
-   Q_UNUSED(lang)
-   sUsr           = usr;
-   sPw            = pw;
+   sLang   = lang;
+   sUsr    = usr;
+   sPw     = pw;
 #ifdef _USE_QJSON
-   sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_JSON_PATH"));
+   sApiUrl = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_JSON_PATH"));
 #else
-   sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_XML_PATH"));
+   sApiUrl = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_XML_PATH"));
 #endif // _USE_QJSON
-   sCookie        = "";
+   sCookie = "";
 
    // since API server was set we can start connection check...
    startConnectionCheck();
@@ -403,11 +403,12 @@ void CKartinaClnt::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&settings=all&softid=%3%4-%5&cli_serial=%6")
+        QString("login=%1&pass=%2&settings=all&softid=%3%4-%5&cli_serial=%6&lang=%7")
             .arg(sUsr).arg(sPw)
             .arg(pCustomization->strVal("APPLICATION_SHORTCUT"))
             .arg(OP_SYS).arg(SOFTID_DEVELOPER)
-            .arg(getStbSerial()),
+            .arg(getStbSerial())
+            .arg(sLang),
         Iptv::Login);
 }
 
@@ -998,7 +999,7 @@ void CKartinaClnt::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   q_get((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3")
+   q_get((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3&fixtime=1")
        .arg(cids));
 }
 

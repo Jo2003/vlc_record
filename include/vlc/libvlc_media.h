@@ -2,7 +2,7 @@
  * libvlc_media.h:  libvlc external API
  *****************************************************************************
  * Copyright (C) 1998-2009 VLC authors and VideoLAN
- * $Id: eaa41f01890d6921f81af3fc4fe4a33aa8905635 $
+ * $Id: 7fc718aa9980e831b3e124950e7f8efe10b1cabb $
  *
  * Authors: Clément Stenac <zorglub@videolan.org>
  *          Jean-Paul Saman <jpsaman@videolan.org>
@@ -67,7 +67,15 @@ typedef enum libvlc_meta_t {
     libvlc_meta_Publisher,
     libvlc_meta_EncodedBy,
     libvlc_meta_ArtworkURL,
-    libvlc_meta_TrackID
+    libvlc_meta_TrackID,
+    libvlc_meta_TrackTotal,
+    libvlc_meta_Director,
+    libvlc_meta_Season,
+    libvlc_meta_Episode,
+    libvlc_meta_ShowName,
+    libvlc_meta_Actors,
+    libvlc_meta_AlbumArtist,
+    libvlc_meta_DiscNumber
     /* Add new meta types HERE */
 } libvlc_meta_t;
 
@@ -215,6 +223,30 @@ typedef struct libvlc_media_track_t
 
 } libvlc_media_track_t;
 
+/**
+ * Parse flags used by libvlc_media_parse_with_options()
+ *
+ * \see libvlc_media_parse_with_options
+ */
+typedef enum libvlc_media_parse_flag_t
+{
+    /**
+     * Parse media if it's a local file
+     */
+    libvlc_media_parse_local    = 0x00,
+    /**
+     * Parse media even if it's a network file
+     */
+    libvlc_media_parse_network  = 0x01,
+    /**
+     * Fetch meta and covert art using local resources
+     */
+    libvlc_media_fetch_local    = 0x02,
+    /**
+     * Fetch meta and covert art using network resources
+     */
+    libvlc_media_fetch_network  = 0x04,
+} libvlc_media_parse_flag_t;
 
 /**
  * Create a media with a certain given media resource location,
@@ -477,7 +509,7 @@ LIBVLC_API libvlc_time_t
 /**
  * Parse a media.
  *
- * This fetches (local) meta data and tracks information.
+ * This fetches (local) art, meta data and tracks information.
  * The method is synchronous.
  *
  * \see libvlc_media_parse_async
@@ -492,7 +524,7 @@ libvlc_media_parse( libvlc_media_t *p_md );
 /**
  * Parse a media.
  *
- * This fetches (local) meta data and tracks information.
+ * This fetches (local) art, meta data and tracks information.
  * The method is the asynchronous of libvlc_media_parse().
  *
  * To track when this is over you can listen to libvlc_MediaParsedChanged
@@ -508,6 +540,34 @@ libvlc_media_parse( libvlc_media_t *p_md );
  */
 LIBVLC_API void
 libvlc_media_parse_async( libvlc_media_t *p_md );
+
+/**
+ * Parse the media asynchronously with options.
+ *
+ * This fetches (local or network) art, meta data and/or tracks information.
+ * This method is the extended version of libvlc_media_parse_async().
+ *
+ * To track when this is over you can listen to libvlc_MediaParsedChanged
+ * event. However if this functions returns an error, you will not receive this
+ * event.
+ *
+ * It uses a flag to specify parse options (see libvlc_media_parse_flag_t). All
+ * these flags can be combined. By default, media is parsed if it's a local
+ * file.
+ *
+ * \see libvlc_MediaParsedChanged
+ * \see libvlc_media_get_meta
+ * \see libvlc_media_tracks_get
+ * \see libvlc_media_parse_flag_t
+ *
+ * \param p_md media descriptor object
+ * \param parse_flag parse options:
+ * \return -1 in case of error, 0 otherwise
+ * \version LibVLC 3.0.0 or later
+ */
+LIBVLC_API int
+libvlc_media_parse_with_options( libvlc_media_t *p_md,
+                                 libvlc_media_parse_flag_t parse_flag );
 
 /**
  * Get Parsed status for media descriptor object.
@@ -581,6 +641,21 @@ LIBVLC_API
 unsigned libvlc_media_tracks_get( libvlc_media_t *p_md,
                                   libvlc_media_track_t ***tracks );
 
+/**
+ * Get codec description from media elementary stream
+ *
+ * \version LibVLC 3.0.0 and later.
+ *
+ * \see libvlc_media_track_t
+ *
+ * \param i_type i_type from libvlc_media_track_t
+ * \param i_codec i_codec or i_original_fourcc from libvlc_media_track_t
+ *
+ * \return codec description
+ */
+LIBVLC_API
+const char *libvlc_media_get_codec_description( libvlc_track_type_t i_type,
+                                                uint32_t i_codec );
 
 /**
  * Release media descriptor's elementary streams description array
