@@ -76,6 +76,7 @@ public:
       REQ_LOGIN_ONLY,
       REQ_STATS_SERVICE,
       REQ_STATS_ONLY,
+      REQ_STRSTD,
       REQ_UNKNOWN = 255
    };
 

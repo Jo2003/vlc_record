@@ -125,6 +125,7 @@ public:
 
     int  getFontDelta ();
     void setFontDelta (int i);
+    void setStrStdData(const cparser::QStrStdMap& data, const QString& curr);
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -152,6 +153,7 @@ signals:
     void sigSetBuffer (int iBuffer);
     void sigSetTimeShift (int iShift);
     void sigFontDeltaChgd (int i);
+    void sigSetStrStd(QString s);
 
 private slots:
     void on_btnResetShortcuts_clicked();

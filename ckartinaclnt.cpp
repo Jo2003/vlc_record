@@ -309,6 +309,9 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
       case CIptvDefs::REQ_STATS_ONLY:
          statsOnly(par_1.toString());
          break;
+      case CIptvDefs::REQ_STRSTD:
+          setStrStd(par_1.toString());
+          break;
       default:
          iRet = -1;
          break;
@@ -981,6 +984,28 @@ void CKartinaClnt::setParentCode(const QString &oldCode, const QString &newCode)
 
    q_post((int)CIptvDefs::REQ_SET_PCODE, sApiUrl + "settings_set", req);
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set new stream standard
+//
+//! \author  Jo2003
+//! \date    31.08.2015
+//
+//! \param   s [in] (const QString&) new stream stndard
+//
+//---------------------------------------------------------------------------
+void CKartinaClnt::setStrStd(const QString &s)
+{
+    mInfo(tr("Change stream standard to %1").arg(s));
+
+    QString req = QString("var=stream_standard&val=%1&cli_serial=%2")
+          .arg(s).arg(getStbSerial());
+
+
+    q_post((int)CIptvDefs::REQ_STRSTD, sApiUrl + "settings_set", req);
+}
+
 
 /*-----------------------------------------------------------------------------\
 | Function:    epgCurrent

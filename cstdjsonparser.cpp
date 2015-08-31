@@ -139,6 +139,62 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
+int CStdJsonParser::parseStrStd(const QString &sResp, cparser::QStrStdMap &strStdMap, QString &curr)
+{
+    int  iRV = 0;
+    bool bOk = false;
+    cparser::StrStdDescr ssDescr;
+    QVariantMap     contentMap, nestedMap;
+
+    contentMap = QtJson::parse(sResp, bOk).toMap();
+
+    // clear given parameters ...
+    strStdMap.clear();
+    curr.clear();
+
+    contentMap = QtJson::parse(sResp, bOk).toMap();
+
+    if (bOk)
+    {
+       nestedMap = contentMap.value("settings").toMap();
+       nestedMap = nestedMap.value("stream_standard").toMap();
+
+       curr      = nestedMap.value("value").toString();
+
+       foreach (const QVariant& lSrv, nestedMap.value("list").toList())
+       {
+          QVariantMap mSrv = lSrv.toMap();
+
+          ssDescr.sName  = mSrv.value("title").toString();
+          ssDescr.sDescr = mSrv.value("description").toString();
+          strStdMap[mSrv.value("value").toString()] = ssDescr;
+       }
+    }
+    else
+    {
+       emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                     tr("QtJson parser error in %1 %2():%3")
+                     .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+       iRV = -1;
+    }
+
+    return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse server list response
+//
+//! \author  Jo2003
+//! \date    15.04.2013
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   vSrv (QVector<cparser::SSrv> &) server vector
+//! \param   sActIp (QString&) ref. to current value
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
 int CStdJsonParser::parseSServersLogin(const QString &sResp, QVector<cparser::SSrv> &vSrv,
                                      QString &sActIp)
 {

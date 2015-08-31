@@ -8,7 +8,8 @@ TRANSLATIONS = lang_de.ts \
 DEFINES += ENABLE_AD_SWITCH \
            _HAS_VOD_MANAGER \
            _EXT_EPG \
-           __MY_EXT_EPG
+           __MY_EXT_EPG \
+           __VLC_FOR_HLS
 
 # stuff for QJSON ...
 DEFINES     += _USE_QJSON

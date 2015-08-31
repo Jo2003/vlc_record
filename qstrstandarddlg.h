@@ -18,18 +18,11 @@
 #include <QMap>
 #include <QListWidgetItem>
 
+#include "cparser.h"
+
 namespace Ui {
     class QStrStandardDlg;
 }
-
-/// \brief hold description data for stream standards
-struct StrStdDescr {
-    QString sName;
-    QString sDescr;
-};
-
-/// \brief define type for stream standards
-typedef QMap<QString, StrStdDescr> QStrStdMap;
 
 //---------------------------------------------------------------------------
 //! \class   QStrStandardDlg
@@ -44,17 +37,18 @@ class QStrStandardDlg : public QDialog
 public:
     QStrStandardDlg(QWidget * parent = 0, Qt::WindowFlags f = 0);
     ~QStrStandardDlg();
-    void setStrStdData(const QStrStdMap& data, const QString& curr);
+    void setStrStdData(const cparser::QStrStdMap& data, const QString& curr);
+    void setCurrName (const QString& s);
     QString getCurrVal();
     QString getCurrName();
 
 private slots:
-    void on_listStrStandards_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+    void on_listStrStandards_itemSelectionChanged();
 
 private:
     Ui::QStrStandardDlg *ui;
-    QStrStdMap mStrStdMap;
-    QString    mStrCurVal;
+    cparser::QStrStdMap  mStrStdMap;
+    QString              mStrCurVal;
 };
 
 #endif // __20150829_QSTRSTANDARDDLG_H

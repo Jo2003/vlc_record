@@ -298,6 +298,7 @@ Recorder::Recorder(QWidget *parent)
    connect (&Settings,     SIGNAL(sigSetServer(QString)), this, SLOT(slotSetSServer(QString)));
    connect (&Settings,     SIGNAL(sigSetBitRate(int)), this, SLOT(slotSetBitrate(int)));
    connect (&Settings,     SIGNAL(sigSetTimeShift(int)), this, SLOT(slotSetTimeShift(int)));
+   connect (&Settings,     SIGNAL(sigSetStrStd(QString)), this, SLOT(slotSetStrStd(QString)));
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
    connect (&Settings,     SIGNAL(sigFontDeltaChgd(int)), this, SLOT(slotChgFontSize(int)));
@@ -1857,6 +1858,7 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_GET_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_HTTPBUFF, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SET_LANGUAGE, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_STRSTD, slotUnused(resp));
    default:
       break;
    }
@@ -2270,6 +2272,16 @@ void Recorder::slotCookie (const QString &str)
       {
          Settings.SetStreamServerCbx(vSrv, sActIp);
          mInfo(tr("Active stream server is %1").arg(sActIp));
+      }
+
+      // stream standard ...
+      cparser::QStrStdMap strStdMap;
+      QString sCurrStrStd;
+
+      if (!pApiParser->parseStrStd(str, strStdMap, sCurrStrStd))
+      {
+          mInfo(tr("Active stream standard: %1").arg(sCurrStrStd));
+          Settings.setStrStdData(strStdMap, sCurrStrStd);
       }
 
 #ifdef _TASTE_IPTV_RECORD
@@ -3039,7 +3051,23 @@ void Recorder::slotDayTabChanged(int iIdx)
 \----------------------------------------------------------------- */
 void Recorder::slotSetSServer(QString sIp)
 {
-   pApiClient->queueRequest(CIptvDefs::REQ_SERVER, sIp);
+    pApiClient->queueRequest(CIptvDefs::REQ_SERVER, sIp);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   change stream standard
+//
+//! \author  Jo2003
+//! \date    31.08.2015
+//
+//! \param   s [in] (QString) new stream standard value
+//
+//! \return  info string
+//---------------------------------------------------------------------------
+void Recorder::slotSetStrStd(QString s)
+{
+    pApiClient->queueRequest(CIptvDefs::REQ_STRSTD, s);
 }
 
 /* -----------------------------------------------------------------\

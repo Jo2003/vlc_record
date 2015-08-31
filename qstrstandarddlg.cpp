@@ -48,17 +48,18 @@ QStrStandardDlg::~QStrStandardDlg()
 //! \author  Jo2003
 //! \date    29.08.2015
 //
-//! \param   data [in] (const QStrStdMap &) stream std data
+//! \param   data [in] (const cparser::QStrStdMap &) stream std data
 //! \param   curr [in] (const QString &) current standard
 //---------------------------------------------------------------------------
-void QStrStandardDlg::setStrStdData(const QStrStdMap &data, const QString &curr)
+void QStrStandardDlg::setStrStdData(const cparser::QStrStdMap &data, const QString &curr)
 {
     QListWidgetItem *pItem;
-    QStrStdMap::ConstIterator cit;
-    mStrStdMap  = data;
-    mStrCurVal  = curr;
-    int    idx  = 0;
-    int    cidx = 0;
+    cparser::QStrStdMap::ConstIterator cit;
+    mStrStdMap   = data;
+    mStrCurVal   = curr;
+    int     idx  = 0;
+    int     cidx = 0;
+    QString descr;
 
     // clear list ...
     ui->listStrStandards->clear();
@@ -73,7 +74,8 @@ void QStrStandardDlg::setStrStdData(const QStrStdMap &data, const QString &curr)
 
         if (cit.key() == mStrCurVal)
         {
-            cidx = idx;
+            cidx  = idx;
+            descr = cit.value().sDescr;
         }
 
         idx++;
@@ -81,6 +83,31 @@ void QStrStandardDlg::setStrStdData(const QStrStdMap &data, const QString &curr)
 
     // mark current selection ...
     ui->listStrStandards->setCurrentRow(cidx);
+    ui->txtStrStdDescr->setPlainText(descr);
+}
+
+//---------------------------------------------------------------------------
+//! \brief   set current name
+//
+//! \author  Jo2003
+//! \date    31.08.2015
+//
+//! \param   s [in] (const QString&) name to set as current
+//---------------------------------------------------------------------------
+void QStrStandardDlg::setCurrName(const QString &s)
+{
+    QListWidgetItem* pItem;
+
+    for (int i = 0; i < ui->listStrStandards->count(); i++)
+    {
+        pItem = ui->listStrStandards->item(i);
+
+        if (pItem->text() == s)
+        {
+            ui->listStrStandards->setCurrentRow(i);
+            break;
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -134,13 +161,13 @@ QString QStrStandardDlg::getCurrName()
 //
 //! \author  Jo2003
 //! \date    29.08.2015
-//
-//! \param current [in] (QListWidgetItem *) pointer to current list item
-//! \param previous [in] (QListWidgetItem *) pointer to previous list item
 //---------------------------------------------------------------------------
-void QStrStandardDlg::on_listStrStandards_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+void QStrStandardDlg::on_listStrStandards_itemSelectionChanged()
 {
-    Q_UNUSED(previous)
-    QString currSel = current->data(Qt::UserRole).toString();
-    ui->txtStrStdDescr->setPlainText(mStrStdMap.value(currSel).sDescr);
+    QString key = getCurrVal();
+
+    if (!key.isEmpty() && !mStrStdMap.isEmpty())
+    {
+        ui->txtStrStdDescr->setPlainText(mStrStdMap.value(key).sDescr);
+    }
 }

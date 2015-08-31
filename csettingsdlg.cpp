@@ -34,7 +34,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    pAccountInfo    = NULL;
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
-   m_pStrStdDlg    = new QStrStandardDlg(this);
+   m_pStrStdDlg    = new QStrStandardDlg(this, Qt::Tool);
 
    if (pShortApiServer)
    {
@@ -91,27 +91,6 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
 #ifndef _EXT_EPG
    m_ui->checkExtEPG->setVisible(false);
 #endif // _EXT_EPG
-
-   StrStdDescr mData;
-   QStrStdMap  mTest;
-
-   mData.sName  = "DASH";
-   mData.sDescr = "DASH Descr.";
-   mTest["dash"] = mData;
-
-   mData.sName  = "UDT";
-   mData.sDescr = "UDT Descr.";
-   mTest["udt"] = mData;
-
-   mData.sName  = "HTTP";
-   mData.sDescr = "HTTP Descr.";
-   mTest["http"] = mData;
-
-   mData.sName  = "HLS";
-   mData.sDescr = "HLS Descr.";
-   mTest["hls"] = mData;
-
-   m_pStrStdDlg->setStrStdData(mTest, "http");
 
    // fill in values ...
    readSettings();
@@ -353,9 +332,6 @@ void CSettingsDlg::readSettings()
    // font size ...
    m_ui->spinBoxFontDelta->setValue(pDb->intValue("CustFontSz"));
 
-////////////////////////////////////////////
-   m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
-////////////////////////////////////////////
    // mark settings as read ...
    bSettingsRead = true;
 }
@@ -2255,7 +2231,24 @@ int CSettingsDlg::getFontDelta()
 //---------------------------------------------------------------------------
 void CSettingsDlg::setFontDelta(int i)
 {
-   m_ui->spinBoxFontDelta->setValue(i);
+    m_ui->spinBoxFontDelta->setValue(i);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set stream standard data to dialog
+//
+//! \author  Jo2003
+//! \date    31.08.2015
+//
+//! \param   data [in] (const cparser::QStrStdMap&) stream standard data
+//! \param   curr [in] (const QString&) current stream standard
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::setStrStdData(const cparser::QStrStdMap &data, const QString &curr)
+{
+    m_pStrStdDlg->setStrStdData(data, curr);
 }
 
 //---------------------------------------------------------------------------
@@ -2283,11 +2276,29 @@ void CSettingsDlg::on_spinBoxFontDelta_valueChanged (int arg1)
    }
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   open stream standard dialog
+//
+//! \author  Jo2003
+//! \date    31.08.2015
+//
+//---------------------------------------------------------------------------
 void CSettingsDlg::on_pushStrStd_clicked()
 {
     if (m_pStrStdDlg->exec() == QDialog::Accepted)
     {
-        m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+        // any change in name ... ?
+        if (m_ui->pushStrStd->text() != m_pStrStdDlg->getCurrName())
+        {
+            m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+            emit sigSetStrStd(m_pStrStdDlg->getCurrVal());
+        }
+    }
+    else
+    {
+        // revert any change ...
+        m_pStrStdDlg->setCurrName(m_ui->pushStrStd->text());
     }
 }
 

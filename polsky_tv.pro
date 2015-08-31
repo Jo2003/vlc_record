@@ -1,6 +1,7 @@
 DEFINES += _TASTE_POLSKY_TV \
            _HAS_VOD_MANAGER \
-           _EXT_EPG
+           _EXT_EPG \
+           __VLC_FOR_HLS
 RESOURCES += polsky_tv.qrc
 HEADERS += tastes/defines_polsky_tv.h \
            tastes/more_polsky_translations.h

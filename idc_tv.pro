@@ -4,7 +4,8 @@ WINICO = television.ico
 TRANSLATIONS = lang_ru.ts
 DEFINES += _TASTE_IDC_TB \
            _HAS_VOD_MANAGER \
-           _EXT_EPG
+           _EXT_EPG \
+           __VLC_FOR_HLS
 
 # stuff for QJSON ...
 DEFINES     += _USE_QJSON

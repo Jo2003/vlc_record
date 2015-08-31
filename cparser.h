@@ -165,6 +165,15 @@ namespace cparser
       int     stats;
       bool    handled;
    };
+
+   /// \brief hold description data for stream standards
+   struct StrStdDescr {
+       QString sName;
+       QString sDescr;
+   };
+
+   /// \brief define type for stream standards
+   typedef QMap<QString, StrStdDescr> QStrStdMap;
 }
 
 // make life easier ...

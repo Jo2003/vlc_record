@@ -288,6 +288,7 @@ private slots:
     void slotReloadLogos ();
     void slotDayTabChanged (int iIdx);
     void slotSetSServer (QString sIp);
+    void slotSetStrStd (QString s);
     void slotTimerRecActive (int iState);
     void slotTimerRecordDone ();
     void slotVlcStarts (int iState);

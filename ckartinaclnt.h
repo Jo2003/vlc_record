@@ -79,6 +79,7 @@ protected:
    const QString& apiUrl();
    void statsService(const QString& stats);
    void statsOnly(const QString& stats);
+   void setStrStd (const QString& s);
 
 private:
    QString   sUsr;
