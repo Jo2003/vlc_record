@@ -42,14 +42,13 @@ class QStrStandardDlg : public QDialog
     Q_OBJECT
 
 public:
-    QStrStandardDlg(QWidget *parent = 0);
+    QStrStandardDlg(QWidget * parent = 0, Qt::WindowFlags f = 0);
     ~QStrStandardDlg();
     void setStrStdData(const QStrStdMap& data, const QString& curr);
     QString getCurrVal();
-    const QString& getCurrName();
+    QString getCurrName();
 
 private slots:
-
     void on_listStrStandards_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:

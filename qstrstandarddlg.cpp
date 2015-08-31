@@ -13,6 +13,7 @@
  *///------------------------- (c) 2015 by Jo2003  --------------------------
 #include "qstrstandarddlg.h"
 #include "ui_qstrstandarddlg.h"
+#include <QMessageBox>
 
 //---------------------------------------------------------------------------
 //! \brief   create dialg
@@ -22,11 +23,12 @@
 //
 //! \param   parent [in ] (QWidget*) pointer to parent widget
 //---------------------------------------------------------------------------
-QStrStandardDlg::QStrStandardDlg(QWidget *parent) :
-   QDialog(parent, Qt::Tool),
+QStrStandardDlg::QStrStandardDlg(QWidget *parent, Qt::WindowFlags f) :
+   QDialog(parent, f),
    ui(new Ui::QStrStandardDlg)
 {
    ui->setupUi(this);
+   setAttribute(Qt::WA_DeleteOnClose, false);
 }
 
 //---------------------------------------------------------------------------
@@ -91,8 +93,15 @@ void QStrStandardDlg::setStrStdData(const QStrStdMap &data, const QString &curr)
 //---------------------------------------------------------------------------
 QString QStrStandardDlg::getCurrVal()
 {
+    QString sRet;
     QListWidgetItem *pCurr = ui->listStrStandards->currentItem();
-    return pCurr->data(Qt::UserRole).toString();
+
+    if (pCurr != NULL)
+    {
+        sRet = pCurr->data(Qt::UserRole).toString();
+    }
+
+    return sRet;
 }
 
 //---------------------------------------------------------------------------
@@ -103,10 +112,21 @@ QString QStrStandardDlg::getCurrVal()
 //
 //! \return  current name as string
 //---------------------------------------------------------------------------
-const QString &QStrStandardDlg::getCurrName()
+QString QStrStandardDlg::getCurrName()
 {
+    QString sRet;
     QString key = getCurrVal();
-    return mStrStdMap.value(key).sName;
+
+    if (key.isEmpty())
+    {
+        sRet = tr("N/A");
+    }
+    else
+    {
+        sRet = mStrStdMap.value(key).sName;
+    }
+
+    return sRet;
 }
 
 //---------------------------------------------------------------------------
@@ -122,6 +142,5 @@ void QStrStandardDlg::on_listStrStandards_currentItemChanged(QListWidgetItem *cu
 {
     Q_UNUSED(previous)
     QString currSel = current->data(Qt::UserRole).toString();
-
     ui->txtStrStdDescr->setPlainText(mStrStdMap.value(currSel).sDescr);
 }

@@ -24,6 +24,7 @@
 #include <QTableWidget>
 #include <QTimer>
 #include <QSystemTrayIcon>
+#include <QEvent>
 
 #include "defdef.h"
 #include "cshortcutex.h"
@@ -127,6 +128,7 @@ public:
 
 protected:
     virtual void changeEvent(QEvent *e);
+    virtual void showEvent(QShowEvent* e);
     bool checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const QString& what);
 
 private:
@@ -141,7 +143,7 @@ private:
     bool                         bSettingsRead;
     int                          m_iServerBitrate;
     int                          m_iServerTimeShift;
-    QStrStandardDlg              m_StrStdDlg;
+    QStrStandardDlg             *m_pStrStdDlg;
 
 signals:
     void sigReloadLogos ();

@@ -34,6 +34,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    pAccountInfo    = NULL;
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
+   m_pStrStdDlg    = new QStrStandardDlg(this);
 
    if (pShortApiServer)
    {
@@ -110,7 +111,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    mData.sDescr = "HLS Descr.";
    mTest["hls"] = mData;
 
-   m_StrStdDlg.setStrStdData(mTest, "http");
+   m_pStrStdDlg->setStrStdData(mTest, "http");
 
    // fill in values ...
    readSettings();
@@ -353,7 +354,7 @@ void CSettingsDlg::readSettings()
    m_ui->spinBoxFontDelta->setValue(pDb->intValue("CustFontSz"));
 
 ////////////////////////////////////////////
-   m_ui->pushStrStd->setText(m_StrStdDlg.getCurrName());
+   m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
 ////////////////////////////////////////////
    // mark settings as read ...
    bSettingsRead = true;
@@ -400,6 +401,13 @@ void CSettingsDlg::changeEvent(QEvent *e)
     default:
        break;
     }
+}
+
+
+void CSettingsDlg::showEvent(QShowEvent *e)
+{
+    m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+    QDialog::showEvent(e);
 }
 
 //---------------------------------------------------------------------------
@@ -2277,10 +2285,9 @@ void CSettingsDlg::on_spinBoxFontDelta_valueChanged (int arg1)
 
 void CSettingsDlg::on_pushStrStd_clicked()
 {
-
-    if (m_StrStdDlg.exec() == QDialog::Accepted)
+    if (m_pStrStdDlg->exec() == QDialog::Accepted)
     {
-        m_ui->pushStrStd->setText(m_StrStdDlg.getCurrName());
+        m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
     }
 }
 
