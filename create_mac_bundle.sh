@@ -3,10 +3,10 @@ APPNAME=${1}
 TMPFILE=/tmp/plist.tmp
 CONTENTS=$APPNAME.app/Contents
 OFFNAME=""
-QTPATH=/Users/joergn/Qt/4.8.5
-if [ -z $QTTRANS ] ; then
-    QTTRANS=$QTPATH/translations
+if [ -z $QTDIR ] ; then
+    QTDIR=~/Qt/4.8.5
 fi
+QTTRANS=$QTDIR/translations
 
 # create official name ...
 case $APPNAME in
@@ -54,7 +54,7 @@ cp ../modules/*.mod $CONTENTS/PlugIns/modules/
 cp ../resources/$APPNAME.icns $CONTENTS/Resources/$APPNAME.icns
 cp ../qhc/$OFFNAME/*.qhc $CONTENTS/Resources/doc/
 cp ../qhc/$OFFNAME/*.qch $CONTENTS/Resources/doc/
-cp -R ../mac/* $CONTENTS/MacOS
+cp -a ../mac/* $CONTENTS/MacOS
 
 # copy Qt translations
 cp $QTTRANS/qt_de.qm $CONTENTS/translations
@@ -87,7 +87,7 @@ cat << EOF > $TMPFILE
 EOF
 
 iconv -f ASCII -t UTF-8 $TMPFILE >$CONTENTS/Info.plist
-$QTPATH/bin/macdeployqt $APPNAME.app -verbose=0
+$QTDIR/bin/macdeployqt $APPNAME.app -verbose=0
 POS=`pwd`
 cd $CONTENTS/Frameworks
 rm -rf QtDeclarative.framework
