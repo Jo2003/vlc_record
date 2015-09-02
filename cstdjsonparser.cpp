@@ -128,14 +128,14 @@ int CStdJsonParser::parseChannelList (const QString &sResp,
 
 //---------------------------------------------------------------------------
 //
-//! \brief   parse server list response
+//! \brief   parse stream standard list response
 //
 //! \author  Jo2003
-//! \date    15.04.2013
+//! \date    31.08.2015
 //
-//! \param   sResp (const QString &) ref. to response string
-//! \param   vSrv (QVector<cparser::SSrv> &) server vector
-//! \param   sActIp (QString&) ref. to current value
+//! \param   sResp [in] (const QString &) ref. to response string
+//! \param   strStdMap [out] (cparser::QStrStdMap&) stream standard map
+//! \param   curr [out] (QString&) ref. to current value
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
