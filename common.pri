@@ -176,6 +176,9 @@ win32 {
     LIBS += -Llib
 }
 else:mac {
+   HEADERS += $$PWD/macNoSleep.h
+   OBJECTIVE_SOURCES += $$PWD/macNoSleep.mm
+   
    OTHER_FILES += create_mac_bundle.sh \
                   release/create_dmg.sh
    INCLUDEPATH += mac/include
@@ -190,7 +193,7 @@ else:mac {
    CONFIG(release,debug|release):appcleanhook.target = Makefile.Release
    QMAKE_EXTRA_TARGETS += appcleanhook
 
-   LIBS += -L./mac/lib
+   LIBS += -L./mac/lib -framework IOKit -framework Foundation
    QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
 }
 else:unix {

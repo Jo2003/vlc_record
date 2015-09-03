@@ -35,6 +35,16 @@ extern ApiClient *pApiClient;
 #define mFromGmt(__x__) (int)((__x__) - TIME_OFFSET)
 #define mToGmt(__x__) (uint)((__x__) + TIME_OFFSET)
 
+// bugfix for not working no sleep mode on Mac
+#ifdef Q_OS_MAC
+   #include "macNoSleep.h"
+   #define mMAC_NO_SLEEP { int yy = macNoSleep(); mInfo(CPlayer::tr("Start NO-SLEEP-MODE: %1").arg((yy == 0) ? "OK" : "ERROR"));}
+   #define mMAC_AL_SLEEP { int yy = macSleep();   mInfo(CPlayer::tr("End NO-SLEEP-MODE: %1").arg((yy == 0) ? "OK" : "ERROR"));  }
+#else
+   #define mMAC_NO_SLEEP
+   #define mMAC_AL_SLEEP
+#endif // Q_OS_MAC
+
 QVector<libvlc_event_type_t> CPlayer::_eventQueue;
 QMutex                       CPlayer::_mtxEvt;
 float                        CPlayer::_flBuffPrt = 0.0;
@@ -718,12 +728,14 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
             libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
          }
 
+#ifndef Q_OS_MAC /// bugfix used for Mac no sleep mode \sa macNoSleep.h / .mm
          ///////////////////////////////////////////////////////////////////////////
          // screensaver stuff ...
          ///////////////////////////////////////////////////////////////////////////
          sMrl = ":disable-screensaver";
          mInfo(tr("Add MRL Option: %1").arg(sMrl));
          libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+#endif // Q_OS_MAC
 
          ///////////////////////////////////////////////////////////////////////////
          // default audio track stuff ...
@@ -1069,6 +1081,7 @@ void CPlayer::slotEventPoll()
 
             // no way to go on ... prepare to use a new instance of libVLC
             cleanupLibVLC();
+            mMAC_AL_SLEEP;
             break;
 
          // opening media ...
@@ -1084,6 +1097,7 @@ void CPlayer::slotEventPoll()
             tAspectShot.start();
             startPlayTimer();
             initSlider();
+            mMAC_NO_SLEEP;
             break;
 
          // player paused ...
@@ -1091,6 +1105,7 @@ void CPlayer::slotEventPoll()
             mInfo("libvlc_MediaPlayerPaused ...");
             emit sigPlayState((int)IncPlay::PS_PAUSE);
             pausePlayTimer();
+            mMAC_AL_SLEEP;
             break;
 
          // player stopped ...
@@ -1099,6 +1114,7 @@ void CPlayer::slotEventPoll()
             emit sigPlayState((int)IncPlay::PS_STOP);
             resetBuffPercent();
             stopPlayTimer();
+            mMAC_AL_SLEEP;
             break;
 
          // end of media reached ...
@@ -1106,6 +1122,7 @@ void CPlayer::slotEventPoll()
             mInfo("libvlc_MediaPlayerEndReached ...");
             emit sigPlayState((int)IncPlay::PS_END);
             stopPlayTimer();
+            mMAC_AL_SLEEP;
             break;
 
          default:
