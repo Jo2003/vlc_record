@@ -1,10 +1,27 @@
-#ifndef QSTALKERPARSER_H
-#define QSTALKERPARSER_H
+/*------------------------------ Information ---------------------------*//**
+ *
+ *  $HeadURL$
+ *
+ *  @file     qstalkerparser.h
+ *
+ *  @author   Jo2003
+ *
+ *  @date     06.09.2015
+ *
+ *  $Id$
+ *
+ *///------------------------- (c) 2015 by Jo2003  --------------------------
+#ifndef __20150906_QSTALKERPARSER_H
+    #define __20150906_QSTALKERPARSER_H
 
-class QStalkerParser
+#include "cstdjsonparser.h"
+
+class QStalkerParser : public CStdJsonParser
 {
+Q_OBJECT
+
 public:
-   QStalkerParser();
+   QStalkerParser(QObject* parent = 0);
 };
 
-#endif // QSTALKERPARSER_H
+#endif // __20150906_QSTALKERPARSER_H

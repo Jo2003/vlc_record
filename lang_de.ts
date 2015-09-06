@@ -507,380 +507,161 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CNovoeClient</name>
     <message>
-        <location filename="cnovoeclient.cpp" line="84"/>
-        <source>Response for request &apos;%1&apos;:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="98"/>
-        <source>Request &apos;%2&apos; done!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="328"/>
-        <source>We&apos;ve got following Cookie: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="346"/>
-        <source>Logout ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="366"/>
-        <source>Request Authentication ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="389"/>
-        <source>Request Channel List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="421"/>
-        <source>Request Stream Server List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="442"/>
-        <source>Request Time Shift ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="463"/>
-        <source>Set TimeShift to %1 hour(s) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="484"/>
-        <source>Request Bit Rate ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="505"/>
-        <source>Set BitRate to %1 kbit/s ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="526"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="554"/>
-        <source>Set Streaming Server to %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="575"/>
-        <source>Set Http Buffer to %1 msec. ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="596"/>
-        <source>Request EPG for Channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="619"/>
-        <source>Request Archiv URL ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="646"/>
-        <source>Request VOD Genres ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="666"/>
-        <source>Request Videos ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="695"/>
-        <source>Request Video info for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="722"/>
-        <source>Request Video Url for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="750"/>
-        <source>Hide channel(s) %1 from channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="773"/>
-        <source>Show channel(s) %1 in channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="796"/>
-        <source>Request VOD manager data ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="819"/>
-        <source>Set VOD manager data (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="842"/>
-        <source>Add VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="869"/>
-        <source>Remove VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="896"/>
-        <source>Get VOD favourites (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="915"/>
-        <source>Change parent code ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="938"/>
-        <source>EPG current for Channels: %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="957"/>
-        <source>Check for available updates ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="975"/>
-        <source>Download image ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="1056"/>
         <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
+        <translation type="obsolete">Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1057"/>
         <source>Incorrect request</source>
-        <translation>Falsche Anfrage</translation>
+        <translation type="obsolete">Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1058"/>
         <source>Wrong login or password</source>
-        <translation>Falsche Login-Daten</translation>
+        <translation type="obsolete">Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1059"/>
         <source>Access denied</source>
-        <translation>Zugriff verboten</translation>
+        <translation type="obsolete">Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1060"/>
         <source>Login incorrect</source>
-        <translation>Falscher Login</translation>
+        <translation type="obsolete">Falscher Login</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1061"/>
         <source>Your contract is inactive</source>
-        <translation>Ihr Vertrag ist nicht aktiv</translation>
+        <translation type="obsolete">Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1062"/>
         <source>Your contract is paused</source>
-        <translation>Ihr Vertrag pausiert</translation>
+        <translation type="obsolete">Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1063"/>
         <source>Channel not found or not allowed</source>
-        <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
+        <translation type="obsolete">Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1064"/>
         <source>Error in request: Bad parameters</source>
-        <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
+        <translation type="obsolete">Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1065"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
+        <translation type="obsolete">Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1066"/>
         <source>Missing parameter (cid)</source>
-        <translation>Fehlender Parameter (cid)</translation>
+        <translation type="obsolete">Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1067"/>
         <source>Another client with your data logged in</source>
-        <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
+        <translation type="obsolete">Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1068"/>
         <source>Authentication error</source>
-        <translation>Authentifizierungsfehler</translation>
+        <translation type="obsolete">Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1069"/>
         <source>Your package expired</source>
-        <translation>Ihr Paket ist abgelaufen</translation>
+        <translation type="obsolete">Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1070"/>
         <source>Unknown API function</source>
-        <translation>Unbekannte API Funktion</translation>
+        <translation type="obsolete">Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1071"/>
         <source>Archive not available</source>
-        <translation>Archiv nicht verfügbar</translation>
+        <translation type="obsolete">Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1072"/>
         <source>Missing parameter (place)</source>
-        <translation>Fehlender Parameter (place)</translation>
+        <translation type="obsolete">Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1073"/>
         <source>Missing parameter (name)</source>
-        <translation>Fehlender Parameter (name)</translation>
+        <translation type="obsolete">Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1074"/>
         <source>Incorrect confirmation code</source>
-        <translation>Falscher Bestätigungscode</translation>
+        <translation type="obsolete">Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1075"/>
         <source>Current code is wrong</source>
-        <translation>Der aktuelle Code ist falsch</translation>
+        <translation type="obsolete">Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1076"/>
         <source>New code is wrong</source>
-        <translation>Neuer Code ist falsch</translation>
+        <translation type="obsolete">Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1077"/>
         <source>Missing parameter (val)</source>
-        <translation>Fehlender Parameter (val)</translation>
+        <translation type="obsolete">Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1078"/>
         <source>Value not allowed</source>
-        <translation>Wert nicht zulässig</translation>
+        <translation type="obsolete">Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1079"/>
         <source>Missing parameter</source>
-        <translation>Fehlende(r) Parameter</translation>
+        <translation type="obsolete">Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1080"/>
         <source>Missing parameter (id)</source>
-        <translation>Fehlender Parameter (id)</translation>
+        <translation type="obsolete">Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1081"/>
         <source>Missing parameter (fileid)</source>
-        <translation>Fehlender Parameter (fileid)</translation>
+        <translation type="obsolete">Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1082"/>
         <source>Missing parameter (type)</source>
-        <translation>Fehlender Parameter (type)</translation>
+        <translation type="obsolete">Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1083"/>
         <source>Missing parameter (query)</source>
-        <translation>Fehlender Parameter (query)</translation>
+        <translation type="obsolete">Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1084"/>
         <source>Bitrate not available</source>
-        <translation>Bitrate nicht verfügbar</translation>
+        <translation type="obsolete">Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1085"/>
         <source>Service not available</source>
-        <translation>Service nicht verfügbar</translation>
+        <translation type="obsolete">Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1086"/>
         <source>Query limit exceeded</source>
-        <translation>Query-Limit überschritten</translation>
+        <translation type="obsolete">Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1087"/>
         <source>Rule already exists</source>
-        <translation>Die Regel existiert bereits</translation>
+        <translation type="obsolete">Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1088"/>
-        <location filename="cnovoeclient.cpp" line="1089"/>
         <source>Missing parameter (cmd)</source>
-        <translation>Fehlender Parameter (cmd)</translation>
+        <translation type="obsolete">Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1090"/>
         <source>Bad value (rate)</source>
-        <translation>Falscher Wert für Einstufung</translation>
+        <translation type="obsolete">Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1091"/>
         <source>Can&apos;t find film</source>
-        <translation>Film nicht gefunden</translation>
+        <translation type="obsolete">Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1092"/>
         <source>Film already added</source>
-        <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
+        <translation type="obsolete">Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
 </context>
 <context>
     <name>CNovoeParser</name>
     <message>
-        <location filename="cnovoeparser.cpp" line="79"/>
-        <location filename="cnovoeparser.cpp" line="178"/>
-        <location filename="cnovoeparser.cpp" line="235"/>
-        <location filename="cnovoeparser.cpp" line="294"/>
-        <location filename="cnovoeparser.cpp" line="374"/>
-        <location filename="cnovoeparser.cpp" line="440"/>
-        <location filename="cnovoeparser.cpp" line="539"/>
         <source>Error in %1</source>
-        <translation>Fehler in %1</translation>
-    </message>
-    <message>
-        <location filename="cnovoeparser.cpp" line="80"/>
-        <location filename="cnovoeparser.cpp" line="179"/>
-        <location filename="cnovoeparser.cpp" line="236"/>
-        <location filename="cnovoeparser.cpp" line="295"/>
-        <location filename="cnovoeparser.cpp" line="375"/>
-        <location filename="cnovoeparser.cpp" line="441"/>
-        <location filename="cnovoeparser.cpp" line="540"/>
-        <source>QtJson parser error in %1 %2():%3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeparser.cpp" line="523"/>
-        <source>Update Entries for channel %1:
-</source>
-        <translation></translation>
+        <translation type="obsolete">Fehler in %1</translation>
     </message>
 </context>
 <context>
     <name>CPlayer</name>
     <message>
-        <location filename="cplayer.cpp" line="368"/>
+        <location filename="cplayer.cpp" line="378"/>
         <source>Create libVLC with following global options:
  %1</source>
         <oldsource>Create libVLC with following global options:
@@ -889,34 +670,34 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="431"/>
+        <location filename="cplayer.cpp" line="441"/>
         <source>Error: Can&apos;t create media list!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="678"/>
-        <location filename="cplayer.cpp" line="698"/>
-        <location filename="cplayer.cpp" line="713"/>
-        <location filename="cplayer.cpp" line="717"/>
-        <location filename="cplayer.cpp" line="725"/>
-        <location filename="cplayer.cpp" line="739"/>
-        <location filename="cplayer.cpp" line="757"/>
-        <location filename="cplayer.cpp" line="764"/>
-        <location filename="cplayer.cpp" line="770"/>
-        <location filename="cplayer.cpp" line="826"/>
-        <location filename="cplayer.cpp" line="830"/>
-        <location filename="cplayer.cpp" line="846"/>
+        <location filename="cplayer.cpp" line="688"/>
+        <location filename="cplayer.cpp" line="708"/>
+        <location filename="cplayer.cpp" line="723"/>
+        <location filename="cplayer.cpp" line="727"/>
+        <location filename="cplayer.cpp" line="736"/>
+        <location filename="cplayer.cpp" line="751"/>
+        <location filename="cplayer.cpp" line="769"/>
+        <location filename="cplayer.cpp" line="776"/>
+        <location filename="cplayer.cpp" line="782"/>
+        <location filename="cplayer.cpp" line="838"/>
+        <location filename="cplayer.cpp" line="842"/>
+        <location filename="cplayer.cpp" line="858"/>
         <source>Add MRL Option: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="704"/>
-        <location filename="cplayer.cpp" line="852"/>
+        <location filename="cplayer.cpp" line="714"/>
+        <location filename="cplayer.cpp" line="864"/>
         <source>Add MRL Option: :http_proxy_pwd=******</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="822"/>
+        <location filename="cplayer.cpp" line="834"/>
         <source>Prepend Ad (Url):
   --&gt; %1</source>
         <oldsource>Show Ad:
@@ -924,64 +705,74 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1875"/>
+        <location filename="cplayer.cpp" line="1892"/>
         <source>Error: Can&apos;t delete media item from media list!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="788"/>
+        <location filename="cplayer.cpp" line="800"/>
         <source>Can&apos;t create media description ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="673"/>
+        <location filename="cplayer.cpp" line="41"/>
+        <source>Start NO-SLEEP-MODE: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cplayer.cpp" line="42"/>
+        <source>End NO-SLEEP-MODE: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cplayer.cpp" line="683"/>
         <source>Media successfully created from MRL:
  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1112"/>
+        <location filename="cplayer.cpp" line="1129"/>
         <source>Unknown Event No. %1 received ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1142"/>
+        <location filename="cplayer.cpp" line="1159"/>
         <source>Aspect ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1166"/>
+        <location filename="cplayer.cpp" line="1183"/>
         <source>Crop ratio: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1489"/>
+        <location filename="cplayer.cpp" line="1506"/>
         <source>Ignore slightly slider position change...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="1579"/>
+        <location filename="cplayer.cpp" line="1596"/>
         <source>Film length: %1ms.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2060"/>
+        <location filename="cplayer.cpp" line="2077"/>
         <source>Scan for Audio tracks:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2079"/>
+        <location filename="cplayer.cpp" line="2096"/>
         <source>-&gt; Audio track %1 %2%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2123"/>
+        <location filename="cplayer.cpp" line="2140"/>
         <source>%1 %2 deinterlace</source>
         <oldsource>%1 deinterlace</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cplayer.cpp" line="2160"/>
+        <location filename="cplayer.cpp" line="2177"/>
         <source>Change audio track to id %1 (idx %2): %3!</source>
         <oldsource>Change audio track to id %1 /idx %2: %3!</oldsource>
         <translation></translation>
@@ -2685,6 +2476,363 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="forms/qseccodedlg.ui" line="27"/>
         <source>Please enter your parent code:</source>
         <translation>Bitte geben Sie Ihren Eltern-Code ein:</translation>
+    </message>
+</context>
+<context>
+    <name>QStalkerClient</name>
+    <message>
+        <location filename="qstalkerclient.cpp" line="85"/>
+        <source>Response for request &apos;%1&apos;:
+ ==8&lt;==8&lt;==8&lt;==
+%2
+ ==&gt;8==&gt;8==&gt;8==</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="99"/>
+        <source>Request &apos;%2&apos; done!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="336"/>
+        <source>We&apos;ve got following Cookie: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="372"/>
+        <source>URL: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="376"/>
+        <source>Raw Header #%1: %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="396"/>
+        <source>Logout ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="415"/>
+        <source>Request Authentication ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="438"/>
+        <source>Request Channel List ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="465"/>
+        <source>Request available VOD languages ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="485"/>
+        <source>Request Stream Server List ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="505"/>
+        <source>Request Time Shift ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="525"/>
+        <source>Set TimeShift to %1 hour(s) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="546"/>
+        <source>Request Bit Rate ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="566"/>
+        <source>Set BitRate to %1 kbit/s ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="587"/>
+        <source>Request URL for channel %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="615"/>
+        <source>Set Streaming Server to %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="636"/>
+        <source>Set Http Buffer to %1 msec. ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="657"/>
+        <source>Request EPG for Channel %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="680"/>
+        <source>Request Archiv URL ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="707"/>
+        <source>Request VOD Genres ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="727"/>
+        <source>Request Videos ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="747"/>
+        <source>Request Video info for video %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="774"/>
+        <source>Request Video Url for video %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="802"/>
+        <source>Hide channel(s) %1 from channel list ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="825"/>
+        <source>Show channel(s) %1 in channel list ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="848"/>
+        <source>Request VOD manager data ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="871"/>
+        <source>Set VOD manager data (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="894"/>
+        <source>Add VOD favourite (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="921"/>
+        <source>Remove VOD favourite (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="948"/>
+        <source>Get VOD favourites (%1) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="967"/>
+        <source>Change parent code ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="990"/>
+        <source>EPG current for Channels: %1 ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1009"/>
+        <source>Check for available updates ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1027"/>
+        <source>Download image ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1123"/>
+        <source>Unknown error</source>
+        <translation type="unfinished">Unbekannter Fehler</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1124"/>
+        <source>Incorrect request</source>
+        <translation type="unfinished">Falsche Anfrage</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1125"/>
+        <source>Wrong login or password</source>
+        <translation type="unfinished">Falsche Login-Daten</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1126"/>
+        <source>Access denied</source>
+        <translation type="unfinished">Zugriff verboten</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1127"/>
+        <source>Login incorrect</source>
+        <translation type="unfinished">Falscher Login</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1128"/>
+        <source>Your contract is inactive</source>
+        <translation type="unfinished">Ihr Vertrag ist nicht aktiv</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1129"/>
+        <source>Your contract is paused</source>
+        <translation type="unfinished">Ihr Vertrag pausiert</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1130"/>
+        <source>Channel not found or not allowed</source>
+        <translation type="unfinished">Kanal nicht gefunden oder nicht erlaubt</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1131"/>
+        <source>Error in request: Bad parameters</source>
+        <translation type="unfinished">Fehler in der Anfrage: Falsche(r) Parameter</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1132"/>
+        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
+        <translation type="unfinished">Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1133"/>
+        <source>Missing parameter (cid)</source>
+        <translation type="unfinished">Fehlender Parameter (cid)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1134"/>
+        <source>Another client with your data logged in</source>
+        <translation type="unfinished">Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1135"/>
+        <source>Authentication error</source>
+        <translation type="unfinished">Authentifizierungsfehler</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1136"/>
+        <source>Your package expired</source>
+        <translation type="unfinished">Ihr Paket ist abgelaufen</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1137"/>
+        <source>Unknown API function</source>
+        <translation type="unfinished">Unbekannte API Funktion</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1138"/>
+        <source>Archive not available</source>
+        <translation type="unfinished">Archiv nicht verfügbar</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1139"/>
+        <source>Missing parameter (place)</source>
+        <translation type="unfinished">Fehlender Parameter (place)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1140"/>
+        <source>Missing parameter (name)</source>
+        <translation type="unfinished">Fehlender Parameter (name)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1141"/>
+        <source>Incorrect confirmation code</source>
+        <translation type="unfinished">Falscher Bestätigungscode</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1142"/>
+        <source>Current code is wrong</source>
+        <translation type="unfinished">Der aktuelle Code ist falsch</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1143"/>
+        <source>New code is wrong</source>
+        <translation type="unfinished">Neuer Code ist falsch</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1144"/>
+        <source>Missing parameter (val)</source>
+        <translation type="unfinished">Fehlender Parameter (val)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1145"/>
+        <source>Value not allowed</source>
+        <translation type="unfinished">Wert nicht zulässig</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1146"/>
+        <source>Missing parameter</source>
+        <translation type="unfinished">Fehlende(r) Parameter</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1147"/>
+        <source>Missing parameter (id)</source>
+        <translation type="unfinished">Fehlender Parameter (id)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1148"/>
+        <source>Missing parameter (fileid)</source>
+        <translation type="unfinished">Fehlender Parameter (fileid)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1149"/>
+        <source>Missing parameter (type)</source>
+        <translation type="unfinished">Fehlender Parameter (type)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1150"/>
+        <source>Missing parameter (query)</source>
+        <translation type="unfinished">Fehlender Parameter (query)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1151"/>
+        <source>Bitrate not available</source>
+        <translation type="unfinished">Bitrate nicht verfügbar</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1152"/>
+        <source>Service not available</source>
+        <translation type="unfinished">Service nicht verfügbar</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1153"/>
+        <source>Query limit exceeded</source>
+        <translation type="unfinished">Query-Limit überschritten</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1154"/>
+        <source>Rule already exists</source>
+        <translation type="unfinished">Die Regel existiert bereits</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1155"/>
+        <location filename="qstalkerclient.cpp" line="1156"/>
+        <source>Missing parameter (cmd)</source>
+        <translation type="unfinished">Fehlender Parameter (cmd)</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1157"/>
+        <source>Bad value (rate)</source>
+        <translation type="unfinished">Falscher Wert für Einstufung</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1158"/>
+        <source>Can&apos;t find film</source>
+        <translation type="unfinished">Film nicht gefunden</translation>
+    </message>
+    <message>
+        <location filename="qstalkerclient.cpp" line="1159"/>
+        <source>Film already added</source>
+        <translation type="unfinished">Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
 </context>
 <context>

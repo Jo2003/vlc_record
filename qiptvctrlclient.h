@@ -129,8 +129,8 @@ private:
 #endif
 
 protected:
-   QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
-   QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
+   virtual QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
+   virtual QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
    void workOffQueue ();
 
 signals:
