@@ -93,7 +93,7 @@ public:
     void  SaveFavourites (const QList<int> &favList);
     QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<cparser::SSrv>& vSrvList, const QString& sActSrv);
-    void  SetBitrateCbx (const QVector<int>& vValues, int iActrate);
+    void  SetBitrateCbx (const cparser::QBitratesMap& mBitRates, int iActrate);
     void  SaveCookie (const QString &str);
     bool  DisableSplashScreen ();
     int   GetBitRate ();

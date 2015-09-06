@@ -76,6 +76,11 @@ void QStrStandardDlg::setStrStdData(const cparser::QStrStdMap &data, const QStri
         {
             cidx  = idx;
             descr = cit.value().sDescr;
+
+            if (cit.value().bDefault)
+            {
+                descr += QString(" %1").arg(tr("This is the default setting."));
+            }
         }
 
         idx++;
@@ -165,9 +170,18 @@ QString QStrStandardDlg::getCurrName()
 void QStrStandardDlg::on_listStrStandards_itemSelectionChanged()
 {
     QString key = getCurrVal();
+    QString content;
+    cparser::QStrStdMap::ConstIterator cit;
 
-    if (!key.isEmpty() && !mStrStdMap.isEmpty())
+    if (!key.isEmpty() && ((cit = mStrStdMap.find(key)) != mStrStdMap.constEnd()))
     {
-        ui->txtStrStdDescr->setPlainText(mStrStdMap.value(key).sDescr);
+        content = cit.value().sDescr;
+
+        if (cit.value().bDefault)
+        {
+            content += QString(" %1").arg(tr("This is the default setting."));
+        }
+
+        ui->txtStrStdDescr->setPlainText(content);
     }
 }

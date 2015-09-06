@@ -1674,32 +1674,30 @@ p, li { white-space: pre-wrap; }
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="946"/>
+        <location filename="csettingsdlg.cpp" line="921"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;%2&apos;!</source>
         <oldsource>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;&apos;%2&apos;!</oldsource>
         <translation>Архив канала &apos;%1&apos; не доступен в битрейте &apos;%2&apos;!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="949"/>
+        <location filename="csettingsdlg.cpp" line="924"/>
         <source>Following bitrates are available:</source>
         <translation>Доступные битрейты:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="958"/>
+        <location filename="csettingsdlg.cpp" line="933"/>
         <source>Do you want to activate the new bitrate? The player will switch to &apos;Live&apos; then.</source>
         <translation>Хотите ли Вы, активировать новый битрейт? Проигрыватель будет переключен в живой режим.</translation>
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="414"/>
-        <location filename="csettingsdlg.cpp" line="786"/>
-        <location filename="csettingsdlg.cpp" line="921"/>
+        <location filename="csettingsdlg.cpp" line="896"/>
         <source>Mobile</source>
         <translation>Мобильный</translation>
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="415"/>
-        <location filename="csettingsdlg.cpp" line="790"/>
-        <location filename="csettingsdlg.cpp" line="922"/>
+        <location filename="csettingsdlg.cpp" line="897"/>
         <source>Eco</source>
         <translation>Эко</translation>
     </message>
@@ -1707,47 +1705,44 @@ p, li { white-space: pre-wrap; }
         <location filename="forms/csettingsdlg.ui" line="156"/>
         <location filename="forms/csettingsdlg.ui" line="175"/>
         <location filename="csettingsdlg.cpp" line="416"/>
-        <location filename="csettingsdlg.cpp" line="794"/>
-        <location filename="csettingsdlg.cpp" line="923"/>
+        <location filename="csettingsdlg.cpp" line="898"/>
         <source>Standard</source>
         <translation>Стандарт</translation>
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="417"/>
-        <location filename="csettingsdlg.cpp" line="798"/>
-        <location filename="csettingsdlg.cpp" line="924"/>
+        <location filename="csettingsdlg.cpp" line="899"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="802"/>
         <source>%1 Kbit/s</source>
         <oldsource>Bitrate: %1Kbit/s</oldsource>
-        <translation>%1 Кбит/с</translation>
+        <translation type="obsolete">%1 Кбит/с</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1655"/>
+        <location filename="csettingsdlg.cpp" line="1630"/>
         <source>blood</source>
         <translation>кровь</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1656"/>
+        <location filename="csettingsdlg.cpp" line="1631"/>
         <source>violence</source>
         <translation>насилие</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1659"/>
+        <location filename="csettingsdlg.cpp" line="1634"/>
         <source>porn</source>
         <translation>порнография</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1660"/>
+        <location filename="csettingsdlg.cpp" line="1635"/>
         <source>horror</source>
         <translation>ужасы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1657"/>
-        <location filename="csettingsdlg.cpp" line="1658"/>
+        <location filename="csettingsdlg.cpp" line="1632"/>
+        <location filename="csettingsdlg.cpp" line="1633"/>
         <source>obscene</source>
         <translation>непристойности</translation>
     </message>
@@ -1762,32 +1757,32 @@ p, li { white-space: pre-wrap; }
         <translation>Архив канала &apos;%1&apos; не доступен в комбинации: Битрейт (%2) и задержка (%3)!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1692"/>
+        <location filename="csettingsdlg.cpp" line="1667"/>
         <source>hide</source>
         <translation>скрывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1693"/>
+        <location filename="csettingsdlg.cpp" line="1668"/>
         <source>show</source>
         <translation>показывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1694"/>
+        <location filename="csettingsdlg.cpp" line="1669"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1886"/>
+        <location filename="csettingsdlg.cpp" line="1861"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1965"/>
+        <location filename="csettingsdlg.cpp" line="1940"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1966"/>
+        <location filename="csettingsdlg.cpp" line="1941"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1820,14 +1815,14 @@ To change the parent code make sure:
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="443"/>
-        <location filename="csettingsdlg.cpp" line="960"/>
-        <location filename="csettingsdlg.cpp" line="2017"/>
+        <location filename="csettingsdlg.cpp" line="935"/>
+        <location filename="csettingsdlg.cpp" line="1992"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2017"/>
-        <location filename="csettingsdlg.cpp" line="2018"/>
+        <location filename="csettingsdlg.cpp" line="1992"/>
+        <location filename="csettingsdlg.cpp" line="1993"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>
@@ -2239,39 +2234,41 @@ To change the parent code make sure:
     <name>CStdJsonParser</name>
     <message>
         <location filename="cstdjsonparser.cpp" line="119"/>
-        <location filename="cstdjsonparser.cpp" line="175"/>
-        <location filename="cstdjsonparser.cpp" line="232"/>
-        <location filename="cstdjsonparser.cpp" line="284"/>
-        <location filename="cstdjsonparser.cpp" line="332"/>
-        <location filename="cstdjsonparser.cpp" line="392"/>
-        <location filename="cstdjsonparser.cpp" line="441"/>
-        <location filename="cstdjsonparser.cpp" line="501"/>
-        <location filename="cstdjsonparser.cpp" line="588"/>
-        <location filename="cstdjsonparser.cpp" line="657"/>
-        <location filename="cstdjsonparser.cpp" line="706"/>
-        <location filename="cstdjsonparser.cpp" line="748"/>
+        <location filename="cstdjsonparser.cpp" line="183"/>
+        <location filename="cstdjsonparser.cpp" line="240"/>
+        <location filename="cstdjsonparser.cpp" line="292"/>
+        <location filename="cstdjsonparser.cpp" line="340"/>
+        <location filename="cstdjsonparser.cpp" line="400"/>
+        <location filename="cstdjsonparser.cpp" line="449"/>
+        <location filename="cstdjsonparser.cpp" line="509"/>
+        <location filename="cstdjsonparser.cpp" line="596"/>
+        <location filename="cstdjsonparser.cpp" line="665"/>
+        <location filename="cstdjsonparser.cpp" line="714"/>
+        <location filename="cstdjsonparser.cpp" line="767"/>
         <location filename="cstdjsonparser.cpp" line="809"/>
-        <location filename="cstdjsonparser.cpp" line="887"/>
-        <location filename="cstdjsonparser.cpp" line="961"/>
+        <location filename="cstdjsonparser.cpp" line="870"/>
+        <location filename="cstdjsonparser.cpp" line="948"/>
+        <location filename="cstdjsonparser.cpp" line="1022"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
         <location filename="cstdjsonparser.cpp" line="120"/>
-        <location filename="cstdjsonparser.cpp" line="176"/>
-        <location filename="cstdjsonparser.cpp" line="233"/>
-        <location filename="cstdjsonparser.cpp" line="285"/>
-        <location filename="cstdjsonparser.cpp" line="333"/>
-        <location filename="cstdjsonparser.cpp" line="393"/>
-        <location filename="cstdjsonparser.cpp" line="442"/>
-        <location filename="cstdjsonparser.cpp" line="502"/>
-        <location filename="cstdjsonparser.cpp" line="589"/>
-        <location filename="cstdjsonparser.cpp" line="658"/>
-        <location filename="cstdjsonparser.cpp" line="707"/>
-        <location filename="cstdjsonparser.cpp" line="749"/>
+        <location filename="cstdjsonparser.cpp" line="184"/>
+        <location filename="cstdjsonparser.cpp" line="241"/>
+        <location filename="cstdjsonparser.cpp" line="293"/>
+        <location filename="cstdjsonparser.cpp" line="341"/>
+        <location filename="cstdjsonparser.cpp" line="401"/>
+        <location filename="cstdjsonparser.cpp" line="450"/>
+        <location filename="cstdjsonparser.cpp" line="510"/>
+        <location filename="cstdjsonparser.cpp" line="597"/>
+        <location filename="cstdjsonparser.cpp" line="666"/>
+        <location filename="cstdjsonparser.cpp" line="715"/>
+        <location filename="cstdjsonparser.cpp" line="768"/>
         <location filename="cstdjsonparser.cpp" line="810"/>
-        <location filename="cstdjsonparser.cpp" line="888"/>
-        <location filename="cstdjsonparser.cpp" line="962"/>
+        <location filename="cstdjsonparser.cpp" line="871"/>
+        <location filename="cstdjsonparser.cpp" line="949"/>
+        <location filename="cstdjsonparser.cpp" line="1023"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
@@ -3619,7 +3616,14 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstrstandarddlg.cpp" line="149"/>
+        <location filename="qstrstandarddlg.cpp" line="82"/>
+        <location filename="qstrstandarddlg.cpp" line="182"/>
+        <source>This is the default setting.</source>
+        <oldsource>This is the default.</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstrstandarddlg.cpp" line="154"/>
         <source>N/A</source>
         <translation type="unfinished"></translation>
     </message>

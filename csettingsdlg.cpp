@@ -758,59 +758,34 @@ void CSettingsDlg::SetStreamServerCbx (const QVector<cparser::SSrv> &vSrvList, c
 |  Author: Jo2003
 |  Description: fill / mark combobox for bitrate
 |
-|  Parameters: ref. to bitrate vector, act bitrate
+|  Parameters: ref. to bitrate map, act bitrate
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
+void CSettingsDlg::SetBitrateCbx (const cparser::QBitratesMap &mBitRates, int iActrate)
 {
    int iActIdx = 0;
    int iCount  = 0;
-   QVector<int>::const_iterator cit;
-   QString sName;
+   cparser::QBitratesMap::const_iterator cit;
 
    // backup bitrate ...
    m_iServerBitrate = iActrate;
 
-   if (!vValues.isEmpty())
+   if (!mBitRates.isEmpty())
    {
       m_ui->cbxBitRate->clear();
 
       // add all available bitrates ...
-      for (cit = vValues.constBegin(); cit != vValues.constEnd(); cit++)
+      for (cit = mBitRates.constBegin(); cit != mBitRates.constEnd(); cit++)
       {
-         // build name ...
-         switch (*cit)
-         {
-         case 320:
-            sName = tr("Mobile");
-            break;
+          m_ui->cbxBitRate->addItem(cit.value(), cit.key());
 
-         case 900:
-            sName = tr("Eco");
-            break;
+          if (cit.key() == iActrate)
+          {
+              iActIdx = iCount;
+          }
 
-         case 1500:
-            sName = tr("Standard");
-            break;
-
-         case 2500:
-            sName = tr("Premium");
-            break;
-
-         default:
-            sName = tr("%1 Kbit/s").arg(*cit);
-            break;
-         }
-
-         m_ui->cbxBitRate->addItem(sName, QVariant(*cit));
-
-         if (*cit == iActrate)
-         {
-            iActIdx = iCount;
-         }
-
-         iCount ++;
+          iCount ++;
       }
 
       // mark active rate ...
@@ -818,7 +793,7 @@ void CSettingsDlg::SetBitrateCbx (const QVector<int>& vValues, int iActrate)
    }
 
    // make sure the box isn't touched if there is only one entry ...
-   if (vValues.count() < 2)
+   if (mBitRates.count() < 2)
    {
       m_ui->cbxBitRate->setDisabled(true);
    }

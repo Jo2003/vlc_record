@@ -170,10 +170,14 @@ namespace cparser
    struct StrStdDescr {
        QString sName;
        QString sDescr;
+       bool    bDefault;
    };
 
    /// \brief define type for stream standards
    typedef QMap<QString, StrStdDescr> QStrStdMap;
+
+   /// \brief define type for bit rates
+   typedef QMap<int, QString> QBitratesMap;
 }
 
 // make life easier ...

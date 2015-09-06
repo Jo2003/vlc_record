@@ -41,6 +41,7 @@ public:
    virtual int parseStrStd(const QString &sResp, cparser::QStrStdMap& strStdMap, QString& curr);
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    virtual int parseSetting(const QString& sResp, const QString &sName, QVector<int>& vValues, int& iActVal);
+   virtual int parseBitrates(const QString& sResp, cparser::QBitratesMap& mRates, int& iActVal);
    virtual int parseSServersLogin (const QString& sResp, QVector<cparser::SSrv>& vSrv, QString& sActIp);
    virtual int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
    virtual int parseUrl (const QString& sResp, QString& sUrl);

@@ -2257,11 +2257,11 @@ void Recorder::slotCookie (const QString &str)
       tmSync.setTimeShift(Settings.getTimeShift());
 
       // bitrate
-      values.clear();
+      cparser::QBitratesMap mBitRates;
       actVal = -1;
-      if (!pApiParser->parseSetting(str, "bitrate", values, actVal))
+      if (!pApiParser->parseBitrates(str, mBitRates, actVal))
       {
-         Settings.SetBitrateCbx(values, actVal);
+         Settings.SetBitrateCbx(mBitRates, actVal);
          mInfo (tr("Using Bitrate %1 kbit/s ...").arg(actVal));
       }
 

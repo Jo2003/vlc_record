@@ -165,8 +165,16 @@ int CStdJsonParser::parseStrStd(const QString &sResp, cparser::QStrStdMap &strSt
        {
           QVariantMap mSrv = lSrv.toMap();
 
-          ssDescr.sName  = mSrv.value("title").toString();
-          ssDescr.sDescr = mSrv.value("description").toString();
+          ssDescr.sName    = mSrv.value("title").toString();
+          ssDescr.sDescr   = mSrv.value("description").toString();
+          ssDescr.bDefault = false;
+
+          // check for default ...
+          if (mSrv.contains("default"))
+          {
+              ssDescr.bDefault = mSrv.value("default").toBool();
+          }
+
           strStdMap[mSrv.value("value").toString()] = ssDescr;
        }
     }
@@ -711,6 +719,59 @@ int CStdJsonParser::parseSetting(const QString& sResp, const QString &sName, QVe
    }
 
    return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   new bitrate parser, takes care of names
+//
+//! \author  Jo2003
+//! \date    06.09.2015
+//
+//! \param   sResp [in] (const QString &) ref. to response string
+//! \param   mRates [out] (cparser::QBitratesMap&) ref. to bitrates map
+//! \param   iActVal [out] (int&) current value
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int CStdJsonParser::parseBitrates(const QString &sResp, cparser::QBitratesMap &mRates, int &iActVal)
+{
+    QVector<int> vRates;
+    bool         bOk = false;
+    QVariantMap  contentMap = QtJson::parse(sResp, bOk).toMap();
+    int          iRet = 0;
+
+    if (bOk)
+    {
+        contentMap = contentMap.value("settings").toMap();
+        contentMap = contentMap.value("bitrate").toMap();
+        iActVal    = contentMap.value("value").toInt();
+
+        foreach (const QVariant& val, contentMap.value("list").toList())
+        {
+           vRates.append(val.toInt());
+        }
+
+        foreach (const QVariant& val, contentMap.value("names").toList())
+        {
+            QVariantMap pairs = val.toMap();
+
+            if (vRates.contains(pairs.value("val").toInt()))
+            {
+                mRates[pairs.value("val").toInt()] = pairs.value("title").toString();
+            }
+        }
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                      tr("QtJson parser error in %1 %2():%3")
+                      .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRet = -1;
+    }
+
+    return iRet;
 }
 
 //---------------------------------------------------------------------------
