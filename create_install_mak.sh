@@ -34,6 +34,10 @@ case ${NAME} in
       OFFNAME="Sunduk.TV"
       SSERVER=$OFFNAME
       ;;
+   stalker)
+      OFFNAME="Stalker.TV"
+      SSERVER=$OFFNAME
+      ;;
    *)
       OFFNAME=${NAME}
       ;;

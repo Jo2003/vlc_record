@@ -352,10 +352,13 @@ void QStalkerClient::SetCookie(const QString &cookie)
 //---------------------------------------------------------------------------
 QNetworkRequest &QStalkerClient::prepareRequest(QNetworkRequest &req, const QString &url, int iSize)
 {
-    // QIptvCtrlClient::prepareRequest(req, url, iSize);
+    QIptvCtrlClient::prepareRequest(req, url, iSize);
 
+    /*
     // set request url ...
     req.setUrl(QUrl(url));
+
+    req.setRawHeader("User-Agent", "curl/7.22.0 (i686-pc-linux-gnu) libcurl/7.22.0 OpenSSL/1.0.1 zlib/1.2.3.4 libidn/1.23 librtmp/2.3");
 
     // set content type ...
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -365,8 +368,12 @@ QNetworkRequest &QStalkerClient::prepareRequest(QNetworkRequest &req, const QStr
     {
        req.setHeader(QNetworkRequest::ContentLengthHeader, iSize);
     }
-    req.setRawHeader("Accept", "application/json");
-    req.setRawHeader("Accept-Language", "ru-Ru");
+    // req.setRawHeader("Accept", "*\/*");
+    // req.setRawHeader("Accept-Language", "ru-Ru");
+    */
+
+    /// \todo We might need to use the accept and language header
+    ///       outside of authentication.
 
 #ifdef __TRACE
     mInfo(tr("URL: %1").arg(req.url().toString()));
@@ -414,7 +421,7 @@ void QStalkerClient::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "token",
+   q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "auth/token",
         QString("grant_type=password&username=%1&password=%2")
             .arg(sUsr).arg(sPw),
         Iptv::Login);
