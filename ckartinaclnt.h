@@ -55,6 +55,7 @@ protected:
    virtual void GetStreamURL (int iChanID, const QString &secCode, bool bTimerRec = false);
    virtual void GetArchivURL (const QString &prepared, const QString &secCode);
    virtual void GetVodUrl (int iVidId, const QString &secCode);
+   virtual void autoStrSrv ();
    void GetVodGenres ();
    void SetServer (const QString& sIp);
    void GetServer ();

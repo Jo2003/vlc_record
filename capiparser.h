@@ -52,6 +52,7 @@ public:
    virtual int parseUpdInfo(const QString& sResp, cparser::SUpdInfo &updInfo);
    virtual int handleTsStuff(QVector<cparser::SChan> &chanList, int bitRate);
    virtual int parseVodLang(const QString &sResp, QVodLangMap &lMap);
+   virtual int parseAutoStreamServer(const QString &sResp, QString& ip);
 
 protected:
    virtual void checkTimeOffSet (const uint &uiSrvTime);

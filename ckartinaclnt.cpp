@@ -196,6 +196,7 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
       case CIptvDefs::REQ_LOGOUT:
       case CIptvDefs::REQ_UPDATE_CHECK:
       case CIptvDefs::REQ_STATS_SERVICE:
+      case CIptvDefs::REQ_AUTO_STR_SRV:
          break;
       default:
          iRet = -1;
@@ -311,6 +312,9 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          break;
       case CIptvDefs::REQ_STRSTD:
           setStrStd(par_1.toString());
+          break;
+      case CIptvDefs::REQ_AUTO_STR_SRV:
+          autoStrSrv();
           break;
       default:
          iRet = -1;
@@ -795,6 +799,21 @@ void CKartinaClnt::GetVodUrl(int iVidId, const QString &secCode)
    }
 
    q_get((int)CIptvDefs::REQ_GETVODURL, sApiUrl + req);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   request auto stream server
+//
+//! \author  Jo2003
+//! \date    14.09.2015
+//
+//---------------------------------------------------------------------------
+void CKartinaClnt::autoStrSrv()
+{
+    mInfo(tr("Request auto stream server ..."));
+    q_get((int)CIptvDefs::REQ_AUTO_STR_SRV,
+          "http://speedtest-auto.kartina.tv:18000/speedtest/api/?act=get");
 }
 
 /*-----------------------------------------------------------------------------\

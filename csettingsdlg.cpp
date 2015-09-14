@@ -227,6 +227,15 @@ void CSettingsDlg::readSettings()
    m_ui->checkDetach->setCheckState((Qt::CheckState)pDb->intValue("DetachPlayer"));
    m_ui->checkAdvanced->setCheckState((Qt::CheckState)pDb->intValue("AdvSet"));
    m_ui->checkGPUAcc->setCheckState((Qt::CheckState)pDb->intValue("GPUAcc"));
+   m_ui->chkStrSrvAuto->setCheckState((Qt::CheckState)pDb->intValue("AutoStrSrv", &iErr));
+
+   // value doesn't exist in database ...
+   if (iErr)
+   {
+      // enable by default ...
+      m_ui->chkStrSrvAuto->setCheckState(Qt::Checked);
+   }
+
    m_ui->checkAds->setCheckState((Qt::CheckState)pDb->intValue("AdsEnabled", &iErr));
 
    // value doesn't exist in database ...
@@ -616,6 +625,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
    pDb->setValue("ExtEPG", (int)m_ui->checkExtEPG->checkState());
+   pDb->setValue("AutoStrSrv", (int)m_ui->chkStrSrvAuto->checkState());
 
 #ifndef _HAS_VOD_MANAGER
    /////////////////////////////////////////////////////////////////////////////
@@ -742,7 +752,7 @@ void CSettingsDlg::SetStreamServerCbx (const QVector<cparser::SSrv> &vSrvList, c
    }
 
    // make sure the box isn't touched if there is only one entry ...
-   if (vSrvList.count() < 2)
+   if ((vSrvList.count() < 2) || m_ui->chkStrSrvAuto->isChecked())
    {
       m_ui->cbxStreamServer->setDisabled(true);
    }
@@ -1425,7 +1435,12 @@ bool CSettingsDlg::showAds()
 
 bool CSettingsDlg::extEpg()
 {
-   return m_ui->checkExtEPG->isChecked();
+    return m_ui->checkExtEPG->isChecked();
+}
+
+bool CSettingsDlg::autoStrSrv()
+{
+    return m_ui->chkStrSrvAuto->isChecked();
 }
 
 uint CSettingsDlg::libVlcVerboseLevel()
@@ -2228,6 +2243,28 @@ void CSettingsDlg::setStrStdData(const cparser::QStrStdMap &data, const QString 
 
 //---------------------------------------------------------------------------
 //
+//! \brief   set stream server to value in GUI, emit signal
+//
+//! \author  Jo2003
+//! \date    14.09.2015
+//
+//! \param   curr [in] (const QString&) auto stream server
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::autoSetStreamServer(const QString &curr)
+{
+    int idx = m_ui->cbxStreamServer->findData(curr);
+
+    if (idx != -1)
+    {
+        m_ui->cbxStreamServer->setCurrentIndex(idx);
+        emit sigSetServer(curr);
+    }
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   font delta was changed -> tell about
 //
 //! \author  Jo2003
@@ -2275,6 +2312,19 @@ void CSettingsDlg::on_pushStrStd_clicked()
         // revert any change ...
         m_pStrStdDlg->setCurrName(m_ui->pushStrStd->text());
     }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   open speed test dialog
+//
+//! \author  Jo2003
+//! \date    14.09.2015
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::on_pushSpeedTest_clicked()
+{
+
 }
 
 /************************* History ***************************\

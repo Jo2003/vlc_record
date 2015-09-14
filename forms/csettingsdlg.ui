@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>494</width>
-    <height>483</height>
+    <width>476</width>
+    <height>456</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -135,37 +135,15 @@
            <property name="title">
             <string>Server Settings</string>
            </property>
-           <layout class="QFormLayout" name="formLayout_3">
-            <property name="fieldGrowthPolicy">
-             <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-            </property>
+           <layout class="QGridLayout" name="gridLayout_6">
             <item row="0" column="0">
-             <widget class="QLabel" name="labStreamServer">
-              <property name="text">
-               <string>Stream Server: </string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="cbxStreamServer">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>Standard</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item row="1" column="0">
              <widget class="QLabel" name="labBitRate">
               <property name="text">
                <string>Bitrate:</string>
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
+            <item row="0" column="1">
              <widget class="QComboBox" name="cbxBitRate">
               <property name="enabled">
                <bool>false</bool>
@@ -177,24 +155,24 @@
               </item>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="labBuffer">
               <property name="text">
                <string>Buffer (sec.):</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="1" column="1">
              <widget class="QComboBox" name="cbxBufferSeconds"/>
             </item>
-            <item row="3" column="0">
+            <item row="2" column="0">
              <widget class="QLabel" name="label_16">
               <property name="text">
                <string>Timeshift: </string>
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
+            <item row="2" column="1">
              <widget class="QComboBox" name="cbxTimeShift">
               <property name="enabled">
                <bool>false</bool>
@@ -216,6 +194,44 @@
                 <string>0</string>
                </property>
               </item>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2">
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Stream Server: </string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_5">
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="chkStrSrvAuto">
+                 <property name="text">
+                  <string>Auto</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QComboBox" name="cbxStreamServer">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Standard</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QPushButton" name="pushSpeedTest">
+                 <property name="text">
+                  <string>Speed Test</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
@@ -883,8 +899,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>98</width>
-                     <height>28</height>
+                     <width>16</width>
+                     <height>16</height>
                     </rect>
                    </property>
                   </widget>
@@ -1035,8 +1051,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>98</width>
-                     <height>264</height>
+                     <width>59</width>
+                     <height>498</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -1368,6 +1384,22 @@ color: red;
     <hint type="destinationlabel">
      <x>517</x>
      <y>463</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chkStrSrvAuto</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cbxStreamServer</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>342</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>173</x>
+     <y>342</y>
     </hint>
    </hints>
   </connection>

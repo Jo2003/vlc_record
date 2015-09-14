@@ -333,5 +333,31 @@ int CApiParser::parseVodLang(const QString &sResp, QVodLangMap &lMap)
    Q_UNUSED(sResp)
    Q_UNUSED(lMap)
 
-   return 0;
+    return 0;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse auto stream server response
+//
+//! \author  Jo2003
+//! \date    14.09.2015
+//
+//! \param   sResp [in] (const QString&) html response
+//! \param   ip [out] (QString&) auto stream server ip
+//
+//! \return  0 -> ok; -1 -> error
+//---------------------------------------------------------------------------
+int CApiParser::parseAutoStreamServer(const QString &sResp, QString &ip)
+{
+    int iRet = -1;
+    QRegExp rx("<ip>([^<]+)</ip>");
+
+    if (rx.indexIn(sResp) > -1)
+    {
+        iRet = 0;
+        ip = rx.cap(1);
+    }
+
+    return iRet;
 }

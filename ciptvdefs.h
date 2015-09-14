@@ -77,6 +77,7 @@ public:
       REQ_STATS_SERVICE,
       REQ_STATS_ONLY,
       REQ_STRSTD,
+      REQ_AUTO_STR_SRV,
       REQ_UNKNOWN = 255
    };
 

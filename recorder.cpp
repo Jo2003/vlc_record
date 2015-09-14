@@ -586,7 +586,14 @@ void Recorder::showEvent(QShowEvent *event)
       ulStartFlags |= FLAG_CONN_CHAIN;
 
       // start connection stuff in 0.5 seconds ...
-      QTimer::singleShot(500, this, SLOT(slotStartConnectionChain()));
+      if (Settings.autoStrSrv())
+      {
+          QTimer::singleShot(500, this, SLOT(slotReqStrSrvAuto()));
+      }
+      else
+      {
+          QTimer::singleShot(500, this, SLOT(slotStartConnectionChain()));
+      }
    }
 
    QWidget::showEvent(event);
@@ -1844,6 +1851,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_STATS_ONLY, slotTriggeredLogout());
 
    ///////////////////////////////////////////////
+   // response for auto stream server ...
+   mkCase(CIptvDefs::REQ_AUTO_STR_SRV, strSrvAuto(resp));
+
+   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
    mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
@@ -2274,6 +2285,12 @@ void Recorder::slotCookie (const QString &str)
          mInfo(tr("Active stream server is %1").arg(sActIp));
       }
 
+      // auto stream server ...
+      if (!m_StrSrvAuto.isEmpty() && (m_StrSrvAuto != sActIp))
+      {
+          Settings.autoSetStreamServer(m_StrSrvAuto);
+      }
+
       // stream standard ...
       cparser::QStrStdMap strStdMap;
       QString sCurrStrStd;
@@ -2638,6 +2655,22 @@ void Recorder::slotEPGCurrent (const QString &str)
          slotUpdateChannelList(keyList);
       }
    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief
+//
+//! \author  Jo2003
+//! \date    07.08.2013
+//
+//! \param   url (QUrl) url of clicked link
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotReqStrSrvAuto()
+{
+    pApiClient->queueRequest(CIptvDefs::REQ_AUTO_STR_SRV);
 }
 
 //---------------------------------------------------------------------------
@@ -6533,6 +6566,23 @@ QString Recorder::createVideoInfo(bool checkVod)
    }
 
    return sInfo;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   create video info for use in overlay control
+//
+//! \author  Jo2003
+//! \date    23.05.2014
+//
+//! \param   checkVod (bool) [default: true] take care for VOD as well
+//
+//! \return  info string
+//---------------------------------------------------------------------------
+void Recorder::strSrvAuto(const QString &resp)
+{
+    pApiParser->parseAutoStreamServer(resp, m_StrSrvAuto);
+    slotStartConnectionChain();
 }
 
 /************************* History ***************************\

@@ -207,6 +207,7 @@ private:
     QTimer                          m_tServiceTimeout;
     cparser::ServiceSettings        servSettings;
     int                             m_iJumpValue;
+    QString                         m_StrSrvAuto;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -241,6 +242,7 @@ protected:
     QString recFileName (const QString& name, QString& ext);
     void loginOnly(const QString& resp);
     QString createVideoInfo(bool checkVod = true);
+    void strSrvAuto(const QString& resp);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
@@ -343,8 +345,8 @@ private slots:
     void slotChgFontSize (int i);
     void slotFinallyJump();
     void slotService(const QString& s = QString());
-
     void on_btnCleanVodSearch_clicked();
+    void slotReqStrSrvAuto();
 
 signals:
     void sigShow ();

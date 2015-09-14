@@ -83,6 +83,7 @@ public:
     bool useGpuAcc();
     bool showAds();
     bool extEpg();
+    bool autoStrSrv();
 
     int GetProxyPort ();
     int GetBufferTime ();
@@ -126,6 +127,7 @@ public:
     int  getFontDelta ();
     void setFontDelta (int i);
     void setStrStdData(const cparser::QStrStdMap& data, const QString& curr);
+    void autoSetStreamServer (const QString& curr);
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -177,6 +179,8 @@ private slots:
     void on_spinBoxFontDelta_valueChanged(int arg1);
 
     void on_pushStrStd_clicked();
+
+    void on_pushSpeedTest_clicked();
 
 public slots:
     void slotSplashStateChgd (bool bChecked);
