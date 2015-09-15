@@ -3319,103 +3319,108 @@ or start time is later than end time!</source>
 <context>
     <name>QIptvCtrlClient</name>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="119"/>
+        <location filename="qiptvctrlclient.cpp" line="120"/>
         <source>No.#%1, id=%2, type=&apos;%3&apos;, size=%4 bytes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="165"/>
+        <location filename="qiptvctrlclient.cpp" line="166"/>
         <source>Error, unknown request type: %1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="188"/>
+        <location filename="qiptvctrlclient.cpp" line="189"/>
         <source>Network response error #%1:
   --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="382"/>
+        <location filename="qiptvctrlclient.cpp" line="383"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;, data=&apos;%4&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="440"/>
+        <location filename="qiptvctrlclient.cpp" line="441"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="558"/>
+        <location filename="qiptvctrlclient.cpp" line="559"/>
         <source>Ignore old queued request ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="537"/>
+        <location filename="qiptvctrlclient.cpp" line="538"/>
         <source>called from %1(), busy(): %2, isOnline(): %3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="196"/>
+        <location filename="qiptvctrlclient.cpp" line="197"/>
         <source>Keeping image download chain intact ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="617"/>
+        <location filename="qiptvctrlclient.cpp" line="618"/>
         <source>Prepend login request ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="625"/>
+        <location filename="qiptvctrlclient.cpp" line="626"/>
         <source>Append last sent request (which triggered error) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="652"/>
+        <location filename="qiptvctrlclient.cpp" line="653"/>
         <source>Network connection established!</source>
         <translation>Подключено к сети!</translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="652"/>
+        <location filename="qiptvctrlclient.cpp" line="653"/>
         <source>Error connecting to network!</source>
         <translation>Нет подключения к сети!</translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="654"/>
+        <location filename="qiptvctrlclient.cpp" line="655"/>
         <source>Online state changed: %1 --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="661"/>
+        <location filename="qiptvctrlclient.cpp" line="662"/>
         <source>Synchronize request counter and acknowledge: %1 &lt;--&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="686"/>
-        <source>Interface: &apos;%1&apos;; MAC: %2; IP: %3</source>
-        <translation></translation>
+        <location filename="qiptvctrlclient.cpp" line="690"/>
+        <source>Interface: &apos;%1&apos;; MAC: %2</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="725"/>
+        <location filename="qiptvctrlclient.cpp" line="704"/>
+        <source>cli_serial &apos;%2&apos;&apos; from source &apos;%1&apos; created ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qiptvctrlclient.cpp" line="724"/>
         <source>network config &apos;%1&apos;, id &apos;%2&apos; changed; state %3 -&gt; check internet connection!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="743"/>
+        <location filename="qiptvctrlclient.cpp" line="742"/>
         <source>Unused(!) network config &apos;%1&apos;, id &apos;%2&apos; changed to state %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="763"/>
+        <location filename="qiptvctrlclient.cpp" line="762"/>
         <source>Network accessibility changed: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="848"/>
+        <location filename="qiptvctrlclient.cpp" line="847"/>
         <source>Start connection check: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="885"/>
+        <location filename="qiptvctrlclient.cpp" line="884"/>
         <source>http request timed out!</source>
         <translation></translation>
     </message>

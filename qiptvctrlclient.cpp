@@ -16,6 +16,7 @@
 #include "version_info.h"
 #include "defdef.h"
 #include "externals_inc.h"
+#include "small_helpers.h"
 
 /// Gray my friend, is all theory ...
 /// We can't count that the QNetworkConfigurationManager
@@ -666,7 +667,7 @@ void QIptvCtrlClient::setOnline(bool o)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   create STB serial from MAC address of the 1st active interface
+//! \brief   create STB serial from MAC address of ethernet interfaces
 //
 //! \author  Jo2003
 //! \date    04.06.2014
@@ -674,38 +675,44 @@ void QIptvCtrlClient::setOnline(bool o)
 //---------------------------------------------------------------------------
 void QIptvCtrlClient::generateStbSerial()
 {
-   foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces())
-   {
-      if (interface.flags().testFlag(QNetworkInterface::IsUp)
-         && (!interface.flags().testFlag(QNetworkInterface::IsLoopBack)))
-      {
-         foreach (QNetworkAddressEntry entry, interface.addressEntries())
-         {
-            if(entry.ip().protocol() == QAbstractSocket::IPv4Protocol)
+    QString     tmpKey;
+    QStringList macList;
+    sStbSerial.clear();
+
+    /// 1. get all interfaces, but loopback
+    /// 2. check if hardware address is a valid MAC address
+    /// 3. add to macList
+    /// 4. sort macList
+    /// 5. join macList
+    /// 6. create md5 hash from joined macList
+    /// Also in case the network adapter order should change,
+    /// the cli_serial should be the same.
+    foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces())
+    {
+        if (!interface.flags().testFlag(QNetworkInterface::IsLoopBack))
+        {
+            tmpKey = interface.hardwareAddress();
+
+            if (tmpKey.split(":").count() == 6)
             {
-               mInfo(tr("Interface: '%1'; MAC: %2; IP: %3")
-                     .arg(interface.name())
-                     .arg(interface.hardwareAddress())
-                     .arg(entry.ip().toString()));
+                mInfo(tr("Interface: '%1'; MAC: %2")
+                    .arg(interface.name())
+                    .arg(interface.hardwareAddress()));
 
-               sStbSerial = interface.hardwareAddress();
+                macList.append(tmpKey);
             }
+        }
+    }
 
-            // no need to go on ...
-            if (!sStbSerial.isEmpty())
-            {
-               break;
-            }
-         }
-      }
-
-      // no need to go on ...
-      if (!sStbSerial.isEmpty())
-      {
-         break;
-      }
-   }
+    if (!macList.isEmpty())
+    {
+        macList.sort();
+        tmpKey = macList.join(":");
+        sStbSerial = CSmallHelpers::md5(tmpKey);
+        mInfo(tr("cli_serial '%2' from source '%1' created ...").arg(tmpKey).arg(sStbSerial));
+    }
 }
+
 
 //---------------------------------------------------------------------------
 //
