@@ -720,20 +720,31 @@ void QIptvCtrlClient::generateStbSerial()
 //---------------------------------------------------------------------------
 void QIptvCtrlClient::configChgd(const QNetworkConfiguration& config)
 {
-   mInfo(tr("network config '%1', id '%2' changed; state %3 -> check internet connection!")
-         .arg(config.name()).arg(config.identifier())
-         .arg(config.state()));
+    if (config == activeConfiguration())
+    {
+        mInfo(tr("network config '%1', id '%2' changed; state %3 -> check internet connection!")
+              .arg(config.name()).arg(config.identifier())
+              .arg(config.state()));
 
-   if (!config.state().testFlag(QNetworkConfiguration::Active))
-   {
-      // one network was set down ...
-      // make sure we send nothing as long we aren't sure
-      // the connection to the internet is up and running ...
-      setOnline(false);
-   }
+        if (!config.state().testFlag(QNetworkConfiguration::Active))
+        {
+            // one network was set down ...
+            // make sure we send nothing as long we aren't sure
+            // the connection to the internet is up and running ...
+            setOnline(false);
+        }
 
-   // give a little time before sending request ...
-   QTimer::singleShot(1000, this, SLOT(startConnectionCheck()));
+        // give a little time before sending request ...
+        QTimer::singleShot(1000, this, SLOT(startConnectionCheck()));
+    }
+#ifdef __TRACE
+    else
+    {
+        mInfo(tr("Unused(!) network config '%1', id '%2' changed to state %3")
+              .arg(config.name()).arg(config.identifier())
+              .arg(config.state()));
+    }
+#endif // __TRACE
 }
 
 //---------------------------------------------------------------------------

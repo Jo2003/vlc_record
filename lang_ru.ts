@@ -3395,22 +3395,27 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="723"/>
+        <location filename="qiptvctrlclient.cpp" line="725"/>
         <source>network config &apos;%1&apos;, id &apos;%2&apos; changed; state %3 -&gt; check internet connection!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="752"/>
+        <location filename="qiptvctrlclient.cpp" line="743"/>
+        <source>Unused(!) network config &apos;%1&apos;, id &apos;%2&apos; changed to state %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qiptvctrlclient.cpp" line="763"/>
         <source>Network accessibility changed: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="837"/>
+        <location filename="qiptvctrlclient.cpp" line="848"/>
         <source>Start connection check: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="874"/>
+        <location filename="qiptvctrlclient.cpp" line="885"/>
         <source>http request timed out!</source>
         <translation></translation>
     </message>
