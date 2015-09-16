@@ -181,7 +181,6 @@ signals:
    void sigToggleFullscreen();
    void sigBuffPercent(int);
    void sigAudioTracks(QLangVector);
-   void sigStopOnDemand();
    void sigStateMessage(int, const QString&, int);
 };
 

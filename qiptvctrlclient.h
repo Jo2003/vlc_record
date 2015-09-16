@@ -48,8 +48,6 @@ public:
       String,
       Binary,
       Stream,
-      m3u,
-      hls,
       chkconn,  // connection check ...
       Unknown
    };
@@ -165,8 +163,6 @@ signals:
    void sigBinResponse (int reqId, QByteArray binResp);
    void sigApiErr (int reqId, QString sErr, int iErr);
 
-   void sigM3u (int reqId, QString s);
-   void sigHls (int reqId, QByteArray bHls);
    void sigStateMessage (int, QString, int);
 
 public slots:

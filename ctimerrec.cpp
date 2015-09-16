@@ -32,7 +32,6 @@ CTimerRec::CTimerRec(QWidget *parent) : QDialog(parent), r_ui(new Ui::CTimerRec)
    uiEdtId       = INVALID_ID;
    pSettings     = NULL;
    pStreamLoader = NULL;
-   pHlsControl   = NULL;
    actJob.id     = (uint)-1;
    InitTab();
    connect (&recTimer, SIGNAL(timeout()), this, SLOT(slotRecTimer()));
@@ -94,22 +93,6 @@ void CTimerRec::SetStreamLoader(CStreamLoader *pLoader)
 
    connect (pStreamLoader, SIGNAL(sigStreamDwnTimer(int,QString)), this,
             SLOT(slotStreamReady(int,QString)));
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   set HLS control instance
-//
-//! \author  Jo2003
-//! \date    19.12.2013
-//
-//! \param   pCtrl (QHlsControl*) pointer to hls control instance
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void CTimerRec::setHlsControl(QHlsControl *pCtrl)
-{
-   pHlsControl = pCtrl;
 }
 
 //---------------------------------------------------------------------------
@@ -817,9 +800,6 @@ void CTimerRec::slotRecTimer()
                      iReqId = -1;
                   }
 
-                  // stop hls download ...
-                  pHlsControl->stop();
-
                   emit sigRecDone();
 
                   // shut we shut down the system ... ?
@@ -902,54 +882,39 @@ void CTimerRec::slotTimerStreamUrl(const QString &str)
    {
       sDst = QString("%1/%2").arg(pSettings->GetTargetDir()).arg(actJob.sName);
 
-      // check for hls ...
-      if (sUrl.contains("m3u"))
+      if (pVlcCtrl->ownDwnld())
       {
-         sUrl.replace("http/ts://", "http://");
-
-         // tell that we use HLS ...
-         showInfo.useHls(true);
-
-         // hls timer record ...
-         mInfo(tr("Use HLS control to download stream..."));
-         pHlsControl->startHls(sUrl, pSettings->GetBufferTime() / 1000, sDst + ".ts");
+         // own downloader ...
+         pStreamLoader->downloadStream(sUrl, QString("%1.%2").arg(sDst).arg("ts"),
+                                       pSettings->GetBufferTime(), true);
       }
       else
       {
-         if (pVlcCtrl->ownDwnld())
+         if (r_ui->checkRecMini->isChecked())
          {
-            // own downloader ...
-            pStreamLoader->downloadStream(sUrl, QString("%1.%2").arg(sDst).arg("ts"),
-                                          pSettings->GetBufferTime(), true);
+            // silent record ...
+            sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
+                                              pSettings->GetVLCPath(), sUrl,
+                                              pSettings->GetBufferTime(), sDst, "ts");
          }
          else
          {
-            if (r_ui->checkRecMini->isChecked())
-            {
-               // silent record ...
-               sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE_SILENT,
-                                                 pSettings->GetVLCPath(), sUrl,
-                                                 pSettings->GetBufferTime(), sDst, "ts");
-            }
-            else
-            {
-               // normal record ...
-               sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
-                                                 pSettings->GetVLCPath(), sUrl,
-                                                 pSettings->GetBufferTime(), sDst, "ts");
-            }
+            // normal record ...
+            sCmdLine = pVlcCtrl->CreateClArgs(vlcctrl::VLC_REC_LIVE,
+                                              pSettings->GetVLCPath(), sUrl,
+                                              pSettings->GetBufferTime(), sDst, "ts");
+         }
 
-            vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
+         vlcpid = pVlcCtrl->start(sCmdLine, -1, false, IncPlay::PS_TIMER_RECORD);
 
-            // successfully started ?
-            if (!vlcpid)
-            {
-               QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
-            }
-            else
-            {
-               mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
-            }
+         // successfully started ?
+         if (!vlcpid)
+         {
+            QMessageBox::critical(this, tr("Error!"), tr("Can't start Player!"));
+         }
+         else
+         {
+            mInfo(tr("Started player with pid #%1!").arg((uint)vlcpid));
          }
       }
    }

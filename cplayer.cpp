@@ -568,13 +568,7 @@ int CPlayer::play()
 
                // save jump time ...
                showInfo.setLastJumpTime(pauseResume.timeStamp);
-
-               emit sigStopOnDemand();
-
                enableDisablePlayControl (false);
-
-               emit sigStopOnDemand();
-
                pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
 
                // mark as unused ...
@@ -1570,8 +1564,6 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
             // save jump time ...
             showInfo.setLastJumpTime(pos);
 
-            emit sigStopOnDemand();
-
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
 
             // do we reach another show?
@@ -1769,8 +1761,6 @@ void CPlayer::slotSliderPosChanged()
 
             // save new start value ...
             showInfo.setLastJumpTime(position);
-
-            emit sigStopOnDemand();
 
             // trigger stream request ...
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());

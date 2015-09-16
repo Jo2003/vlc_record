@@ -91,10 +91,8 @@ SOURCES += main.cpp \
     chtmlwriter.cpp \
     qoverlayicon.cpp \
     qchannelmap.cpp \
-    qextm3uparser.cpp \
     qvlcvideowidget.cpp \
     cplayer.cpp \
-    qhlscontrol.cpp \
     qexpirenotifydlg.cpp \
     qauthdlg.cpp \
     qwaitwidget.cpp \
@@ -154,12 +152,10 @@ HEADERS += recorder.h \
     qoverlayicon.h \
     qchannelmap.h \
     qfadewidget.h \
-    qextm3uparser.h \
     cplayer.h \
     qvlcvideowidget.h \
     qclickandgoslider.h \
     qtimelabel.h \
-    qhlscontrol.h \
     qexpirenotifydlg.h \
     qauthdlg.h \
     qwaitwidget.h \

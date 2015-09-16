@@ -30,7 +30,6 @@
 #include "csettingsdlg.h"
 #include "cvlcctrl.h"
 #include "cstreamloader.h"
-#include "qhlscontrol.h"
 
 //===================================================================
 // namespace
@@ -91,7 +90,6 @@ public:
    void SetSettings (CSettingsDlg *pSet);
    void SetVlcCtrl (CVlcCtrl *pCtrl);
    void SetStreamLoader (CStreamLoader *pLoader);
-   void setHlsControl (QHlsControl *pCtrl);
    int  ReadRecordList ();
    int  AddRow (const rec::SRecEntry &entry);
    void AddJob (rec::SRecEntry &entry);
@@ -117,7 +115,6 @@ private:
    CSettingsDlg               *pSettings;
    CVlcCtrl                   *pVlcCtrl;
    CStreamLoader              *pStreamLoader;
-   QHlsControl                *pHlsControl;
    int                         iReqId;
 
 signals:

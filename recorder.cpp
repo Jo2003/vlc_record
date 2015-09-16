@@ -70,7 +70,6 @@ Recorder::Recorder(QWidget *parent)
    pFilterMenu   =  NULL;
    pMnLangFilter =  NULL;
    pWatchList    =  NULL;
-   pHlsControl   =  NULL;
    bStayOnTop    =  false;
 
    // vod search timer ....
@@ -123,9 +122,6 @@ Recorder::Recorder(QWidget *parent)
       pFavAct[i]     = NULL;
       pContextAct[i] = NULL;
    }
-
-   // create playlist parser ...
-   pHlsControl = new QHlsControl(this);
 
    // set channel list model and delegate ...
    pModel    = new QStandardItemModel(this);
@@ -220,7 +216,6 @@ Recorder::Recorder(QWidget *parent)
    timeRec.SetSettings(&Settings);
    timeRec.SetVlcCtrl(&vlcCtrl);
    timeRec.SetStreamLoader(&streamLoader);
-   timeRec.setHlsControl(pHlsControl);
 
    // hide / remove VOD tab widget ...
    vodTabWidget.iPos    = 1;  // index of VOD tab
@@ -318,12 +313,6 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
    connect (this,           SIGNAL(sigLockParentalManager()), &Settings, SLOT(slotLockParentalManager()));
    connect (this,           SIGNAL(sigSpeedTestData(QSpeedDataVector)), &Settings, SLOT(slotSpeedTestData(QSpeedDataVector)));
-
-   // HLS play stuff ...
-   connect (pApiClient, SIGNAL(sigM3u(int,QString)), pHlsControl, SLOT(slotM3uResp(int,QString)));
-   connect (pApiClient, SIGNAL(sigHls(int,QByteArray)), pHlsControl, SLOT(slotStreamTokResp(int,QByteArray)));
-   connect (pHlsControl, SIGNAL(sigPlay(QString)), this, SLOT(slotPlayHls(QString)));
-   connect (ui->player, SIGNAL(sigStopOnDemand()), this, SLOT(stopOnDemand()));
 
    // new VOD search ...
    connect (ui->lineVodSearch, SIGNAL(textEdited(QString)), &m_tVodSearch, SLOT(start()));
@@ -803,8 +792,6 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
 
                TouchPlayCtrlBtns(false);
 
-               stopOnDemand();
-
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                       cid, secCodeDlg.passWd());
             }
@@ -1198,8 +1185,6 @@ void Recorder::on_pushLive_clicked()
 
             TouchPlayCtrlBtns(false);
 
-            stopOnDemand();
-
             pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                    cid, secCodeDlg.passWd());
          }
@@ -1245,8 +1230,6 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
-
-               stopOnDemand();
 
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                       cid, secCodeDlg.passWd());
@@ -1417,8 +1400,6 @@ void Recorder::slotPlay()
 
                TouchPlayCtrlBtns(false);
 
-               stopOnDemand();
-
                pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                       cid, secCodeDlg.passWd());
             }
@@ -1452,8 +1433,6 @@ void Recorder::slotStop()
       }
 
       vlcCtrl.stop();
-
-      pHlsControl->stop();
 
       showInfo.setPlayState(IncPlay::PS_STOP);
       TouchPlayCtrlBtns(true);
@@ -1494,8 +1473,6 @@ void Recorder::slotRecord()
 
             TouchPlayCtrlBtns(false);
 
-            stopOnDemand();
-
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
          }
       }
@@ -1532,8 +1509,6 @@ void Recorder::slotRecord()
                   showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                   TouchPlayCtrlBtns(false);
-
-                  stopOnDemand();
 
                   pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
                                          cid, secCodeDlg.passWd());
@@ -2119,10 +2094,7 @@ void Recorder::slotStreamURL(const QString &str)
          {
             if (!vlcCtrl.ownDwnld())
             {
-               if (!check4PlayList(sUrl, sShow))
-               {
-                  StartVlcRec(sUrl, sShow);
-               }
+               StartVlcRec(sUrl, sShow);
             }
             else
             {
@@ -2140,10 +2112,7 @@ void Recorder::slotStreamURL(const QString &str)
          }
          else if (ePlayState == IncPlay::PS_PLAY)
          {
-            if (!check4PlayList(sUrl))
-            {
-               StartVlcPlay(sUrl);
-            }
+            StartVlcPlay(sUrl);
          }
       }
    }
@@ -2769,8 +2738,6 @@ void Recorder::slotWlClick(QUrlEx url)
             ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
             ui->labState->setFooter(sTime);
 
-            stopOnDemand();
-
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
 
             if (stop)
@@ -2888,8 +2855,6 @@ void Recorder::slotEpgAnchor (const QUrlEx &link)
             ui->labState->setHeader(showInfo.chanName() + tr(" (Ar.)"));
             ui->labState->setFooter(sTime);
 
-            stopOnDemand();
-
             pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
          }
       }
@@ -3003,10 +2968,7 @@ void Recorder::slotArchivURL(const QString &str)
       {
          if (!vlcCtrl.ownDwnld())
          {
-            if (!check4PlayList(sUrl, CleanShowName(showInfo.showName())))
-            {
-               StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
-            }
+            StartVlcRec(sUrl, CleanShowName(showInfo.showName()));
          }
          else
          {
@@ -3026,11 +2988,7 @@ void Recorder::slotArchivURL(const QString &str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         if (!check4PlayList(sUrl))
-         {
-            StartVlcPlay(sUrl);
-         }
-
+         StartVlcPlay(sUrl);
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }
    }
@@ -3211,8 +3169,6 @@ void Recorder::slotVlcEnds(int iState __UNUSED)
       ePlayState = IncPlay::PS_STOP;
    }
    TouchPlayCtrlBtns();
-
-   pHlsControl->stop();
 }
 
 /* -----------------------------------------------------------------\
@@ -3718,8 +3674,6 @@ void Recorder::slotVodAnchor(const QUrlEx &link)
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
 
-      stopOnDemand();
-
       pApiClient->queueRequest(CIptvDefs::REQ_GETVODURL, id, secCodeDlg.passWd());
    }
 }
@@ -3770,10 +3724,7 @@ void Recorder::slotVodURL(const QString &str)
          // use own downloader ... ?
          if (!vlcCtrl.ownDwnld())
          {
-            if (!check4PlayList(sUrls[0], CleanShowName(showInfo.showName())))
-            {
-               StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
-            }
+            StartVlcRec(sUrls[0], CleanShowName(showInfo.showName()));
          }
          else
          {
@@ -3795,11 +3746,7 @@ void Recorder::slotVodURL(const QString &str)
       }
       else if (ePlayState == IncPlay::PS_PLAY)
       {
-         if (!check4PlayList(sUrls[0]))
-         {
-            StartVlcPlay(sUrls[0]);
-         }
-
+         StartVlcPlay(sUrls[0]);
          showInfo.setPlayState(IncPlay::PS_PLAY);
       }
    }
@@ -6211,59 +6158,6 @@ void Recorder::toggleFullscreen()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   check if media url is a playlist (means HLS streaming)
-//
-//! \author  Jo2003
-//! \date    13.12.2013
-//
-//! \param   sUrl (const QString&) url to check
-//
-//! \return  0 -> normal handling; 1 -> playlist / hls handling
-//---------------------------------------------------------------------------
-int Recorder::check4PlayList(const QString& sUrl, const QString &sName)
-{
-#ifndef __VLC_FOR_HLS ///< this should be defined in case VLC should handle HLS!
-   if (sUrl.contains("m3u", Qt::CaseInsensitive))
-   {
-      // HLS .. Oops!
-
-      // make sure to remove the ts which might be present ...
-
-      QString s = sUrl;
-
-      // there shouldn't ... but there is ...
-      s.replace("http/ts://", "http://");
-
-      if (sName.isEmpty())
-      {
-         // normal play ...
-         pHlsControl->startHls(s, Settings.GetBufferTime() / 1000);
-      }
-      else
-      {
-         // record ...
-         QString sExt;
-         QString sFileName = recFileName(sName, sExt) + ".ts";
-         pHlsControl->startHls(s, Settings.GetBufferTime() / 1000, sFileName);
-      }
-
-      showInfo.useHls(true);
-
-      return 1;
-   }
-   else
-#else
-   // avoid warnings ...
-   Q_UNUSED(sUrl)
-   Q_UNUSED(sName)
-#endif // __VLC_FOR_HLS
-   {
-      return 0;
-   }
-}
-
-//---------------------------------------------------------------------------
-//
 //! \brief   play or record from hls stream buffer
 //
 //! \author  Jo2003
@@ -6500,34 +6394,6 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
       }
 
       eCurDMode = newMode;
-   }
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   make sure to stop playback in case hls download is active
-//
-//! \author  Jo2003
-//! \date    20.12.2013
-//
-//! \param   --
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void Recorder::stopOnDemand()
-{
-   if (pHlsControl->isActive())
-   {
-      if (vlcCtrl.withLibVLC())
-      {
-         ui->player->silentStop();
-      }
-      else
-      {
-         vlcCtrl.stop();
-      }
-
-      pHlsControl->stop();
    }
 }
 

@@ -64,7 +64,6 @@
 #include "qwatchlistdlg.h"
 #include <QStackedLayout>
 #include "qvlcvideowidget.h"
-#include "qhlscontrol.h"
 #include "qauthdlg.h"
 #include "qwaitwidget.h"
 
@@ -198,7 +197,6 @@ private:
     Ui::EDisplayMode                eOldDMode;
     QRect                           rectBackup;
     QRect                           playWndRect;
-    QHlsControl                    *pHlsControl;
     QAuthDlg                        authDlg;
     QWaitWidget                     waitWidget;
     reqItem_t                       reRequest;
@@ -238,7 +236,6 @@ protected:
     void correctEpgOffset();
     int  grantAdultAccess (bool bProtected);
     void toggleFullscreen();
-    int  check4PlayList (const QString& sUrl, const QString& sName = QString());
     QString recFileName (const QString& name, QString& ext);
     void loginOnly(const QString& resp);
     QString createVideoInfo(bool checkVod = true);
@@ -341,7 +338,6 @@ private slots:
     void slotUpdWatchListCount();
     void slotStayOnTop(bool on);
     void slotPlayHls(const QString& s);
-    void stopOnDemand();
     void slotVodLang(const QString &str);
     void slotChgFontSize (int i);
     void slotFinallyJump();
