@@ -16,9 +16,11 @@
 #include <QHttp>
 #include <QString>
 #include <QMessageBox>
+#include <QTemporaryFile>
 #include <QtNetwork>
 #include <QFile>
 #include <QTimer>
+#include <QTime>
 #include <QUrl>
 
 #include "defdef.h"
@@ -42,15 +44,21 @@ public:
    virtual ~CStreamLoader();
 
 private:
-   QString       sHost;
-   QFile         fStream;
-   int           iReq;
-   QTimer        tFileCheck;
-   int           iCache;
-   bool          bUseTimerRec;
+   QString         sHost;
+   QFile           fStream;
+   int             iReq;
+   QTimer          tFileCheck;
+   QTime           m_tmDwn;
+   int             iCache;
+   bool            bUseTimerRec;
+   bool            m_bSpeedTest;
+   QTemporaryFile *m_pTmpFile;
+   int             m_iSize;
 
 public slots:
    void downloadStream (const QString &sUrl, const QString &sFileName, int iCacheTime, bool bTimerRec = false);
+   void speedTest (const QString &sUrl, int iSize);
+   void endSpeedTest();
    void stopDownload (int id);
 
 private slots:
@@ -63,6 +71,8 @@ signals:
    void sigStreamDwnTimer (int iReqId, QString sFileName);
    void sigError (QString str);
    void sigBufferPercent (int percent);
+   void sigDwnSpeed (int ms, int bytes);
+   void sigSpeedTestEnd ();
 };
 
 #endif // __20101214185500_CSTREAMLOADER_H

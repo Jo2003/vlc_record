@@ -31,6 +31,9 @@ CStreamLoader::CStreamLoader() :QHttp()
    iCache       = -1;
    sHost        = "";
    bUseTimerRec = false;
+   m_pTmpFile   = NULL;
+   m_iSize      = 0;
+   m_bSpeedTest = false;
 
    // set timer interval for file check ...
    tFileCheck.setInterval(2000); // 2 sec ...
@@ -111,6 +114,61 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    }
 }
 
+//---------------------------------------------------------------------------
+//! \brief   start speed test
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//! \param   sUrl [in] (onst QString&) download url
+//! \param   iSize [in] (int) size to download in MB (10 ... 100).
+//---------------------------------------------------------------------------
+void CStreamLoader::speedTest(const QString &sUrl, int iSize)
+{
+    QUrl url(sUrl);
+    m_iSize      = (iSize <= 0) ? 10 : ((iSize > 100) ? 100 : iSize);
+    m_pTmpFile   = new QTemporaryFile();
+    m_bSpeedTest = true;
+
+    if (m_pTmpFile)
+    {
+        if (m_pTmpFile->open())
+        {
+            tFileCheck.setInterval(333);
+
+            setHost (url.host(), QHttp::ConnectionModeHttp, (url.port() == -1) ? 80 : url.port());
+
+            iReq = get (url.toString(), m_pTmpFile);
+
+            mInfo(tr("Request #%1 (%2) sent ...").arg(iReq).arg(sUrl));
+
+            // start file check timer ...
+            tFileCheck.start();
+
+            m_tmDwn.start();
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+//! \brief   end speed test
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//---------------------------------------------------------------------------
+void CStreamLoader::endSpeedTest()
+{
+    abort();
+    tFileCheck.stop();
+    m_bSpeedTest = false;
+
+    emit sigSpeedTestEnd();
+
+    delete m_pTmpFile;
+    m_pTmpFile = NULL;
+}
+
 /* -----------------------------------------------------------------\
 |  Method: stopDownload
 |  Begin: 13.12.2010 / 16:32:33
@@ -150,36 +208,51 @@ void CStreamLoader::stopDownload(int id)
 \----------------------------------------------------------------- */
 void CStreamLoader::slotStreamDataAvailable()
 {
-   // Make sure downloaded part of video is "big" enough
-   // so libVLC will not reach the end when reading it.
-   // Assume a good value up to 720p (HD Ready).
+    if (m_bSpeedTest)
+    {
+        if (m_pTmpFile)
+        {
+            emit sigDwnSpeed(m_tmDwn.elapsed(), m_pTmpFile->size());
 
-   // 4.5Mbit/s -> 562.5kB/s
+            if (m_pTmpFile->size() >= (m_iSize * 1024 * 1024))
+            {
+                endSpeedTest();
+            }
+        }
+    }
+    else
+    {
+        // Make sure downloaded part of video is "big" enough
+        // so libVLC will not reach the end when reading it.
+        // Assume a good value up to 720p (HD Ready).
 
-   // wait until file is filled with cache size ...
-   int iSize = (iCache / 1000) * 562500;
+        // 4.5Mbit/s -> 562.5kB/s
 
-   iSize = (iSize < MIN_CACHE_SIZE) ? MIN_CACHE_SIZE : iSize;
+        // wait until file is filled with cache size ...
+        int iSize = (iCache / 1000) * 562500;
 
-   if (fStream.size() >= iSize)
-   {
-      // check no more needed ...
-      tFileCheck.stop();
+        iSize = (iSize < MIN_CACHE_SIZE) ? MIN_CACHE_SIZE : iSize;
 
-      if (!bUseTimerRec)
-      {
-         emit sigStreamDownload(iReq, fStream.fileName());
-      }
-      else
-      {
-         emit sigStreamDwnTimer(iReq, fStream.fileName());
-      }
-      emit sigBufferPercent(100);
-   }
-   else
-   {
-      emit sigBufferPercent((int)((100 * fStream.size()) / iSize));
-   }
+        if (fStream.size() >= iSize)
+        {
+            // check no more needed ...
+            tFileCheck.stop();
+
+            if (!bUseTimerRec)
+            {
+                emit sigStreamDownload(iReq, fStream.fileName());
+            }
+            else
+            {
+                emit sigStreamDwnTimer(iReq, fStream.fileName());
+            }
+            emit sigBufferPercent(100);
+        }
+        else
+        {
+            emit sigBufferPercent((int)((100 * fStream.size()) / iSize));
+        }
+    }
 }
 
 /*-----------------------------------------------------------------------------\

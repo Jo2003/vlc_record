@@ -2298,30 +2298,35 @@ To change the parent code make sure:
 <context>
     <name>CStreamLoader</name>
     <message>
-        <location filename="cstreamloader.cpp" line="81"/>
+        <location filename="cstreamloader.cpp" line="84"/>
         <source>Archive URL:
  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="88"/>
+        <location filename="cstreamloader.cpp" line="91"/>
         <source>Download Stream from http://%1:%2
  --&gt; to %3</source>
         <oldsource>Download Stream from http://%1:%2</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="105"/>
+        <location filename="cstreamloader.cpp" line="108"/>
         <source>Request #%1 sent ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="205"/>
+        <location filename="cstreamloader.cpp" line="143"/>
+        <source>Request #%1 (%2) sent ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cstreamloader.cpp" line="278"/>
         <source>Request #%1 done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="214"/>
+        <location filename="cstreamloader.cpp" line="287"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
