@@ -166,6 +166,13 @@ namespace cparser
       bool    handled;
    };
 
+   /// \brief speed test data structure
+   struct SSpeedTest {
+       QString ip;
+       QString descr;
+       QString url;
+   };
+
    /// \brief hold description data for stream standards
    struct StrStdDescr {
        QString sName;
@@ -186,5 +193,6 @@ typedef QMap<int, QVector<cparser::SEpgCurrent> > QCurrentMap;
 typedef QVector<cparser::SGrp>                    QGrpVector;
 typedef QVector<cparser::SChan>                   QChanList;
 typedef QMap<QString, QString>                    QVodLangMap;
+typedef QVector<cparser::SSpeedTest>              QSpeedDataVector;
 
 #endif // __20130325_CPARSER_H

@@ -361,3 +361,22 @@ int CApiParser::parseAutoStreamServer(const QString &sResp, QString &ip)
 
     return iRet;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse speed data (needs real implementation in child classes)
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//! \param   sResp [in] (const QString&) html response
+//! \param   spdData [out] (QSpeedDataVector&) speed data vector
+//
+//! \return  0 -> ok; -1 -> error
+//---------------------------------------------------------------------------
+int CApiParser::parseSpeedTestData(const QString &resp, QSpeedDataVector &spdData)
+{
+    Q_UNUSED(resp)
+    Q_UNUSED(spdData)
+    return -1;
+}

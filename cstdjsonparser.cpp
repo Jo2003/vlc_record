@@ -1028,3 +1028,47 @@ int CStdJsonParser::parseService(const QString &sResp, cparser::ServiceSettings 
 
    return iRV;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse speed data
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//! \param   resp [in] (const QString&) html response
+//! \param   spdData [out] (QSpeedDataVector&) speed data vector
+//
+//! \return  0 -> ok; -1 -> error
+//---------------------------------------------------------------------------
+int CStdJsonParser::parseSpeedTestData(const QString &resp, QSpeedDataVector &spdData)
+{
+    bool         bOk = false;
+    cparser::SSpeedTest spdTest;
+    QVariantMap  contentMap = QtJson::parse(resp, bOk).toMap();
+    int          iRet = 0;
+    spdData.clear();
+
+    if (bOk)
+    {
+        foreach (const QVariant& val, contentMap.value("list").toList())
+        {
+            QVariantMap dset = val.toMap();
+            spdTest.ip    = dset.value("ip").toString();
+            spdTest.descr = dset.value("descr").toString();
+            spdTest.url   = dset.value("speedtest_url").toString();
+
+            spdData.append(spdTest);
+        }
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                      tr("QtJson parser error in %1 %2():%3")
+                      .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRet = -1;
+    }
+
+    return iRet;
+}

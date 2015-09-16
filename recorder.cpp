@@ -302,6 +302,7 @@ Recorder::Recorder(QWidget *parent)
    connect (&timeRec,      SIGNAL(sigRecDone()), this, SLOT(slotTimerRecordDone()));
    connect (&timeRec,      SIGNAL(sigRecActive(int)), this, SLOT(slotTimerRecActive(int)));
    connect (&Settings,     SIGNAL(sigFontDeltaChgd(int)), this, SLOT(slotChgFontSize(int)));
+   connect (&Settings,     SIGNAL(sigReqSpeedData()), this, SLOT(slotReqSpeedTestData()));
    if (Settings.HideToSystray() && QSystemTrayIcon::isSystemTrayAvailable())
    {
       connect (this,          SIGNAL(sigHide()), &trayIcon, SLOT(show()));
@@ -316,6 +317,7 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->vodBrowser, SIGNAL(anchorClickedEx(QUrlEx)), this, SLOT(slotVodAnchor(QUrlEx)));
    connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
    connect (this,           SIGNAL(sigLockParentalManager()), &Settings, SLOT(slotLockParentalManager()));
+   connect (this,           SIGNAL(sigSpeedTestData(QSpeedDataVector)), &Settings, SLOT(slotSpeedTestData(QSpeedDataVector)));
 
    // HLS play stuff ...
    connect (pApiClient, SIGNAL(sigM3u(int,QString)), pHlsControl, SLOT(slotM3uResp(int,QString)));
@@ -1855,6 +1857,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_AUTO_STR_SRV, strSrvAuto(resp));
 
    ///////////////////////////////////////////////
+   // response for speed test data
+   mkCase(CIptvDefs::REQ_SPEED_TEST_DATA, speedTestData(resp));
+
+   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
    mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
@@ -2659,18 +2665,28 @@ void Recorder::slotEPGCurrent (const QString &str)
 
 //---------------------------------------------------------------------------
 //
-//! \brief
+//! \brief   request auto stream server
 //
 //! \author  Jo2003
-//! \date    07.08.2013
+//! \date    16.09.2015
 //
-//! \param   url (QUrl) url of clicked link
-//
-//! \return  --
 //---------------------------------------------------------------------------
 void Recorder::slotReqStrSrvAuto()
 {
     pApiClient->queueRequest(CIptvDefs::REQ_AUTO_STR_SRV);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   request speed test data
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//---------------------------------------------------------------------------
+void Recorder::slotReqSpeedTestData()
+{
+    pApiClient->queueRequest(CIptvDefs::REQ_SPEED_TEST_DATA);
 }
 
 //---------------------------------------------------------------------------
@@ -6570,19 +6586,38 @@ QString Recorder::createVideoInfo(bool checkVod)
 
 //---------------------------------------------------------------------------
 //
-//! \brief   create video info for use in overlay control
+//! \brief   check auto stream server response / start connection chain
 //
 //! \author  Jo2003
-//! \date    23.05.2014
+//! \date    14.09.2015
 //
-//! \param   checkVod (bool) [default: true] take care for VOD as well
+//! \param   resp [in] (const QString&) response string
 //
-//! \return  info string
 //---------------------------------------------------------------------------
 void Recorder::strSrvAuto(const QString &resp)
 {
     pApiParser->parseAutoStreamServer(resp, m_StrSrvAuto);
     slotStartConnectionChain();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse / delegate speed test data
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//! \param   resp [in] (const QString&) response string
+//
+//---------------------------------------------------------------------------
+void Recorder::speedTestData(const QString &resp)
+{
+    QSpeedDataVector spdData;
+
+    if (!pApiParser->parseSpeedTestData(resp, spdData))
+    {
+        emit sigSpeedTestData(spdData);
+    }
 }
 
 /************************* History ***************************\

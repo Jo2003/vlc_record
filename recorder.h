@@ -243,6 +243,7 @@ protected:
     void loginOnly(const QString& resp);
     QString createVideoInfo(bool checkVod = true);
     void strSrvAuto(const QString& resp);
+    void speedTestData(const QString& resp);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
@@ -347,6 +348,7 @@ private slots:
     void slotService(const QString& s = QString());
     void on_btnCleanVodSearch_clicked();
     void slotReqStrSrvAuto();
+    void slotReqSpeedTestData();
 
 signals:
     void sigShow ();
@@ -363,6 +365,7 @@ signals:
     void sigWindowed(int);
     void sigWLRecEnded();
     void sigOverlay (const QString& s, int iTmOut);
+    void sigSpeedTestData(QSpeedDataVector spdData);
 };
 
 #endif /* __011910__RECORDER_H */

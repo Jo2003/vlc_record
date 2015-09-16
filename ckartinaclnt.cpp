@@ -316,6 +316,9 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
       case CIptvDefs::REQ_AUTO_STR_SRV:
           autoStrSrv();
           break;
+      case CIptvDefs::REQ_SPEED_TEST_DATA:
+          speedTestData();
+          break;
       default:
          iRet = -1;
          break;
@@ -814,6 +817,23 @@ void CKartinaClnt::autoStrSrv()
     mInfo(tr("Request auto stream server ..."));
     q_get((int)CIptvDefs::REQ_AUTO_STR_SRV,
           "http://speedtest-auto.kartina.tv:18000/speedtest/api/?act=get");
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   request speed test data
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//---------------------------------------------------------------------------
+void CKartinaClnt::speedTestData()
+{
+    mInfo(tr("Request speed test data ..."));
+
+    QString req = "speedtest?cmd=list";
+
+    q_get((int)CIptvDefs::REQ_SPEED_TEST_DATA, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\

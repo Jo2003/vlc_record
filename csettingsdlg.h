@@ -156,6 +156,7 @@ signals:
     void sigSetTimeShift (int iShift);
     void sigFontDeltaChgd (int i);
     void sigSetStrStd(QString s);
+    void sigReqSpeedData();
 
 private slots:
     void on_btnResetShortcuts_clicked();
@@ -188,6 +189,7 @@ public slots:
     void slotBuildVodManager (const QString &str);
     void slotNewPCodeSet ();
     void slotEnablePCodeForm ();
+    void slotSpeedTestData (QSpeedDataVector spdData);
 };
 
 #endif /* __011910__CSETTINGSDLG_H */

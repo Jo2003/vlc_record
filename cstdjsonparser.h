@@ -53,6 +53,7 @@ public:
    virtual int parseError (const QString& sResp, QString& sMsg, int& eCode);
    virtual int parseVodLang(const QString &sResp, QVodLangMap &lMap);
    virtual int parseService(const QString &sResp, cparser::ServiceSettings &servset);
+   virtual int parseSpeedTestData (const QString& resp, QSpeedDataVector& spdData);
 };
 
 #endif // __20130415_CSTDJSONPARSER_H

@@ -98,6 +98,7 @@ int main(int argc, char *argv[])
    qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
    qRegisterMetaType<QLangVector>("QLangVector");
    qRegisterMetaType<QUrlEx>("QUrlEx");
+   qRegisterMetaType<QSpeedDataVector>("QSpeedDataVector");
 
 #ifdef Q_OS_MACX
    if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )

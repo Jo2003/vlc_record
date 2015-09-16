@@ -388,7 +388,15 @@ void CSettingsDlg::changeEvent(QEvent *e)
     }
 }
 
-
+//---------------------------------------------------------------------------
+//
+//! \brief   set some data triggered by show event
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//! \param   e [in] (QShowEvent*) event pointer
+//---------------------------------------------------------------------------
 void CSettingsDlg::showEvent(QShowEvent *e)
 {
     m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
@@ -2036,6 +2044,22 @@ void CSettingsDlg::slotEnablePCodeForm()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   we've got speed test data -> ctreate dialog!
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//! \param   spdData [in] (QSpeedDataVector) speed test data
+//---------------------------------------------------------------------------
+void CSettingsDlg::slotSpeedTestData(QSpeedDataVector spdData)
+{
+    /// \todo Open speed test dialog here, using received data!
+    Q_UNUSED(spdData)
+    QMessageBox::information(this, "LALA", "Data received!");
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   change language from outsite
 //
 //! \author  Jo2003
@@ -2316,7 +2340,7 @@ void CSettingsDlg::on_pushStrStd_clicked()
 
 //---------------------------------------------------------------------------
 //
-//! \brief   open speed test dialog
+//! \brief   request speed test data
 //
 //! \author  Jo2003
 //! \date    14.09.2015
@@ -2324,7 +2348,7 @@ void CSettingsDlg::on_pushStrStd_clicked()
 //---------------------------------------------------------------------------
 void CSettingsDlg::on_pushSpeedTest_clicked()
 {
-
+    emit sigReqSpeedData();
 }
 
 /************************* History ***************************\
