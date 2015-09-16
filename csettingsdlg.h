@@ -32,6 +32,7 @@
 #include "clogfile.h"
 #include "cparser.h"
 #include "qstrstandarddlg.h"
+#include "qspeedtestdlg.h"
 
 //===================================================================
 // namespace
@@ -147,6 +148,7 @@ private:
     int                          m_iServerBitrate;
     int                          m_iServerTimeShift;
     QStrStandardDlg             *m_pStrStdDlg;
+    QSpeedTestDlg               *m_pSpdTestDlg;
 
 signals:
     void sigReloadLogos ();

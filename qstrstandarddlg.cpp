@@ -22,6 +22,7 @@
 //! \date    29.08.2015
 //
 //! \param   parent [in ] (QWidget*) pointer to parent widget
+//! \param   f [in] (Qt::WindowFlag) windows flags
 //---------------------------------------------------------------------------
 QStrStandardDlg::QStrStandardDlg(QWidget *parent, Qt::WindowFlags f) :
    QDialog(parent, f),

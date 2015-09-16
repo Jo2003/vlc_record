@@ -35,6 +35,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    pShortApiServer = new CShortcutEx(QKeySequence("CTRL+ALT+A"), this);
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
    m_pStrStdDlg    = new QStrStandardDlg(this, Qt::Tool);
+   m_pSpdTestDlg   = new QSpeedTestDlg(this, Qt::Tool);
 
    if (pShortApiServer)
    {
@@ -2053,9 +2054,26 @@ void CSettingsDlg::slotEnablePCodeForm()
 //---------------------------------------------------------------------------
 void CSettingsDlg::slotSpeedTestData(QSpeedDataVector spdData)
 {
-    /// \todo Open speed test dialog here, using received data!
-    Q_UNUSED(spdData)
-    QMessageBox::information(this, "LALA", "Data received!");
+    m_pSpdTestDlg->setData(spdData);
+
+    if (m_pSpdTestDlg->exec() == QDialog::Accepted)
+    {
+        /*
+        // any change in name ... ?
+        if (m_ui->pushStrStd->text() != m_pStrStdDlg->getCurrName())
+        {
+            m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+            emit sigSetStrStd(m_pStrStdDlg->getCurrVal());
+        }
+        */
+    }
+    else
+    {
+        /*
+        // revert any change ...
+        m_pStrStdDlg->setCurrName(m_ui->pushStrStd->text());
+        */
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -2348,7 +2366,18 @@ void CSettingsDlg::on_pushStrStd_clicked()
 //---------------------------------------------------------------------------
 void CSettingsDlg::on_pushSpeedTest_clicked()
 {
-    emit sigReqSpeedData();
+    QSpeedDataVector spdData = m_pSpdTestDlg->data();
+
+    if (spdData.isEmpty())
+    {
+        // only request data if not already there
+        emit sigReqSpeedData();
+    }
+    else
+    {
+        // open dialog
+        slotSpeedTestData(spdData);
+    }
 }
 
 /************************* History ***************************\

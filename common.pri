@@ -102,7 +102,8 @@ SOURCES += main.cpp \
     qdatetimesyncro.cpp \
     qstatemessage.cpp \
     qwatchstats.cpp \
-    qstrstandarddlg.cpp
+    qstrstandarddlg.cpp \
+    qspeedtestdlg.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -168,7 +169,8 @@ HEADERS += recorder.h \
     qwatchstats.h \
     qurlex.h \
     qtextbrowserex.h \
-    qstrstandarddlg.h
+    qstrstandarddlg.h \
+    qspeedtestdlg.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -184,7 +186,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/qauthdlg.ui \
     forms/qwaitwidget.ui \
     forms/qstatemessage.ui \
-    forms/qstrstandarddlg.ui
+    forms/qstrstandarddlg.ui \
+    forms/qspeedtestdlg.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes
