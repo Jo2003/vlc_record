@@ -2298,35 +2298,35 @@ To change the parent code make sure:
 <context>
     <name>CStreamLoader</name>
     <message>
-        <location filename="cstreamloader.cpp" line="84"/>
+        <location filename="cstreamloader.cpp" line="86"/>
         <source>Archive URL:
  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="91"/>
+        <location filename="cstreamloader.cpp" line="93"/>
         <source>Download Stream from http://%1:%2
  --&gt; to %3</source>
         <oldsource>Download Stream from http://%1:%2</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="108"/>
+        <location filename="cstreamloader.cpp" line="110"/>
         <source>Request #%1 sent ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="143"/>
+        <location filename="cstreamloader.cpp" line="145"/>
         <source>Request #%1 (%2) sent ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="278"/>
+        <location filename="cstreamloader.cpp" line="280"/>
         <source>Request #%1 done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="287"/>
+        <location filename="cstreamloader.cpp" line="289"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
@@ -3637,6 +3637,21 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="14"/>
         <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="25"/>
+        <source>St&amp;art</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="32"/>
+        <source>Sto&amp;p</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="39"/>
+        <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

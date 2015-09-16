@@ -29,6 +29,8 @@ QSpeedTestDlg::QSpeedTestDlg(QWidget *parent, Qt::WindowFlags f) :
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose, false);
+
+    connect (&m_strLoader, SIGNAL(sigDwnSpeed(int,int)), this, SLOT(slotSpeedData(int,int)));
 }
 
 //---------------------------------------------------------------------------
@@ -91,3 +93,26 @@ const QSpeedDataVector &QSpeedTestDlg::data()
     return m_spdData;
 }
 
+void QSpeedTestDlg::slotSpeedData(int ms, int bytes)
+{
+    if ((ms > 0) && (bytes > 0))
+    {
+        double res = (double)(bytes * 8 / 1024 / 1024) / (double)(ms / 1000);
+
+        if (res > 0.2)
+        {
+            QString s = QString("%1 Mbps").arg(res, 0, 'f', 3);
+            ui->labSpeed->setText(s);
+        }
+    }
+}
+
+void QSpeedTestDlg::on_btnStart_clicked()
+{
+    m_strLoader.speedTest(m_spdData.at(ui->cbxServer->currentIndex()).url, 15);
+}
+
+void QSpeedTestDlg::on_btnStop_clicked()
+{
+    m_strLoader.endSpeedTest();
+}

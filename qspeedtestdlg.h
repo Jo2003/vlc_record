@@ -15,7 +15,9 @@
     #define __20150916_QSPEEDTESTDLG_H
 
 #include <QDialog>
+// #include "externals_inc.h"
 #include "cparser.h"
+#include "cstreamloader.h"
 
 //---------------------------------------------------------------------------
 // Ui namespace
@@ -41,10 +43,18 @@ public:
     const QString& chosenOne();
     const QSpeedDataVector& data();
 
+protected:
+    CStreamLoader m_strLoader;
+
 private:
     Ui::QSpeedTestDlg *ui;
     QSpeedDataVector m_spdData;
     QString          m_chosenOne;
+
+private slots:
+    void slotSpeedData(int ms, int bytes);
+    void on_btnStart_clicked();
+    void on_btnStop_clicked();
 };
 
 #endif // __20150916_QSPEEDTESTDLG_H

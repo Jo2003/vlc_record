@@ -81,6 +81,8 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
    QString tmpUrl = sUrl;
    bUseTimerRec   = bTimerRec;
 
+   tFileCheck.setInterval(2000); // 2 sec ...
+
    mInfo(tr("Archive URL:\n --> %1").arg(sUrl));
 
    // patch stream prefix to allow the usage of QUrl ...
@@ -134,7 +136,7 @@ void CStreamLoader::speedTest(const QString &sUrl, int iSize)
     {
         if (m_pTmpFile->open())
         {
-            tFileCheck.setInterval(333);
+            tFileCheck.setInterval(500);
 
             setHost (url.host(), QHttp::ConnectionModeHttp, (url.port() == -1) ? 80 : url.port());
 
