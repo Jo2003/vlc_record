@@ -3572,23 +3572,64 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QSpeedTestDlg</name>
     <message>
-        <location filename="forms/qspeedtestdlg.ui" line="14"/>
-        <source>Dialog</source>
+        <location filename="forms/qspeedtestdlg.ui" line="17"/>
+        <source>Spped Test</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="forms/qspeedtestdlg.ui" line="25"/>
+        <location filename="forms/qspeedtestdlg.ui" line="40"/>
+        <source>Speed Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="49"/>
         <source>St&amp;art</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="forms/qspeedtestdlg.ui" line="32"/>
+        <location filename="forms/qspeedtestdlg.ui" line="59"/>
         <source>Sto&amp;p</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="forms/qspeedtestdlg.ui" line="39"/>
-        <source>TextLabel</source>
+        <location filename="forms/qspeedtestdlg.ui" line="78"/>
+        <source>Speed: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="71"/>
+        <source>x.xxx Mbit/s</source>
+        <oldsource>x.xx Mbps</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="85"/>
+        <source>Data: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="126"/>
+        <source>Test Results</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="115"/>
+        <source>Stream Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="117"/>
+        <source>Download Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="166"/>
+        <source>%1 MBit/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="143"/>
+        <source>%1 Mbit/s</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

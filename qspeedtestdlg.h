@@ -15,9 +15,12 @@
     #define __20150916_QSPEEDTESTDLG_H
 
 #include <QDialog>
-// #include "externals_inc.h"
 #include "cparser.h"
 #include "cstreamloader.h"
+#include <QShowEvent>
+
+
+#define __DEF_DOWN_SIZE 15 ///< 15 MB
 
 //---------------------------------------------------------------------------
 // Ui namespace
@@ -45,14 +48,17 @@ public:
 
 protected:
     CStreamLoader m_strLoader;
+    virtual void showEvent(QShowEvent *e);
 
 private:
     Ui::QSpeedTestDlg *ui;
     QSpeedDataVector m_spdData;
     QString          m_chosenOne;
+    double           m_dSpeed;
 
 private slots:
     void slotSpeedData(int ms, int bytes);
+    void slotSpeedTestDone();
     void on_btnStart_clicked();
     void on_btnStop_clicked();
 };

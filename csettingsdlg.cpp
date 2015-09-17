@@ -2056,6 +2056,9 @@ void CSettingsDlg::slotSpeedTestData(QSpeedDataVector spdData)
 {
     m_pSpdTestDlg->setData(spdData);
 
+    QPoint p = mapToGlobal(m_ui->pushSpeedTest->pos());
+    m_pSpdTestDlg->move(p.x(), p.y());
+
     if (m_pSpdTestDlg->exec() == QDialog::Accepted)
     {
         /*
@@ -2340,6 +2343,9 @@ void CSettingsDlg::on_spinBoxFontDelta_valueChanged (int arg1)
 //---------------------------------------------------------------------------
 void CSettingsDlg::on_pushStrStd_clicked()
 {
+    QPoint p = mapToGlobal(m_ui->pushStrStd->pos());
+    m_pStrStdDlg->move(p.x(), p.y());
+
     if (m_pStrStdDlg->exec() == QDialog::Accepted)
     {
         // any change in name ... ?
