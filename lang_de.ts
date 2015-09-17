@@ -2316,12 +2316,12 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="282"/>
+        <location filename="cstreamloader.cpp" line="283"/>
         <source>Request #%1 done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="291"/>
+        <location filename="cstreamloader.cpp" line="292"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
@@ -3603,7 +3603,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="forms/qspeedtestdlg.ui" line="126"/>
+        <location filename="forms/qspeedtestdlg.ui" line="127"/>
+        <source>x.xxx MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="forms/qspeedtestdlg.ui" line="139"/>
         <source>Test Results</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3618,12 +3623,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="166"/>
+        <location filename="qspeedtestdlg.cpp" line="147"/>
+        <source>%1 MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="177"/>
         <source>%1 MBit/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="143"/>
+        <location filename="qspeedtestdlg.cpp" line="144"/>
         <source>%1 Mbit/s</source>
         <translation type="unfinished"></translation>
     </message>

@@ -19,16 +19,16 @@
   <property name="styleSheet">
    <string notr="true">QSlider::groove:horizontal#hSliderSpeed {
    border: 1px solid #999999;
-   height: 16px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+   height: 15px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
    background-color: qlineargradient(spread:repeat, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 0, 0, 255), stop:0.125 rgba(255, 250, 41, 255), stop:0.25 rgba(118, 255, 97, 255), stop:1 rgba(0, 165, 41, 255));
    margin: 2px 0;
 }
 
  QSlider::handle:horizontal#hSliderSpeed {
      background-color: white;
-     border: 1px solid #5c5c5c;
-     width: 3px;
-     margin: -6px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+     width: 4px;
+     border: 1px solid rgb(88, 88, 88);
+     margin: -2px 0; /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
      border-radius: 2px;
  }
 </string>
@@ -97,6 +97,12 @@
           <property name="value">
            <number>0</number>
           </property>
+          <property name="textVisible">
+           <bool>false</bool>
+          </property>
+          <property name="format">
+           <string/>
+          </property>
          </widget>
         </item>
         <item row="0" column="1">
@@ -112,6 +118,13 @@
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="labData">
+          <property name="text">
+           <string>x.xxx MB</string>
           </property>
          </widget>
         </item>

@@ -165,6 +165,7 @@ void CStreamLoader::endSpeedTest()
     abort();
     tFileCheck.stop();
 
+    emit sigDwnSpeed(m_tmDwn.elapsed(), m_pTmpFile->size());
     emit sigSpeedTestEnd();
 
     delete m_pTmpFile;

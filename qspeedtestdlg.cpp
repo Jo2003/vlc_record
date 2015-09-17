@@ -136,14 +136,25 @@ void QSpeedTestDlg::slotSpeedData(int ms, int bytes)
 {
     if ((ms > 0) && (bytes > 0))
     {
-        m_dSpeed = (double)(bytes * 8 / 1024 / 1024) / (double)(ms / 1000);
+        m_dSpeed = (double)(bytes * 8.0 / 1024.0 / 1024.0) / (double)(ms / 1000.0);
+        double mb = ((double)bytes / 1024.0 / 1024.0);
 
         if (m_dSpeed > 0.2)
         {
             QString s = tr("%1 Mbit/s").arg(m_dSpeed, 0, 'f', 3);
             ui->labSpeed->setText(s);
 
-            ui->progressData->setValue(bytes);
+            s = tr("%1 MB").arg(mb, 0, 'f', 3);
+            ui->labData->setText(s);
+
+            if (mb >= __DEF_DOWN_SIZE)
+            {
+                ui->progressData->setValue(ui->progressData->maximum());
+            }
+            else
+            {
+                ui->progressData->setValue(bytes);
+            }
             ui->hSliderSpeed->setValue(1024 * m_dSpeed);
         }
     }
