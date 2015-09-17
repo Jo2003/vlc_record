@@ -1,7 +1,6 @@
 DEFINES += _TASTE_KARTINA_TV \
            _HAS_VOD_MANAGER \
-           _EXT_EPG \
-           __VLC_FOR_HLS
+           _EXT_EPG
 RESOURCES += kartina_tv.qrc
 HEADERS += tastes/defines_kartina_tv.h \
     tastes/more_kartina_translations.h

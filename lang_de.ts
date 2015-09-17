@@ -2293,35 +2293,35 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
 <context>
     <name>CStreamLoader</name>
     <message>
-        <location filename="cstreamloader.cpp" line="86"/>
+        <location filename="cstreamloader.cpp" line="87"/>
         <source>Archive URL:
  --&gt; %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="93"/>
+        <location filename="cstreamloader.cpp" line="94"/>
         <source>Download Stream from http://%1:%2
  --&gt; to %3</source>
         <oldsource>Download Stream from http://%1:%2</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="110"/>
+        <location filename="cstreamloader.cpp" line="111"/>
         <source>Request #%1 sent ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="145"/>
+        <location filename="cstreamloader.cpp" line="146"/>
         <source>Request #%1 (%2) sent ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="280"/>
+        <location filename="cstreamloader.cpp" line="282"/>
         <source>Request #%1 done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="289"/>
+        <location filename="cstreamloader.cpp" line="291"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>

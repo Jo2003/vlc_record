@@ -80,6 +80,7 @@ void CStreamLoader::downloadStream (const QString &sUrl, const QString &sFileNam
 {
    QString tmpUrl = sUrl;
    bUseTimerRec   = bTimerRec;
+   m_bSpeedTest   = false;
 
    tFileCheck.setInterval(2000); // 2 sec ...
 
@@ -163,7 +164,6 @@ void CStreamLoader::endSpeedTest()
 {
     abort();
     tFileCheck.stop();
-    m_bSpeedTest = false;
 
     emit sigSpeedTestEnd();
 
@@ -272,26 +272,29 @@ void CStreamLoader::slotStreamDataAvailable()
 \-----------------------------------------------------------------------------*/
 void CStreamLoader::handleEndRequest(int id, bool err)
 {
-   // is this our request ... ?
-   if (id == iReq)
-   {
-      if (!err)
-      {
-         mInfo(tr("Request #%1 done!").arg(id));
+    if (!m_bSpeedTest)
+    {
+        // is this our request ... ?
+        if (id == iReq)
+        {
+            if (!err)
+            {
+                mInfo(tr("Request #%1 done!").arg(id));
 
-         // This shouldn't happen. The download should end only
-         // on request. In case it ends, we will close the
-         // file to which data were downloaded ...
-         fStream.close();
-      }
-      else
-      {
-         mErr(tr("Error in Request: %1!").arg(errorString()));
+                // This shouldn't happen. The download should end only
+                // on request. In case it ends, we will close the
+                // file to which data were downloaded ...
+                fStream.close();
+            }
+            else
+            {
+                mErr(tr("Error in Request: %1!").arg(errorString()));
 
-         // send error signal ...
-         emit sigError(errorString());
-      }
-   }
+                // send error signal ...
+                emit sigError(errorString());
+            }
+        }
+    }
 }
 
 /*=============================================================================\
