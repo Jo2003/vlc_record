@@ -2316,12 +2316,12 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="283"/>
+        <location filename="cstreamloader.cpp" line="286"/>
         <source>Request #%1 done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cstreamloader.cpp" line="292"/>
+        <location filename="cstreamloader.cpp" line="295"/>
         <source>Error in Request: %1!</source>
         <translation></translation>
     </message>
@@ -3618,27 +3618,29 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="128"/>
+        <location filename="qspeedtestdlg.cpp" line="39"/>
+        <location filename="qspeedtestdlg.cpp" line="155"/>
         <source>Stream Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="130"/>
+        <location filename="qspeedtestdlg.cpp" line="41"/>
+        <location filename="qspeedtestdlg.cpp" line="157"/>
         <source>Download Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="162"/>
+        <location filename="qspeedtestdlg.cpp" line="185"/>
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="193"/>
+        <location filename="qspeedtestdlg.cpp" line="216"/>
         <source>%1 MBit/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="159"/>
+        <location filename="qspeedtestdlg.cpp" line="182"/>
         <source>%1 Mbit/s</source>
         <translation type="unfinished"></translation>
     </message>

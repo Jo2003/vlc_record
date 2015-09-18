@@ -50,6 +50,7 @@ public:
 protected:
     CStreamLoader m_strLoader;
     virtual void showEvent(QShowEvent *e);
+    virtual void changeEvent(QEvent *e);
 
 private:
     Ui::QSpeedTestDlg *ui;
@@ -57,11 +58,13 @@ private:
     QString          m_chosenOne;
     double           m_dSpeed;
 
+public slots:
+    void on_btnStop_clicked();
+
 private slots:
     void slotSpeedData(int ms, int bytes);
     void slotSpeedTestDone();
     void on_btnStart_clicked();
-    void on_btnStop_clicked();
     void on_buttonBox_accepted();
 };
 

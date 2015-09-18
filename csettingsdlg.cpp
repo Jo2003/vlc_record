@@ -382,6 +382,9 @@ void CSettingsDlg::changeEvent(QEvent *e)
           // set company name ...
           QString s = m_ui->groupAccount->title();
           m_ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
+
+          // stream standard
+          m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
        }
        break;
     default:
@@ -2067,6 +2070,9 @@ void CSettingsDlg::slotSpeedTestData(QSpeedDataVector spdData)
             autoSetStreamServer(m_pSpdTestDlg->chosenOne());
         }
     }
+
+    // in case there is something running ...
+    m_pSpdTestDlg->on_btnStop_clicked();
 }
 
 //---------------------------------------------------------------------------

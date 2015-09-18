@@ -35,6 +35,12 @@ QSpeedTestDlg::QSpeedTestDlg(QWidget *parent, Qt::WindowFlags f) :
     ui->hSliderSpeed->setMinimum(0);
     ui->hSliderSpeed->setMaximum(16000);
 
+    QTableWidgetItem *pItem;
+    pItem= new QTableWidgetItem(tr("Stream Server"));
+    ui->tableResults->setHorizontalHeaderItem(0, pItem);
+    pItem= new QTableWidgetItem(tr("Download Speed"));
+    ui->tableResults->setHorizontalHeaderItem(1, pItem);
+
     connect (&m_strLoader, SIGNAL(sigDwnSpeed(int,int)), this, SLOT(slotSpeedData(int,int)));
     connect (&m_strLoader, SIGNAL(sigSpeedTestEnd()), this, SLOT(slotSpeedTestDone()));
 }
@@ -122,20 +128,37 @@ bool QSpeedTestDlg::save()
 //---------------------------------------------------------------------------
 void QSpeedTestDlg::showEvent(QShowEvent *e)
 {
-    ui->tableResults->clear();
+    QDialog::showEvent(e);
 
-    QTableWidgetItem *pItem;
-    pItem= new QTableWidgetItem(tr("Stream Server"));
-    ui->tableResults->setHorizontalHeaderItem(0, pItem);
-    pItem= new QTableWidgetItem(tr("Download Speed"));
-    ui->tableResults->setHorizontalHeaderItem(1, pItem);
-
+    ui->tableResults->clearContents();
+    ui->tableResults->setRowCount(0);
     int w = ui->tableResults->width();
     ui->tableResults->setColumnWidth(0, w / 2);
-
     ui->chkSaveFastest->setChecked(false);
+}
 
-    QDialog::showEvent(e);
+//---------------------------------------------------------------------------
+//! \brief   catch language change
+//
+//! \author  Jo2003
+//! \date    17.09.2015
+//
+//! \param   e [in] (QEvent*) change event
+//---------------------------------------------------------------------------
+void QSpeedTestDlg::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange)
+    {
+        ui->retranslateUi(this);
+
+        QTableWidgetItem *pItem;
+        pItem= new QTableWidgetItem(tr("Stream Server"));
+        ui->tableResults->setHorizontalHeaderItem(0, pItem);
+        pItem= new QTableWidgetItem(tr("Download Speed"));
+        ui->tableResults->setHorizontalHeaderItem(1, pItem);
+    }
+
+    QDialog::changeEvent(e);
 }
 
 //---------------------------------------------------------------------------
