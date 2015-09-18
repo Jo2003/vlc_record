@@ -2061,21 +2061,11 @@ void CSettingsDlg::slotSpeedTestData(QSpeedDataVector spdData)
 
     if (m_pSpdTestDlg->exec() == QDialog::Accepted)
     {
-        /*
-        // any change in name ... ?
-        if (m_ui->pushStrStd->text() != m_pStrStdDlg->getCurrName())
+        if (!m_pSpdTestDlg->chosenOne().isEmpty())
         {
-            m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
-            emit sigSetStrStd(m_pStrStdDlg->getCurrVal());
+            m_ui->chkStrSrvAuto->setChecked(false);
+            autoSetStreamServer(m_pSpdTestDlg->chosenOne());
         }
-        */
-    }
-    else
-    {
-        /*
-        // revert any change ...
-        m_pStrStdDlg->setCurrName(m_ui->pushStrStd->text());
-        */
     }
 }
 

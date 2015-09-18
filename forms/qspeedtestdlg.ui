@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>435</width>
-    <height>429</height>
+    <height>481</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -157,6 +157,13 @@
         <column/>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="chkSaveFastest">
+        <property name="text">
+         <string>use fastest tested server</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -166,7 +173,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
      </property>
     </widget>
    </item>

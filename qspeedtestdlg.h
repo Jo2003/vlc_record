@@ -45,6 +45,7 @@ public:
     void setData (const QSpeedDataVector& spdData);
     const QString& chosenOne();
     const QSpeedDataVector& data();
+    bool  save();
 
 protected:
     CStreamLoader m_strLoader;
@@ -61,6 +62,7 @@ private slots:
     void slotSpeedTestDone();
     void on_btnStart_clicked();
     void on_btnStop_clicked();
+    void on_buttonBox_accepted();
 };
 
 #endif // __20150916_QSPEEDTESTDLG_H

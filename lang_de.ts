@@ -3592,6 +3592,11 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="forms/qspeedtestdlg.ui" line="163"/>
+        <source>use fastest tested server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="forms/qspeedtestdlg.ui" line="71"/>
         <source>x.xxx Mbit/s</source>
         <oldsource>x.xx Mbps</oldsource>
@@ -3613,27 +3618,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="115"/>
+        <location filename="qspeedtestdlg.cpp" line="128"/>
         <source>Stream Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="117"/>
+        <location filename="qspeedtestdlg.cpp" line="130"/>
         <source>Download Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="147"/>
+        <location filename="qspeedtestdlg.cpp" line="162"/>
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="178"/>
+        <location filename="qspeedtestdlg.cpp" line="193"/>
         <source>%1 MBit/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="144"/>
+        <location filename="qspeedtestdlg.cpp" line="159"/>
         <source>%1 Mbit/s</source>
         <translation type="unfinished"></translation>
     </message>

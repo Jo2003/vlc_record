@@ -100,6 +100,19 @@ const QSpeedDataVector &QSpeedTestDlg::data()
 }
 
 //---------------------------------------------------------------------------
+//! \brief   fastest server to save?
+//
+//! \author  Jo2003
+//! \date    16.09.2015
+//
+//! \return  true -> save; false -> ignore
+//---------------------------------------------------------------------------
+bool QSpeedTestDlg::save()
+{
+    return ui->chkSaveFastest->isChecked();
+}
+
+//---------------------------------------------------------------------------
 //! \brief   things to do when the dialog is shown
 //
 //! \author  Jo2003
@@ -119,6 +132,8 @@ void QSpeedTestDlg::showEvent(QShowEvent *e)
 
     int w = ui->tableResults->width();
     ui->tableResults->setColumnWidth(0, w / 2);
+
+    ui->chkSaveFastest->setChecked(false);
 
     QDialog::showEvent(e);
 }
@@ -211,4 +226,30 @@ void QSpeedTestDlg::on_btnStart_clicked()
 void QSpeedTestDlg::on_btnStop_clicked()
 {
     m_strLoader.endSpeedTest();
+}
+
+//---------------------------------------------------------------------------
+//! \brief   store ip of fastest server
+//
+//! \author  Jo2003
+//! \date    18.09.2015
+//---------------------------------------------------------------------------
+void QSpeedTestDlg::on_buttonBox_accepted()
+{
+    m_chosenOne.clear();
+
+    if (save())
+    {
+        double  val = 0.0, tmpVal;
+        for (int i = 0; i < ui->tableResults->rowCount(); i++)
+        {
+            tmpVal = ui->tableResults->item(i, 1)->data(Qt::UserRole).toDouble();
+
+            if (tmpVal > val)
+            {
+                val         = tmpVal;
+                m_chosenOne = ui->tableResults->item(i, 0)->data(Qt::UserRole).toString();
+            }
+        }
+    }
 }
