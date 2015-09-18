@@ -3633,7 +3633,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="177"/>
+        <location filename="qspeedtestdlg.cpp" line="178"/>
         <source>%1 MBit/s</source>
         <translation type="unfinished"></translation>
     </message>

@@ -173,8 +173,10 @@ void QSpeedTestDlg::slotSpeedTestDone()
 
     QTableWidgetItem *pItem;
     pItem = new QTableWidgetItem(ui->cbxServer->currentText());
+    pItem->setData(Qt::UserRole, m_spdData.at(ui->cbxServer->currentIndex()).ip);
     ui->tableResults->setItem(row, 0, pItem);
     pItem = new QTableWidgetItem(tr("%1 MBit/s").arg(m_dSpeed, 0, 'f', 3));
+    pItem->setData(Qt::UserRole, m_dSpeed);
     ui->tableResults->setItem(row, 1, pItem);
 
     ui->btnStart->setEnabled(true);
