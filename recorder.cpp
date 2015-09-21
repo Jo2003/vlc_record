@@ -1666,6 +1666,12 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    // response for available VOD languages (where supported) ...
    mkCase(CIptvDefs::REQ_VOD_LANG, slotVodLang(resp));
 
+#ifdef _TASTE_STALKER
+   ///////////////////////////////////////////////
+   // response for available VOD languages (where supported) ...
+   mkCase(CIptvDefs::REQ_USER, userData(resp));
+#endif // _TASTE_STALKER
+
    ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
@@ -1929,6 +1935,9 @@ void Recorder::slotStreamURL(const QString &str)
    TouchPlayCtrlBtns();
 }
 
+#ifdef _TASTE_STALKER
+    #include "qstalker_rec.hpp"
+#else
 /* -----------------------------------------------------------------\
 |  Method: slotCookie
 |  Begin: 19.01.2010 / 16:10:23
@@ -2064,6 +2073,7 @@ void Recorder::slotCookie (const QString &str)
       pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
    }
 }
+#endif // _TASTE_STALKER
 
 /* -----------------------------------------------------------------\
 |  Method: slotTimeShift

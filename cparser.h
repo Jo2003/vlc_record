@@ -150,6 +150,14 @@ namespace cparser
       uint    uiEnd;
       QString sShow;
    };
+
+   struct SAuth
+   {
+       QString token;
+       int     expires;
+       QString refreshToken;
+       int     userId;
+   };
 }
 
 // make life easier ...

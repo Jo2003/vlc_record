@@ -187,6 +187,7 @@ private:
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
+    cparser::SAuth                  mAuth;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -225,6 +226,9 @@ protected:
     virtual void hideEvent (QHideEvent * event);
     virtual void closeEvent (QCloseEvent *event);
     virtual void keyPressEvent (QKeyEvent *event);
+#ifdef _TASTE_STALKER
+    void userData (const QString& resp);
+#endif // _TASTE_STALKER
 
 private slots:
     void slotBwd();

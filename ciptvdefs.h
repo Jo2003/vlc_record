@@ -73,6 +73,7 @@ public:
       REQ_GET_ALANG,
       REQ_VOD_LANG,
       REQ_NOOP,
+      REQ_USER,
       REQ_UNKNOWN = 255
    };
 

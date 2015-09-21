@@ -78,6 +78,7 @@ protected:
    int  checkResponse (const QString &sResp, QString& sCleanResp);
    virtual void getVodLang();
    const QString& apiUrl();
+   virtual void userData(int id);
 
 private:
    QString   sUsr;

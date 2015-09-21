@@ -282,6 +282,9 @@ int QStalkerClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, con
       case CIptvDefs::REQ_VOD_LANG:
          getVodLang();
          break;
+      case CIptvDefs::REQ_USER:
+         userData(par_1.toInt());
+         break;
       default:
          iRet = -1;
          break;
@@ -1111,7 +1114,24 @@ int QStalkerClient::checkResponse (const QString &sResp, QString &sCleanResp)
 \----------------------------------------------------------------- */
 const QString& QStalkerClient::apiUrl()
 {
-   return sApiUrl;
+    return sApiUrl;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   request user settings
+//
+//! \author  Jo2003
+//! \date    21.09.2015
+//
+//! \param   id [in] (int) user id
+//
+//---------------------------------------------------------------------------
+void QStalkerClient::userData(int id)
+{
+    mInfo(tr("Get user settings ..."));
+    QString req = QString("users/%1/settings").arg(id);
+    q_get((int)CIptvDefs::REQ_USER, sApiUrl + req);
 }
 
 /* -----------------------------------------------------------------\

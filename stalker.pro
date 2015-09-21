@@ -6,7 +6,8 @@ include (qtjson/qtjson.pri)
 HEADERS += tastes/defines_stalker.h \
            qstalkerclient.h \
            cstdjsonparser.h \
-           qstalkerparser.h
+           qstalkerparser.h \
+           qstalker_rec.hpp
 SOURCES += qstalkerclient.cpp \
            qstalkerparser.cpp \
            cstdjsonparser.cpp
