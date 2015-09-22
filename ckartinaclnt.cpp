@@ -493,8 +493,7 @@ void CKartinaClnt::GetServer()
    mInfo(tr("Request Stream Server List ..."));
 
    q_get((int)CIptvDefs::REQ_GET_SERVER,
-         sApiUrl + QString("settings?var=stream_server&cli_serial=%1")
-         .arg(getStbSerial()));
+         sApiUrl + QString("settings?var=stream_server"));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -515,7 +514,7 @@ void CKartinaClnt::GetTimeShift()
    mInfo(tr("Request Time Shift ..."));
 
    q_get((int)CIptvDefs::REQ_GETTIMESHIFT,
-         sApiUrl + QString("settings?var=timeshift&cli_serial=%1").arg(getStbSerial()));
+         sApiUrl + QString("settings?var=timeshift"));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -536,9 +535,8 @@ void CKartinaClnt::SetTimeShift (int iHours)
    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
    q_post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "settings_set",
-               QString("var=timeshift&val=%1&cli_serial=%2")
-                  .arg(iHours)
-                  .arg(getStbSerial()));
+               QString("var=timeshift&val=%1")
+                  .arg(iHours));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -559,7 +557,7 @@ void CKartinaClnt::GetBitRate()
    mInfo(tr("Request Bit Rate ..."));
 
    q_get((int)CIptvDefs::REQ_GETBITRATE,
-         sApiUrl + QString("settings?var=bitrate&cli_serial=%1").arg(getStbSerial()));
+         sApiUrl + QString("settings?var=bitrate"));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -580,9 +578,8 @@ void CKartinaClnt::SetBitRate(int iRate)
    mInfo(tr("Set BitRate to %1 kbit/s ...").arg(iRate));
 
    q_post((int)CIptvDefs::REQ_SETBITRATE, sApiUrl + "settings_set",
-               QString("var=bitrate&val=%1&cli_serial=%2")
-               .arg(iRate)
-               .arg(getStbSerial()));
+               QString("var=bitrate&val=%1")
+               .arg(iRate));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -631,9 +628,7 @@ void CKartinaClnt::SetServer (const QString &sIp)
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
    q_post((int)CIptvDefs::REQ_SERVER, sApiUrl + "settings_set",
-               QString("var=stream_server&val=%1&cli_serial=%2")
-               .arg(sIp)
-               .arg(getStbSerial()));
+               QString("var=stream_server&val=%1").arg(sIp));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -654,9 +649,7 @@ void CKartinaClnt::SetHttpBuffer(int iTime)
    mInfo(tr("Set Http Buffer to %1 msec. ...").arg(iTime));
 
    q_post((int)CIptvDefs::REQ_HTTPBUFF, sApiUrl + "settings_set",
-               QString("var=http_caching&val=%1&cli_serial=%2")
-               .arg(iTime)
-               .arg(getStbSerial()));
+               QString("var=http_caching&val=%1").arg(iTime));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1038,8 +1031,7 @@ void CKartinaClnt::setStrStd(const QString &s)
 {
     mInfo(tr("Change stream standard to %1").arg(s));
 
-    QString req = QString("var=stream_standard&val=%1&cli_serial=%2")
-          .arg(s).arg(getStbSerial());
+    QString req = QString("var=stream_standard&val=%1").arg(s);
 
 
     q_post((int)CIptvDefs::REQ_STRSTD, sApiUrl + "settings_set", req);
