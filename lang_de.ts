@@ -330,12 +330,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="810"/>
         <source>Request auto stream server ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="825"/>
         <source>Request speed test data ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="847"/>
@@ -380,7 +380,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="ckartinaclnt.cpp" line="1032"/>
         <source>Change stream standard to %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="ckartinaclnt.cpp" line="1056"/>
@@ -1066,22 +1066,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="25"/>
         <source>Start NO-SLEEP-MODE: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="26"/>
         <source>End NO-SLEEP-MODE: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="200"/>
         <source>Ready for libVLC release ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="205"/>
         <source>Wait for player to stop ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="554"/>
@@ -1702,7 +1702,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.cpp" line="2075"/>
         <source>Set new nominal bitrate: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="435"/>
@@ -2092,12 +2092,12 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
     <message>
         <location filename="forms/csettingsdlg.ui" line="208"/>
         <source>Auto</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="230"/>
         <source>Speed Test</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="319"/>
@@ -2107,12 +2107,12 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
     <message>
         <location filename="forms/csettingsdlg.ui" line="326"/>
         <source>Stream Standard: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="333"/>
         <source>PushButton</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="635"/>
@@ -2318,7 +2318,7 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
     <message>
         <location filename="cstreamloader.cpp" line="146"/>
         <source>Request #%1 (%2) sent ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cstreamloader.cpp" line="286"/>
@@ -3190,79 +3190,79 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="qhttp/qhttp.cpp" line="370"/>
         <source>HTTPS connection requested but SSL support not compiled in</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="1579"/>
         <location filename="qhttp/qhttp.cpp" line="2375"/>
         <source>Unknown error</source>
-        <translation type="unfinished">Unbekannter Fehler</translation>
+        <translation>Unbekannter Fehler</translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="1830"/>
         <source>Request aborted</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2386"/>
         <source>No server set to connect to</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2550"/>
         <source>Wrong content length</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2554"/>
         <source>Server closed connection unexpectedly</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2609"/>
         <source>Connection refused (or timed out)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2612"/>
         <source>Host %1 not found</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2632"/>
         <source>HTTP request failed</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2726"/>
         <source>Invalid HTTP response header</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2770"/>
         <source>Unknown authentication method</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2780"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2784"/>
         <source>Authentication required</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2867"/>
         <location filename="qhttp/qhttp.cpp" line="2915"/>
         <source>Invalid HTTP chunked body</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qhttp/qhttp.cpp" line="2953"/>
         <source>Error writing response to device</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -3341,12 +3341,12 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="qiptvctrlclient.cpp" line="690"/>
         <source>Interface: &apos;%1&apos;; MAC: %2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qiptvctrlclient.cpp" line="704"/>
         <source>cli_serial &apos;%2&apos; from source &apos;%1&apos; created ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qiptvctrlclient.cpp" line="724"/>
@@ -3356,7 +3356,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="qiptvctrlclient.cpp" line="742"/>
         <source>Unused(!) network config &apos;%1&apos;, id &apos;%2&apos; changed to state %3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qiptvctrlclient.cpp" line="762"/>
@@ -3573,113 +3573,111 @@ p, li { white-space: pre-wrap; }
     <name>QSpeedTestDlg</name>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="17"/>
-        <source>Spped Test</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="forms/qspeedtestdlg.ui" line="40"/>
         <source>Speed Test</source>
-        <translation type="unfinished"></translation>
+        <oldsource>Spped Test</oldsource>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="49"/>
         <source>St&amp;art</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="59"/>
         <source>Sto&amp;p</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="78"/>
         <source>Speed: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="164"/>
         <source>use fastest tested server</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutze den schnellsten Server</translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="71"/>
         <source>x.xxx Mbit/s</source>
         <oldsource>x.xx Mbps</oldsource>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="85"/>
         <source>Data: </source>
-        <translation type="unfinished"></translation>
+        <translation>Daten: </translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="127"/>
         <source>x.xxx MB</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="139"/>
         <source>Test Results</source>
-        <translation type="unfinished"></translation>
+        <translation>Test Resultate</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="34"/>
         <location filename="qspeedtestdlg.cpp" line="183"/>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Save</source>
+        <oldsource>Save</oldsource>
+        <translation>&amp;Speichern</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="45"/>
         <location filename="qspeedtestdlg.cpp" line="176"/>
         <source>Stream Server</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="47"/>
         <location filename="qspeedtestdlg.cpp" line="178"/>
         <source>Download Speed</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="49"/>
         <location filename="qspeedtestdlg.cpp" line="180"/>
         <source>Suggested Bitrate</source>
-        <translation type="unfinished"></translation>
+        <translation>Passende Bitrate</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="211"/>
         <source>%1 MB</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="242"/>
         <source>Premium</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="243"/>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="244"/>
         <source>Eco</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="245"/>
         <source>Mobile</source>
-        <translation type="unfinished">Handy</translation>
+        <translation>Handy</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="259"/>
         <source>%1 MBit/s</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="208"/>
         <source>%1 Mbit/s</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -3700,19 +3698,19 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/qstrstandarddlg.ui" line="14"/>
         <source>Stream Standard</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="qstrstandarddlg.cpp" line="83"/>
         <location filename="qstrstandarddlg.cpp" line="183"/>
         <source>This is the default setting.</source>
         <oldsource>This is the default.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Das ist die Standardeinstellung.</translation>
     </message>
     <message>
         <location filename="qstrstandarddlg.cpp" line="155"/>
         <source>N/A</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -3885,115 +3883,115 @@ p, li { white-space: pre-wrap; }
         <location filename="recorder.cpp" line="5104"/>
         <location filename="recorder.cpp" line="5125"/>
         <source>Mon</source>
-        <translation type="unfinished">Mo</translation>
+        <translation>Mo</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5105"/>
         <location filename="recorder.cpp" line="5126"/>
         <source>Tue</source>
-        <translation type="unfinished">Di</translation>
+        <translation>Di</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5106"/>
         <location filename="recorder.cpp" line="5127"/>
         <source>Wed</source>
-        <translation type="unfinished">Mi</translation>
+        <translation>Mi</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5107"/>
         <location filename="recorder.cpp" line="5128"/>
         <source>Thu</source>
-        <translation type="unfinished">Do</translation>
+        <translation>Do</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5108"/>
         <location filename="recorder.cpp" line="5129"/>
         <source>Fri</source>
-        <translation type="unfinished">Fr</translation>
+        <translation>Fr</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5109"/>
         <location filename="recorder.cpp" line="5130"/>
         <source>Sat</source>
-        <translation type="unfinished">Sa</translation>
+        <translation>Sa</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5118"/>
         <location filename="recorder.cpp" line="5131"/>
         <source>Sun</source>
-        <translation type="unfinished">So</translation>
+        <translation>So</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4772"/>
         <source>Volume +</source>
-        <translation type="unfinished">Lauter</translation>
+        <translation>Lauter</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4773"/>
         <source>Volume -</source>
-        <translation type="unfinished">Leiser</translation>
+        <translation>Leiser</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5779"/>
         <source>Question</source>
-        <translation type="unfinished">Frage</translation>
+        <translation>Frage</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2737"/>
         <location filename="recorder.cpp" line="2854"/>
         <location filename="recorder.cpp" line="4105"/>
         <source>Length: %1 min.</source>
-        <translation type="unfinished">Länge: %1 min.</translation>
+        <translation>Länge: %1 min.</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5780"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
-        <translation type="unfinished">Aufnahme läuft.&lt;br /&gt; &lt;br /&gt;Sind Sie sicher, dass Sie die Aufnahme abbrechen wollen?</translation>
+        <translation>Aufnahme läuft.&lt;br /&gt; &lt;br /&gt;Sind Sie sicher, dass Sie die Aufnahme abbrechen wollen?</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3241"/>
         <source>Remove from favourites</source>
-        <translation type="unfinished">Aus Favoriten entfernen</translation>
+        <translation>Aus Favoriten entfernen</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2168"/>
         <source>Your subscription will end in %1 day(s).&lt;br /&gt;Visit %2 to renew it!</source>
         <oldsource>Your abonnoment will expire in %1 day(s).&lt;br /&gt;Visit the web page of %2 to extend your subscription!</oldsource>
-        <translation type="unfinished">Ihr Abonnement wird in %1 Tagen auslaufen.&lt;br /&gt;Besuchen Sie %2, um Ihr Abonnement zu verlängern!</translation>
+        <translation>Ihr Abonnement wird in %1 Tagen auslaufen.&lt;br /&gt;Besuchen Sie %2, um Ihr Abonnement zu verlängern!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3248"/>
         <source>Add to favourites</source>
-        <translation type="unfinished">Zu Favoriten hinzufügen</translation>
+        <translation>Zu Favoriten hinzufügen</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3294"/>
         <location filename="recorder.cpp" line="4225"/>
         <source>Note</source>
-        <translation type="unfinished">Info</translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3295"/>
         <location filename="recorder.cpp" line="4226"/>
         <source>Max. number of favourites (%1) reached.</source>
-        <translation type="unfinished">Maximale Anzahl an Favoriten (%1) erreicht.</translation>
+        <translation>Maximale Anzahl an Favoriten (%1) erreicht.</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4778"/>
         <source>Minimal Interface</source>
-        <translation type="unfinished">Minimales Interface</translation>
+        <translation>Minimales Interface</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4911"/>
         <source>Positions saved ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5061"/>
         <location filename="recorder.cpp" line="5138"/>
         <source>1 week backward</source>
-        <translation type="unfinished">1 Woche zurück</translation>
+        <translation>1 Woche zurück</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="179"/>
@@ -4035,18 +4033,18 @@ dataDir: %1
         <location filename="recorder.cpp" line="4598"/>
         <location filename="recorder.cpp" line="5020"/>
         <source>All</source>
-        <translation type="unfinished">Alles</translation>
+        <translation>Alles</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5095"/>
         <location filename="recorder.cpp" line="5143"/>
         <source>1 week forward</source>
-        <translation type="unfinished">1 Woche nach vorn</translation>
+        <translation>1 Woche nach vorn</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4761"/>
         <source>Record</source>
-        <translation type="unfinished">Aufnahme</translation>
+        <translation>Aufnahme</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="139"/>
@@ -4059,12 +4057,12 @@ dataDir: %1
         <location filename="recorder.cpp" line="4978"/>
         <location filename="recorder.cpp" line="4997"/>
         <source>My Favourites</source>
-        <translation type="unfinished">Meine Favoriten</translation>
+        <translation>Meine Favoriten</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4020"/>
         <source>There is the new version %1 of %2 available.&lt;br /&gt;Click %3 to download!</source>
-        <translation type="unfinished">Es ist eine neue Version von %2 verfügbar (%1).&lt;br /&gt;Bitte klicken Sie %3, um das Update downzuladen!</translation>
+        <translation>Es ist eine neue Version von %2 verfügbar (%1).&lt;br /&gt;Bitte klicken Sie %3, um das Update downzuladen!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="57"/>
@@ -4087,236 +4085,236 @@ dataDir: %1
         <location filename="recorder.cpp" line="1548"/>
         <location filename="recorder.cpp" line="1582"/>
         <source>min</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1625"/>
         <source>Timeout while sending statistics.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1639"/>
         <source>Support request: set account to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1647"/>
         <source>Support request: set password to &apos;******&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1655"/>
         <source>Support request: set API server to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1717"/>
         <source>
   --&gt; HTTP Response &apos;%1&apos;, calling &apos;%2&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="1993"/>
         <source>Error %1 (%2) in request &apos;%3&apos;: %4</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2001"/>
         <source>%1 Client API Error:
 %2 (#%3)</source>
-        <translation type="unfinished">%1 Client API Fehler:
+        <translation>%1 Client API Fehler:
 %2 (#%3)</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2043"/>
         <source>logout done ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2068"/>
         <source>Authentication error</source>
-        <translation type="unfinished">Authentifizierungsfehler</translation>
+        <translation>Authentifizierungsfehler</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2239"/>
         <source>Using following timeshift: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2251"/>
         <source>Using Bitrate %1 kbit/s ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2260"/>
         <source>Active stream server is %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2275"/>
         <source>Active stream standard: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2296"/>
         <source>Support request: set stream server to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2314"/>
         <source>Support request: set buffering to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2332"/>
         <source>Support request: set timeshift to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2355"/>
         <source>Support request: change bitrate to &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2569"/>
         <source>%1 (%2) Timeshift: %3</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2576"/>
         <source>%1: %2 (%3)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2731"/>
         <location filename="recorder.cpp" line="2848"/>
         <source>%1 (Archive)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2738"/>
         <location filename="recorder.cpp" line="2855"/>
         <source> (Ar.)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3126"/>
         <source>timeRec reports: record done!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3144"/>
         <source>timeRec reports: record active!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3168"/>
         <source>vlcCtrl reports: vlc player ended!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3186"/>
         <source>vlcCtrl reports: vlc player active!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3379"/>
         <source>Remove &quot;%1&quot; from favourites</source>
-        <translation type="unfinished">&quot;%1&quot; aus den Favoriten entfernen</translation>
+        <translation>&quot;%1&quot; aus den Favoriten entfernen</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3490"/>
         <location filename="recorder.cpp" line="5522"/>
         <location filename="recorder.cpp" line="5588"/>
         <source>Can&apos;t start player!</source>
-        <translation type="unfinished">Kann Player nicht starten!</translation>
+        <translation>Kann Player nicht starten!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="3496"/>
         <location filename="recorder.cpp" line="5529"/>
         <location filename="recorder.cpp" line="5594"/>
         <source>Started player with pid #%1!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4023"/>
         <source>here</source>
-        <translation type="unfinished">hier</translation>
+        <translation>hier</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4031"/>
         <source>Program up to date!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4387"/>
         <source>Record timer timed out ... end pending record!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4433"/>
         <source>Unknown Message: %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4759"/>
         <source>Play / Pause</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4760"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4764"/>
         <source>About</source>
-        <translation type="unfinished">Programm Info</translation>
+        <translation>Programm Info</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4765"/>
         <source>Search EPG</source>
-        <translation type="unfinished">EPG-Suche</translation>
+        <translation>EPG-Suche</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4766"/>
         <source>Text Size +</source>
-        <translation type="unfinished">Schrift vergrößern</translation>
+        <translation>Schrift vergrößern</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4767"/>
         <source>Text Size -</source>
-        <translation type="unfinished">Schrift verkleinern</translation>
+        <translation>Schrift verkleinern</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4769"/>
         <source>Toggle Aspect Ratio</source>
-        <translation type="unfinished">Seitenverhältnis umschalten</translation>
+        <translation>Seitenverhältnis umschalten</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4770"/>
         <source>Toggle Crop Geometry</source>
-        <translation type="unfinished">Videoformat zuschneiden</translation>
+        <translation>Videoformat zuschneiden</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4771"/>
         <source>Toggle Fullscreen</source>
-        <translation type="unfinished">Fullscreen</translation>
+        <translation>Fullscreen</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4774"/>
         <source>Toggle Mute</source>
-        <translation type="unfinished">Lautlos</translation>
+        <translation>Lautlos</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="6174"/>
         <source>Playing file &apos;%1&apos; ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="6180"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1354"/>
@@ -4327,33 +4325,33 @@ dataDir: %1
     <message>
         <location filename="recorder.cpp" line="4779"/>
         <source>Next Channel</source>
-        <translation type="unfinished">Nächster Kanal</translation>
+        <translation>Nächster Kanal</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4780"/>
         <source>Previous Channel</source>
-        <translation type="unfinished">Vorheriger Kanal</translation>
+        <translation>Vorheriger Kanal</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4781"/>
         <source>Play Next Channel</source>
-        <translation type="unfinished">Zeige nächsten Kanal</translation>
+        <translation>Zeige nächsten Kanal</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4782"/>
         <source>Play Prev. Channel</source>
-        <translation type="unfinished">Zeige vorherigen Kanal</translation>
+        <translation>Zeige vorherigen Kanal</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4783"/>
         <source>Show EPG / VOD</source>
-        <translation type="unfinished">Zeige EPG / Videothek</translation>
+        <translation>Zeige EPG / Videothek</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4955"/>
         <source>&amp;restore %1</source>
         <oldsource>&amp;Restore %1!</oldsource>
-        <translation type="unfinished">%1 &amp;wiederherstellen</translation>
+        <translation>%1 &amp;wiederherstellen</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1523"/>
@@ -4365,35 +4363,35 @@ dataDir: %1
         <location filename="recorder.cpp" line="4976"/>
         <location filename="recorder.cpp" line="4987"/>
         <source>Newest</source>
-        <translation type="unfinished">Neueste</translation>
+        <translation>Neueste</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="4977"/>
         <location filename="recorder.cpp" line="4992"/>
         <source>Best</source>
-        <translation type="unfinished">Beste</translation>
+        <translation>Beste</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5297"/>
         <source>Exclude &apos;%1&apos; from channel list (hidden: %2, protected: %3).</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5348"/>
         <source>Can&apos;t load channel image &quot;%1&quot; ...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5432"/>
         <source>Save Stream as</source>
-        <translation type="unfinished">Speichere Stream als</translation>
+        <translation>Speichere Stream als</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="5849"/>
         <location filename="recorder.cpp" line="6062"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
-        <translation type="unfinished">Favorit %1</translation>
+        <translation>Favorit %1</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2068"/>
@@ -4401,12 +4399,12 @@ dataDir: %1
         <location filename="recorder.cpp" line="5522"/>
         <location filename="recorder.cpp" line="5588"/>
         <source>Error!</source>
-        <translation type="unfinished">Fehler!</translation>
+        <translation>Fehler!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2001"/>
         <source>Error</source>
-        <translation type="unfinished">Fehler</translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="175"/>

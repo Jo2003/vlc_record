@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Spped Test</string>
+   <string>Speed Test</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QSlider::groove:horizontal#hSliderSpeed {

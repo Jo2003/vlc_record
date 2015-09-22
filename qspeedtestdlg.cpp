@@ -31,7 +31,7 @@ QSpeedTestDlg::QSpeedTestDlg(QWidget *parent, Qt::WindowFlags f) :
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose, false);
 
-    m_pSave = new QPushButton(tr("Save"));
+    m_pSave = new QPushButton(tr("&Save"));
     m_pSave->setEnabled(false);
     ui->buttonBox->addButton(m_pSave, QDialogButtonBox::AcceptRole);
     connect (ui->chkSaveFastest, SIGNAL(toggled(bool)), m_pSave, SLOT(setEnabled(bool)));
@@ -180,7 +180,7 @@ void QSpeedTestDlg::changeEvent(QEvent *e)
         pItem = new QTableWidgetItem(tr("Suggested Bitrate"));
         ui->tableResults->setHorizontalHeaderItem(2, pItem);
 
-        m_pSave->setText(tr("Save"));
+        m_pSave->setText(tr("&Save"));
 
     }
 
