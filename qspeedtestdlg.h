@@ -44,6 +44,7 @@ public:
     ~QSpeedTestDlg();
     void setData (const QSpeedDataVector& spdData);
     const QString& chosenOne();
+    int nominalBr();
     const QSpeedDataVector& data();
     bool  save();
 
@@ -56,7 +57,9 @@ private:
     Ui::QSpeedTestDlg *ui;
     QSpeedDataVector m_spdData;
     QString          m_chosenOne;
+    int              m_nominalBr;
     double           m_dSpeed;
+    QPushButton     *m_pSave;
 
 public slots:
     void on_btnStop_clicked();

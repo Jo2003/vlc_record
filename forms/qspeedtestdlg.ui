@@ -148,11 +148,12 @@
          <bool>true</bool>
         </property>
         <property name="columnCount">
-         <number>2</number>
+         <number>3</number>
         </property>
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
         </attribute>
+        <column/>
         <column/>
         <column/>
        </widget>
@@ -173,7 +174,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+      <set>QDialogButtonBox::Cancel</set>
      </property>
     </widget>
    </item>

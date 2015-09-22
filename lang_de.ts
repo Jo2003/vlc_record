@@ -1700,6 +1700,11 @@ p, li { white-space: pre-wrap; }
         <translation>Wollen Sie den neuen Wert für Bitrate aktivieren? Der Player wrid dann zu &apos;Live&apos; wechseln.</translation>
     </message>
     <message>
+        <location filename="csettingsdlg.cpp" line="2075"/>
+        <source>Set new nominal bitrate: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="csettingsdlg.cpp" line="435"/>
         <location filename="csettingsdlg.cpp" line="918"/>
         <source>Mobile</source>
@@ -3592,7 +3597,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="forms/qspeedtestdlg.ui" line="163"/>
+        <location filename="forms/qspeedtestdlg.ui" line="164"/>
         <source>use fastest tested server</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3618,29 +3623,61 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="39"/>
-        <location filename="qspeedtestdlg.cpp" line="155"/>
+        <location filename="qspeedtestdlg.cpp" line="34"/>
+        <location filename="qspeedtestdlg.cpp" line="183"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="45"/>
+        <location filename="qspeedtestdlg.cpp" line="176"/>
         <source>Stream Server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="41"/>
-        <location filename="qspeedtestdlg.cpp" line="157"/>
+        <location filename="qspeedtestdlg.cpp" line="47"/>
+        <location filename="qspeedtestdlg.cpp" line="178"/>
         <source>Download Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="185"/>
+        <location filename="qspeedtestdlg.cpp" line="49"/>
+        <location filename="qspeedtestdlg.cpp" line="180"/>
+        <source>Suggested Bitrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="211"/>
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="216"/>
+        <location filename="qspeedtestdlg.cpp" line="242"/>
+        <source>Premium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="243"/>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="244"/>
+        <source>Eco</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="245"/>
+        <source>Mobile</source>
+        <translation type="unfinished">Handy</translation>
+    </message>
+    <message>
+        <location filename="qspeedtestdlg.cpp" line="259"/>
         <source>%1 MBit/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qspeedtestdlg.cpp" line="182"/>
+        <location filename="qspeedtestdlg.cpp" line="208"/>
         <source>%1 Mbit/s</source>
         <translation type="unfinished"></translation>
     </message>

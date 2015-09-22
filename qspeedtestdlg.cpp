@@ -13,6 +13,7 @@
  *///------------------------- (c) 2015 by Jo2003  --------------------------
 #include "qspeedtestdlg.h"
 #include "ui_qspeedtestdlg.h"
+#include "small_helpers.h"
 
 //---------------------------------------------------------------------------
 //! \brief   create dialg
@@ -30,16 +31,23 @@ QSpeedTestDlg::QSpeedTestDlg(QWidget *parent, Qt::WindowFlags f) :
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose, false);
 
+    m_pSave = new QPushButton(tr("Save"));
+    m_pSave->setEnabled(false);
+    ui->buttonBox->addButton(m_pSave, QDialogButtonBox::AcceptRole);
+    connect (ui->chkSaveFastest, SIGNAL(toggled(bool)), m_pSave, SLOT(setEnabled(bool)));
+
     ui->progressData->setMinimum(0);
     ui->progressData->setMaximum(__DEF_DOWN_SIZE * 1024 * 1024);
     ui->hSliderSpeed->setMinimum(0);
     ui->hSliderSpeed->setMaximum(16000);
 
     QTableWidgetItem *pItem;
-    pItem= new QTableWidgetItem(tr("Stream Server"));
+    pItem = new QTableWidgetItem(tr("Stream Server"));
     ui->tableResults->setHorizontalHeaderItem(0, pItem);
-    pItem= new QTableWidgetItem(tr("Download Speed"));
+    pItem = new QTableWidgetItem(tr("Download Speed"));
     ui->tableResults->setHorizontalHeaderItem(1, pItem);
+    pItem = new QTableWidgetItem(tr("Suggested Bitrate"));
+    ui->tableResults->setHorizontalHeaderItem(2, pItem);
 
     connect (&m_strLoader, SIGNAL(sigDwnSpeed(int,int)), this, SLOT(slotSpeedData(int,int)));
     connect (&m_strLoader, SIGNAL(sigSpeedTestEnd()), this, SLOT(slotSpeedTestDone()));
@@ -88,8 +96,20 @@ void QSpeedTestDlg::setData(const QSpeedDataVector &spdData)
 //---------------------------------------------------------------------------
 const QString &QSpeedTestDlg::chosenOne()
 {
-    /// \todo return correct one
     return m_chosenOne;
+}
+
+//---------------------------------------------------------------------------
+//! \brief   get the nominal supported bitrate
+//
+//! \author  Jo2003
+//! \date    22.09.2015
+//
+//! \return  bitrate
+//---------------------------------------------------------------------------
+int QSpeedTestDlg::nominalBr()
+{
+    return m_nominalBr;
 }
 
 //---------------------------------------------------------------------------
@@ -133,7 +153,8 @@ void QSpeedTestDlg::showEvent(QShowEvent *e)
     ui->tableResults->clearContents();
     ui->tableResults->setRowCount(0);
     int w = ui->tableResults->width();
-    ui->tableResults->setColumnWidth(0, w / 2);
+    ui->tableResults->setColumnWidth(0, w / 3);
+    ui->tableResults->setColumnWidth(1, w / 3);
     ui->chkSaveFastest->setChecked(false);
 }
 
@@ -152,10 +173,15 @@ void QSpeedTestDlg::changeEvent(QEvent *e)
         ui->retranslateUi(this);
 
         QTableWidgetItem *pItem;
-        pItem= new QTableWidgetItem(tr("Stream Server"));
+        pItem = new QTableWidgetItem(tr("Stream Server"));
         ui->tableResults->setHorizontalHeaderItem(0, pItem);
-        pItem= new QTableWidgetItem(tr("Download Speed"));
+        pItem = new QTableWidgetItem(tr("Download Speed"));
         ui->tableResults->setHorizontalHeaderItem(1, pItem);
+        pItem = new QTableWidgetItem(tr("Suggested Bitrate"));
+        ui->tableResults->setHorizontalHeaderItem(2, pItem);
+
+        m_pSave->setText(tr("Save"));
+
     }
 
     QDialog::changeEvent(e);
@@ -206,6 +232,23 @@ void QSpeedTestDlg::slotSpeedData(int ms, int bytes)
 //---------------------------------------------------------------------------
 void QSpeedTestDlg::slotSpeedTestDone()
 {
+    // C like structure ... we may have used a vector instead ...
+    const struct SBitRates {
+        double  min;
+        double  max;
+        int     nominal;
+        QString descr;
+    } bitRates[] = {
+        {4.0, 0.0, 2500, tr("Premium")},
+        {2.0, 4.0, 1500, tr("Standard")},
+        {1.0, 2.0,  900, tr("Eco")},
+        {0.0, 1.0,  320, tr("Mobile")}
+    };
+    const uint count = sizeof(bitRates) / sizeof(SBitRates);
+
+    QString sBr;
+    int nominal = 0;
+
     int row = ui->tableResults->rowCount();
     ui->tableResults->insertRow(row);
 
@@ -216,6 +259,20 @@ void QSpeedTestDlg::slotSpeedTestDone()
     pItem = new QTableWidgetItem(tr("%1 MBit/s").arg(m_dSpeed, 0, 'f', 3));
     pItem->setData(Qt::UserRole, m_dSpeed);
     ui->tableResults->setItem(row, 1, pItem);
+
+    for (uint i = 0; i < count; i++)
+    {
+        if (CSmallHelpers::inBetween(bitRates[i].min, (bitRates[i].max == 0.0) ? (m_dSpeed + 1.0) : bitRates[i].max, m_dSpeed))
+        {
+            sBr     = bitRates[i].descr;
+            nominal = bitRates[i].nominal;
+            break;
+        }
+    }
+
+    pItem = new QTableWidgetItem(sBr);
+    pItem->setData(Qt::UserRole, nominal);
+    ui->tableResults->setItem(row, 2, pItem);
 
     ui->btnStart->setEnabled(true);
     ui->btnStop->setEnabled(false);
@@ -260,6 +317,7 @@ void QSpeedTestDlg::on_btnStop_clicked()
 void QSpeedTestDlg::on_buttonBox_accepted()
 {
     m_chosenOne.clear();
+    m_nominalBr = 0;
 
     if (save())
     {
@@ -272,6 +330,7 @@ void QSpeedTestDlg::on_buttonBox_accepted()
             {
                 val         = tmpVal;
                 m_chosenOne = ui->tableResults->item(i, 0)->data(Qt::UserRole).toString();
+                m_nominalBr = ui->tableResults->item(i, 2)->data(Qt::UserRole).toInt();
             }
         }
     }

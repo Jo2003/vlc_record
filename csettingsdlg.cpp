@@ -2069,6 +2069,18 @@ void CSettingsDlg::slotSpeedTestData(QSpeedDataVector spdData)
             m_ui->chkStrSrvAuto->setChecked(false);
             autoSetStreamServer(m_pSpdTestDlg->chosenOne());
         }
+
+        if (m_pSpdTestDlg->nominalBr() > 0)
+        {
+            mInfo(tr("Set new nominal bitrate: %1").arg(m_pSpdTestDlg->nominalBr()));
+            int idx = m_ui->cbxBitRate->findData(m_pSpdTestDlg->nominalBr());
+
+            if ((idx != -1) && (idx != m_ui->cbxBitRate->currentIndex()))
+            {
+                m_ui->cbxBitRate->setCurrentIndex(idx);
+                on_cbxBitRate_activated(idx);
+            }
+        }
     }
 
     // in case there is something running ...
