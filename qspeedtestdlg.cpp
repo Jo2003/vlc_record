@@ -42,11 +42,11 @@ QSpeedTestDlg::QSpeedTestDlg(QWidget *parent, Qt::WindowFlags f) :
     ui->hSliderSpeed->setMaximum(16000);
 
     QTableWidgetItem *pItem;
-    pItem = new QTableWidgetItem(tr("Stream Server"));
+    pItem = new QTableWidgetItem(tr("Server"));
     ui->tableResults->setHorizontalHeaderItem(0, pItem);
-    pItem = new QTableWidgetItem(tr("Download Speed"));
+    pItem = new QTableWidgetItem(tr("Speed"));
     ui->tableResults->setHorizontalHeaderItem(1, pItem);
-    pItem = new QTableWidgetItem(tr("Suggested Bitrate"));
+    pItem = new QTableWidgetItem(tr("Bitrate"));
     ui->tableResults->setHorizontalHeaderItem(2, pItem);
 
     connect (&m_strLoader, SIGNAL(sigDwnSpeed(int,int)), this, SLOT(slotSpeedData(int,int)));
@@ -173,11 +173,11 @@ void QSpeedTestDlg::changeEvent(QEvent *e)
         ui->retranslateUi(this);
 
         QTableWidgetItem *pItem;
-        pItem = new QTableWidgetItem(tr("Stream Server"));
+        pItem = new QTableWidgetItem(tr("Server"));
         ui->tableResults->setHorizontalHeaderItem(0, pItem);
-        pItem = new QTableWidgetItem(tr("Download Speed"));
+        pItem = new QTableWidgetItem(tr("Speed"));
         ui->tableResults->setHorizontalHeaderItem(1, pItem);
-        pItem = new QTableWidgetItem(tr("Suggested Bitrate"));
+        pItem = new QTableWidgetItem(tr("Bitrate"));
         ui->tableResults->setHorizontalHeaderItem(2, pItem);
 
         m_pSave->setText(tr("&Save"));

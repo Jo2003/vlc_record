@@ -3634,20 +3634,26 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="qspeedtestdlg.cpp" line="45"/>
         <location filename="qspeedtestdlg.cpp" line="176"/>
-        <source>Stream Server</source>
-        <translation>Сервер вещания</translation>
+        <source>Server</source>
+        <oldsource>Stream Server</oldsource>
+        <translation>Сервер</translation>
+    </message>
+    <message>
+        <source>Download Speed</source>
+        <translation type="obsolete">Скорость загрузки</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="47"/>
         <location filename="qspeedtestdlg.cpp" line="178"/>
-        <source>Download Speed</source>
-        <translation>Скорость загрузки</translation>
+        <source>Speed</source>
+        <translation>Скорость</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="49"/>
         <location filename="qspeedtestdlg.cpp" line="180"/>
-        <source>Suggested Bitrate</source>
-        <translation>Лучший Битрейт</translation>
+        <source>Bitrate</source>
+        <oldsource>Suggested Bitrate</oldsource>
+        <translation>Битрейт</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="211"/>
