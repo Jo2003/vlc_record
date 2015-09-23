@@ -9,7 +9,7 @@
 |
 | $Id$
 \*************************************************************/
-
+#include <cstdlib>
 #include "cplayer.h"
 #include "ui_cplayer.h"
 #include "externals_inc.h"
@@ -1742,7 +1742,7 @@ void CPlayer::slotSliderPosChanged()
             QString s = pHtml->htmlTag("b", tr("Archive is not yet available for this time!"));
             emit sigStateMessage((int)QStateMessage::S_WARNING, s, 7000);
          }
-         else if (abs(position - timer.pos()) <= 10)
+         else if (std::abs((int)(position - timer.pos())) <= 10)
          {
             // check if slider position is in 10 sec. limit ...
             mInfo(tr("Ignore slightly slider position change..."));

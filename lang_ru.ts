@@ -3743,7 +3743,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QTimeLabel</name>
     <message>
-        <location filename="qtimelabel.h" line="97"/>
+        <location filename="qtimelabel.h" line="98"/>
         <source>Buf: %1%</source>
         <oldsource>Buff: %1%</oldsource>
         <translation>Буф: %1%</translation>

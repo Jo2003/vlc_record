@@ -15,6 +15,7 @@
    #define __20120227_QTIMELABEL_H
 
 #include <QLabel>
+#include <cstdlib>
 
 //---------------------------------------------------------------------------
 //! \class   QTimeLabel
@@ -65,7 +66,7 @@ public:
          int     h, m, s;
          QString lab = (iSec < 0) ? "-" : " ";
 
-         iSec = abs(iSec);
+         iSec = std::abs(iSec);
 
          h =  iSec / 3600;
          m = (iSec % 3600) / 60;
