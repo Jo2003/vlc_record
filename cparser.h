@@ -154,6 +154,7 @@ namespace cparser
    struct SAuth
    {
        QString token;
+       QString toktype;
        int     expires;
        QString refreshToken;
        int     userId;

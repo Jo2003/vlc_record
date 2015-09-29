@@ -21,7 +21,7 @@ QStalkerParser::QStalkerParser(QObject *parent)
 {
 }
 
-int QStalkerParser::parseAuth(const QString &sResp, cparser::SAuth auth)
+int QStalkerParser::parseAuth(const QString &sResp, cparser::SAuth& auth)
 {
     int  iRV = 0;
     bool bOk = false;
@@ -31,6 +31,7 @@ int QStalkerParser::parseAuth(const QString &sResp, cparser::SAuth auth)
 
     if (bOk)
     {
+        auth.toktype      = contentMap.value("token_type").toString();
         auth.token        = contentMap.value("access_token").toString();
         auth.expires      = contentMap.value("expires_in").toInt();
         auth.refreshToken = contentMap.value("refresh_token").toString();

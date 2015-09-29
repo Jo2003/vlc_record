@@ -30,9 +30,12 @@ void Recorder::slotCookie (const QString &str)
 {
     QString s;
 
+    mInfo(tr("Before parser: %1").arg(str));
+
     // parse cookie ...
     if (!pApiParser->parseAuth(str, mAuth))
     {
+        pApiClient->SetCookie(QString("Bearer %1").arg(mAuth.token));
         pApiClient->queueRequest(CIptvDefs::REQ_USER, mAuth.userId);
     }
 }

@@ -24,7 +24,7 @@
 #define COMPANY_LINK  "<a href='http://www.interhost.il'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
-#define API_JSON_PATH  "/stalker_portal/"
+#define API_JSON_PATH  "/stalker_portal/api/"
 
 // define classes of api client ...
 #define ApiClient             QStalkerClient

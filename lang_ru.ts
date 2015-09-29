@@ -2499,343 +2499,343 @@ or start time is later than end time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="382"/>
+        <location filename="qstalkerclient.cpp" line="370"/>
         <source>URL: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="386"/>
+        <location filename="qstalkerclient.cpp" line="374"/>
         <source>Raw Header #%1: %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="406"/>
+        <location filename="qstalkerclient.cpp" line="394"/>
         <source>Logout ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="425"/>
+        <location filename="qstalkerclient.cpp" line="413"/>
         <source>Request Authentication ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="448"/>
+        <location filename="qstalkerclient.cpp" line="437"/>
         <source>Request Channel List ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="475"/>
+        <location filename="qstalkerclient.cpp" line="464"/>
         <source>Request available VOD languages ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="495"/>
+        <location filename="qstalkerclient.cpp" line="484"/>
         <source>Request Stream Server List ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="515"/>
+        <location filename="qstalkerclient.cpp" line="504"/>
         <source>Request Time Shift ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="535"/>
+        <location filename="qstalkerclient.cpp" line="524"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="556"/>
+        <location filename="qstalkerclient.cpp" line="545"/>
         <source>Request Bit Rate ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="576"/>
+        <location filename="qstalkerclient.cpp" line="565"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="597"/>
+        <location filename="qstalkerclient.cpp" line="586"/>
         <source>Request URL for channel %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="625"/>
+        <location filename="qstalkerclient.cpp" line="614"/>
         <source>Set Streaming Server to %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="646"/>
+        <location filename="qstalkerclient.cpp" line="635"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="667"/>
+        <location filename="qstalkerclient.cpp" line="656"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="690"/>
+        <location filename="qstalkerclient.cpp" line="679"/>
         <source>Request Archiv URL ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="717"/>
+        <location filename="qstalkerclient.cpp" line="706"/>
         <source>Request VOD Genres ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="737"/>
+        <location filename="qstalkerclient.cpp" line="726"/>
         <source>Request Videos ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="757"/>
+        <location filename="qstalkerclient.cpp" line="746"/>
         <source>Request Video info for video %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="784"/>
+        <location filename="qstalkerclient.cpp" line="773"/>
         <source>Request Video Url for video %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="812"/>
+        <location filename="qstalkerclient.cpp" line="801"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="835"/>
+        <location filename="qstalkerclient.cpp" line="824"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="858"/>
+        <location filename="qstalkerclient.cpp" line="847"/>
         <source>Request VOD manager data ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="881"/>
+        <location filename="qstalkerclient.cpp" line="870"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="904"/>
+        <location filename="qstalkerclient.cpp" line="893"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="931"/>
+        <location filename="qstalkerclient.cpp" line="920"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="958"/>
+        <location filename="qstalkerclient.cpp" line="947"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="977"/>
+        <location filename="qstalkerclient.cpp" line="966"/>
         <source>Change parent code ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1000"/>
+        <location filename="qstalkerclient.cpp" line="989"/>
         <source>EPG current for Channels: %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1019"/>
+        <location filename="qstalkerclient.cpp" line="1008"/>
         <source>Check for available updates ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1037"/>
+        <location filename="qstalkerclient.cpp" line="1026"/>
         <source>Download image ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1122"/>
+        <location filename="qstalkerclient.cpp" line="1121"/>
         <source>Get user settings ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1140"/>
+        <location filename="qstalkerclient.cpp" line="1139"/>
         <source>Unknown error</source>
         <translation type="unfinished">Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1141"/>
+        <location filename="qstalkerclient.cpp" line="1140"/>
         <source>Incorrect request</source>
         <translation type="unfinished">Неверный запрос</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1142"/>
+        <location filename="qstalkerclient.cpp" line="1141"/>
         <source>Wrong login or password</source>
         <translation type="unfinished">Неверный логин или пароль</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1143"/>
+        <location filename="qstalkerclient.cpp" line="1142"/>
         <source>Access denied</source>
         <translation type="unfinished">Доступ запрещен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1144"/>
+        <location filename="qstalkerclient.cpp" line="1143"/>
         <source>Login incorrect</source>
         <translation type="unfinished">Неверный логин</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1145"/>
+        <location filename="qstalkerclient.cpp" line="1144"/>
         <source>Your contract is inactive</source>
         <translation type="unfinished">Ваш договор неактивен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1146"/>
+        <location filename="qstalkerclient.cpp" line="1145"/>
         <source>Your contract is paused</source>
         <translation type="unfinished">Ваш договор приостановлен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1147"/>
+        <location filename="qstalkerclient.cpp" line="1146"/>
         <source>Channel not found or not allowed</source>
         <translation type="unfinished">Канал не найден или не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1148"/>
+        <location filename="qstalkerclient.cpp" line="1147"/>
         <source>Error in request: Bad parameters</source>
         <translation type="unfinished">Ошибка в запросе: Неверный параметр</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1149"/>
+        <location filename="qstalkerclient.cpp" line="1148"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation type="unfinished">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1150"/>
+        <location filename="qstalkerclient.cpp" line="1149"/>
         <source>Missing parameter (cid)</source>
         <translation type="unfinished">Отсутствует параметр (cid)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1151"/>
+        <location filename="qstalkerclient.cpp" line="1150"/>
         <source>Another client with your data logged in</source>
         <translation type="unfinished">Ваш абонемент используется другим устройством</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1152"/>
+        <location filename="qstalkerclient.cpp" line="1151"/>
         <source>Authentication error</source>
         <translation type="unfinished">Ошибка идентификации</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1153"/>
+        <location filename="qstalkerclient.cpp" line="1152"/>
         <source>Your package expired</source>
         <translation type="unfinished">Ваша подписка истекла или ещё не активирована</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1154"/>
+        <location filename="qstalkerclient.cpp" line="1153"/>
         <source>Unknown API function</source>
         <translation type="unfinished">Неизвестная функция API</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1155"/>
+        <location filename="qstalkerclient.cpp" line="1154"/>
         <source>Archive not available</source>
         <translation type="unfinished">Архив не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1156"/>
+        <location filename="qstalkerclient.cpp" line="1155"/>
         <source>Missing parameter (place)</source>
         <translation type="unfinished">Отсутствует параметр (place)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1157"/>
+        <location filename="qstalkerclient.cpp" line="1156"/>
         <source>Missing parameter (name)</source>
         <translation type="unfinished">Отсутствует параметр (name)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1158"/>
+        <location filename="qstalkerclient.cpp" line="1157"/>
         <source>Incorrect confirmation code</source>
         <translation type="unfinished">Неверный код подтверждения</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1159"/>
+        <location filename="qstalkerclient.cpp" line="1158"/>
         <source>Current code is wrong</source>
         <translation type="unfinished">Текущий код неверный</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1160"/>
+        <location filename="qstalkerclient.cpp" line="1159"/>
         <source>New code is wrong</source>
         <translation type="unfinished">Новый код неверный</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1161"/>
+        <location filename="qstalkerclient.cpp" line="1160"/>
         <source>Missing parameter (val)</source>
         <translation type="unfinished">Отсутствует параметр (val)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1162"/>
+        <location filename="qstalkerclient.cpp" line="1161"/>
         <source>Value not allowed</source>
         <translation type="unfinished">Значение не доступно</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1163"/>
+        <location filename="qstalkerclient.cpp" line="1162"/>
         <source>Missing parameter</source>
         <translation type="unfinished">Отсутствует параметр</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1164"/>
+        <location filename="qstalkerclient.cpp" line="1163"/>
         <source>Missing parameter (id)</source>
         <translation type="unfinished">Отсутствует параметр (id)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1165"/>
+        <location filename="qstalkerclient.cpp" line="1164"/>
         <source>Missing parameter (fileid)</source>
         <translation type="unfinished">Отсутствует параметр (fileid)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1166"/>
+        <location filename="qstalkerclient.cpp" line="1165"/>
         <source>Missing parameter (type)</source>
         <translation type="unfinished">Отсутствует параметр (type)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1167"/>
+        <location filename="qstalkerclient.cpp" line="1166"/>
         <source>Missing parameter (query)</source>
         <translation type="unfinished">Отсутствует параметр (query)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1168"/>
+        <location filename="qstalkerclient.cpp" line="1167"/>
         <source>Bitrate not available</source>
         <translation type="unfinished">Битрейт не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1169"/>
+        <location filename="qstalkerclient.cpp" line="1168"/>
         <source>Service not available</source>
         <translation type="unfinished">Сервис не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1170"/>
+        <location filename="qstalkerclient.cpp" line="1169"/>
         <source>Query limit exceeded</source>
         <translation type="unfinished">Превышен лимит запроса</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1171"/>
+        <location filename="qstalkerclient.cpp" line="1170"/>
         <source>Rule already exists</source>
         <translation type="unfinished">Правило уже существует</translation>
     </message>
     <message>
+        <location filename="qstalkerclient.cpp" line="1171"/>
         <location filename="qstalkerclient.cpp" line="1172"/>
-        <location filename="qstalkerclient.cpp" line="1173"/>
         <source>Missing parameter (cmd)</source>
         <translation type="unfinished">Отсутствует параметр (cmd)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1174"/>
+        <location filename="qstalkerclient.cpp" line="1173"/>
         <source>Bad value (rate)</source>
         <translation type="unfinished">Неверное значение рейтинга</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1175"/>
+        <location filename="qstalkerclient.cpp" line="1174"/>
         <source>Can&apos;t find film</source>
         <translation type="unfinished">Невозможно найти фильм</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1176"/>
+        <location filename="qstalkerclient.cpp" line="1175"/>
         <source>Film already added</source>
         <translation type="unfinished">Этот фильм уже добавлен в список избранных</translation>
     </message>
@@ -2843,12 +2843,12 @@ or start time is later than end time!</source>
 <context>
     <name>QStalkerParser</name>
     <message>
-        <location filename="qstalkerparser.cpp" line="41"/>
+        <location filename="qstalkerparser.cpp" line="42"/>
         <source>Error in %1</source>
         <translation type="unfinished">Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="qstalkerparser.cpp" line="42"/>
+        <location filename="qstalkerparser.cpp" line="43"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3644,8 +3644,13 @@ dataDir: %1
         <translation>Шаг вперед</translation>
     </message>
     <message>
-        <location filename="qstalker_rec.hpp" line="27"/>
-        <source>Got user settings!</source>
+        <location filename="qstalker_rec.hpp" line="33"/>
+        <source>Before parser: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalker_rec.hpp" line="55"/>
+        <source>Got user settings! %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
