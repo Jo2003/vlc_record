@@ -187,7 +187,10 @@ private:
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
+#ifdef _TASTE_STALKER
     cparser::SAuth                  mAuth;
+    QStalkerSettings                mStalkSet;
+#endif // _TASTE_STALKER
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);

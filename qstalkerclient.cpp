@@ -38,6 +38,7 @@ QStalkerClient::QStalkerClient(QObject *parent) :QIptvCtrlClient(parent)
    sPw            = "";
    sCookie        = "";
    sApiUrl        = "";
+   m_Uid          = -1;
    fillErrorMap();
 
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
@@ -252,9 +253,11 @@ int QStalkerClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, con
       case CIptvDefs::REQ_SETCHAN_SHOW:
          setChanShow(par_1.toString(), par_2.toString());
          break;
+/*
       case CIptvDefs::REQ_CHANLIST_ALL:
          GetChannelList(par_1.toString());
          break;
+*/
       case CIptvDefs::REQ_GET_VOD_MANAGER:
          getVodManager(par_1.toString());
          break;
@@ -283,7 +286,7 @@ int QStalkerClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, con
          getVodLang();
          break;
       case CIptvDefs::REQ_USER:
-         userData(par_1.toInt());
+         userData();
          break;
       default:
          iRet = -1;
@@ -338,6 +341,11 @@ void QStalkerClient::SetCookie(const QString &cookie)
 {
    mInfo(tr("We've got following Cookie: %1").arg(cookie));
    sCookie = cookie;
+}
+
+void QStalkerClient::setUid(int id)
+{
+    m_Uid = id;
 }
 
 //---------------------------------------------------------------------------
@@ -432,20 +440,15 @@ void QStalkerClient::GetCookie ()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void QStalkerClient::GetChannelList (const QString &secCode)
+void QStalkerClient::GetChannelList ()
 {
-   mInfo(tr("Request Channel List ..."));
-   QString req;
+    mInfo(tr("Request Channel List ..."));
+    QString req;
 
-   if (secCode != "")
-   {
-      // normal channel list request ...
-      req = QString("show=all&protect_code=%1").arg(secCode);
-   }
+    req = QString("users/%1/tv-channels").arg(m_Uid);
 
    // request channel list or channel list for settings ...
-   q_post((secCode == "") ? (int)CIptvDefs::REQ_CHANNELLIST : (int)CIptvDefs::REQ_CHANLIST_ALL,
-        sApiUrl + "channel_list", req);
+   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + req);
 }
 
 //---------------------------------------------------------------------------
@@ -653,12 +656,16 @@ void QStalkerClient::SetHttpBuffer(int iTime)
 \-----------------------------------------------------------------------------*/
 void QStalkerClient::GetEPG(int iChanID, int iOffset)
 {
-   mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
+    mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
 
-   QDate now = QDate::currentDate().addDays(iOffset);
+    QDateTime dt;
+    dt.setDate(QDate::currentDate().addDays(iOffset));
+    time_t from = dt.toTime_t();
+    dt = dt.addDays(1);
+    time_t to = dt.toTime_t();
 
-   q_get((int)CIptvDefs::REQ_EPG, sApiUrl + QString("epg?cid=%1&day=%2")
-       .arg(iChanID).arg(now.toString("ddMMyy")));
+    q_get((int)CIptvDefs::REQ_EPG, sApiUrl + QString("users/%1/tv-channels/%2/epg?from=%3&to=%4")
+          .arg(m_Uid).arg(iChanID).arg(from).arg(to));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1116,10 +1123,10 @@ const QString& QStalkerClient::apiUrl()
 //! \param   id [in] (int) user id
 //
 //---------------------------------------------------------------------------
-void QStalkerClient::userData(int id)
+void QStalkerClient::userData()
 {
     mInfo(tr("Get user settings ..."));
-    QString req = QString("users/%1/settings").arg(id);
+    QString req = QString("users/%1/settings").arg(m_Uid);
     q_get((int)CIptvDefs::REQ_USER, sApiUrl + req);
 }
 

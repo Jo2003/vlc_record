@@ -44,13 +44,14 @@ public:
    void fillErrorMap();
    bool cookieSet();
    void SetCookie (const QString &cookie);
+   void setUid(int id);
 
 
 protected:
    virtual QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
    void GetCookie ();
    void Logout ();
-   void GetChannelList (const QString &secCode = QString());
+   void GetChannelList ();
    void SetTimeShift (int iHours);
    void GetTimeShift ();
    virtual void GetStreamURL (int iChanID, const QString &secCode, bool bTimerRec = false);
@@ -78,7 +79,7 @@ protected:
    int  checkResponse (const QString &sResp, QString& sCleanResp);
    virtual void getVodLang();
    const QString& apiUrl();
-   virtual void userData(int id);
+   virtual void userData();
 
 private:
    QString   sUsr;
@@ -87,6 +88,7 @@ private:
    QString   sCookie;
    QErrorMap errMap;
    CIptvDefs karTrace;
+   int       m_Uid;
 
 public slots:
    void slotDownImg(const QString& url);

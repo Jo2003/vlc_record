@@ -23,6 +23,8 @@ Q_OBJECT
 public:
    QStalkerParser(QObject* parent = 0);
    virtual int parseAuth(const QString &sResp, cparser::SAuth& auth);
+   virtual int parseUserSettings(const QString &sResp, QStalkerSettings& stalkSet);
+   virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
 };
 
 #endif // __20150906_QSTALKERPARSER_H

@@ -49,6 +49,9 @@ namespace cparser
       bool    bIsHidden;
       bool    bHasTsInfo;
       QVector<cparser::STimeShift> vTs;
+#ifdef _TASTE_STALKER
+      QString url;
+#endif // __TASTE_STALKER
    };
 
    struct SGrp
@@ -167,5 +170,6 @@ typedef QMap<int, QVector<cparser::SEpgCurrent> > QCurrentMap;
 typedef QVector<cparser::SGrp>                    QGrpVector;
 typedef QVector<cparser::SChan>                   QChanList;
 typedef QMap<QString, QString>                    QVodLangMap;
+typedef QMap<QString, QString>                    QStalkerSettings;
 
 #endif // __20130325_CPARSER_H

@@ -36,7 +36,8 @@ void Recorder::slotCookie (const QString &str)
     if (!pApiParser->parseAuth(str, mAuth))
     {
         pApiClient->SetCookie(QString("Bearer %1").arg(mAuth.token));
-        pApiClient->queueRequest(CIptvDefs::REQ_USER, mAuth.userId);
+        pApiClient->setUid(mAuth.userId);
+        pApiClient->queueRequest(CIptvDefs::REQ_USER);
     }
 }
 
@@ -52,5 +53,8 @@ void Recorder::slotCookie (const QString &str)
 //---------------------------------------------------------------------------
 void Recorder::userData (const QString& resp)
 {
-    mInfo(tr("Got user settings! %1").arg(resp));
+    if (!pApiParser->parseUserSettings(resp, mStalkSet))
+    {
+        pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+    }
 }
