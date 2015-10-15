@@ -362,33 +362,80 @@ void CSettingsDlg::changeEvent(QEvent *e)
     switch (e->type())
     {
     case QEvent::LanguageChange:
-       {
-          // save current index from comboboxes ...
-          int iLanIdx = m_ui->cbxLanguage->currentIndex();
-          int iLogIdx = m_ui->cbxLogLevel->currentIndex();
-          int iBufIdx = m_ui->cbxBufferSeconds->currentIndex();
-          int iModIdx = m_ui->cbxPlayerMod->currentIndex();
-          int iDeiIdx = m_ui->cbxDeintlMode->currentIndex();
+        {
+            // take care for combo boxes filled from
+            // out side ..
+            int         i;
+            QVariantMap::ConstIterator cit;
+            QVariantMap vmRates;
+            QVariantMap vmServers;
+            QVariant    vCurSrv;
+            QVariant    vCurBr;
 
-          m_ui->retranslateUi(this);
+            for (i = 0; i < m_ui->cbxBitRate->count(); i++)
+            {
+                vmRates.insert(m_ui->cbxBitRate->itemText(i), m_ui->cbxBitRate->itemData(i));
 
-          // re-set index to comboboxes ...
-          m_ui->cbxLanguage->setCurrentIndex(iLanIdx);
-          m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
-          m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
-          m_ui->cbxPlayerMod->setCurrentIndex(iModIdx);
-          m_ui->cbxDeintlMode->setCurrentIndex(iDeiIdx);
+                if (i == m_ui->cbxBitRate->currentIndex())
+                {
+                    vCurBr = m_ui->cbxBitRate->itemData(i);
+                }
+            }
 
-          // set company name ...
-          QString s = m_ui->groupAccount->title();
-          m_ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
+            for (i = 0; i < m_ui->cbxStreamServer->count(); i++)
+            {
+                vmServers.insert(m_ui->cbxStreamServer->itemText(i), m_ui->cbxStreamServer->itemData(i));
 
-          // stream standard
-          m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
-       }
-       break;
+                if (i == m_ui->cbxStreamServer->currentIndex())
+                {
+                    vCurSrv = m_ui->cbxStreamServer->itemData(i);
+                }
+            }
+
+            // save current index from comboboxes ...
+            int iLanIdx = m_ui->cbxLanguage->currentIndex();
+            int iLogIdx = m_ui->cbxLogLevel->currentIndex();
+            int iBufIdx = m_ui->cbxBufferSeconds->currentIndex();
+            int iModIdx = m_ui->cbxPlayerMod->currentIndex();
+            int iDeiIdx = m_ui->cbxDeintlMode->currentIndex();
+
+            m_ui->retranslateUi(this);
+
+            // clear content of stream server and bitrates ...
+            m_ui->cbxBitRate->clear();
+            m_ui->cbxStreamServer->clear();
+
+            // re-fill bitrates and stream servers ...
+            for (cit = vmRates.constBegin(); cit != vmRates.constEnd(); cit ++)
+            {
+                m_ui->cbxBitRate->addItem(cit.key(), cit.value());
+            }
+
+            for (cit = vmServers.constBegin(); cit != vmServers.constEnd(); cit ++)
+            {
+                m_ui->cbxStreamServer->addItem(cit.key(), cit.value());
+            }
+
+            // re-set index to comboboxes ...
+            m_ui->cbxLanguage->setCurrentIndex(iLanIdx);
+            m_ui->cbxLogLevel->setCurrentIndex(iLogIdx);
+            m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
+            m_ui->cbxPlayerMod->setCurrentIndex(iModIdx);
+            m_ui->cbxDeintlMode->setCurrentIndex(iDeiIdx);
+
+            m_ui->cbxBitRate->setCurrentIndex(m_ui->cbxBitRate->findData(vCurBr));
+            m_ui->cbxStreamServer->setCurrentIndex(m_ui->cbxStreamServer->findData(vCurSrv));
+
+            // set company name ...
+            QString s = m_ui->groupAccount->title();
+            m_ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
+
+            // stream standard
+            m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+        }
+        break;
     default:
-       break;
+        break;
     }
 }
 
