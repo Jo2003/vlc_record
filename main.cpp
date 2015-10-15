@@ -90,105 +90,113 @@ QWatchStats   *pWatchStats;
 \----------------------------------------------------------------- */
 int main(int argc, char *argv[])
 {
-   // bugfix for crash on exit on *nix ...
+    // bugfix for crash on exit on *nix ...
 #ifdef Q_WS_X11
-   XInitThreads();
+    XInitThreads();
 #endif
 
-   qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
-   qRegisterMetaType<QLangVector>("QLangVector");
-   qRegisterMetaType<QUrlEx>("QUrlEx");
-   qRegisterMetaType<QSpeedDataVector>("QSpeedDataVector");
+    qRegisterMetaType<vlcvid::SContextAction>("vlcvid::SContextAction");
+    qRegisterMetaType<QLangVector>("QLangVector");
+    qRegisterMetaType<QUrlEx>("QUrlEx");
+    qRegisterMetaType<QSpeedDataVector>("QSpeedDataVector");
 
 #ifdef Q_OS_MACX
-   if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )
-   {
-       // fix Mac OS X 10.9 (mavericks) font issue
-       // https://bugreports.qt-project.org/browse/QTBUG-32789
-       QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
-   }
+    if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )
+    {
+        // from 10.9 on every new MacOSX has each own system font ...
+        // To make it look normally we need some font substitution ...
+
+        // Mavericks:
+        QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
+
+        // Yosmite:
+        QFont::insertSubstitution(".Helvetica Neue DeskInterface", "Lucida Grande");
+
+        // El Capitan ...
+        QFont::insertSubstitution(".SF NS Text", "Lucida Grande");
+    }
 #endif
 
-   int          iRV = -1;
-   QApplication app(argc, argv);
-   Recorder    *pRec;
-   QFTSettings *pFTSet;
+    int          iRV = -1;
+    QApplication app(argc, argv);
+    Recorder    *pRec;
+    QFTSettings *pFTSet;
 
-   // Setting "app" as parent puts the new generated objects into Qt's memory management,
-   // so no delete is needed since Qt takes care ...
-   pAppTransl  = new QTranslator(&app);
-   pQtTransl   = new QTranslator(&app);
-   pFolders    = new CDirStuff(&app);
-   pHtml       = new CHtmlWriter(&app);
-   pWatchStats = new QWatchStats(&app);
-   pChanMap    = new QChannelMap();
-   pStateMsg   = new QStateMessage(); // will be parented in recorder.cpp::Recorder()!
+    // Setting "app" as parent puts the new generated objects into Qt's memory management,
+    // so no delete is needed since Qt takes care ...
+    pAppTransl  = new QTranslator(&app);
+    pQtTransl   = new QTranslator(&app);
+    pFolders    = new CDirStuff(&app);
+    pHtml       = new CHtmlWriter(&app);
+    pWatchStats = new QWatchStats(&app);
+    pChanMap    = new QChannelMap();
+    pStateMsg   = new QStateMessage(); // will be parented in recorder.cpp::Recorder()!
 
-   if (pFolders && pAppTransl && pQtTransl && pHtml && pChanMap && pWatchStats)
-   {
-      if (pFolders->isInitialized ())
-      {
-         if ((pCustomization = new QCustParser(&app)) != NULL)
-         {
-            pCustomization->parseCust();
-
-            pFolders->setAppName(pCustomization->strVal("APP_NAME"));
-
-            // make sure debug stuff is written from the very begining ...
-            VlcLog.SetLogFile(pFolders->getDataDir(), QString("%1.log").arg(pFolders->getBinName()));
-            VlcLog.SetLogLevel(vlclog::LOG_ALL);
-
-            QApplication::installTranslator (pQtTransl);
-            QApplication::installTranslator (pAppTransl);
-
-            pApiClient = new ApiClient(&app);
-            pApiParser = new ApiParser(&app);
-
-            // The database is the last service used.
-            // Make sure it destroyed latest!
-            // Therefore we don't set app as parent!
-            pDb        = new CVlcRecDB();
-
-            if (pDb && pApiClient && pApiParser)
+    if (pFolders && pAppTransl && pQtTransl && pHtml && pChanMap && pWatchStats)
+    {
+        if (pFolders->isInitialized ())
+        {
+            if ((pCustomization = new QCustParser(&app)) != NULL)
             {
-               // check if needed settings are there ...
-               if ((pDb->stringValue("User") == "")
-                  && (pDb->stringValue("PasswdEnc") == ""))
-               {
-                  if ((pFTSet = new QFTSettings()) != NULL)
-                  {
-                     pFTSet->exec();
-                     delete pFTSet;
-                     pFTSet = NULL;
-                  }
-               }
+                pCustomization->parseCust();
 
-               if ((pRec = new Recorder()) != NULL)
-               {
-                  pRec->show();
-                  iRV = app.exec ();
-                  delete pRec;
-                  pRec = NULL;
-               }
+                pFolders->setAppName(pCustomization->strVal("APP_NAME"));
+
+                // make sure debug stuff is written from the very begining ...
+                VlcLog.SetLogFile(pFolders->getDataDir(), QString("%1.log").arg(pFolders->getBinName()));
+                VlcLog.SetLogLevel(vlclog::LOG_ALL);
+
+                QApplication::installTranslator (pQtTransl);
+                QApplication::installTranslator (pAppTransl);
+
+                pApiClient = new ApiClient(&app);
+                pApiParser = new ApiParser(&app);
+
+                // The database is the last service used.
+                // Make sure it destroyed latest!
+                // Therefore we don't set app as parent!
+                pDb        = new CVlcRecDB();
+
+                if (pDb && pApiClient && pApiParser)
+                {
+                    // check if needed settings are there ...
+                    if ((pDb->stringValue("User") == "")
+                        && (pDb->stringValue("PasswdEnc") == ""))
+                    {
+                        if ((pFTSet = new QFTSettings()) != NULL)
+                        {
+                            pFTSet->exec();
+                            delete pFTSet;
+                            pFTSet = NULL;
+                        }
+                    }
+
+                    if ((pRec = new Recorder()) != NULL)
+                    {
+                        pRec->show();
+                        iRV = app.exec ();
+                        delete pRec;
+                        pRec = NULL;
+                    }
+                }
+
+                // delete database ...
+                if (pDb)
+                {
+                    delete pDb;
+                    pDb = NULL;
+                }
             }
+        }
+    }
 
-            // delete database ...
-            if (pDb)
-            {
-               delete pDb;
-               pDb = NULL;
-            }
-         }
-      }
-   }
+    if (pChanMap)
+    {
+        delete pChanMap;
+        pChanMap = NULL;
+    }
 
-   if (pChanMap)
-   {
-      delete pChanMap;
-      pChanMap = NULL;
-   }
-
-   return iRV;
+    return iRV;
 }
 
 /************************* History ***************************\
