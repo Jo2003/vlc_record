@@ -253,3 +253,60 @@ int QStalkerParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgL
    return iRV;
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   parse URL response
+//
+//! \author  Jo2003
+//! \date    15.04.2013
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   sUrl (QString &) ref. to url string
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int QStalkerParser::parseUrl(const QString &sResp, QString &sUrl)
+{
+    int  iRV = 0;
+    bool bOk = false;
+    QVariantMap contentMap;
+
+    contentMap = QtJson::parse(sResp, bOk).toMap();
+
+    if (bOk)
+    {
+        if (contentMap.contains("url"))
+        {
+            sUrl = contentMap.value("url").toString();
+        }
+        else if (contentMap.contains("results"))
+        {
+            sUrl = contentMap.value("results").toString();
+        }
+        else
+        {
+            mInfo(tr("No url found in '%1'!").arg(sResp));
+            iRV = -1;
+        }
+
+        if (iRV == 0)
+        {
+            sUrl.replace("&amp;", "&");
+
+            if (sUrl.contains(' '))
+            {
+                sUrl = sUrl.left(sUrl.indexOf(' '));
+            }
+        }
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                      tr("QtJson parser error in %1 %2():%3")
+                      .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}

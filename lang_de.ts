@@ -2847,6 +2847,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="qstalkerparser.cpp" line="103"/>
         <location filename="qstalkerparser.cpp" line="174"/>
         <location filename="qstalkerparser.cpp" line="246"/>
+        <location filename="qstalkerparser.cpp" line="304"/>
         <source>Error in %1</source>
         <translation type="unfinished">Fehler in %1</translation>
     </message>
@@ -2855,6 +2856,7 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="qstalkerparser.cpp" line="104"/>
         <location filename="qstalkerparser.cpp" line="175"/>
         <location filename="qstalkerparser.cpp" line="247"/>
+        <location filename="qstalkerparser.cpp" line="305"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2866,6 +2868,11 @@ oder die Startzeit liegt nach der Endzeit!</translation>
     <message>
         <location filename="qstalkerparser.cpp" line="169"/>
         <source>We&apos;ve got channel %1 (%2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qstalkerparser.cpp" line="288"/>
+        <source>No url found in &apos;%1&apos;!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
