@@ -16,11 +16,31 @@
 // log file functions ...
 extern CLogFile VlcLog;
 
+//---------------------------------------------------------------------------
+//! \brief   constructor
+//
+//! \author  Jo2003
+//! \date    19.10.2015
+//
+//! \param   [in] parent (QObject*) parent pointer
+//---------------------------------------------------------------------------
 QStalkerParser::QStalkerParser(QObject *parent)
     : CStdJsonParser(parent)
 {
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   parse authetication
+//
+//! \author  Jo2003
+//! \date    19.10.2015
+//
+//! \param   [in] sResp (const QString &) ref. to response string
+//! \param   [out] auth (cparser::SAuth&) ref. to auth struct
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
 int QStalkerParser::parseAuth(const QString &sResp, cparser::SAuth& auth)
 {
     int  iRV = 0;
@@ -49,6 +69,18 @@ int QStalkerParser::parseAuth(const QString &sResp, cparser::SAuth& auth)
     return iRV;
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   parse user settings
+//
+//! \author  Jo2003
+//! \date    19.10.2015
+//
+//! \param   [in] sResp (const QString &) ref. to response string
+//! \param   [out] stalkSet (QStalkerSettings) settings related to stalker API
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
 int QStalkerParser::parseUserSettings(const QString &sResp, QStalkerSettings &stalkSet)
 {
     int  iRV = 0;
@@ -148,3 +180,76 @@ int QStalkerParser::parseChannelList (const QString &sResp,
 
     return iRV;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse epg response response
+//
+//! \author  Jo2003
+//! \date    15.04.2013
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   epgList (QVector<cparser::SEpg> &) ref. to epg data vector
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int QStalkerParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
+{
+   int  iRV = 0;
+   bool bOk = false;
+   cparser::SEpg entry;
+   QVariantMap contentMap;
+   QString sTmp;
+
+   // clear vector ...
+   epgList.clear();
+
+   contentMap = QtJson::parse(sResp, bOk).toMap();
+
+   if (bOk)
+   {
+      foreach (const QVariant& lEpg, contentMap.value("results").toList())
+      {
+         QVariantMap mEpg = lEpg.toMap();
+
+         entry.sDescr = "";
+         entry.uiGmt  = mEpg.value("start").toUInt();
+         entry.uiEnd  = mEpg.value("end").toUInt();
+         sTmp         = mEpg.value("name").toString();
+
+         if (sTmp.contains('\n'))
+         {
+            entry.sName  = sTmp.left(sTmp.indexOf('\n'));
+            entry.sDescr = sTmp.mid(sTmp.indexOf('\n') + 1);
+         }
+         else
+         {
+            entry.sName = sTmp;
+         }
+
+         entry.id = mEpg.contains("id") ? mEpg.value("id").toInt() : -1;
+
+         if (mEpg.contains("pdescr"))
+         {
+            entry.sDescr = mEpg.value("pdescr").toString();
+         }
+         else if(mEpg.contains("description"))
+         {
+            entry.sDescr = mEpg.value("description").toString();
+         }
+
+         epgList.append(entry);
+      }
+   }
+   else
+   {
+      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                    tr("QtJson parser error in %1 %2():%3")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+      iRV = -1;
+   }
+
+   return iRV;
+}
+

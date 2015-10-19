@@ -71,6 +71,7 @@ namespace cparser
       QString sDescr;
       uint    uiGmt;
       uint    uiEnd;
+      int     id;
    };
 
    struct SSrv

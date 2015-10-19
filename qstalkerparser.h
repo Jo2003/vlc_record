@@ -25,6 +25,7 @@ public:
    virtual int parseAuth(const QString &sResp, cparser::SAuth& auth);
    virtual int parseUserSettings(const QString &sResp, QStalkerSettings& stalkSet);
    virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
 };
 
 #endif // __20150906_QSTALKERPARSER_H

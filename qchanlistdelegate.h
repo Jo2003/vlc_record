@@ -33,6 +33,7 @@ namespace channellist
       posRole      = Qt::UserRole + 108,
       lastEpgUpd   = Qt::UserRole + 109,
       logoFileRole = Qt::UserRole + 110,
+      urlRole      = Qt::UserRole + 111,
       noRole
    };
 }

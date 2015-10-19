@@ -1,5 +1,6 @@
 DEFINES += _TASTE_STALKER \
-           __API_INCLUDED
+           __API_INCLUDED \
+           __VLC_FOR_HLS
 RESOURCES += vlc-record.qrc
 
 include (qtjson/qtjson.pri)

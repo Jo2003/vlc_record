@@ -229,6 +229,10 @@ protected:
     virtual void hideEvent (QHideEvent * event);
     virtual void closeEvent (QCloseEvent *event);
     virtual void keyPressEvent (QKeyEvent *event);
+
+    void startFromModelIndex(const QModelIndex & index);
+    void startFromCid(int cid, IncPlay::ePlayStates ps);
+
 #ifdef _TASTE_STALKER
     void userData (const QString& resp);
 #endif // _TASTE_STALKER

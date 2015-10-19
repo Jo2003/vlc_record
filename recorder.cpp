@@ -512,7 +512,7 @@ void Recorder::closeEvent(QCloseEvent *event)
 
       // delete context menu stuff ...
       CleanContextMenu();
-
+#ifndef _TASTE_STALKER
       // are we authenticated ... ?
       if (pApiClient->cookieSet())
       {
@@ -524,6 +524,7 @@ void Recorder::closeEvent(QCloseEvent *event)
          event->ignore ();
       }
       else
+#endif // _TASTE_STALKER
       {
          // no logout needed ...
          // close programm right now ...
@@ -724,6 +725,133 @@ void Recorder::on_pushAbout_clicked()
    dlg.exec();
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   start play from model index data
+//
+//! \author  Jo2003
+//! \date    19.10.2015
+//
+//! \param   [in] index (const QModelIndex&) model index
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::startFromModelIndex(const QModelIndex &index)
+{
+    int cid = index.data(channellist::cidRole).toInt();
+
+    cparser::SChan chan;
+
+    if (!pChanMap->entry(cid, chan))
+    {
+        if (AllowAction(IncPlay::PS_PLAY))
+        {
+            if (grantAdultAccess(chan.bIsProtected))
+            {
+                showInfo.cleanShowInfo();
+                showInfo.setChanId(cid);
+                showInfo.setChanName(chan.sName);
+                showInfo.setShowType(ShowInfo::Live);
+                showInfo.setShowName(chan.sProgramm);
+                showInfo.setStartTime(chan.uiStart);
+                showInfo.setEndTime(chan.uiEnd);
+                showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+                showInfo.setPlayState(IncPlay::PS_PLAY);
+                showInfo.setPCode(secCodeDlg.passWd());
+                showInfo.setDefAStream((int)chan.uiDefAud);
+                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
+
+                stopOnDemand();
+#ifdef _TASTE_STALKER
+                QString url = index.data(channellist::urlRole).toString();
+
+                if (url.isEmpty())
+                {
+#endif // _TASTE_STALKER
+                    TouchPlayCtrlBtns(false);
+                    pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
+                                             cid, secCodeDlg.passWd());
+#ifdef _TASTE_STALKER
+                }
+                else
+                {
+                    // fake incoming JSON URL string...
+                    url = QString("{\"url\":\"%1\"}").arg(url);
+                    slotStreamURL(url);
+                }
+#endif // _TASTE_STALKER
+            }
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   start play/record from channel id
+//
+//! \author  Jo2003
+//! \date    19.10.2015
+//
+//! \param   [in] cid (int) channel id
+//! \param   [in] ps (IncPlay::ePlayStates) play state
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::startFromCid(int cid, IncPlay::ePlayStates ps)
+{
+    cparser::SChan chan;
+
+    if (!pChanMap->entry(cid, chan))
+    {
+        if (AllowAction(ps))
+        {
+            if (grantAdultAccess(chan.bIsProtected))
+            {
+                if (ps == IncPlay::PS_RECORD)
+                {
+                    // new own downloader ...
+                    if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
+                    {
+                       streamLoader.stopDownload (iDwnReqId);
+                       iDwnReqId = -1;
+                    }
+                }
+
+                showInfo.cleanShowInfo();
+                showInfo.setChanId(cid);
+                showInfo.setChanName(chan.sName);
+                showInfo.setShowType(ShowInfo::Live);
+                showInfo.setShowName(chan.sProgramm);
+                showInfo.setStartTime(chan.uiStart);
+                showInfo.setEndTime(chan.uiEnd);
+                showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
+                showInfo.setPlayState(ps);
+                showInfo.setPCode(secCodeDlg.passWd());
+                showInfo.setDefAStream((int)chan.uiDefAud);
+                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
+
+                stopOnDemand();
+#ifdef _TASTE_STALKER
+                if (chan.url.isEmpty())
+                {
+#endif // _TASTE_STALKER
+                    TouchPlayCtrlBtns(false);
+                    pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
+                                             cid, secCodeDlg.passWd());
+#ifdef _TASTE_STALKER
+                }
+                else
+                {
+                    // fake incoming JSON URL string...
+                    QString url = QString("{\"url\":\"%1\"}").arg(chan.url);
+                    slotStreamURL(url);
+                }
+#endif // _TASTE_STALKER
+            }
+        }
+    }
+}
+
 /* -----------------------------------------------------------------\
 |  Method: on_channelList_itemDoubleClicked
 |  Begin: 19.01.2010 / 16:19:25
@@ -736,40 +864,10 @@ void Recorder::on_pushAbout_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
 {
-   if (Settings.doubleClickToPlay())
-   {
-      int cid = qvariant_cast<int>(index.data(channellist::cidRole));
-      cparser::SChan chan;
-
-      if (!pChanMap->entry(cid, chan))
-      {
-         if (AllowAction(IncPlay::PS_PLAY))
-         {
-            if (grantAdultAccess(chan.bIsProtected))
-            {
-               showInfo.cleanShowInfo();
-               showInfo.setChanId(cid);
-               showInfo.setChanName(chan.sName);
-               showInfo.setShowType(ShowInfo::Live);
-               showInfo.setShowName(chan.sProgramm);
-               showInfo.setStartTime(chan.uiStart);
-               showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-               showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setDefAStream((int)chan.uiDefAud);
-               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
-
-               TouchPlayCtrlBtns(false);
-
-               stopOnDemand();
-
-               pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
-                                      cid, secCodeDlg.passWd());
-            }
-         }
-      }
-   }
+    if (Settings.doubleClickToPlay())
+    {
+        startFromModelIndex(index);
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -1208,41 +1306,10 @@ void Recorder::on_pushLive_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_channelList_clicked(QModelIndex index)
 {
-   if (!Settings.doubleClickToPlay())
-   {
-      int cid = qvariant_cast<int>(index.data(channellist::cidRole));
-
-      cparser::SChan chan;
-
-      if (!pChanMap->entry(cid, chan))
-      {
-         if (AllowAction(IncPlay::PS_PLAY))
-         {
-            if (grantAdultAccess(chan.bIsProtected))
-            {
-               showInfo.cleanShowInfo();
-               showInfo.setChanId(cid);
-               showInfo.setChanName(chan.sName);
-               showInfo.setShowType(ShowInfo::Live);
-               showInfo.setShowName(chan.sProgramm);
-               showInfo.setStartTime(chan.uiStart);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-               showInfo.setEndTime(chan.uiEnd);
-               showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setDefAStream((int)chan.uiDefAud);
-               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
-
-               TouchPlayCtrlBtns(false);
-
-               stopOnDemand();
-
-               pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
-                                      cid, secCodeDlg.passWd());
-            }
-         }
-      }
-   }
+    if (!Settings.doubleClickToPlay())
+    {
+        startFromModelIndex(index);
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -1339,36 +1406,7 @@ void Recorder::slotPlay()
    {
       int cid  = getCurrentCid();
 
-      cparser::SChan chan;
-
-      if (!pChanMap->entry(cid, chan))
-      {
-         if (AllowAction(IncPlay::PS_PLAY))
-         {
-            if (grantAdultAccess(chan.bIsProtected))
-            {
-               showInfo.cleanShowInfo();
-               showInfo.setChanId(cid);
-               showInfo.setChanName(chan.sName);
-               showInfo.setShowType(ShowInfo::Live);
-               showInfo.setShowName(chan.sProgramm);
-               showInfo.setStartTime(chan.uiStart);
-               showInfo.setEndTime(chan.uiEnd);
-               showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-               showInfo.setPlayState(IncPlay::PS_PLAY);
-               showInfo.setPCode(secCodeDlg.passWd());
-               showInfo.setDefAStream((int)chan.uiDefAud);
-               showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
-
-               TouchPlayCtrlBtns(false);
-
-               stopOnDemand();
-
-               pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
-                                      cid, secCodeDlg.passWd());
-            }
-         }
-      }
+      startFromCid(cid, IncPlay::PS_PLAY);
    }
 }
 
@@ -1448,43 +1486,7 @@ void Recorder::slotRecord()
       {
          int cid = getCurrentCid();
 
-         cparser::SChan chan;
-
-         if (!pChanMap->entry(cid, chan))
-         {
-            if (AllowAction(IncPlay::PS_RECORD))
-            {
-               if (grantAdultAccess(chan.bIsProtected))
-               {
-                  // new own downloader ...
-                  if (vlcCtrl.ownDwnld() && (iDwnReqId != -1))
-                  {
-                     streamLoader.stopDownload (iDwnReqId);
-                     iDwnReqId = -1;
-                  }
-
-                  showInfo.cleanShowInfo();
-                  showInfo.setChanId(cid);
-                  showInfo.setChanName(chan.sName);
-                  showInfo.setShowType(ShowInfo::Live);
-                  showInfo.setShowName(chan.sProgramm);
-                  showInfo.setStartTime(chan.uiStart);
-                  showInfo.setEndTime(chan.uiEnd);
-                  showInfo.setLastJumpTime(QDateTime::currentDateTime().toTime_t());
-                  showInfo.setPCode(secCodeDlg.passWd());
-                  showInfo.setPlayState(IncPlay::PS_RECORD);
-                  showInfo.setDefAStream((int)chan.uiDefAud);
-                  showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
-
-                  TouchPlayCtrlBtns(false);
-
-                  stopOnDemand();
-
-                  pApiClient->queueRequest(chan.bIsVideo ? CIptvDefs::REQ_STREAM : CIptvDefs::REQ_RADIO_STREAM,
-                                         cid, secCodeDlg.passWd());
-               }
-            }
-         }
+         startFromCid(cid, IncPlay::PS_RECORD);
       }
    }
 }
@@ -3962,6 +3964,10 @@ void Recorder::slotUpdateChannelList (const QList<int> &cidList)
                pItem->setData(chanEntry.uiEnd   + chanEntry.iTs,   channellist::endRole);
                pItem->setData(chanEntry.sProgramm,                 channellist::progRole);
                pItem->setData(chanEntry.sName,                     channellist::nameRole);
+#ifdef _TASTE_STALKER
+               mInfo(tr("Adding url to model: %1").arg(chanEntry.url));
+               pItem->setData(chanEntry.url,                       channellist::urlRole);
+#endif // _TASTE_STALKER
             }
          }
       }
@@ -4954,6 +4960,10 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem->setData(sLogoFile,                             channellist::logoFileRole);
             pItem->setData(iPos,                                  channellist::posRole);
             pItem->setData(now,                                   channellist::lastEpgUpd);
+#ifdef _TASTE_STALKER
+            mInfo(tr("Adding url to model: %1").arg(chanlist[i].url));
+            pItem->setData(chanlist[i].url,                       channellist::urlRole);
+#endif // _TASTE_STALKER
          }
 
          pModel->appendRow(pItem);

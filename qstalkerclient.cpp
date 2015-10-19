@@ -588,15 +588,15 @@ void QStalkerClient::GetStreamURL(int iChanID, const QString &secCode, bool bTim
 {
    mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
-   QString req = QString("cid=%1").arg(iChanID);
+   QString req = QString("users/%1/tv-channels/%2/link").arg(m_Uid).arg(iChanID);
 
    if (secCode != "")
    {
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   q_post((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
-               sApiUrl + "get_url", req);
+   q_get((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
+               sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
