@@ -67,11 +67,11 @@ EOF
 
 if [ "${QTVER}" == "4" ] ; then
     cat << EOF >> "${BUILD_FOLDER}/DEBIAN/control"
-Depends: gtk2-engines-pixbuf (>= 2.24.10), libqt4-help (>= 4:4.8.1), libqt4-network (>= 4:4.8.1), libqt4-sql-sqlite (>= 4:4.8.1), libqt4-xml (>= 4:4.8.1), libqtcore4 (>= 4:4.8.1), libqtgui4 (>= 4:4.8.1), libvlc5 (>= 2.0.8), vlc (>= 2.0.8), libc6 (>= 2.15)
+Depends: gtk2-engines-pixbuf (>= 2.24.10), libqt4-help (>= 4:4.8.1), libqt4-network (>= 4:4.8.1), libqt4-sql-sqlite (>= 4:4.8.1), libqt4-xml (>= 4:4.8.1), libqtcore4 (>= 4:4.8.1), libqtgui4 (>= 4:4.8.1), libvlc5 (>= 2.0.3), vlc (>= 2.0.3), libc6 (>= 2.13)
 EOF
 else
     cat << EOF >> "${BUILD_FOLDER}/DEBIAN/control"
-Depends: gtk2-engines-pixbuf (>= 2.24.10), libqt5help5 (>= 5:5.2.1), libqt5network5 (>= 5:5.2.1), libqt5sql5-sqlite (>= 5:5.2.1), libqt5xml5 (>= 5:5.2.1), libqt5core5a (>= 5:5.2.1), libqt5gui5 (>= 5:5.2.1), libvlc5 (>= 2.0.8), vlc (>= 2.0.8), libc6 (>= 2.15)
+Depends: gtk2-engines-pixbuf (>= 2.24.10), libqt5help5 (>= 5.0.2), libqt5network5 (>= 5.0.2), libqt5sql5-sqlite (>= 5.0.2), libqt5xml5 (>= 5.0.2), libqt5core5a (>= 5.0.2), libqt5gui5 (>= 5.0.2), libvlc5 (>= 2.0.8), vlc (>= 2.0.8), libc6 (>= 2.15)
 EOF
 fi
 
@@ -81,7 +81,7 @@ Description: IPTV program stream player for ${SERVICE}
  It uses the Qt framework as well as libVLC from VLC player.
  Please note: You need to buy a subscription from ${SERVICE} to find this
  program to be useful!
-Homepage: https://code.google.com/p/vlc-record/
+Homepage: http://jo2003.github.io/vlc_record/
 
 EOF
 }
