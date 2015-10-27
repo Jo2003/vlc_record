@@ -12,7 +12,7 @@
 
 ;------------------------------
 ; path defines ...
-!define LIBVLCFW "..\..\libVLC3.0.0"
+!define LIBVLCFW "..\..\libVLC2.2.2"
 !define SRCDIR ".."
 !define QTLIBS "..\..\qtlibs-485"
 

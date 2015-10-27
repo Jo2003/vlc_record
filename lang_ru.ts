@@ -1654,79 +1654,79 @@ p, li { white-space: pre-wrap; }
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="557"/>
+        <location filename="csettingsdlg.cpp" line="604"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="552"/>
+        <location filename="csettingsdlg.cpp" line="599"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="459"/>
+        <location filename="csettingsdlg.cpp" line="506"/>
         <source>Following table shows the available combinations:</source>
         <translation>В таблице показаны доступные комбинации:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="462"/>
+        <location filename="csettingsdlg.cpp" line="509"/>
         <source>Do you want to activate the new %1? The player will switch to &apos;Live&apos; then.</source>
         <translation>Хотите ли Вы, активировать новый выбор? Проигрыватель будет переключен в живой режим.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="554"/>
+        <location filename="csettingsdlg.cpp" line="601"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="597"/>
+        <location filename="csettingsdlg.cpp" line="644"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="943"/>
+        <location filename="csettingsdlg.cpp" line="990"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;%2&apos;!</source>
         <oldsource>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;&apos;%2&apos;!</oldsource>
         <translation>Архив канала &apos;%1&apos; не доступен в битрейте &apos;%2&apos;!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="946"/>
+        <location filename="csettingsdlg.cpp" line="993"/>
         <source>Following bitrates are available:</source>
         <translation>Доступные битрейты:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="955"/>
+        <location filename="csettingsdlg.cpp" line="1002"/>
         <source>Do you want to activate the new bitrate? The player will switch to &apos;Live&apos; then.</source>
         <translation>Хотите ли Вы, активировать новый битрейт? Проигрыватель будет переключен в живой режим.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2075"/>
+        <location filename="csettingsdlg.cpp" line="2122"/>
         <source>Set new nominal bitrate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="435"/>
-        <location filename="csettingsdlg.cpp" line="918"/>
+        <location filename="csettingsdlg.cpp" line="482"/>
+        <location filename="csettingsdlg.cpp" line="965"/>
         <source>Mobile</source>
         <translation>Мобильный</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="436"/>
-        <location filename="csettingsdlg.cpp" line="919"/>
+        <location filename="csettingsdlg.cpp" line="483"/>
+        <location filename="csettingsdlg.cpp" line="966"/>
         <source>Eco</source>
         <translation>Эко</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="153"/>
         <location filename="forms/csettingsdlg.ui" line="222"/>
-        <location filename="csettingsdlg.cpp" line="437"/>
-        <location filename="csettingsdlg.cpp" line="920"/>
+        <location filename="csettingsdlg.cpp" line="484"/>
+        <location filename="csettingsdlg.cpp" line="967"/>
         <source>Standard</source>
         <translation>Стандарт</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="438"/>
-        <location filename="csettingsdlg.cpp" line="921"/>
+        <location filename="csettingsdlg.cpp" line="485"/>
+        <location filename="csettingsdlg.cpp" line="968"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
@@ -1736,28 +1736,28 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">%1 Кбит/с</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1657"/>
+        <location filename="csettingsdlg.cpp" line="1704"/>
         <source>blood</source>
         <translation>кровь</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1658"/>
+        <location filename="csettingsdlg.cpp" line="1705"/>
         <source>violence</source>
         <translation>насилие</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1661"/>
+        <location filename="csettingsdlg.cpp" line="1708"/>
         <source>porn</source>
         <translation>порнография</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1662"/>
+        <location filename="csettingsdlg.cpp" line="1709"/>
         <source>horror</source>
         <translation>ужасы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1659"/>
-        <location filename="csettingsdlg.cpp" line="1660"/>
+        <location filename="csettingsdlg.cpp" line="1706"/>
+        <location filename="csettingsdlg.cpp" line="1707"/>
         <source>obscene</source>
         <translation>непристойности</translation>
     </message>
@@ -1767,37 +1767,37 @@ p, li { white-space: pre-wrap; }
         <translation>Телегид начинается в 0:00</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="456"/>
+        <location filename="csettingsdlg.cpp" line="503"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in your combination of bitrate (%2) and timeshift (%3)!</source>
         <translation>Архив канала &apos;%1&apos; не доступен в комбинации: Битрейт (%2) и задержка (%3)!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1694"/>
+        <location filename="csettingsdlg.cpp" line="1741"/>
         <source>hide</source>
         <translation>скрывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1695"/>
+        <location filename="csettingsdlg.cpp" line="1742"/>
         <source>show</source>
         <translation>показывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1696"/>
+        <location filename="csettingsdlg.cpp" line="1743"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1888"/>
+        <location filename="csettingsdlg.cpp" line="1935"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1967"/>
+        <location filename="csettingsdlg.cpp" line="2014"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1968"/>
+        <location filename="csettingsdlg.cpp" line="2015"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1829,15 +1829,15 @@ To change the parent code make sure:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="464"/>
-        <location filename="csettingsdlg.cpp" line="957"/>
-        <location filename="csettingsdlg.cpp" line="2019"/>
+        <location filename="csettingsdlg.cpp" line="511"/>
+        <location filename="csettingsdlg.cpp" line="1004"/>
+        <location filename="csettingsdlg.cpp" line="2066"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2019"/>
-        <location filename="csettingsdlg.cpp" line="2020"/>
+        <location filename="csettingsdlg.cpp" line="2066"/>
+        <location filename="csettingsdlg.cpp" line="2067"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>

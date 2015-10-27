@@ -74,15 +74,11 @@ enum libvlc_event_e {
     libvlc_MediaPlayerLengthChanged,
     libvlc_MediaPlayerVout,
     libvlc_MediaPlayerScrambledChanged,
-    libvlc_MediaPlayerESAdded,
-    libvlc_MediaPlayerESDeleted,
-    libvlc_MediaPlayerESSelected,
 
     libvlc_MediaListItemAdded=0x200,
     libvlc_MediaListWillAddItem,
     libvlc_MediaListItemDeleted,
     libvlc_MediaListWillDeleteItem,
-    libvlc_MediaListEndReached,
 
     libvlc_MediaListViewItemAdded=0x300,
     libvlc_MediaListViewWillAddItem,
@@ -234,12 +230,6 @@ typedef struct libvlc_event_t
         {
             libvlc_media_t * new_media;
         } media_player_media_changed;
-
-        struct
-        {
-            libvlc_track_type_t i_type;
-            int                 i_id;
-        } media_player_es_changed;
     } u; /**< Type-dependent event description */
 } libvlc_event_t;
 

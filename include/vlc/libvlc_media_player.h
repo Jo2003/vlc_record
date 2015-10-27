@@ -2,7 +2,7 @@
  * libvlc_media_player.h:  libvlc_media_player external API
  *****************************************************************************
  * Copyright (C) 1998-2010 VLC authors and VideoLAN
- * $Id: 3f9441cd592ea233bb9b706a45b915ef830b8165 $
+ * $Id: 94bf7e8c4461896ff0d22b7c86ce6d3f9854eb17 $
  *
  * Authors: Clément Stenac <zorglub@videolan.org>
  *          Jean-Paul Saman <jpsaman@videolan.org>
@@ -320,7 +320,7 @@ typedef void (*libvlc_video_display_cb)(void *opaque, void *picture);
  * Similarly, the number of scanlines must be bigger than of equal to
  * the pixel height.
  * Furthermore, we recommend that pitches and lines be multiple of 32
- * to not break assumptions that might be held by optimized code
+ * to not break assumption that might be made by various optimizations
  * in the video decoders, video filters and/or video converters.
  */
 typedef unsigned (*libvlc_video_format_cb)(void **opaque, char *chroma,
@@ -1569,30 +1569,6 @@ LIBVLC_API void libvlc_audio_output_device_list_release(
 LIBVLC_API void libvlc_audio_output_device_set( libvlc_media_player_t *mp,
                                                 const char *module,
                                                 const char *device_id );
-
-/**
- * Get the current audio output device identifier.
- *
- * This complements libvlc_audio_output_device_set().
- *
- * \warning The initial value for the current audio output device identifier
- * may not be set or may be some unknown value. A LibVLC application should
- * compare this value against the known device identifiers (e.g. those that
- * were previously retrieved by a call to libvlc_audio_output_device_enum or
- * libvlc_audio_output_device_list_get) to find the current audio output device.
- *
- * It is possible that the selected audio output device changes (an external
- * change) without a call to libvlc_audio_output_device_set. That may make this
- * method unsuitable to use if a LibVLC application is attempting to track
- * dynamic audio device changes as they happen.
- *
- * \param mp media player
- * \return the current audio output device identifier
- *         NULL if no device is selected or in case of error
- *         (the result must be released with free() or libvlc_free()).
- * \version LibVLC 3.0.0 or later.
- */
-LIBVLC_API char *libvlc_audio_output_device_get( libvlc_media_player_t *mp );
 
 /**
  * Stub for backward compatibility.
