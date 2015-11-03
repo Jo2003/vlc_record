@@ -114,7 +114,10 @@ void QRetryDialog::setMessage(const QString &msg, const QIcon &ico, const QStrin
 //---------------------------------------------------------------------------
 void QRetryDialog::showEvent(QShowEvent *pEvent)
 {
-    touchButtonBox();
+    if (!mpBtnReLogin)
+    {
+        touchButtonBox();
+    }
 
     QDialog::showEvent(pEvent);
 }

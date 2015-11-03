@@ -3217,8 +3217,8 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/qretrydialog.ui" line="22"/>
-        <location filename="forms/qretrydialog.ui" line="29"/>
+        <location filename="forms/qretrydialog.ui" line="37"/>
+        <location filename="forms/qretrydialog.ui" line="44"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
