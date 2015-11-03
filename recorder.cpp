@@ -101,6 +101,7 @@ Recorder::Recorder(QWidget *parent)
    pWatchList    =  NULL;
    pHlsControl   =  NULL;
    bStayOnTop    =  false;
+   mpRetryDlg    =  NULL;
 
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,     QFusionControl::BTN_PLAY);
@@ -1667,6 +1668,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_VOD_LANG, slotVodLang(resp));
 
    ///////////////////////////////////////////////
+   // relogin without starting connection chain
+   mkCase(CIptvDefs::REQ_LOGIN_ONLY, loginOnly(resp));
+
+   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
    mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
@@ -1754,66 +1759,42 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
       break;
    }
 
-   // special error handling for special errors ...
-   switch ((CIptvDefs::EErr)err)
-   {
-   case CIptvDefs::ERR_WRONG_PCODE:
-      showInfo.setPCode("");
-      secCodeDlg.slotClearPasswd();
-      break;
-
-   case CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE:
-      // if someone else uses this account
-      // we have to stop the player ...
-      if (vlcCtrl.withLibVLC())
-      {
-         // stop internal player ...
-         if (ui->player->isPlaying())
-         {
-            ui->player->stop();
-         }
-      }
-      else if (vlcCtrl.IsRunning())
-      {
-         // stop external player if under control ...
-         if (!Settings.DetachPlayer())
-         {
-            vlcCtrl.stop();
-         }
-      }
-
-      // || Fall through here ||
-      // VV                   VV
-
-      // Handle errors which lead to
-      // cookie removal ... !
-   case CIptvDefs::ERR_WRONG_LOGIN_DATA:
-   case CIptvDefs::ERR_ACCESS_DENIED:
-   case CIptvDefs::ERR_LOGIN_INCORRECT:
-   case CIptvDefs::ERR_CONTRACT_INACTIVE:
-   case CIptvDefs::ERR_CONTRACT_PAUSED:
-   case CIptvDefs::ERR_AUTHENTICATION:
-
-      // and delete the cookie ...
-      pApiClient->SetCookie("");
-      break;
-
-   default:
-      break;
-   }
-
-   mErr(tr("Error %1 (%2) in request '%3': %4")
+   // Since almost all error codes
+   // are unusable because they differ from
+   // the codes defined by Kartina.TV we wont
+   // decide anything based on these error codes!
+   mErr(tr("Error %1 in request '%2': %3")
         .arg(err)
-        .arg(metaKartina.errValToKey((CIptvDefs::EErr)err))
         .arg(metaKartina.reqValToKey((CIptvDefs::EReq)req))
         .arg(str));
 
    if (!bSilent)
    {
-      QMessageBox::critical(this, tr("Error"), tr("%1 Client API Error:\n%2 (#%3)")
-                            .arg(pCustomization->strVal("COMPANY_NAME"))
-                            .arg(str)
-                            .arg(err));
+      if (!mpRetryDlg) mpRetryDlg = new QRetryDialog(this);
+
+      QString errStr = tr("%1 Client API Error:\n%2 (#%3)")
+                         .arg(pCustomization->strVal("COMPANY_NAME"))
+                         .arg(str)
+                         .arg(err);
+
+      mpRetryDlg->setMessage(errStr, style()->standardIcon(QStyle::SP_MessageBoxCritical), tr("Error"));
+
+      if (mpRetryDlg->exec() == QDialog::Accepted)
+      {
+         switch(mpRetryDlg->lastRole())
+         {
+         case QDialogButtonBox::AcceptRole:
+            pApiClient->requeue();
+            break;
+
+         case QDialogButtonBox::YesRole:
+            pApiClient->reLogin();
+            break;
+
+         default:
+            break;
+         }
+      }
    }
 
    TouchPlayCtrlBtns();
@@ -2062,6 +2043,29 @@ void Recorder::slotCookie (const QString &str)
 
       // request channel list ...
       pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle silent relogin
+//
+//! \author  Jo2003
+//! \date    06.05.2014
+//
+//! \param   resp (const QString&) ref. to response
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::loginOnly(const QString &resp)
+{
+   QString s;
+   cparser::SAccountInfo aInfo;
+
+   // parse cookie ...
+   if (!pApiParser->parseCookie(resp, s, aInfo))
+   {
+      pApiClient->SetCookie(s);
    }
 }
 

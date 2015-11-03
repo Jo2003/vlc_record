@@ -107,6 +107,38 @@ public:
       QString        sUrl;
       QString        sContent;
       Iptv::eReqType eIptvReqType;
+
+      //--------------------------------------------------------------------
+      //! \brief   check if equal
+      //! \author  Jo2003
+      //! \date    03.11.2015
+      //! \param   [in] other (const SRequest&) request to compare with
+      //! \return  true if equal
+      //--------------------------------------------------------------------
+      bool operator==(const SRequest& other) const
+      {
+          if (  (eHttpReqType == other.eHttpReqType)
+             && (iReqId       == other.iReqId      )
+             && (sUrl         == other.sUrl        )
+             && (sContent     == other.sContent    )
+             && (eIptvReqType == other.eIptvReqType))
+          {
+              return true;
+          }
+          return false;
+      }
+
+      //--------------------------------------------------------------------
+      //! \brief   check if not equal
+      //! \author  Jo2003
+      //! \date    03.11.2015
+      //! \param   [in] other (const SRequest&) request to compare with
+      //! \return  true if not equal
+      //--------------------------------------------------------------------
+      bool operator!=(const SRequest& other) const
+      {
+          return !operator==(other);
+      }
    };
 
    explicit QIptvCtrlClient(QObject* parent = 0);
@@ -117,6 +149,8 @@ public:
 
    virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
+   void requeue();
+   void reLogin();
 
 private:
    QVariant          cookies;
@@ -124,6 +158,8 @@ private:
    bool              bBusy;
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
+   SRequest          mLastRequest;
+   SRequest          mLastLogin;
 #ifdef __TRACE
    Iptv              iptv;
 #endif

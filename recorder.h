@@ -65,6 +65,7 @@
 #include <QStackedLayout>
 #include "qvlcvideowidget.h"
 #include "qhlscontrol.h"
+#include "qretrydialog.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -187,6 +188,7 @@ private:
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
+    QRetryDialog                   *mpRetryDlg;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -260,6 +262,7 @@ private slots:
     void slotEPGCurrent (const QString &str);
     void slotStreamURL (const QString &str);
     void slotArchivURL (const QString &str);
+    void loginOnly(const QString &resp);
     void slotCookie (const QString &str);
     void slotTimeShift (const QString &str);
     void slotEpgAnchor (const QUrl & link);

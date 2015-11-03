@@ -15,6 +15,7 @@
 #include "version_info.h"
 #include "defdef.h"
 #include "qcustparser.h"
+#include "ciptvdefs.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -39,6 +40,10 @@ QIptvCtrlClient::QIptvCtrlClient(QObject* parent) :
    bCSet = false;
    bBusy = false;
    connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(slotResponse(QNetworkReply*)));
+
+   mLastRequest.iReqId       = -1;
+   mLastRequest.eHttpReqType = E_REQ_UNKN;
+   mLastLogin                = mLastRequest;
 }
 
 //---------------------------------------------------------------------------
@@ -138,20 +143,18 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
    }
    else
    {
+      QString sErr = reply->errorString();
 #ifdef _IS_OEM
       // in case of OEM we should remove the API server string from
       // error messages ...
-      QString sErr = reply->errorString();
       QUrl    sUrl = reply->request().url();
 
       sErr.remove(sUrl.host());
       sErr = sErr.simplified();
-
-      emit sigErr(iReqId, sErr, (int)reply->error());
-
-#else
-      emit sigErr(iReqId, reply->errorString(), (int)reply->error());
 #endif // _IS_OEM
+
+      mInfo(tr("Network response error #%1:\n  --> %2").arg((int)reply->error()).arg(sErr));
+      emit sigErr(iReqId, sErr, (int)reply->error());
    }
 
    // mark for deletion ...
@@ -391,6 +394,20 @@ void QIptvCtrlClient::workOffQueue()
          vCmdQueue.remove(0);
       }
 
+      // store as last request ...
+      if (mLastRequest != reqObj)
+      {
+          mLastRequest = reqObj;
+
+          // buffer last login ...
+          if ((mLastRequest.eIptvReqType == Iptv::Login)
+             && (mLastRequest.iReqId != (int)CIptvDefs::REQ_LOGIN_ONLY))
+          {
+             mLastLogin        = mLastRequest;
+             mLastLogin.iReqId = (int)CIptvDefs::REQ_LOGIN_ONLY;
+          }
+      }
+
       if (reqObj.eHttpReqType == E_REQ_POST)
       {
          // handle queued post request ...
@@ -406,3 +423,68 @@ void QIptvCtrlClient::workOffQueue()
       mtxCmdQueue.unlock();
    }
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   requeue last request
+//
+//! \author  Jo2003
+//! \date    29.04.2014
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::requeue()
+{
+   if ((mLastRequest.eHttpReqType != E_REQ_UNKN)
+      && (mLastRequest.iReqId != -1))
+   {
+      // lock queue ...
+      mtxCmdQueue.lock();
+
+      // delete all pending requests ...
+      vCmdQueue.clear();
+
+      mInfo(tr("Append last sent request (which triggered error) ..."));
+
+      // add request to command queue ...
+      vCmdQueue.append(mLastRequest);
+
+      mtxCmdQueue.unlock();
+
+      // try to handle request ...
+      workOffQueue();
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   requeue last request
+//
+//! \author  Jo2003
+//! \date    29.04.2014
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QIptvCtrlClient::reLogin()
+{
+   if ((mLastLogin.eHttpReqType != E_REQ_UNKN)
+      && (mLastLogin.iReqId != -1))
+   {
+      // lock queue ...
+      mtxCmdQueue.lock();
+
+      // delete all pending requests ...
+      vCmdQueue.clear();
+
+      mInfo(tr("Append re-Login request ..."));
+
+      // add request to command queue ...
+      vCmdQueue.append(mLastLogin);
+
+      mtxCmdQueue.unlock();
+
+      // try to handle request ...
+      workOffQueue();
+   }
+}
+
