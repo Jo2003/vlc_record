@@ -260,7 +260,7 @@ QCheckBox#checkMute::indicator:checked {
         </size>
        </property>
        <property name="toolTip">
-        <string>Minimal Interface</string>
+        <string>Switch to Minimal Interface</string>
        </property>
        <property name="text">
         <string/>

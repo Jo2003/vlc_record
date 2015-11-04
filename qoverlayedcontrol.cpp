@@ -304,10 +304,12 @@ void QOverlayedControl::chgWindowed (bool on)
    if (on)
    {
       ui->btnWindowed->setIcon(QIcon(":player/from_wnd_panel"));
+      ui->btnWindowed->setToolTip(tr("Leave Minimal Interface"));
    }
    else
    {
       ui->btnWindowed->setIcon(QIcon(":player/to_wnd_panel"));
+      ui->btnWindowed->setToolTip(tr("Switch to Minimal Interface"));
    }
 }
 
@@ -327,10 +329,12 @@ void QOverlayedControl::chgFullscreen (bool on)
    if (on)
    {
       ui->btnFullScreen->setIcon(QIcon(":player/leave-fullscreen"));
+      ui->btnFullScreen->setToolTip(tr("Leave Fullscreen"));
    }
    else
    {
       ui->btnFullScreen->setIcon(QIcon(":player/fullscreen"));
+      ui->btnFullScreen->setToolTip(tr("Switch to Fullscreen"));
    }
 }
 

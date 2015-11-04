@@ -413,7 +413,7 @@ border: 1px solid gray;
                </size>
               </property>
               <property name="toolTip">
-               <string>Minimal Interface</string>
+               <string>Switch to Minimal Interface</string>
               </property>
               <property name="text">
                <string/>
@@ -448,7 +448,7 @@ border: 1px solid gray;
                </size>
               </property>
               <property name="toolTip">
-               <string>Toggle Fullscreen</string>
+               <string>Leave Fullscreen</string>
               </property>
               <property name="text">
                <string/>

@@ -1182,13 +1182,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="forms/cplayer.ui" line="263"/>
-        <source>Minimal Interface</source>
-        <translation>Мини-интерфейс</translation>
+        <source>Switch to Minimal Interface</source>
+        <oldsource>Minimal Interface</oldsource>
+        <translation>Переход к мини-интерфейсу</translation>
     </message>
     <message>
         <location filename="forms/cplayer.ui" line="298"/>
         <source>Switch to Fullscreen</source>
-        <translation>Полный экран</translation>
+        <translation>Переход к полному экрану</translation>
     </message>
     <message>
         <location filename="forms/cplayer.ui" line="354"/>
@@ -3421,8 +3422,10 @@ or start time is later than end time!</source>
     </message>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="416"/>
-        <source>Minimal Interface</source>
-        <translation>Мини-интерфейс</translation>
+        <location filename="qoverlayedcontrol.cpp" line="312"/>
+        <source>Switch to Minimal Interface</source>
+        <oldsource>Minimal Interface</oldsource>
+        <translation>Переход к мини-интерфейсу</translation>
     </message>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="270"/>
@@ -3528,9 +3531,20 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="forms/qoverlayedcontrol.ui" line="451"/>
-        <source>Toggle Fullscreen</source>
-        <oldsource>Leave Fullscreen</oldsource>
-        <translation>Полный экран</translation>
+        <location filename="qoverlayedcontrol.cpp" line="332"/>
+        <source>Leave Fullscreen</source>
+        <oldsource>Toggle Fullscreen</oldsource>
+        <translation>Выход из полного экрана</translation>
+    </message>
+    <message>
+        <location filename="qoverlayedcontrol.cpp" line="307"/>
+        <source>Leave Minimal Interface</source>
+        <translation>Выход из мини-интерфейса</translation>
+    </message>
+    <message>
+        <location filename="qoverlayedcontrol.cpp" line="337"/>
+        <source>Switch to Fullscreen</source>
+        <translation>Переход к полному экрану</translation>
     </message>
 </context>
 <context>
