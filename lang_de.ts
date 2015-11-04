@@ -1654,100 +1654,100 @@ p, li { white-space: pre-wrap; }
         <translation>Logge alles</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="604"/>
+        <location filename="csettingsdlg.cpp" line="635"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="599"/>
+        <location filename="csettingsdlg.cpp" line="630"/>
         <source>Executables (*.exe)</source>
         <translation>ausführbar (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="506"/>
+        <location filename="csettingsdlg.cpp" line="507"/>
         <source>Following table shows the available combinations:</source>
         <translation>Die folgende Tabelle zeigt die möglichen Kombinationen:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="509"/>
+        <location filename="csettingsdlg.cpp" line="510"/>
         <source>Do you want to activate the new %1? The player will switch to &apos;Live&apos; then.</source>
         <translation>Wollen Sie den neuen Wert für %1 aktivieren? Der Player wrid dann zu &apos;Live&apos; wechseln.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="601"/>
+        <location filename="csettingsdlg.cpp" line="632"/>
         <source>Executables (*)</source>
         <translation>ausführbar (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="644"/>
+        <location filename="csettingsdlg.cpp" line="675"/>
         <source>Target Folder</source>
         <translation>Zielverzeichnis</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="990"/>
+        <location filename="csettingsdlg.cpp" line="1021"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;%2&apos;!</source>
         <oldsource>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;&apos;%2&apos;!</oldsource>
         <translation>Das Archiv für Kanal &apos;%1&apos; ist nicht verfügbar in der Bitrate &apos;%2&apos;!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="993"/>
+        <location filename="csettingsdlg.cpp" line="1024"/>
         <source>Following bitrates are available:</source>
         <translation>Folgende Bitraten werden unterstützt:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1002"/>
+        <location filename="csettingsdlg.cpp" line="1033"/>
         <source>Do you want to activate the new bitrate? The player will switch to &apos;Live&apos; then.</source>
         <translation>Wollen Sie den neuen Wert für Bitrate aktivieren? Der Player wrid dann zu &apos;Live&apos; wechseln.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2122"/>
+        <location filename="csettingsdlg.cpp" line="2153"/>
         <source>Set new nominal bitrate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="482"/>
-        <location filename="csettingsdlg.cpp" line="965"/>
+        <location filename="csettingsdlg.cpp" line="483"/>
+        <location filename="csettingsdlg.cpp" line="996"/>
         <source>Mobile</source>
         <translation>Handy</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="483"/>
-        <location filename="csettingsdlg.cpp" line="966"/>
+        <location filename="csettingsdlg.cpp" line="484"/>
+        <location filename="csettingsdlg.cpp" line="997"/>
         <source>Eco</source>
         <translation></translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="153"/>
         <location filename="forms/csettingsdlg.ui" line="222"/>
-        <location filename="csettingsdlg.cpp" line="484"/>
-        <location filename="csettingsdlg.cpp" line="967"/>
+        <location filename="csettingsdlg.cpp" line="485"/>
+        <location filename="csettingsdlg.cpp" line="998"/>
         <source>Standard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="485"/>
-        <location filename="csettingsdlg.cpp" line="968"/>
+        <location filename="csettingsdlg.cpp" line="486"/>
+        <location filename="csettingsdlg.cpp" line="999"/>
         <source>Premium</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1704"/>
+        <location filename="csettingsdlg.cpp" line="1735"/>
         <source>blood</source>
         <translation>blut</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1705"/>
+        <location filename="csettingsdlg.cpp" line="1736"/>
         <source>violence</source>
         <translation>gewalt</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1708"/>
+        <location filename="csettingsdlg.cpp" line="1739"/>
         <source>porn</source>
         <translation>porno</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1706"/>
-        <location filename="csettingsdlg.cpp" line="1707"/>
+        <location filename="csettingsdlg.cpp" line="1737"/>
+        <location filename="csettingsdlg.cpp" line="1738"/>
         <source>obscene</source>
         <translation>obszönitäten</translation>
     </message>
@@ -1757,42 +1757,42 @@ p, li { white-space: pre-wrap; }
         <translation>EPG startet um 0:00Uhr</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="503"/>
+        <location filename="csettingsdlg.cpp" line="504"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in your combination of bitrate (%2) and timeshift (%3)!</source>
         <translation>Das Archiv für Kanal &apos;%1&apos; ist nicht verfügbar in Ihrer Komnination von Bitrate (%2) und Timeshift (%3)!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1709"/>
+        <location filename="csettingsdlg.cpp" line="1740"/>
         <source>horror</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1741"/>
+        <location filename="csettingsdlg.cpp" line="1772"/>
         <source>hide</source>
         <translation>verstecken</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1742"/>
+        <location filename="csettingsdlg.cpp" line="1773"/>
         <source>show</source>
         <translation>zeigen</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1743"/>
+        <location filename="csettingsdlg.cpp" line="1774"/>
         <source>password protected</source>
         <translation>passwortgeschützt</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1935"/>
+        <location filename="csettingsdlg.cpp" line="1966"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2014"/>
+        <location filename="csettingsdlg.cpp" line="2045"/>
         <source>Error!</source>
         <translation>Fehler!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2015"/>
+        <location filename="csettingsdlg.cpp" line="2046"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1824,15 +1824,15 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="511"/>
-        <location filename="csettingsdlg.cpp" line="1004"/>
-        <location filename="csettingsdlg.cpp" line="2066"/>
+        <location filename="csettingsdlg.cpp" line="512"/>
+        <location filename="csettingsdlg.cpp" line="1035"/>
+        <location filename="csettingsdlg.cpp" line="2097"/>
         <source>Information</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2066"/>
-        <location filename="csettingsdlg.cpp" line="2067"/>
+        <location filename="csettingsdlg.cpp" line="2097"/>
+        <location filename="csettingsdlg.cpp" line="2098"/>
         <source>Parent Code successfully changed.</source>
         <translation>Eltern-Code erfolgreich geändert.</translation>
     </message>

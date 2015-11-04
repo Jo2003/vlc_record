@@ -2050,95 +2050,95 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Anuluj</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="552"/>
+        <location filename="csettingsdlg.cpp" line="630"/>
         <source>Executables (*.exe)</source>
         <translation>Pliki wykonywalne (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="554"/>
+        <location filename="csettingsdlg.cpp" line="632"/>
         <source>Executables (*)</source>
         <translation>Pliki wykonywalne (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="557"/>
+        <location filename="csettingsdlg.cpp" line="635"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="597"/>
+        <location filename="csettingsdlg.cpp" line="675"/>
         <source>Target Folder</source>
         <translation>Folder docelowy</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="943"/>
+        <location filename="csettingsdlg.cpp" line="1021"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;%2&apos;!</source>
         <oldsource>The archive for channel &apos;%1&apos; isn&apos;t available in the bitrate &apos;&apos;%2&apos;!</oldsource>
         <translation>Archiwum dla kanału &apos;%1&apos; nie jest dostępna w bitrate &apos;%2&apos;!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="946"/>
+        <location filename="csettingsdlg.cpp" line="1024"/>
         <source>Following bitrates are available:</source>
         <translation>Dostępne są następujące wartości bitrate:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="955"/>
+        <location filename="csettingsdlg.cpp" line="1033"/>
         <source>Do you want to activate the new bitrate? The player will switch to &apos;Live&apos; then.</source>
         <translation>Czy chcesz, aby aktywować nowy bitrate? Odtwarzacz przełączy się &quot;na żywo&quot;.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2075"/>
+        <location filename="csettingsdlg.cpp" line="2153"/>
         <source>Set new nominal bitrate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="435"/>
-        <location filename="csettingsdlg.cpp" line="918"/>
+        <location filename="csettingsdlg.cpp" line="483"/>
+        <location filename="csettingsdlg.cpp" line="996"/>
         <source>Mobile</source>
         <translation>Przenośny</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="436"/>
-        <location filename="csettingsdlg.cpp" line="919"/>
+        <location filename="csettingsdlg.cpp" line="484"/>
+        <location filename="csettingsdlg.cpp" line="997"/>
         <source>Eco</source>
         <translation>Eko</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="153"/>
         <location filename="forms/csettingsdlg.ui" line="222"/>
-        <location filename="csettingsdlg.cpp" line="437"/>
-        <location filename="csettingsdlg.cpp" line="920"/>
+        <location filename="csettingsdlg.cpp" line="485"/>
+        <location filename="csettingsdlg.cpp" line="998"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="438"/>
-        <location filename="csettingsdlg.cpp" line="921"/>
+        <location filename="csettingsdlg.cpp" line="486"/>
+        <location filename="csettingsdlg.cpp" line="999"/>
         <source>Premium</source>
         <translation>Wysokiej jakości</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1657"/>
+        <location filename="csettingsdlg.cpp" line="1735"/>
         <source>blood</source>
         <translation>krwawy</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1658"/>
+        <location filename="csettingsdlg.cpp" line="1736"/>
         <source>violence</source>
         <translation>przemoc</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1661"/>
+        <location filename="csettingsdlg.cpp" line="1739"/>
         <source>porn</source>
         <translation>porno</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1662"/>
+        <location filename="csettingsdlg.cpp" line="1740"/>
         <source>horror</source>
         <translation>horror</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1659"/>
-        <location filename="csettingsdlg.cpp" line="1660"/>
+        <location filename="csettingsdlg.cpp" line="1737"/>
+        <location filename="csettingsdlg.cpp" line="1738"/>
         <source>obscene</source>
         <translation>nieprzyzwoity</translation>
     </message>
@@ -2148,17 +2148,17 @@ p, li { white-space: pre-wrap; }
         <translation>EPG zaczyna się o 00:00</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="456"/>
+        <location filename="csettingsdlg.cpp" line="504"/>
         <source>The archive for channel &apos;%1&apos; isn&apos;t available in your combination of bitrate (%2) and timeshift (%3)!</source>
         <translation>Archiwum dla kanału &apos;%1&apos; nie jest dostępny w Twoim połączeniu bitrate (% 2) i przesunięcia w czasie (% 3)!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="459"/>
+        <location filename="csettingsdlg.cpp" line="507"/>
         <source>Following table shows the available combinations:</source>
         <translation>Poniższa tabela przedstawia dostępne kombinacje:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="462"/>
+        <location filename="csettingsdlg.cpp" line="510"/>
         <source>Do you want to activate the new %1? The player will switch to &apos;Live&apos; then.</source>
         <translation>Czy chcesz, aby uaktywnić nową %1? Odtwarzacz przełączy się &quot;na żywo&quot;.</translation>
     </message>
@@ -2167,32 +2167,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Przesunięcie czasu</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1694"/>
+        <location filename="csettingsdlg.cpp" line="1772"/>
         <source>hide</source>
         <translation>ukryj</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1695"/>
+        <location filename="csettingsdlg.cpp" line="1773"/>
         <source>show</source>
         <translation>pokaż</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1696"/>
+        <location filename="csettingsdlg.cpp" line="1774"/>
         <source>password protected</source>
         <translation>zabezpieczony hasłem</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1888"/>
+        <location filename="csettingsdlg.cpp" line="1966"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1967"/>
+        <location filename="csettingsdlg.cpp" line="2045"/>
         <source>Error!</source>
         <translation>Błąd!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1968"/>
+        <location filename="csettingsdlg.cpp" line="2046"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -2224,15 +2224,15 @@ Aby zmienić kod kontroli rodzicielskiej upewnij się, że:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="464"/>
-        <location filename="csettingsdlg.cpp" line="957"/>
-        <location filename="csettingsdlg.cpp" line="2019"/>
+        <location filename="csettingsdlg.cpp" line="512"/>
+        <location filename="csettingsdlg.cpp" line="1035"/>
+        <location filename="csettingsdlg.cpp" line="2097"/>
         <source>Information</source>
         <translation>Informacje</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="2019"/>
-        <location filename="csettingsdlg.cpp" line="2020"/>
+        <location filename="csettingsdlg.cpp" line="2097"/>
+        <location filename="csettingsdlg.cpp" line="2098"/>
         <source>Parent Code successfully changed.</source>
         <translation>Kod kontroli rodzicielskiej został pomyślnie zmieniony.</translation>
     </message>
@@ -3584,12 +3584,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="49"/>
         <source>St&amp;art</source>
-        <translation>Początek</translation>
+        <translation>Po&amp;czątek</translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="59"/>
         <source>Sto&amp;p</source>
-        <translation>Zatrzymaj</translation>
+        <translation>Zatrz&amp;ymaj</translation>
     </message>
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="71"/>
@@ -3619,7 +3619,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/qspeedtestdlg.ui" line="164"/>
         <source>use fastest tested server</source>
-        <translation>Użyj najszybciej sprawdzony serwera.</translation>
+        <translation>Użyj najszybciej sprawdzony serwera</translation>
     </message>
     <message>
         <location filename="qspeedtestdlg.cpp" line="34"/>
@@ -3739,7 +3739,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QTimeLabel</name>
     <message>
-        <location filename="qtimelabel.h" line="97"/>
+        <location filename="qtimelabel.h" line="98"/>
         <source>Buf: %1%</source>
         <oldsource>Buff: %1%</oldsource>
         <translation></translation>

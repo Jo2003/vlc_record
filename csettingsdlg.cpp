@@ -431,7 +431,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
             m_ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
 
             // stream standard
-            m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+            handleStrStdDeps();
         }
         break;
     default:
@@ -450,7 +450,8 @@ void CSettingsDlg::changeEvent(QEvent *e)
 //---------------------------------------------------------------------------
 void CSettingsDlg::showEvent(QShowEvent *e)
 {
-    m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+    handleStrStdDeps();
+
     QDialog::showEvent(e);
 }
 
@@ -524,6 +525,36 @@ bool CSettingsDlg::checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const 
    }
 
    return bSendSig;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   enable / disable bitrate and buffer settings dependend on
+//!          stream standard
+//
+//! \author  Jo2003
+//! \date    04.11.2015
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::handleStrStdDeps()
+{
+    // update button text
+    m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+
+    // enable / disable different dialog items dependend on new stream standard...
+    QString ssVal = m_pStrStdDlg->getCurrVal();
+
+    // make fuzzy compare since in stream standard values might be some typos ...
+    if (ssVal.contains("dash", Qt::CaseInsensitive) || ssVal.contains("hls", Qt::CaseInsensitive))
+    {
+        m_ui->cbxBitRate->setEnabled(false);
+        m_ui->cbxBufferSeconds->setEnabled(false);
+    }
+    else
+    {
+        m_ui->cbxBitRate->setEnabled(true);
+        m_ui->cbxBufferSeconds->setEnabled(true);
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -2406,7 +2437,8 @@ void CSettingsDlg::on_pushStrStd_clicked()
         // any change in name ... ?
         if (m_ui->pushStrStd->text() != m_pStrStdDlg->getCurrName())
         {
-            m_ui->pushStrStd->setText(m_pStrStdDlg->getCurrName());
+            handleStrStdDeps();
+
             emit sigSetStrStd(m_pStrStdDlg->getCurrVal());
         }
     }

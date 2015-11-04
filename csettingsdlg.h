@@ -134,6 +134,7 @@ protected:
     virtual void changeEvent(QEvent *e);
     virtual void showEvent(QShowEvent* e);
     bool checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const QString& what);
+    void handleStrStdDeps();
 
 private:
     Ui::CSettingsDlg  *m_ui;
