@@ -3,10 +3,10 @@ APPNAME=${1}
 TMPFILE=/tmp/plist.tmp
 CONTENTS=$APPNAME.app/Contents
 OFFNAME=""
-QTPATH=/Users/joergn/Qt/4.8.5
-if [ -z $QTTRANS ] ; then
-    QTTRANS=$QTPATH/translations
+if [ -z $QTDIR ] ; then
+    QTDIR=~/Qt/4.8.5
 fi
+QTTRANS=$QTDIR/translations
 
 # create official name ...
 case $APPNAME in
@@ -34,12 +34,14 @@ case $APPNAME in
 esac
 
 # get version info from version_info.h header ...
-MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]*\([^"]*\).*/\1/p' version_info.h`
+MAJORVER=`sed -n 's/^#define[ \t]*VERSION_MAJOR[^0-9]*\([0-9]*\).*/\1/p' version_info.h`
+MINORVER=`sed -n 's/^#define[ \t]*VERSION_MINOR[^0-9]*\([0-9]*\).*/\1/p' version_info.h`
+BUILDVER=`sed -n 's/^#define[ \t]*VERSION_BUILD[^0-9]*\([0-9]*\).*/\1/p' version_info.h`
 BETAEXT=`sed -n 's/^#define[ \t]*BETA_EXT[^0-9B]*\([^"]*\).*/\1/p' version_info.h`
 DATESTR=`date +%Y%m%d`
 
 # create destination folder name ...
-DSTFOLDER=$APPNAME-2.${MINORVER}${BETAEXT}-${DATESTR}-mac
+DSTFOLDER=$APPNAME-${MAJORVER}.${MINORVER}.${BUILDVER}${BETAEXT}-${DATESTR}-mac
 cd release
 rm -rf $APPNAME-*-mac*
 mkdir -p $CONTENTS/Resources/language
@@ -52,7 +54,7 @@ cp ../modules/*.mod $CONTENTS/PlugIns/modules/
 cp ../resources/$APPNAME.icns $CONTENTS/Resources/$APPNAME.icns
 cp ../qhc/$OFFNAME/*.qhc $CONTENTS/Resources/doc/
 cp ../qhc/$OFFNAME/*.qch $CONTENTS/Resources/doc/
-cp -R ../mac/* $CONTENTS/MacOS
+cp -a ../mac/* $CONTENTS/MacOS
 
 # copy Qt translations
 cp $QTTRANS/qt_de.qm $CONTENTS/translations
@@ -85,7 +87,7 @@ cat << EOF > $TMPFILE
 EOF
 
 iconv -f ASCII -t UTF-8 $TMPFILE >$CONTENTS/Info.plist
-$QTPATH/bin/macdeployqt $APPNAME.app -verbose=0
+$QTDIR/bin/macdeployqt $APPNAME.app -verbose=0
 POS=`pwd`
 cd $CONTENTS/Frameworks
 rm -rf QtDeclarative.framework
