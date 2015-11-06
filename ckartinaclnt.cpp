@@ -290,7 +290,7 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          remVodFav(par_1.toInt(), par_2.toString());
          break;
       case CIptvDefs::REQ_GET_VOD_FAV:
-         getVodFav();
+         getVodFav(par_1.toString());
          break;
       case CIptvDefs::REQ_SET_PCODE:
          setParentCode(par_1.toString(), par_2.toString());
@@ -984,14 +984,20 @@ void CKartinaClnt::remVodFav(int iVidID, const QString &secCode)
 |
 | Description: request vod favourites
 |
-| Parameters:  --
+| Parameters:  [in] sPrepared (const QString&) prepared search string
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CKartinaClnt::getVodFav()
+void CKartinaClnt::getVodFav(const QString &sPrepared)
 {
    mInfo(tr("Get VOD favourites (%1) ..."));
-   q_get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
+   QString req = "vod_favlist";
+
+   if (!sPrepared.isEmpty())
+   {
+       req += "?" + sPrepared;
+   }
+   q_get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\

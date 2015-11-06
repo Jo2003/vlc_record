@@ -72,7 +72,7 @@ protected:
    void setVodManager (const QString &rules, const QString &secCode);
    void addVodFav (int iVidID, const QString &secCode);
    void remVodFav (int iVidID, const QString &secCode);
-   void getVodFav ();
+   void getVodFav (const QString& = "");
    void setParentCode (const QString& oldCode, const QString& newCode);
    void epgCurrent(const QString &cids);
    void updInfo (const QString& url);

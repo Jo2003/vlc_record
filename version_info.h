@@ -33,7 +33,7 @@
 #endif
 
 #define VERSION_MAJOR 2
-#define VERSION_MINOR 72
+#define VERSION_MINOR 73
 #define VERSION_BUILD 0
 #define BETA_EXT
 
