@@ -99,12 +99,6 @@ namespace Ui
        QString     sShortCut;
     };
 
-    struct SVodSite
-    {
-       QString sContent;
-       int     iScrollBarVal;
-    };
-
     struct STabWidget
     {
        QString  sText;
@@ -180,7 +174,6 @@ private:
     cparser::SAccountInfo           accountInfo;
     cparser::SGenreInfo             genreInfo;
     ulong                           ulStartFlags;
-    Ui::SVodSite                    lastVodSite;
     Ui::STabWidget                  vodTabWidget;
     CIptvDefs                       metaKartina;
     QRecordTimerWidget              timerWidget;

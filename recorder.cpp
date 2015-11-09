@@ -112,9 +112,6 @@ Recorder::Recorder(QWidget *parent)
    genreInfo.iTotal        = 0;
    genreInfo.sType         = "wtf";
 
-   // init VOD site backup ...
-   lastVodSite.iScrollBarVal = 0;
-
    // init favourite buttons ...
    for (int i = 0; i < MAX_NO_FAVOURITES; i++)
    {
@@ -3630,9 +3627,8 @@ void Recorder::slotVodAnchor(const QUrlEx &link)
 
    if (action == "vod_info")
    {
-      // buffer last used site (whole code) ...
-      lastVodSite.sContent      = ui->vodBrowser->toHtml();
-      lastVodSite.iScrollBarVal = ui->vodBrowser->verticalScrollBar()->value();
+      // save scroll position ...
+      ui->vodBrowser->saveScrollPos();
 
       id = link.queryItemValue("vodid").toInt();
 
@@ -3640,9 +3636,8 @@ void Recorder::slotVodAnchor(const QUrlEx &link)
    }
    else if (action == "backtolist")
    {
-      // restore last used site ...
-      ui->vodBrowser->setHtml(lastVodSite.sContent);
-      ui->vodBrowser->verticalScrollBar()->setValue(lastVodSite.iScrollBarVal);
+      // re-create last used site and position ...
+      ui->vodBrowser->recreateVodList();
    }
    else if (action == "play")
    {
@@ -3667,6 +3662,10 @@ void Recorder::slotVodAnchor(const QUrlEx &link)
    else if (action == "del_fav")
    {
       id = link.queryItemValue("vodid").toInt();
+
+      // delete video id from cache in vod browser ...
+      ui->vodBrowser->deleteFromLastList(id);
+
       pApiClient->queueRequest(CIptvDefs::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
    }

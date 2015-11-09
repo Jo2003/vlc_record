@@ -13,6 +13,7 @@
 #include "cvodbrowser.h"
 #include "qurlex.h"
 #include "externals_inc.h"
+#include <QScrollBar>
 
 /* -----------------------------------------------------------------\
 |  Method: CVodBrowser / constructor
@@ -29,6 +30,7 @@ CVodBrowser::CVodBrowser(QWidget *parent) : QTextBrowserEx(parent)
    pSettings   = NULL;
    pPixCache   = NULL;
    _uiLength   = (uint)-1;
+   mScrollPos  = -1;
 }
 
 /* -----------------------------------------------------------------\
@@ -57,7 +59,61 @@ CVodBrowser::~CVodBrowser()
 \----------------------------------------------------------------- */
 void CVodBrowser::setSettings(CSettingsDlg *pDlg)
 {
-   pSettings = pDlg;
+    pSettings = pDlg;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   delete video entry from cached video list
+//
+//! \author  Jo2003
+//! \date    09.11.2015
+//
+//! \param  [in] vIdx (uint) video id
+//
+//---------------------------------------------------------------------------
+void CVodBrowser::deleteFromLastList(uint vIdx)
+{
+    if (!mLastList.isEmpty())
+    {
+        QVector<cparser::SVodVideo>::Iterator it;
+
+        for (it = mLastList.begin(); it != mLastList.end(); it ++)
+        {
+            if (it->uiVidId == vIdx)
+            {
+                it = mLastList.erase(it);
+                break;
+            }
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   save scrollbar value for re-creation
+//
+//! \author  Jo2003
+//! \date    09.11.2015
+//
+//---------------------------------------------------------------------------
+void CVodBrowser::saveScrollPos()
+{
+    mScrollPos = verticalScrollBar()->value();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   re-create vod list from cached entry
+//
+//! \author  Jo2003
+//! \date    09.11.2015
+//
+//---------------------------------------------------------------------------
+void CVodBrowser::recreateVodList()
+{
+    displayVodList(mLastList, mLastGenre);
+    verticalScrollBar()->setValue(mScrollPos);
 }
 
 /* -----------------------------------------------------------------\
@@ -94,6 +150,10 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
    int     i, iCount = vList.count();
    bool    bDelay = false;
    QString tab, row, page;
+
+   // buffer data ...
+   mLastList  = vList;
+   mLastGenre = sGenre;
 
    row = pHtml->tableHead(sGenre, TMPL_TH_STYLE, 2);
    tab = pHtml->tableRow(row);

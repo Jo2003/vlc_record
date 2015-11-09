@@ -49,6 +49,9 @@ public:
     const QString& getShortContent ();
     uint  getLength();
     void setSettings (CSettingsDlg *pDlg);
+    void deleteFromLastList (uint vIdx);
+    void saveScrollPos();
+    void recreateVodList();
 
 protected:
     QString createVodListTableCell (const cparser::SVodVideo& entry, bool& delay);
@@ -63,6 +66,9 @@ private:
     uint           _uiLength;
     CSettingsDlg  *pSettings;
     CPixLoader    *pPixCache;
+    QVector<cparser::SVodVideo> mLastList;
+    QString                     mLastGenre;
+    int                         mScrollPos;
 };
 
 #endif // __21122010_CVODBROWSER_H

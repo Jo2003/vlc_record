@@ -33,9 +33,9 @@
 #endif
 
 #define VERSION_MAJOR 2
-#define VERSION_MINOR 73
-#define VERSION_BUILD 0
-#define BETA_EXT
+#define VERSION_MINOR 72
+#define VERSION_BUILD 5
+#define BETA_EXT      "B"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2015-11-09: Version 2.72.5
+| - add order information to player widget and info dialog
+| - support API V2 functionality
+| - vod favorites bugfix
+| - speed test
+| - supports 4 different stream standards
+| - add udt patched VLC for Windows / Mac
+|
 | 2015-05-28: Version t.b.d.
 | - add missing 3d format icon
 |
