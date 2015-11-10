@@ -25,7 +25,7 @@
 
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
-#define VERSION_BUILD 1
+#define VERSION_BUILD 2
 #define BETA_EXT      ""
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
@@ -41,6 +41,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2015-11-10: Version 2.69.2
+| - add retry / reconnect dialog
+| - don't take care for numerical error codes
+|
 | 2015-03-04: Version 2.69.0
 | - add NOOP ping
 | - use libVLC 2.2.0
