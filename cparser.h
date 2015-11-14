@@ -37,6 +37,7 @@ namespace cparser
       QString sName;
       QString sProgramm;
       QString sIcon;
+      QString sLangCode;
       uint    uiStart;
       uint    uiEnd;
       uint    uiDefAud;

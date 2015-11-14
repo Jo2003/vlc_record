@@ -321,7 +321,8 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
          {
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
-               uint idx = (uint)slATracks.indexOf(xml.text().toString());
+               chanEntry.sLangCode = xml.text().toString();
+               uint idx = (uint)slATracks.indexOf(chanEntry.sLangCode);
                chanEntry.uiDefAud = (idx == (uint)-1) ? 0 : idx;
             }
          }

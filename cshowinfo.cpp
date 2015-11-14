@@ -318,7 +318,7 @@ void CShowInfo::setEpgUpdTime(ulong ts)
 |
 |  Returns: unix timestamp
 \----------------------------------------------------------------- */
-ulong CShowInfo::epgUpdTime()
+ulong CShowInfo::epgUpdTime() const
 {
    return ulLastEpgUpd;
 }
@@ -333,7 +333,7 @@ ulong CShowInfo::epgUpdTime()
 |
 |  Returns: true or false
 \----------------------------------------------------------------- */
-bool CShowInfo::streamLoader()
+bool CShowInfo::streamLoader() const
 {
    return bStreamLoader;
 }
@@ -348,7 +348,7 @@ bool CShowInfo::streamLoader()
 |
 |  Returns: true or false
 \----------------------------------------------------------------- */
-bool CShowInfo::isHls()
+bool CShowInfo::isHls() const
 {
    return bHls;
 }
@@ -364,7 +364,7 @@ bool CShowInfo::isHls()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const QString &CShowInfo::showName()
+const QString &CShowInfo::showName() const
 {
    return sShowName;
 }
@@ -379,7 +379,7 @@ const QString &CShowInfo::showName()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const QString &CShowInfo::chanName()
+const QString &CShowInfo::chanName() const
 {
    return sChanName;
 }
@@ -394,7 +394,7 @@ const QString &CShowInfo::chanName()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const int &CShowInfo::channelId()
+const int &CShowInfo::channelId() const
 {
    return iChannelId;
 }
@@ -409,7 +409,7 @@ const int &CShowInfo::channelId()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const uint &CShowInfo::starts()
+const uint &CShowInfo::starts() const
 {
    return uiStart;
 }
@@ -424,7 +424,7 @@ const uint &CShowInfo::starts()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const uint &CShowInfo::lastJump()
+const uint &CShowInfo::lastJump() const
 {
    return uiJumpTime;
 }
@@ -439,7 +439,7 @@ const uint &CShowInfo::lastJump()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const uint &CShowInfo::ends()
+const uint &CShowInfo::ends() const
 {
    return uiEnd;
 }
@@ -454,7 +454,7 @@ const uint &CShowInfo::ends()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const IncPlay::ePlayStates &CShowInfo::playState()
+const IncPlay::ePlayStates &CShowInfo::playState() const
 {
    return ePlayState;
 }
@@ -469,7 +469,7 @@ const IncPlay::ePlayStates &CShowInfo::playState()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const ShowInfo::eProgType &CShowInfo::showType()
+const ShowInfo::eProgType &CShowInfo::showType() const
 {
    return eShowType;
 }
@@ -484,7 +484,7 @@ const ShowInfo::eProgType &CShowInfo::showType()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const int &CShowInfo::vodId()
+const int &CShowInfo::vodId() const
 {
    return iVodId;
 }
@@ -500,7 +500,7 @@ const int &CShowInfo::vodId()
 |  Returns: true --> yes
 |          false --> no
 \----------------------------------------------------------------- */
-bool CShowInfo::canCtrlStream()
+bool CShowInfo::canCtrlStream() const
 {
    if (((eShowType == ShowInfo::Archive) || (eShowType == ShowInfo::VOD))
        && ((ePlayState == IncPlay::PS_PLAY) || (ePlayState == IncPlay::PS_PAUSE)))
@@ -523,7 +523,7 @@ bool CShowInfo::canCtrlStream()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const QString& CShowInfo::htmlDescr()
+const QString& CShowInfo::htmlDescr() const
 {
    return sDescr;
 }
@@ -538,7 +538,7 @@ const QString& CShowInfo::htmlDescr()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const QString& CShowInfo::adUrl()
+const QString& CShowInfo::adUrl() const
 {
    return sAdUrl;
 }
@@ -553,7 +553,7 @@ const QString& CShowInfo::adUrl()
 |
 |  Returns: ref. to value
 \----------------------------------------------------------------- */
-const QString& CShowInfo::pCode()
+const QString& CShowInfo::pCode() const
 {
    return sPCode;
 }
@@ -648,7 +648,23 @@ void CShowInfo::updWithChanEntry (ulong ulTime, const cparser::SChan &entry)
 //---------------------------------------------------------------------------
 void CShowInfo::setDefAStream(int idx)
 {
-   iDefAStream = idx;
+    iDefAStream = idx;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   store default language code
+//
+//! \author  Jo2003
+//! \date    14.11.2015
+//
+//! \param   [in] lcode (const QString&) language code ISO639
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CShowInfo::setLangCode(const QString &lcode)
+{
+    sLangCode = lcode;
 }
 
 //---------------------------------------------------------------------------
@@ -662,9 +678,25 @@ void CShowInfo::setDefAStream(int idx)
 //
 //! \return  audio track index
 //---------------------------------------------------------------------------
-const int &CShowInfo::defAStream()
+const int &CShowInfo::defAStream() const
 {
-   return iDefAStream;
+    return iDefAStream;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get default language code
+//
+//! \author  Jo2003
+//! \date    02.12.2013
+//
+//! \param   --
+//
+//! \return  language code as defined in ISO639
+//---------------------------------------------------------------------------
+const QString &CShowInfo::langCode() const
+{
+    return sLangCode;
 }
 
 /************************* History ***************************\

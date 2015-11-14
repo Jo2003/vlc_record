@@ -168,6 +168,7 @@ void CApiParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
    entry.sIcon        = "";
    entry.sName        = "";
    entry.sProgramm    = "";
+   entry.sLangCode    = "";
    entry.uiEnd        = 0;
    entry.uiStart      = 0;
    entry.bIsHidden    = false;

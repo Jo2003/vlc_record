@@ -72,26 +72,28 @@ public:
    void setEpgUpdTime (ulong ts);
    void updWithChanEntry (ulong ulTime, const cparser::SChan &entry);
    void setDefAStream(int idx);
+   void setLangCode(const QString& lcode);
 
    // get values ...
-   const QString &showName();
-   const QString &chanName();
-   const QString &htmlDescr();
-   const QString &adUrl();
-   const QString &pCode();
-   const int &channelId();
-   const uint &starts();
-   const uint &ends();
-   const uint &lastJump();
-   const IncPlay::ePlayStates &playState();
-   const ShowInfo::eProgType &showType();
-   bool  canCtrlStream();
-   bool  streamLoader();
-   bool  isHls();
-   const int& vodId();
-   ulong epgUpdTime();
+   const QString &showName() const;
+   const QString &chanName() const;
+   const QString &htmlDescr() const;
+   const QString &adUrl() const;
+   const QString &pCode() const;
+   const int &channelId() const;
+   const uint &starts() const;
+   const uint &ends() const;
+   const uint &lastJump() const;
+   const IncPlay::ePlayStates &playState() const;
+   const ShowInfo::eProgType &showType() const;
+   bool  canCtrlStream() const;
+   bool  streamLoader() const;
+   bool  isHls() const;
+   const int& vodId() const;
+   ulong epgUpdTime() const;
    int   autoUpdate(uint uiTime);
-   const int& defAStream();
+   const int& defAStream() const;
+   const QString& langCode() const;
 
 private:
    QString              sShowName;
@@ -111,6 +113,7 @@ private:
    bool                 bHls;
    ulong                ulLastEpgUpd;
    int                  iDefAStream;
+   QString              sLangCode;
 };
 
 #endif // __150610_CSHOWINFO_H

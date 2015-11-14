@@ -609,7 +609,6 @@ int CPlayer::pause()
 int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
 {
    int                         iRV    = 0;
-   int                         iAidx  = 0;
    libvlc_media_t             *p_md   = NULL;
    QStringList                 lArgs;
    QStringList::const_iterator cit;
@@ -730,14 +729,30 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
          ///////////////////////////////////////////////////////////////////////////
          if (showInfo.channelId() != -1)
          {
+            // so far there is no way to get the language code
+            // of the audio tracks from libVLC (I must do it on my own!).
+            // Since the language index changes from time to time
+            // restoring it from DB doesn't make sense.
+            // So we simply use the default language code as
+            // delivered by the API.
+            // When finding the time we later re-activate this feature
+            // after hacking this feature into libVLC.
+
+            /*
             if ((iAidx = pDb->defAStream(showInfo.channelId())) == -1)
             {
                iAidx = showInfo.defAStream();
             }
 
             sMrl = QString(":audio-track=%1").arg(iAidx);
-            mInfo(tr("Add MRL Option: %1").arg(sMrl));
-            libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+            */
+
+            if (showInfo.langCode() != "")
+            {
+                sMrl = QString(":audio-language=%1").arg(showInfo.langCode());
+                mInfo(tr("Add MRL Option: %1").arg(sMrl));
+                libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+            }
          }
 
          ///////////////////////////////////////////////////////////////////////////
@@ -2141,6 +2156,9 @@ void CPlayer::slotChangeATrack(int id)
    int iRet, i = -1;
    if (pMediaPlayer)
    {
+      /* since index may change it makes no
+       * sense to store it in data base!
+       *
       if (showInfo.channelId() != -1)
       {
          // get index of this audio track ...
@@ -2154,6 +2172,7 @@ void CPlayer::slotChangeATrack(int id)
             }
          }
       }
+      */
 
       iRet = libvlc_audio_set_track(pMediaPlayer, id);
 
