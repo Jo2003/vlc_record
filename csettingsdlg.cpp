@@ -480,10 +480,8 @@ bool CSettingsDlg::checkBitrateAndTimeShift(int iBitRate, int iTimeShift, const 
       bool    bArchHasTs = false;
       QString msg;
       QMap<int, QString> brMap;
-      brMap[320]  = tr("Mobile");
-      brMap[900]  = tr("Eco");
-      brMap[1500] = tr("Standard");
-      brMap[2500] = tr("Premium");
+
+      getBrMap(brMap);
 
       if (pChanMap->contains(cid))
       {
@@ -993,10 +991,9 @@ void CSettingsDlg::on_cbxBitRate_activated(int index)
       QString msg;
       QVector<int> brAvail;
       QMap<int, QString> brMap;
-      brMap[320]  = tr("Mobile");
-      brMap[900]  = tr("Eco");
-      brMap[1500] = tr("Standard");
-      brMap[2500] = tr("Premium");
+
+      // create map from values in cbx ...
+      getBrMap(brMap);
 
       if (pChanMap->contains(cid))
       {
@@ -2392,6 +2389,33 @@ void CSettingsDlg::autoSetStreamServer(const QString &curr)
         m_ui->cbxStreamServer->setCurrentIndex(idx);
         emit sigSetServer(curr);
     }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get bitrate map from bitrate cbx
+//
+//! \author  Jo2003
+//! \date    15.11.2015
+//
+//! \param   brMap [out] (QMap<int, QString> &) map to fill
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::getBrMap(QMap<int, QString> &brMap) const
+{
+    int      val;
+    QString  text;
+    brMap.clear();
+
+    for (int i = 0; i < m_ui->cbxBitRate->count(); i++)
+    {
+        val  = m_ui->cbxBitRate->itemData(i).toInt();
+        text = m_ui->cbxBitRate->itemText(i);
+
+        brMap[val] = text;
+    }
+
 }
 
 //---------------------------------------------------------------------------

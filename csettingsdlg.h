@@ -129,6 +129,7 @@ public:
     void setFontDelta (int i);
     void setStrStdData(const cparser::QStrStdMap& data, const QString& curr);
     void autoSetStreamServer (const QString& curr);
+    void getBrMap(QMap<int, QString>& brMap) const;
 
 protected:
     virtual void changeEvent(QEvent *e);
