@@ -36,6 +36,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    pShortVerbLevel = new CShortcutEx(QKeySequence("CTRL+ALT+V"), this);
    m_pStrStdDlg    = new QStrStandardDlg(this, Qt::Tool);
    m_pSpdTestDlg   = new QSpeedTestDlg(this, Qt::Tool);
+   m_ulChgdMask    = 0;
 
    if (pShortApiServer)
    {
@@ -688,6 +689,8 @@ void CSettingsDlg::on_pushDir_clicked()
 \----------------------------------------------------------------- */
 void CSettingsDlg::on_pushSave_clicked()
 {
+   checkChanges();
+
    // line edits ...
    pDb->setValue("VLCPath", m_ui->lineVLC->text());
    pDb->setValue("User", m_ui->lineUsr->text());
@@ -1101,7 +1104,6 @@ void CSettingsDlg::on_cbxTimeShift_activated(int index)
    // store global ...
    tmSync.setTimeShift(ts);
    emit sigSetTimeShift(ts);
-
 }
 
 /* -----------------------------------------------------------------\
@@ -2416,6 +2418,94 @@ void CSettingsDlg::getBrMap(QMap<int, QString> &brMap) const
         brMap[val] = text;
     }
 
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   do we need a re-login?
+//
+//! \author  Jo2003
+//! \date    15.11.2015
+//
+//! \return  changed mask
+//---------------------------------------------------------------------------
+ulong CSettingsDlg::savedChanges() const
+{
+    return m_ulChgdMask;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   compare values before save to find out if re-login is needed
+//
+//! \author  Jo2003
+//! \date    15.11.2015
+//
+//---------------------------------------------------------------------------
+void CSettingsDlg::checkChanges()
+{
+    QString sCmp;
+    int     iErr, iState;
+
+    m_ulChgdMask = 0;
+
+    // user credentials
+    if ((m_ui->lineUsr->text() != pDb->stringValue("User"))
+        || (m_ui->linePass->text() != pDb->password("PasswdEnc")))
+    {
+        mInfo(tr("Trigger Re-Login. Reason: %1").arg(tr("Credentials changed")));
+        m_ulChgdMask |= CREDENTIALS_CHG;
+    }
+
+    // api server
+    sCmp = pDb->stringValue("APIServer").isEmpty() ? pCustomization->strVal("API_SERVER") : pDb->stringValue("APIServer");
+    if (sCmp != m_ui->lineApiServer->text())
+    {
+        mInfo(tr("Trigger Re-Login. Reason: %1").arg(tr("API server changed")));
+        m_ulChgdMask |= API_SERVER_CHG;
+    }
+
+    // auto stream server
+    if (m_ui->chkStrSrvAuto->isChecked())
+    {
+        iState = pDb->intValue("AutoStrSrv", &iErr);
+        if (iErr)
+        {
+            iState = (int)Qt::Checked;
+        }
+
+        if (iState != (int)m_ui->chkStrSrvAuto->checkState())
+        {
+            mInfo(tr("Trigger Re-Login. Reason: %1").arg(tr("Stream Server 'AUTO' setting activated")));
+            m_ulChgdMask |= STREAM_SERVER_CHG;
+        }
+    }
+
+    // proxy user / password
+    if ((m_ui->lineProxyHost->text()        != pDb->stringValue("ProxyHost"))
+        || (m_ui->lineProxyPort->text()     != pDb->stringValue("ProxyPort"))
+        || (m_ui->lineProxyUser->text()     != pDb->stringValue("ProxyUser"))
+        || (m_ui->lineProxyPassword->text() != pDb->password("ProxyPasswdEnc"))
+        || (m_ui->useProxy->checkState()    != (Qt::CheckState)pDb->intValue("UseProxy")))
+    {
+        mInfo(tr("Trigger Re-Login. Reason: %1").arg(tr("Proxy settings changed")));
+        m_ulChgdMask |= PROXY_CHG;
+    }
+
+    // language change ...
+    if (m_ui->cbxLanguage->currentText() != pDb->stringValue("Language"))
+    {
+        mInfo(tr("Trigger Re-Login. Reason: %1").arg(tr("Language changed")));
+        m_ulChgdMask |= LANG_CHG;
+    }
+
+    // player module
+    sCmp = pDb->stringValue("PlayerModule").isEmpty() ? "5_libvlc.mod" : pDb->stringValue("PlayerModule");
+    if (m_ui->cbxPlayerMod->currentText() != sCmp)
+    {
+        mInfo(tr("Trigger player module change"));
+        m_ulChgdMask |= PLAY_MOD_CHG;
+    }
 }
 
 //---------------------------------------------------------------------------

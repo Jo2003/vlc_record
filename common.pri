@@ -48,7 +48,7 @@ CONFIG += shared
 # program version
 # -------------------------------------
 PROGMAJ=2
-PROGMIN=73
+PROGMIN=72
 
 # here you can enable traces ...
 # DEFINES += __TRACE

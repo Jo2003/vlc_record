@@ -619,100 +619,119 @@ void Recorder::hideEvent(QHideEvent *event)
 \----------------------------------------------------------------- */
 void Recorder::on_pushSettings_clicked()
 {
-   QString sHlp;
+    QString sHlp;
 
-   if (Settings.exec() == QDialog::Accepted)
-   {
-      // in case we're playing a stream we should continue it after
-      // settings took effect ...
-      // only takes effect when using internal player ...
-      if (vlcCtrl.withLibVLC() && (ePlayState == IncPlay::PS_PLAY))
-      {
-         if (showInfo.showType() == ShowInfo::Live)
-         {
-            // create request to get current channel ...
-            reRequest.bValid = true;
-            reRequest.req    = CIptvDefs::REQ_STREAM;
-            reRequest.par_1  = showInfo.channelId();
-            reRequest.par_2  = showInfo.pCode();
-         }
-         else if (showInfo.showType() == ShowInfo::Archive)
-         {
-            // create request to get current channel / position ...
-            quint64 pos = ui->player->getSliderPos();
-            QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
 
-            reRequest.bValid = true;
-            reRequest.req    = CIptvDefs::REQ_ARCHIV;
-            reRequest.par_1  = req;
-            reRequest.par_2  = showInfo.pCode();
-         }
-      }
+    if (Settings.exec() == QDialog::Accepted)
+    {
+        // what has changed in settings ...
+        ulong changeFlags = Settings.savedChanges();
 
-      // if changes where saved, accept it here ...
-      VlcLog.SetLogLevel(Settings.GetLogLevel());
+        // if changes where saved, accept it here ...
+        VlcLog.SetLogLevel(Settings.GetLogLevel());
 
-      pModel->clear();
-      // pApiClient->abort();
+        if (changeFlags & PROXY_CHG)
+        {
+            // set proxy ...
+            if (Settings.UseProxy())
+            {
+                QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
+                                    Settings.GetProxyHost(), Settings.GetProxyPort(),
+                                    Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
-      // update connection data ...
-      pApiClient->SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
+                pApiClient->setProxy(proxy);
+                streamLoader.setProxy(proxy);
+            }
+            else
+            {
+                pApiClient->setProxy(QNetworkProxy());
+                streamLoader.setProxy(QNetworkProxy());
+            }
+        }
 
-      // set proxy ...
-      if (Settings.UseProxy())
-      {
-         QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
-                             Settings.GetProxyHost(), Settings.GetProxyPort(),
-                             Settings.GetProxyUser(), Settings.GetProxyPasswd());
+        if (changeFlags & PLAY_MOD_CHG)
+        {
+            // do we use libVLC ?
+            if (Settings.GetPlayerModule().contains("libvlc", Qt::CaseInsensitive))
+            {
+                vlcCtrl.UseLibVlc(true);
+            }
+            else
+            {
+                vlcCtrl.UseLibVlc(false);
+            }
 
-         pApiClient->setProxy(proxy);
-         streamLoader.setProxy(proxy);
-      }
+            // give vlcCtrl needed infos ...
+            vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
+        }
 
-      // do we use libVLC ?
-      if (Settings.GetPlayerModule().contains("libvlc", Qt::CaseInsensitive))
-      {
-         vlcCtrl.UseLibVlc(true);
-      }
-      else
-      {
-         vlcCtrl.UseLibVlc(false);
-      }
+        if (changeFlags & RE_LOGIN_MASK)
+        {
+            // in case we're playing a stream we should continue it after
+            // settings took effect ...
+            // only takes effect when using internal player ...
+            if (vlcCtrl.withLibVLC() && (ePlayState == IncPlay::PS_PLAY))
+            {
+                if (showInfo.showType() == ShowInfo::Live)
+                {
+                    // create request to get current channel ...
+                    reRequest.bValid = true;
+                    reRequest.req    = CIptvDefs::REQ_STREAM;
+                    reRequest.par_1  = showInfo.channelId();
+                    reRequest.par_2  = showInfo.pCode();
+                }
+                else if (showInfo.showType() == ShowInfo::Archive)
+                {
+                    // create request to get current channel / position ...
+                    quint64 pos = ui->player->getSliderPos();
+                    QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
 
-      // give vlcCtrl needed infos ...
-      vlcCtrl.LoadPlayerModule(Settings.GetPlayerModule());
-      vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
+                    reRequest.bValid = true;
+                    reRequest.req    = CIptvDefs::REQ_ARCHIV;
+                    reRequest.par_1  = req;
+                    reRequest.par_2  = showInfo.pCode();
+                }
+            }
 
-      TouchPlayCtrlBtns(false);
+            // re-login needed ...
+            pModel->clear();
 
-      // authenticate ...
-      pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
-   }
+            // update connection data ...
+            pApiClient->SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
 
-   // lock parental manager ...
-   emit sigLockParentalManager();
+            TouchPlayCtrlBtns(false);
 
-   if (Settings.HideToSystray() && QSystemTrayIcon::isSystemTrayAvailable())
-   {
-      connect (this, SIGNAL(sigHide()), &trayIcon, SLOT(show()));
-      connect (this, SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
-   }
-   else
-   {
-      disconnect(this, SIGNAL(sigHide()));
-      disconnect(this, SIGNAL(sigShow()));
-   }
+            // authenticate ...
+            pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
+        }
 
-   // set new(?) helpfile ...
-   // be sure the file we want to load exists ... fallback to english help ...
-   sHlp = QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage());
+        vlcCtrl.SetTranslitSettings(Settings.TranslitRecFile());
+    }
 
-   if (!QFile::exists(sHlp))
-   {
-      sHlp = QString("%1/help_en.qhc").arg(pFolders->getDocDir());
-   }
+    // lock parental manager ...
+    emit sigLockParentalManager();
 
-   pHelp->setHelpFile(sHlp);
+    if (Settings.HideToSystray() && QSystemTrayIcon::isSystemTrayAvailable())
+    {
+        connect (this, SIGNAL(sigHide()), &trayIcon, SLOT(show()));
+        connect (this, SIGNAL(sigShow()), &trayIcon, SLOT(hide()));
+    }
+    else
+    {
+        disconnect(this, SIGNAL(sigHide()));
+        disconnect(this, SIGNAL(sigShow()));
+    }
+
+    // set new(?) helpfile ...
+    // be sure the file we want to load exists ... fallback to english help ...
+    sHlp = QString("%1/help_%2.qhc").arg(pFolders->getDocDir()).arg(Settings.GetLanguage());
+
+    if (!QFile::exists(sHlp))
+    {
+        sHlp = QString("%1/help_en.qhc").arg(pFolders->getDocDir());
+    }
+
+    pHelp->setHelpFile(sHlp);
 }
 
 /* -----------------------------------------------------------------\
@@ -1858,15 +1877,18 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_SPEED_TEST_DATA, speedTestData(resp));
 
    ///////////////////////////////////////////////
+   // stream settings were changed - request new stream on demand
+   mkCase(CIptvDefs::REQ_SERVER, rerequestStream(resp));
+   mkCase(CIptvDefs::REQ_SETBITRATE, rerequestStream(resp));
+
+   ///////////////////////////////////////////////
    // Make sure the unused responses are listed
    // This makes it easier to understand the log.
-   mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_ADD_VOD_FAV, slotUnused(resp));
    mkCase(CIptvDefs::REQ_REM_VOD_FAV, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SET_VOD_MANAGER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SETCHAN_SHOW, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SETCHAN_HIDE, slotUnused(resp));
-   mkCase(CIptvDefs::REQ_SETBITRATE, slotUnused(resp));
    mkCase(CIptvDefs::REQ_GETBITRATE, slotUnused(resp));
    mkCase(CIptvDefs::REQ_GETTIMESHIFT, slotUnused(resp));
    mkCase(CIptvDefs::REQ_GET_SERVER, slotUnused(resp));
@@ -1892,6 +1914,51 @@ void Recorder::slotKartinaResponse(QString resp, int req)
 void Recorder::slotUnused(const QString &str)
 {
    Q_UNUSED(str)
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   new setting was set -> request new stream ...
+//
+//! \author  Jo2003
+//! \date    15.11.2015
+//
+//! \param   resp [in] (const QString&) response string
+//
+//---------------------------------------------------------------------------
+void Recorder::rerequestStream(const QString& resp)
+{
+    Q_UNUSED(resp)
+
+    if (vlcCtrl.withLibVLC() && (ePlayState == IncPlay::PS_PLAY))
+    {
+        if (showInfo.showType() == ShowInfo::Live)
+        {
+            // create request to get current channel ...
+            reRequest.bValid = true;
+            reRequest.req    = CIptvDefs::REQ_STREAM;
+            reRequest.par_1  = showInfo.channelId();
+            reRequest.par_2  = showInfo.pCode();
+        }
+        else if (showInfo.showType() == ShowInfo::Archive)
+        {
+            // create request to get current channel / position ...
+            quint64 pos = ui->player->getSliderPos();
+            QString req = QString("cid=%1&gmt=%2").arg(showInfo.channelId()).arg(pos);
+
+            reRequest.bValid = true;
+            reRequest.req    = CIptvDefs::REQ_ARCHIV;
+            reRequest.par_1  = req;
+            reRequest.par_2  = showInfo.pCode();
+        }
+    }
+
+    // re-request stream ...
+    if (reRequest.bValid)
+    {
+       reRequest.bValid = false;
+       pApiClient->queueRequest(reRequest.req, reRequest.par_1, reRequest.par_2);
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -2412,6 +2479,7 @@ void Recorder::slotCookie (const QString &str)
 void Recorder::slotTimeShift (const QString &str)
 {
    Q_UNUSED(str)
+   pModel->clear();
    pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
 }
 

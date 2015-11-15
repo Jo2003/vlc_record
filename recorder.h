@@ -338,6 +338,7 @@ private slots:
     void on_btnCleanVodSearch_clicked();
     void slotReqStrSrvAuto();
     void slotReqSpeedTestData();
+    void rerequestStream(const QString &resp);
 
 signals:
     void sigShow ();

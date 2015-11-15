@@ -34,7 +34,7 @@
 
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 72
-#define VERSION_BUILD 5
+#define VERSION_BUILD 6
 #define BETA_EXT      "B"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
@@ -50,6 +50,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2015-11-15: Version 2.72.6B
+| - after saving settings make re-login only if needed
+| - re-request current stream after stream server change
+|
 | 2015-11-09: Version 2.72.5
 | - add order information to player widget and info dialog
 | - support API V2 functionality

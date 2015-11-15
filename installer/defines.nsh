@@ -7,8 +7,8 @@
 ; define versions ...
 !define VER_MAJOR   "2"
 !define VER_MINOR   "72"
-!define VER_BUILD   "0"
-!define BETA_EXT    ""
+!define VER_BUILD   "6"
+!define BETA_EXT    "B"
 
 ;------------------------------
 ; path defines ...
