@@ -16,6 +16,7 @@
 #include <QPushButton>
 #include <QEvent>
 #include <QDialogButtonBox>
+#include <QShortcut>
 
 namespace Ui {
     class QRetryDialog;
@@ -47,9 +48,11 @@ private:
     Ui::QRetryDialog*            ui;
     QPushButton*                 mpBtnReLogin;
     QDialogButtonBox::ButtonRole mLastRole;
+    QShortcut                   *mpCopyText;
 
 private slots:
     void on_buttonBox_clicked(QAbstractButton *button);
+    void copyToClipBoard();
 };
 
 #endif // __20151103_QRETRYDIALOG_H

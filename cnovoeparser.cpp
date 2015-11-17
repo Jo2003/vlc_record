@@ -69,7 +69,8 @@ int CNovoeParser::parseCookie (const QString &sResp, QString &sCookie, cparser::
       sInf.bHasArchive = nestedMap.value("archive").toBool();
 
       // novoe removed archive ...
-      sInf.bHasVOD     = false; // nestedMap.value("vod").toBool();
+      // sInf.bHasVOD     = false; // nestedMap.value("vod").toBool();
+      sInf.bHasVOD     = nestedMap.value("vod").toBool();
 
       // check offset ...
       checkTimeOffSet (contentMap.value("servertime").toUInt());

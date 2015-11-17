@@ -11,6 +11,7 @@
  *///------------------------- (c) 2015 by Jo2003  --------------------------
 #include "qretrydialog.h"
 #include "ui_qretrydialog.h"
+#include <QClipboard>
 
 //---------------------------------------------------------------------------
 //
@@ -32,6 +33,11 @@ QRetryDialog::QRetryDialog(QWidget *parent) :
 
     mpBtnReLogin = NULL;
     mLastRole    = QDialogButtonBox::InvalidRole;
+
+    if ((mpCopyText = new QShortcut(QKeySequence("CTRL+C"), this)) != NULL)
+    {
+        connect(mpCopyText, SIGNAL(activated()), this, SLOT(copyToClipBoard()));
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -173,5 +179,23 @@ void QRetryDialog::on_buttonBox_clicked(QAbstractButton *button)
 
     default:
         break;
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   copy message text to clipboard
+//
+//! \author  Jo2003
+//! \date    17.11.2015
+//
+//---------------------------------------------------------------------------
+void QRetryDialog::copyToClipBoard()
+{
+    QClipboard* pClip = QApplication::clipboard();
+
+    if (pClip != NULL)
+    {
+        pClip->setText(ui->labMsg->text());
     }
 }

@@ -898,17 +898,6 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CNovoeParser</name>
     <message>
-        <location filename="cnovoeparser.cpp" line="79"/>
-        <location filename="cnovoeparser.cpp" line="178"/>
-        <location filename="cnovoeparser.cpp" line="235"/>
-        <location filename="cnovoeparser.cpp" line="294"/>
-        <location filename="cnovoeparser.cpp" line="374"/>
-        <location filename="cnovoeparser.cpp" line="440"/>
-        <location filename="cnovoeparser.cpp" line="539"/>
-        <source>Error in %1</source>
-        <translation>Ошибка в %1</translation>
-    </message>
-    <message>
         <location filename="cnovoeparser.cpp" line="80"/>
         <location filename="cnovoeparser.cpp" line="179"/>
         <location filename="cnovoeparser.cpp" line="236"/>
@@ -916,11 +905,22 @@ p, li { white-space: pre-wrap; }
         <location filename="cnovoeparser.cpp" line="375"/>
         <location filename="cnovoeparser.cpp" line="441"/>
         <location filename="cnovoeparser.cpp" line="540"/>
+        <source>Error in %1</source>
+        <translation>Ошибка в %1</translation>
+    </message>
+    <message>
+        <location filename="cnovoeparser.cpp" line="81"/>
+        <location filename="cnovoeparser.cpp" line="180"/>
+        <location filename="cnovoeparser.cpp" line="237"/>
+        <location filename="cnovoeparser.cpp" line="296"/>
+        <location filename="cnovoeparser.cpp" line="376"/>
+        <location filename="cnovoeparser.cpp" line="442"/>
+        <location filename="cnovoeparser.cpp" line="541"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cnovoeparser.cpp" line="523"/>
+        <location filename="cnovoeparser.cpp" line="524"/>
         <source>Update Entries for channel %1:
 </source>
         <translation></translation>
@@ -3223,7 +3223,7 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qretrydialog.cpp" line="66"/>
+        <location filename="qretrydialog.cpp" line="72"/>
         <source>Re-Login</source>
         <translation>Войти снова</translation>
     </message>
