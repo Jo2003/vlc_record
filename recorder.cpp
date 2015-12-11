@@ -103,6 +103,10 @@ Recorder::Recorder(QWidget *parent)
    bStayOnTop    =  false;
    mpRetryDlg    =  NULL;
 
+   // auto re-login timer ...
+   mtAutoReLogin.setSingleShot(true);
+   mtAutoReLogin.setInterval(60000);
+
    // feed mission control ...
    missionControl.addButton(ui->pushPlay,     QFusionControl::BTN_PLAY);
    missionControl.addButton(ui->pushStop,     QFusionControl::BTN_STOP);
@@ -1749,6 +1753,7 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    {
    case CIptvDefs::REQ_SET_PCODE:
       Settings.slotEnablePCodeForm();
+      bSilent = true;
       break;
 
    // in case of not exsting images send empty byte array
@@ -1760,6 +1765,7 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    case CIptvDefs::REQ_UPDATE_CHECK:
       bSilent = true;
       break;
+
    default:
       break;
    }
@@ -1772,6 +1778,26 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
         .arg(err)
         .arg(metaKartina.reqValToKey((CIptvDefs::EReq)req))
         .arg(str));
+
+   // But ... as always there is one exception...
+   if (err == 2)
+   {
+       // most boring error ever on rodnoe server ...
+       // this error could happen always ... and no one at rodnoe.tv takes
+       // care for it.
+
+       // don't start a auto re-login loop on dump error -> use a timer
+       if (!mtAutoReLogin.isActive())
+       {
+           mInfo(tr("Silent re-login on error #2!"));
+
+           // silently make re-login and after that re-send last request ...
+           pApiClient->reLogin();
+           pApiClient->requeue(false);
+           mtAutoReLogin.start();
+           bSilent = true;
+       }
+   }
 
    if (!bSilent)
    {

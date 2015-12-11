@@ -149,7 +149,7 @@ public:
 
    virtual QNetworkReply* post(int iReqId, const QString& url, const QString& content, Iptv::eReqType t_req);
    virtual QNetworkReply*  get(int iReqId, const QString& url, Iptv::eReqType t_req);
-   void requeue();
+   void requeue(bool clearQueue = true);
    void reLogin();
 
 private:

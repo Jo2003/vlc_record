@@ -97,7 +97,7 @@ private:
    CIptvDefs karTrace;
    QString   sChanListBuffer;
    QString   sLangFilter;
-   QTimer    tPing;
+   // QTimer    tPing;
 
 public slots:
    void slotDownImg(const QString& url);

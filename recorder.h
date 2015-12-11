@@ -189,6 +189,7 @@ private:
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
     QRetryDialog                   *mpRetryDlg;
+    QTimer                          mtAutoReLogin;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);

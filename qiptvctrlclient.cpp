@@ -431,9 +431,10 @@ void QIptvCtrlClient::workOffQueue()
 //! \author  Jo2003
 //! \date    29.04.2014
 //
+//! \param   [in] clearQueue (bool) optioanl clear queue flag
 //! \return  --
 //---------------------------------------------------------------------------
-void QIptvCtrlClient::requeue()
+void QIptvCtrlClient::requeue(bool clearQueue)
 {
    if ((mLastRequest.eHttpReqType != E_REQ_UNKN)
       && (mLastRequest.iReqId != -1))
@@ -442,7 +443,10 @@ void QIptvCtrlClient::requeue()
       mtxCmdQueue.lock();
 
       // delete all pending requests ...
-      vCmdQueue.clear();
+      if (clearQueue)
+      {
+          vCmdQueue.clear();
+      }
 
       mInfo(tr("Append last sent request (which triggered error) ..."));
 

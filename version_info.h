@@ -25,7 +25,7 @@
 
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
-#define VERSION_BUILD 2
+#define VERSION_BUILD 3
 #define BETA_EXT      ""
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
@@ -41,6 +41,12 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2015-12-11: Version 2.69.3
+| - no more use noop
+| - use silent re-login on error #2
+| - in case within 2 minutes we'll have another error #2
+|   the re-login dialog will be shown
+|
 | 2015-11-10: Version 2.69.2
 | - add retry / reconnect dialog
 | - don't take care for numerical error codes
