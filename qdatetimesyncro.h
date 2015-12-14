@@ -28,9 +28,6 @@
 //---------------------------------------------------------------------------
 class QDateTimeSyncro : public QDateTime
 {
-   Q_PROPERTY(int offset    READ offset    WRITE setOffset)
-   Q_PROPERTY(int timeShift READ timeShift WRITE setTimeShift)
-
 public:
    QDateTimeSyncro ();
    QDateTimeSyncro (const QDate & date);
@@ -53,14 +50,9 @@ public:
    QString gmtToTsFormatted(uint uit, const QString &format, int iTs = __INTERN_TS);
    QString tsToGmtFormatted(uint uit, const QString &format, int iTs = __INTERN_TS);
 
-signals:
-
-public slots:
-
 private:
    int _iOffset;
    int _iTimeShift;
-
 };
 
 #endif // __20140527_QDATETIMESYNCRO_H
