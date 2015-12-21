@@ -67,7 +67,7 @@ int QChannelMap::fillFromChannelList(const QChanList &chanList)
     m_grpMap.clear();
 
     // since we may have one channel in multiple
-    // groups we have to run this tvice!
+    // groups we have to run this twice!
 
     // create channel map ...
     foreach (const cparser::SChan& chan, chanList)
