@@ -378,12 +378,8 @@ int CPlayer::initPlayer(const QString &sOpts)
          // add player to window ...
          connectToVideoWidget();
 
-         // get volume ...
-         /// Note:
-         /// Don't use libvlc_audio_get_volume() to get current volume since
-         /// it doesn't work as expected with libVLC 2.1.1.
-         /// Set it hard to 100% instead.
-         missionControl.setVolSliderPosition(100);
+         // set volume as last used from missioncontrol ...
+         libvlc_audio_set_volume(pMediaPlayer, missionControl.getVolume());
 
          // switch off handling of hotkeys ...
          libvlc_video_set_key_input(pMediaPlayer, 0);

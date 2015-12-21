@@ -505,7 +505,7 @@ void CRodnoeClient::GetChannelList ()
    // reset language filter ...
    sLangFilter = "";
 
-   QString req = QString("get_list_tv?with_epg=1&time_shift=%1").arg(pTs->timeShift());
+   QString req = QString("get_list_tv?with_epg=1&time_shift=%1&mode=1").arg(pTs->timeShift());
 
    // request channel list or channel list for settings ...
    q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + req);

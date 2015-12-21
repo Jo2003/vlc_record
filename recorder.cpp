@@ -4096,48 +4096,43 @@ void Recorder::slotTriggeredLogout()
 //---------------------------------------------------------------------------
 void Recorder::slotFilterChannelList(QString filter)
 {
-   pFilterMenu->hide();
+    pFilterMenu->hide();
 
-   QChanList                 cl, tmpCl;
-   QGrpVector::ConstIterator cit;
-   cparser::SChan            grp, chan;
-   int                       i;
+    QChanList                 cl, tmpCl;
+    cparser::SChan            grp, chan;
 
-   for (cit = pChanMap->groupVector().constBegin(); cit != pChanMap->groupVector().constEnd(); cit++)
-   {
-      tmpCl.clear();
+    foreach(const cparser::SGrp& tmpGrp, pChanMap->groupMap())
+    {
+        tmpCl.clear();
 
-      grp.iId       = (*cit).iId;
-      grp.bIsGroup  = true;
-      grp.sProgramm = (*cit).sColor;
-      grp.sName     = (*cit).sName;
+        grp.iId       = tmpGrp.iId;
+        grp.bIsGroup  = true;
+        grp.sProgramm = tmpGrp.sColor;
+        grp.sName     = tmpGrp.sName;
 
-      tmpCl.append(grp);
+        tmpCl.append(grp);
 
-      for (i = 0; i < (*cit).vChannels.count(); i++)
-      {
-         pChanMap->entry((*cit).vChannels[i], chan);
+        foreach (int i, tmpGrp.vChannels)
+        {
+            pChanMap->entry(tmpGrp.vChannels[i], chan);
 
-         if (filter.isEmpty()                                        // no filter set
-            || chan.sName.contains(filter, Qt::CaseInsensitive))     // find in name
-         {
-            tmpCl.append(chan);
-         }
-      }
+            if (filter.isEmpty()                                        // no filter set
+                || chan.sName.contains(filter, Qt::CaseInsensitive))    // find in name
+            {
+                tmpCl.append(chan);
+            }
+        }
 
-      // more than group only ...
-      if (tmpCl.count() > 1)
-      {
-         for (i = 0; i < tmpCl.count(); i++)
-         {
-            cl.append(tmpCl.at(i));
-         }
-      }
-   }
+        // more than group only ...
+        if (tmpCl.count() > 1)
+        {
+            cl += tmpCl;
+        }
+    }
 
-   ui->pushFilter->setIcon(QIcon(filter.isEmpty() ? ":/app/filter" : ":/app/act_filter"));
+    ui->pushFilter->setIcon(QIcon(filter.isEmpty() ? ":/app/filter" : ":/app/act_filter"));
 
-   FillChannelList(cl);
+    FillChannelList(cl);
 }
 
 //---------------------------------------------------------------------------

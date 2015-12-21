@@ -58,45 +58,67 @@ QChannelMap::~QChannelMap()
 //---------------------------------------------------------------------------
 int QChannelMap::fillFromChannelList(const QChanList &chanList)
 {
-   lock();
+    lock();
 
-   QChanList::const_iterator cit;
-   cparser::SGrp grpEntry;
+    cparser::SGrp grpEntry;
 
-   clear();
-   _grpVector.clear();
+    clear();
 
-   // create channel map ...
-   for (cit = chanList.constBegin(); cit != chanList.constEnd(); cit++)
-   {
-      if (!(*cit).bIsGroup)
-      {
-         insert((*cit).iId, *cit);
-         grpEntry.vChannels.append((*cit).iId);
-      }
-      else
-      {
-         if (!grpEntry.sName.isEmpty())
-         {
-            _grpVector.append(grpEntry);
-         }
+    m_grpMap.clear();
 
-         grpEntry.iId    = (*cit).iId;
-         grpEntry.sColor = (*cit).sProgramm;
-         grpEntry.sName  = (*cit).sName;
-         grpEntry.vChannels.clear();
-      }
-   }
+    // since we may have one channel in multiple
+    // groups we have to run this tvice!
 
-   // make sure we add last group ...
-   if (!grpEntry.sName.isEmpty())
-   {
-      _grpVector.append(grpEntry);
-   }
+    // create channel map ...
+    foreach (const cparser::SChan& chan, chanList)
+    {
+        if (!chan.bIsGroup)
+        {
+            insert(chan.iId, chan);
+            grpEntry.vChannels.append(chan.iId);
+        }
+        else
+        {
+            if (!grpEntry.sName.isEmpty())
+            {
+                m_grpMap.insert(grpEntry.iId, grpEntry);
+            }
 
-   unlock();
+            grpEntry.iId    = chan.iId;
+            grpEntry.sColor = chan.sProgramm;
+            grpEntry.sName  = chan.sName;
+            grpEntry.vChannels.clear();
+        }
+    }
 
-   return 0;
+    // make sure we add last group ...
+    if (!grpEntry.sName.isEmpty())
+    {
+        m_grpMap.insert(grpEntry.iId, grpEntry);
+    }
+
+    // look again for additional grouping ...
+    foreach (const cparser::SChan& chan, chanList)
+    {
+        if (!chan.bIsGroup && (chan.vInGroups.count() > 1))
+        {
+            foreach (int gid, chan.vInGroups)
+            {
+                if (m_grpMap.contains(gid))
+                {
+                    cparser::SGrp& grp = m_grpMap[gid];
+                    if (!grp.vChannels.contains(chan.iId))
+                    {
+                        grp.vChannels.append(chan.iId);
+                    }
+                }
+            }
+        }
+    }
+
+    unlock();
+
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -215,7 +237,7 @@ void QChannelMap::update(int key, const cparser::SChan& chan, bool bLock)
 //---------------------------------------------------------------------------
 void QChannelMap::lock()
 {
-   _mtx.lock();
+    m_mtx.lock();
 }
 
 //---------------------------------------------------------------------------
@@ -231,23 +253,23 @@ void QChannelMap::lock()
 //---------------------------------------------------------------------------
 void QChannelMap::unlock()
 {
-   _mtx.unlock();
+    m_mtx.unlock();
 }
 
 //---------------------------------------------------------------------------
 //
-//! \brief   get access to group vector
+//! \brief   get access to group map
 //
 //! \author  Jo2003
 //! \date    10.10.2013
 //
 //! \param   --
 //
-//! \return  const ref. to internal group vector
+//! \return  const ref. to internal group map
 //---------------------------------------------------------------------------
-const QGrpVector& QChannelMap::groupVector()
+const QGrpMap& QChannelMap::groupMap()
 {
-   return _grpVector;
+   return m_grpMap;
 }
 
 //---------------------------------------------------------------------------

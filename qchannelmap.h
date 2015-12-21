@@ -37,12 +37,12 @@ public:
    int entry(int key, cparser::SChan &chan, bool bLock = true);
    void lock();
    void unlock();
-   const QGrpVector& groupVector();
+   const QGrpMap& groupMap();
    void update(int key, const cparser::SChan& chan, bool bLock = true);
 
 private:
-   QMutex     _mtx;
-   QGrpVector _grpVector;
+   QMutex     m_mtx;
+   QGrpMap    m_grpMap;
 };
 
 #endif // __20131010_QCHANNELMAP_H

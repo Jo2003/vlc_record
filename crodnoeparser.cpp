@@ -326,6 +326,21 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
                chanEntry.uiDefAud = (idx == (uint)-1) ? 0 : idx;
             }
          }
+         else if (xml.name() == "group_id")
+         {
+            if (xml.readNext() == QXmlStreamReader::Characters)
+            {
+                // string contains a comma separated list
+                // of groups where the channel should appear ...
+                QString sInGrp = xml.text().toString();
+                QStringList slInGrp = sInGrp.split(QChar(','), QString::SkipEmptyParts);
+
+                foreach (const QString& sGrp, slInGrp)
+                {
+                    chanEntry.vInGroups.append(sGrp.toInt());
+                }
+            }
+         }
          else
          {
             // any unknown element shouldn't break our parser ...
