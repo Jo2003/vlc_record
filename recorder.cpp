@@ -4114,7 +4114,7 @@ void Recorder::slotFilterChannelList(QString filter)
 
         foreach (int i, tmpGrp.vChannels)
         {
-            pChanMap->entry(tmpGrp.vChannels[i], chan);
+            pChanMap->entry(i, chan);
 
             if (filter.isEmpty()                                        // no filter set
                 || chan.sName.contains(filter, Qt::CaseInsensitive))    // find in name
