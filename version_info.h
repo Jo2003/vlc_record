@@ -41,6 +41,12 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2016-01-20: Version 2.69.3
+| - rebuild channel list taking care for equal group ids
+| - through no error when no radio is supported
+| - add filter clear button
+| - change group cbx dependend on current channel
+|
 | 2015-12-11: Version 2.69.3
 | - no more use noop
 | - use silent re-login on error #2

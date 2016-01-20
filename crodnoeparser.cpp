@@ -42,8 +42,8 @@ CRodnoeParser::CRodnoeParser(QObject * parent) : CApiXmlParser(parent)
 |        else --> any error
 \----------------------------------------------------------------- */
 int CRodnoeParser::parseChannelList (const QString &sResp,
-                                         QVector<cparser::SChan> &chanList,
-                                         bool bFixTime)
+                                     QVector<cparser::SChan> &chanList,
+                                     bool bFixTime)
 {
    int              iRV = 0;
    QXmlStreamReader xml;
@@ -68,10 +68,10 @@ int CRodnoeParser::parseChannelList (const QString &sResp,
       {
       // any xml element starts ...
       case QXmlStreamReader::StartElement:
-         if (xml.name() == "groups")
+         if ((xml.name() == "groups_tv") || (xml.name() == "groups_radio"))
          {
             // go into next level and parse groups ...
-            parseGroups(xml, chanList, bFixTime);
+            parseGroups(xml, chanList, xml.name().toString(), bFixTime);
          }
          break;
 
@@ -100,20 +100,22 @@ int CRodnoeParser::parseChannelList (const QString &sResp,
 |  Author: Jo2003
 |  Description: parse group part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|  Parameters: ref. to xml parser, ref. to chanList, , end tag, fixTime flag
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
 int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                    bool bFixTime)
+                                const QString &endTag,
+                                bool bFixTime)
 {
    QString        sUnknown;
    cparser::SChan groupEntry;
-   int            idx = 0;
+   int            idx      = 0;
+   bool           isRadio  = (endTag == "groups_radio") ? true : false;
 
    // while not end groups ...
    while (!((xml.readNext() == QXmlStreamReader::EndElement)
-      && (xml.name() == "groups")))
+      && (xml.name() == endTag)))
    {
       if (xml.tokenType() == QXmlStreamReader::StartElement)
       {
@@ -141,6 +143,11 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                groupEntry.iId = xml.text().toString().toInt();
+
+               if (isRadio)
+               {
+                   groupEntry.iId |= RADIO_OFFSET;
+               }
             }
          }
          else if (xml.name() == "color")
@@ -162,7 +169,7 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
                chanList.push_back(groupEntry);
 
                // go into next level (channels)
-               parseChannels(xml, chanList, bFixTime);
+               parseChannels(xml, chanList, isRadio, bFixTime);
             }
          }
          else
@@ -194,12 +201,13 @@ int CRodnoeParser::parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &
 |  Author: Jo2003
 |  Description: parse channels part of channel list
 |
-|  Parameters: ref. to xml parser, ref. to chanList, fixTime flag
+|  Parameters: ref. to xml parser, ref. to chanList, radio flag,
+|              fixTime flag
 |
 |  Returns: 0
 \----------------------------------------------------------------- */
 int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
-                                     bool bFixTime)
+                                 bool isRadio, bool bFixTime)
 {
    QString                sUnknown;
    cparser::SChan         chanEntry;
@@ -230,6 +238,12 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.iId = xml.text().toString().toInt();
+
+               if (isRadio)
+               {
+                  // make radio cid unique  ...
+                  chanEntry.iId |= RADIO_OFFSET;
+               }
             }
          }
          else if (xml.name() == "is_video")
@@ -237,12 +251,6 @@ int CRodnoeParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> 
             if (xml.readNext() == QXmlStreamReader::Characters)
             {
                chanEntry.bIsVideo = (xml.text().toString().toInt() == 1) ? true : false;
-
-               if (!chanEntry.bIsVideo)
-               {
-                  // make radio cid unique  ...
-                  chanEntry.iId |= RADIO_OFFSET;
-               }
             }
          }
          else if (xml.name() == "has_archive")

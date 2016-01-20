@@ -1302,6 +1302,39 @@ void Recorder::on_pushWatchList_clicked()
    pWatchList->exec();
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   undo channel list filtering
+//
+//! \author  Jo2003
+//! \date    20.01.2016
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::on_pushUndoFilter_clicked()
+{
+    bool bFiltered = false;
+
+    pFilterWidget->cleanFilter();
+    slotFilterChannelList("");
+
+    // get a list of available actions ...
+    QList<QAction *> actList = pMnLangFilter->actions();
+    QList<QAction *>::const_iterator cit;
+
+    for (cit = actList.constBegin(); cit != actList.constEnd(); cit ++)
+    {
+        if ((*cit)->isChecked())
+        {
+            bFiltered = !(*cit)->data().toString().isEmpty();
+        }
+    }
+
+    ui->pushFilter->setIcon(QIcon(bFiltered ? ":/app/act_filter" : ":/app/filter"));
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
@@ -3561,6 +3594,8 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
             pApiClient->queueRequest(CIptvDefs::REQ_EPG, cid);
          }
       }
+
+      setChannelGroup(current.data(channellist::gidRole).toInt());
    }
 }
 
@@ -4864,6 +4899,8 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    QPixmap     icon;
    int         iChanCount =  0;
    int         iLastChan  = -1;
+   int         iLastGroup = -1;
+   int         iGroupIdx  = -1;
    int         iPos;
    uint        now = QDateTime::currentDateTime().toTime_t();
    QModelIndex idx = ui->channelList->currentIndex();
@@ -4909,6 +4946,9 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             // add channel group entry ...
             Pix.fill(QColor(chanlist[i].sProgramm));
             ui->cbxChannelGroup->addItem(QIcon(Pix), chanlist[i].sName, QVariant(i));
+
+            // save group index ...
+            iGroupIdx = i;
          }
          else
          {
@@ -4959,7 +4999,8 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
                if (iLastChan == chanlist[i].iId)
                {
                   // save row with last used channel ...
-                  iRow = i;
+                  iRow       = i;
+                  iLastGroup = iGroupIdx;
                }
             }
 
@@ -4976,6 +5017,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem->setData(sLogoFile,                             channellist::logoFileRole);
             pItem->setData(iPos,                                  channellist::posRole);
             pItem->setData(now,                                   channellist::lastEpgUpd);
+            pItem->setData(iGroupIdx,                             channellist::gidRole);
          }
 
          pModel->appendRow(pItem);
@@ -4990,6 +5032,9 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
    ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
    ui->channelList->setCurrentIndex(pModel->index(iRow, 0));
    ui->channelList->scrollTo(pModel->index(iRow, 0));
+
+   // activate current group (if needed) ...
+   setChannelGroup(iLastGroup);
 
    return 0;
 }
@@ -5059,6 +5104,32 @@ QString Recorder::recFileName (const QString& name, QString &ext)
    }
 
    return fileName;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set group cbx
+//
+//! \author  Jo2003
+//! \date    20.01.2016
+//
+//! \param   [in] grpIdx (int) group index
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::setChannelGroup (int grpIdx)
+{
+    if (grpIdx > -1)
+    {
+        for (int i = 0; i < ui->cbxChannelGroup->count(); i++)
+        {
+            if (ui->cbxChannelGroup->itemData(i).toInt() == grpIdx)
+            {
+                ui->cbxChannelGroup->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 }
 
 /* -----------------------------------------------------------------\

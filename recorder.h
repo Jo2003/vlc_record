@@ -222,6 +222,7 @@ protected:
     void toggleFullscreen();
     int  check4PlayList (const QString& sUrl, const QString& sName = QString());
     QString recFileName (const QString& name, QString& ext);
+    void setChannelGroup(int grpIdx);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
@@ -321,6 +322,7 @@ private slots:
     void slotPlayHls(const QString& s);
     void stopOnDemand();
     void slotVodLang(const QString &str);
+    void on_pushUndoFilter_clicked();
 
 signals:
     void sigShow ();

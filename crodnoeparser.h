@@ -53,8 +53,8 @@ public:
    virtual int parseAStreams (const QString& sResp, QStringList &sl);
 
 protected:
-   virtual int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
-   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool bFixTime);
+   virtual int parseGroups (QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, const QString& endTag, bool bFixTime);
+   virtual int parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList, bool isRadio, bool bFixTime);
    virtual int parseStreamParams (QXmlStreamReader &xml, QVector<cparser::STimeShift>& vTs);
 
 private:

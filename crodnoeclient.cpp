@@ -85,70 +85,84 @@ CRodnoeClient::~CRodnoeClient()
 //---------------------------------------------------------------------------
 void CRodnoeClient::slotStringResponse (int reqId, QString strResp)
 {
-   int     iErr = 0;
-   QString sCleanResp;
-   bool    bSendResp = true;
+    int     iErr = 0;
+    QString sCleanResp;
+    bool    bSendResp = true;
 
 #ifdef __TRACE
-   mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
-         .arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId))
-         .arg(strResp));
+    mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
+          .arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId))
+          .arg(strResp));
 #endif // __TRACE
 
-   if (reqId == (int)CIptvDefs::REQ_LOGOUT)
-   {
-       sCookie = "";
+    if (reqId == (int)CIptvDefs::REQ_LOGOUT)
+    {
+        sCookie = "";
 
-       // send response ...
-       emit sigHttpResponse ("", reqId);
-   }
-   else
-   {
-      mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId)));
+        // send response ...
+        emit sigHttpResponse ("", reqId);
+    }
+    else
+    {
+        mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId)));
 
-      // check response ...
-      if ((iErr = checkResponse(strResp, sCleanResp)) != 0)
-      {
-         emit sigError(sCleanResp, reqId, iErr);
-      }
-      else
-      {
-         // modify response as well as id if needed ...
-         switch ((CIptvDefs::EReq)reqId)
-         {
-         // radio stream is a normal stream ...
-         case CIptvDefs::REQ_RADIO_STREAM:
-            reqId = (int)CIptvDefs::REQ_STREAM;
-            break;
+        // check response ...
+        if ((iErr = checkResponse(strResp, sCleanResp)) != 0)
+        {
+            /// ugly radio not there hack ...
+            if ((CIptvDefs::EReq)reqId == CIptvDefs::REQ_CHANLIST_RADIO)
+            {
+                // in case the account doesn't support
+                // radio this error might happen -> ignore and send
+                // TV channel list instead!
+                reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
+                sCleanResp = combineChannelLists("");
 
-         // radio timer record should be handled as timer record ...
-         case CIptvDefs::REQ_RADIO_TIMERREC:
-            reqId = (int)CIptvDefs::REQ_TIMERREC;
-            break;
+                emit sigHttpResponse (sCleanResp, reqId);
+            }
+            else
+            {
+                emit sigError(sCleanResp, reqId, iErr);
+            }
+        }
+        else
+        {
+            // modify response as well as id if needed ...
+            switch ((CIptvDefs::EReq)reqId)
+            {
+                // radio stream is a normal stream ...
+                case CIptvDefs::REQ_RADIO_STREAM:
+                    reqId = (int)CIptvDefs::REQ_STREAM;
+                    break;
 
-         // special handling to concat TV channels with radio channels ...
-         case CIptvDefs::REQ_CHANNELLIST:
-            sChanListBuffer = sCleanResp;
-            getRadioList();
-            bSendResp = false;
-            break;
+                // radio timer record should be handled as timer record ...
+                case CIptvDefs::REQ_RADIO_TIMERREC:
+                    reqId = (int)CIptvDefs::REQ_TIMERREC;
+                    break;
 
-         case CIptvDefs::REQ_CHANLIST_RADIO:
-            sCleanResp = combineChannelLists(sCleanResp);
-            reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
-            break;
+                // special handling to concat TV channels with radio channels ...
+                case CIptvDefs::REQ_CHANNELLIST:
+                    sChanListBuffer = sCleanResp;
+                    getRadioList();
+                    bSendResp = false;
+                    break;
 
-         default:
-            break;
-         }
+                case CIptvDefs::REQ_CHANLIST_RADIO:
+                    sCleanResp = combineChannelLists(sCleanResp);
+                    reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
+                    break;
 
-         // send response ... ?
-         if (bSendResp)
-         {
-            emit sigHttpResponse (sCleanResp, reqId);
-         }
-      }
-   }
+                default:
+                    break;
+            }
+
+            // send response ... ?
+            if (bSendResp)
+            {
+                emit sigHttpResponse (sCleanResp, reqId);
+            }
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -206,51 +220,48 @@ void CRodnoeClient::slotErr (int iReqId, QString sErr, int iErr)
 //---------------------------------------------------------------------------
 QString CRodnoeClient::combineChannelLists(const QString& resp)
 {
-   QRegExp rx;
-   int     iInsPos;
-   QString iconsTmpl = "<tv>[%%TV%%]</tv><radio>[%%RADIO%%]</radio>";
+    QRegExp rx;
+    QString sFound;
 
-   // create new icon section ...
-   rx.setPattern("<default>(.*)</default>");
+    // create whole new channel list ...
+    QString chanListTmpl = (QString)
+      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+    + "<response>"
+    + "<icons><tv>[%%TV%%]</tv><radio>[%%RADIO%%]</radio></icons>"
+    + "<groups_tv>[%%GROUPS_TV%%]</groups_tv>"
+    + "<groups_radio>[%%GROUPS_RADIO%%]</groups_radio>"
+    + "<servertime>[%%SERVERTIME%%]</servertime>"
+    + "</response>";
 
-   if (rx.indexIn(sChanListBuffer) > -1)
-   {
-      iconsTmpl.replace("[%%TV%%]", rx.cap(1));
-   }
+    // servertime from TV channels ...
+    rx.setPattern("<servertime>(.*)</servertime>");
+    sFound = (rx.indexIn(sChanListBuffer) > -1) ? rx.cap(1) : "";
+    chanListTmpl.replace("[%%SERVERTIME%%]", sFound);
 
-   if (rx.indexIn(resp) > -1)
-   {
-      iconsTmpl.replace("[%%RADIO%%]", rx.cap(1));
-   }
+    // TV channels icon ...
+    rx.setPattern("<default>(.*)</default>");
+    sFound = (rx.indexIn(sChanListBuffer) > -1) ? rx.cap(1) : "";
+    chanListTmpl.replace("[%%TV%%]", sFound);
 
-   // remove contents of icons section ...
-   rx.setPattern("<default>.*</w40h30>");
-   sChanListBuffer.remove(rx);
+    // Radio channel icons ...
+    sFound = (rx.indexIn(resp) > -1) ? rx.cap(1) : "";
+    chanListTmpl.replace("[%%RADIO%%]", sFound);
 
-   // insert new icon section ...
-   if ((iInsPos = sChanListBuffer.lastIndexOf("</icons>")) > -1)
-   {
-      sChanListBuffer.insert(iInsPos, iconsTmpl);
-   }
+    // TV groups and channels ...
+    rx.setPattern("<groups>(.*)</groups>");
+    sFound = (rx.indexIn(sChanListBuffer) > -1) ? rx.cap(1) : "";
+    chanListTmpl.replace("[%%GROUPS_TV%%]", sFound);
 
-   // grab radio channels ...
-   rx.setPattern("<groups>(.*)</groups>");
-
-   if (rx.indexIn(resp) > -1)
-   {
-      // append radio channels to tv channels ...
-      if ((iInsPos = sChanListBuffer.lastIndexOf("</groups>")) > -1)
-      {
-         sChanListBuffer.insert(iInsPos, rx.cap(1));
-      }
-   }
+    // radio groups and channels ...
+    sFound = (rx.indexIn(resp) > -1) ? rx.cap(1) : "";
+    chanListTmpl.replace("[%%GROUPS_RADIO%%]", sFound);
 
 #ifdef __TRACE
-   mInfo(tr("Patched channel list:\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
-         .arg(sChanListBuffer));
+    mInfo(tr("Patched channel list:\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
+          .arg(chanListTmpl));
 #endif // __TRACE
 
-   return sChanListBuffer;
+    return chanListTmpl;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
