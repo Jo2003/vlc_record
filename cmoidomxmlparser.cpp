@@ -65,136 +65,118 @@ CMoiDomXmlParser::~CMoiDomXmlParser()
 int CMoiDomXmlParser::parseChannels(QXmlStreamReader &xml, QVector<cparser::SChan> &chanList,
                                      bool bFixTime)
 {
-   QString        sUnknown;
-   cparser::SChan chanEntry;
+    cparser::SChan chanEntry;
+    QStringList    used;
+    QString        tagName;
+    bool           readNext = true;
 
-   // while no end of channels ...
-   while (!((xml.readNext() == QXmlStreamReader::EndElement)
-      && (xml.name() == "channels")))
-   {
-      if (xml.tokenType() == QXmlStreamReader::StartElement)
-      {
-         // item start -> init struct ...
-         if (xml.name() == "item")
-         {
-            initChanEntry(chanEntry);
-         }
-         else if (xml.name() == "name")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.sName = xml.text().toString();
-            }
-         }
-         else if (xml.name() == "id")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.iId = xml.text().toString().toInt();
-            }
-         }
-         else if (xml.name() == "is_video")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.bIsVideo = (xml.text().toString().toInt() == 1) ? true : false;
-            }
-         }
-         else if (xml.name() == "have_archive")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.bHasArchive = (xml.text().toString().toInt() == 1) ? true : false;
-            }
-         }
-         else if (xml.name() == "protected")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.bIsProtected = (xml.text().toString().toInt() == 1) ? true : false;
-            }
-         }
-         else if (xml.name() == "icon")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.sIcon = xml.text().toString();
-            }
-         }
-         else if (xml.name() == "epg_progname")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.sProgramm = xml.text().toString();
-            }
-         }
-         else if (xml.name() == "epg_start")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.uiStart = xml.text().toString().toUInt();
+    // we are parsing this tree only in a flat way.
+    // so we know what we're looking for ...
+    used << "item" << "stream_params" << "audiotrack_default" << "name"
+         << "id"   << "is_video"      << "have_archive"       << "protected"
+         << "icon" << "epg_progname"  << "epg_start"          << "epg_end"
+         << "hide";
 
-               if (bFixTime)
-               {
-                  fixTime(chanEntry.uiStart);
-               }
-            }
-         }
-         else if (xml.name() == "epg_end")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.uiEnd = xml.text().toString().toUInt();
+    while (readNext)
+    {
+        switch (xml.readNext())
+        {
+        case QXmlStreamReader::StartElement:
+            tagName = xml.name().toString();
 
-               if (bFixTime)
-               {
-                  fixTime(chanEntry.uiEnd);
-               }
-            }
-         }
-         else if (xml.name() == "hide")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               chanEntry.bIsHidden = (xml.text().toString().toInt() == 1) ? true : false;
-            }
-         }
-         else if (xml.name() == "stream_params")
-         {
-            // go into next level ... parse stream params ...
-            parseStreamParams(xml, chanEntry.vTs);
-         }
-         else if (xml.name() == "audiotracks")
-         {
-            chanEntry.uiDefAud = parseATracks(xml);
-         }
-         else
-         {
-            // any unknown element shouldn't break our parser ...
-            sUnknown = xml.name().toString();
-
-#ifndef QT_NO_DEBUG
-            mInfo(tr("Found unused element %1 ...").arg(sUnknown));
-#endif
-            while (!((xml.readNext() == QXmlStreamReader::EndElement)
-               && (xml.name().toString() == sUnknown)))
+            if (!used.contains(tagName))
             {
 #ifndef QT_NO_DEBUG
-               mInfo(tr("Found unused child %1: %2 ...")
-                    .arg(xml.name().toString()).arg(xml.text().toString()));
+                mInfo(tr("Found unused element %1 ...").arg(tagName));
 #endif
+                ignoreUntil(xml, tagName);
             }
-         }
-      }
-      else if (xml.tokenType() == QXmlStreamReader::EndElement)
-      {
-         // item end -> save entry ...
-         if (xml.name() == "item")
-         {
-            chanList.push_back(chanEntry);
-         }
-      }
-   }
+            else if (tagName == "item")
+            {
+                initChanEntry(chanEntry);
+            }
+            else if (tagName == "stream_params")
+            {
+                // go into next level ... parse stream params ...
+                parseStreamParams(xml, chanEntry.vTs);
+            }
+            break;
+
+        case QXmlStreamReader::EndElement:
+            if (xml.name() == "channels")
+            {
+                // done!
+                readNext = false;
+            }
+            else if (xml.name() == "item")
+            {
+                // item completed ...
+                chanList.push_back(chanEntry);
+            }
+            break;
+
+        case QXmlStreamReader::Characters:
+            if (tagName == "name")
+            {
+                chanEntry.sName = xml.text().toString();
+            }
+            else if (tagName == "id")
+            {
+                chanEntry.iId = xml.text().toString().toInt();
+            }
+            else if (tagName == "is_video")
+            {
+                chanEntry.bIsVideo = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+            else if (tagName == "have_archive")
+            {
+                chanEntry.bHasArchive = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+            else if (tagName == "protected")
+            {
+                chanEntry.bIsProtected = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+            else if (tagName == "icon")
+            {
+                chanEntry.sIcon = xml.text().toString();
+            }
+            else if (tagName == "epg_progname")
+            {
+                chanEntry.sProgramm = xml.text().toString();
+            }
+            else if (tagName == "epg_start")
+            {
+                chanEntry.uiStart = xml.text().toString().toUInt();
+
+                if (bFixTime)
+                {
+                    fixTime(chanEntry.uiStart);
+                }
+            }
+            else if (tagName == "epg_end")
+            {
+                chanEntry.uiEnd = xml.text().toString().toUInt();
+
+                if (bFixTime)
+                {
+                    fixTime(chanEntry.uiEnd);
+                }
+            }
+            else if (tagName == "hide")
+            {
+                chanEntry.bIsHidden = (xml.text().toString().toInt() == 1) ? true : false;
+            }
+            else if (tagName == "audiotrack_default")
+            {
+                chanEntry.sLangCode = xml.text().toString();
+            }
+            break;
+
+        default:
+            readNext = false;
+            break;
+        }
+    }
 
    return 0;
 }
@@ -215,29 +197,41 @@ uint CMoiDomXmlParser::parseATracks(QXmlStreamReader &xml)
    uint             uiRet = 0;
    QStringList      sl;
    QString          sDef;
+   QString          sName;
+   bool             readNext = true;
 
-   // while no end of audio track stuff ...
-   while (!((xml.readNext() == QXmlStreamReader::EndElement)
-      && (xml.name() == "audiotrack_default")))
+   while (readNext)
    {
-      if (xml.tokenType() == QXmlStreamReader::StartElement)
-      {
-         // audio track item  ...
-         if (xml.name() == "item")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
+       switch(xml.readNext())
+       {
+       case QXmlStreamReader::StartElement:
+           sName = xml.name().toString();
+           break;
+
+       case QXmlStreamReader::EndElement:
+           sName = "";
+           if (xml.name() == "audiotrack_default")
+           {
+               readNext = false;
+           }
+           break;
+
+       case QXmlStreamReader::Characters:
+           if (sName == "item")
+           {
                sl << xml.text().toString();
-            }
-         }
-         else if (xml.name() == "audiotrack_default")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
+           }
+           else if (sName == "audiotrack_default")
+           {
                sDef = xml.text().toString();
-            }
-         }
-      }
+           }
+           sName = "";
+           break;
+
+       default:
+           readNext = false;
+           break;
+       }
    }
 
    if (!sl.isEmpty() && (sl.count() > 1))

@@ -2165,6 +2165,10 @@ void Recorder::slotChanList (const QString &str)
 
    if (!pApiParser->parseChannelList(str, chanList, Settings.FixTime()))
    {
+#ifdef __TRACE
+      dumpChanList(chanList);
+#endif // __TRACE
+
       // handle timeshift stuff if needed ...
       pApiParser->handleTsStuff(chanList);
 
@@ -5130,6 +5134,37 @@ void Recorder::setChannelGroup (int grpIdx)
             }
         }
     }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   dump channel list
+//
+//! \author  Jo2003
+//! \date    16.02.2016
+//
+//! \param   [in] cl (const QChanList &) ref. to channel list
+//
+//---------------------------------------------------------------------------
+void Recorder::dumpChanList(const QChanList &cl)
+{
+    QString     sLog;
+    QTextStream ts(&sLog);
+    foreach (cparser::SChan chan, cl)
+    {
+        if (chan.bIsGroup)
+        {
+            ts << "============ " << chan.sName << " ============" << endl;
+        }
+        else
+        {
+            ts << chan.sName << " (" << chan.iId << "), Video: "
+               << chan.bIsVideo << ", hidden: " << chan.bIsHidden
+               << ", protected: " << chan.bIsProtected << endl;
+        }
+    }
+
+    mInfo(tr("Parsed Channel List:\n===8<===\n%1===8<===").arg(sLog));
 }
 
 /* -----------------------------------------------------------------\
