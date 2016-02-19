@@ -21,6 +21,7 @@ CONFIG += shared
 # -------------------------------------
 PROGMAJ=2
 PROGMIN=69
+PROGBUILD=0
 
 # here you can enable traces ...
 # DEFINES += __TRACE
@@ -153,7 +154,7 @@ win32 {
     VERINC="$${LITERAL_HASH}define VER_FILEVERSION 0,$${PROGMAJ},$${PROGMIN},0"
     VERSTR="$${LITERAL_HASH}define VER_FILEVERSION_STR \"0,$${PROGMAJ},$${PROGMIN},0\""
     PRODVER="$${LITERAL_HASH}define PROD_VER_STR \"$${PROGMAJ}.$${PROGMIN}\""
-    FILEVER="$${LITERAL_HASH}define FILE_VER_STR \"$${PROGMAJ}.$${PROGMIN}.0\""
+    FILEVER="$${LITERAL_HASH}define FILE_VER_STR \"$${PROGMAJ}.$${PROGMIN}.$${PROGBUILD}\""
     WININC="$${LITERAL_HASH}include ^<windows.h^>"
 
 
