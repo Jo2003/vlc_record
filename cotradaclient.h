@@ -37,6 +37,13 @@ class COtradaClient : public QIptvCtrlClient
 {
    Q_OBJECT
 
+   enum EInnerOps {
+       IO_ADD_FAV,
+       IO_DEL_FAV,
+       IO_FAV_LIST,
+       IO_DUNNO = 255
+   };
+
 public:
    explicit COtradaClient(QObject *parent = 0);
    ~COtradaClient();
@@ -86,7 +93,7 @@ protected:
    int  checkResponse (const QString &sResp, QString& sCleanResp);
    void chanListLang(const QString& lang);
    void audioLang();
-   void reqeustVodFavList(const QString& ids);
+   void handleInnerOps(const QString& resp);
 
 private:
    QString   sUsr;
@@ -98,6 +105,8 @@ private:
    CIptvDefs karTrace;
    QString   sChanListBuffer;
    QString   sLangFilter;
+   EInnerOps eIOps;
+   QVariant  vaIOdata;
    // QTimer    tPing;
 
 public slots:

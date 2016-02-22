@@ -74,6 +74,7 @@ public:
       REQ_VOD_LANG,
       REQ_NOOP,
       REQ_LOGIN_ONLY,
+      REQ_INNER_OPS,
       REQ_UNKNOWN = 255
    };
 
