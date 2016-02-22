@@ -3308,13 +3308,19 @@ void Recorder::slotVodAnchor(const QUrl &link)
    {
       id = link.queryItemValue("vodid").toInt();
       pApiClient->queueRequest(CIptvDefs::REQ_ADD_VOD_FAV, id, secCodeDlg.passWd());
+#ifndef _TASTE_IPTV_RECORD
+      // due to different handling this doesn't work on rodnoe based services!
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+#endif // _TASTE_IPTV_RECORD
    }
    else if (action == "del_fav")
    {
       id = link.queryItemValue("vodid").toInt();
       pApiClient->queueRequest(CIptvDefs::REQ_REM_VOD_FAV, id, secCodeDlg.passWd());
+#ifndef _TASTE_IPTV_RECORD
+      // due to different handling this doesn't work on rodnoe based services!
       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOINFO, id, secCodeDlg.passWd());
+#endif // _TASTE_IPTV_RECORD
    }
 
    if (ok)

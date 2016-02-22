@@ -603,6 +603,7 @@ void COtradaClient::handleInnerOps(const QString &resp)
                 sl << QString::number(vaIOdata.toInt());
                 req = QString("val=%1").arg(sl.join(","));
                 q_post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "set_favorites_movie", req);
+                GetVideoInfo(vaIOdata.toInt());
                 break;
 
             case IO_DEL_FAV:
@@ -610,6 +611,7 @@ void COtradaClient::handleInnerOps(const QString &resp)
                 sl.removeOne(QString::number(vaIOdata.toInt()));
                 req = QString("val=%1").arg(sl.join(","));
                 q_post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "set_favorites_movie", req);
+                GetVideoInfo(vaIOdata.toInt());
                 break;
 
             case IO_FAV_LIST:
