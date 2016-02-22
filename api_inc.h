@@ -15,19 +15,22 @@
    #define __20130416_API_INC_H
 
 /// Make sure to include the correct api headers ...
-#ifdef _TASTE_IPTV_RECORD
+#ifdef _TASTE_OTRADA_TV
+   #include "cotradaclient.h"
+   #include "cotradaparser.h"
+#elif defined _TASTE_IPTV_RECORD
    #include "crodnoeclient.h"
    #include "crodnoeparser.h"
-#elif _TASTE_NOVOE_TV
+#elif defined _TASTE_NOVOE_TV
    #include "cnovoeclient.h"
    #include "cnovoeparser.h"
-#elif _TASTE_MOIDOM_TV
+#elif defined _TASTE_MOIDOM_TV
    #include "cmoidomxmlparser.h"
    #include "ckartinaclnt.h"
-#elif _TASTE_SUNDUK_TV
+#elif defined _TASTE_SUNDUK_TV
    #include "csundukclnt.h"
    #include "cstdjsonparser.h"
-#elif _TASTE_TELEPROM
+#elif defined _TASTE_TELEPROM
    #include "ctelepromclient.h"
    #include "cstdjsonparser.h"
 #else

@@ -16,6 +16,9 @@ INCLUDEPATH += .
 # build shared !
 CONFIG += shared
 
+# force traces on debug ...
+CONFIG(debug,debug|release): DEFINES += __TRACE
+
 # -------------------------------------
 # program version
 # -------------------------------------
@@ -205,7 +208,13 @@ else:unix {
 }
 
 #############
-contains(DEFINES, _TASTE_IPTV_RECORD) {
+contains(DEFINES, _TASTE_OTRADA_TV) {
+    message (Using otrade api client ...)
+    HEADERS += cotradaclient.h \
+               cotradaparser.h
+    SOURCES += cotradaclient.cpp \
+               cotradaparser.cpp
+} else:contains(DEFINES, _TASTE_IPTV_RECORD) {
     message (Using alternative api client ...)
     HEADERS += crodnoeclient.h \
                crodnoeparser.h

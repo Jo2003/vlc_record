@@ -14,7 +14,9 @@
 
 #include <QtGlobal>
 
-#ifdef _TASTE_KARTINA_TV
+#ifdef _TASTE_OTRADA_TV
+    #include <defines_otrada_tv.h>
+#elif defined _TASTE_KARTINA_TV
    #include <defines_kartina_tv.h>
 #elif defined _TASTE_POLSKY_TV
    #include <defines_polsky_tv.h>
