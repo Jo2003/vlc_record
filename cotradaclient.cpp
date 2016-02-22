@@ -152,6 +152,11 @@ void COtradaClient::slotStringResponse (int reqId, QString strResp)
                     reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
                     break;
 
+                case CIptvDefs::REQ_GET_VOD_FAV:
+                    reqeustVodFavList(sCleanResp);
+                    bSendResp = false;
+                    break;
+
                 default:
                     break;
             }
@@ -565,6 +570,28 @@ void COtradaClient::audioLang()
    q_get((int)CIptvDefs::REQ_GET_ALANG, sApiUrl + "get_audio_lang");
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   request list for movie favorites
+//
+//! \author  Jo2003
+//! \date    22.02.2016
+//
+//! \param   ids (comma separated list of ids)
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void COtradaClient::reqeustVodFavList(const QString &ids)
+{
+    QRegExp rx("<favorites>(.*)</favorites>");
+
+    if (rx.indexIn(ids) > -1)
+    {
+        QString req = QString("idlist=%1").arg(rx.cap(1));
+        q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + "get_list_movie");
+    }
+}
+
 /*-----------------------------------------------------------------------------\
 | Function:    GetProtChannelList
 |
@@ -830,7 +857,7 @@ void COtradaClient::GetVodGenres()
 {
    mInfo(tr("Request VOD Genres ..."));
 
-   q_get((int)CIptvDefs::REQ_GETVODGENRES, sApiUrl + "vod_genres");
+   q_get((int)CIptvDefs::REQ_GETVODGENRES, sApiUrl + "get_genre_movie");
 }
 
 /*-----------------------------------------------------------------------------\
@@ -850,7 +877,15 @@ void COtradaClient::GetVideos(const QString &sPrepared)
 {
    mInfo(tr("Request Videos ..."));
 
-   q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + "vod_list?" + QUrl::fromPercentEncoding(sPrepared.toUtf8()));
+   QString sHelp = sPrepared;
+   sHelp.replace("nums", "limit");
+
+   if (!sHelp.contains("limit"))
+   {
+       sHelp += "&limit=20";
+   }
+
+   q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + "get_list_movie?" + QUrl::fromPercentEncoding(sHelp.toUtf8()));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -870,7 +905,7 @@ void COtradaClient::GetVideoInfo(int iVodID, const QString &secCode)
 {
    mInfo(tr("Request Video info for video %1...").arg(iVodID));
 
-   QString req = QString("vod_info?id=%1").arg(iVodID);
+   QString req = QString("get_list_movie?extended=1&idlist=%1").arg(iVodID);
 
    if (secCode != "")
    {
@@ -897,7 +932,7 @@ void COtradaClient::GetVodUrl(int iVidId, const QString &secCode)
 {
    mInfo(tr("Request Video Url for video %1...").arg(iVidId));
 
-   QString req = QString("vod_geturl?fileid=%1&ad=1")
+   QString req = QString("get_url_movie?cid=%1")
          .arg(iVidId);
 
    if (secCode != "")
@@ -1017,14 +1052,14 @@ void COtradaClient::addVodFav(int iVidID, const QString &secCode)
 {
    mInfo(tr("Add VOD favourite (%1) ...").arg(iVidID));
 
-   QString req = QString("id=%1").arg(iVidID);
+   QString req = QString("val=%1").arg(iVidID);
 
    if (secCode != "")
    {
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   q_post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "vod_favadd", req);
+   q_post((int)CIptvDefs::REQ_ADD_VOD_FAV, sApiUrl + "set_favorites_movie", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1044,14 +1079,14 @@ void COtradaClient::remVodFav(int iVidID, const QString &secCode)
 {
    mInfo(tr("Remove VOD favourite (%1) ...").arg(iVidID));
 
-   QString req = QString("id=%1").arg(iVidID);
+   QString req = QString("val=%1").arg(iVidID);
 
    if (secCode != "")
    {
       req += QString("&protect_code=%1").arg(secCode);
    }
 
-   q_post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "vod_favsub", req);
+   q_post((int)CIptvDefs::REQ_REM_VOD_FAV, sApiUrl + "set_favorites_movie", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1070,7 +1105,7 @@ void COtradaClient::remVodFav(int iVidID, const QString &secCode)
 void COtradaClient::getVodFav()
 {
    mInfo(tr("Get VOD favourites (%1) ..."));
-   q_get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "vod_favlist");
+   q_get((int)CIptvDefs::REQ_GET_VOD_FAV, sApiUrl + "get_favorites_movie");
 }
 
 /*-----------------------------------------------------------------------------\

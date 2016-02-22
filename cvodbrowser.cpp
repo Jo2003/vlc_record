@@ -174,9 +174,19 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
       pPixCache->enqueuePic(entry.sImg, pFolders->getVodPixDir());
    }
 
+   // image title ...
+   title = entry.sName;
+
+   if (!entry.sCountry.isEmpty() || !entry.sYear.isEmpty())
+   {
+       QString sHlp;
+       sHlp   = QString("%1 %2").arg(entry.sCountry).arg(entry.sYear);
+       sHlp   = sHlp.simplified();
+       title += QString(" (%1)").arg(sHlp);
+   }
+
    // image tag ...
-   img = pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, VOD_POSTER_HEIGHT, "",
-                      QString("%1 (%2 %3)").arg(entry.sName).arg(entry.sCountry).arg(entry.sYear));
+   img = pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, VOD_POSTER_HEIGHT, "", title);
 
    // create link url ...
    url.setPath("videothek");

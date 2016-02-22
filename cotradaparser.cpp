@@ -733,7 +733,7 @@ int COtradaParser::parseGenres (const QString& sResp, QVector<cparser::SGenre>& 
                sGenre.uiGid = xml.text().toString().toUInt();
             }
          }
-         else if (xml.name() == "name")
+         else if (xml.name() == "title")
          {
             // read name ...
             if (xml.readNext() == QXmlStreamReader::Characters)
@@ -976,20 +976,20 @@ int COtradaParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo
       {
       // any xml element starts ...
       case QXmlStreamReader::StartElement:
-         if (xml.name() == "response")
+         if (xml.name() == "options")
          {
             mResults.clear();
             slNeeded.clear();
 
             // we need following data ...
-            slNeeded << "type" << "total" << "count" << "page";
+            slNeeded << "count" << "page";
 
             oneLevelParser(xml, "page", slNeeded, mResults);
 
-            gInfo.sType  = mResults.value("type");
+            gInfo.sType  = "";
             gInfo.iCount = mResults.value("count").toInt();
             gInfo.iPage  = mResults.value("page").toInt();
-            gInfo.iTotal = mResults.value("total").toInt();
+            gInfo.iTotal = mResults.value("count").toInt();
 
             mInfo(tr("Got Type: %1, Count: %2, Page: %3, Total: %4")
                   .arg(gInfo.sType)
@@ -1003,18 +1003,18 @@ int COtradaParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo
             slNeeded.clear();
 
             // we need following data ...
-            slNeeded << "id" << "name" << "description" << "year" << "country" << "poster" << "pass_protect" << "favorite";
+            slNeeded << "id" << "title" << "protected" << "pic" << "is_favorite";
 
             oneLevelParser(xml, "item", slNeeded, mResults);
 
             vod.uiVidId    =   mResults.value("id").toUInt();
-            vod.sName      =   mResults.value("name");
-            vod.sDescr     =   mResults.value("description");
-            vod.sYear      =   mResults.value("year");
-            vod.sCountry   =   mResults.value("country");
-            vod.sImg       =   mResults.value("poster");
-            vod.bProtected = !!mResults.value("pass_protect").toInt();
-            vod.bFavourit  = !!mResults.value("favorite").toInt();
+            vod.sName      =   mResults.value("title");
+            vod.sDescr     =   "";
+            vod.sYear      =   "";
+            vod.sCountry   =   "";
+            vod.sImg       =   mResults.value("pic");
+            vod.bProtected = !!mResults.value("protected").toInt();
+            vod.bFavourit  = !!mResults.value("is_favorite").toInt();
 
             // store element ...
             vVodList.push_back(vod);
@@ -1082,27 +1082,33 @@ int COtradaParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
       {
       // any xml element starts ...
       case QXmlStreamReader::StartElement:
-         if (xml.name() == "film")
+         if (xml.name() == "item")
          {
             mResults.clear();
             slNeeded.clear();
 
-            slNeeded << "name" << "lenght" << "description" << "actors"
-                     << "country" << "director" << "poster" << "year"
-                     << "id" << "genre_str";
+            slNeeded << "title" << "time" << "description" << "acters"
+                     << "country" << "director" << "pic" << "year"
+                     << "id" << "genre" << "protected" << "is_favorite";
 
             oneLevelParser(xml, "vis", slNeeded, mResults);
 
-            vidInfo.sActors   = mResults.value("actors");
-            vidInfo.sCountry  = mResults.value("country");
-            vidInfo.sDescr    = mResults.value("description");
-            vidInfo.sDirector = mResults.value("director");
-            vidInfo.sImg      = mResults.value("poster");
-            vidInfo.sName     = mResults.value("name");
-            vidInfo.sYear     = mResults.value("year");
-            vidInfo.sGenres   = mResults.value("genre_str");
-            vidInfo.uiLength  = mResults.value("lenght").toUInt();
-            vidInfo.uiVidId   = mResults.value("id").toUInt();
+            vidInfo.sActors    = mResults.value("acters");
+            vidInfo.sCountry   = mResults.value("country");
+            vidInfo.sDescr     = mResults.value("description");
+            vidInfo.sDirector  = mResults.value("director");
+            vidInfo.sImg       = mResults.value("pic");
+            vidInfo.sName      = mResults.value("title");
+            vidInfo.sYear      = mResults.value("year");
+            vidInfo.sGenres    = mResults.value("genre");
+            vidInfo.uiLength   = mResults.value("time").toUInt() / 60;
+            vidInfo.uiVidId    = mResults.value("id").toUInt();
+            vidInfo.bProtected = !!mResults.value("protected").toInt();
+            vidInfo.bFavourit  = !!mResults.value("is_favorite").toInt();
+
+            vidInfo.sActors.replace("\r", "");
+            vidInfo.sActors.replace("\n", ", ");
+            vidInfo.sActors = vidInfo.sActors.simplified();
          }
          else if (xml.name() == "videos")
          {
@@ -1134,18 +1140,6 @@ int COtradaParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
                vidInfo.vVodFiles.push_back(fInfo);
             }
          }
-         else if (xml.name() == "genres")
-         {
-            // there is nothing we need from genres ...
-            ignoreUntil(xml, "genres");
-         }
-         else if (xml.name() == "pass_protect")
-         {
-            if (xml.readNext() == QXmlStreamReader::Characters)
-            {
-               vidInfo.bProtected = !!xml.text().toString().toInt();
-            }
-         }
          else if (xml.name() == "favorite")
          {
             if (xml.readNext() == QXmlStreamReader::Characters)
@@ -1157,7 +1151,7 @@ int COtradaParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
 
       case QXmlStreamReader::EndElement:
          // end of videos means end of needed info ...
-         if (xml.name() == "film")
+         if (xml.name() == "item")
          {
             bEnd = true;
          }
@@ -1166,6 +1160,22 @@ int COtradaParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
       default:
          break;
       }
+   }
+
+   /// hack for missing videos ...
+   if (vidInfo.vVodFiles.isEmpty())
+   {
+       fInfo.iHeight = 0;
+       fInfo.iId     = vidInfo.uiVidId;
+       fInfo.iLength = vidInfo.uiLength;
+       fInfo.iSize   = 0;
+       fInfo.iWidth  = 0;
+       fInfo.sCodec  = tr("h264");
+       fInfo.sFormat = tr("VOD");
+       fInfo.sTitle  = tr("Video");
+       fInfo.sUrl    = "";
+
+       vidInfo.vVodFiles.push_back(fInfo);
    }
 
    // check for xml errors ...

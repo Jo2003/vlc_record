@@ -86,6 +86,7 @@ protected:
    int  checkResponse (const QString &sResp, QString& sCleanResp);
    void chanListLang(const QString& lang);
    void audioLang();
+   void reqeustVodFavList(const QString& ids);
 
 private:
    QString   sUsr;
