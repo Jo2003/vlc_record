@@ -920,6 +920,7 @@ void COtradaClient::GetVideos(const QString &sPrepared)
 
    QString sHelp = sPrepared;
    sHelp.replace("nums", "limit");
+   sHelp.replace("query", "word");
 
    if (!sHelp.contains("limit"))
    {
