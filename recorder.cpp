@@ -3343,6 +3343,14 @@ void Recorder::slotVodAnchor(const QUrl &link)
       showInfo.setHtmlDescr(ui->vodBrowser->getShortContent());
       showInfo.setVodId(id);
 
+#ifdef _TASTE_IPTV_RECORD
+      if (link.hasQueryItem("length"))
+      {
+          showInfo.setStartTime(QDateTime::currentDateTime().toTime_t());
+          showInfo.setEndTime(showInfo.starts() + link.queryItemValue("length").toUInt());
+      }
+#endif // _TASTE_IPTV_RECORD
+
       ui->labState->setHeader(tr("Video On Demand"));
       ui->labState->setFooter(showInfo.showName());
 

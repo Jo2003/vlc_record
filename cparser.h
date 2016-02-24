@@ -86,6 +86,8 @@ namespace cparser
 
    struct SVodFileInfo
    {
+      SVodFileInfo()
+          :iId(-1), iSize(0), iLength(0), iWidth(0), iHeight(0){}
       int     iId;
       QString sTitle;
       QString sFormat;
@@ -99,6 +101,8 @@ namespace cparser
 
    struct SVodVideo
    {
+      SVodVideo()
+          :uiVidId(0), uiLength(0), uiLengthSec(0), bProtected(false), bFavourit(false){}
       uint uiVidId;
       QString sName;
       QString sYear;
@@ -109,6 +113,7 @@ namespace cparser
       QString sDirector;
       QString sGenres;
       uint    uiLength;
+      uint    uiLengthSec;
       bool    bProtected;
       bool    bFavourit;
       QVector<cparser::SVodFileInfo> vVodFiles;

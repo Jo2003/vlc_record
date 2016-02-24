@@ -1060,20 +1060,6 @@ int COtradaParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
    cparser::SVodFileInfo  fInfo;
    bool                   bEnd = false;
 
-   // init struct ...
-   vidInfo.sActors    = "";
-   vidInfo.sCountry   = "";
-   vidInfo.sDescr     = "";
-   vidInfo.sDirector  = "";
-   vidInfo.sImg       = "";
-   vidInfo.sName      = "";
-   vidInfo.sYear      = "";
-   vidInfo.uiLength   = 0;
-   vidInfo.uiVidId    = 0;
-   vidInfo.bProtected = false;
-   vidInfo.bFavourit  = false;
-   vidInfo.vVodFiles.clear();
-
    xml.addData(sResp);
 
    while(!xml.atEnd() && !xml.hasError() && !bEnd)
@@ -1093,18 +1079,19 @@ int COtradaParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
 
             oneLevelParser(xml, "vis", slNeeded, mResults);
 
-            vidInfo.sActors    = mResults.value("acters");
-            vidInfo.sCountry   = mResults.value("country");
-            vidInfo.sDescr     = mResults.value("description");
-            vidInfo.sDirector  = mResults.value("director");
-            vidInfo.sImg       = mResults.value("pic");
-            vidInfo.sName      = mResults.value("title");
-            vidInfo.sYear      = mResults.value("year");
-            vidInfo.sGenres    = mResults.value("genre");
-            vidInfo.uiLength   = mResults.value("time").toUInt() / 60;
-            vidInfo.uiVidId    = mResults.value("id").toUInt();
-            vidInfo.bProtected = !!mResults.value("protected").toInt();
-            vidInfo.bFavourit  = !!mResults.value("is_favorite").toInt();
+            vidInfo.sActors     = mResults.value("acters");
+            vidInfo.sCountry    = mResults.value("country");
+            vidInfo.sDescr      = mResults.value("description");
+            vidInfo.sDirector   = mResults.value("director");
+            vidInfo.sImg        = mResults.value("pic");
+            vidInfo.sName       = mResults.value("title");
+            vidInfo.sYear       = mResults.value("year");
+            vidInfo.sGenres     = mResults.value("genre");
+            vidInfo.uiLength    = mResults.value("time").toUInt() / 60;
+            vidInfo.uiLengthSec = mResults.value("time").toUInt();
+            vidInfo.uiVidId     = mResults.value("id").toUInt();
+            vidInfo.bProtected  = !!mResults.value("protected").toInt();
+            vidInfo.bFavourit   = !!mResults.value("is_favorite").toInt();
 
             vidInfo.sActors.replace("\r", "");
             vidInfo.sActors.replace("\n", ", ");
@@ -1167,7 +1154,7 @@ int COtradaParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
    {
        fInfo.iHeight = 0;
        fInfo.iId     = vidInfo.uiVidId;
-       fInfo.iLength = vidInfo.uiLength;
+       fInfo.iLength = vidInfo.uiLengthSec;
        fInfo.iSize   = 0;
        fInfo.iWidth  = 0;
        fInfo.sCodec  = tr("h264");
