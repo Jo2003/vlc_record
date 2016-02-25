@@ -1286,60 +1286,84 @@ int CPlayer::slotToggleCropGeometry()
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
-   if (isPlaying() && showInfo.canCtrlStream() &&!bSpoolPending)
-   {
-      uint pos;
+    if (isPlaying() && showInfo.canCtrlStream() &&!bSpoolPending)
+    {
+        // stop slider update timer ...
+        sliderTimer.stop();
 
-      if (isPositionable() && !showInfo.isHls())
-      {
-         pos  = libvlc_media_player_get_time(pMediaPlayer);
+        uint pos;
 
-         // make sure we don't go negative ...
-         if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
-         {
-            pos = 0;
-         }
-         else
-         {
-            pos += iSeconds * 1000; // ms ...
-         }
+        if (isPositionable() && !showInfo.isHls())
+        {
+            pos  = libvlc_media_player_get_time(pMediaPlayer);
 
-         libvlc_media_player_set_time(pMediaPlayer, pos);
+            // make sure we don't go negative ...
+            if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
+            {
+                pos = 0;
+            }
+            else
+            {
+                pos += iSeconds * 1000; // ms ...
+            }
 
-         missionControl.setPosValue((int)(pos / 1000));
-      }
-      else
-      {
-         // get new gmt value ...
-         pos = timer.pos() + iSeconds;
+            libvlc_media_player_set_time(pMediaPlayer, pos);
 
-         // trigger request for the new stream position ...
-         QString req = QString("cid=%1&gmt=%2")
-                          .arg(showInfo.channelId()).arg(pos);
+            missionControl.setPosValue((int)(pos / 1000));
+        }
+#ifdef _TASTE_IPTV_RECORD
+        else if ((showInfo.showType() == ShowInfo::VOD) && (showInfo.playState() == IncPlay::PS_PLAY))
+        {
+            // length are 100%
+            uint uiLen = showInfo.ends() - showInfo.starts();
 
-         // mark spooling as active ...
-         bSpoolPending = true;
+            // current position
+            pos = timer.pos() + iSeconds - showInfo.starts();
 
-         enableDisablePlayControl (false);
+            float point = (float)pos / (float)uiLen;
 
-         // save jump time ...
-         showInfo.setLastJumpTime(pos);
+            mInfo(tr("Try to set new stream position: %1").arg(point));
 
-         emit sigStopOnDemand();
+            libvlc_media_player_set_position(pMediaPlayer, point);
 
-         pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+            timer.setElapsed(pos);
+        }
+#endif // _TASTE_IPTV_RECORD
+        else
+        {
+            // get new gmt value ...
+            pos = timer.pos() + iSeconds;
 
-         // do we reach another show?
-         if ((pos < mToGmt(missionControl.posMinimum()))
-             || (pos > mToGmt(missionControl.posMaximum())))
-         {
-            // yes --> update show info ...
-            emit sigCheckArchProg(pos);
-         }
-      }
-   }
+            // trigger request for the new stream position ...
+            QString req = QString("cid=%1&gmt=%2")
+                            .arg(showInfo.channelId()).arg(pos);
 
-   return 0;
+            // mark spooling as active ...
+            bSpoolPending = true;
+
+            enableDisablePlayControl (false);
+
+            // save jump time ...
+            showInfo.setLastJumpTime(pos);
+
+            emit sigStopOnDemand();
+
+            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+
+            // do we reach another show?
+            if ((pos < mToGmt(missionControl.posMinimum()))
+                || (pos > mToGmt(missionControl.posMaximum())))
+            {
+                // yes --> update show info ...
+                emit sigCheckArchProg(pos);
+            }
+        }
+
+        // restart slider update timer ...
+        sliderTimer.start(1000);
+    }
+
+    return 0;
 }
 
 /* -----------------------------------------------------------------\
@@ -1479,51 +1503,73 @@ void CPlayer::slotStoredAspectCrop ()
 \----------------------------------------------------------------- */
 void CPlayer::slotSliderPosChanged()
 {
-   if (isPlaying() && showInfo.canCtrlStream() && !bSpoolPending)
-   {
-      // stop slider update timer ...
-      sliderTimer.stop();
+    if (isPlaying() && showInfo.canCtrlStream() && !bSpoolPending)
+    {
+        // stop slider update timer ...
+        sliderTimer.stop();
 
-      uint position = (uint)missionControl.posValue();
+        uint position = (uint)missionControl.posValue();
 
-      if (isPositionable() && !showInfo.isHls())
-      {
-         libvlc_media_player_set_time(pMediaPlayer, position * 1000);
-      }
-      else
-      {
-         position = mToGmt(position);
+        if (isPositionable() && !showInfo.isHls())
+        {
+            libvlc_media_player_set_time(pMediaPlayer, position * 1000);
+        }
+#ifdef _TASTE_IPTV_RECORD
+        else if ((showInfo.showType() == ShowInfo::VOD) && (showInfo.playState() == IncPlay::PS_PLAY))
+        {
+            // length are 100%
+            uint uiLen = showInfo.ends() - showInfo.starts();
 
-         // check if slider position is in 10 sec. limit ...
-         if (abs(position - timer.pos()) <= 10)
-         {
-            mInfo(tr("Ignore slightly slider position change..."));
-         }
-         else
-         {
-            // request new stream ...
-            QString req = QString("cid=%1&gmt=%2")
-                         .arg(showInfo.channelId())
-                         .arg(position);
+            position = mToGmt(position);
 
-            // mark spooling as active ...
-            bSpoolPending = true;
+            position -= showInfo.starts();
 
-            enableDisablePlayControl (false);
+            mInfo(tr("Length: %1, new position: %2").arg(uiLen).arg(position));
 
-            // save new start value ...
-            showInfo.setLastJumpTime(position);
+            float point = (float)position / (float)uiLen;
 
-            emit sigStopOnDemand();
+            mInfo(tr("Try to set new stream position: %1").arg(point));
 
-            // trigger stream request ...
-            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
-         }
-      }
+            libvlc_media_player_set_position(pMediaPlayer, point);
 
-      // restart slider update timer ...
-      sliderTimer.start(1000);
-   }
+            // the timer should know about ...
+            timer.setElapsed(position);
+        }
+#endif // _TASTE_IPTV_RECORD
+        else
+        {
+            position = mToGmt(position);
+
+            // check if slider position is in 10 sec. limit ...
+            if (abs(position - timer.pos()) <= 10)
+            {
+                mInfo(tr("Ignore slightly slider position change..."));
+            }
+            else
+            {
+                // request new stream ...
+                QString req = QString("cid=%1&gmt=%2")
+                                .arg(showInfo.channelId())
+                                .arg(position);
+
+                // mark spooling as active ...
+                bSpoolPending = true;
+
+                enableDisablePlayControl (false);
+
+                // save new start value ...
+                showInfo.setLastJumpTime(position);
+
+                emit sigStopOnDemand();
+
+                // trigger stream request ...
+                pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+            }
+        }
+
+        // restart slider update timer ...
+        sliderTimer.start(1000);
+    }
 }
 
 /* -----------------------------------------------------------------\

@@ -4617,33 +4617,49 @@ void Recorder::CreateSystray()
 \----------------------------------------------------------------- */
 void Recorder::touchLastOrBestCbx ()
 {
-   // fill / update search area combo box ...
-   if (!ui->cbxLastOrBest->count())
-   {
-      ui->cbxLastOrBest->addItem(tr("Newest"), "last");
-      ui->cbxLastOrBest->addItem(tr("Best"), "best");
-      ui->cbxLastOrBest->addItem(tr("My Favourites"), "vodfav");
-      ui->cbxLastOrBest->setCurrentIndex(0);
-   }
-   else
-   {
-      int idx;
+    // fill / update search area combo box ...
+    if (!ui->cbxLastOrBest->count())
+    {
+#ifdef _TASTE_IPTV_RECORD
+        ui->cbxLastOrBest->addItem(tr("Newest"), "id");
+        ui->cbxLastOrBest->addItem(tr("By Name"), "name");
+#else
+        ui->cbxLastOrBest->addItem(tr("Newest"), "last");
+        ui->cbxLastOrBest->addItem(tr("Best"), "best");
+#endif // _TASTE_IPTV_RECORD
+        ui->cbxLastOrBest->addItem(tr("My Favourites"), "vodfav");
+        ui->cbxLastOrBest->setCurrentIndex(0);
+    }
+    else
+    {
+        int idx;
 
-      if ((idx = ui->cbxLastOrBest->findData("last")) > -1)
-      {
-         ui->cbxLastOrBest->setItemText(idx, tr("Newest"));
-      }
+#ifdef _TASTE_IPTV_RECORD
+        if ((idx = ui->cbxLastOrBest->findData("id")) > -1)
+        {
+            ui->cbxLastOrBest->setItemText(idx, tr("Newest"));
+        }
 
-      if ((idx = ui->cbxLastOrBest->findData("best")) > -1)
-      {
-         ui->cbxLastOrBest->setItemText(idx, tr("Best"));
-      }
+        if ((idx = ui->cbxLastOrBest->findData("name")) > -1)
+        {
+            ui->cbxLastOrBest->setItemText(idx, tr("By Name"));
+        }
+#else
+        if ((idx = ui->cbxLastOrBest->findData("last")) > -1)
+        {
+            ui->cbxLastOrBest->setItemText(idx, tr("Newest"));
+        }
 
-      if ((idx = ui->cbxLastOrBest->findData("vodfav")) > -1)
-      {
-         ui->cbxLastOrBest->setItemText(idx, tr("My Favourites"));
-      }
-   }
+        if ((idx = ui->cbxLastOrBest->findData("best")) > -1)
+        {
+            ui->cbxLastOrBest->setItemText(idx, tr("Best"));
+        }
+#endif // _TASTE_IPTV_RECORD
+        if ((idx = ui->cbxLastOrBest->findData("vodfav")) > -1)
+        {
+            ui->cbxLastOrBest->setItemText(idx, tr("My Favourites"));
+        }
+    }
 }
 
 /* -----------------------------------------------------------------\

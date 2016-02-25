@@ -14,6 +14,7 @@
 #ifndef __20121217_QTIMEREX_H
    #define __20121217_QTIMEREX_H
 #include <QTimer>
+#include <QMutex>
 
 //---------------------------------------------------------------------------
 //! \class   QTimerEx
@@ -64,6 +65,24 @@ public:
          uiOffset  = 0;
       }
    }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   set elapsed value
+   //
+   //! \author  Jo2003
+   //! \date    26.02.2016
+   //
+   //! \param   [in] el (uint) new elapsed value
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void setElapsed (uint el)
+   {
+       valLock.lock();
+       uiElapsed = el;
+       valLock.unlock();
+   }
    
    //---------------------------------------------------------------------------
    //
@@ -78,7 +97,9 @@ public:
    //---------------------------------------------------------------------------
    void setOffset (uint uiOffs)
    {
+      valLock.lock();
       uiOffset = uiOffs;
+      valLock.unlock();
    }
    
    //---------------------------------------------------------------------------
@@ -94,7 +115,11 @@ public:
    //---------------------------------------------------------------------------
    uint pos ()
    {
-      return uiElapsed + uiOffset;
+      uint ret;
+      valLock.lock();
+      ret = uiElapsed + uiOffset;
+      valLock.unlock();
+      return ret;
    }
    
 public slots:
@@ -130,12 +155,15 @@ private slots:
    //---------------------------------------------------------------------------
    void slotTick()
    {
+      valLock.lock();
       uiElapsed ++;
+      valLock.unlock();
    }
    
 private:
    uint uiElapsed;
    uint uiOffset;
+   QMutex valLock;
 };
 
 #endif // __20121217_QTIMEREX_H

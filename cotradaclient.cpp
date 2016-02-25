@@ -916,18 +916,31 @@ void COtradaClient::GetVodGenres()
 \-----------------------------------------------------------------------------*/
 void COtradaClient::GetVideos(const QString &sPrepared)
 {
-   mInfo(tr("Request Videos ..."));
+    mInfo(tr("Request Videos ..."));
 
-   QString sHelp = sPrepared;
-   sHelp.replace("nums", "limit");
-   sHelp.replace("query", "word");
+    QString sHelp = sPrepared;
+    sHelp.replace("nums", "limit");
+    sHelp.replace("query", "word");
 
-   if (!sHelp.contains("limit"))
-   {
-       sHelp += "&limit=20";
-   }
+    // sort stuff ...
+    if (sHelp.contains("type=id"))
+    {
+        // this is default
+        sHelp.replace("type", "sort");
+    }
 
-   q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + "get_list_movie?" + QUrl::fromPercentEncoding(sHelp.toUtf8()));
+    if (sHelp.contains("type=name"))
+    {
+        sHelp.replace("type", "sort");
+        sHelp += "&order=1";
+    }
+
+    if (!sHelp.contains("limit"))
+    {
+        sHelp += "&limit=20";
+    }
+
+    q_get((int)CIptvDefs::REQ_GETVIDEOS, sApiUrl + "get_list_movie?" + QUrl::fromPercentEncoding(sHelp.toUtf8()));
 }
 
 /*-----------------------------------------------------------------------------\
