@@ -24,7 +24,7 @@ CONFIG(debug,debug|release): DEFINES += __TRACE
 # -------------------------------------
 PROGMAJ=2
 PROGMIN=69
-PROGBUILD=0
+PROGBUILD=4
 
 # here you can enable traces ...
 # DEFINES += __TRACE
@@ -154,8 +154,8 @@ LIBS += -lvlc
 # -------------------------------------------------
 win32 {
     # Define how to create program.rc
-    VERINC="$${LITERAL_HASH}define VER_FILEVERSION 0,$${PROGMAJ},$${PROGMIN},0"
-    VERSTR="$${LITERAL_HASH}define VER_FILEVERSION_STR \"0,$${PROGMAJ},$${PROGMIN},0\""
+    VERINC="$${LITERAL_HASH}define VER_FILEVERSION 0,$${PROGMAJ},$${PROGMIN},$${PROGBUILD}"
+    VERSTR="$${LITERAL_HASH}define VER_FILEVERSION_STR \"0,$${PROGMAJ},$${PROGMIN},$${PROGBUILD}\""
     PRODVER="$${LITERAL_HASH}define PROD_VER_STR \"$${PROGMAJ}.$${PROGMIN}\""
     FILEVER="$${LITERAL_HASH}define FILE_VER_STR \"$${PROGMAJ}.$${PROGMIN}.$${PROGBUILD}\""
     WININC="$${LITERAL_HASH}include ^<windows.h^>"
