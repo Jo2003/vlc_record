@@ -197,6 +197,8 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
    // wrap image into link ...
    cell = pHtml->link(url.toEncoded(), img) + "<br />";
 
+   title = "";
+
    if (entry.bProtected)
    {
       // add locked image ...

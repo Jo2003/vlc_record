@@ -1015,7 +1015,9 @@ int COtradaParser::parseVodList(const QString &sResp, QVector<cparser::SVodVideo
             vod.sImg       =   mResults.value("pic");
             vod.bProtected = !!mResults.value("protected").toInt();
             vod.bFavourit  = !!mResults.value("is_favorite").toInt();
-
+#ifdef __TRACE
+            mInfo(tr("Found Video '%1'; id=%2").arg(vod.sName).arg(vod.uiVidId));
+#endif // __TRACE
             // store element ...
             vVodList.push_back(vod);
          }
