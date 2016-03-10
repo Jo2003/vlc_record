@@ -33,7 +33,11 @@ namespace cparser
    {
       SChan():uiStart(0),uiEnd(0),uiDefAud(0),iTs(0),iId(0),bIsVideo(false),
          bIsProtected(false),bHasArchive(false),bIsGroup(false),
-         bIsHidden(false),bHasTsInfo(false){}
+         bIsHidden(false),bHasTsInfo(false)
+#ifdef _TASTE_STALKER
+        ,iArchRange(-1)
+#endif // _TASTE_STALKER
+      {}
       QString sName;
       QString sProgramm;
       QString sIcon;
@@ -51,6 +55,7 @@ namespace cparser
       QVector<cparser::STimeShift> vTs;
 #ifdef _TASTE_STALKER
       QString url;
+      int     iArchRange;
 #endif // __TASTE_STALKER
    };
 

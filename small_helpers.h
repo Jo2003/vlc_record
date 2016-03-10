@@ -19,6 +19,7 @@
 #include <QFontMetrics>
 #include <QCryptographicHash>
 #include <QDateTime>
+#include <stdint.h>
 #include "defdef.h"
 
 #define __VLCRECORD_KEY "O20J03N05+v205+n1907#80730108"
@@ -256,11 +257,11 @@ public:
    //
    //! \return  1 -> available; -1 -> not yet av.; -2 -> no more av.
    //---------------------------------------------------------------------------
-   static int archiveAvailable (uint uiStart)
+   static int archiveAvailable (uint uiStart, uint32_t maxAge = MAX_ARCHIV_AGE)
    {
       int  iRet = 0;
       uint now        = QDateTime::currentDateTime().toTime_t();
-      uint uiArchLow  = now - MAX_ARCHIV_AGE;   // no older than 2 weeks
+      uint uiArchLow  = now - maxAge;           // no older than 2 weeks
       uint uiArchHigh = now - ARCHIV_OFFSET;    // 15 minutes in the past
 
 

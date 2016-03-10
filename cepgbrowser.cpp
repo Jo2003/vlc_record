@@ -51,7 +51,7 @@ CEpgBrowser::CEpgBrowser(QWidget *parent) :
 \----------------------------------------------------------------- */
 void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
                              const QString &sName, int iChanID, uint uiGmt,
-                             bool bHasArchiv, int iTs)
+                             bool bHasArchiv, int iTs, int iLen)
 {
    epg::SShow actShow;
 
@@ -61,6 +61,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
    uiTime    = uiGmt;
    bArchive  = bHasArchiv;
    _iTs      = iTs;
+   iArLen    = iLen;
 
    // clear program map ...
    mProgram.clear();
@@ -180,7 +181,11 @@ QString CEpgBrowser::createHtmlCode()
       }
 
       // archive supported and still available ...
+#ifdef _TASTE_STALKER
+      if (bArchive && ((iAa = CSmallHelpers::archiveAvailable(actShow.uiStart, iArLen * 3600)) > -2))
+#else
       if (bArchive && ((iAa = CSmallHelpers::archiveAvailable(actShow.uiStart)) > -2))
+#endif // _TASTE_STALKER
       {
          timeCell += "<hr />" + pHtml->htmlTag("b", tr("Ar.")) + "&nbsp;";
 

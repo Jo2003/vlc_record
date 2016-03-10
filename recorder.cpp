@@ -2168,9 +2168,17 @@ void Recorder::slotEPG(const QString &str)
 
          if (!pChanMap->entry(cid, chan))
          {
+#ifdef _TASTE_STALKER
+            bool bArch = idx.data(channellist::arFlagRole).toBool();
+            int  iLen  = idx.data(channellist::arLenRole).toInt();
+            ui->textEpg->DisplayEpg(epg, chan.sName,
+                                    cid, epgTime.toTime_t(),
+                                    bArch, chan.iTs, iLen);
+#else
             ui->textEpg->DisplayEpg(epg, chan.sName,
                                     cid, epgTime.toTime_t(),
                                     accountInfo.bHasArchive ? chan.bHasArchive : false, chan.iTs);
+#endif // _TASTE_STALKER
 
             // fill epg control ...
             icon = qvariant_cast<QIcon>(idx.data(channellist::iconRole));
@@ -4963,6 +4971,10 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 #ifdef _TASTE_STALKER
             mInfo(tr("Adding url to model: %1").arg(chanlist[i].url));
             pItem->setData(chanlist[i].url,                       channellist::urlRole);
+
+            mInfo(tr("Archive: %1, Length: %2h").arg(chanlist[i].bHasArchive).arg(chanlist[i].iArchRange));
+            pItem->setData(chanlist[i].bHasArchive,               channellist::arFlagRole);
+            pItem->setData(chanlist[i].iArchRange,                channellist::arLenRole);
 #endif // _TASTE_STALKER
          }
 

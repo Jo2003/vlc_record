@@ -164,6 +164,7 @@ int QStalkerParser::parseChannelList (const QString &sResp,
             chan.sIcon        = mChan.value("logo").toString();
             chan.bIsHidden    = !mChan.value("monitoring_status").toBool();
             chan.url          = mChan.value("url").toString();
+            chan.iArchRange   = mChan.value("archive_range").toInt();
             chanList.append(chan);
 
             mInfo(tr("We've got channel %1 (%2)").arg(chan.sName).arg(chan.iId));

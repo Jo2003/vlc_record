@@ -683,16 +683,22 @@ void QStalkerClient::GetEPG(int iChanID, int iOffset)
 \-----------------------------------------------------------------------------*/
 void QStalkerClient::GetArchivURL (const QString &prepared, const QString &secCode)
 {
-   mInfo(tr("Request Archiv URL ..."));
+    mInfo(tr("Request Archiv URL ..."));
 
-   QString req = QUrl::fromPercentEncoding(prepared.toUtf8());
+    // "cid=%1&gmt=%2"
+    QRegExp rx("cid=([^&]*)&gmt=(.*)");
 
-   if (secCode != "")
-   {
-      req += QString("&protect_code=%1").arg(secCode);
-   }
+    if (rx.indexIn(prepared) > -1)
+    {
+        QString req = QString("users/%1/tv-channels/%2/link?start=%3").arg(m_Uid).arg(rx.cap(1)).arg(rx.cap(2));
 
-   q_post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url", req);
+        if (secCode != "")
+        {
+           req += QString("&protect_code=%1").arg(secCode);
+        }
+
+        q_get((int)CIptvDefs::REQ_ARCHIV, sApiUrl + req);
+    }
 }
 
 /*-----------------------------------------------------------------------------\
