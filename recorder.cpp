@@ -2395,6 +2395,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    QString        req;
    cparser::SChan sChan;
    epg::SShow     sEpg;
+   int            iEpgId = -1;
 
    if (action == "archivrec")
    {
@@ -2455,6 +2456,15 @@ void Recorder::slotEpgAnchor (const QUrl &link)
 
             uiStart = link.queryItemValue("gmt").toUInt();
             req     = QString("cid=%1&gmt=%2").arg(cid).arg(uiStart);
+
+            if (link.hasQueryItem("epg_id"))
+            {
+                if ((iEpgId = link.queryItemValue("epg_id").toInt()) > 0)
+                {
+                    req += QString("&epg_id=%1").arg(iEpgId);
+                }
+            }
+
             sEpg    = ui->textEpg->epgShow(uiStart);
 
             // store all info about show ...

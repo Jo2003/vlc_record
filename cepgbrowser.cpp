@@ -71,6 +71,7 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
       actShow.sShowName  = epglist[i].sName;
       actShow.sShowDescr = epglist[i].sDescr;
       actShow.uiStart    = epglist[i].uiGmt;
+      actShow.id         = epglist[i].id;
 
       if (epglist[i].uiEnd != 0)
       {
@@ -198,6 +199,11 @@ QString CEpgBrowser::createHtmlCode()
             url.addQueryItem("cid", QString::number(iCid));
             url.addQueryItem("gmt", QString::number(actShow.uiStart));
 
+            if (actShow.id > 0)
+            {
+                url.addQueryItem("epg_id", QString::number(actShow.id));
+            }
+
             // play button ...
             img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
 
@@ -209,6 +215,11 @@ QString CEpgBrowser::createHtmlCode()
             url.addQueryItem("action", "archivrec");
             url.addQueryItem("cid", QString::number(iCid));
             url.addQueryItem("gmt", QString::number(actShow.uiStart));
+
+            if (actShow.id > 0)
+            {
+                url.addQueryItem("epg_id", QString::number(actShow.id));
+            }
 
             // rec button ...
             img = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
@@ -223,6 +234,11 @@ QString CEpgBrowser::createHtmlCode()
          url.addQueryItem("action", "remember");
          url.addQueryItem("cid"  , QString::number(iCid));
          url.addQueryItem("gmt"  , QString::number(actShow.uiStart));
+
+         if (actShow.id > 0)
+         {
+             url.addQueryItem("epg_id", QString::number(actShow.id));
+         }
 
          // remember button ...
          img = pHtml->image(":/png/remember", 16, 16, "", tr("add to watch list ..."));

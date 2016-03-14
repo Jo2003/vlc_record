@@ -230,6 +230,8 @@ int QStalkerParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgL
 
          entry.id = mEpg.contains("id") ? mEpg.value("id").toInt() : -1;
 
+         mInfo(tr("EPG: %1 (#%2)").arg(entry.sName).arg(entry.id));
+
          if (mEpg.contains("pdescr"))
          {
             entry.sDescr = mEpg.value("pdescr").toString();

@@ -13,6 +13,8 @@
  *///------------------------- (c) 2015 by Jo2003  --------------------------
 #include "qstalkerclient.h"
 #include "qcustparser.h"
+#include <stdint.h>
+#include <QPair>
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -683,22 +685,35 @@ void QStalkerClient::GetEPG(int iChanID, int iOffset)
 \-----------------------------------------------------------------------------*/
 void QStalkerClient::GetArchivURL (const QString &prepared, const QString &secCode)
 {
-    mInfo(tr("Request Archiv URL ..."));
+    mInfo(tr("Request Archiv URL (%1) ...").arg(prepared));
 
-    // "cid=%1&gmt=%2"
-    QRegExp rx("cid=([^&]*)&gmt=(.*)");
+    QUrl    url;
+    url.setEncodedQuery(prepared.toUtf8());
+    QString req;
 
-    if (rx.indexIn(prepared) > -1)
+    // we have 2 possibilities:
+    // 1) get the link through epg id ...
+    // 2) get the link through start time ...
+
+    // 1)
+    if (prepared.contains("epg_id"))
     {
-        QString req = QString("users/%1/tv-channels/%2/link?start=%3").arg(m_Uid).arg(rx.cap(1)).arg(rx.cap(2));
-
-        if (secCode != "")
-        {
-           req += QString("&protect_code=%1").arg(secCode);
-        }
-
-        q_get((int)CIptvDefs::REQ_ARCHIV, sApiUrl + req);
+        req = QString("epg/%1/link").arg(url.queryItemValue("epg_id"));
     }
+    else // 2)
+    {
+        int      cid     = url.queryItemValue("cid").toInt();
+        uint32_t uiStart = url.queryItemValue("gmt").toUInt();
+
+        req = QString("users/%1/tv-channels/%2/link?start=%3").arg(m_Uid).arg(cid).arg(uiStart);
+    }
+
+    if (secCode != "")
+    {
+       req += QString("&protect_code=%1").arg(secCode);
+    }
+
+    q_get((int)CIptvDefs::REQ_ARCHIV, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1000,6 +1015,8 @@ void QStalkerClient::setParentCode(const QString &oldCode, const QString &newCod
 void QStalkerClient::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
+
+   // stalker API doesn't support
 
    q_get((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3")
        .arg(cids));
