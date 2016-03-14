@@ -30,6 +30,9 @@ INCLUDEPATH += .
 # build shared !
 CONFIG += shared
 
+# force traces on debug ...
+CONFIG(debug,debug|release): DEFINES += __TRACE
+
 # -------------------------------------
 # support C++11
 # Depending on your compiler you
@@ -49,6 +52,7 @@ CONFIG += shared
 # -------------------------------------
 PROGMAJ=2
 PROGMIN=72
+PROGBUILD=1
 
 # here you can enable traces ...
 # DEFINES += __TRACE
@@ -195,10 +199,10 @@ LIBS += -lvlc
 # -------------------------------------------------
 win32 {
     # Define how to create program.rc
-    VERINC="$${LITERAL_HASH}define VER_FILEVERSION 0,$${PROGMAJ},$${PROGMIN},0"
-    VERSTR="$${LITERAL_HASH}define VER_FILEVERSION_STR \"0,$${PROGMAJ},$${PROGMIN},0\""
+    VERINC="$${LITERAL_HASH}define VER_FILEVERSION 0,$${PROGMAJ},$${PROGMIN},$${PROGBUILD}"
+    VERSTR="$${LITERAL_HASH}define VER_FILEVERSION_STR \"0,$${PROGMAJ},$${PROGMIN},$${PROGBUILD}\""
     PRODVER="$${LITERAL_HASH}define PROD_VER_STR \"$${PROGMAJ}.$${PROGMIN}\""
-    FILEVER="$${LITERAL_HASH}define FILE_VER_STR \"$${PROGMAJ}.$${PROGMIN}.0\""
+    FILEVER="$${LITERAL_HASH}define FILE_VER_STR \"$${PROGMAJ}.$${PROGMIN}.$${PROGBUILD}\""
     WININC="$${LITERAL_HASH}include ^<windows.h^>"
 
 
