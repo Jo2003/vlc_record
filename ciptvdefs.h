@@ -74,7 +74,8 @@ public:
       REQ_VOD_LANG,
       REQ_NOOP,
       REQ_USER,
-      REQ_UNKNOWN = 255
+      REQ_INNER_OPS,
+      REQ_UNKNOWN = 9999
    };
 
    //---------------------------------------------------------------------------

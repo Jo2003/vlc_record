@@ -48,6 +48,8 @@ QStalkerClient::QStalkerClient(QObject *parent) :QIptvCtrlClient(parent)
    connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
 
    setObjectName("QStalkerClient");
+
+   eIOps = QStalkerClient::IO_DUNNO;
 }
 
 /*-----------------------------------------------------------------------------\
@@ -64,7 +66,35 @@ QStalkerClient::QStalkerClient(QObject *parent) :QIptvCtrlClient(parent)
 \-----------------------------------------------------------------------------*/
 QStalkerClient::~QStalkerClient()
 {
-   // abort();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   handle inner string response from API server
+//
+//! \author  Jo2003
+//! \date    15.03.2016
+//
+//! \param   reqId (int) request id
+//! \param   resp (const QString&) response string
+//
+//---------------------------------------------------------------------------
+void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
+{
+    if (eIOps == QStalkerClient::IO_EPG_CUR)
+    {
+        int cid = reqId - (int)CIptvDefs::REQ_INNER_OPS;
+        mBufMap[cid] = resp;
+        mReqsToGo --;
+
+        if (mReqsToGo <= 0)
+        {
+            // create pseudo response for all channels ...
+
+            // done ...
+            eIOps = QStalkerClient::IO_DUNNO;
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -81,37 +111,48 @@ QStalkerClient::~QStalkerClient()
 //---------------------------------------------------------------------------
 void QStalkerClient::slotStringResponse (int reqId, QString strResp)
 {
-   int     iErr = 0;
-   QString sCleanResp;
+    int     iErr = 0;
+    QString sCleanResp;
+    bool    bSendResp = true;
 
 #ifdef __TRACE
-   mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
-         .arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId))
-         .arg(strResp));
+    mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
+        .arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId))
+        .arg(strResp));
 #endif // __TRACE
 
-   if (reqId == (int)CIptvDefs::REQ_LOGOUT)
-   {
-       sCookie = "";
+    if (reqId == (int)CIptvDefs::REQ_LOGOUT)
+    {
+        sCookie = "";
 
-       // send response ...
-       emit sigHttpResponse ("", reqId);
-   }
-   else
-   {
-      mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId)));
+        // send response ...
+        emit sigHttpResponse ("", reqId);
+    }
+    else
+    {
+        mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId)));
 
-      // check response ...
-      if ((iErr = checkResponse(strResp, sCleanResp)) != 0)
-      {
-         emit sigError(sCleanResp, reqId, iErr);
-      }
-      else
-      {
-         // send response ...
-         emit sigHttpResponse (sCleanResp, reqId);
-      }
-   }
+        // check response ...
+        if ((iErr = checkResponse(strResp, sCleanResp)) != 0)
+        {
+            emit sigError(sCleanResp, reqId, iErr);
+        }
+        else
+        {
+            // modify response as well as id if needed ...
+            if (reqId >= (int)CIptvDefs::REQ_INNER_OPS)
+            {
+                handleInnerOps(reqId, sCleanResp);
+                bSendResp = false;
+            }
+
+            if (bSendResp)
+            {
+                // send response ...
+                emit sigHttpResponse (sCleanResp, reqId);
+            }
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -1014,12 +1055,24 @@ void QStalkerClient::setParentCode(const QString &oldCode, const QString &newCod
 \-----------------------------------------------------------------------------*/
 void QStalkerClient::epgCurrent(const QString &cids)
 {
-   mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
+    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   // stalker API doesn't support
+    // stalker API doesn't support epg current!
+    // We have to split the channel ids and ask for every channel ...
+    mBufMap.clear();
 
-   q_get((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + QString("epg_current?cids=%1&epg=3")
-       .arg(cids));
+    QStringList sl = cids.split(",", QString::SkipEmptyParts);
+
+    int toks  = sl.count();
+    mReqsToGo = toks;
+
+    for (int i = 0; i < toks; i++)
+    {
+        int cid = sl[i].toInt();
+        eIOps   = QStalkerClient::IO_EPG_CUR;
+        q_get((int)CIptvDefs::REQ_INNER_OPS + cid, sApiUrl + QString("users/%1/tv-channels/%2/epg?next=3")
+                    .arg(m_Uid).arg(cid));
+    }
 }
 
 //---------------------------------------------------------------------------

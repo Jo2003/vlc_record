@@ -31,16 +31,19 @@
 //---------------------------------------------------------------------------
 class QStalkerClient : public QIptvCtrlClient
 {
-   Q_OBJECT
+    Q_OBJECT
+
+    enum EInnerOps {
+        IO_EPG_CUR,
+        IO_DUNNO = 255
+    };
 
 public:
    explicit QStalkerClient(QObject *parent = 0);
    virtual ~QStalkerClient();
 
    void SetData(const QString &host, const QString &usr, const QString &pw, const QString& lang = "");
-
    int  queueRequest(CIptvDefs::EReq req, const QVariant& par_1 = QVariant(), const QVariant& par_2 = QVariant());
-
    void fillErrorMap();
    bool cookieSet();
    void SetCookie (const QString &cookie);
@@ -80,6 +83,7 @@ protected:
    virtual void getVodLang();
    const QString& apiUrl();
    virtual void userData();
+   void handleInnerOps(int reqId, const QString& resp);
 
 private:
    QString   sUsr;
@@ -89,6 +93,10 @@ private:
    QErrorMap errMap;
    CIptvDefs karTrace;
    int       m_Uid;
+   EInnerOps eIOps;
+   int       mReqsToGo;
+   QMap<int, QString> mBufMap;
+
 
 public slots:
    void slotDownImg(const QString& url);
