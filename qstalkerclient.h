@@ -17,6 +17,7 @@
 #include <QString>
 #include <QDate>
 #include <QRegExp>
+#include <QtJson>
 
 #include "qiptvctrlclient.h"
 #include "clogfile.h"
@@ -35,6 +36,8 @@ class QStalkerClient : public QIptvCtrlClient
 
     enum EInnerOps {
         IO_EPG_CUR,
+        IO_TV_GENRES,
+        IO_TV_CHANNELS,
         IO_DUNNO = 255
     };
 
@@ -95,8 +98,9 @@ private:
    int       m_Uid;
    EInnerOps eIOps;
    int       mReqsToGo;
-   QMap<int, QString> mBufMap;
-
+   QMap<int, QString>     mBufMap;
+   QMap<QString, QString> mTvGenres;
+   QVariantMap            mTvChannels;
 
 public slots:
    void slotDownImg(const QString& url);

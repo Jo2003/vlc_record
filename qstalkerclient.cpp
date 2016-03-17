@@ -81,6 +81,9 @@ QStalkerClient::~QStalkerClient()
 //---------------------------------------------------------------------------
 void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
 {
+    bool        bOk;
+    QVariantMap masterMap;
+
     if (eIOps == QStalkerClient::IO_EPG_CUR)
     {
         int cid = reqId - (int)CIptvDefs::REQ_INNER_OPS;
@@ -93,6 +96,73 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
 
             // done ...
             eIOps = QStalkerClient::IO_DUNNO;
+        }
+    }
+    else if (eIOps == QStalkerClient::IO_TV_GENRES)
+    {
+        mTvGenres.clear();
+        masterMap = QtJson::parse(resp, bOk).toMap();
+
+        if (bOk)
+        {
+            foreach(const QVariant& entry, masterMap.value("results").toList())
+            {
+                QVariantMap mEntry = entry.toMap();
+                mTvGenres[mEntry.value("id").toString()] = mEntry.value("title").toString();
+            }
+
+            // request channels ...
+            eIOps = QStalkerClient::IO_TV_CHANNELS;
+
+            QString req = QString("users/%1/tv-channels").arg(m_Uid);
+            q_get((int)CIptvDefs::REQ_INNER_OPS, sApiUrl + req);
+        }
+        else
+        {
+            mInfo(tr("QtJson parser error in %1 %2():%3")
+                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+        }
+    }
+    else if (eIOps == QStalkerClient::IO_TV_CHANNELS)
+    {
+        masterMap = QtJson::parse(resp, bOk).toMap();
+
+        if (bOk)
+        {
+            mTvChannels.clear();
+            QMap<QString, QList<QVariant> > tmpGroupMap;
+
+            foreach (const QVariant& lChans, masterMap.value("results").toList())
+            {
+                QString sGenre = lChans.toMap().value("genre_id").toString();
+
+                if (!tmpGroupMap.contains(sGenre))
+                {
+                    tmpGroupMap[sGenre] = QList<QVariant>();
+                }
+
+                tmpGroupMap[sGenre].append(lChans);
+            }
+
+            QList<QVariant> groupList;
+
+            foreach (const QString& key, tmpGroupMap.keys())
+            {
+                QVariantMap group;
+                group.insert("id", key);
+                group.insert("title", mTvGenres[key]);
+                group.insert("channels", tmpGroupMap.value(key));
+                groupList.append(group);
+            }
+
+            mTvChannels.insert("status", QString("OK"));
+            mTvChannels.insert("results", groupList);
+            mInfo(tr("Own JSON creation:\n%1\n").arg(QtJson::serializeStr(mTvChannels)));
+        }
+        else
+        {
+            mInfo(tr("QtJson parser error in %1 %2():%3")
+                  .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
         }
     }
 }
@@ -485,13 +555,18 @@ void QStalkerClient::GetCookie ()
 \-----------------------------------------------------------------------------*/
 void QStalkerClient::GetChannelList ()
 {
+    // stalker works very different ...
+    // 1) get tv ganres
+    // 2) get tv channels
+    // 3) get epg current
+    // 4) combine the stuff
     mInfo(tr("Request Channel List ..."));
-    QString req;
+    eIOps = QStalkerClient::IO_TV_GENRES;
 
-    req = QString("users/%1/tv-channels").arg(m_Uid);
+    QString req = "tv-genres";
 
-   // request channel list or channel list for settings ...
-   q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + req);
+    // request tv channel list or channel list for settings ...
+    q_get((int)CIptvDefs::REQ_INNER_OPS, sApiUrl + req);
 }
 
 //---------------------------------------------------------------------------
