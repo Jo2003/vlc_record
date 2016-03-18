@@ -24,6 +24,8 @@
 #include "defdef.h"
 #include "ciptvdefs.h"
 
+typedef QMap<QString, QList<QVariant> > QGroupMap;
+
 //---------------------------------------------------------------------------
 //! \class   QStalkerClient
 //! \date    06.09.2015
@@ -36,6 +38,7 @@ class QStalkerClient : public QIptvCtrlClient
 
     enum EInnerOps {
         IO_EPG_CUR,
+        IO_EPG_CUR_CHAN,
         IO_TV_GENRES,
         IO_TV_CHANNELS,
         IO_DUNNO = 255
@@ -80,13 +83,14 @@ protected:
    void remVodFav (int iVidID, const QString &secCode);
    void getVodFav ();
    void setParentCode (const QString& oldCode, const QString& newCode);
-   void epgCurrent(const QString &cids);
+   void epgCurrent(const QString &cids, bool bChanList = false);
    void updInfo (const QString& url);
    int  checkResponse (const QString &sResp, QString& sCleanResp);
    virtual void getVodLang();
    const QString& apiUrl();
    virtual void userData();
    void handleInnerOps(int reqId, const QString& resp);
+   void combineChannelList();
 
 private:
    QString   sUsr;
@@ -101,6 +105,7 @@ private:
    QMap<int, QString>     mBufMap;
    QMap<QString, QString> mTvGenres;
    QVariantMap            mTvChannels;
+   QGroupMap              mGroupMap;
 
 public slots:
    void slotDownImg(const QString& url);

@@ -98,6 +98,23 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
             eIOps = QStalkerClient::IO_DUNNO;
         }
     }
+    else if (eIOps == QStalkerClient::IO_EPG_CUR_CHAN)
+    {
+        int cid = reqId - (int)CIptvDefs::REQ_INNER_OPS;
+        mBufMap[cid] = resp;
+        mReqsToGo --;
+
+        if (mReqsToGo <= 0)
+        {
+            // create pseudo response for all channels ...
+            mInfo(tr("All EPG values there!"));
+
+            combineChannelList();
+
+            // done ...
+            eIOps = QStalkerClient::IO_DUNNO;
+        }
+    }
     else if (eIOps == QStalkerClient::IO_TV_GENRES)
     {
         mTvGenres.clear();
@@ -129,35 +146,42 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
 
         if (bOk)
         {
-            mTvChannels.clear();
-            QMap<QString, QList<QVariant> > tmpGroupMap;
+            mGroupMap.clear();
+            QStringList chanList;
 
             foreach (const QVariant& lChans, masterMap.value("results").toList())
             {
                 QString sGenre = lChans.toMap().value("genre_id").toString();
 
-                if (!tmpGroupMap.contains(sGenre))
+                chanList << lChans.toMap().value("id").toString();
+
+                if (!mGroupMap.contains(sGenre))
                 {
-                    tmpGroupMap[sGenre] = QList<QVariant>();
+                    mGroupMap[sGenre] = QList<QVariant>();
                 }
 
-                tmpGroupMap[sGenre].append(lChans);
+                mGroupMap[sGenre].append(lChans);
             }
 
             QList<QVariant> groupList;
 
-            foreach (const QString& key, tmpGroupMap.keys())
+            foreach (const QString& key, mGroupMap.keys())
             {
                 QVariantMap group;
                 group.insert("id", key);
                 group.insert("title", mTvGenres[key]);
-                group.insert("channels", tmpGroupMap.value(key));
+                group.insert("channels", mGroupMap.value(key));
                 groupList.append(group);
             }
 
             mTvChannels.insert("status", QString("OK"));
             mTvChannels.insert("results", groupList);
             mInfo(tr("Own JSON creation:\n%1\n").arg(QtJson::serializeStr(mTvChannels)));
+
+            if (!chanList.isEmpty())
+            {
+                epgCurrent(chanList.join(","), true);
+            }
         }
         else
         {
@@ -165,6 +189,19 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
                   .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
         }
     }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   combine data to channel list and send out
+//
+//! \author  Jo2003
+//! \date    18.03.2016
+//
+//---------------------------------------------------------------------------
+void QStalkerClient::combineChannelList()
+{
+
 }
 
 //---------------------------------------------------------------------------
@@ -1125,10 +1162,11 @@ void QStalkerClient::setParentCode(const QString &oldCode, const QString &newCod
 | Description: request current epg for given channels
 |
 | Parameters:  comma separated list of channel ids
+|              flag when used for channel list
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void QStalkerClient::epgCurrent(const QString &cids)
+void QStalkerClient::epgCurrent(const QString &cids, bool bChanList)
 {
     mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
@@ -1144,9 +1182,9 @@ void QStalkerClient::epgCurrent(const QString &cids)
     for (int i = 0; i < toks; i++)
     {
         int cid = sl[i].toInt();
-        eIOps   = QStalkerClient::IO_EPG_CUR;
-        q_get((int)CIptvDefs::REQ_INNER_OPS + cid, sApiUrl + QString("users/%1/tv-channels/%2/epg?next=3")
-                    .arg(m_Uid).arg(cid));
+        eIOps   = bChanList ? QStalkerClient::IO_EPG_CUR_CHAN : QStalkerClient::IO_EPG_CUR;
+        q_get((int)CIptvDefs::REQ_INNER_OPS + cid, sApiUrl + QString("users/%1/tv-channels/%2/epg?next=%3")
+                    .arg(m_Uid).arg(cid).arg(bChanList ? 1 : 3));
     }
 }
 
