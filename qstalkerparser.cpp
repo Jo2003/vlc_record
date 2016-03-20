@@ -141,33 +141,38 @@ int QStalkerParser::parseChannelList (const QString &sResp,
 
     if (bOk)
     {
-        // no groups -> define our own ...
-        initChanEntry(chan, false);
-
-        chan.iId       = 1;
-        chan.sName     = tr("Programs");
-
-        // make sure group color isn't black ...
-        checkColor(chan.sProgramm, iGrpIdx++);
-        chanList.append(chan);
-
-        foreach (const QVariant& lChan, contentMap.value("results").toList())
+        foreach (const QVariant& groupListEntry, contentMap.value("results").toList())
         {
-            QVariantMap mChan = lChan.toMap();
-            initChanEntry(chan);
+            QVariantMap mGroup = groupListEntry.toMap();
+            initChanEntry(chan, false);
 
-            chan.iId          = mChan.value("id").toInt();
-            chan.sName        = mChan.value("name").toString().simplified();
-            chan.bIsVideo     = true;
-            chan.bHasArchive  = mChan.value("archive").toBool();
-            chan.bIsProtected = mChan.value("censored").toBool();
-            chan.sIcon        = mChan.value("logo").toString();
-            chan.bIsHidden    = !mChan.value("monitoring_status").toBool();
-            chan.url          = mChan.value("url").toString();
-            chan.iArchRange   = mChan.value("archive_range").toInt();
+            chan.sName = mGroup.value("title").toString();
+            checkColor(chan.sProgramm, iGrpIdx++);
             chanList.append(chan);
 
-            mInfo(tr("We've got channel %1 (%2)").arg(chan.sName).arg(chan.iId));
+            foreach (const QVariant& chanListEntry, mGroup.value("channels").toList())
+            {
+                QVariantMap mChan = chanListEntry.toMap();
+                initChanEntry(chan);
+
+                chan.iId          = mChan.value("id").toInt();
+                chan.sName        = mChan.value("name").toString().simplified();
+                chan.bIsVideo     = true;
+                chan.bHasArchive  = mChan.value("archive").toBool();
+                chan.bIsProtected = mChan.value("censored").toBool();
+                chan.sIcon        = mChan.value("logo").toString();
+                chan.bIsHidden    = !mChan.value("monitoring_status").toBool();
+                chan.url          = mChan.value("url").toString();
+                chan.iArchRange   = mChan.value("archive_range").toInt();
+
+                QVariantMap mEpg  = mChan.value("epg").toMap();
+                chan.uiStart      = mEpg.value("start").toUInt();
+                chan.uiEnd        = mEpg.value("end").toUInt();
+                chan.sProgramm    = mEpg.value("name").toString();
+                chanList.append(chan);
+
+                mInfo(tr("We've got channel %1 (%2)").arg(chan.sName).arg(chan.iId));
+            }
         }
     }
     else

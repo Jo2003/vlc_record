@@ -142,41 +142,16 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
     }
     else if (eIOps == QStalkerClient::IO_TV_CHANNELS)
     {
-        masterMap = QtJson::parse(resp, bOk).toMap();
+        mTvChannels = QtJson::parse(resp, bOk).toMap();
 
         if (bOk)
         {
-            mGroupMap.clear();
             QStringList chanList;
 
-            foreach (const QVariant& lChans, masterMap.value("results").toList())
+            foreach (const QVariant& lChans, mTvChannels.value("results").toList())
             {
-                QString sGenre = lChans.toMap().value("genre_id").toString();
-
                 chanList << lChans.toMap().value("id").toString();
-
-                if (!mGroupMap.contains(sGenre))
-                {
-                    mGroupMap[sGenre] = QList<QVariant>();
-                }
-
-                mGroupMap[sGenre].append(lChans);
             }
-
-            QList<QVariant> groupList;
-
-            foreach (const QString& key, mGroupMap.keys())
-            {
-                QVariantMap group;
-                group.insert("id", key);
-                group.insert("title", mTvGenres[key]);
-                group.insert("channels", mGroupMap.value(key));
-                groupList.append(group);
-            }
-
-            mTvChannels.insert("status", QString("OK"));
-            mTvChannels.insert("results", groupList);
-            mInfo(tr("Own JSON creation:\n%1\n").arg(QtJson::serializeStr(mTvChannels)));
 
             if (!chanList.isEmpty())
             {
@@ -201,7 +176,44 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
 //---------------------------------------------------------------------------
 void QStalkerClient::combineChannelList()
 {
+    mGroupMap.clear();
 
+    foreach (const QVariant& lChans, mTvChannels.value("results").toList())
+    {
+        QVariantMap mChan  = lChans.toMap();
+        QString     sGenre = mChan.value("genre_id").toString();
+        int         iCid   = mChan.value("id").toInt();
+
+        if (!mGroupMap.contains(sGenre))
+        {
+            mGroupMap[sGenre] = QList<QVariant>();
+        }
+
+        if (mBufMap.contains(iCid))
+        {
+            QVariantMap epgMap   = QtJson::parse(mBufMap[iCid]).toMap();
+            QVariant    epgEntry = epgMap.value("results").toList().at(0);
+            mChan.insert("epg", epgEntry);
+        }
+
+        mGroupMap[sGenre].append(mChan);
+    }
+
+    QList<QVariant> groupList;
+
+    foreach (const QString& key, mGroupMap.keys())
+    {
+        QVariantMap group;
+        group.insert("id", key);
+        group.insert("title", mTvGenres[key]);
+        group.insert("channels", mGroupMap.value(key));
+        groupList.append(group);
+    }
+
+    mTvChannels.clear();
+    mTvChannels.insert("status", QString("OK"));
+    mTvChannels.insert("results", groupList);
+    slotStringResponse((int)CIptvDefs::REQ_CHANNELLIST, QtJson::serializeStr(mTvChannels));
 }
 
 //---------------------------------------------------------------------------
