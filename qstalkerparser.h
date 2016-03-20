@@ -27,6 +27,7 @@ public:
    virtual int parseChannelList (const QString &sResp, QVector<cparser::SChan> &chanList, bool bFixTime);
    virtual int parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList);
    virtual int parseUrl(const QString &sResp, QString &sUrl);
+   virtual int parseEpgCurrent(const QString &sResp, QCurrentMap &currentEpg);
 };
 
 #endif // __20150906_QSTALKERPARSER_H

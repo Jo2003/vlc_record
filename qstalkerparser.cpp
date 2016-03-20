@@ -318,3 +318,65 @@ int QStalkerParser::parseUrl(const QString &sResp, QString &sUrl)
 
     return iRV;
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse current epg current response
+//
+//! \author  Jo2003
+//! \date    20.03.2016
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   currentEpg (QCurrentMap &) ref. to epg data map
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int QStalkerParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
+{
+   int  iRV = 0, cid;
+   bool bOk = false;
+   cparser::SEpgCurrent          entry;
+   QVector<cparser::SEpgCurrent> vEntries;
+   QVariantMap   contentMap;
+
+   // clear map ...
+   currentEpg.clear();
+
+   contentMap = QtJson::parse(sResp, bOk).toMap();
+
+   if (bOk)
+   {
+      foreach (const QVariant& lEpg1, contentMap.value("results").toList())
+      {
+         QVariantMap mEpg1 = lEpg1.toMap();
+
+         vEntries.clear();
+
+         cid = mEpg1.value("cid").toInt();
+
+         foreach (const QVariant& lEpg2, mEpg1.value("epg").toList())
+         {
+            QVariantMap mEpg2 = lEpg2.toMap();
+
+            entry.sShow   = mEpg2.value("name").toString();
+            entry.uiStart = mEpg2.value("start").toUInt();
+            entry.uiEnd   = mEpg2.value("end").toUInt();
+
+            vEntries.append(entry);
+         }
+
+         currentEpg.insert(cid, vEntries);
+      }
+   }
+   else
+   {
+      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                    tr("QtJson parser error in %1 %2():%3")
+                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+      iRV = -1;
+   }
+
+   return iRV;
+}
+

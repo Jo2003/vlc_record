@@ -82,23 +82,9 @@ QStalkerClient::~QStalkerClient()
 void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
 {
     bool        bOk;
-    QVariantMap masterMap;
 
-    if (eIOps == QStalkerClient::IO_EPG_CUR)
-    {
-        int cid = reqId - (int)CIptvDefs::REQ_INNER_OPS;
-        mBufMap[cid] = resp;
-        mReqsToGo --;
-
-        if (mReqsToGo <= 0)
-        {
-            // create pseudo response for all channels ...
-
-            // done ...
-            eIOps = QStalkerClient::IO_DUNNO;
-        }
-    }
-    else if (eIOps == QStalkerClient::IO_EPG_CUR_CHAN)
+    if ((eIOps == QStalkerClient::IO_EPG_CUR)
+        || (eIOps == QStalkerClient::IO_EPG_CUR_CHAN))
     {
         int cid = reqId - (int)CIptvDefs::REQ_INNER_OPS;
         mBufMap[cid] = resp;
@@ -109,7 +95,14 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
             // create pseudo response for all channels ...
             mInfo(tr("All EPG values there!"));
 
-            combineChannelList();
+            if (eIOps == QStalkerClient::IO_EPG_CUR)
+            {
+                combineEpgCurrent();
+            }
+            else if (eIOps == QStalkerClient::IO_EPG_CUR_CHAN)
+            {
+                combineChannelList();
+            }
 
             // done ...
             eIOps = QStalkerClient::IO_DUNNO;
@@ -118,11 +111,11 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
     else if (eIOps == QStalkerClient::IO_TV_GENRES)
     {
         mTvGenres.clear();
-        masterMap = QtJson::parse(resp, bOk).toMap();
+        QVariantMap tmpMap = QtJson::parse(resp, bOk).toMap();
 
         if (bOk)
         {
-            foreach(const QVariant& entry, masterMap.value("results").toList())
+            foreach(const QVariant& entry, tmpMap.value("results").toList())
             {
                 QVariantMap mEntry = entry.toMap();
                 mTvGenres[mEntry.value("id").toString()] = mEntry.value("title").toString();
@@ -214,6 +207,33 @@ void QStalkerClient::combineChannelList()
     mTvChannels.insert("status", QString("OK"));
     mTvChannels.insert("results", groupList);
     slotStringResponse((int)CIptvDefs::REQ_CHANNELLIST, QtJson::serializeStr(mTvChannels));
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   combine epg current data and send out
+//
+//! \author  Jo2003
+//! \date    20.03.2016
+//
+//---------------------------------------------------------------------------
+void QStalkerClient::combineEpgCurrent()
+{
+    QVariantList epgCurrent;
+    foreach(int key, mBufMap.keys())
+    {
+        QVariantMap epgMap = QtJson::parse(mBufMap[key]).toMap();
+        QVariantMap chan;
+        chan.insert("cid", key);
+        chan.insert("epg", epgMap.value("results").toList());
+        epgCurrent.append(chan);
+    }
+
+    QVariantMap mCur;
+    mCur.insert("results", epgCurrent);
+    mCur.insert("status", QString("OK"));
+
+    slotStringResponse((int)CIptvDefs::REQ_EPG_CURRENT, QtJson::serializeStr(mCur));
 }
 
 //---------------------------------------------------------------------------

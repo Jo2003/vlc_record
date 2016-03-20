@@ -91,6 +91,7 @@ protected:
    virtual void userData();
    void handleInnerOps(int reqId, const QString& resp);
    void combineChannelList();
+   void combineEpgCurrent();
 
 private:
    QString   sUsr;

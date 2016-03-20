@@ -38,7 +38,7 @@ CApiParser::CApiParser(QObject * parent) : QObject(parent)
    iOffset    = 0;
 
    // define some nice colors ...
-   slAltColors << "#ef0000" << "#00ef00" << "#0000ef"
+   slAltColors << "#ef0000" << "#00ef00" << "#0044ef"
                << "#efef00" << "#ef00ef" << "#00efef"
                << "#ef9933" << "#99ef33" << "#9933ef"
                << "#ef3399" << "#33ef99" << "#3399ef"
