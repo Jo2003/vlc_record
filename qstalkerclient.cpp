@@ -50,7 +50,7 @@ QStalkerClient::QStalkerClient(QObject *parent) :QIptvCtrlClient(parent)
 
    setObjectName("QStalkerClient");
 
-   // QTimer::singleShot(120000, this, SLOT(slotPing()));
+   QTimer::singleShot(120000, this, SLOT(slotPing()));
 
    eIOps = QStalkerClient::IO_DUNNO;
 }
@@ -355,8 +355,8 @@ void QStalkerClient::slotPing()
 {
     if (!sCookie.isEmpty())
     {
-        // request tv channel list or channel list for settings ...
-        q_get((int)CIptvDefs::REQ_NOOP, sApiUrl + "ping");
+        QString req = QString("users/%1/ping").arg(m_Uid);
+        q_get((int)CIptvDefs::REQ_NOOP, sApiUrl + req);
     }
     QTimer::singleShot(120000, this, SLOT(slotPing()));
 }
@@ -562,6 +562,16 @@ void QStalkerClient::SetCookie(const QString &cookie)
 void QStalkerClient::setUid(int id)
 {
     m_Uid = id;
+/*
+    QString         sReq = sApiUrl + QString("users/%1/settings").arg(m_Uid);
+    QString         sMac = QString("mac=%2").arg(getFirstMAC());
+    QUrl            data(sMac);
+    QNetworkRequest nReq;
+
+    prepareRequest(nReq, sReq, data.toEncoded().size());
+
+    put(nReq, data.toEncoded());
+*/
 }
 
 //---------------------------------------------------------------------------
