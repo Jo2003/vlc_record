@@ -15,6 +15,7 @@
 #include "qcustparser.h"
 #include <stdint.h>
 #include <QPair>
+#include <QNetworkInterface>
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -48,6 +49,8 @@ QStalkerClient::QStalkerClient(QObject *parent) :QIptvCtrlClient(parent)
    connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
 
    setObjectName("QStalkerClient");
+
+   // QTimer::singleShot(120000, this, SLOT(slotPing()));
 
    eIOps = QStalkerClient::IO_DUNNO;
 }
@@ -278,9 +281,13 @@ void QStalkerClient::slotStringResponse (int reqId, QString strResp)
         }
         else
         {
-            // modify response as well as id if needed ...
-            if (reqId >= (int)CIptvDefs::REQ_INNER_OPS)
+            if (reqId == (int)CIptvDefs::REQ_NOOP)
             {
+                bSendResp = false;
+            }
+            else if (reqId >= (int)CIptvDefs::REQ_INNER_OPS)
+            {
+                // modify response as well as id if needed ...
                 handleInnerOps(reqId, sCleanResp);
                 bSendResp = false;
             }
@@ -333,7 +340,25 @@ void QStalkerClient::slotBinResponse (int reqId, QByteArray binResp)
 //---------------------------------------------------------------------------
 void QStalkerClient::slotErr (int iReqId, QString sErr, int iErr)
 {
-   emit sigError(sErr, iReqId, iErr);
+    emit sigError(sErr, iReqId, iErr);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   tell API server: We're still alive
+//
+//! \author  Jo2003
+//! \date    20.03.2016
+//
+//---------------------------------------------------------------------------
+void QStalkerClient::slotPing()
+{
+    if (!sCookie.isEmpty())
+    {
+        // request tv channel list or channel list for settings ...
+        q_get((int)CIptvDefs::REQ_NOOP, sApiUrl + "ping");
+    }
+    QTimer::singleShot(120000, this, SLOT(slotPing()));
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -525,6 +550,15 @@ void QStalkerClient::SetCookie(const QString &cookie)
    sCookie = cookie;
 }
 
+//---------------------------------------------------------------------------
+//
+//! \brief   set user id
+//
+//! \author  Jo2003
+//
+//! \param   id [in] (int) user id
+//
+//---------------------------------------------------------------------------
 void QStalkerClient::setUid(int id)
 {
     m_Uid = id;
@@ -553,6 +587,7 @@ QNetworkRequest &QStalkerClient::prepareRequest(QNetworkRequest &req, const QStr
     {
         req.setRawHeader("Authorization", sCookie.toUtf8());
         req.setRawHeader("Accept", "application/json");
+        req.setRawHeader("MAC", getFirstMAC().toAscii());
         // req.setRawHeader("Accept-Language", "ru-Ru");
     }
 
@@ -1350,6 +1385,43 @@ void QStalkerClient::userData()
     QString req = QString("users/%1/settings").arg(m_Uid);
     q_get((int)CIptvDefs::REQ_USER, sApiUrl + req);
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get first mac address
+//
+//! \author  Jo2003
+//! \date    20.03.2016
+//
+//! \return  MAC address
+//---------------------------------------------------------------------------
+QString QStalkerClient::getFirstMAC()
+{
+    if (sMac.isEmpty())
+    {
+        /// 1. get all interfaces, but loopback
+        /// 2. check if hardware address is a valid MAC address
+        foreach (QNetworkInterface interface, QNetworkInterface::allInterfaces())
+        {
+            if (!interface.flags().testFlag(QNetworkInterface::IsLoopBack))
+            {
+                sMac = interface.hardwareAddress();
+
+                if (sMac.split(":").count() == 6)
+                {
+                    mInfo(tr("Interface: '%1'; MAC: %2")
+                        .arg(interface.name())
+                        .arg(interface.hardwareAddress()));
+
+                    break;
+                }
+            }
+        }
+    }
+
+    return sMac;
+}
+
 
 /* -----------------------------------------------------------------\
 |  Method: fillErrorMap

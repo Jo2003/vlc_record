@@ -18,6 +18,7 @@
 #include <QDate>
 #include <QRegExp>
 #include <QtJson>
+#include <QTimer>
 
 #include "qiptvctrlclient.h"
 #include "clogfile.h"
@@ -92,12 +93,14 @@ protected:
    void handleInnerOps(int reqId, const QString& resp);
    void combineChannelList();
    void combineEpgCurrent();
+   QString getFirstMAC();
 
 private:
    QString   sUsr;
    QString   sPw;
    QString   sApiUrl;
    QString   sCookie;
+   QString   sMac;
    QErrorMap errMap;
    CIptvDefs karTrace;
    int       m_Uid;
@@ -115,6 +118,7 @@ protected slots:
    virtual void slotStringResponse (int reqId, QString strResp);
    void slotBinResponse (int reqId, QByteArray binResp);
    void slotErr (int iReqId, QString sErr, int iErr);
+   void slotPing();
 
 signals:
    void sigError (QString str, int req, int err);
