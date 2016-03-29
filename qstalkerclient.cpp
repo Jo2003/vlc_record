@@ -123,7 +123,8 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
             foreach(const QVariant& entry, tmpMap.value("results").toList())
             {
                 QVariantMap mEntry = entry.toMap();
-                mTvGenres[mEntry.value("id").toString()] = mEntry.value("title").toString();
+                SGenre tmpGenre    = {mEntry.value("id").toString(), mEntry.value("title").toString()};
+                mTvGenres.append(tmpGenre);
             }
 
             // request channels ...
@@ -199,13 +200,16 @@ void QStalkerClient::combineChannelList()
 
     QList<QVariant> groupList;
 
-    foreach (const QString& key, mGroupMap.keys())
+    foreach (const SGenre& tmpGenre, mTvGenres)
     {
-        QVariantMap group;
-        group.insert("id", key);
-        group.insert("title", mTvGenres[key]);
-        group.insert("channels", mGroupMap.value(key));
-        groupList.append(group);
+        if (mGroupMap.contains(tmpGenre.sId))
+        {
+            QVariantMap group;
+            group.insert("id", tmpGenre.sId);
+            group.insert("title", tmpGenre.sTitle);
+            group.insert("channels", mGroupMap.value(tmpGenre.sId));
+            groupList.append(group);
+        }
     }
 
     mTvChannels.clear();

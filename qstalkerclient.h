@@ -26,9 +26,6 @@
 #include "ciptvdefs.h"
 #include "cparser.h"
 
-typedef QMap<QString, QList<QVariant> >   QGroupMap;
-typedef QMap<int, QMap<QString,QString> > QGenreMap;
-
 //---------------------------------------------------------------------------
 //! \class   QStalkerClient
 //! \date    06.09.2015
@@ -48,6 +45,15 @@ class QStalkerClient : public QIptvCtrlClient
     };
 
 public:
+
+   struct SGenre {
+       QString sId;
+       QString sTitle;
+   };
+
+   typedef QMap<QString, QVariantList> QGroupMap;
+   typedef QList<SGenre>               QGenreList;
+
    explicit QStalkerClient(QObject *parent = 0);
    virtual ~QStalkerClient();
 
@@ -109,8 +115,7 @@ private:
    EInnerOps eIOps;
    int       mReqsToGo;
    QMap<int, QString>     mBufMap;
-   QMap<QString, QString> mTvGenres;
-   // QGenreMap              mTvGenres;
+   QGenreList             mTvGenres;
    QVariantMap            mTvChannels;
    QGroupMap              mGroupMap;
    QTimer                 mSessionRenew;
