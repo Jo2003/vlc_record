@@ -1670,8 +1670,12 @@ void Recorder::slotKartinaResponse(QString resp, int req)
 
 #ifdef _TASTE_STALKER
    ///////////////////////////////////////////////
-   // response for available VOD languages (where supported) ...
+   // response foruser data ...
    mkCase(CIptvDefs::REQ_USER, userData(resp));
+
+   ///////////////////////////////////////////////
+   // response for session renew ...
+   mkCase(CIptvDefs::REQ_SESSION_RENEW, sessionRenew(resp));
 #endif // _TASTE_STALKER
 
    ///////////////////////////////////////////////

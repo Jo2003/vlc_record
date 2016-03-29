@@ -41,12 +41,14 @@ QStalkerClient::QStalkerClient(QObject *parent) :QIptvCtrlClient(parent)
    sPw            = "";
    sCookie        = "";
    sApiUrl        = "";
-   m_Uid          = -1;
    fillErrorMap();
+
+   mSessionRenew.setSingleShot(true);
 
    connect(this, SIGNAL(sigStringResponse(int,QString)), this, SLOT(slotStringResponse(int,QString)));
    connect(this, SIGNAL(sigBinResponse(int,QByteArray)), this, SLOT(slotBinResponse(int,QByteArray)));
    connect(this, SIGNAL(sigErr(int,QString,int)), this, SLOT(slotErr(int,QString,int)));
+   connect(&mSessionRenew, SIGNAL(timeout()), this, SLOT(slotRenewSession()));
 
    setObjectName("QStalkerClient");
 
@@ -127,7 +129,7 @@ void QStalkerClient::handleInnerOps(int reqId, const QString &resp)
             // request channels ...
             eIOps = QStalkerClient::IO_TV_CHANNELS;
 
-            QString req = QString("users/%1/tv-channels").arg(m_Uid);
+            QString req = QString("users/%1/tv-channels").arg(mAuth.userId);
             q_get((int)CIptvDefs::REQ_INNER_OPS, sApiUrl + req);
         }
         else
@@ -355,10 +357,32 @@ void QStalkerClient::slotPing()
 {
     if (!sCookie.isEmpty())
     {
-        QString req = QString("users/%1/ping").arg(m_Uid);
+        QString req = QString("users/%1/ping").arg(mAuth.userId);
         q_get((int)CIptvDefs::REQ_NOOP, sApiUrl + req);
     }
     QTimer::singleShot(120000, this, SLOT(slotPing()));
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   renew session
+//
+//! \author  Jo2003
+//! \date    29.03.2016
+//
+//---------------------------------------------------------------------------
+void QStalkerClient::slotRenewSession()
+{
+    // request new session cookie ...
+    /*
+    QUrl url(sApiUrl);
+
+    q_post((int)CIptvDefs::REQ_SESSION_RENEW,
+         QString("%1://%2/stalker_portal/auth/token").arg(url.scheme()).arg(url.host()),
+         QString("grant_type=password&username=%1&password=%2")
+             .arg(sUsr).arg(sPw),
+         Iptv::Login);
+    */
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -559,19 +583,18 @@ void QStalkerClient::SetCookie(const QString &cookie)
 //! \param   id [in] (int) user id
 //
 //---------------------------------------------------------------------------
-void QStalkerClient::setUid(int id)
+void QStalkerClient::setAuthData (const cparser::SAuth& auth)
 {
-    m_Uid = id;
-/*
-    QString         sReq = sApiUrl + QString("users/%1/settings").arg(m_Uid);
-    QString         sMac = QString("mac=%2").arg(getFirstMAC());
-    QUrl            data(sMac);
-    QNetworkRequest nReq;
+    mAuth = auth;
 
-    prepareRequest(nReq, sReq, data.toEncoded().size());
+    if (mSessionRenew.isActive())
+    {
+        mSessionRenew.stop();
+    }
 
-    put(nReq, data.toEncoded());
-*/
+    // set timer for session renew (2 minutes before ultimo )...
+    mSessionRenew.setInterval((mAuth.expires - 120) * 1000);
+    mSessionRenew.start();
 }
 
 //---------------------------------------------------------------------------
@@ -820,7 +843,7 @@ void QStalkerClient::GetStreamURL(int iChanID, const QString &secCode, bool bTim
 {
    mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
-   QString req = QString("users/%1/tv-channels/%2/link").arg(m_Uid).arg(iChanID);
+   QString req = QString("users/%1/tv-channels/%2/link").arg(mAuth.userId).arg(iChanID);
 
    if (secCode != "")
    {
@@ -897,7 +920,7 @@ void QStalkerClient::GetEPG(int iChanID, int iOffset)
     time_t to = dt.toTime_t();
 
     q_get((int)CIptvDefs::REQ_EPG, sApiUrl + QString("users/%1/tv-channels/%2/epg?from=%3&to=%4")
-          .arg(m_Uid).arg(iChanID).arg(from).arg(to));
+          .arg(mAuth.userId).arg(iChanID).arg(from).arg(to));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -935,7 +958,7 @@ void QStalkerClient::GetArchivURL (const QString &prepared, const QString &secCo
         int      cid     = url.queryItemValue("cid").toInt();
         uint32_t uiStart = url.queryItemValue("gmt").toUInt();
 
-        req = QString("users/%1/tv-channels/%2/link?start=%3").arg(m_Uid).arg(cid).arg(uiStart);
+        req = QString("users/%1/tv-channels/%2/link?start=%3").arg(mAuth.userId).arg(cid).arg(uiStart);
     }
 
     if (secCode != "")
@@ -1261,7 +1284,7 @@ void QStalkerClient::epgCurrent(const QString &cids, bool bChanList)
         int cid = sl[i].toInt();
         eIOps   = bChanList ? QStalkerClient::IO_EPG_CUR_CHAN : QStalkerClient::IO_EPG_CUR;
         q_get((int)CIptvDefs::REQ_INNER_OPS + cid, sApiUrl + QString("users/%1/tv-channels/%2/epg?next=%3")
-                    .arg(m_Uid).arg(cid).arg(bChanList ? 1 : 3));
+                    .arg(mAuth.userId).arg(cid).arg(bChanList ? 1 : 3));
     }
 }
 
@@ -1392,7 +1415,7 @@ const QString& QStalkerClient::apiUrl()
 void QStalkerClient::userData()
 {
     mInfo(tr("Get user settings ..."));
-    QString req = QString("users/%1/settings").arg(m_Uid);
+    QString req = QString("users/%1/settings").arg(mAuth.userId);
     q_get((int)CIptvDefs::REQ_USER, sApiUrl + req);
 }
 

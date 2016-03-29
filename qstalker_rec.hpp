@@ -28,15 +28,13 @@
 //---------------------------------------------------------------------------
 void Recorder::slotCookie (const QString &str)
 {
-    QString s;
-
     mInfo(tr("Before parser: %1").arg(str));
 
     // parse cookie ...
     if (!pApiParser->parseAuth(str, mAuth))
     {
         pApiClient->SetCookie(QString("Bearer %1").arg(mAuth.token));
-        pApiClient->setUid(mAuth.userId);
+        pApiClient->setAuthData(mAuth);
         pApiClient->queueRequest(CIptvDefs::REQ_USER);
     }
 }
@@ -56,5 +54,25 @@ void Recorder::userData (const QString& resp)
     if (!pApiParser->parseUserSettings(resp, mStalkSet))
     {
         pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   got session renew response
+//
+//! \author  Jo2003
+//! \date    29.03.2016
+//
+//! \param   str [in] (const QString&) response string
+//
+//---------------------------------------------------------------------------
+void Recorder::sessionRenew (const QString& str)
+{
+    // parse cookie ...
+    if (!pApiParser->parseAuth(str, mAuth))
+    {
+        pApiClient->SetCookie(QString("Bearer %1").arg(mAuth.token));
+        pApiClient->setAuthData(mAuth);
     }
 }

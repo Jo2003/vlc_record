@@ -235,6 +235,7 @@ protected:
 
 #ifdef _TASTE_STALKER
     void userData (const QString& resp);
+    void sessionRenew (const QString& str);
 #endif // _TASTE_STALKER
 
 private slots:

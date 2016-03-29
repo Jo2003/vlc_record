@@ -24,8 +24,10 @@
 #include "clogfile.h"
 #include "defdef.h"
 #include "ciptvdefs.h"
+#include "cparser.h"
 
-typedef QMap<QString, QList<QVariant> > QGroupMap;
+typedef QMap<QString, QList<QVariant> >   QGroupMap;
+typedef QMap<int, QMap<QString,QString> > QGenreMap;
 
 //---------------------------------------------------------------------------
 //! \class   QStalkerClient
@@ -54,7 +56,7 @@ public:
    void fillErrorMap();
    bool cookieSet();
    void SetCookie (const QString &cookie);
-   void setUid(int id);
+   void setAuthData (const cparser::SAuth& auth);
 
 
 protected:
@@ -103,13 +105,15 @@ private:
    QString   sMac;
    QErrorMap errMap;
    CIptvDefs karTrace;
-   int       m_Uid;
+   cparser::SAuth mAuth;
    EInnerOps eIOps;
    int       mReqsToGo;
    QMap<int, QString>     mBufMap;
    QMap<QString, QString> mTvGenres;
+   // QGenreMap              mTvGenres;
    QVariantMap            mTvChannels;
    QGroupMap              mGroupMap;
+   QTimer                 mSessionRenew;
 
 public slots:
    void slotDownImg(const QString& url);
@@ -119,6 +123,7 @@ protected slots:
    void slotBinResponse (int reqId, QByteArray binResp);
    void slotErr (int iReqId, QString sErr, int iErr);
    void slotPing();
+   void slotRenewSession();
 
 signals:
    void sigError (QString str, int req, int err);

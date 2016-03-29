@@ -2481,369 +2481,369 @@ or start time is later than end time!</source>
 <context>
     <name>QStalkerClient</name>
     <message>
-        <location filename="qstalkerclient.cpp" line="549"/>
+        <location filename="qstalkerclient.cpp" line="573"/>
         <source>We&apos;ve got following Cookie: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="604"/>
+        <location filename="qstalkerclient.cpp" line="628"/>
         <source>URL: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="608"/>
+        <location filename="qstalkerclient.cpp" line="632"/>
         <source>Raw Header #%1: %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="628"/>
+        <location filename="qstalkerclient.cpp" line="652"/>
         <source>Logout ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="647"/>
+        <location filename="qstalkerclient.cpp" line="671"/>
         <source>Request Authentication ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="676"/>
+        <location filename="qstalkerclient.cpp" line="700"/>
         <source>Request Channel List ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="698"/>
+        <location filename="qstalkerclient.cpp" line="722"/>
         <source>Request available VOD languages ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="718"/>
+        <location filename="qstalkerclient.cpp" line="742"/>
         <source>Request Stream Server List ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="738"/>
+        <location filename="qstalkerclient.cpp" line="762"/>
         <source>Request Time Shift ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="758"/>
+        <location filename="qstalkerclient.cpp" line="782"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="779"/>
+        <location filename="qstalkerclient.cpp" line="803"/>
         <source>Request Bit Rate ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="799"/>
+        <location filename="qstalkerclient.cpp" line="823"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="820"/>
+        <location filename="qstalkerclient.cpp" line="844"/>
         <source>Request URL for channel %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="848"/>
+        <location filename="qstalkerclient.cpp" line="872"/>
         <source>Set Streaming Server to %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="869"/>
+        <location filename="qstalkerclient.cpp" line="893"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="890"/>
+        <location filename="qstalkerclient.cpp" line="914"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="917"/>
+        <location filename="qstalkerclient.cpp" line="941"/>
         <source>Request Archiv URL (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="963"/>
+        <location filename="qstalkerclient.cpp" line="987"/>
         <source>Request VOD Genres ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="983"/>
+        <location filename="qstalkerclient.cpp" line="1007"/>
         <source>Request Videos ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1003"/>
+        <location filename="qstalkerclient.cpp" line="1027"/>
         <source>Request Video info for video %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1030"/>
+        <location filename="qstalkerclient.cpp" line="1054"/>
         <source>Request Video Url for video %1...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1058"/>
+        <location filename="qstalkerclient.cpp" line="1082"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1081"/>
+        <location filename="qstalkerclient.cpp" line="1105"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1104"/>
+        <location filename="qstalkerclient.cpp" line="1128"/>
         <source>Request VOD manager data ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1127"/>
+        <location filename="qstalkerclient.cpp" line="1151"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1150"/>
+        <location filename="qstalkerclient.cpp" line="1174"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1177"/>
+        <location filename="qstalkerclient.cpp" line="1201"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1204"/>
+        <location filename="qstalkerclient.cpp" line="1228"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1223"/>
+        <location filename="qstalkerclient.cpp" line="1247"/>
         <source>Change parent code ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1247"/>
+        <location filename="qstalkerclient.cpp" line="1271"/>
         <source>EPG current for Channels: %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1280"/>
+        <location filename="qstalkerclient.cpp" line="1304"/>
         <source>Check for available updates ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1298"/>
+        <location filename="qstalkerclient.cpp" line="1322"/>
         <source>Download image ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1393"/>
+        <location filename="qstalkerclient.cpp" line="1417"/>
         <source>Get user settings ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1421"/>
+        <location filename="qstalkerclient.cpp" line="1445"/>
         <source>Interface: &apos;%1&apos;; MAC: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1448"/>
+        <location filename="qstalkerclient.cpp" line="1472"/>
         <source>Unknown error</source>
         <translation type="unfinished">Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1449"/>
+        <location filename="qstalkerclient.cpp" line="1473"/>
         <source>Incorrect request</source>
         <translation type="unfinished">Неверный запрос</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1450"/>
+        <location filename="qstalkerclient.cpp" line="1474"/>
         <source>Wrong login or password</source>
         <translation type="unfinished">Неверный логин или пароль</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1451"/>
+        <location filename="qstalkerclient.cpp" line="1475"/>
         <source>Access denied</source>
         <translation type="unfinished">Доступ запрещен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1452"/>
+        <location filename="qstalkerclient.cpp" line="1476"/>
         <source>Login incorrect</source>
         <translation type="unfinished">Неверный логин</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1453"/>
+        <location filename="qstalkerclient.cpp" line="1477"/>
         <source>Your contract is inactive</source>
         <translation type="unfinished">Ваш договор неактивен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1454"/>
+        <location filename="qstalkerclient.cpp" line="1478"/>
         <source>Your contract is paused</source>
         <translation type="unfinished">Ваш договор приостановлен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1455"/>
+        <location filename="qstalkerclient.cpp" line="1479"/>
         <source>Channel not found or not allowed</source>
         <translation type="unfinished">Канал не найден или не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1456"/>
+        <location filename="qstalkerclient.cpp" line="1480"/>
         <source>Error in request: Bad parameters</source>
         <translation type="unfinished">Ошибка в запросе: Неверный параметр</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1457"/>
+        <location filename="qstalkerclient.cpp" line="1481"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
         <translation type="unfinished">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1458"/>
+        <location filename="qstalkerclient.cpp" line="1482"/>
         <source>Missing parameter (cid)</source>
         <translation type="unfinished">Отсутствует параметр (cid)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1459"/>
+        <location filename="qstalkerclient.cpp" line="1483"/>
         <source>Another client with your data logged in</source>
         <translation type="unfinished">Ваш абонемент используется другим устройством</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1460"/>
+        <location filename="qstalkerclient.cpp" line="1484"/>
         <source>Authentication error</source>
         <translation type="unfinished">Ошибка идентификации</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1461"/>
+        <location filename="qstalkerclient.cpp" line="1485"/>
         <source>Your package expired</source>
         <translation type="unfinished">Ваша подписка истекла или ещё не активирована</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1462"/>
+        <location filename="qstalkerclient.cpp" line="1486"/>
         <source>Unknown API function</source>
         <translation type="unfinished">Неизвестная функция API</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1463"/>
+        <location filename="qstalkerclient.cpp" line="1487"/>
         <source>Archive not available</source>
         <translation type="unfinished">Архив не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1464"/>
+        <location filename="qstalkerclient.cpp" line="1488"/>
         <source>Missing parameter (place)</source>
         <translation type="unfinished">Отсутствует параметр (place)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1465"/>
+        <location filename="qstalkerclient.cpp" line="1489"/>
         <source>Missing parameter (name)</source>
         <translation type="unfinished">Отсутствует параметр (name)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1466"/>
+        <location filename="qstalkerclient.cpp" line="1490"/>
         <source>Incorrect confirmation code</source>
         <translation type="unfinished">Неверный код подтверждения</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1467"/>
+        <location filename="qstalkerclient.cpp" line="1491"/>
         <source>Current code is wrong</source>
         <translation type="unfinished">Текущий код неверный</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1468"/>
+        <location filename="qstalkerclient.cpp" line="1492"/>
         <source>New code is wrong</source>
         <translation type="unfinished">Новый код неверный</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1469"/>
+        <location filename="qstalkerclient.cpp" line="1493"/>
         <source>Missing parameter (val)</source>
         <translation type="unfinished">Отсутствует параметр (val)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1470"/>
+        <location filename="qstalkerclient.cpp" line="1494"/>
         <source>Value not allowed</source>
         <translation type="unfinished">Значение не доступно</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1471"/>
+        <location filename="qstalkerclient.cpp" line="1495"/>
         <source>Missing parameter</source>
         <translation type="unfinished">Отсутствует параметр</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1472"/>
+        <location filename="qstalkerclient.cpp" line="1496"/>
         <source>Missing parameter (id)</source>
         <translation type="unfinished">Отсутствует параметр (id)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1473"/>
+        <location filename="qstalkerclient.cpp" line="1497"/>
         <source>Missing parameter (fileid)</source>
         <translation type="unfinished">Отсутствует параметр (fileid)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1474"/>
+        <location filename="qstalkerclient.cpp" line="1498"/>
         <source>Missing parameter (type)</source>
         <translation type="unfinished">Отсутствует параметр (type)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1475"/>
+        <location filename="qstalkerclient.cpp" line="1499"/>
         <source>Missing parameter (query)</source>
         <translation type="unfinished">Отсутствует параметр (query)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1476"/>
+        <location filename="qstalkerclient.cpp" line="1500"/>
         <source>Bitrate not available</source>
         <translation type="unfinished">Битрейт не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1477"/>
+        <location filename="qstalkerclient.cpp" line="1501"/>
         <source>Service not available</source>
         <translation type="unfinished">Сервис не доступен</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1478"/>
+        <location filename="qstalkerclient.cpp" line="1502"/>
         <source>Query limit exceeded</source>
         <translation type="unfinished">Превышен лимит запроса</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1479"/>
+        <location filename="qstalkerclient.cpp" line="1503"/>
         <source>Rule already exists</source>
         <translation type="unfinished">Правило уже существует</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1480"/>
-        <location filename="qstalkerclient.cpp" line="1481"/>
+        <location filename="qstalkerclient.cpp" line="1504"/>
+        <location filename="qstalkerclient.cpp" line="1505"/>
         <source>Missing parameter (cmd)</source>
         <translation type="unfinished">Отсутствует параметр (cmd)</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1482"/>
+        <location filename="qstalkerclient.cpp" line="1506"/>
         <source>Bad value (rate)</source>
         <translation type="unfinished">Неверное значение рейтинга</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1483"/>
+        <location filename="qstalkerclient.cpp" line="1507"/>
         <source>Can&apos;t find film</source>
         <translation type="unfinished">Невозможно найти фильм</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="1484"/>
+        <location filename="qstalkerclient.cpp" line="1508"/>
         <source>Film already added</source>
         <translation type="unfinished">Этот фильм уже добавлен в список избранных</translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="99"/>
+        <location filename="qstalkerclient.cpp" line="101"/>
         <source>All EPG values there!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="135"/>
-        <location filename="qstalkerclient.cpp" line="159"/>
+        <location filename="qstalkerclient.cpp" line="137"/>
+        <location filename="qstalkerclient.cpp" line="161"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="261"/>
+        <location filename="qstalkerclient.cpp" line="263"/>
         <source>Response for request &apos;%1&apos;:
  ==8&lt;==8&lt;==8&lt;==
 %2
@@ -2851,7 +2851,7 @@ or start time is later than end time!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="qstalkerclient.cpp" line="275"/>
+        <location filename="qstalkerclient.cpp" line="277"/>
         <source>Request &apos;%2&apos; done!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3046,112 +3046,112 @@ or start time is later than end time!</source>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="4700"/>
-        <location filename="recorder.cpp" line="4721"/>
+        <location filename="recorder.cpp" line="4704"/>
+        <location filename="recorder.cpp" line="4725"/>
         <source>Mon</source>
         <translation>Пон</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4701"/>
-        <location filename="recorder.cpp" line="4722"/>
+        <location filename="recorder.cpp" line="4705"/>
+        <location filename="recorder.cpp" line="4726"/>
         <source>Tue</source>
         <translation>Вт</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4702"/>
-        <location filename="recorder.cpp" line="4723"/>
+        <location filename="recorder.cpp" line="4706"/>
+        <location filename="recorder.cpp" line="4727"/>
         <source>Wed</source>
         <translation>Ср</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4703"/>
-        <location filename="recorder.cpp" line="4724"/>
+        <location filename="recorder.cpp" line="4707"/>
+        <location filename="recorder.cpp" line="4728"/>
         <source>Thu</source>
         <translation>Чт</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4704"/>
-        <location filename="recorder.cpp" line="4725"/>
+        <location filename="recorder.cpp" line="4708"/>
+        <location filename="recorder.cpp" line="4729"/>
         <source>Fri</source>
         <translation>Пят</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4705"/>
-        <location filename="recorder.cpp" line="4726"/>
+        <location filename="recorder.cpp" line="4709"/>
+        <location filename="recorder.cpp" line="4730"/>
         <source>Sat</source>
         <translation>Суб</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4714"/>
-        <location filename="recorder.cpp" line="4727"/>
+        <location filename="recorder.cpp" line="4718"/>
+        <location filename="recorder.cpp" line="4731"/>
         <source>Sun</source>
         <translation>Воск</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4339"/>
+        <location filename="recorder.cpp" line="4343"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4351"/>
+        <location filename="recorder.cpp" line="4355"/>
         <source>Volume +</source>
         <translation>Громче</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4352"/>
+        <location filename="recorder.cpp" line="4356"/>
         <source>Volume -</source>
         <translation>Тише</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5404"/>
+        <location filename="recorder.cpp" line="5408"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2361"/>
-        <location filename="recorder.cpp" line="2490"/>
-        <location filename="recorder.cpp" line="3729"/>
+        <location filename="recorder.cpp" line="2365"/>
+        <location filename="recorder.cpp" line="2494"/>
+        <location filename="recorder.cpp" line="3733"/>
         <source>Length: %1 min.</source>
         <translation>Длит.: %1 мин.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2362"/>
-        <location filename="recorder.cpp" line="2491"/>
+        <location filename="recorder.cpp" line="2366"/>
+        <location filename="recorder.cpp" line="2495"/>
         <source> (Ar.)</source>
         <oldsource>(Ar.)</oldsource>
         <translation> (Ар.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5405"/>
+        <location filename="recorder.cpp" line="5409"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Запись в процессе!&lt;br /&gt; &lt;br /&gt;Вы действительно хотите остановить запись?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2872"/>
+        <location filename="recorder.cpp" line="2876"/>
         <source>Remove from favourites</source>
         <translation>Удалить из избранных</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2879"/>
+        <location filename="recorder.cpp" line="2883"/>
         <source>Add to favourites</source>
         <translation>Добавить в избранные</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2925"/>
-        <location filename="recorder.cpp" line="3849"/>
+        <location filename="recorder.cpp" line="2929"/>
+        <location filename="recorder.cpp" line="3853"/>
         <source>Note</source>
         <translation>Примечание</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2926"/>
-        <location filename="recorder.cpp" line="3850"/>
+        <location filename="recorder.cpp" line="2930"/>
+        <location filename="recorder.cpp" line="3854"/>
         <source>Max. number of favourites (%1) reached.</source>
         <translation>Макс. число избранных (%1) достигнуто.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4657"/>
-        <location filename="recorder.cpp" line="4734"/>
+        <location filename="recorder.cpp" line="4661"/>
+        <location filename="recorder.cpp" line="4738"/>
         <source>1 week backward</source>
         <translation>1 неделю назад</translation>
     </message>
@@ -3191,25 +3191,25 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3153"/>
-        <location filename="recorder.cpp" line="4206"/>
-        <location filename="recorder.cpp" line="4616"/>
+        <location filename="recorder.cpp" line="3157"/>
+        <location filename="recorder.cpp" line="4210"/>
+        <location filename="recorder.cpp" line="4620"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4357"/>
+        <location filename="recorder.cpp" line="4361"/>
         <source>Minimal Interface</source>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4691"/>
-        <location filename="recorder.cpp" line="4739"/>
+        <location filename="recorder.cpp" line="4695"/>
+        <location filename="recorder.cpp" line="4743"/>
         <source>1 week forward</source>
         <translation>1 неделю вперед</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4338"/>
+        <location filename="recorder.cpp" line="4342"/>
         <source>Play / Pause</source>
         <translation>Воспроизведение / Пауза</translation>
     </message>
@@ -3221,34 +3221,34 @@ dataDir: %1
         <translation>Языковый фильтр</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2355"/>
-        <location filename="recorder.cpp" line="2484"/>
+        <location filename="recorder.cpp" line="2359"/>
+        <location filename="recorder.cpp" line="2488"/>
         <source>%1 (Archive)</source>
         <translation>%1 (Архив)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3655"/>
+        <location filename="recorder.cpp" line="3659"/>
         <source>Program up to date!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4015"/>
+        <location filename="recorder.cpp" line="4019"/>
         <source>Record timer timed out ... end pending record!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4061"/>
+        <location filename="recorder.cpp" line="4065"/>
         <source>Unknown Message: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4574"/>
-        <location filename="recorder.cpp" line="4593"/>
+        <location filename="recorder.cpp" line="4578"/>
+        <location filename="recorder.cpp" line="4597"/>
         <source>My Favourites</source>
         <translation>Избранные фильмы</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3644"/>
+        <location filename="recorder.cpp" line="3648"/>
         <source>There is the new version %1 of %2 available.&lt;br /&gt;Click %3 to download!</source>
         <translation>Новая версия %2 доступна (%1).&lt;br /&gt;Для загрузки нажать %3!</translation>
     </message>
@@ -3270,19 +3270,19 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1813"/>
+        <location filename="recorder.cpp" line="1817"/>
         <source>Error %1 (%2) in request &apos;%3&apos;: %4</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1821"/>
+        <location filename="recorder.cpp" line="1825"/>
         <source>%1 Client API Error:
 %2 (#%3)</source>
         <translation>%1 API сообщает о ошибке:
 %2 (#%3)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1854"/>
+        <location filename="recorder.cpp" line="1858"/>
         <source>logout done ...</source>
         <translation></translation>
     </message>
@@ -3291,228 +3291,228 @@ dataDir: %1
         <translation type="obsolete">Информация</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2043"/>
+        <location filename="recorder.cpp" line="2047"/>
         <source>Using following timeshift: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2055"/>
+        <location filename="recorder.cpp" line="2059"/>
         <source>Using Bitrate %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2064"/>
+        <location filename="recorder.cpp" line="2068"/>
         <source>Active stream server is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2755"/>
+        <location filename="recorder.cpp" line="2759"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2773"/>
+        <location filename="recorder.cpp" line="2777"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2797"/>
+        <location filename="recorder.cpp" line="2801"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2817"/>
+        <location filename="recorder.cpp" line="2821"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3010"/>
+        <location filename="recorder.cpp" line="3014"/>
         <source>Remove &quot;%1&quot; from favourites</source>
         <translation>Удалить &quot;%1&quot; из избранных</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3121"/>
-        <location filename="recorder.cpp" line="5133"/>
-        <location filename="recorder.cpp" line="5206"/>
+        <location filename="recorder.cpp" line="3125"/>
+        <location filename="recorder.cpp" line="5137"/>
+        <location filename="recorder.cpp" line="5210"/>
         <source>Can&apos;t start player!</source>
         <translation>Не удается запустить плеер!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3127"/>
-        <location filename="recorder.cpp" line="5140"/>
-        <location filename="recorder.cpp" line="5212"/>
+        <location filename="recorder.cpp" line="3131"/>
+        <location filename="recorder.cpp" line="5144"/>
+        <location filename="recorder.cpp" line="5216"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3647"/>
+        <location filename="recorder.cpp" line="3651"/>
         <source>here</source>
         <translation>тут</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1973"/>
+        <location filename="recorder.cpp" line="1977"/>
         <source>Your subscription will end in %1 day(s).&lt;br /&gt;Visit %2 to renew it!</source>
         <oldsource>Your abonnoment will expire in %1 day(s).&lt;br /&gt;Visit the web page of %2 to extend your subscription!</oldsource>
         <translation>Ваша подписка истекает через %1 дня/дней.&lt;br /&gt;Посетите %2 продлевать её!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1879"/>
+        <location filename="recorder.cpp" line="1883"/>
         <source>Authentication error</source>
         <translation>Ошибка идентификации</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3986"/>
-        <location filename="recorder.cpp" line="4982"/>
+        <location filename="recorder.cpp" line="3990"/>
+        <location filename="recorder.cpp" line="4986"/>
         <source>Adding url to model: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4340"/>
+        <location filename="recorder.cpp" line="4344"/>
         <source>Record</source>
         <translation>Запись</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4343"/>
+        <location filename="recorder.cpp" line="4347"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4344"/>
+        <location filename="recorder.cpp" line="4348"/>
         <source>Search EPG</source>
         <translation>Поиск в программе</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4345"/>
+        <location filename="recorder.cpp" line="4349"/>
         <source>Text Size +</source>
         <translation>Увеличить размер шрифта</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4346"/>
+        <location filename="recorder.cpp" line="4350"/>
         <source>Text Size -</source>
         <translation>Уменьшить размер шрифта</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4348"/>
+        <location filename="recorder.cpp" line="4352"/>
         <source>Toggle Aspect Ratio</source>
         <translation>Формат изображения</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4349"/>
+        <location filename="recorder.cpp" line="4353"/>
         <source>Toggle Crop Geometry</source>
         <translation>Размер кадра</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4350"/>
+        <location filename="recorder.cpp" line="4354"/>
         <source>Toggle Fullscreen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4353"/>
+        <location filename="recorder.cpp" line="4357"/>
         <source>Toggle Mute</source>
         <translation>Включить / Выключить Звук</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5856"/>
+        <location filename="recorder.cpp" line="5860"/>
         <source>Playing file &apos;%1&apos; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5862"/>
+        <location filename="recorder.cpp" line="5866"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
         <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1392"/>
-        <location filename="recorder.cpp" line="4356"/>
+        <location filename="recorder.cpp" line="4360"/>
         <source>Screenshot</source>
         <translation>Скриншот</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4358"/>
+        <location filename="recorder.cpp" line="4362"/>
         <source>Next Channel</source>
         <translation>Следующий канал</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4359"/>
+        <location filename="recorder.cpp" line="4363"/>
         <source>Previous Channel</source>
         <translation>Предыдущий канал</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4360"/>
+        <location filename="recorder.cpp" line="4364"/>
         <source>Play Next Channel</source>
         <translation>Просмотр след. канала</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4361"/>
+        <location filename="recorder.cpp" line="4365"/>
         <source>Play Prev. Channel</source>
         <translation>Просмотр пред. канала</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4362"/>
+        <location filename="recorder.cpp" line="4366"/>
         <source>Show EPG / VOD</source>
         <translation>Программа / Видеотека</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4551"/>
+        <location filename="recorder.cpp" line="4555"/>
         <source>&amp;restore %1</source>
         <oldsource>&amp;Restore %1!</oldsource>
         <translation>&amp;показать %1</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1561"/>
-        <location filename="recorder.cpp" line="4364"/>
+        <location filename="recorder.cpp" line="4368"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4572"/>
-        <location filename="recorder.cpp" line="4583"/>
+        <location filename="recorder.cpp" line="4576"/>
+        <location filename="recorder.cpp" line="4587"/>
         <source>Newest</source>
         <translation>Последние</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4573"/>
-        <location filename="recorder.cpp" line="4588"/>
+        <location filename="recorder.cpp" line="4577"/>
+        <location filename="recorder.cpp" line="4592"/>
         <source>Best</source>
         <translation>Лучшие</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4893"/>
+        <location filename="recorder.cpp" line="4897"/>
         <source>Exclude &apos;%1&apos; from channel list (hidden: %2, protected: %3).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4944"/>
+        <location filename="recorder.cpp" line="4948"/>
         <source>Can&apos;t load channel image &quot;%1&quot; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4985"/>
+        <location filename="recorder.cpp" line="4989"/>
         <source>Archive: %1, Length: %2h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5036"/>
+        <location filename="recorder.cpp" line="5040"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5474"/>
-        <location filename="recorder.cpp" line="5687"/>
+        <location filename="recorder.cpp" line="5478"/>
+        <location filename="recorder.cpp" line="5691"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Избранное %1</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1879"/>
-        <location filename="recorder.cpp" line="3121"/>
-        <location filename="recorder.cpp" line="5133"/>
-        <location filename="recorder.cpp" line="5206"/>
+        <location filename="recorder.cpp" line="1883"/>
+        <location filename="recorder.cpp" line="3125"/>
+        <location filename="recorder.cpp" line="5137"/>
+        <location filename="recorder.cpp" line="5210"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1821"/>
+        <location filename="recorder.cpp" line="1825"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -3575,10 +3575,10 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="716"/>
-        <location filename="recorder.cpp" line="3296"/>
-        <location filename="recorder.cpp" line="5119"/>
-        <location filename="recorder.cpp" line="5192"/>
-        <location filename="recorder.cpp" line="5239"/>
+        <location filename="recorder.cpp" line="3300"/>
+        <location filename="recorder.cpp" line="5123"/>
+        <location filename="recorder.cpp" line="5196"/>
+        <location filename="recorder.cpp" line="5243"/>
         <source>Video On Demand</source>
         <translation>Видеотека</translation>
     </message>
@@ -3624,7 +3624,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1307"/>
-        <location filename="recorder.cpp" line="4363"/>
+        <location filename="recorder.cpp" line="4367"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
         <translation>Отложенные передачи</translation>
@@ -3647,13 +3647,13 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1275"/>
-        <location filename="recorder.cpp" line="4341"/>
+        <location filename="recorder.cpp" line="4345"/>
         <source>Timer Record</source>
         <translation>Планировщик записи</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1485"/>
-        <location filename="recorder.cpp" line="4342"/>
+        <location filename="recorder.cpp" line="4346"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
@@ -3664,7 +3664,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1599"/>
-        <location filename="recorder.cpp" line="4347"/>
+        <location filename="recorder.cpp" line="4351"/>
         <source>Quit</source>
         <translation>Выключить</translation>
     </message>
@@ -3675,7 +3675,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1164"/>
-        <location filename="recorder.cpp" line="4355"/>
+        <location filename="recorder.cpp" line="4359"/>
         <source>Jump Backward</source>
         <translation>Шаг назад</translation>
     </message>
@@ -3691,12 +3691,12 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1239"/>
-        <location filename="recorder.cpp" line="4354"/>
+        <location filename="recorder.cpp" line="4358"/>
         <source>Jump Forward</source>
         <translation>Шаг вперед</translation>
     </message>
     <message>
-        <location filename="qstalker_rec.hpp" line="33"/>
+        <location filename="qstalker_rec.hpp" line="31"/>
         <source>Before parser: %1</source>
         <translation type="unfinished"></translation>
     </message>

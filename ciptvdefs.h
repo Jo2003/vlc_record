@@ -75,6 +75,7 @@ public:
       REQ_NOOP,
       REQ_USER,
       REQ_INNER_OPS,
+      REQ_SESSION_RENEW,
       REQ_UNKNOWN = 9999
    };
 
