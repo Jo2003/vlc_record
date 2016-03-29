@@ -378,15 +378,13 @@ void QStalkerClient::slotPing()
 void QStalkerClient::slotRenewSession()
 {
     // request new session cookie ...
-    /*
     QUrl url(sApiUrl);
 
     q_post((int)CIptvDefs::REQ_SESSION_RENEW,
          QString("%1://%2/stalker_portal/auth/token").arg(url.scheme()).arg(url.host()),
-         QString("grant_type=password&username=%1&password=%2")
-             .arg(sUsr).arg(sPw),
+         QString("grant_type=refresh_token&refresh_token=%1")
+             .arg(mAuth.refreshToken),
          Iptv::Login);
-    */
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -620,7 +618,7 @@ QNetworkRequest &QStalkerClient::prepareRequest(QNetworkRequest &req, const QStr
 
     /// \todo We might need to use the accept and language header
     ///       outside of authentication.
-    if (!sCookie.isEmpty())
+    if (!url.contains("stalker_portal/auth/token"))
     {
         req.setRawHeader("Authorization", sCookie.toUtf8());
         req.setRawHeader("Accept", "application/json");
