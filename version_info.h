@@ -28,6 +28,8 @@
 #define VERSION_BUILD 1
 #define BETA_EXT      ""
 
+#define EXPIRES_IN    30
+
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
 #define STR_HELPER(x) #x

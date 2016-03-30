@@ -65,7 +65,8 @@ SOURCES += main.cpp \
     qvlcvideowidget.cpp \
     cplayer.cpp \
     qhlscontrol.cpp \
-    qexpirenotifydlg.cpp
+    qexpirenotifydlg.cpp \
+    buildstamp.cc
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -141,6 +142,13 @@ RESOURCES += common.qrc \
 INCLUDEPATH += tastes
 LIBS += -lvlc
 
+# build stamp
+buildstamp.target = buildstamp.cc
+buildstamp.commands = "echo \"const char* pBuilt = __DATE__ \\\", \\\" __TIME__;\" > buildstamp.c && $$QMAKE_CXX -E buildstamp.c -o buildstamp.cc"
+buildstamp.depends = buildclean
+win32:buildclean.commands = del /y buildstamp.c*
+else:buildclean.commands = rm -f buildstamp.c*
+QMAKE_EXTRA_TARGETS += buildclean buildstamp
 
 # -------------------------------------------------
 # create Windows rc file ...
