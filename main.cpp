@@ -91,7 +91,7 @@ bool expired()
         QLocale engLoc(QLocale::English);
 
         // when program will expire?
-        time_t  compare = engLoc.toDateTime(pBuilt, "MMM dd yyyy, hh:mm:ss").toTime_t() + (time_t)(EXPIRES_IN * 24 * 3600);
+        uint compare   = engLoc.toDateTime(pBuilt, "MMM dd yyyy, hh:mm:ss").toTime_t() + (uint)(EXPIRES_IN * 24 * 3600);
 
         ret            = (QDateTime::currentDateTime().toTime_t() > compare);
         iExpiresInDays = QDateTime::currentDateTime().daysTo(QDateTime::fromTime_t(compare));

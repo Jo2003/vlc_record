@@ -144,11 +144,13 @@ LIBS += -lvlc
 
 # build stamp
 buildstamp.target = buildstamp.cc
-buildstamp.commands = "echo \"const char* pBuilt = __DATE__ \\\", \\\" __TIME__;\" > buildstamp.c && $$QMAKE_CXX -E buildstamp.c -o buildstamp.cc"
+win32:buildstamp.commands = echo const char* pBuilt = __DATE__ \", \" __TIME__; > buildstamp.c && $$QMAKE_CXX -E buildstamp.c -o buildstamp.cc
+else:buildstamp.commands = "echo \"const char* pBuilt = __DATE__ \\\", \\\" __TIME__;\" > buildstamp.c && $$QMAKE_CXX -E buildstamp.c -o buildstamp.cc"
 buildstamp.depends = buildclean
-win32:buildclean.commands = del /y buildstamp.c*
+win32:buildclean.commands = del /q buildstamp.c*
 else:buildclean.commands = rm -f buildstamp.c*
 QMAKE_EXTRA_TARGETS += buildclean buildstamp
+PRE_TARGETDEPS += buildstamp.cc
 
 # -------------------------------------------------
 # create Windows rc file ...
@@ -186,7 +188,7 @@ win32 {
 else:mac {
    HEADERS += $$PWD/macNoSleep.h
    OBJECTIVE_SOURCES += $$PWD/macNoSleep.mm
-   
+
    OTHER_FILES += create_mac_bundle.sh \
                   release/create_dmg.sh
    INCLUDEPATH += mac/include
@@ -216,7 +218,7 @@ else:unix {
     message (Using standard api client ...)
     HEADERS += ckartinaclnt.h
     SOURCES += ckartinaclnt.cpp
-    
+
     message (using QtJson parser ...)
     include (qtjson/qtjson.pri)
     SOURCES += cstdjsonparser.cpp
