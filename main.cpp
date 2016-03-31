@@ -138,12 +138,20 @@ int main(int argc, char *argv[])
    qRegisterMetaType<QLangVector>("QLangVector");
 
 #ifdef Q_OS_MACX
-   if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )
-   {
-       // fix Mac OS X 10.9 (mavericks) font issue
-       // https://bugreports.qt-project.org/browse/QTBUG-32789
-       QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
-   }
+    if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )
+    {
+        // from 10.9 on every new MacOSX has each own system font ...
+        // To make it look normally we need some font substitution ...
+
+        // Mavericks:
+        QFont::insertSubstitution(".Lucida Grande UI", "Lucida Grande");
+
+        // Yosmite:
+        QFont::insertSubstitution(".Helvetica Neue DeskInterface", "Lucida Grande");
+
+        // El Capitan ...
+        QFont::insertSubstitution(".SF NS Text", "Lucida Grande");
+    }
 #endif
 
    int          iRV = -1;
