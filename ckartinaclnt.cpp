@@ -12,6 +12,10 @@
 \=============================================================================*/
 #include "ckartinaclnt.h"
 #include "qcustparser.h"
+#include <QTranslator>
+
+// external translator ...
+extern QTranslator *pAppTransl;
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -1017,38 +1021,63 @@ bool CKartinaClnt::cookieSet()
 \----------------------------------------------------------------- */
 int CKartinaClnt::checkResponse (const QString &sResp, QString &sCleanResp)
 {
-   int iRV = 0;
+    int iRV = 0;
 #ifdef _USE_QJSON
-   sCleanResp = sResp;
+    sCleanResp = sResp;
 
-   if (sCleanResp.contains("\"error\""))
-   {
-      iRV = -1;
-   }
+    if (sCleanResp.contains("\"error\""))
+    {
+        iRV = -1;
+    }
 #else
-   // clean response ... (delete content which may come
-   // after / before the xml code ...
-   int iStartPos   = sResp.indexOf("<?xml");       // xml start tag
-   int iEndPos     = sResp.lastIndexOf('>') + 1;   // end of last tag
+    // clean response ... (delete content which may come
+    // after / before the xml code ...
+    int iStartPos   = sResp.indexOf("<?xml");       // xml start tag
+    int iEndPos     = sResp.lastIndexOf('>') + 1;   // end of last tag
 
-   // store clean string in private variable ...
-   sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);
+    // store clean string in private variable ...
+    sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);
 
-   QRegExp rx("<message>(.*)</message>[ \t\n\r]*"
-              "<code>(.*)</code>");
+    // quick'n'dirty error check ...
+    if (sCleanResp.contains("<error>"))
+    {
+        // error anyway ...
+        QString sErr = tr("Unknown error");
+        iRV          = -1;
 
-   // quick'n'dirty error check ...
-   if (sCleanResp.contains("<error>"))
-   {
-      if (rx.indexIn(sCleanResp) > -1)
-      {
-         iRV = rx.cap(2).toInt();
+        QRegExp rxErrNo("<code>([^<]+)</code>");
 
-         sCleanResp = errMap.contains((CIptvDefs::EErr)iRV) ? errMap[(CIptvDefs::EErr)iRV] : rx.cap(1);
-      }
-   }
+        if (rxErrNo.indexIn(sCleanResp) > -1)
+        {
+            iRV = rxErrNo.cap(1).toInt();
+        }
+
+        QRegExp rxErrMsg("<message>([^<]+)</message>");
+
+        if (rxErrMsg.indexIn(sCleanResp) > -1)
+        {
+            // try to translate ...
+            sErr = pAppTransl->translate(objectName().toUtf8().constData(),
+                                         rxErrMsg.cap(1).toUtf8().constData());
+
+            if (sErr.isEmpty())
+            {
+                sErr = rxErrMsg.cap(1);
+            }
+        }
+        else
+        {
+            if (errMap.contains((CIptvDefs::EErr)iRV))
+            {
+                sErr = errMap[(CIptvDefs::EErr)iRV];
+            }
+        }
+
+        sCleanResp = sErr;
+
+    }
 #endif // _USE_QJSON
-   return iRV;
+    return iRV;
 }
 
 /* -----------------------------------------------------------------\
