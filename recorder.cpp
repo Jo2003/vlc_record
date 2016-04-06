@@ -2004,9 +2004,12 @@ void Recorder::slotCookie (const QString &str)
 
             if (QDateTime::currentDateTime().toTime_t() > llCheck)
             {
-               QString content = tr("Your subscription will end in %1 day(s).<br />Visit %2 to renew it!")
-                     .arg(iDaysTo)
-                     .arg(pCustomization->strVal("COMPANY_LINK"));
+               QString content = tr("Your subscription will end in %1 day(s).").arg(iDaysTo);
+
+               if (!pCustomization->strVal("COMPANY_LINK").isEmpty())
+               {
+                   content += tr("<br />Visit %1 to renew it!").arg(pCustomization->strVal("COMPANY_LINK"));
+               }
 
                expNotifier.setNotifyContent(pHtml->htmlPage(content, "Account Info"));
                expNotifier.exec();
