@@ -191,8 +191,11 @@ void QStalkerClient::combineChannelList()
         if (mBufMap.contains(iCid))
         {
             QVariantMap epgMap   = QtJson::parse(mBufMap[iCid]).toMap();
-            QVariant    epgEntry = epgMap.value("results").toList().at(0);
-            mChan.insert("epg", epgEntry);
+            if (!epgMap.value("results").toList().isEmpty())
+            {
+                QVariant    epgEntry = epgMap.value("results").toList().at(0);
+                mChan.insert("epg", epgEntry);
+            }
         }
 
         mGroupMap[sGenre].append(mChan);

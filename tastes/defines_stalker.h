@@ -16,12 +16,12 @@
 
 #include <QtGlobal>
 
-#define APP_NAME      "Stalker"
-#define UPD_CHECK_URL "http://rt.coujo.de/stalker_ver.xml"
-#define BIN_NAME      "stalker"
-#define API_SERVER    "v2.api.devportal.interhost.co.il"
-#define COMPANY_NAME  "Interhost"
-#define COMPANY_LINK  "<a href='http://www.interhost.il'>" COMPANY_NAME "</a>"
+#define APP_NAME      "Lenta.TV"
+#define UPD_CHECK_URL "http://rt.coujo.de/lenta_tv_ver.xml"
+#define BIN_NAME      "lenta_tv"
+#define API_SERVER    "v2.api.portal.lentatv.tv"
+#define COMPANY_NAME  "Lenta.TV"
+#define COMPANY_LINK  "<a href='http://www.lentatv.tv'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
 #define API_JSON_PATH  "/stalker_portal/api/"
