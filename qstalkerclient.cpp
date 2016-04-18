@@ -1360,12 +1360,29 @@ int QStalkerClient::checkResponse (const QString &sResp, QString &sCleanResp)
 {
    int iRV = 0;
 #ifdef _USE_QJSON
-   sCleanResp = sResp;
+   bool bSuccess = false;
 
-   if (sCleanResp.contains("\"error\""))
+   QVariantMap content = QtJson::parse(sResp, bSuccess).toMap();
+
+   if (bSuccess)
    {
-      iRV = -1;
+       if (content.contains("error"))
+       {
+           iRV = -1;
+           sCleanResp = tr("Error") + QString(": %1 / %2").arg(content.value("error").toString())
+                                                          .arg(content.value("error_description").toString());
+       }
+       else
+       {
+           sCleanResp = sResp;
+       }
    }
+   else
+   {
+       iRV = -1;
+       sCleanResp = tr("Can't parse JSON answer!");
+   }
+
 #else
    // clean response ... (delete content which may come
    // after / before the xml code ...
