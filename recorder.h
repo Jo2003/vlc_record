@@ -65,6 +65,7 @@
 #include <QStackedLayout>
 #include "qvlcvideowidget.h"
 #include "qhlscontrol.h"
+#include "qwaitwidget.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -187,6 +188,7 @@ private:
     QRect                           rectBackup;
     QRect                           playWndRect;
     QHlsControl                    *pHlsControl;
+    QWaitWidget                     waitWidget;
 #ifdef _TASTE_STALKER
     cparser::SAuth                  mAuth;
     QStalkerSettings                mStalkSet;

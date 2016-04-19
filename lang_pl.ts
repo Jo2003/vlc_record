@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="pl_PL" sourcelanguage="en_US">
 <context>
+    <name>QWaitWidget</name>
+    <message>
+        <location filename="forms/qwaitwidget.ui" line="14"/>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="forms/qwaitwidget.ui" line="44"/>
+        <source>Please wait while getting data ...</source>
+        <translation>Poczekaj pobierania danych ...</translation>
+    </message>
+</context>
+<context>
     <name>CAboutDialog</name>
     <message>
         <location filename="forms/caboutdialog.ui" line="14"/>

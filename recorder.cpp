@@ -2095,6 +2095,7 @@ void Recorder::slotTimeShift (const QString &str)
 {
    Q_UNUSED(str)
    pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+   waitWidget.longWaitShow();
 }
 
 /* -----------------------------------------------------------------\
@@ -2110,6 +2111,7 @@ void Recorder::slotTimeShift (const QString &str)
 void Recorder::slotChanList (const QString &str)
 {
    QChanList chanList;
+   waitWidget.longWaitHide();
 
    if (!pApiParser->parseChannelList(str, chanList, Settings.FixTime()))
    {

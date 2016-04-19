@@ -66,6 +66,7 @@ SOURCES += main.cpp \
     cplayer.cpp \
     qhlscontrol.cpp \
     qexpirenotifydlg.cpp \
+    qwaitwidget.cpp \
     buildstamp.cc
 HEADERS += recorder.h \
     csettingsdlg.h \
@@ -124,6 +125,7 @@ HEADERS += recorder.h \
     qclickandgoslider.h \
     qtimelabel.h \
     qhlscontrol.h \
+    qwaitwidget.h \
     qexpirenotifydlg.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
@@ -136,6 +138,7 @@ FORMS += forms/csettingsdlg.ui \
     forms/qnotifydlg.ui \
     forms/qwatchlistdlg.ui \
     forms/cplayer.ui \
+    forms/qwaitwidget.ui \
     forms/recorder_inc.ui
 RESOURCES += common.qrc \
     lcd.qrc

@@ -54,6 +54,7 @@ void Recorder::userData (const QString& resp)
     if (!pApiParser->parseUserSettings(resp, mStalkSet))
     {
         pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+        waitWidget.longWaitShow();
     }
 }
 

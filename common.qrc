@@ -28,6 +28,7 @@
         <file alias="watchlist">resources/watchlist.png</file>
         <file alias="cam">resources/photo_camera.png</file>
         <file alias="cam2">resources/camera.png</file>
+	<file alias="wait">resources/wait_ani.gif</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
