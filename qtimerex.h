@@ -1,6 +1,6 @@
 /*------------------------------ Information ---------------------------*//**
  *
- *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/sunduk.tv/qtimerex.h $
+ *  $HeadURL: https://vlc-record.googlecode.com/svn/branches/rodnoe.tv/qtimerex.h $
  *
  *  @file     qtimeerex.h
  *
@@ -8,12 +8,13 @@
  *
  *  @date     18.12.2012
  *
- *  $Id: qtimerex.h 1492 2015-02-18 14:14:37Z Olenka.Joerg $
+ *  $Id: qtimerex.h 996 2012-12-18 18:31:27Z Olenka.Joerg@gmail.com $
  *
  *///------------------------- (c) 2012 by Jo2003  --------------------------
 #ifndef __20121217_QTIMEREX_H
    #define __20121217_QTIMEREX_H
 #include <QTimer>
+#include <QMutex>
 
 //---------------------------------------------------------------------------
 //! \class   QTimerEx
@@ -64,6 +65,24 @@ public:
          uiOffset  = 0;
       }
    }
+
+   //---------------------------------------------------------------------------
+   //
+   //! \brief   set elapsed value
+   //
+   //! \author  Jo2003
+   //! \date    26.02.2016
+   //
+   //! \param   [in] el (uint) new elapsed value
+   //
+   //! \return  --
+   //---------------------------------------------------------------------------
+   void setElapsed (uint el)
+   {
+       valLock.lock();
+       uiElapsed = el;
+       valLock.unlock();
+   }
    
    //---------------------------------------------------------------------------
    //
@@ -78,9 +97,11 @@ public:
    //---------------------------------------------------------------------------
    void setOffset (uint uiOffs)
    {
+      valLock.lock();
       uiOffset = uiOffs;
+      valLock.unlock();
    }
-
+   
    //---------------------------------------------------------------------------
    //
    //! \brief   get position + offset
@@ -94,22 +115,11 @@ public:
    //---------------------------------------------------------------------------
    uint pos ()
    {
-      return uiElapsed + uiOffset;
-   }
-
-   //---------------------------------------------------------------------------
-   //
-   //! \brief   set position
-   //
-   //! \author  Jo2003
-   //! \date    18.12.2012
-   //
-   //! \param   uiPos new position
-   //
-   //---------------------------------------------------------------------------
-   void setPos(uint uiPos)
-   {
-      uiElapsed = uiPos;
+      uint ret;
+      valLock.lock();
+      ret = uiElapsed + uiOffset;
+      valLock.unlock();
+      return ret;
    }
    
 public slots:
@@ -145,12 +155,15 @@ private slots:
    //---------------------------------------------------------------------------
    void slotTick()
    {
+      valLock.lock();
       uiElapsed ++;
+      valLock.unlock();
    }
    
 private:
    uint uiElapsed;
    uint uiOffset;
+   QMutex valLock;
 };
 
 #endif // __20121217_QTIMEREX_H

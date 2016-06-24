@@ -713,6 +713,10 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
             sMrl = QString(":input-timeshift-granularity=%1").arg(0x7FFFFFFF); // max. positive integer value (about 2047MB)  ...
             mInfo(tr("Add MRL Option: %1").arg(sMrl));
             libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+
+            sMrl = QString(":ipv4-timeout=%1").arg(10 * 1000); // 10 sec. timeout for ipv4 connections
+            mInfo(tr("Add MRL Option: %1").arg(sMrl));
+            libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
          }
 
          ///////////////////////////////////////////////////////////////////////////
@@ -907,31 +911,20 @@ void CPlayer::slotUpdateSlider()
          {
             pos = timer.pos();
 
-            if (showInfo.showType() == ShowInfo::VOD)
+            if (!missionControl.isPosSliderDown())
             {
-               if (!missionControl.isPosSliderDown())
+               // reaching the end of this show ... ?
+               if (pos > mToGmt(missionControl.posMaximum()))
                {
-                  missionControl.setPosValue(pos);
-                  missionControl.setTime(pos);
+                  // check archive program ...
+                  emit sigCheckArchProg(pos);
                }
-            }
-            else
-            {
-               if (!missionControl.isPosSliderDown())
-               {
-                  // reaching the end of this show ... ?
-                  if (pos > mToGmt(missionControl.posMaximum()))
-                  {
-                     // check archive program ...
-                     emit sigCheckArchProg(pos);
-                  }
 
-                  missionControl.setPosValue(mFromGmt(pos));
+               missionControl.setPosValue(mFromGmt(pos));
 
-                  pos -= showInfo.starts();
+               pos -= showInfo.starts();
 
-                  missionControl.setTime(pos);
-               }
+               missionControl.setTime(pos);
             }
          }
       }
@@ -1293,46 +1286,55 @@ int CPlayer::slotToggleCropGeometry()
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
-   if (isPlaying() && showInfo.canCtrlStream() &&!bSpoolPending)
-   {
-      uint pos;
+    if (isPlaying() && showInfo.canCtrlStream() &&!bSpoolPending)
+    {
+        // stop slider update timer ...
+        sliderTimer.stop();
 
-      if (isPositionable() && !showInfo.isHls())
-      {
-         pos  = libvlc_media_player_get_time(pMediaPlayer);
+        uint pos;
 
-         // make sure we don't go negative ...
-         if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
-         {
-            pos = 0;
-         }
-         else
-         {
-            pos += iSeconds * 1000; // ms ...
-         }
+        if (isPositionable() && !showInfo.isHls())
+        {
+            pos  = libvlc_media_player_get_time(pMediaPlayer);
 
-         libvlc_media_player_set_time(pMediaPlayer, pos);
+            // make sure we don't go negative ...
+            if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
+            {
+                pos = 0;
+            }
+            else
+            {
+                pos += iSeconds * 1000; // ms ...
+            }
 
-         missionControl.setPosValue((int)(pos / 1000));
-      }
-      else
-      {
-         // get new position value ...
-         pos = timer.pos() + iSeconds;
+            libvlc_media_player_set_time(pMediaPlayer, pos);
 
-         if (showInfo.showType() == ShowInfo::VOD)
-         {
-            // try to position with HLS ...
-            // this will NOT work exactly!
-            libvlc_media_player_set_position(pMediaPlayer, (float)pos / (float)showInfo.ends());
-            missionControl.setPosValue(pos);
-            timer.setPos(pos);
-         }
-         else
-         {
+            missionControl.setPosValue((int)(pos / 1000));
+        }
+        else if ((showInfo.showType() == ShowInfo::VOD) && (showInfo.playState() == IncPlay::PS_PLAY))
+        {
+            // length are 100%
+            uint uiLen = showInfo.ends() - showInfo.starts();
+
+            // current position
+            pos = timer.pos() + iSeconds - showInfo.starts();
+
+            float point = (float)pos / (float)uiLen;
+
+            mInfo(tr("Try to set new stream position: %1").arg(point));
+
+            libvlc_media_player_set_position(pMediaPlayer, point);
+
+            timer.setElapsed(pos);
+        }
+        else
+        {
+            // get new gmt value ...
+            pos = timer.pos() + iSeconds;
+
             // trigger request for the new stream position ...
             QString req = QString("cid=%1&gmt=%2")
-                             .arg(showInfo.channelId()).arg(pos);
+                            .arg(showInfo.channelId()).arg(pos);
 
             // mark spooling as active ...
             bSpoolPending = true;
@@ -1350,14 +1352,16 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
             if ((pos < mToGmt(missionControl.posMinimum()))
                 || (pos > mToGmt(missionControl.posMaximum())))
             {
-               // yes --> update show info ...
-               emit sigCheckArchProg(pos);
+                // yes --> update show info ...
+                emit sigCheckArchProg(pos);
             }
-         }
-      }
-   }
+        }
 
-   return 0;
+        // restart slider update timer ...
+        sliderTimer.start(1000);
+    }
+
+    return 0;
 }
 
 /* -----------------------------------------------------------------\
@@ -1497,59 +1501,71 @@ void CPlayer::slotStoredAspectCrop ()
 \----------------------------------------------------------------- */
 void CPlayer::slotSliderPosChanged()
 {
-   if (isPlaying() && showInfo.canCtrlStream() && !bSpoolPending)
-   {
-      // stop slider update timer ...
-      sliderTimer.stop();
+    if (isPlaying() && showInfo.canCtrlStream() && !bSpoolPending)
+    {
+        // stop slider update timer ...
+        sliderTimer.stop();
 
-      uint position = (uint)missionControl.posValue();
+        uint position = (uint)missionControl.posValue();
 
-      if (isPositionable() && !showInfo.isHls())
-      {
-         libvlc_media_player_set_time(pMediaPlayer, position * 1000);
-      }
-      else
-      {
-         if (showInfo.showType() == ShowInfo::VOD)
-         {
-            libvlc_media_player_set_position(pMediaPlayer, (float)position / (float)showInfo.ends());
-            timer.setPos(position);
-         }
-         else
-         {
+        if (isPositionable() && !showInfo.isHls())
+        {
+            libvlc_media_player_set_time(pMediaPlayer, position * 1000);
+        }
+        else if ((showInfo.showType() == ShowInfo::VOD) && (showInfo.playState() == IncPlay::PS_PLAY))
+        {
+            // length are 100%
+            uint uiLen = showInfo.ends() - showInfo.starts();
+
+            position = mToGmt(position);
+
+            position -= showInfo.starts();
+
+            mInfo(tr("Length: %1, new position: %2").arg(uiLen).arg(position));
+
+            float point = (float)position / (float)uiLen;
+
+            mInfo(tr("Try to set new stream position: %1").arg(point));
+
+            libvlc_media_player_set_position(pMediaPlayer, point);
+
+            // the timer should know about ...
+            timer.setElapsed(position);
+        }
+        else
+        {
             position = mToGmt(position);
 
             // check if slider position is in 10 sec. limit ...
             if (abs(position - timer.pos()) <= 10)
             {
-               mInfo(tr("Ignore slightly slider position change..."));
+                mInfo(tr("Ignore slightly slider position change..."));
             }
             else
             {
-               // request new stream ...
-               QString req = QString("cid=%1&gmt=%2")
-                            .arg(showInfo.channelId())
-                            .arg(position);
+                // request new stream ...
+                QString req = QString("cid=%1&gmt=%2")
+                                .arg(showInfo.channelId())
+                                .arg(position);
 
-               // mark spooling as active ...
-               bSpoolPending = true;
+                // mark spooling as active ...
+                bSpoolPending = true;
 
-               enableDisablePlayControl (false);
+                enableDisablePlayControl (false);
 
-               // save new start value ...
-               showInfo.setLastJumpTime(position);
+                // save new start value ...
+                showInfo.setLastJumpTime(position);
 
-               emit sigStopOnDemand();
+                emit sigStopOnDemand();
 
-               // trigger stream request ...
-               pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+                // trigger stream request ...
+                pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
             }
-         }
-      }
+        }
 
-      // restart slider update timer ...
-      sliderTimer.start(1000);
-   }
+        // restart slider update timer ...
+        sliderTimer.start(1000);
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -1568,11 +1584,8 @@ void CPlayer::slotPositionChanged(int value)
    {
       if (!isPositionable() || showInfo.isHls())
       {
-         if (showInfo.showType() != ShowInfo::VOD)
-         {
-            value  = mToGmt(value);
-            value -= showInfo.starts();
-         }
+         value  = mToGmt(value);
+         value -= showInfo.starts();
       }
 
       missionControl.setTime(value);
@@ -1627,39 +1640,20 @@ void CPlayer::initSlider()
    }
    else
    {
-      if (showInfo.showType() == ShowInfo::VOD)
-      {
-         // set slider range to seconds ...
-         missionControl.setPosRange(showInfo.starts(), showInfo.ends());
+      // set slider range to seconds ...
+      missionControl.setPosRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
 
-         if (showInfo.lastJump())
-         {
-            missionControl.setPosValue(showInfo.lastJump());
-            missionControl.setTime(showInfo.lastJump() - showInfo.starts());
-         }
-         else
-         {
-            missionControl.setPosValue(showInfo.starts());
-            missionControl.setTime(0);
-         }
+      if (showInfo.lastJump())
+      {
+         missionControl.setPosValue(mFromGmt(showInfo.lastJump()));
+
+         missionControl.setTime(showInfo.lastJump() - showInfo.starts());
       }
       else
       {
-         // set slider range to seconds ...
-         missionControl.setPosRange(mFromGmt(showInfo.starts()), mFromGmt(showInfo.ends()));
+         missionControl.setPosValue(mFromGmt(showInfo.starts()));
 
-         if (showInfo.lastJump())
-         {
-            missionControl.setPosValue(mFromGmt(showInfo.lastJump()));
-
-            missionControl.setTime(showInfo.lastJump() - showInfo.starts());
-         }
-         else
-         {
-            missionControl.setPosValue(mFromGmt(showInfo.starts()));
-
-            missionControl.setTime(0);
-         }
+         missionControl.setTime(0);
       }
    }
 }
