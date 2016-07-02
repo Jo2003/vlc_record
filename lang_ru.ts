@@ -3480,13 +3480,13 @@ or start time is later than end time!</source>
 <context>
     <name>QIptvCtrlClient</name>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="89"/>
+        <location filename="qiptvctrlclient.cpp" line="90"/>
         <source>id=%1, type=&apos;%2&apos;, size=%3 bytes</source>
         <oldsource>iReqID=%1, ReqType=&apos;%2&apos;, DataSize=%3B</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="129"/>
+        <location filename="qiptvctrlclient.cpp" line="130"/>
         <source>Response:
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -3498,36 +3498,46 @@ or start time is later than end time!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="139"/>
+        <location filename="qiptvctrlclient.cpp" line="140"/>
         <source>Error, unknown request type: %1!</source>
         <oldsource>Error, unknown reqest type: %1!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="156"/>
+        <location filename="qiptvctrlclient.cpp" line="157"/>
         <source>Network response error #%1:
   --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="263"/>
+        <location filename="qiptvctrlclient.cpp" line="272"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;, data=&apos;%4&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="297"/>
+        <location filename="qiptvctrlclient.cpp" line="306"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="451"/>
+        <location filename="qiptvctrlclient.cpp" line="460"/>
         <source>Append last sent request (which triggered error) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="483"/>
+        <location filename="qiptvctrlclient.cpp" line="492"/>
         <source>Append re-Login request ...</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="qiptvctrlclient.cpp" line="534"/>
+        <source>Interface: &apos;%1&apos;; MAC: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qiptvctrlclient.cpp" line="548"/>
+        <source>cli_serial &apos;%2&apos; from source &apos;%1&apos; created ...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

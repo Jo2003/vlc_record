@@ -17,6 +17,9 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QNetworkConfiguration>
+#include <QNetworkConfigurationManager>
+#include <QNetworkInterface>
 #include <QVariant>
 #include <QMetaEnum>
 #include <QUrl>
@@ -158,6 +161,7 @@ private:
    bool              bBusy;
    QVector<SRequest> vCmdQueue;
    QMutex            mtxCmdQueue;
+   QString           sStbSerial;
    SRequest          mLastRequest;
    SRequest          mLastLogin;
 #ifdef __TRACE
@@ -168,6 +172,7 @@ protected:
    QNetworkRequest& prepareRequest(QNetworkRequest& req, const QString &url, int iSize = -1);
    QNetworkReply*   prepareReply(QNetworkReply* rep, int iReqId, Iptv::eReqType t_req);
    void workOffQueue ();
+   void generateStbSerial();
 
 signals:
    void sigStringResponse (int reqId, QString strResp);
