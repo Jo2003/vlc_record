@@ -162,6 +162,7 @@ void CAboutDialog::FillInfo(QString sExpires)
    strAbout  = pHtml->htmlPage(strAbout);
 }
 
+#ifdef __INFO_WINDOW_CONTENT
 //---------------------------------------------------------------------------
 //
 //! \brief   add order information in first tab
@@ -207,6 +208,7 @@ void CAboutDialog::addOrderInfo()
    // set active tab
    ui->tabWidget->setCurrentIndex(0);
 }
+#endif // __INFO_WINDOW_CONTENT
 
 /************************* History ***************************\
 | $Log$

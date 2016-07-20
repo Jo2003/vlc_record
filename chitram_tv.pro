@@ -13,3 +13,5 @@ WINICO = chitram_tv.ico
 DEFINES += _USE_QJSON
 
 include (common.pri)
+
+DEFINES += _IS_OEM
