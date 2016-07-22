@@ -255,6 +255,7 @@ void QFusionControl::disconnectCtrls()
    disconnectCng();
    disconnectLab();
    disconnectCbx();
+   disconnectMute();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -670,6 +671,108 @@ void QFusionControl::disconnectBtn()
 
    disconnect(this, SLOT(slotSaveVideoFormat()));
    _frmtBtnVector.clear();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+/// mute checkbox region ...
+/////////////////////////////////////////////////////////////////////////////
+
+//---------------------------------------------------------------------------
+//
+//! \brief   put mute checkbox under control, make connections
+//
+//! \author  Jo2003
+//! \date    26.05.2014
+//
+//! \param   pChk (QCheckBox *) pointer to mute checkbox
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::addMuteBtn(QCheckBox *pChk)
+{
+   connect (pChk, SIGNAL(clicked(bool)), this, SLOT(slotMute(bool)));
+   _muteButton.append(pChk);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   one checkbox was muted -> emit mute signal
+//
+//! \author  Jo2003
+//! \date    26.05.2014
+//
+//! \param   val (bool) muted or not
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::slotMute(bool val)
+{
+   // synchronize ...
+   setMute(val);
+
+   emit sigMute(val);
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   set mute state on all controls
+//
+//! \author  Jo2003
+//! \date    26.05.2014
+//
+//! \param   val (bool) muted or not
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::setMute(bool val)
+{
+   for (int i = 0; i < _muteButton.count(); i++)
+   {
+      if (_muteButton.at(i)->isChecked() != val)
+      {
+         _muteButton.at(i)->setChecked(val);
+      }
+   }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   get mute state
+//
+//! \author  Jo2003
+//! \date    26.05.2014
+//
+//! \param   --
+//
+//! \return  true or false
+//---------------------------------------------------------------------------
+bool QFusionControl::muted()
+{
+   bool bRv = false;
+
+   if (!_muteButton.isEmpty())
+   {
+      bRv = _muteButton.at(0)->isChecked();
+   }
+
+   return bRv;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   cleanup for mute controls
+//
+//! \author  Jo2003
+//! \date    26.05.2014
+//
+//! \param   --
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void QFusionControl::disconnectMute()
+{
+   disconnect(this, SLOT(slotMute(bool)));
+   _muteButton.clear();
 }
 
 /////////////////////////////////////////////////////////////////////////////

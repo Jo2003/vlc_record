@@ -282,6 +282,7 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigRec()), this, SLOT(slotRecord()));
    connect (&missionControl, SIGNAL(sigBwd()), this, SLOT(slotBwd()));
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
+   connect (&missionControl, SIGNAL(sigMute(bool)), ui->player, SLOT(slotMute()));
 
 #ifdef _TASTE_IPTV_RECORD
    connect (pMnLangFilter, SIGNAL(triggered(QAction*)), this, SLOT(slotLangFilterChannelList(QAction*)));

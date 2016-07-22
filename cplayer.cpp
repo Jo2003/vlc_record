@@ -70,7 +70,6 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    uint i;
 
    // feed mission control ...
-   missionControl.addMuteLab(ui->labSound);
    missionControl.addCngSlider(ui->posSlider);
    missionControl.addTimeLab(ui->labPos);
    missionControl.addVolSlider(ui->volSlider);
@@ -79,6 +78,7 @@ CPlayer::CPlayer(QWidget *parent) : QWidget(parent), ui(new Ui::CPlayer)
    missionControl.addButton(ui->btnWindowed,       QFusionControl::BTN_WNDWD);
    missionControl.addVidFormCbx(ui->cbxAspect,     QFusionControl::CBX_ASPECT);
    missionControl.addVidFormCbx(ui->cbxCrop,       QFusionControl::CBX_CROP);
+   missionControl.addMuteBtn(ui->checkMute);
 
    // libVlcVersion ...
    QRegExp rx("^([0-9.]+).*$");
@@ -378,8 +378,15 @@ int CPlayer::initPlayer(const QString &sOpts)
          // add player to window ...
          connectToVideoWidget();
 
-         // set volume as last used from missioncontrol ...
-         libvlc_audio_set_volume(pMediaPlayer, missionControl.getVolume());
+         // get volume ...
+         /// Note:
+         /// Don't use libvlc_audio_get_volume() to get current volume since
+         /// it doesn't work as expected with libVLC 2.1.1.
+         /// Set it hard to 100% instead.
+         missionControl.setVolSliderPosition(100);
+
+         // set mute mode to the one in mission control ...
+         libvlc_audio_set_mute(pMediaPlayer, missionControl.muted() ? 1 : 0);
 
          // switch off handling of hotkeys ...
          libvlc_video_set_key_input(pMediaPlayer, 0);
@@ -446,15 +453,6 @@ int CPlayer::initPlayer(const QString &sOpts)
 \----------------------------------------------------------------- */
 void CPlayer::slotChangeVolume(int newVolume)
 {
-   if (!newVolume)
-   {
-      missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
-   }
-   else
-   {
-      missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
-   }
-
    if (pMediaPlayer)
    {
       libvlc_audio_set_volume (pMediaPlayer, newVolume);
@@ -1700,7 +1698,6 @@ void CPlayer::slotMoreLoudly()
 
       if(!libvlc_audio_set_volume (pMediaPlayer, newVolume))
       {
-         missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
          missionControl.setVolume(newVolume);
       }
    }
@@ -1729,10 +1726,6 @@ void CPlayer::slotMoreQuietly()
 
       if (!libvlc_audio_set_volume (pMediaPlayer, newVolume))
       {
-         if (!newVolume)
-         {
-            missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
-         }
          missionControl.setVolume(newVolume);
       }
    }
@@ -1755,13 +1748,13 @@ void CPlayer::slotMute()
       if (libvlc_audio_get_mute(pMediaPlayer))
       {
          // muted --> unmute ...
-         missionControl.setMutePixmap(QPixmap(":/player/sound_on"));
+         missionControl.setMute(false);
          libvlc_audio_set_mute(pMediaPlayer, 0);
       }
       else
       {
          // unmuted --> mute ...
-         missionControl.setMutePixmap(QPixmap(":/player/sound_off"));
+         missionControl.setMute(true);
          libvlc_audio_set_mute(pMediaPlayer, 1);
       }
    }
