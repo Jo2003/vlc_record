@@ -4987,6 +4987,9 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 
             // save group index ...
             iGroupIdx = i;
+
+            // each group count its channels ...
+            iChanCount = 0;
          }
          else
          {
