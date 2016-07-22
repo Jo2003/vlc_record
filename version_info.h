@@ -25,7 +25,7 @@
 
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
-#define VERSION_BUILD 3
+#define VERSION_BUILD 4
 #define BETA_EXT      ""
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
@@ -41,6 +41,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2016-07-22: Version 2.69.4
+| - add unique key to user agent string
+| - add mute button to main widget and overlay control
+| - change channel numbering: now count channels per group
+|
 | 2016-01-20: Version 2.69.3
 | - rebuild channel list taking care for equal group ids
 | - through no error when no radio is supported
