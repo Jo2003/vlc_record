@@ -3458,13 +3458,13 @@ lub czas początkowy jest później niż czas końcowy!</translation>
 <context>
     <name>QIptvCtrlClient</name>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="89"/>
+        <location filename="qiptvctrlclient.cpp" line="90"/>
         <source>id=%1, type=&apos;%2&apos;, size=%3 bytes</source>
         <oldsource>iReqID=%1, ReqType=&apos;%2&apos;, DataSize=%3B</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="129"/>
+        <location filename="qiptvctrlclient.cpp" line="130"/>
         <source>Response:
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -3476,36 +3476,46 @@ lub czas początkowy jest później niż czas końcowy!</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="139"/>
+        <location filename="qiptvctrlclient.cpp" line="140"/>
         <source>Error, unknown request type: %1!</source>
         <oldsource>Error, unknown reqest type: %1!</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="156"/>
+        <location filename="qiptvctrlclient.cpp" line="157"/>
         <source>Network response error #%1:
   --&gt; %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="263"/>
+        <location filename="qiptvctrlclient.cpp" line="272"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;, data=&apos;%4&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="297"/>
+        <location filename="qiptvctrlclient.cpp" line="306"/>
         <source>id=%1, type=&apos;%2&apos;, url=&apos;%3&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="451"/>
+        <location filename="qiptvctrlclient.cpp" line="460"/>
         <source>Append last sent request (which triggered error) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="qiptvctrlclient.cpp" line="483"/>
+        <location filename="qiptvctrlclient.cpp" line="492"/>
         <source>Append re-Login request ...</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="qiptvctrlclient.cpp" line="534"/>
+        <source>Interface: &apos;%1&apos;; MAC: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="qiptvctrlclient.cpp" line="548"/>
+        <source>cli_serial &apos;%2&apos; from source &apos;%1&apos; created ...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4091,9 +4101,10 @@ dataDir: %1
         <translation>Błąd weryfikacji</translation>
     </message>
     <message>
-        <source>Your subscription will end in %1 day(s).&lt;br /&gt;Visit %2 to renew it!</source>
-        <oldsource>Your abonnoment will expire in %1 day(s).&lt;br /&gt;Visit the web page of %2 to extend your subscription!</oldsource>
-        <translation type="obsolete">Twoja subskrypcja wygaśnie za %1 dzień/dni. Odwiedź stronę internetową %2 aby przedłużyć ważność abonamentu!</translation>
+        <location filename="recorder.cpp" line="2008"/>
+        <source>Your subscription will end in %1 day(s).</source>
+        <oldsource>Your subscription will end in %1 day(s).&lt;br /&gt;Visit %2 to renew it!</oldsource>
+        <translation type="unfinished">Twoja subskrypcja wygaśnie za %1 dzień/dni. Odwiedź stronę internetową %2 aby przedłużyć ważność abonamentu!</translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2081"/>
@@ -4246,11 +4257,6 @@ dataDir: %1
         <location filename="recorder.cpp" line="1826"/>
         <source>Silent re-login on error #2!</source>
         <translation></translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="2008"/>
-        <source>Your subscription will end in %1 day(s).</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="recorder.cpp" line="2012"/>
