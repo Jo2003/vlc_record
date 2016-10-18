@@ -141,6 +141,7 @@ public:
     void getBrMap(QMap<int, QString>& brMap) const;
     ulong savedChanges() const;
     void checkChanges();
+    void autoStreamServerFeature (bool status);
 
 protected:
     virtual void changeEvent(QEvent *e);

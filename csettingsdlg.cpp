@@ -2510,6 +2510,24 @@ void CSettingsDlg::checkChanges()
 
 //---------------------------------------------------------------------------
 //
+//! \brief   enable / disable auto stream server feature
+//
+//! \author  Jo2003
+//! \date    18.10.2016
+//
+//! \param   status [in] (bool) enable if true, disable if false
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void CSettingsDlg::autoStreamServerFeature(bool status)
+{
+    m_ui->chkStrSrvAuto->setChecked(status);
+    m_ui->chkStrSrvAuto->setHidden(!status);
+    m_ui->pushSpeedTest->setHidden(!status);
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   font delta was changed -> tell about
 //
 //! \author  Jo2003

@@ -237,6 +237,13 @@ Recorder::Recorder(QWidget *parent)
    // give player settings and wait trigger access ...
    ui->player->setSettings(&Settings);
 
+#if (!defined _TASTE_KARTINA_TV && !defined _TASTE_VLC_RECORD)
+
+   // disable auto stream server stuff in settings ...
+   Settings.autoStreamServerFeature(false);
+
+#endif // !_TASTE_KARTINA_TV && !_TASTE_VLC_RECORD
+
    // connect vlc control with libvlc player ...
    connect (ui->player, SIGNAL(sigPlayState(int)), &vlcCtrl, SLOT(slotLibVlcStateChange(int)));
    connect (&vlcCtrl, SIGNAL(sigLibVlcPlayMedia(QString, QString)), ui->player, SLOT(playMedia(QString, QString)));
@@ -573,12 +580,14 @@ void Recorder::showEvent(QShowEvent *event)
    {
       ulStartFlags |= FLAG_CONN_CHAIN;
 
+#if (defined _TASTE_KARTINA_TV || defined _TASTE_VLC_RECORD)
       // start connection stuff in 0.5 seconds ...
       if (Settings.autoStrSrv())
       {
           QTimer::singleShot(500, this, SLOT(slotReqStrSrvAuto()));
       }
       else
+#endif // (defined _TASTE_KARTINA_TV || defined _TASTE_VLC_RECORD)
       {
           QTimer::singleShot(500, this, SLOT(slotStartConnectionChain()));
       }
