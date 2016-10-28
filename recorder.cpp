@@ -1321,6 +1321,7 @@ void Recorder::on_pushUndoFilter_clicked()
     pFilterWidget->cleanFilter();
     slotFilterChannelList("");
 
+#ifdef _TASTE_IPTV_RECORD
     // get a list of available actions ...
     QList<QAction *> actList = pMnLangFilter->actions();
     QList<QAction *>::const_iterator cit;
@@ -1332,6 +1333,7 @@ void Recorder::on_pushUndoFilter_clicked()
             bFiltered = !(*cit)->data().toString().isEmpty();
         }
     }
+#endif // _TASTE_IPTV_RECORD
 
     ui->pushFilter->setIcon(QIcon(bFiltered ? ":/app/act_filter" : ":/app/filter"));
 }
@@ -1835,6 +1837,12 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
 
    if (!bSilent)
    {
+      // anyhow stop playing the stream ...
+      if (ui->player->isPlaying())
+      {
+          ui->player->stop();
+      }
+
       if (!mpRetryDlg) mpRetryDlg = new QRetryDialog(this);
 
       QString errStr = tr("%1 Client API Error:\n%2 (#%3)")
