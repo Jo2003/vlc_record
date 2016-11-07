@@ -710,6 +710,9 @@ void Recorder::on_pushSettings_clicked()
 
             TouchPlayCtrlBtns(false);
 
+            // log out ...
+            pApiClient->queueRequest(CIptvDefs::REQ_LOGOUT);
+
             // authenticate ...
             pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
         }
