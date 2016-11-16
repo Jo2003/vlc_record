@@ -79,6 +79,7 @@ public:
       REQ_STRSTD,
       REQ_AUTO_STR_SRV,
       REQ_SPEED_TEST_DATA,
+      REQ_IVI_INFO,
       REQ_UNKNOWN = 255
    };
 

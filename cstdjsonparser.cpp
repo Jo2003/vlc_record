@@ -268,6 +268,8 @@ int CStdJsonParser::parseCookie (const QString &sResp, QString &sCookie, cparser
 
    contentMap = QtJson::parse(sResp, bOk).toMap();
 
+   sInf.bHasIVI = false;
+
    if (bOk)
    {
       sCookie = QString("%1=%2")
@@ -283,6 +285,11 @@ int CStdJsonParser::parseCookie (const QString &sResp, QString &sCookie, cparser
       nestedMap        = contentMap.value("services").toMap();
       sInf.bHasArchive = nestedMap.value("archive").toBool();
       sInf.bHasVOD     = nestedMap.value("vod").toBool();
+
+      if (nestedMap.contains("ivi"))
+      {
+          sInf.bHasIVI = nestedMap.value("ivi").toBool();
+      }
 
       // check offset ...
       checkTimeOffSet (contentMap.value("servertime").toUInt());
@@ -1060,6 +1067,42 @@ int CStdJsonParser::parseSpeedTestData(const QString &resp, QSpeedDataVector &sp
 
             spdData.append(spdTest);
         }
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                      tr("QtJson parser error in %1 %2():%3")
+                      .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRet = -1;
+    }
+
+    return iRet;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse ivi info
+//
+//! \author  Jo2003
+//! \date    15.11.2016
+//
+//! \param   resp [in] (const QString&) html response
+//! \param   iviInfo [out] (SIviInfo&) ivi info struct
+//
+//! \return  0 -> ok; -1 -> error
+//---------------------------------------------------------------------------
+int CStdJsonParser::parseIviInfo(const QString &resp, cparser::SIviInfo &iviInfo)
+{
+    bool         bOk = false;
+    QVariantMap  contentMap = QtJson::parse(resp, bOk).toMap();
+    int          iRet = 0;
+
+    if (bOk)
+    {
+        iviInfo.url    = contentMap.value("url").toString();
+        iviInfo.status = contentMap.value("status").toBool();
+        iviInfo.ivi_id = contentMap.value("ivi_id").toString();
     }
     else
     {

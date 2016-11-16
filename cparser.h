@@ -120,6 +120,7 @@ namespace cparser
       QDateTime dtExpires;
       bool      bHasArchive;
       bool      bHasVOD;
+      bool      bHasIVI;
    };
 
    struct SGenreInfo
@@ -178,6 +179,15 @@ namespace cparser
        QString sName;
        QString sDescr;
        bool    bDefault;
+   };
+
+   ///
+   /// \brief The SIviInfo struct
+   ///
+   struct SIviInfo {
+       QString url;     ///< ivi start video
+       bool status;     ///< ivi stratus
+       QString ivi_id;  ///< ivi id (session)
    };
 
    /// \brief define type for stream standards

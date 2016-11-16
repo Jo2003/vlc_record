@@ -105,7 +105,9 @@ SOURCES += main.cpp \
     qstatemessage.cpp \
     qwatchstats.cpp \
     qstrstandarddlg.cpp \
-    qspeedtestdlg.cpp
+    qspeedtestdlg.cpp \
+    cvodivi.cpp \
+    civiapi.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -170,7 +172,9 @@ HEADERS += recorder.h \
     qurlex.h \
     qtextbrowserex.h \
     qstrstandarddlg.h \
-    qspeedtestdlg.h
+    qspeedtestdlg.h \
+    cvodivi.h \
+    civiapi.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -187,7 +191,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/qwaitwidget.ui \
     forms/qstatemessage.ui \
     forms/qstrstandarddlg.ui \
-    forms/qspeedtestdlg.ui
+    forms/qspeedtestdlg.ui \
+    forms/cvodivi.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

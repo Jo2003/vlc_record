@@ -213,6 +213,11 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
          GetChannelList();
          break;
       case CIptvDefs::REQ_COOKIE:
+         if (!sCookie.isEmpty())
+         {
+             sCookie = "";
+             Logout();
+         }
          GetCookie();
          break;
       case CIptvDefs::REQ_EPG:
@@ -318,6 +323,9 @@ int CKartinaClnt::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, const
           break;
       case CIptvDefs::REQ_SPEED_TEST_DATA:
           speedTestData();
+          break;
+      case CIptvDefs::REQ_IVI_INFO:
+          iviInfo();
           break;
       default:
          iRet = -1;
@@ -828,6 +836,24 @@ void CKartinaClnt::speedTestData()
 
     q_get((int)CIptvDefs::REQ_SPEED_TEST_DATA, sApiUrl + req);
 }
+
+//---------------------------------------------------------------------------
+//
+//! \brief   request ivi info
+//
+//! \author  Jo2003
+//! \date    15.11.2016
+//
+//---------------------------------------------------------------------------
+void CKartinaClnt::iviInfo()
+{
+    mInfo(tr("Request ivi info ..."));
+
+    QString req = "entry/ivi";
+
+    q_get((int)CIptvDefs::REQ_IVI_INFO, sApiUrl + req);
+}
+
 
 /*-----------------------------------------------------------------------------\
 | Function:    setChanHide

@@ -867,6 +867,16 @@ color: white;
            </item>
           </layout>
          </widget>
+         <widget class="QWidget" name="tabIviVod">
+          <attribute name="title">
+           <string>IVI Vod</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="CVodIvi" name="iviVod" native="true"/>
+           </item>
+          </layout>
+         </widget>
         </widget>
         <widget class="QGroupBox" name="groupPlayer">
          <property name="title">
@@ -1625,6 +1635,12 @@ border-top: 0px;
    <class>QFavFrame</class>
    <extends>QFrame</extends>
    <header>qfavframe.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>CVodIvi</class>
+   <extends>QWidget</extends>
+   <header>cvodivi.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

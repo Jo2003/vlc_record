@@ -66,6 +66,7 @@
 #include "qvlcvideowidget.h"
 #include "qauthdlg.h"
 #include "qwaitwidget.h"
+#include "cvodivi.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -103,7 +104,6 @@ namespace Ui
     {
        QString  sText;
        QIcon    icon;
-       int      iPos;
        QWidget *pWidget;
     };
 
@@ -175,6 +175,7 @@ private:
     cparser::SGenreInfo             genreInfo;
     ulong                           ulStartFlags;
     Ui::STabWidget                  vodTabWidget;
+    Ui::STabWidget                  iviTabWidget;
     CIptvDefs                       metaKartina;
     QRecordTimerWidget              timerWidget;
     QUpdateNotifyDlg                updNotifier;
@@ -199,6 +200,7 @@ private:
     cparser::ServiceSettings        servSettings;
     int                             m_iJumpValue;
     QString                         m_StrSrvAuto;
+    cparser::SIviInfo               mIviInfo;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -234,6 +236,7 @@ protected:
     QString createVideoInfo(bool checkVod = true);
     void strSrvAuto(const QString& resp);
     void speedTestData(const QString& resp);
+    int findTabWidget(const QString& objName);
 
     virtual void changeEvent(QEvent *e);
     virtual void showEvent (QShowEvent * event);
@@ -339,6 +342,7 @@ private slots:
     void slotReqStrSrvAuto();
     void slotReqSpeedTestData();
     void rerequestStream(const QString &resp);
+    void slotIviInfo(const QString &resp);
 
 signals:
     void sigShow ();

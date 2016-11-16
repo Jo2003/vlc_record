@@ -45,7 +45,6 @@ public:
    bool cookieSet();
    void SetCookie (const QString &cookie);
 
-
 protected:
    void GetCookie ();
    void Logout ();
@@ -82,6 +81,7 @@ protected:
    void statsService(const QString& stats);
    void statsOnly(const QString& stats);
    void setStrStd (const QString& s);
+   void iviInfo();
 
 private:
    QString   sUsr;

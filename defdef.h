@@ -81,9 +81,20 @@
 #  define APPLICATION_SHORTCUT "ktv"
 #endif
 
+/*
+/// \todo DELETE before commit
+#define SOFTID_DEVELOPER   "003"
+
+// application shortcut ...
+#ifndef APPLICATION_SHORTCUT
+#  define APPLICATION_SHORTCUT "dune-ktv"
+#endif
+*/
+
 // operating system ...
 #ifdef Q_OS_LINUX
 #  define OP_SYS  "linux"
+// #  define OP_SYS  ""
 #elif defined Q_OS_WIN32
 #  define OP_SYS  "win"
 #elif defined Q_OS_MAC

@@ -52,6 +52,7 @@ Recorder::Recorder(QWidget *parent)
    eCurDMode = Ui::DM_NORMAL;
    eOldDMode = Ui::DM_NORMAL;
    m_iJumpValue = 0;
+   mIviInfo.status = false;
 
    // set (customized) windows title ...
    setWindowTitle(QString("%1%2").arg(pCustomization->strVal("APP_NAME")).arg(pFolders->portable() ? tr(" - Portable Edition") : ""));
@@ -214,12 +215,23 @@ Recorder::Recorder(QWidget *parent)
    timeRec.SetVlcCtrl(&vlcCtrl);
    timeRec.SetStreamLoader(&streamLoader);
 
-   // hide / remove VOD tab widget ...
-   vodTabWidget.iPos    = 1;  // index of VOD tab
-   vodTabWidget.icon    = ui->tabEpgVod->tabIcon(vodTabWidget.iPos);
-   vodTabWidget.sText   = ui->tabEpgVod->tabText(vodTabWidget.iPos);
-   vodTabWidget.pWidget = ui->tabEpgVod->widget(vodTabWidget.iPos);
-   ui->tabEpgVod->removeTab(vodTabWidget.iPos);
+   {
+       int idx;
+
+       // hide / remove VOD tab widget ...
+       idx                  = findTabWidget("vodTab");
+       vodTabWidget.icon    = ui->tabEpgVod->tabIcon(idx);
+       vodTabWidget.sText   = ui->tabEpgVod->tabText(idx);
+       vodTabWidget.pWidget = ui->tabEpgVod->widget(idx);
+       ui->tabEpgVod->removeTab(idx);
+
+       // hide / remove IVI tab widget ...
+       idx                  = findTabWidget("tabIviVod");
+       iviTabWidget.icon    = ui->tabEpgVod->tabIcon(idx);
+       iviTabWidget.sText   = ui->tabEpgVod->tabText(idx);
+       iviTabWidget.pWidget = ui->tabEpgVod->widget(idx);
+       ui->tabEpgVod->removeTab(idx);
+   }
 
    // do we use libVLC ?
    if (Settings.GetPlayerModule().contains("libvlc", Qt::CaseInsensitive))
@@ -709,9 +721,6 @@ void Recorder::on_pushSettings_clicked()
             pApiClient->SetData(Settings.GetAPIServer(), Settings.GetUser(), Settings.GetPasswd(), Settings.GetLanguage());
 
             TouchPlayCtrlBtns(false);
-
-            // log out ...
-            pApiClient->queueRequest(CIptvDefs::REQ_LOGOUT);
 
             // authenticate ...
             pApiClient->queueRequest(CIptvDefs::REQ_COOKIE);
@@ -1832,7 +1841,6 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    ///////////////////////////////////////////////
    // got requested video details
    mkCase(CIptvDefs::REQ_GETVIDEOINFO, slotGotVideoInfo(resp));
-
    ///////////////////////////////////////////////
    // got requested vod url
    mkCase(CIptvDefs::REQ_GETVODURL, slotVodURL(resp));
@@ -1892,6 +1900,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    // stream settings were changed - request new stream on demand
    mkCase(CIptvDefs::REQ_SERVER, rerequestStream(resp));
    mkCase(CIptvDefs::REQ_SETBITRATE, rerequestStream(resp));
+
+   ///////////////////////////////////////////////
+   // response for ivi settings received
+   mkCase(CIptvDefs::REQ_IVI_INFO, slotIviInfo(resp));
 
    ///////////////////////////////////////////////
    // Make sure the unused responses are listed
@@ -1970,6 +1982,24 @@ void Recorder::rerequestStream(const QString& resp)
     {
        reRequest.bValid = false;
        pApiClient->queueRequest(reRequest.req, reRequest.par_1, reRequest.par_2);
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   got ivi info -> parse
+//
+//! \author  Jo2003
+//! \date    15.11.2016
+//
+//! \param   resp [in] (const QString&) response string
+//
+//---------------------------------------------------------------------------
+void Recorder:: slotIviInfo(const QString &resp)
+{
+    if (!pApiParser->parseIviInfo(resp, mIviInfo))
+    {
+        ui->iviVod->setIviSession(mIviInfo.ivi_id);
     }
 }
 
@@ -2236,6 +2266,7 @@ void Recorder::slotCookie (const QString &str)
    QString s;
 
    bool loadChanList = true;
+   int  idx;
 
    // parse cookie ...
    if (!pApiParser->parseCookie(str, s, accountInfo))
@@ -2280,14 +2311,16 @@ void Recorder::slotCookie (const QString &str)
       // decide if we should enable / disable VOD stuff ...
       if (accountInfo.bHasVOD)
       {
-         if (!ui->tabEpgVod->widget(vodTabWidget.iPos))
+         if (findTabWidget("vodTab") == -1)
          {
             // make sure tab text is translated as needed
             QString title = pAppTransl->translate(objectName().toUtf8().constData(),
                                                    vodTabWidget.sText.toUtf8().constData());
 
             // add tab ...
-            ui->tabEpgVod->addTab(vodTabWidget.pWidget, (title != "") ? title : vodTabWidget.sText);
+            // VOD tab always at index 1!
+            ui->tabEpgVod->insertTab(1, vodTabWidget.pWidget,
+                                     vodTabWidget.icon, (title != "") ? title : vodTabWidget.sText);
             ui->tabEpgVod->adjustSize();
 
 #ifdef _TASTE_POLSKY_TV
@@ -2316,13 +2349,42 @@ void Recorder::slotCookie (const QString &str)
       }
       else
       {
-         if (ui->tabEpgVod->widget(vodTabWidget.iPos))
+         idx = findTabWidget("vodTab");
+         if (idx != -1)
          {
             // make sure the widget we want to remove
             // is not the active one ...
             ui->tabEpgVod->setCurrentIndex(0);
-            ui->tabEpgVod->removeTab(vodTabWidget.iPos);
+            ui->tabEpgVod->removeTab(idx);
          }
+      }
+
+      if (accountInfo.bHasIVI)
+      {
+         pApiClient->queueRequest(CIptvDefs::REQ_IVI_INFO);
+         if (findTabWidget("tabIviVod") == -1)
+         {
+            // make sure tab text is translated as needed
+            QString title = pAppTransl->translate(objectName().toUtf8().constData(),
+                                                   iviTabWidget.sText.toUtf8().constData());
+
+            // add tab ...
+            // IVI tab always at index 2!
+            ui->tabEpgVod->insertTab(2, iviTabWidget.pWidget,
+                                     iviTabWidget.icon, (title != "") ? title : iviTabWidget.sText);
+            ui->tabEpgVod->adjustSize();
+         }
+      }
+      else
+      {
+          idx = findTabWidget("tabIviVod");
+          if (idx != -1)
+          {
+             // make sure the widget we want to remove
+             // is not the active one ...
+             ui->tabEpgVod->setCurrentIndex(0);
+             ui->tabEpgVod->removeTab(idx);
+          }
       }
 
       // ------------------------------------------------
@@ -6588,6 +6650,29 @@ void Recorder::speedTestData(const QString &resp)
     {
         emit sigSpeedTestData(spdData);
     }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   find tab widget
+//
+//! \author  Jo2003
+//! \date    16.11.2016
+//
+//! \param   objName [in] (const QString&) object name
+//! \returns index of tab widget or -1 if not found
+//---------------------------------------------------------------------------
+int Recorder::findTabWidget(const QString &objName)
+{
+    for (int i = 0; i < ui->tabEpgVod->count(); i++)
+    {
+        if (ui->tabEpgVod->widget(i)->objectName() == objName)
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 /************************* History ***************************\
