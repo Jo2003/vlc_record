@@ -1,11 +1,14 @@
 #include "cvodivi.h"
 #include "ui_cvodivi.h"
+#include "externals_inc.h"
 
 CVodIvi::CVodIvi(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CVodIvi)
 {
     ui->setupUi(this);
+    connect (&iviApi, SIGNAL(sigCategories(ivi::CategoryMap)), this, SLOT(slotCatchCategories(ivi::CategoryMap)));
+    connect (&iviApi, SIGNAL(sigCountries(ivi::CountryMap)), this, SLOT(slotCatchCountries(ivi::CountryMap)));
 }
 
 CVodIvi::~CVodIvi()
@@ -16,182 +19,162 @@ CVodIvi::~CVodIvi()
 void CVodIvi::setIviSession(const QString &str)
 {
     iviApi.setSessionKey(str);
+    fillSortCbx();
+    iviApi.getCountries();
+}
+
+void CVodIvi::on_cbxIviGenre_activated(int index)
+{
+    int         catId = ui->cbxIviCategory->itemData(ui->cbxIviCategory->currentIndex()).toInt();
+    int         genId = ui->cbxIviGenre->itemData(index).toInt();
+    ivi::SCat   cat   = mIviCats.value(catId);
+    ivi::SGenre genre = cat.mGenres.value(genId);
+
+    fillSitesCbx(genre.mNoContent);
+}
+
+void CVodIvi::on_cbxIviLastOrBest_activated(int index)
+{
+    (void)index;
+    getVideos();
+}
+
+void CVodIvi::on_btnIviPrevSite_clicked()
+{
+    int siteIdx   = ui->cbxIviSites->currentIndex();
+
+    if (siteIdx > 0)
+    {
+        siteIdx--;
+        ui->cbxIviSites->setCurrentIndex(siteIdx);
+        on_cbxIviSites_activated(siteIdx);
+    }
+}
+
+void CVodIvi::on_btnIviNextSite_clicked()
+{
+    int siteIdx   = ui->cbxIviSites->currentIndex();
+    int siteCount = ui->cbxIviSites->count();
+
+    if (siteIdx < (siteCount -1))
+    {
+        siteIdx++;
+        ui->cbxIviSites->setCurrentIndex(siteIdx);
+        on_cbxIviSites_activated(siteIdx);
+    }
+}
+
+void CVodIvi::on_cbxIviSites_activated(int index)
+{
+    int siteCount = ui->cbxIviSites->count();
+    ui->btnIviPrevSite->setDisabled(index == 0);
+    ui->btnIviNextSite->setDisabled((index + 1) == siteCount);
+    getVideos();
+}
+
+void CVodIvi::on_cbxIviCategory_activated(int index)
+{
+    ui->cbxIviGenre->clear();
+    int catId     = ui->cbxIviCategory->itemData(index).toInt();
+    ivi::SCat cat = mIviCats.value(catId);
+
+    foreach(ivi::SGenre oneGenre, cat.mGenres)
+    {
+        ui->cbxIviGenre->addItem(oneGenre.mTitle, oneGenre.mId);
+    }
+
+    ui->cbxIviGenre->setCurrentIndex(0);
+    on_cbxIviGenre_activated(0);
+}
+
+void CVodIvi::slotCatchCategories(ivi::CategoryMap cats)
+{
+    mIviCats = cats;
+    mIviGenres.clear();
+    ui->cbxIviCategory->clear();
+
+    foreach(ivi::SCat oneCat, mIviCats)
+    {
+#ifdef __TRACE
+        mInfo(tr("Found category '%1'(%2) ...").arg(oneCat.mTitle).arg(oneCat.mId));
+#endif // __TRACE
+
+        ui->cbxIviCategory->addItem(oneCat.mTitle, oneCat.mId);
+
+
+        foreach(ivi::SGenre oneGenre, oneCat.mGenres)
+        {
+#ifdef __TRACE
+            mInfo(tr("  \\_Genre '%1'(%2) ...").arg(oneGenre.mTitle).arg(oneGenre.mId));
+#endif // __TRACE
+
+            mIviGenres.insert(oneGenre.mId, oneGenre);
+        }
+    }
+
+    ui->cbxIviCategory->setCurrentIndex(0);
+    on_cbxIviCategory_activated(0);
+}
+
+void CVodIvi::slotCatchCountries(ivi::CountryMap countr)
+{
+    mIviCountries = countr;
+
+#ifdef __TRACE
+    foreach(ivi::SCountry country, mIviCountries)
+    {
+        mInfo(tr("Found country #%1 '%2'[%3] ...")
+              .arg(country.mId).arg(country.mName).arg(country.mShort));
+    }
+
+#endif // __TRACE
     iviApi.getGenres();
 }
 
-void CVodIvi::on_cbxVodLang_activated(int index)
+void CVodIvi::fillSortCbx()
 {
-    /*
-    int  iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-
-    QUrlEx url;
-    url.addQueryItem("type", ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString());
-    url.addQueryItem("lang", ui->cbxVodLang->itemData(index).toString());
-    url.addQueryItem("nums", "20");
-    if (iGid != -1)
-    {
-       url.addQueryItem("genre", QString::number(iGid));
-    }
-    pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, url.query());
-    */
+    ui->cbxIviLastOrBest->clear();
+    ui->cbxIviLastOrBest->addItem(tr("Popularity"), QString("pop"));
+    ui->cbxIviLastOrBest->addItem(tr("Newest"), QString("new"));
+    ui->cbxIviLastOrBest->addItem(tr("IVI Rating"), QString("ivi"));
+    ui->cbxIviLastOrBest->addItem(tr("KP Rating"), QString("kp"));
+    ui->cbxIviLastOrBest->addItem(tr("IMDB Rating"), QString("imdb"));
+    ui->cbxIviLastOrBest->addItem(tr("Budget"), QString("budget"));
+    ui->cbxIviLastOrBest->setCurrentIndex(0);
 }
 
-void CVodIvi::on_cbxGenre_activated(int index)
+void CVodIvi::fillSitesCbx(int count)
 {
-    /*
-    // check for vod favourites ...
-    QString   sType = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-    int       iGid  = ui->cbxGenre->itemData(index).toInt();
-    QUrlEx    url;
+    int sites = count / VIDEOS_PER_SITE;
 
-    if (sType == "vodfav")
+    ui->cbxIviSites->clear();
+
+    if (count % VIDEOS_PER_SITE)
     {
-       // set filter cbx to "last"  ...
-       ui->cbxLastOrBest->setCurrentIndex(0);
-       sType = "last";
+        sites ++;
     }
 
-    url.addQueryItem("type", sType);
-
- #ifdef _HAS_VOD_LANG
-    url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
- #endif // _HAS_VOD_LANG
-
-    if (iGid != -1)
+    for (int i = 0; i < sites; i++)
     {
-       url.addQueryItem("genre", QString::number(iGid));
+        ui->cbxIviSites->addItem(QString::number(i + 1), i * VIDEOS_PER_SITE);
     }
 
-    pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, url.query());
-    */
+    ui->cbxIviSites->setCurrentIndex(0);
+    on_cbxIviSites_activated(0);
 }
 
-void CVodIvi::on_cbxLastOrBest_activated(int index)
+void CVodIvi::getFilterData(ivi::SVideoFilter &filter)
 {
-    /*
-    QString sType = ui->cbxLastOrBest->itemData(index).toString();
-
-    if (sType == "vodfav")
-    {
-       pApiClient->queueRequest(CIptvDefs::REQ_GET_VOD_FAV);
-    }
-    else
-    {
-       int    iGid  = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-       QUrlEx url;
-
-       url.addQueryItem("type", sType);
-
-       if (iGid != -1)
-       {
-          url.addQueryItem("genre", QString::number(iGid));
-       }
-
- #ifdef _HAS_VOD_LANG
-       url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
- #endif // _HAS_VOD_LANG
-
-       pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, url.query());
-    }
-    */
+    filter.mGenId = ui->cbxIviGenre->itemData(ui->cbxIviGenre->currentIndex()).toInt();
+    filter.mSort  = ui->cbxIviLastOrBest->itemData(ui->cbxIviLastOrBest->currentIndex()).toString();
+    filter.mFrom  = ui->cbxIviSites->itemData(ui->cbxIviSites->currentIndex()).toInt();
+    filter.mTo    = filter.mFrom + (VIDEOS_PER_SITE - 1);
 }
 
-void CVodIvi::on_btnPrevSite_clicked()
+void CVodIvi::getVideos()
 {
-    /*
-    QUrlEx  url;
-    QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-    int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-    int     iPage  = ui->cbxSites->currentIndex() + 1;
-
-    url.addQueryItem("page", QString::number(iPage - 1));
-
-    if (sType == "vodfav")
-    {
-        pApiClient->queueRequest(CIptvDefs::REQ_GET_VOD_FAV, url.query());
-    }
-    else
-    {
-        url.addQueryItem("type", sType);
-
-#ifdef _HAS_VOD_LANG
-        url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
-
-        if (iGenre != -1)
-        {
-            url.addQueryItem("genre", QString::number(iGenre));
-        }
-
-        pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, url.query());
-    }
-    */
+    ivi::SVideoFilter filter;
+    getFilterData(filter);
+    iviApi.getVideos(filter);
 }
 
-void CVodIvi::on_btnNextSite_clicked()
-{
-    /*
-    QUrlEx  url;
-    QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-    int     iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-    int     iPage  = ui->cbxSites->currentIndex() + 1;
-
-    url.addQueryItem("page", QString::number(iPage + 1));
-
-    if (sType == "vodfav")
-    {
-        pApiClient->queueRequest(CIptvDefs::REQ_GET_VOD_FAV, url.query());
-    }
-    else
-    {
-        url.addQueryItem("type", sType);
-
-#ifdef _HAS_VOD_LANG
-        url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
-
-        if (iGenre != -1)
-        {
-            url.addQueryItem("genre", QString::number(iGenre));
-        }
-
-        pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, url.query());
-    }
-    */
-}
-
-void CVodIvi::on_cbxSites_activated(int index)
-{
-    /*
-    // something changed ... ?
-    if ((index + 1) != genreInfo.iPage)
-    {
-        QUrlEx  url;
-        url.addQueryItem("page", QString::number(index + 1));
-
-        QString sType  = ui->cbxLastOrBest->itemData(ui->cbxLastOrBest->currentIndex()).toString();
-
-        if (sType == "vodfav")
-        {
-            pApiClient->queueRequest(CIptvDefs::REQ_GET_VOD_FAV, url.query());
-        }
-        else
-        {
-            int iGenre = ui->cbxGenre->itemData(ui->cbxGenre->currentIndex()).toInt();
-
-            url.addQueryItem("type", sType);
-
-#ifdef _HAS_VOD_LANG
-            url.addQueryItem("lang", ui->cbxVodLang->itemData(ui->cbxVodLang->currentIndex()).toString());
-#endif // _HAS_VOD_LANG
-
-            if (iGenre != -1)
-            {
-                url.addQueryItem("genre", QString::number(iGenre));
-            }
-
-            pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, url.query());
-        }
-    }
-    */
-}

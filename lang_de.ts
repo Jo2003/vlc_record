@@ -209,7 +209,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CIviApi</name>
     <message>
-        <location filename="civiapi.cpp" line="67"/>
+        <location filename="civiapi.cpp" line="99"/>
+        <source>We&apos;ve got genres response ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="142"/>
+        <location filename="civiapi.cpp" line="182"/>
+        <source>Error in %1</source>
+        <translation type="unfinished">Fehler in %1</translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="143"/>
+        <location filename="civiapi.cpp" line="183"/>
+        <source>QtJson parser error in %1 %2():%3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="154"/>
+        <source>Parse IVI countries ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="194"/>
+        <source>Parse IVI videos ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="208"/>
+        <source>IVI Response:
+ ==8&lt;==8&lt;==8&lt;==
+%1
+ ==&gt;8==&gt;8==&gt;8==</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="229"/>
         <source>Network error: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3105,9 +3140,13 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="forms/cvodivi.ui" line="22"/>
         <source>Lang.:</source>
-        <translation type="unfinished">Sprache:</translation>
+        <translation type="obsolete">Sprache:</translation>
+    </message>
+    <message>
+        <location filename="forms/cvodivi.ui" line="22"/>
+        <source>Category: </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="forms/cvodivi.ui" line="32"/>
@@ -3128,6 +3167,51 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <location filename="forms/cvodivi.ui" line="157"/>
         <source>Search: </source>
         <translation type="unfinished">Suche: </translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="99"/>
+        <source>Found category &apos;%1&apos;(%2) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="108"/>
+        <source>  \_Genre &apos;%1&apos;(%2) ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="126"/>
+        <source>Found country #%1 &apos;%2&apos;[%3] ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="137"/>
+        <source>Popularity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="138"/>
+        <source>Newest</source>
+        <translation type="unfinished">Neueste</translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="139"/>
+        <source>IVI Rating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="140"/>
+        <source>KP Rating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="141"/>
+        <source>IMDB Rating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="142"/>
+        <source>Budget</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -19,12 +19,12 @@
      <item>
       <widget class="QLabel" name="labVodLang">
        <property name="text">
-        <string>Lang.:</string>
+        <string>Category: </string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxVodLang"/>
+      <widget class="QComboBox" name="cbxIviCategory"/>
      </item>
      <item>
       <widget class="QLabel" name="labGenre">
@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxGenre"/>
+      <widget class="QComboBox" name="cbxIviGenre"/>
      </item>
      <item>
       <widget class="QLabel" name="label_2">
@@ -44,7 +44,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxLastOrBest"/>
+      <widget class="QComboBox" name="cbxIviLastOrBest"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_5">
@@ -60,7 +60,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnPrevSite">
+      <widget class="QPushButton" name="btnIviPrevSite">
        <property name="minimumSize">
         <size>
          <width>28</width>
@@ -96,7 +96,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxSites">
+      <widget class="QComboBox" name="cbxIviSites">
        <property name="maximumSize">
         <size>
          <width>60</width>
@@ -106,7 +106,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnNextSite">
+      <widget class="QPushButton" name="btnIviNextSite">
        <property name="minimumSize">
         <size>
          <width>28</width>
@@ -137,7 +137,7 @@
     </layout>
    </item>
    <item>
-    <widget class="CVodBrowser" name="vodBrowser">
+    <widget class="CVodBrowser" name="iviBrowser">
      <property name="openLinks">
       <bool>false</bool>
      </property>

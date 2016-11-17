@@ -19,15 +19,25 @@ public:
     void setIviSession(const QString& str);
 
 private slots:
-    void on_cbxVodLang_activated(int index);
-    void on_cbxGenre_activated(int index);
-    void on_cbxLastOrBest_activated(int index);
-    void on_btnPrevSite_clicked();
-    void on_btnNextSite_clicked();
-    void on_cbxSites_activated(int index);
+    void on_cbxIviGenre_activated(int index);
+    void on_cbxIviLastOrBest_activated(int index);
+    void on_btnIviPrevSite_clicked();
+    void on_btnIviNextSite_clicked();
+    void on_cbxIviSites_activated(int index);
+    void on_cbxIviCategory_activated(int index);
+    void slotCatchCategories(ivi::CategoryMap cats);
+    void slotCatchCountries(ivi::CountryMap countr);
 
 protected:
-    CIviApi iviApi;
+    void fillSortCbx();
+    void fillSitesCbx(int count);
+    void getFilterData(ivi::SVideoFilter& filter);
+    void getVideos();
+
+    CIviApi          iviApi;
+    ivi::CategoryMap mIviCats;
+    ivi::GenreMap    mIviGenres;
+    ivi::CountryMap  mIviCountries;
 
 private:
     Ui::CVodIvi *ui;
