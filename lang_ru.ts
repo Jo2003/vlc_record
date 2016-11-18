@@ -264,7 +264,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="civiapi.cpp" line="524"/>
-        <source>Network error: %1</source>
+        <source>Network error: #%1: %2</source>
+        <oldsource>Network error: %1</oldsource>
         <translation type="unfinished"></translation>
     </message>
 </context>

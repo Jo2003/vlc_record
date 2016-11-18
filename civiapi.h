@@ -20,7 +20,7 @@
 #include "cparser.h"
 
 #define IVI_REQ_ID          "reqid"
-#define IVI_APP_VERSION     "1001"
+#define IVI_APP_VERSION     "4856"
 #define IVI_GETCONTENT_TMPL "{\"params\":[\"%1\", {\"session\": \"%2\", \"app_version\": " IVI_APP_VERSION "}], \"method\":\"da.content.get\"}"
 
 namespace ivi {

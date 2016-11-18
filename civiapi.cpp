@@ -521,7 +521,7 @@ void CIviApi::getReply(QNetworkReply *reply)
     }
     else
     {
-        mInfo(tr("Network error: %1").arg(reply->errorString()));
+        mInfo(tr("Network error: #%1: %2").arg((int)reply->error()).arg(reply->errorString()));
     }
 
     // mark for deletion ...
