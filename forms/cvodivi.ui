@@ -14,8 +14,20 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>6</number>
+   </property>
+   <property name="topMargin">
+    <number>6</number>
+   </property>
+   <property name="rightMargin">
+    <number>6</number>
+   </property>
+   <property name="bottomMargin">
+    <number>6</number>
+   </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,8,0,8,0,0,0,0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,2,0,2,0,2,0,0,0,1,0">
      <item>
       <widget class="QLabel" name="labVodLang">
        <property name="text">
@@ -91,7 +103,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Page: </string>
+        <string>Pg.</string>
        </property>
       </widget>
      </item>
@@ -138,6 +150,9 @@
    </item>
    <item>
     <widget class="CVodBrowser" name="iviBrowser">
+     <property name="openExternalLinks">
+      <bool>false</bool>
+     </property>
      <property name="openLinks">
       <bool>false</bool>
      </property>

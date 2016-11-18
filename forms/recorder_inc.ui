@@ -872,6 +872,21 @@ color: white;
            <string>IVI Vod</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_8">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
            <item>
             <widget class="CVodIvi" name="iviVod" native="true"/>
            </item>
@@ -1606,6 +1621,11 @@ border-top: 0px;
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>CVodBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>cvodbrowser.h</header>
+  </customwidget>
+  <customwidget>
    <class>QComboBoxEx</class>
    <extends>QComboBox</extends>
    <header>qcomboboxex.h</header>
@@ -1619,11 +1639,6 @@ border-top: 0px;
    <class>CLCDDisplay</class>
    <extends>QLabel</extends>
    <header>clcddisplay.h</header>
-  </customwidget>
-  <customwidget>
-   <class>CVodBrowser</class>
-   <extends>QTextBrowser</extends>
-   <header>cvodbrowser.h</header>
   </customwidget>
   <customwidget>
    <class>CPlayer</class>

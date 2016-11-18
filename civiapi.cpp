@@ -1,7 +1,26 @@
+/*------------------------------ Information ---------------------------*//**
+ *
+ *  $HeadURL$
+ *
+ *  @file     civiapi.cpp
+ *
+ *  @author   Jo2003
+ *
+ *  @date     18.11.2016
+ *
+ *  $Id$
+ *
+ *///------------------------- (c) 2016 by Jo2003  --------------------------
+
 #include "civiapi.h"
 #include <QtJson>
 #include "externals_inc.h"
 
+//------------------------------------------------------------------------------
+//! @brief      Constructs the object.
+//!
+//! @param      parent  The parent
+//------------------------------------------------------------------------------
 CIviApi::CIviApi(QObject *parent) :
     QNetworkAccessManager(parent)
 {
@@ -11,11 +30,21 @@ CIviApi::CIviApi(QObject *parent) :
     connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
 }
 
+//------------------------------------------------------------------------------
+//! @brief      Sets the session key.
+//!
+//! @param[in]  key   The key
+//------------------------------------------------------------------------------
 void CIviApi::setSessionKey(const QString &key)
 {
     mSessionKey = key;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      Gets the genres.
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
 int CIviApi::getGenres()
 {
     // "https://api.ivi.ru/mobileapi/categories/v5/?session=sesstoken"
@@ -38,8 +67,15 @@ int CIviApi::getGenres()
     {
         pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_GENRES);
     }
+
+    return pReply ? 0 : -1;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      Gets the countries.
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
 int CIviApi::getCountries()
 {
     // https://api.ivi.ru/mobileapi/countries/v6/?session=sesstoken"
@@ -62,8 +98,17 @@ int CIviApi::getCountries()
     {
         pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_COUNTRIES);
     }
+
+    return pReply ? 0 : -1;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      Gets the videos.
+//!
+//! @param[in]  filter  video list filter
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
 int CIviApi::getVideos(const ivi::SVideoFilter &filter)
 {
     // "https://api.ivi.ru/mobileapi/videos/v5/?session=sesstoken"
@@ -92,8 +137,53 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
     {
         pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEOS);
     }
+
+    return pReply ? 0 : -1;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      Gets the video information.
+//!
+//! @param[in]  id    The identifier
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getVideoInfo(int id)
+{
+    // "https://api.ivi.ru/mobileapi/videoinfo/v6/?session=sesstoken&id=1"
+    QString req = QString("%1://%2/%3/videoinfo/v6/?session=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(mSessionKey);
+
+    // add id ...
+    req += QString("&id=%1").arg(id);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEOINFO);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      parse ivi categories and genres
+//!
+//! @param[in]  resp  http response
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
 int CIviApi::parseGenres(const QString &resp)
 {
     mInfo(tr("We've got genres response ..."));
@@ -104,6 +194,8 @@ int CIviApi::parseGenres(const QString &resp)
     ivi::CategoryMap cats;
     ivi::SCat        cat;
     ivi::SGenre      genre;
+
+    mGenres.clear();
 
     contentMap = QtJson::parse(resp, bOk).toMap();
 
@@ -130,6 +222,7 @@ int CIviApi::parseGenres(const QString &resp)
                 genre.mNoContent      = mGenre.value("content_count").toInt();
 
                 cat.mGenres.insert(genre.mId, genre);
+                mGenres.insert(genre.mId, genre);
             }
 
             cats.insert(cat.mId, cat);
@@ -149,14 +242,22 @@ int CIviApi::parseGenres(const QString &resp)
     return iRV;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      parse ivi countries
+//!
+//! @param[in]  resp  http response
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
 int CIviApi::parseCountries(const QString &resp)
 {
     mInfo(tr("Parse IVI countries ..."));
     int              iRV = 0;
     bool             bOk;
     QVariantMap      contentMap;
-    ivi::CountryMap  countries;
     ivi::SCountry    country;
+
+    mCountries.clear();
 
     contentMap = QtJson::parse(resp, bOk).toMap();
 
@@ -172,10 +273,10 @@ int CIviApi::parseCountries(const QString &resp)
             country.mName  = mDetails.value("title").toString();
             country.mShort = mDetails.value("code").toString();
 
-            countries.insert(country.mId, country);
+            mCountries.insert(country.mId, country);
         }
 
-        emit sigCountries(countries);
+        emit sigCountries(mCountries);
     }
     else
     {
@@ -189,12 +290,154 @@ int CIviApi::parseCountries(const QString &resp)
     return iRV;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      parse ivi vidoes
+//!
+//! @param[in]  resp  http response
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
 int CIviApi::parseVideos(const QString &resp)
 {
     mInfo(tr("Parse IVI videos ..."));
-    return 0;
+    int                  iRV = 0;
+    bool                 bOk;
+    QVariantMap          contentMap;
+    cparser::VideoList   videos;
+    cparser::SVodVideo   video;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        // video by video
+        foreach (const QVariant& varVideo, contentMap.value("result").toList())
+        {
+            QVariantMap mVideo = varVideo.toMap();
+            video.sImg     = "";
+            video.uiVidId  = mVideo.value("id").toUInt();
+            video.sName    = mVideo.value("title").toString();
+            video.sYear    = QString::number(mVideo.value("year").toInt());
+            video.sCountry = mCountries.value(mVideo.value("country").toInt()).mName;
+
+            QVariantList posters = mVideo.value("poster_originals").toList();
+
+            if (posters.size() > 0)
+            {
+                // get first poster ...
+                QVariantMap poster = posters.value(0).toMap();
+
+                video.sImg = poster.value("path").toString();
+            }
+
+            videos.append(video);
+        }
+
+        emit sigVideoList(videos);
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      parse ivi video info
+//!
+//! @param[in]  resp  http response
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseVideoInfo(const QString &resp)
+{
+    mInfo(tr("Parse IVI video info ..."));
+    int                  iRV = 0;
+    bool                 bOk;
+    QVariantMap          contentMap;
+    cparser::SVodVideo   video;
+
+    video.bProtected       = false;
+    video.bFavourit        = false;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        QVariantMap mVideo = contentMap.value("result").toMap();
+        video.uiVidId  = mVideo.value("id").toUInt();
+        video.sName    = mVideo.value("title").toString();
+
+        if (!mVideo.value("orig_title").toString().isEmpty())
+        {
+            video.sName += " (" + mVideo.value("orig_title").toString() + ")";
+        }
+
+        video.sYear    = QString::number(mVideo.value("year").toInt());
+        video.sCountry = mCountries.value(mVideo.value("country").toInt()).mName;
+
+        // genres ...
+        foreach(QVariant rawGenre, mVideo.value("genres").toList())
+        {
+            int genId = rawGenre.toInt();
+            if (!video.sGenres.isEmpty())
+            {
+                video.sGenres += ", ";
+            }
+            video.sGenres += mGenres.value(genId).mTitle;
+        }
+
+        // actors ...
+        foreach(QVariant rawActor, mVideo.value("artists").toList())
+        {
+            QString actor = rawActor.toString();
+            if (!video.sActors.isEmpty())
+            {
+                video.sActors += ", ";
+            }
+            video.sActors += actor;
+        }
+
+        // description ...
+        video.sDescr           = mVideo.value("description").toString();
+        video.uiLength         = mVideo.value("duration_minutes").toInt();
+        video.sImdbRating      = mVideo.value("imdb_rating").toString();
+        video.sKinopoiskRating = mVideo.value("kp_rating").toString();
+
+        QVariantList posters = mVideo.value("poster_originals").toList();
+
+        if (posters.size() > 0)
+        {
+            // get first poster ...
+            QVariantMap poster = posters.value(0).toMap();
+
+            video.sImg = poster.value("path").toString();
+        }
+
+        emit sigVideoInfo(video);
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      Gets the network reply.
+//!
+//! @param      reply  pointer to network reply
+//------------------------------------------------------------------------------
 void CIviApi::getReply(QNetworkReply *reply)
 {
     ivi::eIviReq req = (ivi::eIviReq)reply->property(IVI_REQ_ID).toInt();
@@ -219,6 +462,9 @@ void CIviApi::getReply(QNetworkReply *reply)
             break;
         case ivi::IVI_COUNTRIES:
             parseCountries(resp);
+            break;
+        case ivi::IVI_VIDEOINFO:
+            parseVideoInfo(resp);
             break;
         default:
             break;

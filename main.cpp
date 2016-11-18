@@ -102,6 +102,8 @@ int main(int argc, char *argv[])
     qRegisterMetaType<QSpeedDataVector>("QSpeedDataVector");
     qRegisterMetaType<ivi::CategoryMap>("ivi::CategoryMap");
     qRegisterMetaType<ivi::CountryMap>("ivi::CountryMap");
+    qRegisterMetaType<cparser::VideoList>("cparser::VideoList");
+    qRegisterMetaType<cparser::SVodVideo>("cparser::SVodVideo");
 
 #ifdef Q_OS_MACX
     if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )

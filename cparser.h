@@ -195,6 +195,11 @@ namespace cparser
 
    /// \brief define type for bit rates
    typedef QMap<int, QString> QBitratesMap;
+
+   ///
+   /// \brief VideoList
+   ///
+   typedef QVector<SVodVideo> VideoList;
 }
 
 // make life easier ...

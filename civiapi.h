@@ -1,9 +1,24 @@
-#ifndef CIVIAPI_H
-#define CIVIAPI_H
+/*------------------------------ Information ---------------------------*//**
+ *
+ *  $HeadURL$
+ *
+ *  @file     civiapi.h
+ *
+ *  @author   Jo2003
+ *
+ *  @date     18.11.2016
+ *
+ *  $Id$
+ *
+ *///------------------------- (c) 2016 by Jo2003  --------------------------
+#ifndef __20161118_CIVIAPI_H
+    #define __20161118_CIVIAPI_H
 
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QMap>
+#include "cparser.h"
+
 #define IVI_REQ_ID "reqid"
 
 namespace ivi {
@@ -56,6 +71,9 @@ namespace ivi {
     };
 }
 
+///
+/// \brief The CIviApi class
+///
 class CIviApi : public QNetworkAccessManager
 {
     Q_OBJECT
@@ -69,21 +87,29 @@ public:
     int getGenres();
     int getCountries();
     int getVideos(const ivi::SVideoFilter& filter);
+    int getVideoInfo(int id);
 
     // parse
     int parseGenres(const QString& resp);
     int parseCountries(const QString& resp);
     int parseVideos(const QString& resp);
+    int parseVideoInfo(const QString& resp);
 
 signals:
     void sigCategories(ivi::CategoryMap cats);
     void sigCountries(ivi::CountryMap countr);
+    void sigVideoList(cparser::VideoList vidoes);
+    void sigVideoInfo(cparser::SVodVideo video);
     void sigError(int iType, const QString& cap, const QString& descr);
 
 private slots:
     void getReply(QNetworkReply* reply);
 
 public slots:
+
+protected:
+    ivi::CountryMap  mCountries;
+    ivi::GenreMap    mGenres;
 
 private:
     QString mProtocol;
@@ -92,4 +118,4 @@ private:
     QString mSessionKey;
 };
 
-#endif // CIVIAPI_H
+#endif // __20161118_CIVIAPI_H
