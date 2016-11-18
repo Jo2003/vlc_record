@@ -19,7 +19,9 @@
 #include <QMap>
 #include "cparser.h"
 
-#define IVI_REQ_ID "reqid"
+#define IVI_REQ_ID          "reqid"
+#define IVI_APP_VERSION     "1001"
+#define IVI_GETCONTENT_TMPL "{\"params\":[\"%1\", {\"session\": \"%2\", \"app_version\": " IVI_APP_VERSION "}], \"method\":\"da.content.get\"}"
 
 namespace ivi {
 
@@ -36,6 +38,7 @@ namespace ivi {
         IVI_GENRES,
         IVI_VIDEOS,
         IVI_VIDEOINFO,
+        IVI_FILES,
         IVI_COUNTRIES,
         IVI_ADD_FAV,
         IVI_DEL_FAV,
@@ -88,12 +91,14 @@ public:
     int getCountries();
     int getVideos(const ivi::SVideoFilter& filter);
     int getVideoInfo(int id);
+    int getFiles(int id);
 
     // parse
     int parseGenres(const QString& resp);
     int parseCountries(const QString& resp);
     int parseVideos(const QString& resp);
     int parseVideoInfo(const QString& resp);
+    int parseFiles(const QString& resp);
 
 signals:
     void sigCategories(ivi::CategoryMap cats);

@@ -178,6 +178,38 @@ int CIviApi::getVideoInfo(int id)
 }
 
 //------------------------------------------------------------------------------
+//! @brief      Gets the content files.
+//!
+//! @param[in]  id    The identifier
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getFiles(int id)
+{
+    QString url = QString("%1://%2/light/")
+            .arg(mProtocol)
+            .arg(mHost);
+
+    QString postData = QString(IVI_GETCONTENT_TMPL).arg(id).arg(mSessionKey);
+
+#ifdef __TRACE
+    mInfo(tr("Post '%1' to url '%2'").arg(postData).arg(url));
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(url));
+
+    QNetworkReply* pReply = QNetworkAccessManager::post(request, postData.toUtf8());
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_FILES);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
 //! @brief      parse ivi categories and genres
 //!
 //! @param[in]  resp  http response
@@ -419,6 +451,8 @@ int CIviApi::parseVideoInfo(const QString &resp)
             video.sImg = poster.value("path").toString();
         }
 
+        getFiles(video.uiVidId);
+
         emit sigVideoInfo(video);
     }
     else
@@ -431,6 +465,18 @@ int CIviApi::parseVideoInfo(const QString &resp)
     }
 
     return iRV;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      parse ivi content files
+//!
+//! @param[in]  resp  files response
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseFiles(const QString &resp)
+{
+    mInfo(tr("Parse IVI file info ..."));
 }
 
 //------------------------------------------------------------------------------
@@ -465,6 +511,9 @@ void CIviApi::getReply(QNetworkReply *reply)
             break;
         case ivi::IVI_VIDEOINFO:
             parseVideoInfo(resp);
+            break;
+        case ivi::IVI_FILES:
+            parseFiles(resp);
             break;
         default:
             break;
