@@ -107,7 +107,9 @@ SOURCES += main.cpp \
     qstrstandarddlg.cpp \
     qspeedtestdlg.cpp \
     cvodivi.cpp \
-    civiapi.cpp
+    civiapi.cpp \
+    ccmac_bf.cpp
+
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -174,7 +176,9 @@ HEADERS += recorder.h \
     qstrstandarddlg.h \
     qspeedtestdlg.h \
     cvodivi.h \
-    civiapi.h
+    civiapi.h \
+    ccmac_bf.h
+
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -319,6 +323,9 @@ contains(DEFINES, _USE_QJSON) {
     CONFIG(debug, debug|release):DESTDIR = debug
     else:DESTDIR = release
 }
+
+# blowfish (bubbles ...)
+include (qblowfish/src/qblowfish.pri)
 
 # translation stuff ...
 include (language.pri)
