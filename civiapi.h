@@ -17,11 +17,13 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QMap>
+#include <QTimer>
+#include "ccmac_bf.h"
 #include "cparser.h"
 
-#define IVI_REQ_ID          "reqid"
-#define IVI_APP_VERSION     "4856"
-#define IVI_GETCONTENT_TMPL "{\"params\":[\"%1\", {\"session\": \"%2\", \"app_version\": " IVI_APP_VERSION "}], \"method\":\"da.content.get\"}"
+#define IVI_REQ_ID            "reqid"
+#define IVI_GETCONTENT_TMPL   "{\"params\":[\"%1\", {\"session\": \"%2\", \"app_version\": %3}], \"method\":\"da.content.get\"}"
+#define IVI_GETTIMESTAMP_TMPL "{\"method\": \"da.timestamp.get\", \"params\": []}"
 
 namespace ivi {
 
@@ -40,6 +42,7 @@ namespace ivi {
         IVI_VIDEOINFO,
         IVI_FILES,
         IVI_COUNTRIES,
+        IVI_TIMESTAMP,
         IVI_ADD_FAV,
         IVI_DEL_FAV,
         IVI_UNKNOWN=256
@@ -83,6 +86,7 @@ class CIviApi : public QNetworkAccessManager
 
 public:
     CIviApi(QObject *parent = 0);
+    virtual ~CIviApi();
 
     void setSessionKey(const QString& key);
 
@@ -99,6 +103,7 @@ public:
     int parseVideos(const QString& resp);
     int parseVideoInfo(const QString& resp);
     int parseFiles(const QString& resp);
+    int parseTimeStamp(const QString& resp);
 
 signals:
     void sigCategories(ivi::CategoryMap cats);
@@ -106,6 +111,9 @@ signals:
     void sigVideoList(cparser::VideoList vidoes);
     void sigVideoInfo(cparser::SVodVideo video);
     void sigError(int iType, const QString& cap, const QString& descr);
+
+public slots:
+    int getTimeStamp();
 
 private slots:
     void getReply(QNetworkReply* reply);
@@ -117,10 +125,12 @@ protected:
     ivi::GenreMap    mGenres;
 
 private:
-    QString mProtocol;
-    QString mHost;
-    QString mQueryPrefix;
-    QString mSessionKey;
+    QString   mProtocol;
+    QString   mHost;
+    QString   mQueryPrefix;
+    QString   mSessionKey;
+    QString   mTs;
+    CCMAC_Bf *pHash;
 };
 
 #endif // __20161118_CIVIAPI_H

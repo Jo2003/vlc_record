@@ -209,53 +209,66 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CIviApi</name>
     <message>
-        <location filename="civiapi.cpp" line="196"/>
+        <location filename="civiapi.cpp" line="221"/>
+        <location filename="civiapi.cpp" line="246"/>
         <source>Post &apos;%1&apos; to url &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="221"/>
+        <location filename="civiapi.cpp" line="272"/>
         <source>We&apos;ve got genres response ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="267"/>
-        <location filename="civiapi.cpp" line="315"/>
-        <location filename="civiapi.cpp" line="372"/>
-        <location filename="civiapi.cpp" line="460"/>
+        <location filename="civiapi.cpp" line="318"/>
+        <location filename="civiapi.cpp" line="366"/>
+        <location filename="civiapi.cpp" line="423"/>
+        <location filename="civiapi.cpp" line="511"/>
+        <location filename="civiapi.cpp" line="553"/>
         <source>Error in %1</source>
         <translation type="unfinished">Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="268"/>
-        <location filename="civiapi.cpp" line="316"/>
-        <location filename="civiapi.cpp" line="373"/>
-        <location filename="civiapi.cpp" line="461"/>
+        <location filename="civiapi.cpp" line="319"/>
+        <location filename="civiapi.cpp" line="367"/>
+        <location filename="civiapi.cpp" line="424"/>
+        <location filename="civiapi.cpp" line="512"/>
+        <location filename="civiapi.cpp" line="554"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="286"/>
+        <location filename="civiapi.cpp" line="337"/>
         <source>Parse IVI countries ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="334"/>
+        <location filename="civiapi.cpp" line="385"/>
         <source>Parse IVI videos ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="391"/>
+        <location filename="civiapi.cpp" line="442"/>
         <source>Parse IVI video info ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="479"/>
+        <location filename="civiapi.cpp" line="530"/>
         <source>Parse IVI file info ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="497"/>
+        <location filename="civiapi.cpp" line="535"/>
+        <source>Parse IVI time stamp ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="546"/>
+        <source>Using time stamp &apos;%1&apos; for the next 9 minutes ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="578"/>
         <source>IVI Response:
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -263,7 +276,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="524"/>
+        <location filename="civiapi.cpp" line="608"/>
         <source>Network error: #%1: %2</source>
         <oldsource>Network error: %1</oldsource>
         <translation type="unfinished"></translation>
@@ -3206,52 +3219,52 @@ or start time is later than end time!</source>
         <translation type="unfinished">Поиск:</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="167"/>
+        <location filename="cvodivi.cpp" line="168"/>
         <source>Found category &apos;%1&apos;(%2) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="174"/>
+        <location filename="cvodivi.cpp" line="175"/>
         <source>  \_Genre &apos;%1&apos;(%2) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="192"/>
+        <location filename="cvodivi.cpp" line="193"/>
         <source>Found country #%1 &apos;%2&apos;[%3] ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="212"/>
+        <location filename="cvodivi.cpp" line="213"/>
         <source>Found Video #%1 &apos;%2&apos;(%3 %4) ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="240"/>
+        <location filename="cvodivi.cpp" line="241"/>
         <source>Popularity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="241"/>
+        <location filename="cvodivi.cpp" line="242"/>
         <source>Newest</source>
         <translation type="unfinished">Последние</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="242"/>
+        <location filename="cvodivi.cpp" line="243"/>
         <source>IVI Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="243"/>
+        <location filename="cvodivi.cpp" line="244"/>
         <source>KP Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="244"/>
+        <location filename="cvodivi.cpp" line="245"/>
         <source>IMDB Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="245"/>
+        <location filename="cvodivi.cpp" line="246"/>
         <source>Budget</source>
         <translation type="unfinished"></translation>
     </message>

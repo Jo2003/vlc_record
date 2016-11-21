@@ -16,6 +16,11 @@
 #include <QtJson>
 #include "externals_inc.h"
 
+#define IVI_APP_VERSION       4856                                  ///< replace with correct data!
+#define IVI_KEY               "99328c878d1d6eb9e02a8f80470390e4"    ///< replace with correct data!
+#define IVI_K1                "e3572989c2407c14"                    ///< replace with correct data!
+#define IVI_K2                "c6ae53138480f833"                    ///< replace with correct data!
+
 //------------------------------------------------------------------------------
 //! @brief      Constructs the object.
 //!
@@ -27,7 +32,20 @@ CIviApi::CIviApi(QObject *parent) :
     mProtocol    = "https";
     mHost        = "api.ivi.ru";
     mQueryPrefix = "mobileapi";
+    pHash        = new CCMAC_Bf(IVI_KEY, IVI_K1, IVI_K2);
     connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
+}
+
+//------------------------------------------------------------------------------
+//! @brief      Destroys the object.
+//------------------------------------------------------------------------------
+CIviApi::~CIviApi()
+{
+    if (pHash)
+    {
+        delete pHash;
+        pHash = NULL;
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -190,7 +208,14 @@ int CIviApi::getFiles(int id)
             .arg(mProtocol)
             .arg(mHost);
 
-    QString postData = QString(IVI_GETCONTENT_TMPL).arg(id).arg(mSessionKey);
+    QString postData = QString(IVI_GETCONTENT_TMPL)
+            .arg(id)
+            .arg(mSessionKey)
+            .arg(IVI_APP_VERSION);
+
+    url += QString("?app_version=%1").arg(IVI_APP_VERSION);
+    url += QString("&ts=%1").arg(mTs);
+    url += QString("&sign=%1").arg(pHash->sign(postData));
 
 #ifdef __TRACE
     mInfo(tr("Post '%1' to url '%2'").arg(postData).arg(url));
@@ -208,6 +233,37 @@ int CIviApi::getFiles(int id)
 
     return pReply ? 0 : -1;
 }
+
+//------------------------------------------------------------------------------
+//! @brief      Gets the time stamp.
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getTimeStamp()
+{
+    QString url = QString("%1://%2/light/")
+            .arg(mProtocol)
+            .arg(mHost);
+
+    QString postData = IVI_GETTIMESTAMP_TMPL;
+
+#ifdef __TRACE
+    mInfo(tr("Post '%1' to url '%2'").arg(postData).arg(url));
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(url));
+
+    QNetworkReply* pReply = QNetworkAccessManager::post(request, postData.toUtf8());
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_TIMESTAMP);
+    }
+
+    return pReply ? 0 : -1;
+}
+
 
 //------------------------------------------------------------------------------
 //! @brief      parse ivi categories and genres
@@ -480,6 +536,43 @@ int CIviApi::parseFiles(const QString &resp)
 }
 
 //------------------------------------------------------------------------------
+//! @brief      parse time stamp reply
+//!
+//! @param[in]  resp  ivi response to parse
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseTimeStamp(const QString &resp)
+{
+    mInfo(tr("Parse IVI time stamp ..."));
+    int                  iRV = 0;
+    bool                 bOk;
+    QVariantMap          contentMap;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        mTs = contentMap.value("result").toString();
+
+        mInfo(tr("Using time stamp '%1' for the next 9 minutes ...").arg(mTs));
+
+        // update in 9 minutes ...
+        QTimer::singleShot(9 * 60 * 1000, this, SLOT(getTimeStamp()));
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}
+
+//------------------------------------------------------------------------------
 //! @brief      Gets the network reply.
 //!
 //! @param      reply  pointer to network reply
@@ -514,6 +607,9 @@ void CIviApi::getReply(QNetworkReply *reply)
             break;
         case ivi::IVI_FILES:
             parseFiles(resp);
+            break;
+        case ivi::IVI_TIMESTAMP:
+            parseTimeStamp(resp);
             break;
         default:
             break;

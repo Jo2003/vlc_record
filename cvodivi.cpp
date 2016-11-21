@@ -59,6 +59,7 @@ void CVodIvi::setIviSession(const QString &str)
     iviApi.setSessionKey(str);
     fillSortCbx();
     iviApi.getCountries();
+    iviApi.getTimeStamp();
 }
 
 //------------------------------------------------------------------------------
