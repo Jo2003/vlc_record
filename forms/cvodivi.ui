@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>632</width>
+    <width>634</width>
     <height>544</height>
    </rect>
   </property>
@@ -29,7 +29,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,2,0,2,0,2,0,0,0,1,0">
      <item>
-      <widget class="QLabel" name="labVodLang">
+      <widget class="QLabel" name="labIviCategory">
        <property name="text">
         <string>Category: </string>
        </property>
@@ -39,7 +39,7 @@
       <widget class="QComboBox" name="cbxIviCategory"/>
      </item>
      <item>
-      <widget class="QLabel" name="labGenre">
+      <widget class="QLabel" name="labIviGenre">
        <property name="text">
         <string>Genre: </string>
        </property>
@@ -49,7 +49,7 @@
       <widget class="QComboBox" name="cbxIviGenre"/>
      </item>
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="labelIviOrderBy">
        <property name="text">
         <string>Order: </string>
        </property>
@@ -101,7 +101,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="labIviPg">
        <property name="text">
         <string>Pg.</string>
        </property>
@@ -161,7 +161,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
      <item>
-      <widget class="QLabel" name="labVodSearch">
+      <widget class="QLabel" name="labIviSearch">
        <property name="styleSheet">
         <string notr="true">QLabel#labSearch {
 font-weight: bold;
@@ -174,7 +174,7 @@ color: white;
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineVodSearch">
+      <widget class="QLineEdit" name="lineIviSearch">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -192,7 +192,7 @@ color: white;
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="btnCleanVodSearch">
+      <widget class="QPushButton" name="btnCleanIviSearch">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
