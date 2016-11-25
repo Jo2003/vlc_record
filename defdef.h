@@ -131,7 +131,7 @@
 #define GPU_ACC_TOKEN     ":ffmpeg-hw"    // mrl option to use GPU acceleration
 #define EPG_UPD_TMOUT     120             // make sure epg update comes not to much
 #define MAX_LVLC_ARGS     16              // max arguments to give to libVLC at creation
-#define VOD_POSTER_WIDTH  120             // picture size for VOD (width)
+#define VOD_POSTER_WIDTH  140             // picture size for VOD (width)
 #define VOD_POSTER_HEIGHT 170             // picture size for VOD (height)
 #define HTTP_REQ_TIMEOUT  90000           // 90 seconds (this should be enough)
 #define PAUSE_WORKS_FOR_SECS 300          // we assume pause works well for up to 5 minutes ...

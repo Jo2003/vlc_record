@@ -478,14 +478,22 @@ int CIviApi::parseVideos(const QString &resp)
             video.sYear    = QString::number(mVideo.value("year").toInt());
             video.sCountry = mCountries.value(mVideo.value("country").toInt()).mName;
 
-            QVariantList posters = mVideo.value("poster_originals").toList();
+            QStringList imgSrc;
+            imgSrc << "poster_originals" << "thumbnails" << "thumb_originals";
 
-            if (posters.size() > 0)
+            foreach (QString src, imgSrc)
             {
-                // get first poster ...
-                QVariantMap poster = posters.value(0).toMap();
+                QVariantList posters = mVideo.value(src).toList();
 
-                video.sImg = poster.value("path").toString();
+                if (posters.size() > 0)
+                {
+                    // get first poster ...
+                    QVariantMap poster = posters.value(0).toMap();
+
+                    video.sImg = poster.value("path").toString();
+
+                    break;
+                }
             }
 
             videos.append(video);
@@ -567,14 +575,22 @@ int CIviApi::parseVideoInfo(const QString &resp)
         video.sImdbRating      = mVideo.value("imdb_rating").toString();
         video.sKinopoiskRating = mVideo.value("kp_rating").toString();
 
-        QVariantList posters = mVideo.value("poster_originals").toList();
+        QStringList imgSrc;
+        imgSrc << "poster_originals" << "thumbnails" << "thumb_originals";
 
-        if (posters.size() > 0)
+        foreach (QString src, imgSrc)
         {
-            // get first poster ...
-            QVariantMap poster = posters.value(0).toMap();
+            QVariantList posters = mVideo.value(src).toList();
 
-            video.sImg = poster.value("path").toString();
+            if (posters.size() > 0)
+            {
+                // get first poster ...
+                QVariantMap poster = posters.value(0).toMap();
+
+                video.sImg = poster.value("path").toString();
+
+                break;
+            }
         }
 
         mCurrentVideo = video;

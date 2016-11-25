@@ -209,75 +209,75 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CIviApi</name>
     <message>
-        <location filename="civiapi.cpp" line="267"/>
-        <location filename="civiapi.cpp" line="298"/>
+        <location filename="civiapi.cpp" line="253"/>
+        <location filename="civiapi.cpp" line="284"/>
         <source>Post &apos;%1&apos; to url &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="361"/>
+        <location filename="civiapi.cpp" line="347"/>
         <source>We&apos;ve got genres response ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="342"/>
-        <location filename="civiapi.cpp" line="407"/>
-        <location filename="civiapi.cpp" line="455"/>
-        <location filename="civiapi.cpp" line="512"/>
-        <location filename="civiapi.cpp" line="601"/>
-        <location filename="civiapi.cpp" line="670"/>
-        <location filename="civiapi.cpp" line="707"/>
+        <location filename="civiapi.cpp" line="328"/>
+        <location filename="civiapi.cpp" line="393"/>
+        <location filename="civiapi.cpp" line="441"/>
+        <location filename="civiapi.cpp" line="506"/>
+        <location filename="civiapi.cpp" line="603"/>
+        <location filename="civiapi.cpp" line="672"/>
+        <location filename="civiapi.cpp" line="709"/>
         <source>Error in %1</source>
         <translation type="unfinished">Fehler in %1</translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="324"/>
+        <location filename="civiapi.cpp" line="310"/>
         <source>Parse IVI login respone ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="343"/>
-        <location filename="civiapi.cpp" line="408"/>
-        <location filename="civiapi.cpp" line="456"/>
-        <location filename="civiapi.cpp" line="513"/>
-        <location filename="civiapi.cpp" line="602"/>
-        <location filename="civiapi.cpp" line="671"/>
-        <location filename="civiapi.cpp" line="708"/>
+        <location filename="civiapi.cpp" line="329"/>
+        <location filename="civiapi.cpp" line="394"/>
+        <location filename="civiapi.cpp" line="442"/>
+        <location filename="civiapi.cpp" line="507"/>
+        <location filename="civiapi.cpp" line="604"/>
+        <location filename="civiapi.cpp" line="673"/>
+        <location filename="civiapi.cpp" line="710"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="426"/>
+        <location filename="civiapi.cpp" line="412"/>
         <source>Parse IVI countries ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="474"/>
+        <location filename="civiapi.cpp" line="460"/>
         <source>Parse IVI videos ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="531"/>
+        <location filename="civiapi.cpp" line="525"/>
         <source>Parse IVI video info ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="620"/>
+        <location filename="civiapi.cpp" line="622"/>
         <source>Parse IVI file info ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="689"/>
+        <location filename="civiapi.cpp" line="691"/>
         <source>Parse IVI time stamp ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="700"/>
+        <location filename="civiapi.cpp" line="702"/>
         <source>Using time stamp &apos;%1&apos; for the next 9 minutes ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="732"/>
+        <location filename="civiapi.cpp" line="734"/>
         <source>IVI Response:
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -285,7 +285,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="765"/>
+        <location filename="civiapi.cpp" line="767"/>
         <source>Network error: #%1: %2</source>
         <oldsource>Network error: %1</oldsource>
         <translation type="unfinished"></translation>
