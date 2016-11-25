@@ -344,6 +344,9 @@ private slots:
     void rerequestStream(const QString &resp);
     void slotIviInfo(const QString &resp);
 
+    void slotIviPlay(QString url);
+    void slotIviRecord(QString url);
+
 signals:
     void sigShow ();
     void sigHide ();

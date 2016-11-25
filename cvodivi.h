@@ -35,6 +35,7 @@ public:
     virtual ~CVodIvi();
     void setPixCache(CPixLoader* cache);
     void setIviSession(const QString& str);
+    CVodBrowser *iviBrowser();
 
 private slots:
     void on_cbxIviGenre_activated(int index);
@@ -61,6 +62,10 @@ protected:
 
 private:
     Ui::CVodIvi *ui;
+
+signals:
+    void sigPlay(QString url);
+    void sigRecord(QString url);
 };
 
 #endif // __20161118_CVODIVI_H

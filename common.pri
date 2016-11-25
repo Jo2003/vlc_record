@@ -177,7 +177,8 @@ HEADERS += recorder.h \
     qspeedtestdlg.h \
     cvodivi.h \
     civiapi.h \
-    ccmac_bf.h
+    ccmac_bf.h \
+    ivi_kartina_credits.h
 
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \

@@ -56,10 +56,18 @@ void CVodIvi::setPixCache(CPixLoader *cache)
 //------------------------------------------------------------------------------
 void CVodIvi::setIviSession(const QString &str)
 {
-    iviApi.setSessionKey(str);
+    iviApi.setVerimatrixKey(str);
     fillSortCbx();
-    iviApi.getCountries();
-    iviApi.getTimeStamp();
+}
+
+//------------------------------------------------------------------------------
+//! @brief      get pointer to vod browser
+//!
+//! @return     pointer to vod browser
+//------------------------------------------------------------------------------
+CVodBrowser *CVodIvi::iviBrowser()
+{
+    return ui->iviBrowser;
 }
 
 //------------------------------------------------------------------------------
@@ -304,6 +312,7 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
 {
     QString action = arg1.queryItemValue("action");
     int     vodId;
+    QString sUrl;
 
     if (action == "vod_info")
     {
@@ -315,4 +324,22 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
        // re-create last used site and position ...
        ui->iviBrowser->recreateVodList();
     }
+    else if (action == "play")
+    {
+        // ivi should have set video_url ...
+        sUrl = QUrlEx::fromPercentEncoding(arg1.queryItemValue("video_url").toUtf8());
+        mInfo(tr("Start ivi play with URL %1 ...").arg(sUrl));
+        // sUrl = QString("{\"url\": \"%1\"}").arg(sUrl);
+        emit sigPlay(sUrl);
+    }
+    else if (action == "record")
+    {
+        // ivi should have set video_url ...
+        sUrl = QUrlEx::fromPercentEncoding(arg1.queryItemValue("video_url").toUtf8());
+        mInfo(tr("Start ivi record with URL %1 ...").arg(sUrl));
+        // sUrl = QString("{\"url\": \"%1\"}").arg(sUrl);
+        emit sigRecord(sUrl);
+    }
+
+
 }

@@ -285,6 +285,10 @@ Recorder::Recorder(QWidget *parent)
    connect (&missionControl, SIGNAL(sigFwd()), this, SLOT(slotFwd()));
    connect (&missionControl, SIGNAL(sigMute(bool)), ui->player, SLOT(slotMute()));
 
+   // IVI stuff
+   connect (ui->iviVod, SIGNAL(sigPlay(QString)), this, SLOT(slotIviPlay(QString)));
+   connect (ui->iviVod, SIGNAL(sigRecord(QString)), this, SLOT(slotIviRecord(QString)));
+
 #ifdef _TASTE_IPTV_RECORD
    connect (pMnLangFilter, SIGNAL(triggered(QAction*)), this, SLOT(slotLangFilterChannelList(QAction*)));
 #endif // _TASTE_IPTV_RECORD
@@ -2001,6 +2005,86 @@ void Recorder:: slotIviInfo(const QString &resp)
     if (!pApiParser->parseIviInfo(resp, mIviInfo))
     {
         ui->iviVod->setIviSession(mIviInfo.ivi_id);
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   play video from ivi
+//
+//! \author  Jo2003
+//! \date    25.11.2016
+//
+//! \param   url[in] url of video to play
+//
+//---------------------------------------------------------------------------
+void Recorder::slotIviPlay(QString url)
+{
+    if (AllowAction(IncPlay::PS_PLAY))
+    {
+        showInfo.cleanShowInfo();
+        showInfo.setShowName(ui->iviVod->iviBrowser()->getName());
+        showInfo.setShowType(ShowInfo::VOD);
+        showInfo.setPlayState(ePlayState);
+        showInfo.setHtmlDescr(ui->iviVod->iviBrowser()->getShortContent());
+        showInfo.setStartTime(0);
+        showInfo.setEndTime(ui->vodBrowser->getLength());
+
+        ui->labState->setHeader(tr("Video On Demand"));
+        ui->labState->setFooter(showInfo.showName());
+
+        StartVlcPlay(url);
+        showInfo.setPlayState(IncPlay::PS_PLAY);
+    }
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   record video from ivi
+//
+//! \author  Jo2003
+//! \date    25.11.2016
+//
+//! \param   url[in] url of video to record
+//
+//---------------------------------------------------------------------------
+void Recorder::slotIviRecord(QString url)
+{
+    if (AllowAction(IncPlay::PS_RECORD))
+    {
+        showInfo.cleanShowInfo();
+        showInfo.setShowName(ui->iviVod->iviBrowser()->getName());
+        showInfo.setShowType(ShowInfo::VOD);
+        showInfo.setPlayState(ePlayState);
+        showInfo.setHtmlDescr(ui->iviVod->iviBrowser()->getShortContent());
+        showInfo.setStartTime(0);
+        showInfo.setEndTime(ui->vodBrowser->getLength());
+
+        ui->labState->setHeader(tr("Video On Demand"));
+        ui->labState->setFooter(showInfo.showName());
+
+        // use own downloader ... ?
+        if (!vlcCtrl.ownDwnld())
+        {
+           StartVlcRec(url, CleanShowName(showInfo.showName()));
+        }
+        else
+        {
+           if (vlcCtrl.withLibVLC())
+           {
+              ui->player->silentStop();
+           }
+           else if (vlcCtrl.IsRunning())
+           {
+              vlcCtrl.stop();
+           }
+
+           // stream loader doesn't support adds so far ... ;-)
+           showInfo.setAdUrl("");
+           StartStreamDownload(url, CleanShowName(showInfo.showName()), "m4v");
+        }
+
+        showInfo.setPlayState(IncPlay::PS_RECORD);
     }
 }
 

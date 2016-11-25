@@ -15,11 +15,7 @@
 #include "civiapi.h"
 #include <QtJson>
 #include "externals_inc.h"
-
-#define IVI_APP_VERSION       4856                                  ///< replace with correct data!
-#define IVI_KEY               "99328c878d1d6eb9e02a8f80470390e4"    ///< replace with correct data!
-#define IVI_K1                "e3572989c2407c14"                    ///< replace with correct data!
-#define IVI_K2                "c6ae53138480f833"                    ///< replace with correct data!
+#include "ivi_kartina_credits.h"
 
 //------------------------------------------------------------------------------
 //! @brief      Constructs the object.
@@ -53,9 +49,33 @@ CIviApi::~CIviApi()
 //!
 //! @param[in]  key   The key
 //------------------------------------------------------------------------------
-void CIviApi::setSessionKey(const QString &key)
+void CIviApi::setVerimatrixKey(const QString &key)
 {
-    mSessionKey = key;
+    mVerimatrix = key;
+
+    // "https://api.ivi.ru/mobileapi/user/login/verimatrix/v2?verimatrix=abc&app_version=1234"
+    QString req = QString("%1://%2/%3/user/login/verimatrix/v5?verimatrix=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(mVerimatrix);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_SESSION);
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -71,6 +91,9 @@ int CIviApi::getGenres()
             .arg(mHost)
             .arg(mQueryPrefix)
             .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
 
 #ifdef __TRACE
     mInfo(req);
@@ -102,6 +125,9 @@ int CIviApi::getCountries()
             .arg(mHost)
             .arg(mQueryPrefix)
             .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
 
 #ifdef __TRACE
     mInfo(req);
@@ -135,6 +161,9 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
             .arg(mHost)
             .arg(mQueryPrefix)
             .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
 
     // add filter stuff ...
     req += QString("&sort=%1").arg(filter.mSort);
@@ -174,6 +203,9 @@ int CIviApi::getVideoInfo(int id)
             .arg(mHost)
             .arg(mQueryPrefix)
             .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
 
     // add id ...
     req += QString("&id=%1").arg(id);
@@ -215,7 +247,7 @@ int CIviApi::getFiles(int id)
 
     url += QString("?app_version=%1").arg(IVI_APP_VERSION);
     url += QString("&ts=%1").arg(mTs);
-    url += QString("&sign=%1").arg(pHash->sign(postData));
+    url += QString("&sign=%1").arg(pHash->sign(mTs + postData));
 
 #ifdef __TRACE
     mInfo(tr("Post '%1' to url '%2'").arg(postData).arg(url));
@@ -223,6 +255,7 @@ int CIviApi::getFiles(int id)
 
     QNetworkRequest request;
     request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QNetworkReply* pReply = QNetworkAccessManager::post(request, postData.toUtf8());
 
@@ -253,6 +286,7 @@ int CIviApi::getTimeStamp()
 
     QNetworkRequest request;
     request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QNetworkReply* pReply = QNetworkAccessManager::post(request, postData.toUtf8());
 
@@ -264,6 +298,42 @@ int CIviApi::getTimeStamp()
     return pReply ? 0 : -1;
 }
 
+//------------------------------------------------------------------------------
+//! @brief      parse ivi login stuff
+//!
+//! @param[in]  resp  http response
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseSession(const QString &resp)
+{
+    mInfo(tr("Parse IVI login respone ..."));
+    int              iRV = 0;
+    bool             bOk;
+    QVariantMap      contentMap;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        contentMap  = contentMap.value("result").toMap();
+        mSessionKey = contentMap.value("session").toString();
+
+        getCountries();
+        getTimeStamp();
+
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}
 
 //------------------------------------------------------------------------------
 //! @brief      parse ivi categories and genres
@@ -507,9 +577,10 @@ int CIviApi::parseVideoInfo(const QString &resp)
             video.sImg = poster.value("path").toString();
         }
 
-        getFiles(video.uiVidId);
+        mCurrentVideo = video;
 
-        emit sigVideoInfo(video);
+        // request links ...
+        getFiles(video.uiVidId);
     }
     else
     {
@@ -533,6 +604,63 @@ int CIviApi::parseVideoInfo(const QString &resp)
 int CIviApi::parseFiles(const QString &resp)
 {
     mInfo(tr("Parse IVI file info ..."));
+    int                   iRV = 0;
+    bool                  bOk;
+    QVariantMap           contentMap;
+    cparser::SVodFileInfo fileInfo;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        QVariantMap mVideo = contentMap.value("result").toMap();
+
+        // files ...
+        foreach(QVariant rawFile, mVideo.value("files").toList())
+        {
+            QVariantMap mFile = rawFile.toMap();
+
+            fileInfo.iId    = mFile.value("id").toInt();
+            fileInfo.sUrl   = mFile.value("url").toString();
+            fileInfo.sTitle = mFile.value("content_format").toString();
+
+            // try to get resolution from title ...
+            if (fileInfo.sTitle.contains("hi"))
+            {
+                fileInfo.sFormat = "dvd";
+            }
+            else if (fileInfo.sTitle.contains("lo"))
+            {
+                fileInfo.sFormat = "tv";
+            }
+            else if (fileInfo.sTitle.contains("HD"))
+            {
+                fileInfo.sFormat = "fullhd";
+            }
+            else if (fileInfo.sTitle.contains("HQ"))
+            {
+                fileInfo.sFormat = "fullhd";
+            }
+            else
+            {
+                fileInfo.sFormat = "";
+            }
+
+            mCurrentVideo.vVodFiles.append(fileInfo);
+        }
+
+        emit sigVideoInfo(mCurrentVideo);
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
 }
 
 //------------------------------------------------------------------------------
@@ -593,6 +721,9 @@ void CIviApi::getReply(QNetworkReply *reply)
 
         switch(req)
         {
+        case ivi::IVI_SESSION:
+            parseSession(resp);
+            break;
         case ivi::IVI_GENRES:
             parseGenres(resp);
             break;

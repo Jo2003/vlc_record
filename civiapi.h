@@ -37,6 +37,7 @@ namespace ivi {
     typedef QMap<int, SCountry> CountryMap;
 
     enum eIviReq {
+        IVI_SESSION,
         IVI_GENRES,
         IVI_VIDEOS,
         IVI_VIDEOINFO,
@@ -88,7 +89,7 @@ public:
     CIviApi(QObject *parent = 0);
     virtual ~CIviApi();
 
-    void setSessionKey(const QString& key);
+    void setVerimatrixKey(const QString& key);
 
     // get / set
     int getGenres();
@@ -98,6 +99,7 @@ public:
     int getFiles(int id);
 
     // parse
+    int parseSession(const QString& resp);
     int parseGenres(const QString& resp);
     int parseCountries(const QString& resp);
     int parseVideos(const QString& resp);
@@ -125,12 +127,14 @@ protected:
     ivi::GenreMap    mGenres;
 
 private:
-    QString   mProtocol;
-    QString   mHost;
-    QString   mQueryPrefix;
-    QString   mSessionKey;
-    QString   mTs;
-    CCMAC_Bf *pHash;
+    QString            mProtocol;
+    QString            mHost;
+    QString            mQueryPrefix;
+    QString            mVerimatrix;
+    QString            mSessionKey;
+    QString            mTs;
+    CCMAC_Bf          *pHash;
+    cparser::SVodVideo mCurrentVideo;
 };
 
 #endif // __20161118_CIVIAPI_H
