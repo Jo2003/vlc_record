@@ -2028,7 +2028,7 @@ void Recorder::slotIviPlay(QString url)
         showInfo.setPlayState(ePlayState);
         showInfo.setHtmlDescr(ui->iviVod->iviBrowser()->getShortContent());
         showInfo.setStartTime(0);
-        showInfo.setEndTime(ui->vodBrowser->getLength());
+        showInfo.setEndTime(ui->iviVod->iviBrowser()->getLength());
 
         ui->labState->setHeader(tr("Video On Demand"));
         ui->labState->setFooter(showInfo.showName());
@@ -2058,7 +2058,7 @@ void Recorder::slotIviRecord(QString url)
         showInfo.setPlayState(ePlayState);
         showInfo.setHtmlDescr(ui->iviVod->iviBrowser()->getShortContent());
         showInfo.setStartTime(0);
-        showInfo.setEndTime(ui->vodBrowser->getLength());
+        showInfo.setEndTime(ui->iviVod->iviBrowser()->getLength());
 
         ui->labState->setHeader(tr("Video On Demand"));
         ui->labState->setFooter(showInfo.showName());

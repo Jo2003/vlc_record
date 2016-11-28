@@ -25,6 +25,7 @@
 CIviApi::CIviApi(QObject *parent) :
     QNetworkAccessManager(parent)
 {
+    mFavCount    = -1;
     mProtocol    = "https";
     mHost        = "api.ivi.ru";
     mQueryPrefix = "mobileapi";
@@ -155,6 +156,11 @@ int CIviApi::getCountries()
 //------------------------------------------------------------------------------
 int CIviApi::getVideos(const ivi::SVideoFilter &filter)
 {
+    if (filter.mSort == "favorites")
+    {
+        return getFavourites(filter.mFrom);
+    }
+
     // "https://api.ivi.ru/mobileapi/videos/v5/?session=sesstoken"
     QString req = QString("%1://%2/%3/videos/v5/?session=%4")
             .arg(mProtocol)
@@ -262,6 +268,208 @@ int CIviApi::getFiles(int id)
     if (pReply)
     {
         pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_FILES);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      Gets info about persons in video
+//!
+//! @param[in]  id    The identifier
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getVideoPersons(int id)
+{
+    // "https://api.ivi.ru/mobileapi/video/persons/v5/?session=sesstoken&id=7029"
+    QString req = QString("%1://%2/%3/video/persons/v5/?session=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+
+    // add id ...
+    req += QString("&id=%1").arg(id);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEO_PERSONS);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      add video to favourites
+//!
+//! @param      id video id
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::addFav(int id)
+{
+    // /video/favourite/v5/add?(int: id)&(str: session)&(int: subsite)&(int: app_version)
+    QString req = QString("%1://%2/%3/video/favourite/v5/add")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix);
+
+    // content  ...
+    QString cont;
+    cont += QString("app_version=%1").arg(IVI_APP_VERSION);
+    cont += QString("&session=%1").arg(mSessionKey);
+    cont += QString("&id=%1").arg(id);
+
+#ifdef __TRACE
+    mInfo(tr("Post '%1' to url '%2'").arg(cont).arg(req));
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::post(request, cont.toUtf8());
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_ADD_FAV);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      remove video from favourites
+//!
+//! @param      id video id
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::delFav(int id)
+{
+    QString req = QString("%1://%2/%3/video/favourite/v5/delete")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix);
+
+    // content  ...
+    QString cont;
+    cont += QString("app_version=%1").arg(IVI_APP_VERSION);
+    cont += QString("&session=%1").arg(mSessionKey);
+    cont += QString("&id=%1").arg(id);
+
+#ifdef __TRACE
+    mInfo(tr("Post '%1' to url '%2'").arg(cont).arg(req));
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::post(request, cont.toUtf8());
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_DEL_FAV);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      get number of favourites
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getFavCount()
+{
+    // /user/favourites/v5/count?(str: session)[&(int: subsite)][&(int: app_version)][&(int: withunavailable)]
+    QString req = QString("%1://%2/%3/user/favourites/v5/count?session=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&withunavailable=%1").arg(0);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_FAV_COUNT);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      get number of favourites
+//!
+//! @param      offset (optional) start at offset
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getFavourites(int offset)
+{
+    int from, to, reqId;
+
+    if (offset == -1)
+    {
+        from  = 0;
+        to    = mFavCount - 1;
+        reqId = (int)ivi::IVI_ALL_FAV;
+    }
+    else
+    {
+        from = offset;
+        to   = offset + 19;
+        reqId = (int)ivi::IVI_FAVOURITES;
+    }
+
+    // /user/favourites/v5/?(str: session)[&(int: subsite)][&(int: from)][&(int: to)][&(int: app_version)][&(int: showunavailable)]
+    QString req = QString("%1://%2/%3/user/favourites/v5/?session=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&showunavailable=%1").arg(0);
+    req += QString("&from=%1").arg(from);
+    req += QString("&to=%1").arg(to);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, reqId);
     }
 
     return pReply ? 0 : -1;
@@ -500,6 +708,11 @@ int CIviApi::parseVideos(const QString &resp)
         }
 
         emit sigVideoList(videos);
+
+        if (mFavCount == -1)
+        {
+            getFavCount();
+        }
     }
     else
     {
@@ -593,10 +806,12 @@ int CIviApi::parseVideoInfo(const QString &resp)
             }
         }
 
-        mCurrentVideo = video;
+        video.bFavourit = mFavourites.contains((int)video.uiVidId);
+
+        mCurrentVideo   = video;
 
         // request links ...
-        getFiles(video.uiVidId);
+        getVideoPersons(video.uiVidId);
     }
     else
     {
@@ -717,6 +932,131 @@ int CIviApi::parseTimeStamp(const QString &resp)
 }
 
 //------------------------------------------------------------------------------
+//! @brief      parse video persons info
+//!
+//! @param[in]  resp  ivi response to parse
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseVideoPersons(const QString &resp)
+{
+    mInfo(tr("We've got persons response ..."));
+    int              iRV = 0;
+    bool             bOk;
+    QVariantMap      contentMap;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        // ivi categories ...
+        foreach (const QVariant& varPerson, contentMap.value("result").toList())
+        {
+            QVariantMap mPerson = varPerson.toMap();
+
+            if (mPerson.value("id").toInt() == 3) // director
+            {
+                foreach (const QVariant& varDir, mPerson.value("persons").toList())
+                {
+                    QVariantMap mDirector = varDir.toMap();
+                    if (!mCurrentVideo.sDirector.isEmpty())
+                    {
+                        mCurrentVideo.sDirector += ", ";
+                    }
+
+                    mCurrentVideo.sDirector += mDirector.value("name").toString();
+                }
+
+                break;
+            }
+        }
+
+        getFiles(mCurrentVideo.uiVidId);
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      parse favourite count
+//!
+//! @param[in]  resp  ivi response to parse
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseFavCount(const QString &resp)
+{
+    mInfo(tr("We've favourite count response ..."));
+    int              iRV = 0;
+    bool             bOk;
+    QVariantMap      contentMap;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        mFavCount = contentMap.value("result").toInt();
+        getFavourites();
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      parse all favourites
+//!
+//! @param[in]  resp  ivi response to parse
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseAllFavs(const QString &resp)
+{
+    mInfo(tr("parse all favourites ..."));
+    int              iRV = 0;
+    bool             bOk;
+    QVariantMap      contentMap;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        mFavourites.clear();
+
+        foreach (const QVariant& rawFav, contentMap.value("result").toList())
+        {
+            QVariantMap mFav = rawFav.toMap();
+            mFavourites.append(mFav.value("id").toInt());
+        }
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}
+
+//------------------------------------------------------------------------------
 //! @brief      Gets the network reply.
 //!
 //! @param      reply  pointer to network reply
@@ -757,6 +1097,44 @@ void CIviApi::getReply(QNetworkReply *reply)
             break;
         case ivi::IVI_TIMESTAMP:
             parseTimeStamp(resp);
+            break;
+        case ivi::IVI_VIDEO_PERSONS:
+            parseVideoPersons(resp);
+            break;
+        case ivi::IVI_ADD_FAV:
+            if (!resp.contains("error"))
+            {
+                mCurrentVideo.bFavourit = true;
+                mFavCount ++;
+                mFavourites.append((int)mCurrentVideo.uiVidId);
+                emit sigVideoInfo(mCurrentVideo);
+            }
+            break;
+        case ivi::IVI_DEL_FAV:
+            if (!resp.contains("error"))
+            {
+                mFavCount --;
+                int idx = mFavourites.indexOf((int)mCurrentVideo.uiVidId);
+
+                if (idx > -1)
+                {
+                    mFavourites.remove(idx);
+                }
+
+                mCurrentVideo.bFavourit = false;
+                emit sigVideoInfo(mCurrentVideo);
+            }
+            break;
+
+        case ivi::IVI_FAV_COUNT:
+            parseFavCount(resp);
+            break;
+
+        case ivi::IVI_ALL_FAV:
+            parseAllFavs(resp);
+            break;
+        case ivi::IVI_FAVOURITES:
+            parseVideos(resp);
             break;
         default:
             break;

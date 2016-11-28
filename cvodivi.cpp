@@ -223,9 +223,18 @@ void CVodIvi::slotCatchVideos(cparser::VideoList videos)
               .arg(video.sCountry).arg(video.sYear));
     }
 #endif // __TRACE
-    QString genre = QString("%1: %2")
-            .arg(ui->cbxIviCategory->currentText())
-            .arg(ui->cbxIviGenre->currentText());
+
+    QString genre;
+    if (ui->cbxIviLastOrBest->itemData(ui->cbxIviLastOrBest->currentIndex()) == "favorites")
+    {
+        genre = ui->cbxIviLastOrBest->currentText();
+    }
+    else
+    {
+        genre = QString("%1: %2")
+                .arg(ui->cbxIviCategory->currentText())
+                .arg(ui->cbxIviGenre->currentText());
+    }
 
     ui->iviBrowser->displayVodList(videos, genre);
 }
@@ -252,6 +261,7 @@ void CVodIvi::fillSortCbx()
     ui->cbxIviLastOrBest->addItem(tr("KP Rating"), QString("kp"));
     ui->cbxIviLastOrBest->addItem(tr("IMDB Rating"), QString("imdb"));
     ui->cbxIviLastOrBest->addItem(tr("Budget"), QString("budget"));
+    ui->cbxIviLastOrBest->addItem(tr("My Favourites"), QString("favorites"));
     ui->cbxIviLastOrBest->setCurrentIndex(0);
 }
 
@@ -316,6 +326,7 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
 
     if (action == "vod_info")
     {
+        ui->iviBrowser->saveScrollPos();
         vodId = arg1.queryItemValue("vodid").toInt();
         iviApi.getVideoInfo(vodId);
     }
@@ -329,7 +340,6 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         // ivi should have set video_url ...
         sUrl = QUrlEx::fromPercentEncoding(arg1.queryItemValue("video_url").toUtf8());
         mInfo(tr("Start ivi play with URL %1 ...").arg(sUrl));
-        // sUrl = QString("{\"url\": \"%1\"}").arg(sUrl);
         emit sigPlay(sUrl);
     }
     else if (action == "record")
@@ -337,9 +347,16 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         // ivi should have set video_url ...
         sUrl = QUrlEx::fromPercentEncoding(arg1.queryItemValue("video_url").toUtf8());
         mInfo(tr("Start ivi record with URL %1 ...").arg(sUrl));
-        // sUrl = QString("{\"url\": \"%1\"}").arg(sUrl);
         emit sigRecord(sUrl);
     }
-
-
+    else if (action == "add_fav")
+    {
+        vodId = arg1.queryItemValue("vodid").toInt();
+        iviApi.addFav(vodId);
+    }
+    else if (action == "del_fav")
+    {
+        vodId = arg1.queryItemValue("vodid").toInt();
+        iviApi.delFav(vodId);
+    }
 }

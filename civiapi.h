@@ -41,11 +41,15 @@ namespace ivi {
         IVI_GENRES,
         IVI_VIDEOS,
         IVI_VIDEOINFO,
+        IVI_VIDEO_PERSONS,
         IVI_FILES,
         IVI_COUNTRIES,
         IVI_TIMESTAMP,
         IVI_ADD_FAV,
         IVI_DEL_FAV,
+        IVI_ALL_FAV,
+        IVI_FAV_COUNT,
+        IVI_FAVOURITES,
         IVI_UNKNOWN=256
     };
 
@@ -97,6 +101,11 @@ public:
     int getVideos(const ivi::SVideoFilter& filter);
     int getVideoInfo(int id);
     int getFiles(int id);
+    int getVideoPersons(int id);
+    int addFav(int id);
+    int delFav(int id);
+    int getFavCount();
+    int getFavourites(int offset = -1);
 
     // parse
     int parseSession(const QString& resp);
@@ -106,6 +115,9 @@ public:
     int parseVideoInfo(const QString& resp);
     int parseFiles(const QString& resp);
     int parseTimeStamp(const QString& resp);
+    int parseVideoPersons(const QString& resp);
+    int parseFavCount(const QString& resp);
+    int parseAllFavs(const QString& resp);
 
 signals:
     void sigCategories(ivi::CategoryMap cats);
@@ -135,6 +147,8 @@ private:
     QString            mTs;
     CCMAC_Bf          *pHash;
     cparser::SVodVideo mCurrentVideo;
+    int                mFavCount;
+    QVector<int>       mFavourites;
 };
 
 #endif // __20161118_CIVIAPI_H

@@ -209,75 +209,98 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CIviApi</name>
     <message>
-        <location filename="civiapi.cpp" line="253"/>
-        <location filename="civiapi.cpp" line="284"/>
+        <location filename="civiapi.cpp" line="259"/>
+        <location filename="civiapi.cpp" line="337"/>
+        <location filename="civiapi.cpp" line="374"/>
+        <location filename="civiapi.cpp" line="492"/>
         <source>Post &apos;%1&apos; to url &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="347"/>
+        <location filename="civiapi.cpp" line="555"/>
         <source>We&apos;ve got genres response ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="328"/>
-        <location filename="civiapi.cpp" line="393"/>
-        <location filename="civiapi.cpp" line="441"/>
-        <location filename="civiapi.cpp" line="506"/>
-        <location filename="civiapi.cpp" line="603"/>
-        <location filename="civiapi.cpp" line="672"/>
-        <location filename="civiapi.cpp" line="709"/>
+        <location filename="civiapi.cpp" line="536"/>
+        <location filename="civiapi.cpp" line="601"/>
+        <location filename="civiapi.cpp" line="649"/>
+        <location filename="civiapi.cpp" line="719"/>
+        <location filename="civiapi.cpp" line="818"/>
+        <location filename="civiapi.cpp" line="887"/>
+        <location filename="civiapi.cpp" line="924"/>
+        <location filename="civiapi.cpp" line="978"/>
+        <location filename="civiapi.cpp" line="1011"/>
+        <location filename="civiapi.cpp" line="1049"/>
         <source>Error in %1</source>
         <translation type="unfinished">Fehler in %1</translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="310"/>
+        <location filename="civiapi.cpp" line="518"/>
         <source>Parse IVI login respone ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="329"/>
-        <location filename="civiapi.cpp" line="394"/>
-        <location filename="civiapi.cpp" line="442"/>
-        <location filename="civiapi.cpp" line="507"/>
-        <location filename="civiapi.cpp" line="604"/>
-        <location filename="civiapi.cpp" line="673"/>
-        <location filename="civiapi.cpp" line="710"/>
+        <location filename="civiapi.cpp" line="537"/>
+        <location filename="civiapi.cpp" line="602"/>
+        <location filename="civiapi.cpp" line="650"/>
+        <location filename="civiapi.cpp" line="720"/>
+        <location filename="civiapi.cpp" line="819"/>
+        <location filename="civiapi.cpp" line="888"/>
+        <location filename="civiapi.cpp" line="925"/>
+        <location filename="civiapi.cpp" line="979"/>
+        <location filename="civiapi.cpp" line="1012"/>
+        <location filename="civiapi.cpp" line="1050"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="412"/>
+        <location filename="civiapi.cpp" line="620"/>
         <source>Parse IVI countries ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="460"/>
+        <location filename="civiapi.cpp" line="668"/>
         <source>Parse IVI videos ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="525"/>
+        <location filename="civiapi.cpp" line="738"/>
         <source>Parse IVI video info ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="622"/>
+        <location filename="civiapi.cpp" line="837"/>
         <source>Parse IVI file info ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="691"/>
+        <location filename="civiapi.cpp" line="906"/>
         <source>Parse IVI time stamp ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="702"/>
+        <location filename="civiapi.cpp" line="917"/>
         <source>Using time stamp &apos;%1&apos; for the next 9 minutes ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="734"/>
+        <location filename="civiapi.cpp" line="943"/>
+        <source>We&apos;ve got persons response ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="997"/>
+        <source>We&apos;ve favourite count response ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="1030"/>
+        <source>parse all favourites ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="1074"/>
         <source>IVI Response:
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -285,7 +308,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="767"/>
+        <location filename="civiapi.cpp" line="1145"/>
         <source>Network error: #%1: %2</source>
         <oldsource>Network error: %1</oldsource>
         <translation type="unfinished"></translation>
@@ -3235,42 +3258,48 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="249"/>
+        <location filename="cvodivi.cpp" line="258"/>
         <source>Popularity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="250"/>
+        <location filename="cvodivi.cpp" line="259"/>
         <source>Newest</source>
         <translation type="unfinished">Neueste</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="251"/>
+        <location filename="cvodivi.cpp" line="260"/>
         <source>IVI Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="252"/>
+        <location filename="cvodivi.cpp" line="261"/>
         <source>KP Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="253"/>
+        <location filename="cvodivi.cpp" line="262"/>
         <source>IMDB Rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="254"/>
+        <location filename="cvodivi.cpp" line="263"/>
         <source>Budget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="331"/>
+        <location filename="cvodivi.cpp" line="264"/>
+        <source>My Favourites</source>
+        <oldsource>Favorites</oldsource>
+        <translation type="unfinished">Meine Favoriten</translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="342"/>
         <source>Start ivi play with URL %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="339"/>
+        <location filename="cvodivi.cpp" line="349"/>
         <source>Start ivi record with URL %1 ...</source>
         <translation type="unfinished"></translation>
     </message>
