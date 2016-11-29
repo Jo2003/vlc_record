@@ -82,6 +82,8 @@
         <file alias="sd">resources/vod_quality_sd.png</file>
         <file alias="eco">resources/vod_quality_tv.png</file>
         <file alias="3d">resources/vod_quality_3d.png</file>
+        <file alias="ivi">resources/ivi_app_icon.png</file>
+        <file alias="hq">resources/vod_quality_hq.png</file>
     </qresource>
     <qresource prefix="/access">
         <file alias="unlocked">resources/lock_open.png</file>

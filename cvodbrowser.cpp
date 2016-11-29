@@ -235,6 +235,10 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
    url.clear();
    url.addQueryItem("action", "vod_info");
    url.addQueryItem("vodid" , QString::number(entry.uiVidId));
+   if (entry.iKind != -1)
+   {
+       url.addQueryItem("kind" , QString::number(entry.iKind));
+   }
    url.addQueryItem("pass_protect", entry.bProtected ? "1" : "0");
    url.setPath("videothek");
 
@@ -445,6 +449,10 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       else if (sInfo.vVodFiles[i].sFormat == "3d")
       {
          title = pHtml->image(":/vod/3d", 18, 18, "", title);
+      }
+      else if (sInfo.vVodFiles[i].sFormat == "hq")
+      {
+         title = pHtml->image(":/vod/hq", 18, 18, "", title);
       }
       else
       {

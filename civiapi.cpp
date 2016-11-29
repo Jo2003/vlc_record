@@ -156,7 +156,11 @@ int CIviApi::getCountries()
 //------------------------------------------------------------------------------
 int CIviApi::getVideos(const ivi::SVideoFilter &filter)
 {
-    if (filter.mSort == "favorites")
+    if (!filter.mSearch.isEmpty())
+    {
+        return searchVideos(filter);
+    }
+    else if (filter.mSort == "favorites")
     {
         return getFavourites(filter.mFrom);
     }
@@ -176,6 +180,48 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
     req += QString("&from=%1").arg(filter.mFrom);
     req += QString("&to=%1").arg(filter.mTo);
     req += QString("&genre=%1").arg(filter.mGenId);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEOS);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      search for videos
+//!
+//! @param[in]  filter  video list filter
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::searchVideos(const ivi::SVideoFilter &filter)
+{
+    // /search/v5/?(str: query)[&(int: subsite)][&(int: app_version)][&(int: from)][&(int: to)][&(int: category)][&(int: genre)][&(i
+    QString req = QString("%1://%2/%3/search/v5/?session=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+
+    // add filter stuff ...
+    req += QString("&from=%1").arg(filter.mFrom);
+    req += QString("&to=%1").arg(filter.mTo);
+    req += QString("&genre=%1").arg(filter.mGenId);
+    req += QString("&query=%1").arg(filter.mSearch);
 
 #ifdef __TRACE
     mInfo(req);
@@ -403,7 +449,7 @@ int CIviApi::getFavCount()
 
     // add app_version ...
     req += QString("&app_version=%1").arg(IVI_APP_VERSION);
-    req += QString("&withunavailable=%1").arg(0);
+    req += QString("&withunavailable=");
 
 #ifdef __TRACE
     mInfo(req);
@@ -441,7 +487,7 @@ int CIviApi::getFavourites(int offset)
     else
     {
         from = offset;
-        to   = offset + 19;
+        to   = offset + (VIDEOS_PER_SITE - 1);
         reqId = (int)ivi::IVI_FAVOURITES;
     }
 
@@ -454,7 +500,7 @@ int CIviApi::getFavourites(int offset)
 
     // add app_version ...
     req += QString("&app_version=%1").arg(IVI_APP_VERSION);
-    req += QString("&showunavailable=%1").arg(0);
+    req += QString("&showunavailable=");
     req += QString("&from=%1").arg(from);
     req += QString("&to=%1").arg(to);
 
@@ -473,6 +519,16 @@ int CIviApi::getFavourites(int offset)
     }
 
     return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      return favourite count
+//!
+//! @return     number of favourites
+//------------------------------------------------------------------------------
+int CIviApi::favCount() const
+{
+    return mFavCount;
 }
 
 //------------------------------------------------------------------------------
@@ -685,6 +741,7 @@ int CIviApi::parseVideos(const QString &resp)
             video.sName    = mVideo.value("title").toString();
             video.sYear    = QString::number(mVideo.value("year").toInt());
             video.sCountry = mCountries.value(mVideo.value("country").toInt()).mName;
+            video.iKind    = mVideo.value("kind").toInt();
 
             QStringList imgSrc;
             imgSrc << "poster_originals" << "thumbnails" << "thumb_originals";
@@ -751,6 +808,7 @@ int CIviApi::parseVideoInfo(const QString &resp)
         QVariantMap mVideo = contentMap.value("result").toMap();
         video.uiVidId  = mVideo.value("id").toUInt();
         video.sName    = mVideo.value("title").toString();
+        video.iKind    = mVideo.value("kind").toInt();
 
         if (!mVideo.value("orig_title").toString().isEmpty())
         {
@@ -870,13 +928,13 @@ int CIviApi::parseFiles(const QString &resp)
             }
             else if (fileInfo.sTitle.contains("HQ"))
             {
-                fileInfo.sFormat = "fullhd";
+                fileInfo.sFormat = "hq";
             }
             else
             {
                 fileInfo.sFormat = "";
             }
-
+            fileInfo.sCodec = "h264";
             mCurrentVideo.vVodFiles.append(fileInfo);
         }
 

@@ -25,10 +25,15 @@ CVodIvi::CVodIvi(QWidget *parent) :
     ui(new Ui::CVodIvi)
 {
     ui->setupUi(this);
+
+    tIviSearch.setSingleShot(true);
+    tIviSearch.setInterval(500);
+
     connect (&iviApi, SIGNAL(sigCategories(ivi::CategoryMap)), this, SLOT(slotCatchCategories(ivi::CategoryMap)));
     connect (&iviApi, SIGNAL(sigCountries(ivi::CountryMap)), this, SLOT(slotCatchCountries(ivi::CountryMap)));
     connect (&iviApi, SIGNAL(sigVideoList(cparser::VideoList)), this, SLOT(slotCatchVideos(cparser::VideoList)));
     connect (&iviApi, SIGNAL(sigVideoInfo(cparser::SVodVideo)), this, SLOT(slotCatchVideoInfo(cparser::SVodVideo)));
+    connect (&tIviSearch, SIGNAL(timeout()), this, SLOT(slotTimerIviSearch()));
 }
 
 //------------------------------------------------------------------------------
@@ -37,6 +42,22 @@ CVodIvi::CVodIvi(QWidget *parent) :
 CVodIvi::~CVodIvi()
 {
     delete ui;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      re-translate ui
+//!
+//! @param      e event pointer
+//------------------------------------------------------------------------------
+void CVodIvi::changeEvent(QEvent *e)
+{
+    QWidget::changeEvent(e);
+    if (e->type() == QEvent::LanguageChange)
+    {
+        int idx = ui->cbxIviLastOrBest->currentIndex();
+        ui->retranslateUi(this);
+        fillSortCbx(idx);
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -92,7 +113,19 @@ void CVodIvi::on_cbxIviGenre_activated(int index)
 //------------------------------------------------------------------------------
 void CVodIvi::on_cbxIviLastOrBest_activated(int index)
 {
-    (void)index;
+    if (ui->cbxIviLastOrBest->itemData(index).toString() == "favorites")
+    {
+        fillSitesCbx(iviApi.favCount());
+    }
+    else
+    {
+        int catId = ui->cbxIviCategory->itemData(ui->cbxIviCategory->currentIndex()).toInt();
+        int genId = ui->cbxIviGenre->itemData(ui->cbxIviGenre->currentIndex()).toInt();
+        ivi::SCat   cat   = mIviCats.value(catId);
+        ivi::SGenre genre = cat.mGenres.value(genId);
+        fillSitesCbx(genre.mNoContent);
+    }
+
     getVideos();
 }
 
@@ -251,8 +284,10 @@ void CVodIvi::slotCatchVideoInfo(cparser::SVodVideo video)
 
 //------------------------------------------------------------------------------
 //! @brief      fill sort combo box
+//!
+//! @param      idx default index
 //------------------------------------------------------------------------------
-void CVodIvi::fillSortCbx()
+void CVodIvi::fillSortCbx(int idx)
 {
     ui->cbxIviLastOrBest->clear();
     ui->cbxIviLastOrBest->addItem(tr("Popularity"), QString("pop"));
@@ -262,7 +297,7 @@ void CVodIvi::fillSortCbx()
     ui->cbxIviLastOrBest->addItem(tr("IMDB Rating"), QString("imdb"));
     ui->cbxIviLastOrBest->addItem(tr("Budget"), QString("budget"));
     ui->cbxIviLastOrBest->addItem(tr("My Favourites"), QString("favorites"));
-    ui->cbxIviLastOrBest->setCurrentIndex(0);
+    ui->cbxIviLastOrBest->setCurrentIndex(idx);
 }
 
 //------------------------------------------------------------------------------
@@ -297,10 +332,11 @@ void CVodIvi::fillSitesCbx(int count)
 //------------------------------------------------------------------------------
 void CVodIvi::getFilterData(ivi::SVideoFilter &filter)
 {
-    filter.mGenId = ui->cbxIviGenre->itemData(ui->cbxIviGenre->currentIndex()).toInt();
-    filter.mSort  = ui->cbxIviLastOrBest->itemData(ui->cbxIviLastOrBest->currentIndex()).toString();
-    filter.mFrom  = ui->cbxIviSites->itemData(ui->cbxIviSites->currentIndex()).toInt();
-    filter.mTo    = filter.mFrom + (VIDEOS_PER_SITE - 1);
+    filter.mGenId  = ui->cbxIviGenre->itemData(ui->cbxIviGenre->currentIndex()).toInt();
+    filter.mSort   = ui->cbxIviLastOrBest->itemData(ui->cbxIviLastOrBest->currentIndex()).toString();
+    filter.mFrom   = ui->cbxIviSites->itemData(ui->cbxIviSites->currentIndex()).toInt();
+    filter.mTo     = filter.mFrom + (VIDEOS_PER_SITE - 1);
+    filter.mSearch = ui->lineIviSearch->text();
 }
 
 //------------------------------------------------------------------------------
@@ -332,8 +368,15 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
     }
     else if (action == "backtolist")
     {
-       // re-create last used site and position ...
-       ui->iviBrowser->recreateVodList();
+        if (ui->cbxIviLastOrBest->itemData(ui->cbxIviLastOrBest->currentIndex()).toString() == "favorites")
+        {
+            getVideos();
+        }
+        else
+        {
+            // re-create last used site and position ...
+            ui->iviBrowser->recreateVodList();
+        }
     }
     else if (action == "play")
     {
@@ -359,4 +402,38 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         vodId = arg1.queryItemValue("vodid").toInt();
         iviApi.delFav(vodId);
     }
+}
+
+//------------------------------------------------------------------------------
+//! @brief      search string was edited
+//!
+//! @param[in]  arg1  search string
+//------------------------------------------------------------------------------
+void CVodIvi::on_lineIviSearch_textEdited(const QString &arg1)
+{
+    if (arg1.length() > 2)
+    {
+        tIviSearch.start();
+    }
+    else if (arg1.length() == 0)
+    {
+        getVideos();
+    }
+}
+
+//------------------------------------------------------------------------------
+//! @brief      0.5 seconds no edit in ivi search line
+//------------------------------------------------------------------------------
+void CVodIvi::slotTimerIviSearch()
+{
+    getVideos();
+}
+
+//------------------------------------------------------------------------------
+//! @brief      clear ivi search line
+//------------------------------------------------------------------------------
+void CVodIvi::on_btnCleanIviSearch_clicked()
+{
+    ui->lineIviSearch->setText("");
+    on_lineIviSearch_textEdited("");
 }

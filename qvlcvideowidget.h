@@ -90,8 +90,8 @@ public:
    void setShortCuts (QVector<CShortcutEx *> *pvSc);
    WId widgetId();
    void raiseRender();
-
    void updateContent (int delta);
+   void removeContent(bool doit);
 
 protected:
 #ifndef Q_OS_LINUX
@@ -133,6 +133,7 @@ private:
    QMutex                  _mtxLv;
    vlcvid::ePanelPos       _lastPos;
    QLabel                 *_labOverlay;
+   int                     _iDelta;
 
 signals:
    void fullScreen();

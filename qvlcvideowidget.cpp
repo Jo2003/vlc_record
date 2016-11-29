@@ -553,6 +553,8 @@ void QVlcVideoWidget::raiseRender()
 //---------------------------------------------------------------------------
 void QVlcVideoWidget::updateContent(int delta)
 {
+   _iDelta = delta;
+
 #ifndef __INFO_WINDOW_CONTENT
    Q_UNUSED(delta)
    setStyleSheet("QWidget#videoWidget {"
@@ -589,6 +591,26 @@ void QVlcVideoWidget::updateContent(int delta)
    setWordWrap(true);
    setText(pHtml->htmlPage(sContent, "Order Info", sCss));
 #endif
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   remove / add content
+//
+//! \param   [in] bool doit
+//
+//---------------------------------------------------------------------------
+void QVlcVideoWidget::removeContent(bool doit)
+{
+    if (doit)
+    {
+        setText("");
+        setStyleSheet("QWidget#videoWidget { background-color: black; }");
+    }
+    else
+    {
+        updateContent(_iDelta);
+    }
 }
 
 //---------------------------------------------------------------------------

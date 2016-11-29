@@ -868,8 +868,12 @@ color: white;
           </layout>
          </widget>
          <widget class="QWidget" name="tabIviVod">
+          <attribute name="icon">
+           <iconset resource="../common.qrc">
+            <normaloff>:/vod/ivi</normaloff>:/vod/ivi</iconset>
+          </attribute>
           <attribute name="title">
-           <string>IVI Vod</string>
+           <string>VOD IVI</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_8">
            <property name="spacing">

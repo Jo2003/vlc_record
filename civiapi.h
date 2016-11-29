@@ -73,6 +73,7 @@ namespace ivi {
         int     mFrom;
         int     mTo;
         QString mSort;
+        QString mSearch;
     };
 
     struct SCountry {
@@ -99,6 +100,7 @@ public:
     int getGenres();
     int getCountries();
     int getVideos(const ivi::SVideoFilter& filter);
+    int searchVideos(const ivi::SVideoFilter& filter);
     int getVideoInfo(int id);
     int getFiles(int id);
     int getVideoPersons(int id);
@@ -106,6 +108,7 @@ public:
     int delFav(int id);
     int getFavCount();
     int getFavourites(int offset = -1);
+    int favCount() const;
 
     // parse
     int parseSession(const QString& resp);

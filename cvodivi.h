@@ -15,6 +15,8 @@
     #define __20161118_CVODIVI_H
 
 #include <QWidget>
+#include <QTimer>
+#include <QEvent>
 #include "cvodbrowser.h"
 #include "civiapi.h"
 #include "cpixloader.h"
@@ -48,17 +50,22 @@ private slots:
     void slotCatchCountries(ivi::CountryMap countr);
     void slotCatchVideos(cparser::VideoList videos);
     void slotCatchVideoInfo(cparser::SVodVideo video);
-
     void on_iviBrowser_anchorClicked(const QUrl &arg1);
+    void on_lineIviSearch_textEdited(const QString &arg1);
+    void slotTimerIviSearch();
+
+    void on_btnCleanIviSearch_clicked();
 
 protected:
-    void fillSortCbx();
+    virtual void changeEvent(QEvent *e);
+    void fillSortCbx(int idx = 0);
     void fillSitesCbx(int count);
     void getFilterData(ivi::SVideoFilter& filter);
     void getVideos();
 
     CIviApi          iviApi;
     ivi::CategoryMap mIviCats;
+    QTimer           tIviSearch;
 
 private:
     Ui::CVodIvi *ui;

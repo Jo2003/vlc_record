@@ -1230,6 +1230,7 @@ void CPlayer::slotEventPoll()
             libPlayState = IncPlay::PS_ERROR;
             errHelper.errCount ++;
             mMAC_AL_SLEEP;
+            ui->videoWidget->removeContent(false);
             break;
 
          // TRACK CHANGED ...
@@ -1303,6 +1304,7 @@ void CPlayer::slotEventPoll()
             }
             libPlayState = IncPlay::PS_PLAY;
             mMAC_NO_SLEEP;
+            ui->videoWidget->removeContent(true);
             break;
 
          // player paused ...
@@ -1323,6 +1325,7 @@ void CPlayer::slotEventPoll()
             libPlayState = IncPlay::PS_STOP;
             pWatchStats->playEnds(errHelper.errCount);
             mMAC_AL_SLEEP;
+            ui->videoWidget->removeContent(false);
             break;
 
          // end of media reached ...
@@ -1333,6 +1336,7 @@ void CPlayer::slotEventPoll()
             libPlayState = IncPlay::PS_END;
             pWatchStats->playEnds(errHelper.errCount);
             mMAC_AL_SLEEP;
+            ui->videoWidget->removeContent(false);
             break;
 
          // showing video ...
