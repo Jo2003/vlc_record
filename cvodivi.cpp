@@ -123,7 +123,7 @@ void CVodIvi::on_cbxIviLastOrBest_activated(int index)
         int genId = ui->cbxIviGenre->itemData(ui->cbxIviGenre->currentIndex()).toInt();
         ivi::SCat   cat   = mIviCats.value(catId);
         ivi::SGenre genre = cat.mGenres.value(genId);
-        fillSitesCbx(genre.mNoContent);
+        fillSitesCbx(genre.mCount);
     }
 
     getVideos();
@@ -357,13 +357,14 @@ void CVodIvi::getVideos()
 void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
 {
     QString action = arg1.queryItemValue("action");
-    int     vodId;
+    int     vodId, kind;
     QString sUrl;
 
     if (action == "vod_info")
     {
         ui->iviBrowser->saveScrollPos();
         vodId = arg1.queryItemValue("vodid").toInt();
+        kind  = arg1.queryItemValue("kind").toInt();
         iviApi.getVideoInfo(vodId);
     }
     else if (action == "backtolist")

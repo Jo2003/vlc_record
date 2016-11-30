@@ -165,8 +165,8 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
         return getFavourites(filter.mFrom);
     }
 
-    // "https://api.ivi.ru/mobileapi/videos/v5/?session=sesstoken"
-    QString req = QString("%1://%2/%3/videos/v5/?session=%4")
+    // "https://api.ivi.ru/mobileapi/catalogue/v5/?session=sesstoken"
+    QString req = QString("%1://%2/%3/catalogue/v5/?session=%4")
             .arg(mProtocol)
             .arg(mHost)
             .arg(mQueryPrefix)
