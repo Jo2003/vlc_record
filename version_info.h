@@ -33,9 +33,9 @@
 #endif
 
 #define VERSION_MAJOR 2
-#define VERSION_MINOR 72
-#define VERSION_BUILD 6
-#define BETA_EXT      "B"
+#define VERSION_MINOR 73
+#define VERSION_BUILD 0
+#define BETA_EXT      "B1"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2016-11-30: Version 2.73.0B1
+| - base support of IVI VOD
+| - missing compilations
+| - search only in gernres
+| 
 | 2015-11-15: Version 2.72.6B
 | - after saving settings make re-login only if needed
 | - re-request current stream after stream server change
