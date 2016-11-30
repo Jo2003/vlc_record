@@ -2004,7 +2004,41 @@ void Recorder:: slotIviInfo(const QString &resp)
 {
     if (!pApiParser->parseIviInfo(resp, mIviInfo))
     {
-        ui->iviVod->setIviSession(mIviInfo.ivi_id);
+        // check if IVI is working ...
+        if (mIviInfo.status)
+        {
+           if (findTabWidget("tabIviVod") == -1)
+           {
+              // make sure tab text is translated as needed ...
+              QString title = pAppTransl->translate(objectName().toUtf8().constData(),
+                                                     iviTabWidget.sText.toUtf8().constData());
+
+              // add tab ...
+              // IVI tab always at index 2!
+              ui->tabEpgVod->insertTab(2, iviTabWidget.pWidget,
+                                       iviTabWidget.icon, (title != "") ? title : iviTabWidget.sText);
+
+              ui->tabEpgVod->adjustSize();
+           }
+
+           ui->iviVod->setIviSession(mIviInfo.ivi_id);
+        }
+        else
+        {
+            int idx = findTabWidget("tabIviVod");
+            if (idx != -1)
+            {
+               // make sure the widget we want to remove
+               // is not the active one ...
+               ui->tabEpgVod->setCurrentIndex(0);
+               ui->tabEpgVod->removeTab(idx);
+            }
+        }
+
+        if (!mIviInfo.url.isEmpty())
+        {
+            StartVlcPlay(mIviInfo.url);
+        }
     }
 }
 
@@ -2447,18 +2481,6 @@ void Recorder::slotCookie (const QString &str)
       if (accountInfo.bHasIVI)
       {
          pApiClient->queueRequest(CIptvDefs::REQ_IVI_INFO);
-         if (findTabWidget("tabIviVod") == -1)
-         {
-            // make sure tab text is translated as needed
-            QString title = pAppTransl->translate(objectName().toUtf8().constData(),
-                                                   iviTabWidget.sText.toUtf8().constData());
-
-            // add tab ...
-            // IVI tab always at index 2!
-            ui->tabEpgVod->insertTab(2, iviTabWidget.pWidget,
-                                     iviTabWidget.icon, (title != "") ? title : iviTabWidget.sText);
-            ui->tabEpgVod->adjustSize();
-         }
       }
       else
       {
