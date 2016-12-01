@@ -66,6 +66,7 @@ protected:
     CIviApi          iviApi;
     ivi::CategoryMap mIviCats;
     QTimer           tIviSearch;
+    int              mCompId;
 
 private:
     Ui::CVodIvi *ui;

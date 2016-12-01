@@ -156,6 +156,10 @@ int CIviApi::getCountries()
 //------------------------------------------------------------------------------
 int CIviApi::getVideos(const ivi::SVideoFilter &filter)
 {
+    if (filter.mCompId != -1)
+    {
+        return getVideoFromCompilation(filter);
+    }
     if (!filter.mSearch.isEmpty())
     {
         return searchVideos(filter);
@@ -220,7 +224,7 @@ int CIviApi::searchVideos(const ivi::SVideoFilter &filter)
     // add filter stuff ...
     req += QString("&from=%1").arg(filter.mFrom);
     req += QString("&to=%1").arg(filter.mTo);
-    req += QString("&genre=%1").arg(filter.mGenId);
+    // req += QString("&genre=%1").arg(filter.mGenId);
     req += QString("&query=%1").arg(filter.mSearch);
 
 #ifdef __TRACE
@@ -244,13 +248,16 @@ int CIviApi::searchVideos(const ivi::SVideoFilter &filter)
 //! @brief      Gets the video information.
 //!
 //! @param[in]  id    The identifier
+//! @param[in]  kind  video or compilation
 //!
 //! @return     0 -> ok; -1 -> error
 //------------------------------------------------------------------------------
-int CIviApi::getVideoInfo(int id)
+int CIviApi::getVideoInfo(int id, ivi::eKind kind)
 {
     // "https://api.ivi.ru/mobileapi/videoinfo/v6/?session=sesstoken&id=1"
-    QString req = QString("%1://%2/%3/videoinfo/v6/?session=%4")
+    QString req = QString((kind == ivi::KIND_VIDEO)
+                          ? "%1://%2/%3/videoinfo/v6/?session=%4"
+                          : "%1://%2/%3/compilationinfo/v5/?session=%4")
             .arg(mProtocol)
             .arg(mHost)
             .arg(mQueryPrefix)
@@ -274,6 +281,48 @@ int CIviApi::getVideoInfo(int id)
     if (pReply)
     {
         pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEOINFO);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      get videos belonging to one compilation
+//!
+//! @param[in]  id    The identifier
+//! @param[in]  count number of contens
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getVideoFromCompilation(const ivi::SVideoFilter &filter)
+{
+    // "https://api.ivi.ru/mobileapi/videofromcompilation/v5/?session=sesstoken&id=1"
+    QString req = QString("%1://%2/%3/videofromcompilation/v5/?session=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(mSessionKey);
+
+    // add app_version ...
+    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+
+    // add id ...
+    req += QString("&id=%1").arg(filter.mCompId);
+    req += QString("&from=%1").arg(filter.mFrom);
+    req += QString("&to=%1").arg(filter.mTo);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEOS);
     }
 
     return pReply ? 0 : -1;
@@ -323,13 +372,16 @@ int CIviApi::getFiles(int id)
 //! @brief      Gets info about persons in video
 //!
 //! @param[in]  id    The identifier
+//! @param      kind compilation or video
 //!
 //! @return     0 -> ok; -1 -> error
 //------------------------------------------------------------------------------
-int CIviApi::getVideoPersons(int id)
+int CIviApi::getVideoPersons(int id, ivi::eKind kind)
 {
     // "https://api.ivi.ru/mobileapi/video/persons/v5/?session=sesstoken&id=7029"
-    QString req = QString("%1://%2/%3/video/persons/v5/?session=%4")
+    QString req = QString((kind == ivi::KIND_VIDEO)
+                          ? "%1://%2/%3/video/persons/v5/?session=%4"
+                          : "%1://%2/%3/compilation/persons/v5/?session=%4")
             .arg(mProtocol)
             .arg(mHost)
             .arg(mQueryPrefix)
@@ -362,13 +414,16 @@ int CIviApi::getVideoPersons(int id)
 //! @brief      add video to favourites
 //!
 //! @param      id video id
+//! @param      kind compilation or video
 //!
 //! @return     0 -> ok; -1 -> error
 //------------------------------------------------------------------------------
-int CIviApi::addFav(int id)
+int CIviApi::addFav(int id, ivi::eKind kind)
 {
     // /video/favourite/v5/add?(int: id)&(str: session)&(int: subsite)&(int: app_version)
-    QString req = QString("%1://%2/%3/video/favourite/v5/add")
+    QString req = QString((kind == ivi::KIND_VIDEO)
+                          ? "%1://%2/%3/video/favourite/v5/add"
+                          : "%1://%2/%3/compilation/favourite/v5/add")
             .arg(mProtocol)
             .arg(mHost)
             .arg(mQueryPrefix);
@@ -400,12 +455,15 @@ int CIviApi::addFav(int id)
 //! @brief      remove video from favourites
 //!
 //! @param      id video id
+//! @param      kind compilation or video
 //!
 //! @return     0 -> ok; -1 -> error
 //------------------------------------------------------------------------------
-int CIviApi::delFav(int id)
+int CIviApi::delFav(int id, ivi::eKind kind)
 {
-    QString req = QString("%1://%2/%3/video/favourite/v5/delete")
+    QString req = QString((kind == ivi::KIND_VIDEO)
+                          ? "%1://%2/%3/video/favourite/v5/delete"
+                          : "%1://%2/%3/compilation/favourite/v5/delete")
             .arg(mProtocol)
             .arg(mHost)
             .arg(mQueryPrefix);
@@ -736,10 +794,34 @@ int CIviApi::parseVideos(const QString &resp)
         foreach (const QVariant& varVideo, contentMap.value("result").toList())
         {
             QVariantMap mVideo = varVideo.toMap();
-            video.sImg     = "";
+            video.sImg          = "";
+            video.sYear         = "";
+            video.iContentCount = -1;
             video.uiVidId  = mVideo.value("id").toUInt();
             video.sName    = mVideo.value("title").toString();
-            video.sYear    = QString::number(mVideo.value("year").toInt());
+
+            if (mVideo.contains("total_contents"))
+            {
+                video.iContentCount = mVideo.value("total_contents").toInt();
+            }
+
+            // compilation and video handle year in a different way ...
+            if (mVideo.contains("year"))
+            {
+                video.sYear    = QString::number(mVideo.value("year").toInt());
+            }
+            else if (mVideo.contains("years"))
+            {
+                foreach(const QVariant& rawYear, mVideo.value("years").toList())
+                {
+                    if(!video.sYear.isEmpty())
+                    {
+                        video.sYear += ", ";
+                    }
+                    video.sYear += QString::number(rawYear.toInt());
+                }
+            }
+
             video.sCountry = mCountries.value(mVideo.value("country").toInt()).mName;
             video.iKind    = mVideo.value("kind").toInt();
 
@@ -810,12 +892,33 @@ int CIviApi::parseVideoInfo(const QString &resp)
         video.sName    = mVideo.value("title").toString();
         video.iKind    = mVideo.value("kind").toInt();
 
+        if (mVideo.contains("total_contents"))
+        {
+            video.iContentCount = mVideo.value("total_contents").toInt();
+        }
+
         if (!mVideo.value("orig_title").toString().isEmpty())
         {
             video.sName += " (" + mVideo.value("orig_title").toString() + ")";
         }
 
-        video.sYear    = QString::number(mVideo.value("year").toInt());
+        // compilation and video handle year in a different way ...
+        if (mVideo.contains("year"))
+        {
+            video.sYear    = QString::number(mVideo.value("year").toInt());
+        }
+        else if (mVideo.contains("years"))
+        {
+            foreach(const QVariant& rawYear, mVideo.value("years").toList())
+            {
+                if(!video.sYear.isEmpty())
+                {
+                    video.sYear += ", ";
+                }
+                video.sYear += QString::number(rawYear.toInt());
+            }
+        }
+
         video.sCountry = mCountries.value(mVideo.value("country").toInt()).mName;
 
         // genres ...
@@ -869,7 +972,7 @@ int CIviApi::parseVideoInfo(const QString &resp)
         mCurrentVideo   = video;
 
         // request links ...
-        getVideoPersons(video.uiVidId);
+        getVideoPersons(video.uiVidId, (ivi::eKind)video.iKind);
     }
     else
     {
@@ -1029,7 +1132,10 @@ int CIviApi::parseVideoPersons(const QString &resp)
             }
         }
 
-        getFiles(mCurrentVideo.uiVidId);
+        if ((ivi::eKind)mCurrentVideo.iKind == ivi::KIND_VIDEO)
+        {
+            getFiles(mCurrentVideo.uiVidId);
+        }
     }
     else
     {

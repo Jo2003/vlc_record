@@ -35,7 +35,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 73
 #define VERSION_BUILD 0
-#define BETA_EXT      "B1"
+#define BETA_EXT      "B2"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,12 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2016-12-01: Version 2.73.0B2
+| - compilations work
+| - show IVI intro as soon as available
+| - global search
+| - tiny error handling for empty content
+|
 | 2016-11-30: Version 2.73.0B1
 | - base support of IVI VOD
 | - missing compilations

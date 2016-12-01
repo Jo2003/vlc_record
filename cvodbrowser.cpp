@@ -112,7 +112,7 @@ void CVodBrowser::saveScrollPos()
 //---------------------------------------------------------------------------
 void CVodBrowser::recreateVodList()
 {
-    displayVodList(mLastList, mLastGenre);
+    displayVodList(mLastList, mLastGenre, mBackLink);
     verticalScrollBar()->setValue(mScrollPos);
 }
 
@@ -140,12 +140,12 @@ void CVodBrowser::setPixCache(CPixLoader *pCache)
 |  Author: Jo2003
 |  Description: display video list given by kartina.zv
 |
-|  Parameters: vector with video items, genre string
+|  Parameters: vector with video items, genre string, link back
 |
 |  Returns:  --
 \----------------------------------------------------------------- */
 void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
-                                 const QString &sGenre)
+                                 const QString &sGenre, bool backLink)
 {
    int     i, iCount = vList.count();
    bool    bDelay = false;
@@ -154,6 +154,7 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
    // buffer data ...
    mLastList  = vList;
    mLastGenre = sGenre;
+   mBackLink  = backLink;
 
    row = pHtml->tableHead(sGenre, TMPL_TH_STYLE, 2);
    tab = pHtml->tableRow(row);
@@ -184,6 +185,21 @@ void CVodBrowser::displayVodList(const QVector<cparser::SVodVideo> &vList,
 
    // wrap rows into table ...
    tab = pHtml->table(tab, TMPL_TAB_STYLE);
+
+   if (backLink)
+   {
+       // back link ...
+       QUrlEx url;
+       QString link, back;
+       url.addQueryItem("action", "backHome");
+       url.setPath("videothek");
+
+       link  = pHtml->link(url.toEncoded(), tr("Back"));
+       link  = "[ " + link + " ]";
+       back  = pHtml->div(link, "font-weight: bold; color: #800;", "center");
+
+       tab = back + tab + back;
+   }
 
    // wrap tab into page ...
    page = pHtml->htmlPage(tab, "VOD");
@@ -239,6 +255,12 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
    {
        url.addQueryItem("kind" , QString::number(entry.iKind));
    }
+
+   if (entry.iContentCount != -1)
+   {
+       url.addQueryItem("count" , QString::number(entry.iContentCount));
+   }
+
    url.addQueryItem("pass_protect", entry.bProtected ? "1" : "0");
    url.setPath("videothek");
 
@@ -335,6 +357,10 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       url.clear();
       url.addQueryItem("action", "del_fav");
       url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+      if (sInfo.iKind > 0)
+      {
+          url.addQueryItem("kind", QString::number(sInfo.iKind));
+      }
       url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 
@@ -346,6 +372,10 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       url.clear();
       url.addQueryItem("action", "add_fav");
       url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+      if (sInfo.iKind > 0)
+      {
+          url.addQueryItem("kind", QString::number(sInfo.iKind));
+      }
       url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 

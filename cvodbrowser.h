@@ -43,7 +43,7 @@ public:
     void ChangeFontSize (int iSz);
     void setPixCache (CPixLoader *pCache);
 
-    void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre);
+    void displayVodList (const QVector<cparser::SVodVideo> &vList, const QString &sGenre, bool backLink = false);
     void displayVideoDetails (const cparser::SVodVideo &sInfo);
     const QString& getName ();
     const QString& getShortContent ();
@@ -68,6 +68,7 @@ private:
     CPixLoader    *pPixCache;
     QVector<cparser::SVodVideo> mLastList;
     QString                     mLastGenre;
+    bool                        mBackLink;
     int                         mScrollPos;
 };
 

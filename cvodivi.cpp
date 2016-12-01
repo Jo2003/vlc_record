@@ -21,7 +21,7 @@
 //! @param      parent  The parent
 //------------------------------------------------------------------------------
 CVodIvi::CVodIvi(QWidget *parent) :
-    QWidget(parent),
+    QWidget(parent), mCompId(-1),
     ui(new Ui::CVodIvi)
 {
     ui->setupUi(this);
@@ -98,12 +98,13 @@ CVodBrowser *CVodIvi::iviBrowser()
 //------------------------------------------------------------------------------
 void CVodIvi::on_cbxIviGenre_activated(int index)
 {
+    mCompId = -1;
     int         catId = ui->cbxIviCategory->itemData(ui->cbxIviCategory->currentIndex()).toInt();
     int         genId = ui->cbxIviGenre->itemData(index).toInt();
     ivi::SCat   cat   = mIviCats.value(catId);
     ivi::SGenre genre = cat.mGenres.value(genId);
 
-    fillSitesCbx(genre.mNoContent);
+    fillSitesCbx(genre.mCount);
 }
 
 //------------------------------------------------------------------------------
@@ -113,6 +114,7 @@ void CVodIvi::on_cbxIviGenre_activated(int index)
 //------------------------------------------------------------------------------
 void CVodIvi::on_cbxIviLastOrBest_activated(int index)
 {
+    mCompId = -1;
     if (ui->cbxIviLastOrBest->itemData(index).toString() == "favorites")
     {
         fillSitesCbx(iviApi.favCount());
@@ -213,7 +215,9 @@ void CVodIvi::slotCatchCategories(ivi::CategoryMap cats)
 
 #ifdef __TRACE
         foreach(ivi::SGenre oneGenre, oneCat.mGenres)
-            mInfo(tr("  \\_Genre '%1'(%2) ...").arg(oneGenre.mTitle).arg(oneGenre.mId));
+            mInfo(tr("  \\_Genre '%1'(%2) (#%3) ...")
+                  .arg(oneGenre.mTitle).arg(oneGenre.mId)
+                  .arg(oneGenre.mCount));
 #endif // __TRACE
     }
 
@@ -269,7 +273,7 @@ void CVodIvi::slotCatchVideos(cparser::VideoList videos)
                 .arg(ui->cbxIviGenre->currentText());
     }
 
-    ui->iviBrowser->displayVodList(videos, genre);
+    ui->iviBrowser->displayVodList(videos, genre, mCompId != -1);
 }
 
 //------------------------------------------------------------------------------
@@ -280,6 +284,13 @@ void CVodIvi::slotCatchVideos(cparser::VideoList videos)
 void CVodIvi::slotCatchVideoInfo(cparser::SVodVideo video)
 {
     ui->iviBrowser->displayVideoDetails(video);
+
+    if (video.vVodFiles.isEmpty())
+    {
+        QMessageBox::critical(this,
+          tr("Error"),
+          tr("Sorry, content '%1' is currently not available in your country!").arg(video.sName));
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -337,6 +348,7 @@ void CVodIvi::getFilterData(ivi::SVideoFilter &filter)
     filter.mFrom   = ui->cbxIviSites->itemData(ui->cbxIviSites->currentIndex()).toInt();
     filter.mTo     = filter.mFrom + (VIDEOS_PER_SITE - 1);
     filter.mSearch = ui->lineIviSearch->text();
+    filter.mCompId = mCompId;
 }
 
 //------------------------------------------------------------------------------
@@ -357,7 +369,7 @@ void CVodIvi::getVideos()
 void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
 {
     QString action = arg1.queryItemValue("action");
-    int     vodId, kind;
+    int     vodId, kind, count = -1;
     QString sUrl;
 
     if (action == "vod_info")
@@ -365,7 +377,28 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         ui->iviBrowser->saveScrollPos();
         vodId = arg1.queryItemValue("vodid").toInt();
         kind  = arg1.queryItemValue("kind").toInt();
-        iviApi.getVideoInfo(vodId);
+
+        if (arg1.hasQueryItem("count"))
+        {
+            count = arg1.queryItemValue("count").toInt();
+        }
+
+        if ((ivi::eKind)kind == ivi::KIND_VIDEO)
+        {
+            iviApi.getVideoInfo(vodId, (ivi::eKind)kind);
+        }
+        else
+        {
+            mCompId = vodId;
+            fillSitesCbx(count);
+        }
+    }
+    else if (action == "backHome")
+    {
+        mCompId = -1;
+
+        // force reload ...
+        on_cbxIviLastOrBest_activated(ui->cbxIviLastOrBest->currentIndex());
     }
     else if (action == "backtolist")
     {
@@ -396,12 +429,14 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
     else if (action == "add_fav")
     {
         vodId = arg1.queryItemValue("vodid").toInt();
-        iviApi.addFav(vodId);
+        kind  = arg1.queryItemValue("kind").toInt();
+        iviApi.addFav(vodId, (ivi::eKind)kind);
     }
     else if (action == "del_fav")
     {
         vodId = arg1.queryItemValue("vodid").toInt();
-        iviApi.delFav(vodId);
+        kind  = arg1.queryItemValue("kind").toInt();
+        iviApi.delFav(vodId, (ivi::eKind)kind);
     }
 }
 

@@ -53,6 +53,12 @@ namespace ivi {
         IVI_UNKNOWN=256
     };
 
+    enum eKind {
+        KIND_UNKNOWN     = 0,
+        KIND_VIDEO       = 1,
+        KIND_COMPILATION = 2
+    };
+
     struct SCat {
         QString  mTitle;
         int      mId;
@@ -69,9 +75,11 @@ namespace ivi {
     };
 
     struct SVideoFilter {
+        SVideoFilter() :mGenId(-1), mFrom(-1), mTo(-1), mCompId(-1){}
         int     mGenId;
         int     mFrom;
         int     mTo;
+        int     mCompId;
         QString mSort;
         QString mSearch;
     };
@@ -101,11 +109,12 @@ public:
     int getCountries();
     int getVideos(const ivi::SVideoFilter& filter);
     int searchVideos(const ivi::SVideoFilter& filter);
-    int getVideoInfo(int id);
+    int getVideoInfo(int id, ivi::eKind kind);
+    int getVideoFromCompilation(const ivi::SVideoFilter& filter);
     int getFiles(int id);
-    int getVideoPersons(int id);
-    int addFav(int id);
-    int delFav(int id);
+    int getVideoPersons(int id, ivi::eKind kind);
+    int addFav(int id, ivi::eKind kind);
+    int delFav(int id, ivi::eKind kind);
     int getFavCount();
     int getFavourites(int offset = -1);
     int favCount() const;
