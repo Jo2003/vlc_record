@@ -261,6 +261,11 @@ QString CVodBrowser::createVodListTableCell(const cparser::SVodVideo& entry, boo
        url.addQueryItem("count" , QString::number(entry.iContentCount));
    }
 
+   if (entry.iCompId != -1)
+   {
+       url.addQueryItem("compid" , QString::number(entry.iCompId));
+   }
+
    url.addQueryItem("pass_protect", entry.bProtected ? "1" : "0");
    url.setPath("videothek");
 
@@ -356,11 +361,22 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       // is favourite ...
       url.clear();
       url.addQueryItem("action", "del_fav");
-      url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
-      if (sInfo.iKind > 0)
+
+      // video compilation (do not handle a single show independed) ...
+      if (sInfo.iCompId != -1)
       {
-          url.addQueryItem("kind", QString::number(sInfo.iKind));
+         url.addQueryItem("vodid", QString::number(sInfo.iCompId));
+         url.addQueryItem("kind", QString::number(2)); // ivi::KIND_COMPILATION
       }
+      else
+      {
+         url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+         if (sInfo.iKind > 0)
+         {
+             url.addQueryItem("kind", QString::number(sInfo.iKind));
+         }
+      }
+
       url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 
@@ -371,11 +387,22 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       // not a favourite ...
       url.clear();
       url.addQueryItem("action", "add_fav");
-      url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
-      if (sInfo.iKind > 0)
+
+      // video compilation (do not handle a single show independed) ...
+      if (sInfo.iCompId != -1)
       {
-          url.addQueryItem("kind", QString::number(sInfo.iKind));
+         url.addQueryItem("vodid", QString::number(sInfo.iCompId));
+         url.addQueryItem("kind", QString::number(2)); // ivi::KIND_COMPILATION
       }
+      else
+      {
+         url.addQueryItem("vodid", QString::number(sInfo.uiVidId));
+         if (sInfo.iKind > 0)
+         {
+             url.addQueryItem("kind", QString::number(sInfo.iKind));
+         }
+      }
+
       url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
       url.setPath("videothek");
 

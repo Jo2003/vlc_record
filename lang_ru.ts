@@ -209,68 +209,68 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CIviApi</name>
     <message>
-        <location filename="civiapi.cpp" line="354"/>
-        <location filename="civiapi.cpp" line="438"/>
-        <location filename="civiapi.cpp" line="478"/>
-        <location filename="civiapi.cpp" line="606"/>
+        <location filename="civiapi.cpp" line="382"/>
+        <location filename="civiapi.cpp" line="470"/>
+        <location filename="civiapi.cpp" line="510"/>
+        <location filename="civiapi.cpp" line="638"/>
         <source>Post &apos;%1&apos; to url &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="669"/>
+        <location filename="civiapi.cpp" line="701"/>
         <source>We&apos;ve got genres response ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="650"/>
-        <location filename="civiapi.cpp" line="715"/>
-        <location filename="civiapi.cpp" line="763"/>
-        <location filename="civiapi.cpp" line="858"/>
-        <location filename="civiapi.cpp" line="979"/>
-        <location filename="civiapi.cpp" line="1048"/>
-        <location filename="civiapi.cpp" line="1085"/>
-        <location filename="civiapi.cpp" line="1142"/>
-        <location filename="civiapi.cpp" line="1175"/>
-        <location filename="civiapi.cpp" line="1213"/>
+        <location filename="civiapi.cpp" line="682"/>
+        <location filename="civiapi.cpp" line="747"/>
+        <location filename="civiapi.cpp" line="795"/>
+        <location filename="civiapi.cpp" line="902"/>
+        <location filename="civiapi.cpp" line="1036"/>
+        <location filename="civiapi.cpp" line="1112"/>
+        <location filename="civiapi.cpp" line="1149"/>
+        <location filename="civiapi.cpp" line="1215"/>
+        <location filename="civiapi.cpp" line="1248"/>
+        <location filename="civiapi.cpp" line="1286"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="632"/>
+        <location filename="civiapi.cpp" line="664"/>
         <source>Parse IVI login respone ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="651"/>
-        <location filename="civiapi.cpp" line="716"/>
-        <location filename="civiapi.cpp" line="764"/>
-        <location filename="civiapi.cpp" line="859"/>
-        <location filename="civiapi.cpp" line="980"/>
-        <location filename="civiapi.cpp" line="1049"/>
-        <location filename="civiapi.cpp" line="1086"/>
-        <location filename="civiapi.cpp" line="1143"/>
-        <location filename="civiapi.cpp" line="1176"/>
-        <location filename="civiapi.cpp" line="1214"/>
+        <location filename="civiapi.cpp" line="683"/>
+        <location filename="civiapi.cpp" line="748"/>
+        <location filename="civiapi.cpp" line="796"/>
+        <location filename="civiapi.cpp" line="903"/>
+        <location filename="civiapi.cpp" line="1037"/>
+        <location filename="civiapi.cpp" line="1113"/>
+        <location filename="civiapi.cpp" line="1150"/>
+        <location filename="civiapi.cpp" line="1216"/>
+        <location filename="civiapi.cpp" line="1249"/>
+        <location filename="civiapi.cpp" line="1287"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="734"/>
+        <location filename="civiapi.cpp" line="766"/>
         <source>Parse IVI countries ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="782"/>
+        <location filename="civiapi.cpp" line="814"/>
         <source>Parse IVI videos ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="877"/>
+        <location filename="civiapi.cpp" line="922"/>
         <source>Parse IVI video info ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="998"/>
+        <location filename="civiapi.cpp" line="1055"/>
         <source>Parse IVI file info ...</source>
         <translation></translation>
     </message>
@@ -279,32 +279,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Ошибка</translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1067"/>
+        <location filename="civiapi.cpp" line="1131"/>
         <source>Parse IVI time stamp ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1078"/>
+        <location filename="civiapi.cpp" line="1142"/>
         <source>Using time stamp &apos;%1&apos; for the next 9 minutes ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1104"/>
+        <location filename="civiapi.cpp" line="1168"/>
         <source>We&apos;ve got persons response ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1161"/>
+        <location filename="civiapi.cpp" line="1234"/>
         <source>We&apos;ve favourite count response ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1194"/>
+        <location filename="civiapi.cpp" line="1267"/>
         <source>parse all favourites ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1238"/>
+        <location filename="civiapi.cpp" line="1377"/>
         <source>IVI Response:
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -312,7 +312,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1309"/>
+        <location filename="civiapi.cpp" line="1470"/>
         <source>Network error: #%1: %2</source>
         <oldsource>Network error: %1</oldsource>
         <translation></translation>
@@ -3134,83 +3134,83 @@ or start time is later than end time!</source>
 <context>
     <name>CVodBrowser</name>
     <message>
-        <location filename="cvodbrowser.cpp" line="367"/>
+        <location filename="cvodbrowser.cpp" line="383"/>
         <source>Remove from favourites.</source>
         <translation>Удалить из избранных.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="382"/>
+        <location filename="cvodbrowser.cpp" line="409"/>
         <source>Add to favourites.</source>
         <translation>Добавить в избранные.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="406"/>
+        <location filename="cvodbrowser.cpp" line="433"/>
         <source>Rating</source>
         <translation>Рейтинг</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="427"/>
+        <location filename="cvodbrowser.cpp" line="454"/>
         <source>Filmweb: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="429"/>
+        <location filename="cvodbrowser.cpp" line="456"/>
         <source>Kinopoisk: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="539"/>
+        <location filename="cvodbrowser.cpp" line="566"/>
         <source>Video Details</source>
         <translation>Информации о видео</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="273"/>
+        <location filename="cvodbrowser.cpp" line="278"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="400"/>
+        <location filename="cvodbrowser.cpp" line="427"/>
         <source>min.</source>
         <translation>мин.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="441"/>
+        <location filename="cvodbrowser.cpp" line="468"/>
         <source>Director: %1</source>
         <translation>Режиссер: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="446"/>
+        <location filename="cvodbrowser.cpp" line="473"/>
         <source>With: %1</source>
         <translation>В ролях: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="390"/>
+        <location filename="cvodbrowser.cpp" line="417"/>
         <source>Genre: %1</source>
         <translation>Жанр: %1</translation>
     </message>
     <message>
         <location filename="cvodbrowser.cpp" line="197"/>
-        <location filename="cvodbrowser.cpp" line="333"/>
+        <location filename="cvodbrowser.cpp" line="338"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="459"/>
+        <location filename="cvodbrowser.cpp" line="486"/>
         <source>Part %1</source>
         <translation>Часть %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="417"/>
+        <location filename="cvodbrowser.cpp" line="444"/>
         <source>IMDB: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="509"/>
+        <location filename="cvodbrowser.cpp" line="536"/>
         <source>Play Movie ...</source>
         <translation>Просмотр фильма ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="524"/>
+        <location filename="cvodbrowser.cpp" line="551"/>
         <source>Record Movie ...</source>
         <translation>Запись фильма ...</translation>
     </message>
@@ -3256,80 +3256,86 @@ or start time is later than end time!</source>
         <translation>Поиск: </translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="211"/>
+        <location filename="cvodivi.cpp" line="232"/>
+        <location filename="cvodivi.cpp" line="267"/>
+        <source>All</source>
+        <translation>Все</translation>
+    </message>
+    <message>
+        <location filename="cvodivi.cpp" line="272"/>
         <source>Found category &apos;%1&apos;(%2) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="218"/>
+        <location filename="cvodivi.cpp" line="279"/>
         <source>  \_Genre &apos;%1&apos;(%2) (#%3) ...</source>
         <oldsource>  \_Genre &apos;%1&apos;(%2) ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="238"/>
+        <location filename="cvodivi.cpp" line="299"/>
         <source>Found country #%1 &apos;%2&apos;[%3] ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="258"/>
+        <location filename="cvodivi.cpp" line="319"/>
         <source>Found Video #%1 &apos;%2&apos;(%3 %4) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="291"/>
+        <location filename="cvodivi.cpp" line="357"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="292"/>
+        <location filename="cvodivi.cpp" line="358"/>
         <source>Sorry, content &apos;%1&apos; is currently not available in your country!</source>
         <oldsource>Sorry, the content &apos;%1&apos; is not available at the moment. Please try again later!</oldsource>
-        <translation type="unfinished">К сожалению данный контент &apos;%1&apos; временно не доступен в Вашей стране!</translation>
+        <translation>К сожалению данный контент &apos;%1&apos; временно не доступен в Вашей стране!</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="304"/>
+        <location filename="cvodivi.cpp" line="370"/>
         <source>Popularity</source>
         <translation>Популярность</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="305"/>
+        <location filename="cvodivi.cpp" line="371"/>
         <source>Newest</source>
         <translation>Последние</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="306"/>
+        <location filename="cvodivi.cpp" line="372"/>
         <source>IVI Rating</source>
         <translation>Рейтинг IVI</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="307"/>
+        <location filename="cvodivi.cpp" line="373"/>
         <source>KP Rating</source>
         <translation>Рейтинг КП</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="308"/>
+        <location filename="cvodivi.cpp" line="374"/>
         <source>IMDB Rating</source>
         <translation>Рейтинг IMDB</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="309"/>
+        <location filename="cvodivi.cpp" line="375"/>
         <source>Budget</source>
         <translation>Бюджет</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="310"/>
+        <location filename="cvodivi.cpp" line="376"/>
         <source>My Favourites</source>
         <oldsource>Favorites</oldsource>
         <translation>Избранные фильмы</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="419"/>
+        <location filename="cvodivi.cpp" line="486"/>
         <source>Start ivi play with URL %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="426"/>
+        <location filename="cvodivi.cpp" line="493"/>
         <source>Start ivi record with URL %1 ...</source>
         <translation></translation>
     </message>

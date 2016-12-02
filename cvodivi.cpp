@@ -98,13 +98,34 @@ CVodBrowser *CVodIvi::iviBrowser()
 //------------------------------------------------------------------------------
 void CVodIvi::on_cbxIviGenre_activated(int index)
 {
-    mCompId = -1;
-    int         catId = ui->cbxIviCategory->itemData(ui->cbxIviCategory->currentIndex()).toInt();
-    int         genId = ui->cbxIviGenre->itemData(index).toInt();
-    ivi::SCat   cat   = mIviCats.value(catId);
-    ivi::SGenre genre = cat.mGenres.value(genId);
+    mCompId   = -1;
+    int catId = ui->cbxIviCategory->itemData(ui->cbxIviCategory->currentIndex()).toInt();
+    int genId = ui->cbxIviGenre->itemData(index).toInt();
+    int count = 0;
 
-    fillSitesCbx(genre.mCount);
+    if ((catId == -1) && (genId == -1))
+    {
+        foreach (const ivi::SCat& cat, mIviCats)
+        {
+            foreach (const ivi::SGenre genre, cat.mGenres)
+            {
+                count += genre.mCount;
+            }
+        }
+    }
+    else if (genId == -1)
+    {
+        foreach (const ivi::SGenre genre, mIviCats.value(catId).mGenres)
+        {
+            count += genre.mCount;
+        }
+    }
+    else
+    {
+        count = mIviCats.value(catId).mGenres.value(genId).mCount;
+    }
+
+    fillSitesCbx(count);
 }
 
 //------------------------------------------------------------------------------
@@ -123,9 +144,31 @@ void CVodIvi::on_cbxIviLastOrBest_activated(int index)
     {
         int catId = ui->cbxIviCategory->itemData(ui->cbxIviCategory->currentIndex()).toInt();
         int genId = ui->cbxIviGenre->itemData(ui->cbxIviGenre->currentIndex()).toInt();
-        ivi::SCat   cat   = mIviCats.value(catId);
-        ivi::SGenre genre = cat.mGenres.value(genId);
-        fillSitesCbx(genre.mCount);
+        int count = 0;
+
+        if ((catId == -1) && (genId == -1))
+        {
+            foreach (const ivi::SCat& cat, mIviCats)
+            {
+                foreach (const ivi::SGenre genre, cat.mGenres)
+                {
+                    count += genre.mCount;
+                }
+            }
+        }
+        else if (genId == -1)
+        {
+            foreach (const ivi::SGenre genre, mIviCats.value(catId).mGenres)
+            {
+                count += genre.mCount;
+            }
+        }
+        else
+        {
+            count = mIviCats.value(catId).mGenres.value(genId).mCount;
+        }
+
+        fillSitesCbx(count);
     }
 
     getVideos();
@@ -184,11 +227,26 @@ void CVodIvi::on_cbxIviCategory_activated(int index)
 {
     ui->cbxIviGenre->clear();
     int catId     = ui->cbxIviCategory->itemData(index).toInt();
-    ivi::SCat cat = mIviCats.value(catId);
 
-    foreach(ivi::SGenre oneGenre, cat.mGenres)
+    // add "all" ...
+    ui->cbxIviGenre->addItem(tr("All"), -1);
+
+    if (catId == -1)
     {
-        ui->cbxIviGenre->addItem(oneGenre.mTitle, oneGenre.mId);
+        foreach(const ivi::SCat& cat, mIviCats)
+        {
+            foreach(const ivi::SGenre& genre, cat.mGenres)
+            {
+                ui->cbxIviGenre->addItem(cat.mTitle + ": " + genre.mTitle, genre.mId);
+            }
+        }
+    }
+    else
+    {
+        foreach(ivi::SGenre oneGenre, mIviCats.value(catId).mGenres)
+        {
+            ui->cbxIviGenre->addItem(oneGenre.mTitle, oneGenre.mId);
+        }
     }
 
     ui->cbxIviGenre->setCurrentIndex(0);
@@ -204,6 +262,9 @@ void CVodIvi::slotCatchCategories(ivi::CategoryMap cats)
 {
     mIviCats = cats;
     ui->cbxIviCategory->clear();
+
+    // add "all" entry ...
+    ui->cbxIviCategory->addItem(tr("All"), -1);
 
     foreach(ivi::SCat oneCat, mIviCats)
     {
@@ -271,6 +332,11 @@ void CVodIvi::slotCatchVideos(cparser::VideoList videos)
         genre = QString("%1: %2")
                 .arg(ui->cbxIviCategory->currentText())
                 .arg(ui->cbxIviGenre->currentText());
+    }
+
+    if ((videos.count() > 0) && !videos.at(0).sCompName.isEmpty())
+    {
+        genre += QString(": %1").arg(videos.at(0).sCompName);
     }
 
     ui->iviBrowser->displayVodList(videos, genre, mCompId != -1);
@@ -343,6 +409,7 @@ void CVodIvi::fillSitesCbx(int count)
 //------------------------------------------------------------------------------
 void CVodIvi::getFilterData(ivi::SVideoFilter &filter)
 {
+    filter.mCatId  = ui->cbxIviCategory->itemData(ui->cbxIviCategory->currentIndex()).toInt();
     filter.mGenId  = ui->cbxIviGenre->itemData(ui->cbxIviGenre->currentIndex()).toInt();
     filter.mSort   = ui->cbxIviLastOrBest->itemData(ui->cbxIviLastOrBest->currentIndex()).toString();
     filter.mFrom   = ui->cbxIviSites->itemData(ui->cbxIviSites->currentIndex()).toInt();

@@ -41,7 +41,9 @@ namespace ivi {
         IVI_GENRES,
         IVI_VIDEOS,
         IVI_VIDEOINFO,
+        IVI_COMPINFO,
         IVI_VIDEO_PERSONS,
+        IVI_COMP_PERSONS,
         IVI_FILES,
         IVI_COUNTRIES,
         IVI_TIMESTAMP,
@@ -75,8 +77,9 @@ namespace ivi {
     };
 
     struct SVideoFilter {
-        SVideoFilter() :mGenId(-1), mFrom(-1), mTo(-1), mCompId(-1){}
+        SVideoFilter() :mGenId(-1), mCatId(-1), mFrom(-1), mTo(-1), mCompId(-1){}
         int     mGenId;
+        int     mCatId;
         int     mFrom;
         int     mTo;
         int     mCompId;
@@ -124,12 +127,14 @@ public:
     int parseGenres(const QString& resp);
     int parseCountries(const QString& resp);
     int parseVideos(const QString& resp);
-    int parseVideoInfo(const QString& resp);
+    int parseVideoInfo(const QString& resp, ivi::eIviReq req);
     int parseFiles(const QString& resp);
     int parseTimeStamp(const QString& resp);
-    int parseVideoPersons(const QString& resp);
+    int parseVideoPersons(const QString& resp, ivi::eIviReq req);
     int parseFavCount(const QString& resp);
     int parseAllFavs(const QString& resp);
+
+    void combineInfo();
 
 signals:
     void sigCategories(ivi::CategoryMap cats);
@@ -159,6 +164,8 @@ private:
     QString            mTs;
     CCMAC_Bf          *pHash;
     cparser::SVodVideo mCurrentVideo;
+    cparser::SVodVideo mCompilationInfo;
+    ivi::SVideoFilter  mCompFilter;
     int                mFavCount;
     QVector<int>       mFavourites;
 };

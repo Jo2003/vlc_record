@@ -158,7 +158,16 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
 {
     if (filter.mCompId != -1)
     {
-        return getVideoFromCompilation(filter);
+        // check for compilation info ...
+        if (filter.mCompId != (int)mCompilationInfo.uiVidId)
+        {
+            mCompFilter = filter;
+            return getVideoInfo(filter.mCompId, ivi::KIND_COMPILATION);
+        }
+        else
+        {
+            return getVideoFromCompilation(filter);
+        }
     }
     if (!filter.mSearch.isEmpty())
     {
@@ -183,7 +192,15 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
     req += QString("&sort=%1").arg(filter.mSort);
     req += QString("&from=%1").arg(filter.mFrom);
     req += QString("&to=%1").arg(filter.mTo);
-    req += QString("&genre=%1").arg(filter.mGenId);
+
+    if (filter.mGenId != -1)
+    {
+        req += QString("&genre=%1").arg(filter.mGenId);
+    }
+    else if (filter.mCatId != -1)
+    {
+        req += QString("&category=%1").arg(filter.mCatId);
+    }
 
 #ifdef __TRACE
     mInfo(req);
@@ -224,7 +241,16 @@ int CIviApi::searchVideos(const ivi::SVideoFilter &filter)
     // add filter stuff ...
     req += QString("&from=%1").arg(filter.mFrom);
     req += QString("&to=%1").arg(filter.mTo);
-    // req += QString("&genre=%1").arg(filter.mGenId);
+
+    if (filter.mGenId != -1)
+    {
+        req += QString("&genre=%1").arg(filter.mGenId);
+    }
+    else if (filter.mCatId != -1)
+    {
+        req += QString("&category=%1").arg(filter.mCatId);
+    }
+
     req += QString("&query=%1").arg(filter.mSearch);
 
 #ifdef __TRACE
@@ -247,8 +273,8 @@ int CIviApi::searchVideos(const ivi::SVideoFilter &filter)
 //------------------------------------------------------------------------------
 //! @brief      Gets the video information.
 //!
-//! @param[in]  id    The identifier
-//! @param[in]  kind  video or compilation
+//! @param[in]  id      The identifier
+//! @param[in]  kind    video or compilation
 //!
 //! @return     0 -> ok; -1 -> error
 //------------------------------------------------------------------------------
@@ -280,7 +306,9 @@ int CIviApi::getVideoInfo(int id, ivi::eKind kind)
 
     if (pReply)
     {
-        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEOINFO);
+        pReply->setProperty(IVI_REQ_ID, ((ivi::eKind)kind == ivi::KIND_VIDEO)
+                                         ? (int)ivi::IVI_VIDEOINFO
+                                         : (int)ivi::IVI_COMPINFO);
     }
 
     return pReply ? 0 : -1;
@@ -404,7 +432,11 @@ int CIviApi::getVideoPersons(int id, ivi::eKind kind)
 
     if (pReply)
     {
-        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_VIDEO_PERSONS);
+        int req = ((kind == ivi::KIND_COMPILATION) && (id == (int)mCompilationInfo.uiVidId))
+                ? (int)ivi::IVI_COMP_PERSONS
+                : (int)ivi::IVI_VIDEO_PERSONS;
+
+        pReply->setProperty(IVI_REQ_ID, req);
     }
 
     return pReply ? 0 : -1;
@@ -796,13 +828,25 @@ int CIviApi::parseVideos(const QString &resp)
             QVariantMap mVideo = varVideo.toMap();
             video.sImg          = "";
             video.sYear         = "";
+            video.sCompName     = "";
             video.iContentCount = -1;
+            video.iCompId       = -1;
             video.uiVidId  = mVideo.value("id").toUInt();
             video.sName    = mVideo.value("title").toString();
 
             if (mVideo.contains("total_contents"))
             {
                 video.iContentCount = mVideo.value("total_contents").toInt();
+            }
+
+            if (mVideo.contains("compilation"))
+            {
+                video.iCompId = mVideo.value("compilation").toInt();
+            }
+
+            if (mVideo.contains("compilation_title"))
+            {
+                video.sCompName = mVideo.value("compilation_title").toString();
             }
 
             // compilation and video handle year in a different way ...
@@ -869,10 +913,11 @@ int CIviApi::parseVideos(const QString &resp)
 //! @brief      parse ivi video info
 //!
 //! @param[in]  resp  http response
+//! @param[in]  req   ivi request type
 //!
 //! @return     0 -> ok; -1 -> error
 //------------------------------------------------------------------------------
-int CIviApi::parseVideoInfo(const QString &resp)
+int CIviApi::parseVideoInfo(const QString &resp, ivi::eIviReq req)
 {
     mInfo(tr("Parse IVI video info ..."));
     int                  iRV = 0;
@@ -895,6 +940,11 @@ int CIviApi::parseVideoInfo(const QString &resp)
         if (mVideo.contains("total_contents"))
         {
             video.iContentCount = mVideo.value("total_contents").toInt();
+        }
+
+        if (mVideo.contains("compilation"))
+        {
+            video.iCompId = mVideo.value("compilation").toInt();
         }
 
         if (!mVideo.value("orig_title").toString().isEmpty())
@@ -969,7 +1019,14 @@ int CIviApi::parseVideoInfo(const QString &resp)
 
         video.bFavourit = mFavourites.contains((int)video.uiVidId);
 
-        mCurrentVideo   = video;
+        if (req == ivi::IVI_VIDEOINFO)
+        {
+            mCurrentVideo    = video;
+        }
+        else
+        {
+            mCompilationInfo = video;
+        }
 
         // request links ...
         getVideoPersons(video.uiVidId, (ivi::eKind)video.iKind);
@@ -1041,7 +1098,14 @@ int CIviApi::parseFiles(const QString &resp)
             mCurrentVideo.vVodFiles.append(fileInfo);
         }
 
-        emit sigVideoInfo(mCurrentVideo);
+        if ((mCurrentVideo.iCompId != -1) && (mCurrentVideo.iCompId == (int)mCompilationInfo.uiVidId))
+        {
+            combineInfo();
+        }
+        else
+        {
+            emit sigVideoInfo(mCurrentVideo);
+        }
     }
     else
     {
@@ -1099,7 +1163,7 @@ int CIviApi::parseTimeStamp(const QString &resp)
 //!
 //! @return     0 -> ok; -1 -> error
 //------------------------------------------------------------------------------
-int CIviApi::parseVideoPersons(const QString &resp)
+int CIviApi::parseVideoPersons(const QString &resp, ivi::eIviReq req)
 {
     mInfo(tr("We've got persons response ..."));
     int              iRV = 0;
@@ -1110,6 +1174,10 @@ int CIviApi::parseVideoPersons(const QString &resp)
 
     if (bOk)
     {
+        QString& director = (req == ivi::IVI_VIDEO_PERSONS)
+                            ? mCurrentVideo.sDirector
+                            : mCompilationInfo.sDirector;
+
         // ivi categories ...
         foreach (const QVariant& varPerson, contentMap.value("result").toList())
         {
@@ -1120,21 +1188,26 @@ int CIviApi::parseVideoPersons(const QString &resp)
                 foreach (const QVariant& varDir, mPerson.value("persons").toList())
                 {
                     QVariantMap mDirector = varDir.toMap();
-                    if (!mCurrentVideo.sDirector.isEmpty())
+                    if (!director.isEmpty())
                     {
-                        mCurrentVideo.sDirector += ", ";
+                        director += ", ";
                     }
 
-                    mCurrentVideo.sDirector += mDirector.value("name").toString();
+                    director += mDirector.value("name").toString();
                 }
 
                 break;
             }
         }
 
-        if ((ivi::eKind)mCurrentVideo.iKind == ivi::KIND_VIDEO)
+        if (req == ivi::IVI_VIDEO_PERSONS)
         {
             getFiles(mCurrentVideo.uiVidId);
+        }
+        else
+        {
+            // compilation info filled -> request compilation videos ...
+            iRV = getVideoFromCompilation(mCompFilter);
         }
     }
     else
@@ -1221,6 +1294,72 @@ int CIviApi::parseAllFavs(const QString &resp)
 }
 
 //------------------------------------------------------------------------------
+//! @brief      combine video info with compilation info
+//------------------------------------------------------------------------------
+void CIviApi::combineInfo()
+{
+    // prepare strings ...
+    mCurrentVideo.sDescr           = mCurrentVideo.sDescr.simplified();
+    mCurrentVideo.sActors          = mCurrentVideo.sActors.simplified();
+    mCurrentVideo.sDirector        = mCurrentVideo.sDirector.simplified();
+    mCurrentVideo.sCountry         = mCurrentVideo.sCountry.simplified();
+    mCurrentVideo.sYear            = mCurrentVideo.sYear.simplified();
+    mCurrentVideo.sGenres          = mCurrentVideo.sGenres.simplified();
+    mCurrentVideo.sImdbRating      = mCurrentVideo.sImdbRating.simplified();
+    mCurrentVideo.sKinopoiskRating = mCurrentVideo.sKinopoiskRating.simplified();
+    mCurrentVideo.sName            = mCurrentVideo.sName.simplified();
+
+    // check for more detailed info ...
+    if (mCurrentVideo.sDescr.isEmpty())
+    {
+        mCurrentVideo.sDescr = mCompilationInfo.sDescr;
+    }
+
+    if (mCurrentVideo.sActors.isEmpty())
+    {
+        mCurrentVideo.sActors = mCompilationInfo.sActors;
+    }
+
+    if (mCurrentVideo.sDirector.isEmpty())
+    {
+        mCurrentVideo.sDirector = mCompilationInfo.sDirector;
+    }
+
+    if (mCurrentVideo.sCountry.isEmpty())
+    {
+        mCurrentVideo.sCountry = mCompilationInfo.sCountry;
+    }
+
+    if (mCurrentVideo.sYear.isEmpty() || (mCurrentVideo.sYear == "0"))
+    {
+        mCurrentVideo.sYear = mCompilationInfo.sYear;
+    }
+
+    if (mCurrentVideo.sGenres.isEmpty())
+    {
+        mCurrentVideo.sGenres = mCompilationInfo.sGenres;
+    }
+
+    if (mCurrentVideo.sImdbRating.isEmpty() || (mCurrentVideo.sImdbRating == "0"))
+    {
+        mCurrentVideo.sImdbRating = mCompilationInfo.sImdbRating;
+    }
+
+    if (mCurrentVideo.sKinopoiskRating.isEmpty() || (mCurrentVideo.sKinopoiskRating == "0"))
+    {
+        mCurrentVideo.sKinopoiskRating = mCompilationInfo.sKinopoiskRating;
+    }
+
+    // override favourites stuff ...
+    mCurrentVideo.bFavourit = mCompilationInfo.bFavourit;
+
+    // title ...
+    mCurrentVideo.sName = mCompilationInfo.sName + " - " + mCurrentVideo.sName;
+
+    emit sigVideoInfo(mCurrentVideo);
+}
+
+//------------------------------------------------------------------------------
 //! @brief      Gets the network reply.
 //!
 //! @param      reply  pointer to network reply
@@ -1254,7 +1393,8 @@ void CIviApi::getReply(QNetworkReply *reply)
             parseCountries(resp);
             break;
         case ivi::IVI_VIDEOINFO:
-            parseVideoInfo(resp);
+        case ivi::IVI_COMPINFO:
+            parseVideoInfo(resp, req);
             break;
         case ivi::IVI_FILES:
             parseFiles(resp);
@@ -1263,23 +1403,44 @@ void CIviApi::getReply(QNetworkReply *reply)
             parseTimeStamp(resp);
             break;
         case ivi::IVI_VIDEO_PERSONS:
-            parseVideoPersons(resp);
+        case ivi::IVI_COMP_PERSONS:
+            parseVideoPersons(resp, req);
             break;
         case ivi::IVI_ADD_FAV:
             if (!resp.contains("error"))
             {
+                if ((mCurrentVideo.iCompId != -1) && (mCurrentVideo.iCompId == (int)mCompilationInfo.uiVidId))
+                {
+                    // compilation added to favourites ...
+                    mCompilationInfo.bFavourit = true;
+                    mFavourites.append((int)mCurrentVideo.iCompId);
+                }
+                else
+                {
+                    mFavourites.append((int)mCurrentVideo.uiVidId);
+                }
+
                 mCurrentVideo.bFavourit = true;
                 mFavCount ++;
-                mFavourites.append((int)mCurrentVideo.uiVidId);
                 emit sigVideoInfo(mCurrentVideo);
             }
             break;
         case ivi::IVI_DEL_FAV:
             if (!resp.contains("error"))
             {
-                mFavCount --;
-                int idx = mFavourites.indexOf((int)mCurrentVideo.uiVidId);
+                int idx;
+                if ((mCurrentVideo.iCompId != -1) && (mCurrentVideo.iCompId == (int)mCompilationInfo.uiVidId))
+                {
+                    // compilation removed from favourites ...
+                    mCompilationInfo.bFavourit = false;
+                    idx = mFavourites.indexOf((int)mCurrentVideo.iCompId);
+                }
+                else
+                {
+                    idx = mFavourites.indexOf((int)mCurrentVideo.uiVidId);
+                }
 
+                mFavCount --;
                 if (idx > -1)
                 {
                     mFavourites.remove(idx);

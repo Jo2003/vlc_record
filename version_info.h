@@ -35,7 +35,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 73
 #define VERSION_BUILD 0
-#define BETA_EXT      "B2"
+#define BETA_EXT      "B3"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2016-12-02: Version 2.73.0B3
+| - favourites stuff works correctly on compilations
+| - combine compilation info with video info from compilation
+|
 | 2016-12-01: Version 2.73.0B2
 | - compilations work
 | - show IVI intro as soon as available
