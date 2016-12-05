@@ -31,6 +31,7 @@ CIviApi::CIviApi(QObject *parent) :
     mQueryPrefix = "mobileapi";
     pHash        = new CCMAC_Bf(IVI_KEY, IVI_K1, IVI_K2);
     connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
+    connect(this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(slotSslError(QNetworkReply*,QList<QSslError>)));
 }
 
 //------------------------------------------------------------------------------
@@ -1472,4 +1473,20 @@ void CIviApi::getReply(QNetworkReply *reply)
 
     // mark for deletion ...
     reply->deleteLater();
+}
+
+//------------------------------------------------------------------------------
+//! @brief      ssl error occured
+//!
+//! @param      pReply  pointer to network reply
+//! @param      errors  list of network errors
+//------------------------------------------------------------------------------
+void CIviApi::slotSslError(QNetworkReply *pReply, QList<QSslError> errors)
+{
+    Q_UNUSED(pReply)
+
+    foreach (const QSslError &error, errors)
+    {
+        mInfo(tr("SSL Error #%1: '%2'").arg((int)error.error()).arg(error.errorString()));
+    }
 }

@@ -18,6 +18,7 @@
 #include <QNetworkAccessManager>
 #include <QMap>
 #include <QTimer>
+#include <QSslError>
 #include "ccmac_bf.h"
 #include "cparser.h"
 
@@ -148,6 +149,7 @@ public slots:
 
 private slots:
     void getReply(QNetworkReply* reply);
+    void slotSslError(QNetworkReply* pReply,QList<QSslError> errors);
 
 public slots:
 
