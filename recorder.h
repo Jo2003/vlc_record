@@ -347,6 +347,8 @@ private slots:
     void slotIviPlay(QString url);
     void slotIviRecord(QString url);
 
+    void on_tabEpgVod_currentChanged(int index);
+
 signals:
     void sigShow ();
     void sigHide ();

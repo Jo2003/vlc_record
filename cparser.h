@@ -191,8 +191,9 @@ namespace cparser
    ///
    struct SIviInfo {
        QString url;     ///< ivi start video
-       bool status;     ///< ivi stratus
        QString ivi_id;  ///< ivi id (session)
+       bool status;     ///< ivi status
+       bool adShown;    ///< add already shown
    };
 
    /// \brief define type for stream standards

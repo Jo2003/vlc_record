@@ -52,7 +52,8 @@ Recorder::Recorder(QWidget *parent)
    eCurDMode = Ui::DM_NORMAL;
    eOldDMode = Ui::DM_NORMAL;
    m_iJumpValue = 0;
-   mIviInfo.status = false;
+   mIviInfo.status  = false;
+   mIviInfo.adShown = false;
 
    // set (customized) windows title ...
    setWindowTitle(QString("%1%2").arg(pCustomization->strVal("APP_NAME")).arg(pFolders->portable() ? tr(" - Portable Edition") : ""));
@@ -1399,6 +1400,33 @@ void Recorder::on_btnCleanVodSearch_clicked()
    pApiClient->queueRequest(CIptvDefs::REQ_GETVIDEOS, url.query());
 }
 
+//---------------------------------------------------------------------------
+//! \brief   tab index changed -> check for ivi tab
+//
+//! \param   index: int, current index
+//---------------------------------------------------------------------------
+void Recorder::on_tabEpgVod_currentChanged(int index)
+{
+    if (findTabWidget("tabIviVod") == index)
+    {
+        if (!mIviInfo.adShown)
+        {
+            // show ad ...
+            if (!mIviInfo.url.isEmpty() && AllowAction(IncPlay::PS_ADVERTISING))
+            {
+                showInfo.setPlayState(IncPlay::PS_ADVERTISING);
+                StartVlcPlay(mIviInfo.url);
+                mIviInfo.adShown = true;
+            }
+            else
+            {
+                ui->tabEpgVod->setCurrentIndex(0);
+            }
+        }
+    }
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //                                Slots                                       //
 ////////////////////////////////////////////////////////////////////////////////
@@ -2033,11 +2061,6 @@ void Recorder:: slotIviInfo(const QString &resp)
                ui->tabEpgVod->setCurrentIndex(0);
                ui->tabEpgVod->removeTab(idx);
             }
-        }
-
-        if (!mIviInfo.url.isEmpty())
-        {
-            StartVlcPlay(mIviInfo.url);
         }
     }
 }
@@ -6193,6 +6216,7 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
             // requested action stop or new record ...
          case IncPlay::PS_STOP:
          case IncPlay::PS_RECORD:
+         case IncPlay::PS_ADVERTISING:
             // ask for permission ...
             if (WantToStopRec ())
             {
@@ -6235,6 +6259,10 @@ int Recorder::AllowAction (IncPlay::ePlayStates newState)
       }
       // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
       break;
+
+   case IncPlay::PS_ADVERTISING:
+       // do never break ...
+       break;
 
    default:
       // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

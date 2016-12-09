@@ -51,8 +51,8 @@ CONFIG(debug,debug|release): DEFINES += __TRACE
 # program version
 # -------------------------------------
 PROGMAJ=2
-PROGMIN=72
-PROGBUILD=1
+PROGMIN=73
+PROGBUILD=0
 
 # here you can enable traces ...
 # DEFINES += __TRACE
