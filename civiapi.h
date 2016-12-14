@@ -38,6 +38,7 @@ namespace ivi {
     typedef QMap<int, SCountry> CountryMap;
 
     enum eIviReq {
+        IVI_APP_VER,
         IVI_SESSION,
         IVI_GENRES,
         IVI_VIDEOS,
@@ -107,6 +108,7 @@ public:
     virtual ~CIviApi();
 
     void setVerimatrixKey(const QString& key);
+    int login();
 
     // get / set
     int getGenres();
@@ -122,6 +124,7 @@ public:
     int getFavCount();
     int getFavourites(int offset = -1);
     int favCount() const;
+    int getRealAppVersion();
 
     // parse
     int parseSession(const QString& resp);
@@ -134,6 +137,7 @@ public:
     int parseVideoPersons(const QString& resp, ivi::eIviReq req);
     int parseFavCount(const QString& resp);
     int parseAllFavs(const QString& resp);
+    int parseRealAppVer(const QString& resp);
 
     void combineInfo();
 
@@ -170,6 +174,7 @@ private:
     ivi::SVideoFilter  mCompFilter;
     int                mFavCount;
     QVector<int>       mFavourites;
+    int                mRealAppVer;
 };
 
 #endif // __20161118_CIVIAPI_H

@@ -29,6 +29,7 @@ CIviApi::CIviApi(QObject *parent) :
     mProtocol    = "https";
     mHost        = "api.ivi.ru";
     mQueryPrefix = "mobileapi";
+    mRealAppVer  = -1;
     pHash        = new CCMAC_Bf(IVI_KEY, IVI_K1, IVI_K2);
     connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
     connect(this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(slotSslError(QNetworkReply*,QList<QSslError>)));
@@ -54,7 +55,16 @@ CIviApi::~CIviApi()
 void CIviApi::setVerimatrixKey(const QString &key)
 {
     mVerimatrix = key;
+    getRealAppVersion();
+}
 
+//------------------------------------------------------------------------------
+//! @brief      Sets the session key.
+//!
+//! @param[in]  key   The key
+//------------------------------------------------------------------------------
+int CIviApi::login()
+{
     // "https://api.ivi.ru/mobileapi/user/login/verimatrix/v2?verimatrix=abc&app_version=1234"
     QString req = QString("%1://%2/%3/user/login/verimatrix/v5?verimatrix=%4")
             .arg(mProtocol)
@@ -63,7 +73,7 @@ void CIviApi::setVerimatrixKey(const QString &key)
             .arg(mVerimatrix);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
 #ifdef __TRACE
     mInfo(req);
@@ -78,6 +88,8 @@ void CIviApi::setVerimatrixKey(const QString &key)
     {
         pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_SESSION);
     }
+
+    return pReply ? 0 : -1;
 }
 
 //------------------------------------------------------------------------------
@@ -95,7 +107,7 @@ int CIviApi::getGenres()
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
 #ifdef __TRACE
     mInfo(req);
@@ -129,7 +141,7 @@ int CIviApi::getCountries()
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
 #ifdef __TRACE
     mInfo(req);
@@ -187,7 +199,7 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
     // add filter stuff ...
     req += QString("&sort=%1").arg(filter.mSort);
@@ -237,7 +249,7 @@ int CIviApi::searchVideos(const ivi::SVideoFilter &filter)
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
     // add filter stuff ...
     req += QString("&from=%1").arg(filter.mFrom);
@@ -291,7 +303,7 @@ int CIviApi::getVideoInfo(int id, ivi::eKind kind)
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
     // add id ...
     req += QString("&id=%1").arg(id);
@@ -333,7 +345,7 @@ int CIviApi::getVideoFromCompilation(const ivi::SVideoFilter &filter)
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
     // add id ...
     req += QString("&id=%1").arg(filter.mCompId);
@@ -373,9 +385,9 @@ int CIviApi::getFiles(int id)
     QString postData = QString(IVI_GETCONTENT_TMPL)
             .arg(id)
             .arg(mSessionKey)
-            .arg(IVI_APP_VERSION);
+            .arg(mRealAppVer);
 
-    url += QString("?app_version=%1").arg(IVI_APP_VERSION);
+    url += QString("?app_version=%1").arg(mRealAppVer);
     url += QString("&ts=%1").arg(mTs);
     url += QString("&sign=%1").arg(pHash->sign(mTs + postData));
 
@@ -417,7 +429,7 @@ int CIviApi::getVideoPersons(int id, ivi::eKind kind)
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
 
     // add id ...
     req += QString("&id=%1").arg(id);
@@ -463,7 +475,7 @@ int CIviApi::addFav(int id, ivi::eKind kind)
 
     // content  ...
     QString cont;
-    cont += QString("app_version=%1").arg(IVI_APP_VERSION);
+    cont += QString("app_version=%1").arg(mRealAppVer);
     cont += QString("&session=%1").arg(mSessionKey);
     cont += QString("&id=%1").arg(id);
 
@@ -503,7 +515,7 @@ int CIviApi::delFav(int id, ivi::eKind kind)
 
     // content  ...
     QString cont;
-    cont += QString("app_version=%1").arg(IVI_APP_VERSION);
+    cont += QString("app_version=%1").arg(mRealAppVer);
     cont += QString("&session=%1").arg(mSessionKey);
     cont += QString("&id=%1").arg(id);
 
@@ -539,7 +551,7 @@ int CIviApi::getFavCount()
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
     req += QString("&withunavailable=");
 
 #ifdef __TRACE
@@ -590,7 +602,7 @@ int CIviApi::getFavourites(int offset)
             .arg(mSessionKey);
 
     // add app_version ...
-    req += QString("&app_version=%1").arg(IVI_APP_VERSION);
+    req += QString("&app_version=%1").arg(mRealAppVer);
     req += QString("&showunavailable=");
     req += QString("&from=%1").arg(from);
     req += QString("&to=%1").arg(to);
@@ -620,6 +632,37 @@ int CIviApi::getFavourites(int offset)
 int CIviApi::favCount() const
 {
     return mFavCount;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      Gets real app version for my location
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::getRealAppVersion()
+{
+    // /geocheck/whoami/v6/?(int: app_version)
+    QString req = QString("%1://%2/%3/geocheck/whoami/v6/?app_version=%4")
+            .arg(mProtocol)
+            .arg(mHost)
+            .arg(mQueryPrefix)
+            .arg(IVI_APP_VERSION);
+
+#ifdef __TRACE
+    mInfo(req);
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(req));
+
+    QNetworkReply* pReply = QNetworkAccessManager::get(request);
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_APP_VER);
+    }
+
+    return pReply ? 0 : -1;
 }
 
 //------------------------------------------------------------------------------
@@ -1295,6 +1338,56 @@ int CIviApi::parseAllFavs(const QString &resp)
 }
 
 //------------------------------------------------------------------------------
+//! @brief      parse app version response
+//!
+//! @param[in]  resp  ivi response to parse
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::parseRealAppVer(const QString &resp)
+{
+    mInfo(tr("parse real app version ... "));
+
+    int              iRV = 0;
+    bool             bOk;
+    QVariantMap      contentMap;
+
+    contentMap = QtJson::parse(resp, bOk).toMap();
+
+    if (bOk)
+    {
+        contentMap  = contentMap.value("result").toMap();
+
+        if (contentMap.contains("actual_app_version"))
+        {
+            mRealAppVer = contentMap.value("actual_app_version").toInt();
+        }
+        else
+        {
+            mRealAppVer = IVI_APP_VERSION;
+            mWarn(tr("Can't get real app version, using default: %1").arg(IVI_APP_VERSION));
+        }
+
+        login();
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+
+
+
+    // login() ...
+    return 0;
+}
+
+//------------------------------------------------------------------------------
 //! @brief      combine video info with compilation info
 //------------------------------------------------------------------------------
 void CIviApi::combineInfo()
@@ -1461,6 +1554,9 @@ void CIviApi::getReply(QNetworkReply *reply)
             break;
         case ivi::IVI_FAVOURITES:
             parseVideos(resp);
+            break;
+        case ivi::IVI_APP_VER:
+            parseRealAppVer(resp);
             break;
         default:
             break;
