@@ -23,6 +23,8 @@
   credentials!
  */
 
+#warning Using defined values below will lead to not working IVI stuff!
+
 // operating system ...
 #ifdef Q_OS_LINUX
     #define IVI_APP_VERSION 1234
