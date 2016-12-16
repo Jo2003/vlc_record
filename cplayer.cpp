@@ -265,7 +265,8 @@ void CPlayer::cleanupLibVLC()
 \----------------------------------------------------------------- */
 bool CPlayer::isPositionable()
 {
-   return ((uiDuration > 0) && (uiDuration != (uint)-1)) ? true : false;
+   // return ((uiDuration > 0) && (uiDuration != (uint)-1)) ? true : false;
+   return ((showInfo.showType() == ShowInfo::VOD) || (showInfo.showType() == ShowInfo::VOD_IVI));
 }
 
 /* -----------------------------------------------------------------\
@@ -700,6 +701,10 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
    QStringList::const_iterator cit;
    bool                        bLocal = false;
 
+   // buffer request ...
+   mCurrentCmdLine = sCmdLine;
+   mCurrentOpts = sOpts;
+
    // reset internal play state ...
    libPlayState = IncPlay::PS_WTF;
 
@@ -710,7 +715,7 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
    // reset play timer stuff ...
    timer.reset();
    timer.setOffset(showInfo.lastJump() ? showInfo.lastJump() : showInfo.starts());
-   uiDuration = (uint)-1;
+   // uiDuration = (uint)-1;
 
    // while not showing video, disable spooling ...
    bSpoolPending = true;
@@ -1008,6 +1013,11 @@ void CPlayer::slotUpdateSlider()
          if (isPositionable() && !showInfo.streamLoader() && !showInfo.isHls())
          {
             pos = libvlc_media_player_get_time (pMediaPlayer) / 1000;
+
+            if ((showInfo.showType() == ShowInfo::VOD_IVI) && (showInfo.lastJump() != 0))
+            {
+                pos += showInfo.lastJump();
+            }
 
             if (!missionControl.isPosSliderDown())
             {
@@ -1521,27 +1531,74 @@ int CPlayer::slotToggleCropGeometry()
 \----------------------------------------------------------------- */
 int CPlayer::slotTimeJumpRelative (int iSeconds)
 {
-   if (isPlaying() && showInfo.canCtrlStream() &&!bSpoolPending)
+   if (isPlaying() && showInfo.canCtrlStream() && !bSpoolPending)
    {
       uint pos;
 
       if (isPositionable() && !showInfo.isHls())
       {
-         pos  = libvlc_media_player_get_time(pMediaPlayer);
+         pos = libvlc_media_player_get_time(pMediaPlayer);
 
-         // make sure we don't go negative ...
-         if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
+         if (showInfo.showType() == ShowInfo::VOD_IVI)
          {
-            pos = 0;
+            // take care for last jump ...
+            pos = showInfo.lastJump() * 1000 + pos;
+
+            // make sure we don't go negative ...
+            if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
+            {
+               pos = 0;
+            }
+            else
+            {
+               pos += iSeconds * 1000; // ms ...
+            }
+
+            // store current position in seconds as last jump ...
+            showInfo.setLastJumpTime(pos / 1000);
+
+            QString sMrl = mCurrentCmdLine.section(";;", 0, 0);
+            QUrlEx media(sMrl);
+
+            if (media.hasQueryItem("start"))
+            {
+               media.removeQueryItem("start");
+            }
+
+            if (media.hasEncodedQueryItem("start"))
+            {
+               media.removeEncodedQueryItem("start");
+            }
+
+            // add start item ...
+            media.addQueryItem("start", QString::number(pos / 1000));
+
+            sMrl = media.toString();
+
+            if (mCurrentCmdLine.contains(";;"))
+            {
+               sMrl += ";;" + mCurrentCmdLine.section(";;", 1);
+            }
+
+            mInfo(tr("IVI spool: \n'%1s' ...").arg(sMrl));
+
+            playMedia(sMrl, mCurrentOpts);
          }
          else
          {
-            pos += iSeconds * 1000; // ms ...
+            // make sure we don't go negative ...
+            if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
+            {
+               pos = 0;
+            }
+            else
+            {
+               pos += iSeconds * 1000; // ms ...
+            }
+
+            libvlc_media_player_set_time(pMediaPlayer, pos);
+            missionControl.setPosValue((int)(pos / 1000));
          }
-
-         libvlc_media_player_set_time(pMediaPlayer, pos);
-
-         missionControl.setPosValue((int)(pos / 1000));
       }
       else
       {
@@ -1734,7 +1791,40 @@ void CPlayer::slotSliderPosChanged()
 
       if (isPositionable() && !showInfo.isHls())
       {
-         libvlc_media_player_set_time(pMediaPlayer, position * 1000);
+         if (showInfo.showType() == ShowInfo::VOD_IVI)
+         {
+            showInfo.setLastJumpTime(position);
+            QString sMrl = mCurrentCmdLine.section(";;", 0, 0);
+            QUrlEx media(sMrl);
+
+            if (media.hasQueryItem("start"))
+            {
+               media.removeQueryItem("start");
+            }
+
+            if (media.hasEncodedQueryItem("start"))
+            {
+               media.removeEncodedQueryItem("start");
+            }
+
+            // add start item ...
+            media.addQueryItem("start", QString::number(position));
+
+            sMrl = media.toString();
+
+            if (mCurrentCmdLine.contains(";;"))
+            {
+               sMrl += ";;" + mCurrentCmdLine.section(";;", 1);
+            }
+
+            mInfo(tr("IVI spool: \n'%1s' ...").arg(sMrl));
+
+            playMedia(sMrl, mCurrentOpts);
+         }
+         else
+         {
+            libvlc_media_player_set_time(pMediaPlayer, position * 1000);
+         }
       }
       else
       {
@@ -1842,8 +1932,39 @@ void CPlayer::initSlider()
 {
    // check if we need the pseudo archive spool
    // or the real spool in vod ...
-   uiDuration = libvlc_media_player_get_length(pMediaPlayer);
-   mInfo(tr("Film length: %1ms.").arg(uiDuration));
+   uint length = libvlc_media_player_get_length(pMediaPlayer);
+
+   // in case of IVI VOD we should check if this was a new video or
+   // a position change in the current video ...
+   if (showInfo.showType() == ShowInfo::VOD_IVI)
+   {
+       if (showInfo.lastJump() == 0)
+       {
+           // new video ...
+           uiDuration = length;
+
+           // update showinfo length with real value ...
+           showInfo.setEndTime(uiDuration / 1000);
+           missionControl.setLength(uiDuration / 1000);
+
+           mInfo(tr("IVI Film length: %1ms.").arg(uiDuration));
+       }
+       else
+       {
+           mInfo(tr("Don't change IVI Film length to %1ms since it should stay at %2ms...")
+                 .arg(length).arg(uiDuration));
+       }
+   }
+   else
+   {
+       uiDuration = length;
+
+       // update showinfo length with real value ...
+       showInfo.setEndTime(uiDuration / 1000);
+       missionControl.setLength(uiDuration / 1000);
+
+       mInfo(tr("Film length: %1ms.").arg(uiDuration));
+   }
 
    if (isPositionable() && !showInfo.streamLoader() && !showInfo.isHls())
    {

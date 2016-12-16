@@ -2081,7 +2081,7 @@ void Recorder::slotIviPlay(QString url)
     {
         showInfo.cleanShowInfo();
         showInfo.setShowName(ui->iviVod->iviBrowser()->getName());
-        showInfo.setShowType(ShowInfo::VOD);
+        showInfo.setShowType(ShowInfo::VOD_IVI);
         showInfo.setPlayState(ePlayState);
         showInfo.setHtmlDescr(ui->iviVod->iviBrowser()->getShortContent());
         showInfo.setStartTime(0);
@@ -2111,7 +2111,7 @@ void Recorder::slotIviRecord(QString url)
     {
         showInfo.cleanShowInfo();
         showInfo.setShowName(ui->iviVod->iviBrowser()->getName());
-        showInfo.setShowType(ShowInfo::VOD);
+        showInfo.setShowType(ShowInfo::VOD_IVI);
         showInfo.setPlayState(ePlayState);
         showInfo.setHtmlDescr(ui->iviVod->iviBrowser()->getShortContent());
         showInfo.setStartTime(0);

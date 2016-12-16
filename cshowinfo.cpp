@@ -552,7 +552,7 @@ const int &CShowInfo::videoId()
 \----------------------------------------------------------------- */
 bool CShowInfo::canCtrlStream()
 {
-   if (((eShowType == ShowInfo::Archive) || (eShowType == ShowInfo::VOD))
+   if (((eShowType == ShowInfo::Archive) || (eShowType == ShowInfo::VOD) || (eShowType == ShowInfo::VOD_IVI))
        && ((ePlayState == IncPlay::PS_PLAY) || (ePlayState == IncPlay::PS_PAUSE)))
    {
       return true;

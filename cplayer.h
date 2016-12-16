@@ -137,6 +137,8 @@ private:
    IncPlay::ePlayStates         libPlayState;
    Player::SErrHelper           errHelper;
    bool                         _bVoutHandled;
+   QString                      mCurrentCmdLine;
+   QString                      mCurrentOpts;
 
 private slots:
    void slotPositionChanged(int value);

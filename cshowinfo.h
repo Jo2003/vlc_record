@@ -30,6 +30,7 @@ namespace ShowInfo
       Live,      ///< live stream
       Archive,   ///< archive
       VOD,       ///< video on demand
+      VOD_IVI,   ///< video on demand from IVI
       Unknown    ///< unknown type
    };
 }
