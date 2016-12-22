@@ -536,20 +536,23 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       img  = pHtml->image(":/png/play", 16, 16, "", tr("Play Movie ..."));
       link = pHtml->link(url.toEncoded(), img) + "&nbsp;";
 
-      // add record button ...
-      url.clear();
-      url.addQueryItem("action", "record");
-      url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
-      url.addQueryItem("video_id", QString::number(sInfo.uiVidId));
-      url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
-      if (!sInfo.vVodFiles[i].sUrl.isEmpty())
+      if (sInfo.bAllowRecord)
       {
-          url.addQueryItem("video_url", QUrlEx::toPercentEncoding(sInfo.vVodFiles[i].sUrl.toUtf8()));
-      }
-      url.setPath("videothek");
+          // add record button ...
+          url.clear();
+          url.addQueryItem("action", "record");
+          url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
+          url.addQueryItem("video_id", QString::number(sInfo.uiVidId));
+          url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
+          if (!sInfo.vVodFiles[i].sUrl.isEmpty())
+          {
+              url.addQueryItem("video_url", QUrlEx::toPercentEncoding(sInfo.vVodFiles[i].sUrl.toUtf8()));
+          }
+          url.setPath("videothek");
 
-      img   = pHtml->image(":/png/record", 16, 16, "", tr("Record Movie ..."));
-      link += pHtml->link(url.toEncoded(), img);
+          img   = pHtml->image(":/png/record", 16, 16, "", tr("Record Movie ..."));
+          link += pHtml->link(url.toEncoded(), img);
+      }
 
       tok += pHtml->tableCell(link, "padding: 3px;");
 

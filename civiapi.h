@@ -141,6 +141,9 @@ public:
 
     void combineInfo();
 
+protected:
+    int  hasError(const QString& resp, QString& errText);
+
 signals:
     void sigCategories(ivi::CategoryMap cats);
     void sigCountries(ivi::CountryMap countr);

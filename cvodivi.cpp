@@ -15,6 +15,10 @@
 #include "ui_cvodivi.h"
 #include "externals_inc.h"
 
+#ifdef __TRACE
+    #define __TRACE_IVI
+#endif // __TRACE
+
 //------------------------------------------------------------------------------
 //! @brief      Constructs the object.
 //!
@@ -268,18 +272,18 @@ void CVodIvi::slotCatchCategories(ivi::CategoryMap cats)
 
     foreach(ivi::SCat oneCat, mIviCats)
     {
-#ifdef __TRACE
+#ifdef __TRACE_IVI
         mInfo(tr("Found category '%1'(%2) ...").arg(oneCat.mTitle).arg(oneCat.mId));
-#endif // __TRACE
+#endif // __TRACE_IVI
 
         ui->cbxIviCategory->addItem(oneCat.mTitle, oneCat.mId);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
         foreach(ivi::SGenre oneGenre, oneCat.mGenres)
             mInfo(tr("  \\_Genre '%1'(%2) (#%3) ...")
                   .arg(oneGenre.mTitle).arg(oneGenre.mId)
                   .arg(oneGenre.mCount));
-#endif // __TRACE
+#endif // __TRACE_IVI
     }
 
     ui->cbxIviCategory->setCurrentIndex(0);
@@ -293,7 +297,7 @@ void CVodIvi::slotCatchCategories(ivi::CategoryMap cats)
 //------------------------------------------------------------------------------
 void CVodIvi::slotCatchCountries(ivi::CountryMap countr)
 {
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     foreach(ivi::SCountry country, countr)
     {
         mInfo(tr("Found country #%1 '%2'[%3] ...")
@@ -301,7 +305,7 @@ void CVodIvi::slotCatchCountries(ivi::CountryMap countr)
     }
 #else
     Q_UNUSED(countr)
-#endif // __TRACE
+#endif // __TRACE_IVI
     iviApi.getGenres();
 }
 
@@ -312,7 +316,7 @@ void CVodIvi::slotCatchCountries(ivi::CountryMap countr)
 //------------------------------------------------------------------------------
 void CVodIvi::slotCatchVideos(cparser::VideoList videos)
 {
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     foreach(cparser::SVodVideo video, videos)
     {
 
@@ -320,7 +324,7 @@ void CVodIvi::slotCatchVideos(cparser::VideoList videos)
               .arg(video.uiVidId).arg(video.sName)
               .arg(video.sCountry).arg(video.sYear));
     }
-#endif // __TRACE
+#endif // __TRACE_IVI
 
     QString genre;
     if (ui->cbxIviLastOrBest->itemData(ui->cbxIviLastOrBest->currentIndex()) == "favorites")

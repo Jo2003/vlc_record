@@ -17,6 +17,10 @@
 #include "externals_inc.h"
 #include "ivi_kartina_credits.h"
 
+#ifdef __TRACE
+    #define __TRACE_IVI
+#endif // __TRACE
+
 //------------------------------------------------------------------------------
 //! @brief      Constructs the object.
 //!
@@ -75,7 +79,7 @@ int CIviApi::login()
     // add app_version ...
     req += QString("&app_version=%1").arg(mRealAppVer);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -109,7 +113,7 @@ int CIviApi::getGenres()
     // add app_version ...
     req += QString("&app_version=%1").arg(mRealAppVer);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -143,7 +147,7 @@ int CIviApi::getCountries()
     // add app_version ...
     req += QString("&app_version=%1").arg(mRealAppVer);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -215,7 +219,7 @@ int CIviApi::getVideos(const ivi::SVideoFilter &filter)
         req += QString("&category=%1").arg(filter.mCatId);
     }
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -266,7 +270,7 @@ int CIviApi::searchVideos(const ivi::SVideoFilter &filter)
 
     req += QString("&query=%1").arg(filter.mSearch);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -308,7 +312,7 @@ int CIviApi::getVideoInfo(int id, ivi::eKind kind)
     // add id ...
     req += QString("&id=%1").arg(id);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -352,7 +356,7 @@ int CIviApi::getVideoFromCompilation(const ivi::SVideoFilter &filter)
     req += QString("&from=%1").arg(filter.mFrom);
     req += QString("&to=%1").arg(filter.mTo);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -391,7 +395,7 @@ int CIviApi::getFiles(int id)
     url += QString("&ts=%1").arg(mTs);
     url += QString("&sign=%1").arg(pHash->sign(mTs + postData));
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(tr("Post '%1' to url '%2'").arg(postData).arg(url));
 #endif
 
@@ -434,7 +438,7 @@ int CIviApi::getVideoPersons(int id, ivi::eKind kind)
     // add id ...
     req += QString("&id=%1").arg(id);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -479,7 +483,7 @@ int CIviApi::addFav(int id, ivi::eKind kind)
     cont += QString("&session=%1").arg(mSessionKey);
     cont += QString("&id=%1").arg(id);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(tr("Post '%1' to url '%2'").arg(cont).arg(req));
 #endif
 
@@ -519,7 +523,7 @@ int CIviApi::delFav(int id, ivi::eKind kind)
     cont += QString("&session=%1").arg(mSessionKey);
     cont += QString("&id=%1").arg(id);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(tr("Post '%1' to url '%2'").arg(cont).arg(req));
 #endif
 
@@ -554,7 +558,7 @@ int CIviApi::getFavCount()
     req += QString("&app_version=%1").arg(mRealAppVer);
     req += QString("&withunavailable=");
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -607,7 +611,7 @@ int CIviApi::getFavourites(int offset)
     req += QString("&from=%1").arg(from);
     req += QString("&to=%1").arg(to);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -648,7 +652,7 @@ int CIviApi::getRealAppVersion()
             .arg(mQueryPrefix)
             .arg(IVI_APP_VERSION);
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(req);
 #endif
 
@@ -980,6 +984,9 @@ int CIviApi::parseVideoInfo(const QString &resp, ivi::eIviReq req)
         video.uiVidId  = mVideo.value("id").toUInt();
         video.sName    = mVideo.value("title").toString();
         video.iKind    = mVideo.value("kind").toInt();
+
+        // no record in IVI VOD!
+        video.bAllowRecord = false;
 
         if (mVideo.contains("total_contents"))
         {
@@ -1454,6 +1461,65 @@ void CIviApi::combineInfo()
 }
 
 //------------------------------------------------------------------------------
+//! @brief      check response for errors
+//!
+//! @param      resp string response
+//! @param      errText string reference for error text
+//!
+//! @returns    error number (o if all is well)
+//------------------------------------------------------------------------------
+int CIviApi::hasError(const QString &resp, QString &errText)
+{
+    int iRV = 0;
+
+    // simple pre check ...
+    if (resp.contains("error"))
+    {
+        bool             bOk;
+        QVariantMap      contentMap;
+
+        contentMap = QtJson::parse(resp, bOk).toMap();
+
+        if (bOk)
+        {
+            if (contentMap.contains("error"))
+            {
+                contentMap  = contentMap.value("error").toMap();
+
+                if (contentMap.contains("message"))
+                {
+                    errText = contentMap.value("message").toString();
+                }
+
+                if (contentMap.contains("type"))
+                {
+                    iRV = contentMap.value("type").toInt();
+                }
+
+                if (contentMap.contains("code"))
+                {
+                    iRV = contentMap.value("code").toInt();
+                }
+
+                if (contentMap.contains("error_code"))
+                {
+                    iRV = contentMap.value("error_code").toInt();
+                }
+            }
+        }
+        else
+        {
+            emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                          tr("QtJson parser error in %1 %2():%3")
+                              .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+        }
+
+    }
+
+    return iRV;
+}
+
+//------------------------------------------------------------------------------
 //! @brief      Gets the network reply.
 //!
 //! @param      reply  pointer to network reply
@@ -1461,105 +1527,119 @@ void CIviApi::combineInfo()
 void CIviApi::getReply(QNetworkReply *reply)
 {
     ivi::eIviReq req = (ivi::eIviReq)reply->property(IVI_REQ_ID).toInt();
+    QString errText;
+    int     errCode;
 
     if (reply->error() == QNetworkReply::NoError)
     {
         QByteArray ba   = reply->readAll();
         QString    resp = QString::fromUtf8(ba.constData());
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
         mInfo(tr("IVI Response:\n ==8<==8<==8<==\n%1\n ==>8==>8==>8==")
                  .arg(resp));
 #endif // __TRACE
 
-        switch(req)
+        errCode = hasError(resp, errText);
+
+        // where are errors allowed ... ?
+        if (errCode && ((req == ivi::IVI_APP_VER) || (req == ivi::IVI_FILES)))
         {
-        case ivi::IVI_SESSION:
-            parseSession(resp);
-            break;
-        case ivi::IVI_GENRES:
-            parseGenres(resp);
-            break;
-        case ivi::IVI_VIDEOS:
-            parseVideos(resp);
-            break;
-        case ivi::IVI_COUNTRIES:
-            parseCountries(resp);
-            break;
-        case ivi::IVI_VIDEOINFO:
-        case ivi::IVI_COMPINFO:
-            parseVideoInfo(resp, req);
-            break;
-        case ivi::IVI_FILES:
-            parseFiles(resp);
-            break;
-        case ivi::IVI_TIMESTAMP:
-            parseTimeStamp(resp);
-            break;
-        case ivi::IVI_VIDEO_PERSONS:
-        case ivi::IVI_COMP_PERSONS:
-            parseVideoPersons(resp, req);
-            break;
-        case ivi::IVI_ADD_FAV:
-            if (!resp.contains("error"))
+            errCode = 0;
+        }
+
+        if (!errCode)
+        {
+            switch(req)
             {
-                if ((mCurrentVideo.iCompId != -1) && (mCurrentVideo.iCompId == (int)mCompilationInfo.uiVidId))
+            case ivi::IVI_SESSION:
+                parseSession(resp);
+                break;
+            case ivi::IVI_GENRES:
+                parseGenres(resp);
+                break;
+            case ivi::IVI_VIDEOS:
+                parseVideos(resp);
+                break;
+            case ivi::IVI_COUNTRIES:
+                parseCountries(resp);
+                break;
+            case ivi::IVI_VIDEOINFO:
+            case ivi::IVI_COMPINFO:
+                parseVideoInfo(resp, req);
+                break;
+            case ivi::IVI_FILES:
+                parseFiles(resp);
+                break;
+            case ivi::IVI_TIMESTAMP:
+                parseTimeStamp(resp);
+                break;
+            case ivi::IVI_VIDEO_PERSONS:
+            case ivi::IVI_COMP_PERSONS:
+                parseVideoPersons(resp, req);
+                break;
+            case ivi::IVI_ADD_FAV:
                 {
-                    // compilation added to favourites ...
-                    mCompilationInfo.bFavourit = true;
-                    mFavourites.append((int)mCurrentVideo.iCompId);
-                }
-                else
-                {
-                    mFavourites.append((int)mCurrentVideo.uiVidId);
-                }
+                    if ((mCurrentVideo.iCompId != -1) && (mCurrentVideo.iCompId == (int)mCompilationInfo.uiVidId))
+                    {
+                        // compilation added to favourites ...
+                        mCompilationInfo.bFavourit = true;
+                        mFavourites.append((int)mCurrentVideo.iCompId);
+                    }
+                    else
+                    {
+                        mFavourites.append((int)mCurrentVideo.uiVidId);
+                    }
 
-                mCurrentVideo.bFavourit = true;
-                mFavCount ++;
-                emit sigVideoInfo(mCurrentVideo);
+                    mCurrentVideo.bFavourit = true;
+                    mFavCount ++;
+                    emit sigVideoInfo(mCurrentVideo);
+                }
+                break;
+            case ivi::IVI_DEL_FAV:
+                {
+                    int idx;
+                    if ((mCurrentVideo.iCompId != -1) && (mCurrentVideo.iCompId == (int)mCompilationInfo.uiVidId))
+                    {
+                        // compilation removed from favourites ...
+                        mCompilationInfo.bFavourit = false;
+                        idx = mFavourites.indexOf((int)mCurrentVideo.iCompId);
+                    }
+                    else
+                    {
+                        idx = mFavourites.indexOf((int)mCurrentVideo.uiVidId);
+                    }
+
+                    mFavCount --;
+                    if (idx > -1)
+                    {
+                        mFavourites.remove(idx);
+                    }
+
+                    mCurrentVideo.bFavourit = false;
+                    emit sigVideoInfo(mCurrentVideo);
+                }
+                break;
+
+            case ivi::IVI_FAV_COUNT:
+                parseFavCount(resp);
+                break;
+            case ivi::IVI_ALL_FAV:
+                parseAllFavs(resp);
+                break;
+            case ivi::IVI_FAVOURITES:
+                parseVideos(resp);
+                break;
+            case ivi::IVI_APP_VER:
+                parseRealAppVer(resp);
+                break;
+            default:
+                break;
             }
-            break;
-        case ivi::IVI_DEL_FAV:
-            if (!resp.contains("error"))
-            {
-                int idx;
-                if ((mCurrentVideo.iCompId != -1) && (mCurrentVideo.iCompId == (int)mCompilationInfo.uiVidId))
-                {
-                    // compilation removed from favourites ...
-                    mCompilationInfo.bFavourit = false;
-                    idx = mFavourites.indexOf((int)mCurrentVideo.iCompId);
-                }
-                else
-                {
-                    idx = mFavourites.indexOf((int)mCurrentVideo.uiVidId);
-                }
-
-                mFavCount --;
-                if (idx > -1)
-                {
-                    mFavourites.remove(idx);
-                }
-
-                mCurrentVideo.bFavourit = false;
-                emit sigVideoInfo(mCurrentVideo);
-            }
-            break;
-
-        case ivi::IVI_FAV_COUNT:
-            parseFavCount(resp);
-            break;
-
-        case ivi::IVI_ALL_FAV:
-            parseAllFavs(resp);
-            break;
-        case ivi::IVI_FAVOURITES:
-            parseVideos(resp);
-            break;
-        case ivi::IVI_APP_VER:
-            parseRealAppVer(resp);
-            break;
-        default:
-            break;
+        }
+        else
+        {
+            emit sigError((int)Msg::Error, tr("Error %1").arg(errCode), errText);
         }
     }
     else

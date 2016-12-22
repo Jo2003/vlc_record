@@ -6737,7 +6737,7 @@ QString Recorder::createVideoInfo(bool checkVod)
    QString sInfo;
 
    // update show info in overlay display ...
-   if ((showInfo.showType() == ShowInfo::VOD) && checkVod)
+   if (((showInfo.showType() == ShowInfo::VOD) || (showInfo.showType() == ShowInfo::VOD_IVI)) && checkVod)
    {
       sInfo = QString("<b>%1:</b> %2").arg(tr("Video On Demand")).arg(showInfo.showName());
    }

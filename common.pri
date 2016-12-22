@@ -32,6 +32,7 @@ CONFIG += shared
 
 # force traces on debug ...
 CONFIG(debug,debug|release): DEFINES += __TRACE
+# CONFIG(debug,debug|release): DEFINES += __TRACE_IVI
 
 # -------------------------------------
 # support C++11
@@ -56,6 +57,7 @@ PROGBUILD=0
 
 # here you can enable traces ...
 # DEFINES += __TRACE
+# DEFINES += __TRACE_IVI
 
 # this flag will be checked on linux only!
 # DEFINES += __PORTABLE
