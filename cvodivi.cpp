@@ -30,6 +30,8 @@ CVodIvi::CVodIvi(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    mpPlayer = NULL;
+
     tIviSearch.setSingleShot(true);
     tIviSearch.setInterval(500);
 
@@ -84,6 +86,17 @@ void CVodIvi::setIviSession(const QString &str)
 {
     iviApi.setVerimatrixKey(str);
     fillSortCbx();
+}
+
+//------------------------------------------------------------------------------
+//! @brief      store player instance
+//!
+//! @param[in]  pPlayer pointer to player instance
+//------------------------------------------------------------------------------
+void CVodIvi::setPlayer(CPlayer *pPlayer)
+{
+    mpPlayer = pPlayer;
+    iviStats.setPlayer(pPlayer);
 }
 
 //------------------------------------------------------------------------------

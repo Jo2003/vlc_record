@@ -2617,7 +2617,29 @@ QVlcVideoWidget*& CPlayer::getVideoWidget()
 //---------------------------------------------------------------------------
 void CPlayer::aboutToClose()
 {
-   pWatchStats->playEnds(errHelper.errCount);
+    pWatchStats->playEnds(errHelper.errCount);
+}
+
+//---------------------------------------------------------------------------
+//! @brief   get position from mediaplayer
+//!
+//! @returns postion in seconds; -1 for error
+//---------------------------------------------------------------------------
+int CPlayer::getMediaPosition()
+{
+    int ret = -1;
+
+    if (isPositionable() && pMediaPlayer)
+    {
+        ret = (int)(libvlc_media_player_get_time(pMediaPlayer) / 1000);
+
+        if (showInfo.showType() == ShowInfo::VOD_IVI)
+        {
+            ret += (int)showInfo.lastJump();
+        }
+    }
+
+    return ret;
 }
 
 /************************* History ***************************\

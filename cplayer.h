@@ -92,6 +92,7 @@ public:
    void resetBuffPercent();
    QVlcVideoWidget*& getVideoWidget();
    void aboutToClose();
+   int getMediaPosition();
 
    static QVector<libvlc_event_type_t> _eventQueue;
    static const char*                  _pAspect[];

@@ -21,6 +21,7 @@
 #include "civiapi.h"
 #include "cpixloader.h"
 #include "civistats.h"
+#include "cplayer.h"
 
 namespace Ui {
     class CVodIvi;
@@ -38,6 +39,7 @@ public:
     virtual ~CVodIvi();
     void setPixCache(CPixLoader* cache);
     void setIviSession(const QString& str);
+    void setPlayer(CPlayer* pPlayer);
     CVodBrowser *iviBrowser();
 
 private slots:
@@ -69,6 +71,7 @@ protected:
     ivi::CategoryMap mIviCats;
     QTimer           tIviSearch;
     int              mCompId;
+    CPlayer*         mpPlayer;
 
 private:
     Ui::CVodIvi *ui;

@@ -169,6 +169,9 @@ Recorder::Recorder(QWidget *parent)
    ui->vodBrowser->setPixCache(&pixCache);
    ui->iviVod->setPixCache(&pixCache);
 
+   // set player ...
+   ui->iviVod->setPlayer(ui->player);
+
    // set log level ...
    VlcLog.SetLogLevel(Settings.GetLogLevel());
 
