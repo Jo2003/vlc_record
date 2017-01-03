@@ -217,84 +217,94 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="749"/>
+        <location filename="civiapi.cpp" line="791"/>
         <source>We&apos;ve got genres response ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="730"/>
-        <location filename="civiapi.cpp" line="795"/>
-        <location filename="civiapi.cpp" line="843"/>
-        <location filename="civiapi.cpp" line="950"/>
-        <location filename="civiapi.cpp" line="1087"/>
-        <location filename="civiapi.cpp" line="1163"/>
-        <location filename="civiapi.cpp" line="1200"/>
-        <location filename="civiapi.cpp" line="1266"/>
-        <location filename="civiapi.cpp" line="1299"/>
-        <location filename="civiapi.cpp" line="1337"/>
-        <location filename="civiapi.cpp" line="1382"/>
-        <location filename="civiapi.cpp" line="1512"/>
+        <location filename="civiapi.cpp" line="772"/>
+        <location filename="civiapi.cpp" line="837"/>
+        <location filename="civiapi.cpp" line="885"/>
+        <location filename="civiapi.cpp" line="992"/>
+        <location filename="civiapi.cpp" line="1129"/>
+        <location filename="civiapi.cpp" line="1205"/>
+        <location filename="civiapi.cpp" line="1242"/>
+        <location filename="civiapi.cpp" line="1308"/>
+        <location filename="civiapi.cpp" line="1341"/>
+        <location filename="civiapi.cpp" line="1379"/>
+        <location filename="civiapi.cpp" line="1424"/>
+        <location filename="civiapi.cpp" line="1554"/>
         <source>Error in %1</source>
         <translation>Fehler in %1</translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="712"/>
+        <location filename="civiapi.cpp" line="715"/>
+        <source>Post statistics &apos;%1&apos; to url &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="719"/>
+        <source>Statistics request: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="civiapi.cpp" line="754"/>
         <source>Parse IVI login respone ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="731"/>
-        <location filename="civiapi.cpp" line="796"/>
-        <location filename="civiapi.cpp" line="844"/>
-        <location filename="civiapi.cpp" line="951"/>
-        <location filename="civiapi.cpp" line="1088"/>
-        <location filename="civiapi.cpp" line="1164"/>
-        <location filename="civiapi.cpp" line="1201"/>
-        <location filename="civiapi.cpp" line="1267"/>
-        <location filename="civiapi.cpp" line="1300"/>
-        <location filename="civiapi.cpp" line="1338"/>
-        <location filename="civiapi.cpp" line="1383"/>
-        <location filename="civiapi.cpp" line="1513"/>
+        <location filename="civiapi.cpp" line="773"/>
+        <location filename="civiapi.cpp" line="838"/>
+        <location filename="civiapi.cpp" line="886"/>
+        <location filename="civiapi.cpp" line="993"/>
+        <location filename="civiapi.cpp" line="1130"/>
+        <location filename="civiapi.cpp" line="1206"/>
+        <location filename="civiapi.cpp" line="1243"/>
+        <location filename="civiapi.cpp" line="1309"/>
+        <location filename="civiapi.cpp" line="1342"/>
+        <location filename="civiapi.cpp" line="1380"/>
+        <location filename="civiapi.cpp" line="1425"/>
+        <location filename="civiapi.cpp" line="1555"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="814"/>
+        <location filename="civiapi.cpp" line="856"/>
         <source>Parse IVI countries ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="862"/>
+        <location filename="civiapi.cpp" line="904"/>
         <source>Parse IVI videos ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="970"/>
+        <location filename="civiapi.cpp" line="1012"/>
         <source>Parse IVI video info ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1106"/>
+        <location filename="civiapi.cpp" line="1148"/>
         <source>Parse IVI file info ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1356"/>
+        <location filename="civiapi.cpp" line="1398"/>
         <source>parse real app version ... </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1375"/>
+        <location filename="civiapi.cpp" line="1417"/>
         <source>Can&apos;t get real app version, using default: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1645"/>
+        <location filename="civiapi.cpp" line="1687"/>
         <source>Error %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1669"/>
+        <location filename="civiapi.cpp" line="1711"/>
         <source>SSL Error #%1: &apos;%2&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -303,32 +313,32 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Fehler</translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1182"/>
+        <location filename="civiapi.cpp" line="1224"/>
         <source>Parse IVI time stamp ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1193"/>
+        <location filename="civiapi.cpp" line="1235"/>
         <source>Using time stamp &apos;%1&apos; for the next 9 minutes ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1219"/>
+        <location filename="civiapi.cpp" line="1261"/>
         <source>We&apos;ve got persons response ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1285"/>
+        <location filename="civiapi.cpp" line="1327"/>
         <source>We&apos;ve favourite count response ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1318"/>
+        <location filename="civiapi.cpp" line="1360"/>
         <source>parse all favourites ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1539"/>
+        <location filename="civiapi.cpp" line="1581"/>
         <source>IVI Response:
  ==8&lt;==8&lt;==8&lt;==
 %1
@@ -336,7 +346,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="civiapi.cpp" line="1650"/>
+        <location filename="civiapi.cpp" line="1692"/>
         <source>Network error: #%1: %2</source>
         <oldsource>Network error: %1</oldsource>
         <translation></translation>

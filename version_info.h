@@ -50,6 +50,8 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| - start ivi statistic stuff
+|
 | 2016-12-16: Version 2.73.0B5
 | - use whoami to get patched app_version from IVI
 | - when spooling in IVI use start get parameter to speed

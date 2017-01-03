@@ -682,7 +682,7 @@ int CIviApi::getTimeStamp()
 
     QString postData = IVI_GETTIMESTAMP_TMPL;
 
-#ifdef __TRACE
+#ifdef __TRACE_IVI
     mInfo(tr("Post '%1' to url '%2'").arg(postData).arg(url));
 #endif
 
@@ -695,6 +695,48 @@ int CIviApi::getTimeStamp()
     if (pReply)
     {
         pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_TIMESTAMP);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      send ivi statistics
+//!
+//! @param[in]  stats ivi statistiks structure
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::sendIviStats(ivistats::SIviStats stats)
+{
+#ifdef __TRACE_IVI
+    if (stats.mPost)
+    {
+        mInfo(tr("Post statistics '%1' to url '%2'").arg(stats.mContent).arg(stats.mUrl));
+    }
+    else
+    {
+        mInfo(tr("Statistics request: '%1'").arg(stats.mUrl));
+    }
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(stats.mUrl));
+
+    QNetworkReply* pReply = NULL;
+
+    if (stats.mPost)
+    {
+        pReply = QNetworkAccessManager::post(request, stats.mContent.toUtf8());
+    }
+    else
+    {
+        pReply = QNetworkAccessManager::get(request);
+    }
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_STATS);
     }
 
     return pReply ? 0 : -1;
@@ -1543,7 +1585,7 @@ void CIviApi::getReply(QNetworkReply *reply)
         errCode = hasError(resp, errText);
 
         // where are errors allowed ... ?
-        if (errCode && ((req == ivi::IVI_APP_VER) || (req == ivi::IVI_FILES)))
+        if (errCode && ((req == ivi::IVI_APP_VER) || (req == ivi::IVI_FILES) || (req == ivi::IVI_STATS)))
         {
             errCode = 0;
         }
@@ -1632,6 +1674,9 @@ void CIviApi::getReply(QNetworkReply *reply)
                 break;
             case ivi::IVI_APP_VER:
                 parseRealAppVer(resp);
+                break;
+            case ivi::IVI_STATS:
+                // nothing to note here ...
                 break;
             default:
                 break;

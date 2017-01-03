@@ -20,6 +20,7 @@
 #include "cvodbrowser.h"
 #include "civiapi.h"
 #include "cpixloader.h"
+#include "civistats.h"
 
 namespace Ui {
     class CVodIvi;
@@ -64,6 +65,7 @@ protected:
     void getVideos();
 
     CIviApi          iviApi;
+    CIviStats        iviStats;
     ivi::CategoryMap mIviCats;
     QTimer           tIviSearch;
     int              mCompId;

@@ -38,6 +38,7 @@ CVodIvi::CVodIvi(QWidget *parent) :
     connect (&iviApi, SIGNAL(sigVideoList(cparser::VideoList)), this, SLOT(slotCatchVideos(cparser::VideoList)));
     connect (&iviApi, SIGNAL(sigVideoInfo(cparser::SVodVideo)), this, SLOT(slotCatchVideoInfo(cparser::SVodVideo)));
     connect (&tIviSearch, SIGNAL(timeout()), this, SLOT(slotTimerIviSearch()));
+    connect (&iviStats,   SIGNAL(sigStats(ivistats::SIviStats)), &iviApi, SLOT(sendIviStats(ivistats::SIviStats)));
 }
 
 //------------------------------------------------------------------------------

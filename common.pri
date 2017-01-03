@@ -110,7 +110,8 @@ SOURCES += main.cpp \
     qspeedtestdlg.cpp \
     cvodivi.cpp \
     civiapi.cpp \
-    ccmac_bf.cpp
+    ccmac_bf.cpp \
+    civistats.cpp
 
 HEADERS += recorder.h \
     csettingsdlg.h \
@@ -180,7 +181,8 @@ HEADERS += recorder.h \
     cvodivi.h \
     civiapi.h \
     ccmac_bf.h \
-    ivi_kartina_credits.h
+    ivi_kartina_credits.h \
+    civistats.h
 
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \

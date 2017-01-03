@@ -21,6 +21,7 @@
 #include <QSslError>
 #include "ccmac_bf.h"
 #include "cparser.h"
+#include "civistats.h"
 
 #define IVI_REQ_ID            "reqid"
 #define IVI_GETCONTENT_TMPL   "{\"params\":[\"%1\", {\"session\": \"%2\", \"app_version\": %3}], \"method\":\"da.content.get\"}"
@@ -54,6 +55,7 @@ namespace ivi {
         IVI_ALL_FAV,
         IVI_FAV_COUNT,
         IVI_FAVOURITES,
+        IVI_STATS,
         IVI_UNKNOWN=256
     };
 
@@ -153,6 +155,7 @@ signals:
 
 public slots:
     int getTimeStamp();
+    int sendIviStats(ivistats::SIviStats stats);
 
 private slots:
     void getReply(QNetworkReply* reply);

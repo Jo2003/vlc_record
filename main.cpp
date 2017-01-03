@@ -31,6 +31,7 @@
 #include "cdirstuff.h"
 #include "qwatchstats.h"
 #include "civiapi.h"
+#include "civistats.h"
 #include "qurlex.h"
 
 #ifdef Q_WS_X11
@@ -104,6 +105,7 @@ int main(int argc, char *argv[])
     qRegisterMetaType<ivi::CountryMap>("ivi::CountryMap");
     qRegisterMetaType<cparser::VideoList>("cparser::VideoList");
     qRegisterMetaType<cparser::SVodVideo>("cparser::SVodVideo");
+    qRegisterMetaType<ivistats::SIviStats>("ivistats::SIviStats");
 
 #ifdef Q_OS_MACX
     if ( QSysInfo::MacintoshVersion > QSysInfo::MV_10_8 )
