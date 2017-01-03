@@ -14,6 +14,7 @@
 
 #include "civistats.h"
 #include "qurlex.h"
+#include "playstates.h"
 
 //------------------------------------------------------------------------------
 //! @brief      create object
@@ -76,23 +77,26 @@ void CIviStats::start(const ivistats::SContentData &cntData)
 //------------------------------------------------------------------------------
 void CIviStats::end()
 {
-    // stop tick timer ...
-    mTmSecTick.stop();
-
-    ivistats::SIviStats stats;
-    stats.mUrl     = "http://logger.ivi.ru/logger/content/time";
-    stats.mPost    = true;
-    stats.mContent = createStatsContent();
-
-    emit sigStats(stats);
-
-    if (mContentData.mPixAudit.contains("end_content"))
+    if (mTmSecTick.isActive())
     {
-        stats.mContent = "";
-        stats.mPost    = false;
-        stats.mUrl     = mContentData.mPixAudit.value("end_content");
+        // stop tick timer ...
+        mTmSecTick.stop();
+
+        ivistats::SIviStats stats;
+        stats.mUrl     = "http://logger.ivi.ru/logger/content/time";
+        stats.mPost    = true;
+        stats.mContent = createStatsContent();
 
         emit sigStats(stats);
+
+        if (mContentData.mPixAudit.contains("end_content"))
+        {
+            stats.mContent = "";
+            stats.mPost    = false;
+            stats.mUrl     = mContentData.mPixAudit.value("end_content");
+
+            emit sigStats(stats);
+        }
     }
 }
 
@@ -202,6 +206,26 @@ void CIviStats::secsTick()
 }
 
 //------------------------------------------------------------------------------
+//! @brief      player state was changed ...
+//!
+//! @param[in]  state new player state
+//------------------------------------------------------------------------------
+void CIviStats::playStateChg(int state)
+{
+    switch((IncPlay::ePlayStates)state)
+    {
+    case IncPlay::PS_END:
+    case IncPlay::PS_STOP:
+    case IncPlay::PS_ERROR:
+        end();
+        break;
+
+    default:
+        break;
+    }
+}
+
+//------------------------------------------------------------------------------
 //! @brief      store player instance
 //!
 //! @param[in]  pPlayer pointer to player instance
@@ -209,6 +233,7 @@ void CIviStats::secsTick()
 void CIviStats::setPlayer(CPlayer *pPlayer)
 {
     mpPlayer = pPlayer;
+    connect (mpPlayer, SIGNAL(sigPlayState(int)), this, SLOT(playStateChg(int)));
 }
 
 //------------------------------------------------------------------------------

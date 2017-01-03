@@ -35,6 +35,11 @@ CIviApi::CIviApi(QObject *parent) :
     mQueryPrefix = "mobileapi";
     mRealAppVer  = -1;
     pHash        = new CCMAC_Bf(IVI_KEY, IVI_K1, IVI_K2);
+
+    mContData.mDevice = QString("%1%2-%3")
+            .arg(pCustomization->strVal("APPLICATION_SHORTCUT"))
+            .arg(OP_SYS).arg(SOFTID_DEVELOPER);
+
     connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
     connect(this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(slotSslError(QNetworkReply*,QList<QSslError>)));
 }

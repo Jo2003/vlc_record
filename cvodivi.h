@@ -40,6 +40,7 @@ public:
     void setPixCache(CPixLoader* cache);
     void setIviSession(const QString& str);
     void setPlayer(CPlayer* pPlayer);
+    void setUid(const QString& str);
     CVodBrowser *iviBrowser();
 
 private slots:
@@ -72,6 +73,7 @@ protected:
     QTimer                 tIviSearch;
     int                    mCompId;
     CPlayer*               mpPlayer;
+    QString                mUid;
 
 private:
     Ui::CVodIvi *ui;

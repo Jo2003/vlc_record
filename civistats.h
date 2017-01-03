@@ -86,7 +86,6 @@ public:
     virtual ~CIviStats();
     void setPlayer(CPlayer* pPlayer);
 
-
 public slots:
     void start(const ivistats::SContentData& cntData);
     void end();
@@ -100,6 +99,7 @@ public slots:
 
 private slots:
     void secsTick();
+    void playStateChg(int state);
 
 protected:
     QString createStatsContent(int loadType = -1, int duration = -1);
