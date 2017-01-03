@@ -527,6 +527,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
       url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
       url.addQueryItem("video_id", QString::number(sInfo.uiVidId));
       url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
+      url.addQueryItem("content_format", sInfo.vVodFiles[i].sTitle.toUtf8());
       if (!sInfo.vVodFiles[i].sUrl.isEmpty())
       {
           url.addQueryItem("video_url", QUrlEx::toPercentEncoding(sInfo.vVodFiles[i].sUrl.toUtf8()));
@@ -544,6 +545,7 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
           url.addQueryItem("vid", QString::number(sInfo.vVodFiles[i].iId));
           url.addQueryItem("video_id", QString::number(sInfo.uiVidId));
           url.addQueryItem("pass_protect", sInfo.bProtected ? "1" : "0");
+          url.addQueryItem("content_format", sInfo.vVodFiles[i].sTitle.toUtf8());
           if (!sInfo.vVodFiles[i].sUrl.isEmpty())
           {
               url.addQueryItem("video_url", QUrlEx::toPercentEncoding(sInfo.vVodFiles[i].sUrl.toUtf8()));

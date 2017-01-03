@@ -503,6 +503,10 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         sUrl = QUrlEx::fromPercentEncoding(arg1.queryItemValue("video_url").toUtf8());
         mInfo(tr("Start ivi play with URL %1 ...").arg(sUrl));
         emit sigPlay(sUrl);
+
+        ivistats::SContentData contData = iviApi.getContentData();
+        contData.mFormat = arg1.queryItemValue("content_format").toUtf8();
+        iviStats.start(contData);
     }
     else if (action == "record")
     {
@@ -510,6 +514,10 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         sUrl = QUrlEx::fromPercentEncoding(arg1.queryItemValue("video_url").toUtf8());
         mInfo(tr("Start ivi record with URL %1 ...").arg(sUrl));
         emit sigRecord(sUrl);
+
+        ivistats::SContentData contData = iviApi.getContentData();
+        contData.mFormat = arg1.queryItemValue("content_format").toUtf8();
+        iviStats.start(contData);
     }
     else if (action == "add_fav")
     {

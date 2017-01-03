@@ -51,10 +51,10 @@ namespace ivistats
         {}
 
         QString mUid;
-        QString mIviUid;
         QString mWatchId;
         QString mDevice;
         QString mFormat;
+        int     mIviUid;
         int     mContentId;
         int     mAppVersion;
         int     mPreRoll;

@@ -251,9 +251,9 @@ QString CIviStats::createStatsContent(int loadType, int duration)
     QUrlEx  content;
 
     content.addQueryItem("uid"         , mContentData.mUid.toUtf8());
-    content.addQueryItem("iviuid"      , mContentData.mIviUid.toUtf8());
     content.addQueryItem("watchid"     , mContentData.mWatchId.toUtf8());
-    content.addQueryItem("device"      , mContentData.mWatchId.toUtf8());
+    content.addQueryItem("device"      , mContentData.mDevice.toUtf8());
+    content.addQueryItem("iviuid"      , QString::number(mContentData.mIviUid).toUtf8());
     content.addQueryItem("app_version" , QString::number(mContentData.mAppVersion).toUtf8());
     content.addQueryItem("contentid"   , QString::number(mContentData.mContentId).toUtf8());
     content.addQueryItem("seconds"     , QString::number(mSecCounter).toUtf8());

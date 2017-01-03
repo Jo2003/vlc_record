@@ -66,12 +66,12 @@ protected:
     void getFilterData(ivi::SVideoFilter& filter);
     void getVideos();
 
-    CIviApi          iviApi;
-    CIviStats        iviStats;
-    ivi::CategoryMap mIviCats;
-    QTimer           tIviSearch;
-    int              mCompId;
-    CPlayer*         mpPlayer;
+    CIviApi                iviApi;
+    CIviStats              iviStats;
+    ivi::CategoryMap       mIviCats;
+    QTimer                 tIviSearch;
+    int                    mCompId;
+    CPlayer*               mpPlayer;
 
 private:
     Ui::CVodIvi *ui;

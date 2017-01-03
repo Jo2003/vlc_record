@@ -140,8 +140,8 @@ public:
     int parseFavCount(const QString& resp);
     int parseAllFavs(const QString& resp);
     int parseRealAppVer(const QString& resp);
-
     void combineInfo();
+    ivistats::SContentData getContentData();
 
 protected:
     int  hasError(const QString& resp, QString& errText);
@@ -164,8 +164,9 @@ private slots:
 public slots:
 
 protected:
-    ivi::CountryMap  mCountries;
-    ivi::GenreMap    mGenres;
+    ivi::CountryMap        mCountries;
+    ivi::GenreMap          mGenres;
+    ivistats::SContentData mContData;
 
 private:
     QString            mProtocol;

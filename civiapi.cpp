@@ -760,8 +760,9 @@ int CIviApi::parseSession(const QString &resp)
 
     if (bOk)
     {
-        contentMap  = contentMap.value("result").toMap();
-        mSessionKey = contentMap.value("session").toString();
+        contentMap        = contentMap.value("result").toMap();
+        mSessionKey       = contentMap.value("session").toString();
+        mContData.mIviUid = contentMap.value("id").toInt();
 
         getCountries();
         getTimeStamp();
@@ -1121,6 +1122,14 @@ int CIviApi::parseVideoInfo(const QString &resp, ivi::eIviReq req)
             mCompilationInfo = video;
         }
 
+        // fill content data ...
+        mContData.mEndCredits = mVideo.value("credits_begin_time").toInt();
+        if (mContData.mEndCredits == 0)
+        {
+            mContData.mEndCredits = video.uiLength * 60;
+        }
+        mContData.mContentId = (int)video.uiVidId;
+
         // request links ...
         getVideoPersons(video.uiVidId, (ivi::eKind)video.iKind);
     }
@@ -1156,6 +1165,19 @@ int CIviApi::parseFiles(const QString &resp)
     if (bOk)
     {
         QVariantMap mVideo = contentMap.value("result").toMap();
+
+        // fill content data ...
+
+        // pixel audit ...
+        mContData.mPixAudit.clear();
+        foreach(QVariant pixelRaw, mVideo.value("pixelaudit").toList())
+        {
+            QVariantMap pixel = pixelRaw.toMap();
+            mContData.mPixAudit.insert(pixel.value("title").toString(), pixel.value("link").toString());
+        }
+
+        // watch id ...
+        mContData.mWatchId = mVideo.value("watchid").toString();
 
         // files ...
         foreach(QVariant rawFile, mVideo.value("files").toList())
@@ -1417,6 +1439,9 @@ int CIviApi::parseRealAppVer(const QString &resp)
             mWarn(tr("Can't get real app version, using default: %1").arg(IVI_APP_VERSION));
         }
 
+        // for content data ...
+        mContData.mAppVersion = mRealAppVer;
+
         login();
     }
     else
@@ -1500,6 +1525,17 @@ void CIviApi::combineInfo()
     mCurrentVideo.sName = mCompilationInfo.sName + " - " + mCurrentVideo.sName;
 
     emit sigVideoInfo(mCurrentVideo);
+}
+
+//------------------------------------------------------------------------------
+//! @brief      get content data
+//!
+//! @returns    ivistats::SContentData
+//! @sa         ivistats::SContentData
+//------------------------------------------------------------------------------
+ivistats::SContentData CIviApi::getContentData()
+{
+    return mContData;
 }
 
 //------------------------------------------------------------------------------
