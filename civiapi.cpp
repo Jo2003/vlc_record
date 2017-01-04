@@ -1619,8 +1619,15 @@ void CIviApi::getReply(QNetworkReply *reply)
         QString    resp = QString::fromUtf8(ba.constData());
 
 #ifdef __TRACE_IVI
-        mInfo(tr("IVI Response:\n ==8<==8<==8<==\n%1\n ==>8==>8==>8==")
-                 .arg(resp));
+        if (!resp.isEmpty())
+        {
+            mInfo(tr("IVI Response:\n ==8<==8<==8<==\n%1\n ==>8==>8==>8==")
+                     .arg(resp));
+        }
+        else
+        {
+            mInfo(tr("Empty IVI response ..."));
+        }
 #endif // __TRACE
 
         errCode = hasError(resp, errText);

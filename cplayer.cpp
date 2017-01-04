@@ -750,7 +750,7 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
    // make sure we stop the player - needed since playlist support ...
    if (isPlaying())
    {
-       stop();
+       silentStop();
    }
 
    if (!iRV)
