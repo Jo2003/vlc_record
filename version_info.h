@@ -35,7 +35,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 73
 #define VERSION_BUILD 0
-#define BETA_EXT      "B5"
+#define BETA_EXT      "B6"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,7 +50,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
-| - start ivi statistic stuff
+|
+| 2017-01-05: Version 2.73.0B6
+| - ivi stats working
 |
 | 2016-12-16: Version 2.73.0B5
 | - use whoami to get patched app_version from IVI

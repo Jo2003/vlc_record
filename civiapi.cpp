@@ -732,12 +732,51 @@ int CIviApi::sendIviStats(ivistats::SIviStats stats)
 
     if (stats.mPost)
     {
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
         pReply = QNetworkAccessManager::post(request, stats.mContent.toUtf8());
     }
     else
     {
         pReply = QNetworkAccessManager::get(request);
     }
+
+    if (pReply)
+    {
+        pReply->setProperty(IVI_REQ_ID, (int)ivi::IVI_STATS);
+    }
+
+    return pReply ? 0 : -1;
+}
+
+//------------------------------------------------------------------------------
+//! @brief      send ivi statistics
+//!
+//! @param[in]  stats ivi statistiks structure
+//!
+//! @return     0 -> ok; -1 -> error
+//------------------------------------------------------------------------------
+int CIviApi::sendWatched(int cid, QString wid)
+{
+    QString url = QString("%1://%2/light/")
+            .arg(mProtocol)
+            .arg(mHost);
+
+    QString content = QString(IVI_CNT_WATCHED_TMPL)
+            .arg(cid).arg(mRealAppVer).arg(mSessionKey).arg(wid);
+
+    url += QString("?app_version=%1").arg(mRealAppVer);
+    url += QString("&ts=%1").arg(mTs);
+    url += QString("&sign=%1").arg(pHash->sign(mTs + content));
+
+#ifdef __TRACE_IVI
+    mInfo(tr("Post '%1' to url '%2").arg(content).arg(url));
+#endif
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QNetworkReply* pReply = QNetworkAccessManager::post(request, content.toUtf8());
 
     if (pReply)
     {

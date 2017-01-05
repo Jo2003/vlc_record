@@ -24,8 +24,9 @@
 #include "civistats.h"
 
 #define IVI_REQ_ID            "reqid"
-#define IVI_GETCONTENT_TMPL   "{\"params\":[\"%1\", {\"session\": \"%2\", \"app_version\": %3}], \"method\":\"da.content.get\"}"
+#define IVI_GETCONTENT_TMPL   "{\"params\":[%1, {\"session\": \"%2\", \"app_version\": %3}], \"method\":\"da.content.get\"}"
 #define IVI_GETTIMESTAMP_TMPL "{\"method\": \"da.timestamp.get\", \"params\": []}"
+#define IVI_CNT_WATCHED_TMPL  "{\"method\": \"da.content.watched\", \"params\": [%1, {\"app_version\": %2, \"session\": \"%3\", \"watchid\": \"%4\"}]}"
 
 namespace ivi {
 
@@ -156,6 +157,7 @@ signals:
 public slots:
     int getTimeStamp();
     int sendIviStats(ivistats::SIviStats stats);
+    int sendWatched(int cid, QString wid);
 
 private slots:
     void getReply(QNetworkReply* reply);

@@ -1580,8 +1580,8 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
                sMrl += ";;" + mCurrentCmdLine.section(";;", 1);
             }
 
-            mInfo(tr("IVI spool: \n'%1s' ...").arg(sMrl));
-
+            mInfo(tr("IVI spool: \n'%1' ...").arg(sMrl));
+            emit sigSpool();
             playMedia(sMrl, mCurrentOpts);
          }
          else
@@ -1817,8 +1817,8 @@ void CPlayer::slotSliderPosChanged()
                sMrl += ";;" + mCurrentCmdLine.section(";;", 1);
             }
 
-            mInfo(tr("IVI spool: \n'%1s' ...").arg(sMrl));
-
+            mInfo(tr("IVI spool: \n'%1' ...").arg(sMrl));
+            emit sigSpool();
             playMedia(sMrl, mCurrentOpts);
          }
          else

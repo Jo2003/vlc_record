@@ -100,6 +100,7 @@ public slots:
 private slots:
     void secsTick();
     void playStateChg(int state);
+    void bufferPercent(int percent);
 
 protected:
     QString createStatsContent(int loadType = -1, int duration = -1);
@@ -115,6 +116,7 @@ protected:
 
 signals:
     void sigStats(ivistats::SIviStats stats);
+    void sigWatched(int cid, QString whatchId);
 };
 
 #endif // __20170103_CIVISTATS_H

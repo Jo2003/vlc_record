@@ -15,6 +15,7 @@
 #include "civistats.h"
 #include "qurlex.h"
 #include "playstates.h"
+#include "externals_inc.h"
 
 //------------------------------------------------------------------------------
 //! @brief      create object
@@ -82,6 +83,11 @@ void CIviStats::end()
         // stop tick timer ...
         mTmSecTick.stop();
 
+        // make all measurments invalid ...
+        mMeasureBuffer = QTime();
+        mMeasureLoad   = QTime();
+        mMeasureRewind = QTime();
+
         ivistats::SIviStats stats;
         stats.mUrl     = "http://logger.ivi.ru/logger/content/time";
         stats.mPost    = true;
@@ -138,6 +144,7 @@ void CIviStats::rewindEnd()
 void CIviStats::loadEnd()
 {
     sendLoadStats(ivistats::LT_LOAD, mMeasureLoad);
+    emit sigWatched(mContentData.mContentId, mContentData.mWatchId);
 }
 
 //------------------------------------------------------------------------------
@@ -226,6 +233,51 @@ void CIviStats::playStateChg(int state)
 }
 
 //------------------------------------------------------------------------------
+//! @brief      percent of internal play buffer
+//!
+//! @param[in]  percent new buffer value
+//------------------------------------------------------------------------------
+void CIviStats::bufferPercent(int percent)
+{
+    // interseting only when statistic stuff is active ...
+    if (mTmSecTick.isActive())
+    {
+        if (percent >= 95)
+        {
+            // only one of these measurments should
+            // be active at same time ...
+            if (mMeasureLoad.isValid())
+            {
+                mInfo(tr("Buffering complete after opening the video (%1%) ...").arg(percent));
+                loadEnd();
+            }
+            else if (mMeasureRewind.isValid())
+            {
+                mInfo(tr("Buffering complete after spooling the video (%1%) ...").arg(percent));
+                rewindEnd();
+            }
+            else if (mMeasureBuffer.isValid())
+            {
+                mInfo(tr("Buffering complete after buffer underrun (%1%) ...").arg(percent));
+                bufferEnd();
+            }
+        }
+        else if (percent <= 5)
+        {
+            // we count it as buffer underrun only,
+            // if no other measurment is active ...
+            if (   !mMeasureLoad.isValid()
+                && !mMeasureRewind.isValid()
+                && !mMeasureBuffer.isValid())
+            {
+                mInfo(tr("Buffer underrun (%1%) ...").arg(percent));
+                bufferStart();
+            }
+        }
+    }
+}
+
+//------------------------------------------------------------------------------
 //! @brief      store player instance
 //!
 //! @param[in]  pPlayer pointer to player instance
@@ -233,7 +285,9 @@ void CIviStats::playStateChg(int state)
 void CIviStats::setPlayer(CPlayer *pPlayer)
 {
     mpPlayer = pPlayer;
-    connect (mpPlayer, SIGNAL(sigPlayState(int)), this, SLOT(playStateChg(int)));
+    connect (mpPlayer, SIGNAL(sigPlayState(int))  , this, SLOT(playStateChg(int)));
+    connect (mpPlayer, SIGNAL(sigSpool())         , this, SLOT(rewindStart()));
+    connect (mpPlayer, SIGNAL(sigBuffPercent(int)), this, SLOT(bufferPercent(int)));
 }
 
 //------------------------------------------------------------------------------
