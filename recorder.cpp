@@ -2054,6 +2054,16 @@ void Recorder:: slotIviInfo(const QString &resp)
            }
 
            ui->iviVod->setIviSession(mIviInfo.ivi_id);
+
+           // check for ivi teaser ...
+           QFileInfo fi;
+           fi.setFile(IVI_TEASER_URL);
+           QString img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
+
+           if (!QFile::exists(img))
+           {
+              pixCache.enqueuePic(IVI_TEASER_URL, pFolders->getVodPixDir());
+           }
         }
         else
         {
@@ -2091,6 +2101,10 @@ void Recorder::slotIviPlay(QString url)
         showInfo.setStartTime(0);
         showInfo.setEndTime(ui->iviVod->iviBrowser()->getLength());
 
+        QFileInfo fi(IVI_TEASER_URL);
+        QString addUrl = QString("file://%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
+        showInfo.setAdUrl(addUrl);
+
         ui->labState->setHeader(tr("Video On Demand"));
         ui->labState->setFooter(showInfo.showName());
 
@@ -2120,6 +2134,10 @@ void Recorder::slotIviRecord(QString url)
         showInfo.setHtmlDescr(ui->iviVod->iviBrowser()->getShortContent());
         showInfo.setStartTime(0);
         showInfo.setEndTime(ui->iviVod->iviBrowser()->getLength());
+
+        QFileInfo fi(IVI_TEASER_URL);
+        QString addUrl = QString("file://%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
+        showInfo.setAdUrl(addUrl);
 
         ui->labState->setHeader(tr("Video On Demand"));
         ui->labState->setFooter(showInfo.showName());

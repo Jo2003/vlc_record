@@ -938,7 +938,9 @@ int CPlayer::addAd()
    QString         adUrl  = showInfo.adUrl();
    QString         sOpt;
 
-   if ((adUrl != "") && (showInfo.showType() == ShowInfo::VOD) && pSettings->showAds() && !showInfo.noAd())
+   if (    (adUrl != "")
+           && ((showInfo.showType() == ShowInfo::VOD) || (showInfo.showType() == ShowInfo::VOD_IVI))
+           && pSettings->showAds() && !showInfo.noAd())
    {
       mInfo(tr("Prepend Ad (Url):\n  --> %1").arg(adUrl));
       if ((p_mdad = libvlc_media_new_location(pVlcInstance, adUrl.toUtf8().constData())) != NULL)
@@ -946,36 +948,47 @@ int CPlayer::addAd()
          // cache add media item ...
          addMediaItem = p_mdad;
 
-         sOpt = QString(":network-caching=%1").arg(pSettings->GetBufferTime());
-         mInfo(tr("Add MRL Option: %1").arg(sOpt));
-         libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
-
-         sOpt = ":no-http-reconnect";
-         mInfo(tr("Add MRL Option: %1").arg(sOpt));
-         libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
-
-         ///////////////////////////////////////////////////////////////////////////
-         // set proxy server ...
-         ///////////////////////////////////////////////////////////////////////////
-         if (pSettings->UseProxy())
+         if (adUrl.contains("file://"))
          {
-            sOpt = ":http_proxy=http://";
+             sOpt = QString(":file-caching=%1").arg(pSettings->GetBufferTime());
 
-            if (pSettings->GetProxyUser() != "")
-            {
-               sOpt += QString("%1@").arg(pSettings->GetProxyUser());
-            }
+             mInfo(tr("Add MRL Option: %1").arg(sOpt));
+             libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+         }
+         else
+         {
+             sOpt = QString(":network-caching=%1").arg(pSettings->GetBufferTime());
 
-            sOpt += QString("%1:%2/").arg(pSettings->GetProxyHost()).arg(pSettings->GetProxyPort());
-            mInfo(tr("Add MRL Option: %1").arg(sOpt));
-            libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+             mInfo(tr("Add MRL Option: %1").arg(sOpt));
+             libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
 
-            if ((pSettings->GetProxyPasswd() != "") && (pSettings->GetProxyUser() != ""))
-            {
-               sOpt = QString(":http_proxy_pwd=%1").arg(pSettings->GetProxyPasswd());
-               mInfo(tr("Add MRL Option: :http_proxy_pwd=******"));
-               libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
-            }
+             sOpt = ":no-http-reconnect";
+             mInfo(tr("Add MRL Option: %1").arg(sOpt));
+             libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+
+             ///////////////////////////////////////////////////////////////////////////
+             // set proxy server ...
+             ///////////////////////////////////////////////////////////////////////////
+             if (pSettings->UseProxy())
+             {
+                sOpt = ":http_proxy=http://";
+
+                if (pSettings->GetProxyUser() != "")
+                {
+                   sOpt += QString("%1@").arg(pSettings->GetProxyUser());
+                }
+
+                sOpt += QString("%1:%2/").arg(pSettings->GetProxyHost()).arg(pSettings->GetProxyPort());
+                mInfo(tr("Add MRL Option: %1").arg(sOpt));
+                libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+
+                if ((pSettings->GetProxyPasswd() != "") && (pSettings->GetProxyUser() != ""))
+                {
+                   sOpt = QString(":http_proxy_pwd=%1").arg(pSettings->GetProxyPasswd());
+                   mInfo(tr("Add MRL Option: :http_proxy_pwd=******"));
+                   libvlc_media_add_option(p_mdad, sOpt.toUtf8().constData());
+                }
+             }
          }
 
          // add media ...
@@ -1261,6 +1274,12 @@ void CPlayer::slotEventPoll()
 
                   // enable spooling ...
                   bSpoolPending = false;
+
+                  if (showInfo.showType() == ShowInfo::VOD_IVI)
+                  {
+                      emit sigIviMainFeature();
+                      showInfo.setNoAd(true);
+                  }
                }
             }
             break;

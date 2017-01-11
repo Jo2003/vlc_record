@@ -873,7 +873,7 @@ color: white;
             <normaloff>:/vod/ivi</normaloff>:/vod/ivi</iconset>
           </attribute>
           <attribute name="title">
-           <string>VOD IVI</string>
+           <string>VOD ivi</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_8">
            <property name="spacing">

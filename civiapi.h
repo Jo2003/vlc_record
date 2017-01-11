@@ -27,6 +27,7 @@
 #define IVI_GETCONTENT_TMPL   "{\"params\":[%1, {\"session\": \"%2\", \"app_version\": %3}], \"method\":\"da.content.get\"}"
 #define IVI_GETTIMESTAMP_TMPL "{\"method\": \"da.timestamp.get\", \"params\": []}"
 #define IVI_CNT_WATCHED_TMPL  "{\"method\": \"da.content.watched\", \"params\": [%1, {\"app_version\": %2, \"session\": \"%3\", \"watchid\": \"%4\"}]}"
+#define IVI_TEASER_URL        "http://anysta.kartina.tv/assets/ivi/ivi_ID.mp4"
 
 namespace ivi {
 

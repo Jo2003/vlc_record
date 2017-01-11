@@ -57,8 +57,8 @@ private slots:
     void on_iviBrowser_anchorClicked(const QUrl &arg1);
     void on_lineIviSearch_textEdited(const QString &arg1);
     void slotTimerIviSearch();
-
     void on_btnCleanIviSearch_clicked();
+    void slotIviMainFeature();
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -74,6 +74,7 @@ protected:
     int                    mCompId;
     CPlayer*               mpPlayer;
     QString                mUid;
+    ivistats::SContentData mPrepContData;
 
 private:
     Ui::CVodIvi *ui;

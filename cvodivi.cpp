@@ -99,6 +99,9 @@ void CVodIvi::setPlayer(CPlayer *pPlayer)
 {
     mpPlayer = pPlayer;
     iviStats.setPlayer(pPlayer);
+
+    // catch pseudo start ...
+    connect (mpPlayer, SIGNAL(sigIviMainFeature()), this, SLOT(slotIviMainFeature()));
 }
 
 //------------------------------------------------------------------------------
@@ -516,10 +519,9 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         mInfo(tr("Start ivi play with URL %1 ...").arg(sUrl));
         emit sigPlay(sUrl);
 
-        ivistats::SContentData contData = iviApi.getContentData();
-        contData.mFormat = arg1.queryItemValue("content_format").toUtf8();
-        contData.mUid    = mUid;
-        iviStats.start(contData);
+        mPrepContData         = iviApi.getContentData();
+        mPrepContData.mFormat = arg1.queryItemValue("content_format").toUtf8();
+        mPrepContData.mUid    = mUid;
     }
     else if (action == "record")
     {
@@ -528,10 +530,9 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
         mInfo(tr("Start ivi record with URL %1 ...").arg(sUrl));
         emit sigRecord(sUrl);
 
-        ivistats::SContentData contData = iviApi.getContentData();
-        contData.mFormat = arg1.queryItemValue("content_format").toUtf8();
-        contData.mUid    = mUid;
-        iviStats.start(contData);
+        mPrepContData         = iviApi.getContentData();
+        mPrepContData.mFormat = arg1.queryItemValue("content_format").toUtf8();
+        mPrepContData.mUid    = mUid;
     }
     else if (action == "add_fav")
     {
@@ -579,4 +580,12 @@ void CVodIvi::on_btnCleanIviSearch_clicked()
 {
     ui->lineIviSearch->setText("");
     on_lineIviSearch_textEdited("");
+}
+
+//------------------------------------------------------------------------------
+//! @brief      ivi main feature reached, start statistics ...
+//------------------------------------------------------------------------------
+void CVodIvi::slotIviMainFeature()
+{
+    iviStats.start(mPrepContData);
 }

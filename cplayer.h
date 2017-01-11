@@ -186,6 +186,7 @@ signals:
    void sigAudioTracks(QLangVector);
    void sigStateMessage(int, const QString&, int);
    void sigSpool();
+   void sigIviMainFeature();
 };
 
 #endif /* __022410__CPLAYER_H */
