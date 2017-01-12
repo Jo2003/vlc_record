@@ -3212,83 +3212,88 @@ oder die Startzeit liegt nach der Endzeit!</translation>
 <context>
     <name>CVodBrowser</name>
     <message>
-        <location filename="cvodbrowser.cpp" line="383"/>
+        <location filename="cvodbrowser.cpp" line="402"/>
         <source>Remove from favourites.</source>
         <translation>Aus den Favoriten entfernen.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="409"/>
+        <location filename="cvodbrowser.cpp" line="428"/>
         <source>Add to favourites.</source>
         <translation>Zu Favoriten hinzufügen.</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="278"/>
+        <location filename="cvodbrowser.cpp" line="286"/>
         <source>password protected</source>
         <translation>passwortgeschützt</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="427"/>
+        <location filename="cvodbrowser.cpp" line="358"/>
+        <source>VOD ivi</source>
+        <translation>Videothek ivi</translation>
+    </message>
+    <message>
+        <location filename="cvodbrowser.cpp" line="446"/>
         <source>min.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="433"/>
+        <location filename="cvodbrowser.cpp" line="452"/>
         <source>Rating</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="454"/>
+        <location filename="cvodbrowser.cpp" line="473"/>
         <source>Filmweb: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="468"/>
+        <location filename="cvodbrowser.cpp" line="487"/>
         <source>Director: %1</source>
         <translation>Regisseur: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="473"/>
+        <location filename="cvodbrowser.cpp" line="492"/>
         <source>With: %1</source>
         <translation>Mit: %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="456"/>
+        <location filename="cvodbrowser.cpp" line="475"/>
         <source>Kinopoisk: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="571"/>
+        <location filename="cvodbrowser.cpp" line="590"/>
         <source>Video Details</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="417"/>
+        <location filename="cvodbrowser.cpp" line="436"/>
         <source>Genre: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="197"/>
-        <location filename="cvodbrowser.cpp" line="338"/>
+        <location filename="cvodbrowser.cpp" line="205"/>
+        <location filename="cvodbrowser.cpp" line="346"/>
         <source>Back</source>
         <translation>Zurück</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="486"/>
+        <location filename="cvodbrowser.cpp" line="505"/>
         <source>Part %1</source>
         <translation>Teil %1</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="444"/>
+        <location filename="cvodbrowser.cpp" line="463"/>
         <source>IMDB: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="537"/>
+        <location filename="cvodbrowser.cpp" line="556"/>
         <source>Play Movie ...</source>
         <translation>Film abspielen ...</translation>
     </message>
     <message>
-        <location filename="cvodbrowser.cpp" line="555"/>
+        <location filename="cvodbrowser.cpp" line="574"/>
         <source>Record Movie ...</source>
         <translation>Film aufzeichnen ...</translation>
     </message>
@@ -3334,86 +3339,86 @@ oder die Startzeit liegt nach der Endzeit!</translation>
         <translation>Suche: </translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="265"/>
-        <location filename="cvodivi.cpp" line="300"/>
+        <location filename="cvodivi.cpp" line="267"/>
+        <location filename="cvodivi.cpp" line="302"/>
         <source>All</source>
         <translation>Alles</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="305"/>
+        <location filename="cvodivi.cpp" line="307"/>
         <source>Found category &apos;%1&apos;(%2) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="312"/>
+        <location filename="cvodivi.cpp" line="314"/>
         <source>  \_Genre &apos;%1&apos;(%2) (#%3) ...</source>
         <oldsource>  \_Genre &apos;%1&apos;(%2) ...</oldsource>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="332"/>
+        <location filename="cvodivi.cpp" line="334"/>
         <source>Found country #%1 &apos;%2&apos;[%3] ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="352"/>
+        <location filename="cvodivi.cpp" line="354"/>
         <source>Found Video #%1 &apos;%2&apos;(%3 %4) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="390"/>
+        <location filename="cvodivi.cpp" line="392"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="391"/>
+        <location filename="cvodivi.cpp" line="393"/>
         <source>Sorry, content &apos;%1&apos; is currently not available in your country!</source>
         <oldsource>Sorry, the content &apos;%1&apos; is not available at the moment. Please try again later!</oldsource>
         <translation>Leider ist &apos;%1&apos; momentan in Ihrem Land nicht verfügbar!</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="403"/>
+        <location filename="cvodivi.cpp" line="405"/>
         <source>Popularity</source>
         <translation>Popularität</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="404"/>
+        <location filename="cvodivi.cpp" line="406"/>
         <source>Newest</source>
         <translation>Neueste</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="405"/>
+        <location filename="cvodivi.cpp" line="407"/>
         <source>IVI Rating</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="406"/>
+        <location filename="cvodivi.cpp" line="408"/>
         <source>KP Rating</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="407"/>
+        <location filename="cvodivi.cpp" line="409"/>
         <source>IMDB Rating</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="408"/>
+        <location filename="cvodivi.cpp" line="410"/>
         <source>Budget</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="409"/>
+        <location filename="cvodivi.cpp" line="411"/>
         <source>My Favourites</source>
         <oldsource>Favorites</oldsource>
         <translation>Meine Favoriten</translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="519"/>
+        <location filename="cvodivi.cpp" line="521"/>
         <source>Start ivi play with URL %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="cvodivi.cpp" line="530"/>
+        <location filename="cvodivi.cpp" line="532"/>
         <source>Start ivi record with URL %1 ...</source>
         <translation></translation>
     </message>

@@ -66,6 +66,7 @@
    #define TMPL_CUR_STYLE  "color: black; background-color: #fc0; padding: 3px;"
    #define TMPL_VOD_STYLE  "color: #800; background-color: rgb(255, 254, 212); font-weight: bold; padding: 10px;"
    #define TMPL_IMG_RFLOAT "float: right; margin: 15px; padding: 2px; border: 1px solid #666;"
+   #define TMPL_IMG_LFLOAT "margin: 15px; padding: 15px; border: 0px;"
    #define TMPL_ONE_CELL   "background-color: rgb(255, 254, 212); color: black; padding: 3px;"
    #define TMPL_VOD_BODY   "body {background-color: rgb(255, 254, 212);}"
 #endif // _HAS_OWN_STYLES

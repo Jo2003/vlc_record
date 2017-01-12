@@ -116,6 +116,14 @@ void CVodBrowser::recreateVodList()
     verticalScrollBar()->setValue(mScrollPos);
 }
 
+//---------------------------------------------------------------------------
+//! \brief   set branding logo
+//---------------------------------------------------------------------------
+void CVodBrowser::setBranding(const QString &logo)
+{
+    _brandLogo = logo;
+}
+
 /* -----------------------------------------------------------------\
 |  Method: setPixCache
 |  Begin: 31.05.2012
@@ -339,11 +347,22 @@ void CVodBrowser::displayVideoDetails(const cparser::SVodVideo &sInfo)
    link  = "[ " + link + " ]";
    back  = pHtml->div(link, "", "center");
 
+   if (!_brandLogo.isEmpty())
+   {
+       // create source url for image ...
+       img = _brandLogo;
+
+       // add image ...
+       content = pHtml->simpleTag("br", "") +
+                 pHtml->image(QUrl::toPercentEncoding(img), 40, 0,
+                               TMPL_IMG_LFLOAT, tr("VOD ivi"));
+   }
+
    // create source url for image ...
    img = QString("%1/%2").arg(pFolders->getVodPixDir()).arg(info.fileName());
 
    // add image ...
-   content = pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, 0,
+   content += pHtml->image(QUrl::toPercentEncoding(img), VOD_POSTER_WIDTH, 0,
                            TMPL_IMG_RFLOAT, sInfo.sName);
 
    // add headline ...

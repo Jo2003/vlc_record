@@ -35,6 +35,8 @@ CVodIvi::CVodIvi(QWidget *parent) :
     tIviSearch.setSingleShot(true);
     tIviSearch.setInterval(500);
 
+    ui->iviBrowser->setBranding(":/vod/ivi");
+
     connect (&iviApi, SIGNAL(sigCategories(ivi::CategoryMap)), this, SLOT(slotCatchCategories(ivi::CategoryMap)));
     connect (&iviApi, SIGNAL(sigCountries(ivi::CountryMap)), this, SLOT(slotCatchCountries(ivi::CountryMap)));
     connect (&iviApi, SIGNAL(sigVideoList(cparser::VideoList)), this, SLOT(slotCatchVideos(cparser::VideoList)));

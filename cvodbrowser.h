@@ -52,6 +52,7 @@ public:
     void deleteFromLastList (uint vIdx);
     void saveScrollPos();
     void recreateVodList();
+    void setBranding(const QString& logo);
 
 protected:
     QString createVodListTableCell (const cparser::SVodVideo& entry, bool& delay);
@@ -63,6 +64,7 @@ private:
     QString        _name;
     QString        _shortContent;
     QString        _contentBuffer;
+    QString        _brandLogo;
     uint           _uiLength;
     CSettingsDlg  *pSettings;
     CPixLoader    *pPixCache;

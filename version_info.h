@@ -35,7 +35,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 73
 #define VERSION_BUILD 0
-#define BETA_EXT      "B6"
+#define BETA_EXT      "B7"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,11 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2017-01-12: Version 2.73.0B7
+| - change IVI to ivi
+| - show ivi teaser before showing ivi video
+| - add ivi logo to video info content
 |
 | 2017-01-05: Version 2.73.0B6
 | - ivi stats working
