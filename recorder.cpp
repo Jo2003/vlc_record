@@ -2102,7 +2102,7 @@ void Recorder::slotIviPlay(QString url)
         showInfo.setEndTime(ui->iviVod->iviBrowser()->getLength());
 
         QFileInfo fi(IVI_TEASER_URL);
-        QString addUrl = QString("file://%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
+        QString addUrl = QString("file:///%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
         showInfo.setAdUrl(addUrl);
 
         ui->labState->setHeader(tr("Video On Demand"));
@@ -2136,7 +2136,7 @@ void Recorder::slotIviRecord(QString url)
         showInfo.setEndTime(ui->iviVod->iviBrowser()->getLength());
 
         QFileInfo fi(IVI_TEASER_URL);
-        QString addUrl = QString("file://%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
+        QString addUrl = QString("file:///%1/%2").arg(pFolders->getVodPixDir()).arg(fi.fileName());
         showInfo.setAdUrl(addUrl);
 
         ui->labState->setHeader(tr("Video On Demand"));
