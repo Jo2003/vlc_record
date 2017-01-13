@@ -575,13 +575,46 @@ int CPlayer::play()
                // mark as unused ...
                pauseResume.id = -1;
             }
-            else
+            else if (showInfo.showType() == ShowInfo::VOD)
             {
                // position can't be requested here ...
                pApiClient->queueRequest(CIptvDefs::REQ_GETVODURL, pauseResume.id, showInfo.pCode());
 
                // so we mark the id to be recognized in playMedia() ...
                pauseResume.id = PAUSE_RESUME_VOD;
+            }
+            else if (showInfo.showType() == ShowInfo::VOD_IVI)
+            {
+                mInfo(tr("ivi pause resume after %1 seconds ...").arg(tPaused.elapsed() / 1000));
+
+                QString sMrl = mCurrentCmdLine.section(";;", 0, 0);
+                QUrlEx media(sMrl);
+
+                if (media.hasQueryItem("start"))
+                {
+                   media.removeQueryItem("start");
+                }
+
+                if (media.hasEncodedQueryItem("start"))
+                {
+                   media.removeEncodedQueryItem("start");
+                }
+
+                // add start item ...
+                media.addQueryItem("start", QString::number(pauseResume.timeStamp));
+                showInfo.setLastJumpTime(pauseResume.timeStamp);
+
+                sMrl = media.toString();
+
+                if (mCurrentCmdLine.contains(";;"))
+                {
+                   sMrl += ";;" + mCurrentCmdLine.section(";;", 1);
+                }
+
+                // mark as unused ...
+                pauseResume.id = -1;
+
+                playMedia(sMrl, mCurrentOpts);
             }
          }
       }
@@ -664,21 +697,35 @@ int CPlayer::silentStop()
 \----------------------------------------------------------------- */
 int CPlayer::pause()
 {
-   int iRV = 0;
+    int iRV = 0;
 
-   if (pMedialistPlayer && showInfo.canCtrlStream())
-   {
-      // go from play into pause ...
-      mInfo(tr("Prepare for long time resume ..."));
-      pauseResume.bArch     = (showInfo.showType() == ShowInfo::Archive);
-      pauseResume.timeStamp = pauseResume.bArch ? (timer.pos() - 5) : (libvlc_media_player_get_time (pMediaPlayer) / 1000);
-      pauseResume.id        = pauseResume.bArch ? showInfo.channelId() : showInfo.vodFileId();
-      tPaused.start();
+    if (pMedialistPlayer && showInfo.canCtrlStream())
+    {
+        // go from play into pause ...
+        mInfo(tr("Prepare for long time resume ..."));
+        pauseResume.bArch     = (showInfo.showType() == ShowInfo::Archive);
 
-      libvlc_media_list_player_pause(pMedialistPlayer);
-   }
+        if (pauseResume.bArch)
+        {
+            pauseResume.timeStamp = timer.pos() - 5;
+            pauseResume.id        = showInfo.channelId();
+        }
+        else if (showInfo.showType() == ShowInfo::VOD)
+        {
+            pauseResume.timeStamp = libvlc_media_player_get_time (pMediaPlayer) / 1000;
+            pauseResume.id        = showInfo.vodFileId();
+        }
+        else if (showInfo.showType() == ShowInfo::VOD_IVI)
+        {
+            pauseResume.timeStamp = (libvlc_media_player_get_time (pMediaPlayer) / 1000) + showInfo.lastJump();
+            pauseResume.id        = 0;
+        }
 
-   return iRV;
+        tPaused.start();
+        libvlc_media_list_player_pause(pMedialistPlayer);
+    }
+
+    return iRV;
 }
 
 /* -----------------------------------------------------------------\

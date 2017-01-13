@@ -47,9 +47,9 @@ namespace Player
    struct SPauseResume
    {
       SPauseResume() :timeStamp(0),id(-1),bArch(false){}
-      ulong timeStamp;
-      int   id;
-      bool  bArch;
+      ulong   timeStamp;
+      int     id;
+      bool    bArch;
    };
 
    struct SErrHelper
