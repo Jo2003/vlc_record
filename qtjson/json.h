@@ -38,6 +38,30 @@ namespace QtJson {
     typedef QVariantList JsonArray;
 
     /**
+     * Clone a JSON object (makes a deep copy)
+     *
+     * \param data The JSON object
+     */
+    QVariant clone(const QVariant &data);
+
+    /**
+     * Insert value to JSON object (QVariantMap)
+     *
+     * \param v The JSON object
+     * \param key The key
+     * \param value The value
+     */
+    void insert(QVariant &v, const QString &key, const QVariant &value);
+
+    /**
+     * Append value to JSON array (QVariantList)
+     *
+     * \param v The JSON array
+     * \param value The value
+     */
+    void append(QVariant &v, const QVariant &value);
+
+    /**
      * Parse a JSON string
      *
      * \param json The JSON data
@@ -105,6 +129,53 @@ namespace QtJson {
      */
     QString getDateTimeFormat();
     QString getDateFormat();
+
+    /**
+     * QVariant based Json object
+     */
+    class Object : public QVariant {
+        template<typename T>
+        Object& insertKey(Object* ptr, const QString& key) {
+            T* p = (T*)ptr->data();
+            if (!p->contains(key)) p->insert(key, QVariant());
+            return *reinterpret_cast<Object*>(&p->operator[](key));
+        }
+        template<typename T>
+        void removeKey(Object *ptr, const QString& key) {
+            T* p = (T*)ptr->data();
+            p->remove(key);
+        }
+    public:
+        Object() : QVariant() {}
+        Object(const Object& ref) : QVariant(ref) {}
+
+        Object& operator=(const QVariant& rhs) {
+            /** It maybe more robust when running under Qt versions below 4.7 */
+            QObject * obj = qvariant_cast<QObject *>(rhs);
+            //  setValue(rhs);
+            setValue(obj);
+            return *this;
+        }
+        Object& operator[](const QString& key) {
+            if (type() == QVariant::Map)
+                return insertKey<QVariantMap>(this, key);
+            else if (type() == QVariant::Hash)
+                return insertKey<QVariantHash>(this, key);
+
+            setValue(QVariantMap());
+
+            return insertKey<QVariantMap>(this, key);
+        }
+        const Object& operator[](const QString& key) const {
+            return const_cast<Object*>(this)->operator[](key);
+        }
+        void remove(const QString& key) {
+            if (type() == QVariant::Map)
+                removeKey<QVariantMap>(this, key);
+            else if (type() == QVariant::Hash)
+                removeKey<QVariantHash>(this, key);
+        }
+    };
 }
 
 #endif //JSON_H

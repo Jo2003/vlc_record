@@ -55,6 +55,7 @@ protected:
    void GetCookie ();
    void Logout ();
    void GetChannelList ();
+   void getChanGroups();
    void GetProtChannelList (const QString &secCode);
    void SetTimeShift (int iHours);
    void GetTimeShift ();
@@ -82,9 +83,8 @@ protected:
    void updInfo (const QString& url);
    void getRadioList();
    void getRadioStream(int cid, bool bTimerRec = false);
-   QString combineChannelLists(const QString& resp);
    void setInterfaceLang (const QString& langCode);
-   int  checkResponse (const QString &sResp, QString& sCleanResp);
+   int  checkResponse (const QString &sResp);
    void chanListLang(const QString& lang);
    void audioLang();
 

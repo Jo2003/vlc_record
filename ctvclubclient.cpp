@@ -86,9 +86,7 @@ CTVClubClient::~CTVClubClient()
 //---------------------------------------------------------------------------
 void CTVClubClient::slotStringResponse (int reqId, QString strResp)
 {
-    int     iErr = 0;
-    QString sCleanResp;
-    bool    bSendResp = true;
+    int iErr = 0;
 
 #ifdef __TRACE
     mInfo(tr("Response for request '%1':\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
@@ -108,60 +106,13 @@ void CTVClubClient::slotStringResponse (int reqId, QString strResp)
         mInfo(tr("Request '%2' done!").arg(karTrace.reqValToKey((CIptvDefs::EReq)reqId)));
 
         // check response ...
-        if ((iErr = checkResponse(strResp, sCleanResp)) != 0)
+        if ((iErr = checkResponse(strResp)) != 0)
         {
-            /// ugly radio not there hack ...
-            if ((CIptvDefs::EReq)reqId == CIptvDefs::REQ_CHANLIST_RADIO)
-            {
-                // in case the account doesn't support
-                // radio this error might happen -> ignore and send
-                // TV channel list instead!
-                reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
-                sCleanResp = combineChannelLists("");
-
-                emit sigHttpResponse (sCleanResp, reqId);
-            }
-            else
-            {
-                emit sigError(sCleanResp, reqId, iErr);
-            }
+            emit sigError(strResp, reqId, iErr);
         }
         else
         {
-            // modify response as well as id if needed ...
-            switch ((CIptvDefs::EReq)reqId)
-            {
-                // radio stream is a normal stream ...
-                case CIptvDefs::REQ_RADIO_STREAM:
-                    reqId = (int)CIptvDefs::REQ_STREAM;
-                    break;
-
-                // radio timer record should be handled as timer record ...
-                case CIptvDefs::REQ_RADIO_TIMERREC:
-                    reqId = (int)CIptvDefs::REQ_TIMERREC;
-                    break;
-
-                // special handling to concat TV channels with radio channels ...
-                case CIptvDefs::REQ_CHANNELLIST:
-                    sChanListBuffer = sCleanResp;
-                    getRadioList();
-                    bSendResp = false;
-                    break;
-
-                case CIptvDefs::REQ_CHANLIST_RADIO:
-                    sCleanResp = combineChannelLists(sCleanResp);
-                    reqId      = (int)CIptvDefs::REQ_CHANNELLIST;
-                    break;
-
-                default:
-                    break;
-            }
-
-            // send response ... ?
-            if (bSendResp)
-            {
-                emit sigHttpResponse (sCleanResp, reqId);
-            }
+            emit sigHttpResponse (strResp, reqId);
         }
     }
 }
@@ -208,63 +159,6 @@ void CTVClubClient::slotErr (int iReqId, QString sErr, int iErr)
    emit sigError(sErr, iReqId, iErr);
 }
 
-//---------------------------------------------------------------------------
-//
-//! \brief   combine tv and radio channel list
-//
-//! \author  Jo2003
-//! \date    25.03.2013
-//
-//! \param   resp (QString) radio channel list
-//
-//! \return  ref. to combined string
-//---------------------------------------------------------------------------
-QString CTVClubClient::combineChannelLists(const QString& resp)
-{
-    QRegExp rx;
-    QString sFound;
-
-    // create whole new channel list ...
-    QString chanListTmpl = (QString)
-      "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-    + "<response>"
-    + "<icons><tv>[%%TV%%]</tv><radio>[%%RADIO%%]</radio></icons>"
-    + "<groups_tv>[%%GROUPS_TV%%]</groups_tv>"
-    + "<groups_radio>[%%GROUPS_RADIO%%]</groups_radio>"
-    + "<servertime>[%%SERVERTIME%%]</servertime>"
-    + "</response>";
-
-    // servertime from TV channels ...
-    rx.setPattern("<servertime>(.*)</servertime>");
-    sFound = (rx.indexIn(sChanListBuffer) > -1) ? rx.cap(1) : "";
-    chanListTmpl.replace("[%%SERVERTIME%%]", sFound);
-
-    // TV channels icon ...
-    rx.setPattern("<default>(.*)</default>");
-    sFound = (rx.indexIn(sChanListBuffer) > -1) ? rx.cap(1) : "";
-    chanListTmpl.replace("[%%TV%%]", sFound);
-
-    // Radio channel icons ...
-    sFound = (rx.indexIn(resp) > -1) ? rx.cap(1) : "";
-    chanListTmpl.replace("[%%RADIO%%]", sFound);
-
-    // TV groups and channels ...
-    rx.setPattern("<groups>(.*)</groups>");
-    sFound = (rx.indexIn(sChanListBuffer) > -1) ? rx.cap(1) : "";
-    chanListTmpl.replace("[%%GROUPS_TV%%]", sFound);
-
-    // radio groups and channels ...
-    sFound = (rx.indexIn(resp) > -1) ? rx.cap(1) : "";
-    chanListTmpl.replace("[%%GROUPS_RADIO%%]", sFound);
-
-#ifdef __TRACE
-    mInfo(tr("Patched channel list:\n ==8<==8<==8<==\n%2\n ==>8==>8==>8==")
-          .arg(chanListTmpl));
-#endif // __TRACE
-
-    return chanListTmpl;
-}
-
 /////////////////////////////////////////////////////////////////////////////////
 
 /* -----------------------------------------------------------------\
@@ -302,6 +196,9 @@ int CTVClubClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
       // handle request ...
       switch (req)
       {
+      case CIptvDefs::REQ_CHANNELGROUPS:
+         getChanGroups();
+         break;
       case CIptvDefs::REQ_CHANNELLIST:
          GetChannelList();
          break;
@@ -433,7 +330,7 @@ void CTVClubClient::SetData(const QString &host, const QString &usr,
    sUsr           = usr;
    sPw            = pw;
    sLang          = lang;
-   sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_XML_PATH"));
+   sApiUrl        = QString("http://%1%2").arg(host).arg(pCustomization->strVal("API_JSON_PATH"));
    sCookie        = "";
 }
 
@@ -470,7 +367,7 @@ void CTVClubClient::SetCookie(const QString &cookie)
 void CTVClubClient::Logout ()
 {
    mInfo(tr("Logout ..."));
-   q_get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout", Iptv::Logout);
+   q_get((int)CIptvDefs::REQ_LOGOUT, sApiUrl + "logout?" + sCookie, Iptv::Logout);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -490,11 +387,33 @@ void CTVClubClient::GetCookie ()
 {
    mInfo(tr("Request Authentication ..."));
 
-   q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "login",
-        QString("login=%1&pass=%2&with_acc=1&with_cfg=1")
-        .arg(sUsr)
-        .arg(CSmallHelpers::md5(CSmallHelpers::md5(sUsr) + CSmallHelpers::md5(sPw))),
+   q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "auth",
+        QString("hash=%1")
+        .arg(CSmallHelpers::md5(sUsr + CSmallHelpers::md5(sPw))),
         Iptv::Login);
+}
+
+/*-----------------------------------------------------------------------------\
+| Function:    getChanGroups
+|
+| Author:      Jo2003
+|
+| Begin:       15.01.2017
+|
+| Description: request channel groups
+|
+\-----------------------------------------------------------------------------*/
+void CTVClubClient::getChanGroups ()
+{
+   mInfo(tr("Request Channel Groups ..."));
+
+   // reset language filter ...
+   sLangFilter = "";
+
+   QString req = QString("groups?%1").arg(sCookie);
+
+   // request channel groups
+   q_get((int)CIptvDefs::REQ_CHANNELGROUPS, sApiUrl + req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1210,9 +1129,10 @@ void CTVClubClient::getRadioList()
 void CTVClubClient::getRadioStream(int cid, bool bTimerRec)
 {
    mInfo(tr("Get radio stream Url ..."));
-
+/*
    q_post(bTimerRec ? (int)CIptvDefs::REQ_RADIO_TIMERREC : (int)CIptvDefs::REQ_RADIO_STREAM,
           sApiUrl + "get_url_radio", QString("cid=%1&time_shift=%2").arg(cid & ~RADIO_OFFSET).arg(pTs->timeShift()));
+*/
 }
 
 //---------------------------------------------------------------------------
@@ -1257,46 +1177,12 @@ bool CTVClubClient::cookieSet()
 |  Description: format kartina error string
 |
 |  Parameters: sResp -> string to heck
-|              sCleanReasp -> cleaned response
 |
 |  Returns: error code
 \----------------------------------------------------------------- */
-int CTVClubClient::checkResponse (const QString &sResp, QString &sCleanResp)
+int CTVClubClient::checkResponse (const QString &sResp)
 {
-   int iRV = 0;
-
-   // clean response ... (delete content which may come
-   // after / before the xml code ...
-   int iStartPos   = sResp.indexOf("<?xml");       // xml start tag
-   int iEndPos     = sResp.lastIndexOf('>') + 1;   // end of last tag
-
-   // store clean string in private variable ...
-   sCleanResp      = sResp.mid(iStartPos, iEndPos - iStartPos);
-
-   // quick'n'dirty error check ...
-   if (sCleanResp.contains("<error>"))
-   {
-      iRV = -2;
-
-      QString sCode, sMsg;
-      QRegExp rx("<message>(.*)</message>");
-
-      if (rx.indexIn(sCleanResp) > -1)
-      {
-         sMsg = rx.cap(1);
-      }
-
-      rx.setPattern("<code>(.*)</code>");
-
-      if (rx.indexIn(sCleanResp) > -1)
-      {
-         sCode = rx.cap(1);
-      }
-
-      sCleanResp = QString("%1: %2").arg(sCode).arg(sMsg);
-   }
-
-   return iRV;
+    return sResp.contains("error") ? -1 : 0;
 }
 
 /* -----------------------------------------------------------------\

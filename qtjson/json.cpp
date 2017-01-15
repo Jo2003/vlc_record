@@ -21,6 +21,7 @@
  */
 
 #include <QDateTime>
+#include <QStringList>
 #include "json.h"
 
 namespace QtJson {
@@ -40,7 +41,7 @@ namespace QtJson {
 
     template<typename T>
     QByteArray serializeMap(const T &map, bool &success) {
-        QByteArray str = "{ ";
+        QByteArray str = "{";
         QList<QByteArray> pairs;
         for (typename T::const_iterator it = map.begin(), itend = map.end(); it != itend; ++it) {
             QByteArray serializedValue = serialize(it.value());
@@ -48,14 +49,30 @@ namespace QtJson {
                 success = false;
                 break;
             }
-            pairs << sanitizeString(it.key()).toUtf8() + " : " + serializedValue;
+            pairs << sanitizeString(it.key()).toUtf8() + ":" + serializedValue;
         }
 
-        str += join(pairs, ", ");
-        str += " }";
+        str += join(pairs, ",");
+        str += "}";
         return str;
     }
 
+    void insert(QVariant &v, const QString &key, const QVariant &value);
+    void append(QVariant &v, const QVariant &value);
+
+    template<typename T>
+    void cloneMap(QVariant &json, const T &map) {
+	for (typename T::const_iterator it = map.begin(), itend = map.end(); it != itend; ++it) {
+	    insert(json, it.key(), (*it));
+	}
+    }
+
+    template<typename T>
+    void cloneList(QVariant &json, const T &list) {
+	for (typename T::const_iterator it = list.begin(), itend = list.end(); it != itend; ++it) {
+	    append(json, (*it));
+	}
+    }
 
     /**
      * parse
@@ -88,6 +105,45 @@ namespace QtJson {
         }
     }
 
+    /**
+     * clone
+     */
+    QVariant clone(const QVariant &data) {
+	QVariant v;
+
+	if (data.type() == QVariant::Map) {
+	    cloneMap(v, data.toMap());
+	} else if (data.type() == QVariant::Hash) {
+	    cloneMap(v, data.toHash());
+	} else if (data.type() == QVariant::List) {
+	    cloneList(v, data.toList());
+	} else if (data.type() == QVariant::StringList) {
+	    cloneList(v, data.toStringList());
+	} else {
+	    v = QVariant(data);
+	}
+
+	return v;
+    }
+
+    /**
+     * insert value (map case)
+     */
+    void insert(QVariant &v, const QString &key, const QVariant &value) {
+	if (!v.canConvert<QVariantMap>()) v = QVariantMap();
+	QVariantMap *p = (QVariantMap *)v.data();
+	p->insert(key, clone(value));
+    }
+
+    /**
+     * append value (list case)
+     */
+    void append(QVariant &v, const QVariant &value) {
+	if (!v.canConvert<QVariantList>()) v = QVariantList();
+	QVariantList *p = (QVariantList *)v.data();
+	p->append(value);
+    }
+
     QByteArray serialize(const QVariant &data) {
         bool success = true;
         return serialize(data, success);
@@ -112,7 +168,7 @@ namespace QtJson {
                 values << serializedValue;
             }
 
-            str = "[ " + join( values, ", " ) + " ]";
+            str = "[" + join( values, "," ) + "]";
         } else if (data.type() == QVariant::Hash) { // variant is a hash?
             str = serializeMap<>(data.toHash(), success);
         } else if (data.type() == QVariant::Map) { // variant is a map?
@@ -121,14 +177,12 @@ namespace QtJson {
                    (data.type() == QVariant::ByteArray)) {// a string or a byte array?
             str = sanitizeString(data.toString()).toUtf8();
         } else if (data.type() == QVariant::Double) { // double?
-            double value = data.toDouble();
-            if ((value - value) == 0.0) {
+            double value = data.toDouble(&success);
+            if (success) {
                 str = QByteArray::number(value, 'g');
                 if (!str.contains(".") && ! str.contains("e")) {
                     str += ".0";
                 }
-            } else {
-                success = false;
             }
         } else if (data.type() == QVariant::Bool) { // boolean value?
             str = data.toBool() ? "true" : "false";
@@ -155,9 +209,8 @@ namespace QtJson {
 
         if (success) {
             return str;
-        } else {
-            return QByteArray();
         }
+        return QByteArray();
     }
 
     QString serializeStr(const QVariant &data) {

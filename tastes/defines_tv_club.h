@@ -22,8 +22,8 @@
 #define COMPANY_LINK  "<a href='http://tvclub.us'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
-#define API_XML_PATH   "/0.8/XML/"
-#define API_JSON_PATH  "/0.8/JSON/"
+#define API_XML_PATH   "/0.8/xml/"
+#define API_JSON_PATH  "/0.8/json/"
 
 // define classes of api client ...
 #define ApiClient             CTVClubClient

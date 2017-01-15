@@ -47,44 +47,56 @@ CTVClubParser::CTVClubParser(QObject * parent) : CStdJsonParser(parent)
 //---------------------------------------------------------------------------
 int CTVClubParser::parseCookie (const QString &sResp, QString &sCookie, cparser::SAccountInfo &sInf)
 {
-   int  iRV = 0;
-   bool bOk = false;
-   QVariantMap   contentMap, nestedMap;
+    int  iRV = 0;
+    bool bOk = false;
+    QVariantMap   contentMap, nestedMap;
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+    contentMap = QtJson::parse(sResp, bOk).toMap();
 
-   if (bOk)
-   {
-      sCookie = QString("%1=%2")
-            .arg(contentMap.value("sid_name").toString())
-            .arg(contentMap.value("sid").toString());
+    if (bOk)
+    {
+        QtJson::JsonObject session = contentMap.value("session").toMap();
 
+        // create cookie ...
+        sCookie = QString("token=%1")
+            .arg(session.value("token").toString());
 
-      nestedMap        = contentMap.value("account").toMap();
-      sInf.sExpires    = QDateTime::fromTime_t(nestedMap.value("packet_expire").toUInt())
-                           .toString(DEF_TIME_FORMAT);
-      sInf.dtExpires   = QDateTime::fromTime_t(nestedMap.value("packet_expire").toUInt());
+        // check offset ...
+        checkTimeOffSet (session.value("now").toUInt());
 
-      nestedMap        = contentMap.value("services").toMap();
-      sInf.bHasArchive = nestedMap.value("archive").toBool();
+        // account info ...
+        QtJson::JsonObject account = contentMap.value("account").toMap();
 
-      // novoe removed archive ...
-      // sInf.bHasVOD     = false; // nestedMap.value("vod").toBool();
-      sInf.bHasVOD     = nestedMap.value("vod").toBool();
+        // archive ...
+        QtJson::JsonObject options = account.value("options").toMap();
+        sInf.bHasArchive = options.value("archive").toBool();
 
-      // check offset ...
-      checkTimeOffSet (contentMap.value("servertime").toUInt());
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+        // services ...
+        foreach (const QVariant& service, account.value("services").toList())
+        {
+            QtJson::JsonObject serv = service.toMap();
 
-      iRV = -1;
-   }
+            mInfo(tr("Found service '%1' (%2) ...").arg(serv.value("name").toString()).arg(serv.value("type").toString()));
 
-   return iRV;
+            if (serv.value("id").toInt() == 1)
+            {
+                sInf.sExpires  = QDateTime::fromTime_t(serv.value("expire").toUInt()).toString(DEF_TIME_FORMAT);
+                sInf.dtExpires = QDateTime::fromTime_t(serv.value("expire").toUInt());
+            }
+        }
+
+        sInf.bHasVOD     = false; // nestedMap.value("vod").toBool();
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
 }
 
 

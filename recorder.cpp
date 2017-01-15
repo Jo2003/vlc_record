@@ -2109,8 +2109,12 @@ void Recorder::slotCookie (const QString &str)
       }
 #endif // _TASTE_IPTV_RECORD
 
+#ifdef _TASTE_TV_CLUB
+      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELGROUPS);
+#else
       // request channel list ...
       pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
+#endif // _TASTE_TV_CLUB
    }
 }
 

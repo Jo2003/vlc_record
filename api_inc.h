@@ -33,6 +33,9 @@
 #elif defined _TASTE_TELEPROM
    #include "ctelepromclient.h"
    #include "cstdjsonparser.h"
+#elif defined _TASTE_TV_CLUB
+   #include "ctvclubclient.h"
+   #include "ctvclubparser.h"
 #else
    #include "ckartinaclnt.h"
    #ifdef _USE_QJSON
