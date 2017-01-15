@@ -230,6 +230,12 @@ contains(DEFINES, _TASTE_OTRADA_TV) {
    message (Using teleprom api client ...)
    HEADERS += ctelepromclient.h
    SOURCES += ctelepromclient.cpp
+} else:contains(DEFINES, _TASTE_TV_CLUB) {
+   message (Using tvclub api client ...)
+   HEADERS += ctvclubclient.h \
+              ctvclubparser.h
+   SOURCES += ctvclubclient.cpp \
+              ctvclubparser.cpp
 } else {
    message (Using standard api client ...)
    HEADERS += ckartinaclnt.h
