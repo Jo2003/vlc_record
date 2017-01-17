@@ -1223,6 +1223,9 @@ int CIviApi::parseFiles(const QString &resp)
         // watch id ...
         mContData.mWatchId = mVideo.value("watchid").toString();
 
+        // remove formes files ...
+        mCurrentVideo.vVodFiles.clear();
+
         // files ...
         foreach(QVariant rawFile, mVideo.value("files").toList())
         {
@@ -1254,6 +1257,7 @@ int CIviApi::parseFiles(const QString &resp)
                 fileInfo.sFormat = "";
             }
             fileInfo.sCodec = "h264";
+
             mCurrentVideo.vVodFiles.append(fileInfo);
         }
 

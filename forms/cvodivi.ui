@@ -36,7 +36,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxIviCategory"/>
+      <widget class="QComboBox" name="cbxIviCategory">
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLabel" name="labIviGenre">
@@ -46,7 +50,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxIviGenre"/>
+      <widget class="QComboBox" name="cbxIviGenre">
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QLabel" name="labelIviOrderBy">
@@ -56,7 +64,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cbxIviLastOrBest"/>
+      <widget class="QComboBox" name="cbxIviLastOrBest">
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_5">
@@ -114,6 +126,9 @@
          <width>60</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
        </property>
       </widget>
      </item>

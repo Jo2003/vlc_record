@@ -693,6 +693,9 @@ border: 1px solid gray;
               <property name="toolTip">
                <string>Time Jump Value in minutes</string>
               </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QComboBox::AdjustToContents</enum>
+              </property>
               <item>
                <property name="text">
                 <string>1 min</string>

@@ -266,6 +266,7 @@ void CVodIvi::on_cbxIviCategory_activated(int index)
     // add "all" ...
     ui->cbxIviGenre->addItem(tr("All"), -1);
 
+/*
     if (catId == -1)
     {
         foreach(const ivi::SCat& cat, mIviCats)
@@ -277,6 +278,8 @@ void CVodIvi::on_cbxIviCategory_activated(int index)
         }
     }
     else
+*/
+    if (catId != -1)
     {
         foreach(ivi::SGenre oneGenre, mIviCats.value(catId).mGenres)
         {

@@ -35,7 +35,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 73
 #define VERSION_BUILD 0
-#define BETA_EXT      "B8"
+#define BETA_EXT      "B9"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-01-17: Version 2.73.0B9
+| - clear ivi file list before adding new files
+| - don't show genre when 'all' category chosen
+|
 | 2017-01-13: Version 2.73.0B8
 | - fix long time pause problem on ivi video
 | - fix ivi statistic problem (wrong key name for content id)
