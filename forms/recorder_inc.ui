@@ -673,11 +673,7 @@ color: white;
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cbxVodLang">
-               <property name="sizeAdjustPolicy">
-                <enum>QComboBox::AdjustToContents</enum>
-               </property>
-              </widget>
+              <widget class="QComboBox" name="cbxVodLang"/>
              </item>
              <item>
               <widget class="QLabel" name="labGenre">
@@ -687,11 +683,7 @@ color: white;
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cbxGenre">
-               <property name="sizeAdjustPolicy">
-                <enum>QComboBox::AdjustToContents</enum>
-               </property>
-              </widget>
+              <widget class="QComboBox" name="cbxGenre"/>
              </item>
              <item>
               <widget class="QLabel" name="label_2">
@@ -701,11 +693,7 @@ color: white;
               </widget>
              </item>
              <item>
-              <widget class="QComboBox" name="cbxLastOrBest">
-               <property name="sizeAdjustPolicy">
-                <enum>QComboBox::AdjustToContents</enum>
-               </property>
-              </widget>
+              <widget class="QComboBox" name="cbxLastOrBest"/>
              </item>
              <item>
               <spacer name="horizontalSpacer_5">
@@ -763,9 +751,6 @@ color: white;
                  <width>60</width>
                  <height>16777215</height>
                 </size>
-               </property>
-               <property name="sizeAdjustPolicy">
-                <enum>QComboBox::AdjustToContents</enum>
                </property>
               </widget>
              </item>
@@ -1188,9 +1173,6 @@ border-top: 0px;
                    </property>
                    <property name="toolTip">
                     <string>Time Jump Value in minutes</string>
-                   </property>
-                   <property name="sizeAdjustPolicy">
-                    <enum>QComboBox::AdjustToContents</enum>
                    </property>
                    <item>
                     <property name="text">
