@@ -120,10 +120,8 @@ int CTVClubParser::parseChannelList (const QString &sResp,
    int  iRV = 0;
    bool bOk = false;
    cparser::SChan      chan;
-   cparser::STimeShift ts;
-   QVariantMap contentMap;
-   int iGrpIdx = 0;
-   QString strImgPrefix = "/_logos/channelLogos/";
+   QtJson::JsonObject  contentMap;
+   QString strImgPrefix = "http://tvclub.us/logo/36_36_1/%1.png";
 
    // clear channel list ...
    chanList.clear();
@@ -132,58 +130,33 @@ int CTVClubParser::parseChannelList (const QString &sResp,
 
    if (bOk)
    {
-      foreach (const QVariant& lGroup, contentMap.value("groups").toList())
+      foreach (const QVariant& rawChan, contentMap.value("channels").toList())
       {
-         QVariantMap mGroup = lGroup.toMap();
+         QtJson::JsonObject info  = rawChan.toMap().value("info").toMap();
+         QtJson::JsonObject epg   = rawChan.toMap().value("epg").toMap();
 
          initChanEntry(chan, false);
 
-         chan.iId       = mGroup.value("id").toInt();
-         chan.sName     = mGroup.value("name").toString();
-         chan.sProgramm = mGroup.value("color").toString();
+         chan.iId          = info.value("id").toInt();
+         chan.sName        = info.value("name").toString();
+         chan.bIsProtected = info.value("potected").toBool();
+         chan.iPrimGrp     = info.value("groups").toInt();
+         chan.sProgramm    = epg.value("text").toString();
+         chan.uiStart      = epg.value("start").toUInt();
+         chan.uiEnd        = epg.value("end").toUInt();
+         chan.iArchHours   = info.value("records").toInt();
+         chan.bHasArchive  = (chan.iArchHours > 0);
+         chan.sIcon        = strImgPrefix.arg(chan.iId);
+         chan.bIsVideo     = true;
+         chan.bIsGroup     = false;
 
-         if (!ignoreGroup(chan))
+         if (bFixTime)
          {
-            // make sure group color isn't black ...
-            checkColor(chan.sProgramm, iGrpIdx++);
-
-            chanList.append(chan);
-
-            foreach (const QVariant& lChannel, mGroup.value("channels").toList())
-            {
-               QVariantMap mChannel = lChannel.toMap();
-
-               initChanEntry(chan);
-
-               chan.iId          = mChannel.value("id").toInt();
-               chan.sName        = mChannel.value("name").toString();
-               chan.bIsVideo     = mChannel.value("is_video").toBool();
-               chan.bHasArchive  = mChannel.value("have_archive").toBool();
-               chan.bIsProtected = mChannel.value("protected").toBool();
-               chan.sIcon        = strImgPrefix + mChannel.value("logo_big").toString();
-               chan.sProgramm    = mChannel.value("epg_progname").toString();
-               chan.uiStart      = mChannel.value("epg_start").toUInt();
-               chan.uiEnd        = mChannel.value("epg_end").toUInt();
-
-               if (bFixTime)
-               {
-                  fixTime(chan.uiStart);
-                  fixTime(chan.uiEnd);
-               }
-
-               foreach (const QVariant& lParam, mChannel.value("stream_params").toList())
-               {
-                  QVariantMap mParam = lParam.toMap();
-
-                  ts.iBitRate   = mParam.value("rate").toInt();
-                  ts.iTimeShift = mParam.value("ts").toInt();
-
-                  chan.vTs.append(ts);
-               }
-
-               chanList.append(chan);
-            }
+            fixTime(chan.uiStart);
+            fixTime(chan.uiEnd);
          }
+
+         chanList.append(chan);
       }
    }
    else
@@ -196,6 +169,97 @@ int CTVClubParser::parseChannelList (const QString &sResp,
    }
 
    return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse channel groups
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   chanGroups (QVector<cparser::SGrp> &) channel groups
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int CTVClubParser::parseChannelGroups(const QString &sResp, QGrpMap &chanGroups)
+{
+    int  iRV = 0;
+    bool bOk = false;
+    QtJson::JsonObject contentMap;
+    cparser::SGrp      chanGroup;
+
+    contentMap = QtJson::parse(sResp, bOk).toMap();
+
+    if (bOk)
+    {
+        // groups ...
+        foreach(const QVariant& rawGrp, contentMap.value("groups").toList())
+        {
+            QtJson::JsonObject grp = rawGrp.toMap();
+
+            chanGroup.sColor  = "";
+            chanGroup.iId     = grp.value("id").toInt();
+            chanGroup.iCount  = grp.value("count").toInt();
+            chanGroup.sName   = grp.value("name_ru").toString();
+            chanGroup.sNameEn = grp.value("name_en").toString();
+            checkColor(chanGroup.sColor, chanGroup.iId);
+
+            chanGroups.insert(chanGroup.iId, chanGroup);
+        }
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse url
+//
+//! \param   sResp (const QString &) ref. to response string
+//! \param   sUrl (QString &) buffer for url
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int CTVClubParser::parseUrl(const QString &sResp, QString &sUrl)
+{
+    int  iRV = 0;
+    bool bOk = false;
+    QtJson::JsonObject contentMap;
+
+    contentMap = QtJson::parse(sResp, bOk).toMap();
+
+    if (bOk)
+    {
+        QtJson::JsonObject url;
+
+        if (contentMap.contains("live"))
+        {
+            url = contentMap.value("live").toMap();
+        }
+        else if (contentMap.contains("rec"))
+        {
+            url = contentMap.value("rec").toMap();
+        }
+
+        sUrl = url.value("url").toString();
+    }
+    else
+    {
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+            tr("QtJson parser error in %1 %2():%3")
+                .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+        iRV = -1;
+    }
+
+    return iRV;
 }
 
 //---------------------------------------------------------------------------
@@ -410,9 +474,8 @@ int CTVClubParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgLi
 {
    int  iRV = 0;
    bool bOk = false;
-   cparser::SEpg entry;
-   QVariantMap   contentMap;
-   QString sTmp;
+   cparser::SEpg      entry;
+   QtJson::JsonObject contentMap;
 
    // clear vector ...
    epgList.clear();
@@ -421,40 +484,35 @@ int CTVClubParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgLi
 
    if (bOk)
    {
-      foreach (const QVariant& lEpg, contentMap.value("epg").toList())
-      {
-         QVariantMap mEpg = lEpg.toMap();
+       // get entry point ...
+       contentMap = contentMap.value("epg").toMap();
+       QtJson::JsonArray channels = contentMap.value("channels").toList();
 
-         entry.sDescr = "";
-         entry.uiGmt  = mEpg.value("ut_start").toUInt();
-         entry.uiEnd  = mEpg.value("ut_end").toUInt();
-         sTmp         = mEpg.value("progname").toString();
+       // request was for one channel only ...
+       QtJson::JsonArray epg      = channels.at(0).toMap().value("epg").toList();
 
-         if (sTmp.contains('\n'))
-         {
-            entry.sName  = sTmp.left(sTmp.indexOf('\n'));
-            entry.sDescr = sTmp.mid(sTmp.indexOf('\n') + 1);
-         }
-         else
-         {
-            entry.sName = sTmp;
-         }
+       foreach (const QVariant& rawEpg, epg)
+       {
+           QtJson::JsonObject epgEntry = rawEpg.toMap();
+           entry.sName  = epgEntry.value("text").toString();
+           entry.sDescr = epgEntry.value("description").toString();
+           entry.uiGmt  = epgEntry.value("start").toUInt();
+           entry.uiEnd  = epgEntry.value("end").toUInt();
 
-         if (mEpg.contains("pdescr"))
-         {
-            entry.sDescr = mEpg.value("pdescr").toString();
-         }
+           // remove html tag fragments ...
+           QRegExp rx("<[^>]*>.*(</[^>]*>|$)");
+           entry.sDescr.replace(rx, "");
 
-         epgList.append(entry);
-      }
+           epgList.append(entry);
+       }
    }
    else
    {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+        emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                        tr("QtJson parser error in %1 %2():%3")
+                        .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
 
-      iRV = -1;
+        iRV = -1;
    }
 
    return iRV;
@@ -498,63 +556,65 @@ int CTVClubParser::parseSetting(const QString& sResp, const QString &sName, QVec
 //---------------------------------------------------------------------------
 int CTVClubParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg)
 {
-   int  iRV = 0, cid;
-   bool bOk = false;
-   cparser::SEpgCurrent          entry;
-   QVector<cparser::SEpgCurrent> vEntries;
-   QVariantMap                   contentMap;
+    int  iRV = 0, cid;
+    bool bOk = false;
+    cparser::SEpgCurrent          entry;
+    QVector<cparser::SEpgCurrent> vEntries;
+    QtJson::JsonObject            contentMap;
 
-   // clear map ...
-   currentEpg.clear();
+    // clear vector ...
+    currentEpg.clear();
 
-   contentMap = QtJson::parse(sResp, bOk).toMap();
+    contentMap = QtJson::parse(sResp, bOk).toMap();
 
-   if (bOk)
-   {
-      foreach (const QVariant& lEpg1, contentMap.value("epg").toList())
-      {
-         QVariantMap mEpg1 = lEpg1.toMap();
+    if (bOk)
+    {
+        // get entry point ...
+        contentMap = contentMap.value("epg").toMap();
 
-         vEntries.clear();
+        foreach(const QVariant& rawChan, contentMap.value("channels").toList())
+        {
+            QtJson::JsonObject chan = rawChan.toMap();
+            cid = chan.value("id").toInt();
 
-         cid = mEpg1.value("cid").toInt();
+            vEntries.clear();
 
-         foreach (const QVariant& lEpg2, mEpg1.value("epg").toList())
-         {
-            QVariantMap mEpg2 = lEpg2.toMap();
+            foreach(const QVariant& rawEpg, chan.value("epg").toList())
+            {
+                QtJson::JsonObject epgEntry = rawEpg.toMap();
+                entry.sShow   = epgEntry.value("text").toString();
+                entry.uiStart = epgEntry.value("start").toUInt();
+                entry.uiEnd   = epgEntry.value("end").toUInt();
 
-            entry.sShow   = mEpg2.value("epg_progname").toString();
-            entry.uiStart = mEpg2.value("epg_start").toUInt();
-            entry.uiEnd   = mEpg2.value("epg_end").toUInt();
+                vEntries.append(entry);
+            }
 
-            vEntries.append(entry);
-         }
+            currentEpg.insert(cid, vEntries);
 
-         currentEpg.insert(cid, vEntries);
 #ifdef __TRACE
          QString s;
-         s = tr("Update Entries for channel %1:\n").arg(cid);
+             s = tr("Update Entries for channel %1:\n").arg(cid);
 
-         for (int i = 0; i < vEntries.count(); i++)
-         {
-            s += QString("%1 - %2: %3\n")
-                  .arg(QDateTime::fromTime_t(vEntries.at(i).uiStart).toString("dd.MM.yyyy hh:mm"))
-                  .arg(QDateTime::fromTime_t(vEntries.at(i).uiEnd).toString("dd.MM.yyyy hh:mm"))
-                  .arg(vEntries.at(i).sShow);
-         }
+             for (int i = 0; i < vEntries.count(); i++)
+             {
+                 s += QString("%1 - %2: %3\n")
+                       .arg(QDateTime::fromTime_t(vEntries.at(i).uiStart).toString("dd.MM.yyyy hh:mm"))
+                       .arg(QDateTime::fromTime_t(vEntries.at(i).uiEnd).toString("dd.MM.yyyy hh:mm"))
+                       .arg(vEntries.at(i).sShow);
+             }
 
-         mInfo(s);
+             mInfo(s);
 #endif // __TRACE
-      }
-   }
-   else
-   {
-      emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
-                    tr("QtJson parser error in %1 %2():%3")
-                    .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+        }
+    }
+    else
+    {
+         emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                         tr("QtJson parser error in %1 %2():%3")
+                         .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
 
-      iRV = -1;
-   }
+         iRV = -1;
+    }
 
-   return iRV;
+    return iRV;
 }

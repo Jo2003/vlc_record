@@ -67,6 +67,7 @@ private:
     int                    _iTs;
     int                    iCid;
     bool                   bArchive;
+    uint                   mMaxArchAge;
     uint                   uiTime;
     QString                sChanName;
     QMap<uint, epg::SShow> mProgram;

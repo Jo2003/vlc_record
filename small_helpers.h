@@ -253,14 +253,15 @@ public:
    //! \date    07.08.2013
    //
    //! \param   uiStart (uint) unix time stamp
-   //
+   //! \param   uiMaxArchAge (uint) max. archive age
+   //!
    //! \return  1 -> available; -1 -> not yet av.; -2 -> no more av.
    //---------------------------------------------------------------------------
-   static int archiveAvailable (uint uiStart)
+   static int archiveAvailable (uint uiStart, uint uiMaxArchAge = MAX_ARCHIV_AGE)
    {
       int  iRet = 0;
       uint now        = QDateTime::currentDateTime().toTime_t();
-      uint uiArchLow  = now - MAX_ARCHIV_AGE;   // no older than 2 weeks
+      uint uiArchLow  = now - uiMaxArchAge;     // no older than 2 weeks
       uint uiArchHigh = now - ARCHIV_OFFSET;    // 15 minutes in the past
 
 

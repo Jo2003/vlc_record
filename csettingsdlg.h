@@ -102,6 +102,9 @@ public:
     void fillTimeShiftCbx(const QVector<int> &vVals, int iAct);
     void saveChannel(int cid);
     int lastChannel();
+    void saveChanGrp(int gid);
+    int lastChanGrp();
+
     void saveEpgDay(const QString &dateString);
     QString lastEpgDay();
     uint libVlcVerboseLevel();

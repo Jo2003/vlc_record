@@ -1261,7 +1261,17 @@ void CSettingsDlg::saveChannel(int cid)
 
 int CSettingsDlg::lastChannel()
 {
-   return pDb->intValue("lastChan");
+    return pDb->intValue("lastChan");
+}
+
+void CSettingsDlg::saveChanGrp(int gid)
+{
+    pDb->setValue("lastChanGrp", gid);
+}
+
+int CSettingsDlg::lastChanGrp()
+{
+    return pDb->intValue("lastChanGrp");
 }
 
 void CSettingsDlg::saveEpgDay(const QString &dateString)

@@ -507,6 +507,7 @@ void Recorder::closeEvent(QCloseEvent *event)
 
       // save channel and epg position ...
       Settings.saveChannel(getCurrentCid());
+      Settings.saveChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
       Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
 
       // clear shortcuts ...
@@ -706,11 +707,8 @@ void Recorder::on_pushSettings_clicked()
 \----------------------------------------------------------------- */
 void Recorder::on_cbxChannelGroup_activated(int index)
 {
-   int         row = ui->cbxChannelGroup->itemData(index).toInt();
-   QModelIndex idx = pModel->index(row + 1, 0);
-
-   ui->channelList->setCurrentIndex(idx);
-   ui->channelList->scrollTo(idx, QAbstractItemView::PositionAtTop);
+    int gid = ui->cbxChannelGroup->itemData(index).toInt();
+    pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, gid);
 }
 
 /* -----------------------------------------------------------------\
@@ -1633,6 +1631,12 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    // which requests the EPG ...
    mkCase(CIptvDefs::REQ_CHANNELLIST, slotChanList(resp));
 
+   /**
+    * get channel group response and parse it
+    * and request channel list
+    */
+   mkCase(CIptvDefs::REQ_CHANNELGROUPS, slotChanGroups(resp));
+
    ///////////////////////////////////////////////
    // Fills EPG browser and triggers the load
    // of VOD genres (if there in account info).
@@ -2169,43 +2173,33 @@ void Recorder::slotTimeShift (const QString &str)
 \----------------------------------------------------------------- */
 void Recorder::slotChanList (const QString &str)
 {
-   QChanList chanList;
+    QChanList chanList;
 
-   if (!pApiParser->parseChannelList(str, chanList, Settings.FixTime()))
-   {
+    if (!pApiParser->parseChannelList(str, chanList, Settings.FixTime()))
+    {
 #ifdef __TRACE
-      dumpChanList(chanList);
+        dumpChanList(chanList);
 #endif // __TRACE
 
-      // handle timeshift stuff if needed ...
-      pApiParser->handleTsStuff(chanList);
+        // handle timeshift stuff if needed ...
+        pApiParser->handleTsStuff(chanList);
 
-      pChanMap->fillFromChannelList(chanList);
+        pChanMap->fillFromChannelList(chanList);
+        // rebuild ...
+        FillChannelList (chanList);
 
-      // Can we make an update or do we need to
-      // rebuild the channel list?
-      if (pModel->rowCount() != chanList.count())
-      {
-         // rebuild ...
-         FillChannelList (chanList);
-      }
-      else
-      {
-         slotUpdateChannelList();
-      }
+        // set channel list in timeRec class ...
+        timeRec.SetChanList(chanList);
+        timeRec.StartTimer();
+    }
 
-      // set channel list in timeRec class ...
-      timeRec.SetChanList(chanList);
-      timeRec.StartTimer();
-   }
+    // create favourite buttons if needed ...
+    if ((lFavourites.count() > 0) && (ui->gLayoutFav->count() == 0))
+    {
+        HandleFavourites();
+    }
 
-   // create favourite buttons if needed ...
-   if ((lFavourites.count() > 0) && (ui->gLayoutFav->count() == 0))
-   {
-      HandleFavourites();
-   }
-
-   TouchPlayCtrlBtns();
+    TouchPlayCtrlBtns();
 }
 
 /* -----------------------------------------------------------------\
@@ -4318,6 +4312,58 @@ void Recorder::slotVodLang(const QString &str)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   got channel group response; parse and request channel list [slot]
+//
+//
+//! \param[in] str string response
+//
+//! \return  --
+//---------------------------------------------------------------------------
+void Recorder::slotChanGroups(const QString &str)
+{
+    QGrpMap chanGrps;
+
+    if (!pApiParser->parseChannelGroups(str, chanGrps))
+    {
+        if (chanGrps.count() > 0)
+        {
+            pChanMap->setGroupMap(chanGrps);
+
+            QPixmap pix(16, 16);
+            int     idx, cnt = 0;
+            int     lastGroup = Settings.lastChanGrp();
+
+            // either last group or first group in channel groups map ...
+            if (!chanGrps.contains(lastGroup))
+            {
+                lastGroup = chanGrps.keys()[0];
+            }
+
+            ui->cbxChannelGroup->clear();
+
+            foreach(const cparser::SGrp& grp, chanGrps)
+            {
+                if (lastGroup == grp.iId)
+                {
+                    idx = cnt;
+                }
+
+                // add channel group entry ...
+                pix.fill(QColor(grp.sColor));
+                ui->cbxChannelGroup->addItem(QIcon(pix), grp.sName, grp.iId);
+
+                cnt ++;
+            }
+
+            ui->cbxChannelGroup->setCurrentIndex(idx);
+
+            pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, lastGroup);
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   update overlay number for watchlist button icon [slot]
 //
 //! \author  Jo2003
@@ -4931,72 +4977,41 @@ void Recorder::ClearShortCuts()
 \----------------------------------------------------------------- */
 int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
 {
-   QString   sLine;
-   QString   sLogoFile;
-   QStandardItem *pItem;
-   bool        bMissingIcon = false;
-   int         iRow, iRowGroup;
-   QFileInfo   fInfo;
-   QPixmap     Pix(16, 16);
-   QPixmap     icon;
-   int         iChanCount =  0;
-   int         iLastChan  = -1;
-   int         iLastGroup = -1;
-   int         iGroupIdx  = -1;
-   int         iPos;
-   uint        now = QDateTime::currentDateTime().toTime_t();
-   QModelIndex idx = ui->channelList->currentIndex();
+    QString   sLine;
+    QString   sLogoFile;
+    QStandardItem *pItem;
+    bool        bMissingIcon = false;
+    QFileInfo   fInfo;
+    QPixmap     icon;
+    int         iChanCount =  0;
+    int         iPos;
+    uint        now = QDateTime::currentDateTime().toTime_t();
 
-   iRowGroup = ui->cbxChannelGroup->currentIndex();
-   iRow      = idx.isValid() ? idx.row() : -1;
-   iRow      = (iRow <= 0) ? 1 : iRow;
-   iRowGroup = (iRowGroup < 0) ? 0 : iRowGroup;
+    // ui->cbxChannelGroup->clear();
+    pModel->clear();
 
-   ui->cbxChannelGroup->clear();
-   pModel->clear();
+    // any channel stored from former session ... ?
+    if (!(ulStartFlags & FLAG_CHAN_LIST))
+    {
+        ulStartFlags |= FLAG_CHAN_LIST;
+    }
 
-   // any channel stored from former session ... ?
-   if (!(ulStartFlags & FLAG_CHAN_LIST))
-   {
-      iLastChan     = Settings.lastChannel() ? Settings.lastChannel() : -1;
-      ulStartFlags |= FLAG_CHAN_LIST;
-   }
+    for (int i = 0; i < chanlist.size(); i++)
+    {
+        // check if we should display channel in channel list ...
+        if (chanlist[i].bIsHidden || (chanlist[i].bIsProtected && !Settings.AllowEros()))
+        {
+            mInfo(tr("Exclude '%1' from channel list (hidden: %2, protected: %3).")
+                .arg(chanlist[i].sName)
+                .arg(chanlist[i].bIsHidden)
+                .arg(chanlist[i].bIsProtected));
+        }
+        else
+        {
+            // create new item ...
+            pItem = new QStandardItem;
 
-   for (int i = 0; i < chanlist.size(); i++)
-   {
-      // check if we should display channel in channel list ...
-      if (chanlist[i].bIsHidden || (chanlist[i].bIsProtected && !Settings.AllowEros()))
-      {
-         mInfo(tr("Exclude '%1' from channel list (hidden: %2, protected: %3).")
-               .arg(chanlist[i].sName)
-               .arg(chanlist[i].bIsHidden)
-               .arg(chanlist[i].bIsProtected));
-      }
-      else
-      {
-         // create new item ...
-         pItem = new QStandardItem;
 
-         // is this a channel group ... ?
-         if (chanlist[i].bIsGroup)
-         {
-            pItem->setData(-1,                    channellist::cidRole);
-            pItem->setData(chanlist[i].sName,     channellist::nameRole);
-            pItem->setData(chanlist[i].sProgramm, channellist::bgcolorRole);
-            pItem->setData(QIcon(":png/group"),   channellist::iconRole);
-
-            // add channel group entry ...
-            Pix.fill(QColor(chanlist[i].sProgramm));
-            ui->cbxChannelGroup->addItem(QIcon(Pix), chanlist[i].sName, QVariant(i));
-
-            // save group index ...
-            iGroupIdx = i;
-
-            // each group count its channels ...
-            iChanCount = 0;
-         }
-         else
-         {
             fInfo.setFile(chanlist[i].sIcon);
             sLogoFile = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
             sLine     = QString("%1. %2").arg(++ iChanCount).arg(chanlist[i].sName);
@@ -5004,49 +5019,38 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             // check if file exists ...
             if (!QFile::exists(sLogoFile))
             {
-               // no --> load default image ...
-               icon.load(":png/no_logo");
+                // no --> load default image ...
+                icon.load(":png/no_logo");
 
-               // enqueue pic to cache ...
-               pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
+                // enqueue pic to cache ...
+                pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
 
-               // mark for reload ...
-               bMissingIcon = true;
+                // mark for reload ...
+                bMissingIcon = true;
             }
             else
             {
-               // check if image file can be loaded ...
-               if (!icon.load(sLogoFile))                   // try auto type detection ...
-               {
-                  // try to force load with type from file extension ...
-                  if (!icon.load(sLogoFile, QString("image/%1").arg(fInfo.suffix()).toUtf8().constBegin()))
-                  {
-                     // can't load --> load default image ...
-                     icon.load(":png/no_logo");
+                // check if image file can be loaded ...
+                if (!icon.load(sLogoFile))                   // try auto type detection ...
+                {
+                    // try to force load with type from file extension ...
+                    if (!icon.load(sLogoFile, QString("image/%1").arg(fInfo.suffix()).toUtf8().constBegin()))
+                    {
+                        // can't load --> load default image ...
+                        icon.load(":png/no_logo");
 
-                     mInfo(tr("Can't load channel image \"%1\" ...").arg(sLogoFile));
+                        mInfo(tr("Can't load channel image \"%1\" ...").arg(sLogoFile));
 
-                     // delete logo file ...
-                     QFile::remove(sLogoFile);
+                        // delete logo file ...
+                        QFile::remove(sLogoFile);
 
-                     // enqueue pic to cache ...
-                     pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
+                        // enqueue pic to cache ...
+                        pixCache.enqueuePic(chanlist[i].sIcon, pFolders->getLogoDir());
 
-                     // mark for reload ...
-                     bMissingIcon = true;
-                  }
-               }
-            }
-
-            // last used channel ...
-            if (iLastChan != -1)
-            {
-               if (iLastChan == chanlist[i].iId)
-               {
-                  // save row with last used channel ...
-                  iRow       = i;
-                  iLastGroup = iGroupIdx;
-               }
+                        // mark for reload ...
+                        bMissingIcon = true;
+                    }
+                }
             }
 
             // progress position ...
@@ -5062,26 +5066,28 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem->setData(sLogoFile,                             channellist::logoFileRole);
             pItem->setData(iPos,                                  channellist::posRole);
             pItem->setData(now,                                   channellist::lastEpgUpd);
-            pItem->setData(iGroupIdx,                             channellist::gidRole);
-         }
+            pItem->setData(chanlist[i].iPrimGrp,                  channellist::gidRole);
 
-         pModel->appendRow(pItem);
-      } // not hidden ...
-   }
+            pModel->appendRow(pItem);
+        } // not hidden ...
+    }
 
-   if (!bMissingIcon)
-   {
-      ulStartFlags |= FLAG_CLOGO_COMPL;
-   }
+    if (!bMissingIcon)
+    {
+        ulStartFlags |= FLAG_CLOGO_COMPL;
+    }
+    else
+    {
+        if (ulStartFlags & FLAG_CLOGO_COMPL)
+        {
+            ulStartFlags ^= FLAG_CLOGO_COMPL;
+        }
+    }
 
-   ui->cbxChannelGroup->setCurrentIndex(iRowGroup);
-   ui->channelList->setCurrentIndex(pModel->index(iRow, 0));
-   ui->channelList->scrollTo(pModel->index(iRow, 0));
+    ui->channelList->setCurrentIndex(pModel->index(0, 0));
+    ui->channelList->scrollTo(pModel->index(0, 0));
 
-   // activate current group (if needed) ...
-   setChannelGroup(iLastGroup);
-
-   return 0;
+    return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -5191,7 +5197,7 @@ void Recorder::dumpChanList(const QChanList &cl)
 {
     QString     sLog;
     QTextStream ts(&sLog);
-    foreach (cparser::SChan chan, cl)
+    foreach (const cparser::SChan& chan, cl)
     {
         if (chan.bIsGroup)
         {

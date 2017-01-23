@@ -30,7 +30,8 @@ class QChannelMap : public QChanMap
 public:
    explicit QChannelMap();
    ~QChannelMap();
-   int fillFromChannelList(const QChanList& chanList);
+   void setGroupMap(const QGrpMap& grps);
+   void fillFromChannelList(const QChanList& chanList);
    bool contains(int key, bool bLock = false);
    int timeShift(int key, bool bLock = true);
    const cparser::SChan value(int key, bool bLock = false);

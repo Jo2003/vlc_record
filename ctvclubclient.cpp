@@ -200,7 +200,7 @@ int CTVClubClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
          getChanGroups();
          break;
       case CIptvDefs::REQ_CHANNELLIST:
-         GetChannelList();
+         GetChannelList(par_1.toInt());
          break;
       case CIptvDefs::REQ_COOKIE:
          GetCookie();
@@ -285,12 +285,6 @@ int CTVClubClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
          break;
       case CIptvDefs::REQ_UPDATE_CHECK:
          updInfo(par_1.toString());
-         break;
-      case CIptvDefs::REQ_RADIO_STREAM:
-         getRadioStream(par_1.toInt());
-         break;
-      case CIptvDefs::REQ_RADIO_TIMERREC:
-         getRadioStream(par_1.toInt(), true);
          break;
       case CIptvDefs::REQ_SET_LANGUAGE:
          setInterfaceLang(par_1.toString());
@@ -429,14 +423,14 @@ void CTVClubClient::getChanGroups ()
 |
 | Returns:     --
 \-----------------------------------------------------------------------------*/
-void CTVClubClient::GetChannelList ()
+void CTVClubClient::GetChannelList (int gid)
 {
    mInfo(tr("Request Channel List ..."));
 
    // reset language filter ...
    sLangFilter = "";
 
-   QString req = QString("get_list_tv?with_epg=1&time_shift=%1&mode=1").arg(pTs->timeShift());
+   QString req = QString("channels?gid=%1&limit=no&%2").arg(gid).arg(sCookie);
 
    // request channel list or channel list for settings ...
    q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + req);
@@ -627,15 +621,15 @@ void CTVClubClient::GetStreamURL(int iChanID, const QString &secCode, bool bTime
 {
    mInfo(tr("Request URL for channel %1 ...").arg(iChanID));
 
-   QString req = QString("cid=%1&time_shift=%2").arg(iChanID).arg(pTs->timeShift());
+   QString req = QString("cid=%1&%2").arg(iChanID).arg(sCookie);
 
    if (secCode != "")
    {
-      req += QString("&protect_code=%1").arg(secCode);
+      req += QString("&protected=%1").arg(secCode);
    }
 
    q_post((bTimerRec) ? (int)CIptvDefs::REQ_TIMERREC : (int)CIptvDefs::REQ_STREAM,
-               sApiUrl + "get_url_tv", req);
+               sApiUrl + "live", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -696,11 +690,14 @@ void CTVClubClient::SetHttpBuffer(int iTime)
 void CTVClubClient::GetEPG(int iChanID, int iOffset)
 {
    mInfo(tr("Request EPG for Channel %1 ...").arg(iChanID));
-
    QDateTime dt(QDate::currentDate().addDays(iOffset));
 
-   q_post((int)CIptvDefs::REQ_EPG, sApiUrl + "get_epg",
-          QString("cid=%1&from_uts=%2&hours=24&time_shift=%3").arg(iChanID).arg(dt.toTime_t()).arg(pTs->timeShift()));
+   QString sReq = QString("epg?channels=%1&time=%2&period=24&limit=100&%3")
+           .arg(iChanID)
+           .arg(dt.toTime_t())
+           .arg(sCookie);
+
+   q_get((int)CIptvDefs::REQ_EPG, sApiUrl + sReq);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -723,14 +720,18 @@ void CTVClubClient::GetArchivURL (const QString &prepared, const QString &secCod
    QString req = QUrl::fromPercentEncoding(prepared.toUtf8());
 
    // adapt rodnoe ...
-   req.replace("&gmt=", "&uts=");
+   req.replace("&gmt=", "&time=");
+
+
+   req += QString("&%1").arg(sCookie);
+
 
    if (secCode != "")
    {
-      req += QString("&protect_code=%1").arg(secCode);
+      req += QString("&protected=%1").arg(secCode);
    }
 
-   q_post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "get_url_tv", req);
+   q_post((int)CIptvDefs::REQ_ARCHIV, sApiUrl + "rec", req);
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1033,7 +1034,12 @@ void CTVClubClient::epgCurrent(const QString &cids)
 {
    mInfo(tr("EPG current for Channels: %1 ...").arg(cids));
 
-   q_post((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + "get_epg_current", QString("cid=%1&time_shift=%2").arg(cids).arg(pTs->timeShift()));
+
+   QString sReq = QString("epg?channels=%1&c_to=3&limit=300&%2")
+           .arg(cids)
+           .arg(sCookie);
+
+   q_get((int)CIptvDefs::REQ_EPG_CURRENT, sApiUrl + sReq);
 }
 
 //---------------------------------------------------------------------------
@@ -1112,27 +1118,6 @@ void CTVClubClient::getRadioList()
    }
 
    q_get((int)CIptvDefs::REQ_CHANLIST_RADIO, sApiUrl + req);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief   get stream url for radio
-//
-//! \author  Jo2003
-//! \date    25.03.2013
-//
-//! \param   cid (int) channel id
-//! \param   bTimerRec (bool) timer record flag
-//
-//! \return  --
-//---------------------------------------------------------------------------
-void CTVClubClient::getRadioStream(int cid, bool bTimerRec)
-{
-   mInfo(tr("Get radio stream Url ..."));
-/*
-   q_post(bTimerRec ? (int)CIptvDefs::REQ_RADIO_TIMERREC : (int)CIptvDefs::REQ_RADIO_STREAM,
-          sApiUrl + "get_url_radio", QString("cid=%1&time_shift=%2").arg(cid & ~RADIO_OFFSET).arg(pTs->timeShift()));
-*/
 }
 
 //---------------------------------------------------------------------------

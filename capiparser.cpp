@@ -171,6 +171,8 @@ void CApiParser::initChanEntry(cparser::SChan &entry, bool bIsChan)
    entry.sLangCode    = "";
    entry.uiEnd        = 0;
    entry.uiStart      = 0;
+   entry.iPrimGrp     = -1;
+   entry.iArchHours   = 0;
    entry.bIsHidden    = false;
    entry.bHasTsInfo   = false;
    entry.iTs          = 0;

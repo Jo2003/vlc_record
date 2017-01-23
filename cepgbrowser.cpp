@@ -13,12 +13,16 @@
 #include "cepgbrowser.h"
 #include "small_helpers.h"
 #include "chtmlwriter.h"
+#include "qchannelmap.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
 
 // global html writer ...
 extern CHtmlWriter *pHtml;
+
+// gloabl channel map ...
+extern QChannelMap *pChanMap;
 
 /* -----------------------------------------------------------------\
 |  Method: CEpgBrowser / constructor
@@ -61,6 +65,18 @@ void CEpgBrowser::DisplayEpg(QVector<cparser::SEpg> epglist,
    uiTime    = uiGmt;
    bArchive  = bHasArchiv;
    _iTs      = iTs;
+
+   cparser::SChan chanInfo;
+
+   if (pChanMap->entry(iChanID, chanInfo, true) == 0)
+   {
+       mMaxArchAge = (uint)chanInfo.iArchHours * (uint)3600;
+       mInfo(tr("%1 has max. archive age of %2 secs ...").arg(sName).arg(mMaxArchAge));
+   }
+   else
+   {
+       mMaxArchAge = MAX_ARCHIV_AGE;
+   }
 
    // clear program map ...
    mProgram.clear();
@@ -180,7 +196,7 @@ QString CEpgBrowser::createHtmlCode()
       }
 
       // archive supported and still available ...
-      if (bArchive && ((iAa = CSmallHelpers::archiveAvailable(actShow.uiStart)) > -2))
+      if (bArchive && ((iAa = CSmallHelpers::archiveAvailable(actShow.uiStart, mMaxArchAge)) > -2))
       {
          timeCell += "<hr />" + pHtml->htmlTag("b", tr("Ar.")) + "&nbsp;";
 

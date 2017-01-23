@@ -31,8 +31,8 @@ namespace cparser
 
    struct SChan
    {
-      SChan():uiStart(0),uiEnd(0),uiDefAud(0),iTs(0),iId(0),bIsVideo(false),
-         bIsProtected(false),bHasArchive(false),bIsGroup(false),
+      SChan():uiStart(0),uiEnd(0),uiDefAud(0),iTs(0),iId(0),iPrimGrp(-1),iArchHours(0),
+         bIsVideo(false), bIsProtected(false),bHasArchive(false),bIsGroup(false),
          bIsHidden(false),bHasTsInfo(false){}
       QString sName;
       QString sProgramm;
@@ -43,6 +43,8 @@ namespace cparser
       uint    uiDefAud;
       int     iTs;
       int     iId;
+      int     iPrimGrp;
+      int     iArchHours;
       bool    bIsVideo;
       bool    bIsProtected;
       bool    bHasArchive;
@@ -55,9 +57,11 @@ namespace cparser
 
    struct SGrp
    {
-      SGrp():iId(0){}
+      SGrp():iId(0), iCount(0){}
       int          iId;
+      int          iCount;
       QString      sName;
+      QString      sNameEn;
       QString      sColor;
       QVector<int> vChannels;
    };

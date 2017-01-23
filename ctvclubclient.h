@@ -54,7 +54,7 @@ public:
 protected:
    void GetCookie ();
    void Logout ();
-   void GetChannelList ();
+   void GetChannelList (int gid = -1);
    void getChanGroups();
    void GetProtChannelList (const QString &secCode);
    void SetTimeShift (int iHours);
@@ -82,7 +82,6 @@ protected:
    void epgCurrent(const QString &cids);
    void updInfo (const QString& url);
    void getRadioList();
-   void getRadioStream(int cid, bool bTimerRec = false);
    void setInterfaceLang (const QString& langCode);
    int  checkResponse (const QString &sResp);
    void chanListLang(const QString& lang);
