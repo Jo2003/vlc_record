@@ -12,9 +12,13 @@
 #include "cvlcrecdb.h"
 #include "tables.h"
 #include "small_helpers.h"
+#include "clogfile.h"
 
 // for folders ...
 extern CDirStuff *pFolders;
+
+// log file functions ...
+extern CLogFile VlcLog;
 
 /* -----------------------------------------------------------------\
 |  Method: CVlcRecDB / constructor
@@ -110,6 +114,11 @@ int CVlcRecDB::checkDb()
    if (!lAllTabs.contains("astream"))
    {
       iRV |= query.exec(TAB_ASTREAM) ? 0 : -1;
+   }
+
+   if (!lAllTabs.contains("favdata"))
+   {
+      iRV |= query.exec(TAB_FAVDATA) ? 0 : -1;
    }
 
    // db update ...
@@ -762,6 +771,77 @@ int CVlcRecDB::defAStream (int cid)
    }
 
    return iRet;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief      get additional favourites data
+//
+//! \param[in]  cid (int) channel id
+//! \param[in]  name (const QString&) channel name
+//! \param[in]  logo (const QString&) channel logo name
+//
+//! \return  -1 -> error; 0 -> ok
+//---------------------------------------------------------------------------
+int CVlcRecDB::addFavData(int cid, const QString& name, const QString& logo)
+{
+    QSqlQuery query;
+
+    // delete ...
+    if (name.isEmpty())
+    {
+        // mInfo(tr("DELETE FROM favdata WHERE cid=%1").arg(cid));
+        query.prepare("DELETE FROM favdata WHERE cid=?");
+        query.addBindValue(cid);
+    }
+    else
+    {
+        /*
+        mInfo(tr("REPLACE INTO favdata VALUES(%1, '%2', '%3')")
+              .arg(cid)
+              .arg(name)
+              .arg(logo));
+        */
+
+        query.prepare("REPLACE INTO favdata VALUES(?, ?, ?)");
+        query.addBindValue(cid);
+        query.addBindValue(name);
+        query.addBindValue(logo);
+    }
+
+    int iRet = query.exec() ? 0 : -1;
+
+    return iRet;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief      get additional favourites data
+//
+//! \param[in]  cid (int) channel id
+//! \param[out] name (QString&) buffer for channel name
+//! \param[out] logo (QString&) buffer for channel logo name
+//
+//! \return  -1 -> error; 0 -> ok
+//---------------------------------------------------------------------------
+int CVlcRecDB::favData(int cid, QString& name, QString& logo)
+{
+    int       iRet = -1;
+    QSqlQuery query;
+
+    // mInfo(tr("SELECT name, logo FROM favdata WHERE cid=%1").arg(cid));
+    query.prepare("SELECT name, logo FROM favdata WHERE cid=?");
+    query.addBindValue(cid);
+    query.exec();
+
+    if (query.first())
+    {
+        iRet = 0;
+        name = query.value(0).toString();
+        logo = query.value(1).toString();
+    }
+
+    return iRet;
 }
 
 /************************* History ***************************\

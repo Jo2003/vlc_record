@@ -55,6 +55,14 @@
       "PRIMARY KEY(\"cid\"),"\
       "UNIQUE(\"cid\"))"
 
+#define TAB_FAVDATA \
+"CREATE TABLE \"favdata\" ("\
+      "\"cid\"  INTEGER NOT NULL,"\
+      "\"name\"  VARCHAR(100) NOT NULL,"\
+      "\"logo\"  VARCHAR(100) NOT NULL,"\
+      "PRIMARY KEY(\"cid\"),"\
+      "UNIQUE(\"cid\"))"
+
 #endif // __130610_TABLES_H
 /************************* History ***************************\
 | $Log$

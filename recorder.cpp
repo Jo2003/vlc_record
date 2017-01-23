@@ -2961,10 +2961,16 @@ void Recorder::slotChgFavourites (QAction *pAct)
       {
          if (lFavourites.count() < MAX_NO_FAVOURITES)
          {
-            // add new favourite ...
-            lFavourites.push_back(iCid);
+             cparser::SChan chan;
 
-            HandleFavourites();
+             if (pChanMap->entry(iCid, chan) == 0)
+             {
+                 // add new favourite ...
+                 lFavourites.push_back(iCid);
+                 Settings.addFavData(iCid, chan.sName, chan.sIcon);
+
+                 HandleFavourites();
+             }
          }
          else
          {
@@ -2980,6 +2986,7 @@ void Recorder::slotChgFavourites (QAction *pAct)
       {
          // remove favourite ...
          lFavourites.removeOne(iCid);
+         Settings.addFavData(iCid, "", "");
 
          HandleFavourites();
       }
@@ -3001,6 +3008,7 @@ void Recorder::slotHandleFavAction(QAction *pAct)
    CFavAction      *pAction = (CFavAction *)pAct;
    int              iCid    = 0;
    kartinafav::eAct act     = kartinafav::FAV_WHAT;
+   bool             found   = false;
 
    if (pAction)
    {
@@ -3020,8 +3028,14 @@ void Recorder::slotHandleFavAction(QAction *pAct)
             // found --> mark row ...
             ui->channelList->setCurrentIndex(idx);
             ui->channelList->scrollTo(idx, QAbstractItemView::PositionAtTop);
+            found = true;
             break;
          }
+      }
+
+      if (!found)
+      {
+          pApiClient->queueRequest(CIptvDefs::REQ_EPG, iCid);
       }
    }
 }
@@ -3903,7 +3917,18 @@ void Recorder::slotAddFav(int cid)
    {
       if (lFavourites.count() < MAX_NO_FAVOURITES)
       {
-         lFavourites.append(cid);
+
+         cparser::SChan chan;
+
+         if (pChanMap->entry(cid, chan) == 0)
+         {
+             // add new favourite ...
+             lFavourites.append(cid);
+             Settings.addFavData(cid, chan.sName, chan.sIcon);
+
+             HandleFavourites();
+         }
+
          HandleFavourites();
       }
       else
@@ -5573,6 +5598,7 @@ void Recorder::HandleFavourites()
    QString        sObj;
    cparser::SChan entry;
    QFileInfo      fInfo;
+   QString        sLogo, sName;
 
    // remove all favourite buttons ...
    for (i = 0; i < MAX_NO_FAVOURITES; i++)
@@ -5602,8 +5628,8 @@ void Recorder::HandleFavourites()
          // -------------------------
          // init action ...
          // -------------------------
-         pChanMap->entry(lFavourites[i], entry);
-         fInfo.setFile(entry.sIcon);
+         Settings.favData(lFavourites[i] , sName, sLogo);
+         fInfo.setFile(sLogo);
 
          // add logo ...
          pic.load(QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName()));
@@ -5622,7 +5648,7 @@ void Recorder::HandleFavourites()
          pFavAct[i]->setShortcut(QKeySequence(Settings.shortCut(sObj, SLOT(slotHandleFavAction(QAction*)))));
 
          // add channel name as tooltip ...
-         pFavAct[i]->setToolTip(pChanMap->value(lFavourites[i], true).sName);
+         pFavAct[i]->setToolTip(sName);
 
          // style the tool button ...
          pFavBtn[i]->setStyleSheet(FAVBTN_STYLE);
