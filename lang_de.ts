@@ -2996,8 +2996,8 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
         <location filename="ctvclubparser.cpp" line="312"/>
         <location filename="ctvclubparser.cpp" line="371"/>
         <location filename="ctvclubparser.cpp" line="451"/>
-        <location filename="ctvclubparser.cpp" line="511"/>
-        <location filename="ctvclubparser.cpp" line="612"/>
+        <location filename="ctvclubparser.cpp" line="517"/>
+        <location filename="ctvclubparser.cpp" line="618"/>
         <source>Error in %1</source>
         <translation type="unfinished">Fehler in %1</translation>
     </message>
@@ -3009,13 +3009,13 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
         <location filename="ctvclubparser.cpp" line="313"/>
         <location filename="ctvclubparser.cpp" line="372"/>
         <location filename="ctvclubparser.cpp" line="452"/>
-        <location filename="ctvclubparser.cpp" line="512"/>
-        <location filename="ctvclubparser.cpp" line="613"/>
+        <location filename="ctvclubparser.cpp" line="518"/>
+        <location filename="ctvclubparser.cpp" line="619"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ctvclubparser.cpp" line="596"/>
+        <location filename="ctvclubparser.cpp" line="602"/>
         <source>Update Entries for channel %1:
 </source>
         <translation type="unfinished"></translation>
@@ -4671,12 +4671,12 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="6025"/>
+        <location filename="recorder.cpp" line="6024"/>
         <source>Playing file &apos;%1&apos; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="6031"/>
+        <location filename="recorder.cpp" line="6030"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
         <translation></translation>
     </message>
@@ -4753,8 +4753,8 @@ dataDir: %1
         <translation>Speichere Stream als</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5643"/>
-        <location filename="recorder.cpp" line="5856"/>
+        <location filename="recorder.cpp" line="5642"/>
+        <location filename="recorder.cpp" line="5855"/>
         <source>Favourite %1</source>
         <oldsource>Favoorite %1</oldsource>
         <translation>Favorit %1</translation>

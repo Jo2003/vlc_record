@@ -85,8 +85,8 @@ public:
    int        delWatchEntry (int cid, uint uiGmt);
    int        setDefAStream (int cid, int idx);
    int        defAStream (int cid);
-   int        addFavData(int cid, const QString& name, const QString& logo);
-   int        favData(int cid, QString& name, QString& logo);
+   int        addFavData(int cid, int gid, const QString& name, const QString& logo);
+   int        favData(int cid, int& gid, QString& name, QString& logo);
 
 
 protected:

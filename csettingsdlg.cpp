@@ -1924,17 +1924,18 @@ int CSettingsDlg::setLanguage(const QString &lng)
 
 //---------------------------------------------------------------------------
 //
-//! \brief      get additional favourites data
+//! \brief      set additional favourites data
 //
 //! \param[in]  cid (int) channel id
+//! \param[in]  gid (int) group id
 //! \param[in]  name (const QString&) channel name
 //! \param[in]  logo (const QString&) channel logo name
 //
 //! \return  -1 -> error; 0 -> ok
 //---------------------------------------------------------------------------
-int CSettingsDlg::addFavData(int cid, const QString& name, const QString& logo)
+int CSettingsDlg::addFavData(int cid, int gid, const QString& name, const QString& logo)
 {
-    return pDb->addFavData(cid, name, logo);
+    return pDb->addFavData(cid, gid, name, logo);
 }
 
 //---------------------------------------------------------------------------
@@ -1942,16 +1943,16 @@ int CSettingsDlg::addFavData(int cid, const QString& name, const QString& logo)
 //! \brief      get additional favourites data
 //
 //! \param[in]  cid (int) channel id
+//! \param[out] gid (int&) buffer for group id
 //! \param[out] name (QString&) buffer for channel name
 //! \param[out] logo (QString&) buffer for channel logo name
 //
 //! \return  -1 -> error; 0 -> ok
 //---------------------------------------------------------------------------
-int CSettingsDlg::favData(int cid, QString& name, QString& logo)
+int CSettingsDlg::favData(int cid, int& gid, QString& name, QString& logo)
 {
-    return pDb->favData(cid, name, logo);
+    return pDb->favData(cid, gid, name, logo);
 }
-
 
 /************************* History ***************************\
 | $Log$

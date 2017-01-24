@@ -104,8 +104,8 @@ public:
     int lastChannel();
     void saveChanGrp(int gid);
     int lastChanGrp();
-    int addFavData(int cid, const QString& name, const QString& logo);
-    int favData(int cid, QString& name, QString& logo);
+    int addFavData(int cid, int gid, const QString& name, const QString& logo);
+    int favData(int cid, int& gid, QString& name, QString& logo);
 
     void saveEpgDay(const QString &dateString);
     QString lastEpgDay();

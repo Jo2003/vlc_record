@@ -775,15 +775,16 @@ int CVlcRecDB::defAStream (int cid)
 
 //---------------------------------------------------------------------------
 //
-//! \brief      get additional favourites data
+//! \brief      set additional favourites data
 //
 //! \param[in]  cid (int) channel id
+//! \param[in]  gid (int) group id
 //! \param[in]  name (const QString&) channel name
 //! \param[in]  logo (const QString&) channel logo name
 //
 //! \return  -1 -> error; 0 -> ok
 //---------------------------------------------------------------------------
-int CVlcRecDB::addFavData(int cid, const QString& name, const QString& logo)
+int CVlcRecDB::addFavData(int cid, int gid, const QString& name, const QString& logo)
 {
     QSqlQuery query;
 
@@ -796,15 +797,9 @@ int CVlcRecDB::addFavData(int cid, const QString& name, const QString& logo)
     }
     else
     {
-        /*
-        mInfo(tr("REPLACE INTO favdata VALUES(%1, '%2', '%3')")
-              .arg(cid)
-              .arg(name)
-              .arg(logo));
-        */
-
-        query.prepare("REPLACE INTO favdata VALUES(?, ?, ?)");
+        query.prepare("REPLACE INTO favdata VALUES(?, ?, ?, ?)");
         query.addBindValue(cid);
+        query.addBindValue(gid);
         query.addBindValue(name);
         query.addBindValue(logo);
     }
@@ -819,26 +814,28 @@ int CVlcRecDB::addFavData(int cid, const QString& name, const QString& logo)
 //! \brief      get additional favourites data
 //
 //! \param[in]  cid (int) channel id
+//! \param[out] gid (int&) buffer for group id
 //! \param[out] name (QString&) buffer for channel name
 //! \param[out] logo (QString&) buffer for channel logo name
 //
 //! \return  -1 -> error; 0 -> ok
 //---------------------------------------------------------------------------
-int CVlcRecDB::favData(int cid, QString& name, QString& logo)
+int CVlcRecDB::favData(int cid, int& gid, QString& name, QString& logo)
 {
     int       iRet = -1;
     QSqlQuery query;
 
     // mInfo(tr("SELECT name, logo FROM favdata WHERE cid=%1").arg(cid));
-    query.prepare("SELECT name, logo FROM favdata WHERE cid=?");
+    query.prepare("SELECT gid, name, logo FROM favdata WHERE cid=?");
     query.addBindValue(cid);
     query.exec();
 
     if (query.first())
     {
         iRet = 0;
-        name = query.value(0).toString();
-        logo = query.value(1).toString();
+        gid  = query.value(0).toInt();
+        name = query.value(1).toString();
+        logo = query.value(2).toString();
     }
 
     return iRet;

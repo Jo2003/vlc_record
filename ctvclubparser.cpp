@@ -465,12 +465,13 @@ int CTVClubParser::parseVideoInfo(const QString &sResp, cparser::SVodVideo &vidI
 //! \author  Jo2003
 //! \date    15.04.2013
 //
-//! \param   sResp (const QString &) ref. to response string
-//! \param   epgList (QVector<cparser::SEpg> &) ref. to epg data vector
+//! \param[in]    sResp (const QString &) ref. to response string
+//! \param[out]   epgList (QVector<cparser::SEpg> &) ref. to epg data vector
+//! \param[out]   pCid (int*) optional buffer for channel id ...
 //
 //! \return  0 --> ok; -1 --> any error
 //---------------------------------------------------------------------------
-int CTVClubParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList)
+int CTVClubParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgList, int* pCid)
 {
    int  iRV = 0;
    bool bOk = false;
@@ -487,6 +488,11 @@ int CTVClubParser::parseEpg (const QString &sResp, QVector<cparser::SEpg> &epgLi
        // get entry point ...
        contentMap = contentMap.value("epg").toMap();
        QtJson::JsonArray channels = contentMap.value("channels").toList();
+
+       if (pCid != NULL)
+       {
+           *pCid = channels.at(0).toMap().value("id").toInt();
+       }
 
        // request was for one channel only ...
        QtJson::JsonArray epg      = channels.at(0).toMap().value("epg").toList();

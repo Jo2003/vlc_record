@@ -58,6 +58,7 @@
 #define TAB_FAVDATA \
 "CREATE TABLE \"favdata\" ("\
       "\"cid\"  INTEGER NOT NULL,"\
+      "\"gid\"  INTEGER NOT NULL,"\
       "\"name\"  VARCHAR(100) NOT NULL,"\
       "\"logo\"  VARCHAR(100) NOT NULL,"\
       "PRIMARY KEY(\"cid\"),"\

@@ -2967,7 +2967,7 @@ void Recorder::slotChgFavourites (QAction *pAct)
              {
                  // add new favourite ...
                  lFavourites.push_back(iCid);
-                 Settings.addFavData(iCid, chan.sName, chan.sIcon);
+                 Settings.addFavData(iCid, chan.iPrimGrp, chan.sName, chan.sIcon);
 
                  HandleFavourites();
              }
@@ -2986,7 +2986,7 @@ void Recorder::slotChgFavourites (QAction *pAct)
       {
          // remove favourite ...
          lFavourites.removeOne(iCid);
-         Settings.addFavData(iCid, "", "");
+         Settings.addFavData(iCid, 0, "", "");
 
          HandleFavourites();
       }
@@ -3924,7 +3924,7 @@ void Recorder::slotAddFav(int cid)
          {
              // add new favourite ...
              lFavourites.append(cid);
-             Settings.addFavData(cid, chan.sName, chan.sIcon);
+             Settings.addFavData(cid, chan.iPrimGrp, chan.sName, chan.sIcon);
 
              HandleFavourites();
          }
@@ -5593,10 +5593,9 @@ bool Recorder::WantToStopRec()
 \----------------------------------------------------------------- */
 void Recorder::HandleFavourites()
 {
-   int            i;
+   int            i, gid;
    QPixmap        pic;
    QString        sObj;
-   cparser::SChan entry;
    QFileInfo      fInfo;
    QString        sLogo, sName;
 
@@ -5628,7 +5627,7 @@ void Recorder::HandleFavourites()
          // -------------------------
          // init action ...
          // -------------------------
-         Settings.favData(lFavourites[i] , sName, sLogo);
+         Settings.favData(lFavourites[i], gid, sName, sLogo);
          fInfo.setFile(sLogo);
 
          // add logo ...
