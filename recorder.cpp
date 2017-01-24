@@ -102,6 +102,7 @@ Recorder::Recorder(QWidget *parent)
    pHlsControl   =  NULL;
    bStayOnTop    =  false;
    mpRetryDlg    =  NULL;
+   miMarkFavChan =  -1;
 
    // auto re-login timer ...
    mtAutoReLogin.setSingleShot(true);
@@ -3005,39 +3006,24 @@ void Recorder::slotChgFavourites (QAction *pAct)
 \----------------------------------------------------------------- */
 void Recorder::slotHandleFavAction(QAction *pAct)
 {
-   CFavAction      *pAction = (CFavAction *)pAct;
-   int              iCid    = 0;
-   kartinafav::eAct act     = kartinafav::FAV_WHAT;
-   bool             found   = false;
+    CFavAction      *pAction = (CFavAction *)pAct;
+    int              iCid    = 0;
+    kartinafav::eAct act     = kartinafav::FAV_WHAT;
 
-   if (pAction)
-   {
-      pAction->favData(iCid, act);
+    if (pAction)
+    {
+        int     gid;
+        QString name, logo;
 
-      // search in channel list for cannel id ...
-      QModelIndex idx;
+        pAction->favData(iCid, act);
+        Settings.favData(iCid, gid, name, logo);
 
-      // go through channel list ...
-      for (int i = 0; i < pModel->rowCount(); i++)
-      {
-         idx = pModel->index(i, 0);
+        // fav channel which should be marked ...
+        miMarkFavChan = iCid;
 
-         // check if this is favourite channel ...
-         if (qvariant_cast<int>(idx.data(channellist::cidRole)) == iCid)
-         {
-            // found --> mark row ...
-            ui->channelList->setCurrentIndex(idx);
-            ui->channelList->scrollTo(idx, QAbstractItemView::PositionAtTop);
-            found = true;
-            break;
-         }
-      }
-
-      if (!found)
-      {
-          pApiClient->queueRequest(CIptvDefs::REQ_EPG, iCid);
-      }
-   }
+        // mark TV group ... triggers load of channel list as well ...
+        on_cbxChannelGroup_activated(ui->cbxChannelGroup->findData(gid));
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -5011,6 +4997,7 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
     int         iChanCount =  0;
     int         iPos;
     uint        now = QDateTime::currentDateTime().toTime_t();
+    int         favChanIdx =  0; // default to first entry
 
     // ui->cbxChannelGroup->clear();
     pModel->clear();
@@ -5094,6 +5081,14 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
             pItem->setData(chanlist[i].iPrimGrp,                  channellist::gidRole);
 
             pModel->appendRow(pItem);
+
+            if (miMarkFavChan != -1)
+            {
+                if (miMarkFavChan == chanlist[i].iId)
+                {
+                    favChanIdx = i;
+                }
+            }
         } // not hidden ...
     }
 
@@ -5109,8 +5104,11 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
         }
     }
 
-    ui->channelList->setCurrentIndex(pModel->index(0, 0));
-    ui->channelList->scrollTo(pModel->index(0, 0));
+    // reset marker ...
+    miMarkFavChan = -1;
+
+    ui->channelList->setCurrentIndex(pModel->index(favChanIdx, 0));
+    ui->channelList->scrollTo(pModel->index(favChanIdx, 0));
 
     return 0;
 }

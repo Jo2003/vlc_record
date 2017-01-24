@@ -190,6 +190,7 @@ private:
     QHlsControl                    *pHlsControl;
     QRetryDialog                   *mpRetryDlg;
     QTimer                          mtAutoReLogin;
+    int                             miMarkFavChan;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
