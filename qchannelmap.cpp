@@ -194,6 +194,31 @@ void QChannelMap::update(int key, const cparser::SChan& chan, bool bLock)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   search for channels with filter
+//
+//! \param[in] filter (const QString&) filter string
+//
+//! \return  channel list
+//---------------------------------------------------------------------------
+QChanList QChannelMap::filterChannels(const QString &filter)
+{
+    QChanList cl;
+
+    ConstIterator cit;
+
+    for(cit = begin(); cit != end(); cit ++)
+    {
+        if (filter.isEmpty() || cit->sName.contains(filter, Qt::CaseInsensitive))
+        {
+            cl.append(*cit);
+        }
+    }
+
+    return cl;
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   lock channel map
 //
 //! \author  Jo2003

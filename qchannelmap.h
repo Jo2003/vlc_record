@@ -40,6 +40,7 @@ public:
    void unlock();
    const QGrpMap& groupMap();
    void update(int key, const cparser::SChan& chan, bool bLock = true);
+   QChanList filterChannels(const QString& filter);
 
 private:
    QMutex     m_mtx;

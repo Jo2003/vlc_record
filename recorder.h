@@ -326,6 +326,7 @@ private slots:
     void slotVodLang(const QString &str);
     void slotChanGroups(const QString &str);
     void on_pushUndoFilter_clicked();
+    void slotSettings(QString resp);
 
 signals:
     void sigShow ();

@@ -38,6 +38,7 @@ public:
       REQ_COOKIE,
       REQ_CHANNELLIST,
       REQ_CHANNELGROUPS,
+      REQ_SETTINGS,
       REQ_STREAM,
       REQ_TIMESHIFT,
       REQ_EPG,

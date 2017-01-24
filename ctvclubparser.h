@@ -16,6 +16,8 @@
 
 #include "cstdjsonparser.h"
 
+class CSettingsDlg;
+
 //---------------------------------------------------------------------------
 //! \class   CTVClubParser
 //! \date    15.01.2017
@@ -40,6 +42,7 @@ public:
    virtual int parseVodList (const QString& sResp, QVector<cparser::SVodVideo>& vVodList, cparser::SGenreInfo &gInfo);
    virtual int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
+   virtual int parseSettings(const QString& sResp, CSettingsDlg& settings);
 };
 
 #endif // __20170115_CTVCLUBPARSER_H

@@ -12,6 +12,7 @@
  *
  *///------------------------- (c) 2017 by Jo2003  --------------------------
 #include "ctvclubparser.h"
+#include "csettingsdlg.h"
 
 // log file functions ...
 extern CLogFile VlcLog;
@@ -121,7 +122,7 @@ int CTVClubParser::parseChannelList (const QString &sResp,
    bool bOk = false;
    cparser::SChan      chan;
    QtJson::JsonObject  contentMap;
-   QString strImgPrefix = "http://tvclub.us/logo/36_36_1/%1.png";
+   QString strImgPrefix = "http://tvclub.us/logo/72_72_1/%1.png";
 
    // clear channel list ...
    chanList.clear();
@@ -139,7 +140,7 @@ int CTVClubParser::parseChannelList (const QString &sResp,
 
          chan.iId          = info.value("id").toInt();
          chan.sName        = info.value("name").toString();
-         chan.bIsProtected = info.value("potected").toBool();
+         chan.bIsProtected = info.value("protected").toBool();
          chan.iPrimGrp     = info.value("groups").toInt();
          chan.sProgramm    = epg.value("text").toString();
          chan.uiStart      = epg.value("start").toUInt();
@@ -612,6 +613,60 @@ int CTVClubParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEp
              mInfo(s);
 #endif // __TRACE
         }
+    }
+    else
+    {
+         emit sigError((int)Msg::Error, tr("Error in %1").arg(__FUNCTION__),
+                         tr("QtJson parser error in %1 %2():%3")
+                         .arg(__FILE__).arg(__FUNCTION__).arg(__LINE__));
+
+         iRV = -1;
+    }
+
+    return iRV;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief   parse settings
+//
+//! \param[in]      sResp (const QString &) ref. to response string
+//! \param[in/out]  settings (CSettingsDlg &) ref. to settings dialog
+//
+//! \return  0 --> ok; -1 --> any error
+//---------------------------------------------------------------------------
+int CTVClubParser::parseSettings(const QString &sResp, CSettingsDlg &settings)
+{
+    bool ok;
+    int  iRV = 0;
+    QtJson::JsonObject root = QtJson::parse(sResp, ok).toMap();
+
+    if (ok)
+    {
+        // due to historical reason server id is handled here as string...
+        QString                currentSrv;
+        cparser::SSrv          srv;
+        QVector<cparser::SSrv> servers;
+
+        QtJson::JsonObject current = root.value("settings").toMap().value("current").toMap();
+        QtJson::JsonObject lists   = root.value("settings").toMap().value("lists").toMap();
+
+        currentSrv = QString::number(current.value("server").toMap().value("id").toInt());
+
+        foreach(const QVariant& rawSrv, lists.value("servers").toList())
+        {
+            QtJson::JsonObject srvData = rawSrv.toMap();
+            srv.sName = tr("%1 (%2HP @ %3%)")
+                    .arg(srvData.value("name").toString())
+                    .arg(srvData.value("power").toInt())
+                    .arg(srvData.value("load").toInt());
+
+            srv.sIp = QString::number(srvData.value("id").toInt());
+
+            servers.append(srv);
+        }
+
+        settings.SetStreamServerCbx(servers, currentSrv);
     }
     else
     {

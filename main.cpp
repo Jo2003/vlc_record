@@ -62,6 +62,60 @@ CHtmlWriter *pHtml;
 // global channel map ...
 QChannelMap *pChanMap;
 
+/// build timestamp ...
+extern const char* pBuilt;
+
+int iExpiresInDays;
+
+//---------------------------------------------------------------------------
+//
+//! \brief   check if program has expired
+//
+//! \author  Jo2003
+//! \date    30.03.2016
+//
+//! \return  true -> expired; false -> not expired
+//---------------------------------------------------------------------------
+bool expired()
+{
+    bool ret;
+
+    if (EXPIRES_IN == -1)
+    {
+        ret            = false;
+        iExpiresInDays = -1;
+    }
+    else
+    {
+        // build stamp is done in english locale ...
+        QLocale engLoc(QLocale::English);
+
+        // when program will expire?
+        uint compare   = engLoc.toDateTime(pBuilt, "MMM dd yyyy, hh:mm:ss").toTime_t() + (uint)(EXPIRES_IN * 24 * 3600);
+
+        ret            = (QDateTime::currentDateTime().toTime_t() > compare);
+        iExpiresInDays = QDateTime::currentDateTime().daysTo(QDateTime::fromTime_t(compare));
+
+        QString msg;
+
+        if (ret)
+        {
+            msg = QString("This BETA has expired! If you are a legal user you know where to get an update from!");
+        }
+        else if (iExpiresInDays <= 5)
+        {
+            msg = QString("This BETA version expires in %1 day(s)!").arg(iExpiresInDays);
+        }
+
+        if (!msg.isEmpty())
+        {
+            QMessageBox::warning(NULL, "Note", msg);
+        }
+    }
+
+    return ret;
+}
+
 /* -----------------------------------------------------------------\
 |  Method: main / program entry
 |  Begin: 19.01.2010 / 15:57:36
@@ -114,7 +168,7 @@ int main(int argc, char *argv[])
    pHtml      = new CHtmlWriter(&app);
    pChanMap   = new QChannelMap();
 
-   if (pFolders && pAppTransl && pQtTransl && pTs && pHtml && pChanMap)
+   if (pFolders && pAppTransl && pQtTransl && pTs && pHtml && pChanMap && !expired())
    {
       if (pFolders->isInitialized ())
       {
@@ -133,6 +187,8 @@ int main(int argc, char *argv[])
 
             pApiClient = new ApiClient(&app);
             pApiParser = new ApiParser(&app);
+
+            if (iExpiresInDays > -1) mLog(QString("Program expires in %1 day(s)!").arg(iExpiresInDays));
 
             // The database is the last service used.
             // Make sure it destroyed latest!

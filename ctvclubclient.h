@@ -83,9 +83,10 @@ protected:
    void updInfo (const QString& url);
    void getRadioList();
    void setInterfaceLang (const QString& langCode);
-   int  checkResponse (const QString &sResp);
+   int  checkResponse (QString &sResp);
    void chanListLang(const QString& lang);
    void audioLang();
+   void getSettings();
 
 private:
    QString   sUsr;
@@ -93,7 +94,6 @@ private:
    QString   sApiUrl;
    QString   sCookie;
    QString   sLang;
-   QErrorMap errMap;
    CIptvDefs karTrace;
    QString   sChanListBuffer;
    QString   sLangFilter;

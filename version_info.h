@@ -25,8 +25,10 @@
 
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
-#define VERSION_BUILD 4
-#define BETA_EXT      ""
+#define VERSION_BUILD 0
+#define BETA_EXT      "B1"
+
+#define EXPIRES_IN    7
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 

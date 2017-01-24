@@ -15,6 +15,7 @@
 #include "small_helpers.h"
 #include "qcustparser.h"
 #include "ctimeshift.h"
+#include <QtJson>
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -295,6 +296,9 @@ int CTVClubClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
       case CIptvDefs::REQ_GET_ALANG:
          audioLang();
          break;
+      case CIptvDefs::REQ_SETTINGS:
+          getSettings();
+          break;
       default:
          iRet = -1;
          break;
@@ -479,6 +483,15 @@ void CTVClubClient::audioLang()
    q_get((int)CIptvDefs::REQ_GET_ALANG, sApiUrl + "get_audio_lang");
 }
 
+//---------------------------------------------------------------------------
+//! \brief   request all settings
+//---------------------------------------------------------------------------
+void CTVClubClient::getSettings()
+{
+    mInfo(tr("get settings ..."));
+    q_get((int)CIptvDefs::REQ_SETTINGS, sApiUrl + "settings?" + sCookie, Iptv::String);
+}
+
 /*-----------------------------------------------------------------------------\
 | Function:    GetProtChannelList
 |
@@ -650,7 +663,7 @@ void CTVClubClient::SetServer (const QString &sIp)
    mInfo(tr("Set Streaming Server to %1 ...").arg(sIp));
 
    q_post((int)CIptvDefs::REQ_SERVER, sApiUrl + "set",
-               QString("var=media_server_id&val=%1").arg(sIp));
+               QString("server=%1&%2").arg(sIp).arg(sCookie));
 }
 
 /*-----------------------------------------------------------------------------\
@@ -1011,8 +1024,10 @@ void CTVClubClient::setParentCode(const QString &oldCode, const QString &newCode
 {
    mInfo(tr("Change parent code ..."));
 
-   QString req = QString("var=parental_pass&val=%1&protect_code=%2")
-         .arg(newCode).arg(oldCode);
+   QString req = QString("new_code=%1&old_code=%2&%3")
+           .arg(newCode)
+           .arg(oldCode)
+           .arg(sCookie);
 
    q_post((int)CIptvDefs::REQ_SET_PCODE, sApiUrl + "set", req);
 }
@@ -1165,61 +1180,26 @@ bool CTVClubClient::cookieSet()
 |
 |  Returns: error code
 \----------------------------------------------------------------- */
-int CTVClubClient::checkResponse (const QString &sResp)
+int CTVClubClient::checkResponse (QString &sResp)
 {
-    return sResp.contains("error") ? -1 : 0;
-}
+    bool ok;
+    int  iRet = 0;
 
-/* -----------------------------------------------------------------\
-|  Method: fillErrorMap
-|  Begin: 21.07.2011 / 12:30
-|  Author: Jo2003
-|  Description: fill error translation map
-|
-|  Parameters: --
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CTVClubClient::fillErrorMap()
-{
-   errMap.clear();
-   errMap.insert(CIptvDefs::ERR_UNKNOWN,                 tr("Unknown error"));
-   errMap.insert(CIptvDefs::ERR_INCORRECT_REQUEST,       tr("Incorrect request"));
-   errMap.insert(CIptvDefs::ERR_WRONG_LOGIN_DATA,        tr("Wrong login or password"));
-   errMap.insert(CIptvDefs::ERR_ACCESS_DENIED,           tr("Access denied"));
-   errMap.insert(CIptvDefs::ERR_LOGIN_INCORRECT,         tr("Login incorrect"));
-   errMap.insert(CIptvDefs::ERR_CONTRACT_INACTIVE,       tr("Your contract is inactive"));
-   errMap.insert(CIptvDefs::ERR_CONTRACT_PAUSED,         tr("Your contract is paused"));
-   errMap.insert(CIptvDefs::ERR_CHANNEL_NOT_FOUND,       tr("Channel not found or not allowed"));
-   errMap.insert(CIptvDefs::ERR_BAD_PARAM,               tr("Error in request: Bad parameters"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_DAY,       tr("Missing parameter (day) in format <DDMMYY>"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_CID,       tr("Missing parameter (cid)"));
-   errMap.insert(CIptvDefs::ERR_MULTIPLE_ACCOUNT_USE,    tr("Another client with your data logged in"));
-   errMap.insert(CIptvDefs::ERR_AUTHENTICATION,          tr("Authentication error"));
-   errMap.insert(CIptvDefs::ERR_PACKAGE_EXPIRED,         tr("Your package expired"));
-   errMap.insert(CIptvDefs::ERR_UNKNOWN_API_FUNCTION,    tr("Unknown API function"));
-   errMap.insert(CIptvDefs::ERR_ARCHIVE_NOT_AVAIL,       tr("Archive not available"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_PLACE,     tr("Missing parameter (place)"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_NAME,      tr("Missing parameter (name)"));
-   errMap.insert(CIptvDefs::ERR_CONFIRMATION_CODE,       tr("Incorrect confirmation code"));
-   errMap.insert(CIptvDefs::ERR_WRONG_PCODE,             tr("Current code is wrong"));
-   errMap.insert(CIptvDefs::ERR_NEW_CODE,                tr("New code is wrong"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_VAL,       tr("Missing parameter (val)"));
-   errMap.insert(CIptvDefs::ERR_VALUE_NOT_ALLOWED,       tr("Value not allowed"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM,           tr("Missing parameter"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_ID,        tr("Missing parameter (id)"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_FILEID,    tr("Missing parameter (fileid)"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_TYPE,      tr("Missing parameter (type)"));
-   errMap.insert(CIptvDefs::ERR_MISSING_PARAM_QUERY,     tr("Missing parameter (query)"));
-   errMap.insert(CIptvDefs::ERR_BITRATE_NOT_AVAIL,       tr("Bitrate not available"));
-   errMap.insert(CIptvDefs::ERR_SERVICE_NOT_AVAIL,       tr("Service not available"));
-   errMap.insert(CIptvDefs::ERR_QUERY_LIMIT_EXCEEDED,    tr("Query limit exceeded"));
-   errMap.insert(CIptvDefs::ERR_RULE_ALREADY_EXISTS,     tr("Rule already exists"));
-   errMap.insert(CIptvDefs::ERR_RULE_NEED_CMD,           tr("Missing parameter (cmd)"));
-   errMap.insert(CIptvDefs::ERR_MANAGE_NEED_CMD,         tr("Missing parameter (cmd)"));
-   errMap.insert(CIptvDefs::ERR_MANAGE_BAD_VALUE,        tr("Bad value (rate)"));
-   errMap.insert(CIptvDefs::ERR_MANAGE_FILM_NOT_FOUND,   tr("Can't find film"));
-   errMap.insert(CIptvDefs::ERR_MANAGE_ALREADY_ADDED,    tr("Film already added"));
+    // {"error":{"code":9,"msg":"Channel not found or not allowed"}}
+
+    QtJson::JsonObject data = QtJson::parse(sResp, ok).toMap();
+
+    if (ok)
+    {
+        if (data.contains("error"))
+        {
+            data  = data.value("error").toMap();
+            iRet  = data.value("code").toInt();
+            sResp = data.value("msg").toString();
+        }
+    }
+
+    return iRet;
 }
 
 /*=============================================================================\

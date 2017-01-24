@@ -448,9 +448,6 @@ void Recorder::changeEvent(QEvent *e)
 
       // translate shortcut table ...
       retranslateShortcutTable();
-
-      // translate error strings ...
-      pApiClient->fillErrorMap();
       break;
 
    default:
@@ -1315,24 +1312,22 @@ void Recorder::on_pushWatchList_clicked()
 //---------------------------------------------------------------------------
 void Recorder::on_pushUndoFilter_clicked()
 {
-    bool bFiltered = false;
-
     pFilterWidget->cleanFilter();
     slotFilterChannelList("");
 
-    // get a list of available actions ...
-    QList<QAction *> actList = pMnLangFilter->actions();
-    QList<QAction *>::const_iterator cit;
+    ui->pushFilter->setIcon(QIcon(":/app/filter"));
+}
 
-    for (cit = actList.constBegin(); cit != actList.constEnd(); cit ++)
-    {
-        if ((*cit)->isChecked())
-        {
-            bFiltered = !(*cit)->data().toString().isEmpty();
-        }
-    }
+//---------------------------------------------------------------------------
+//! \brief   received settings from tvclub ..
+//
+//! \param[in] resp (QString) string response
+//---------------------------------------------------------------------------
+void Recorder::slotSettings(QString resp)
+{
+    pApiParser->parseSettings(resp, Settings);
 
-    ui->pushFilter->setIcon(QIcon(bFiltered ? ":/app/act_filter" : ":/app/filter"));
+    pApiClient->queueRequest(CIptvDefs::REQ_CHANNELGROUPS);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1631,6 +1626,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    // slotCurrentChannelChanged() will be called
    // which requests the EPG ...
    mkCase(CIptvDefs::REQ_CHANNELLIST, slotChanList(resp));
+
+   ///////////////////////////////////////////////
+   // settings received ...
+   mkCase(CIptvDefs::REQ_SETTINGS, slotSettings(resp));
 
    /**
     * get channel group response and parse it
@@ -2115,7 +2114,7 @@ void Recorder::slotCookie (const QString &str)
 #endif // _TASTE_IPTV_RECORD
 
 #ifdef _TASTE_TV_CLUB
-      pApiClient->queueRequest(CIptvDefs::REQ_CHANNELGROUPS);
+      pApiClient->queueRequest(CIptvDefs::REQ_SETTINGS);
 #else
       // request channel list ...
       pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST);
@@ -4164,41 +4163,8 @@ void Recorder::slotFilterChannelList(QString filter)
 {
     pFilterMenu->hide();
 
-    QChanList                 cl, tmpCl;
-    cparser::SChan            grp, chan;
-
-    foreach(const cparser::SGrp& tmpGrp, pChanMap->groupMap())
-    {
-        tmpCl.clear();
-
-        grp.iId       = tmpGrp.iId;
-        grp.bIsGroup  = true;
-        grp.sProgramm = tmpGrp.sColor;
-        grp.sName     = tmpGrp.sName;
-
-        tmpCl.append(grp);
-
-        foreach (int i, tmpGrp.vChannels)
-        {
-            pChanMap->entry(i, chan);
-
-            if (filter.isEmpty()                                        // no filter set
-                || chan.sName.contains(filter, Qt::CaseInsensitive))    // find in name
-            {
-                tmpCl.append(chan);
-            }
-        }
-
-        // more than group only ...
-        if (tmpCl.count() > 1)
-        {
-            cl += tmpCl;
-        }
-    }
-
     ui->pushFilter->setIcon(QIcon(filter.isEmpty() ? ":/app/filter" : ":/app/act_filter"));
-
-    FillChannelList(cl);
+    FillChannelList(pChanMap->filterChannels(filter));
 }
 
 //---------------------------------------------------------------------------

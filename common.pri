@@ -70,7 +70,8 @@ SOURCES += main.cpp \
     cplayer.cpp \
     qhlscontrol.cpp \
     qexpirenotifydlg.cpp \
-    qretrydialog.cpp
+    qretrydialog.cpp \
+    buildstamp.cc
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -148,6 +149,15 @@ RESOURCES += common.qrc \
 INCLUDEPATH += tastes
 LIBS += -lvlc
 
+# build stamp
+buildstamp.target = buildstamp.cc
+win32:buildstamp.commands = echo const char* pBuilt = __DATE__ \", \" __TIME__; > buildstamp.c && $$QMAKE_CXX -E buildstamp.c -o buildstamp.cc
+else:buildstamp.commands = "echo \"const char* pBuilt = __DATE__ \\\", \\\" __TIME__;\" > buildstamp.c && $$QMAKE_CXX -E buildstamp.c -o buildstamp.cc"
+buildstamp.depends = buildclean
+win32:buildclean.commands = del /q buildstamp.c*
+else:buildclean.commands = rm -f buildstamp.c*
+QMAKE_EXTRA_TARGETS += buildclean buildstamp
+PRE_TARGETDEPS += buildstamp.cc
 
 # -------------------------------------------------
 # create Windows rc file ...
