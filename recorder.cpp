@@ -4307,7 +4307,7 @@ void Recorder::slotChanGroups(const QString &str)
             pChanMap->setGroupMap(chanGrps);
 
             QPixmap pix(16, 16);
-            int     idx, cnt = 0;
+            int     idx = 0, cnt = 0;
             int     lastGroup = Settings.lastChanGrp();
 
             // either last group or first group in channel groups map ...
