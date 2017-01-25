@@ -25,10 +25,10 @@
 
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
-#define VERSION_BUILD 0
-#define BETA_EXT      "B1"
+#define VERSION_BUILD 1
+#define BETA_EXT      "B2"
 
-#define EXPIRES_IN    7
+#define EXPIRES_IN    -1
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -43,26 +43,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
-| 2016-07-22: Version 2.69.4
-| - add unique key to user agent string
-| - add mute button to main widget and overlay control
-| - change channel numbering: now count channels per group
-|
-| 2016-01-20: Version 2.69.3
-| - rebuild channel list taking care for equal group ids
-| - through no error when no radio is supported
-| - add filter clear button
-| - change group cbx dependend on current channel
-|
-| 2015-12-11: Version 2.69.3
-| - no more use noop
-| - use silent re-login on error #2
-| - in case within 2 minutes we'll have another error #2
-|   the re-login dialog will be shown
-|
-| 2015-11-10: Version 2.69.2
-| - add retry / reconnect dialog
-| - don't take care for numerical error codes
+| 2017-01-25: Version 2.69.1B2
+| - TVClub.us build
+| - use tv club API
+| - add device name to each query
 |
 | 2015-03-04: Version 2.69.0
 | - add NOOP ping

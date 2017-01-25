@@ -26,6 +26,9 @@ extern CLogFile VlcLog;
 // global timeshift class ...
 extern CTimeShift *pTs;
 
+// device name
+#define TVCLUB_DEV_NAME "&device=vlcrecords"
+
 /*-----------------------------------------------------------------------------\
 | Function:    CTVClubClient / constructor
 |
@@ -347,7 +350,7 @@ void CTVClubClient::SetData(const QString &host, const QString &usr,
 void CTVClubClient::SetCookie(const QString &cookie)
 {
    mInfo(tr("We've got following Cookie: %1").arg(cookie));
-   sCookie = cookie;
+   sCookie = cookie + TVCLUB_DEV_NAME;
 }
 
 /*-----------------------------------------------------------------------------\
@@ -386,8 +389,9 @@ void CTVClubClient::GetCookie ()
    mInfo(tr("Request Authentication ..."));
 
    q_post((int)CIptvDefs::REQ_COOKIE, sApiUrl + "auth",
-        QString("hash=%1")
-        .arg(CSmallHelpers::md5(sUsr + CSmallHelpers::md5(sPw))),
+        QString("hash=%1%2")
+            .arg(CSmallHelpers::md5(sUsr + CSmallHelpers::md5(sPw)))
+            .arg(TVCLUB_DEV_NAME),
         Iptv::Login);
 }
 

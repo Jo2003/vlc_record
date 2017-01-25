@@ -2611,7 +2611,7 @@ To change the parent code make sure:
 <context>
     <name>CTVClubClient</name>
     <message>
-        <location filename="ctvclubclient.cpp" line="93"/>
+        <location filename="ctvclubclient.cpp" line="96"/>
         <source>Response for request &apos;%1&apos;:
  ==8&lt;==8&lt;==8&lt;==
 %2
@@ -2619,188 +2619,188 @@ To change the parent code make sure:
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="107"/>
+        <location filename="ctvclubclient.cpp" line="110"/>
         <source>Request &apos;%2&apos; done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="349"/>
+        <location filename="ctvclubclient.cpp" line="352"/>
         <source>We&apos;ve got following Cookie: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="367"/>
+        <location filename="ctvclubclient.cpp" line="370"/>
         <source>Logout ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="386"/>
+        <location filename="ctvclubclient.cpp" line="389"/>
         <source>Request Authentication ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="406"/>
+        <location filename="ctvclubclient.cpp" line="410"/>
         <source>Request Channel Groups ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="432"/>
-        <location filename="ctvclubclient.cpp" line="510"/>
+        <location filename="ctvclubclient.cpp" line="436"/>
+        <location filename="ctvclubclient.cpp" line="514"/>
         <source>Request Channel List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="456"/>
+        <location filename="ctvclubclient.cpp" line="460"/>
         <source>Request Channel List (language filtered) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="480"/>
+        <location filename="ctvclubclient.cpp" line="484"/>
         <source>Request available audio streams ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="491"/>
+        <location filename="ctvclubclient.cpp" line="495"/>
         <source>get settings ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="533"/>
+        <location filename="ctvclubclient.cpp" line="537"/>
         <source>Request Stream Server List ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="553"/>
+        <location filename="ctvclubclient.cpp" line="557"/>
         <source>Request Time Shift ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="573"/>
+        <location filename="ctvclubclient.cpp" line="577"/>
         <source>Set TimeShift to %1 hour(s) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="594"/>
+        <location filename="ctvclubclient.cpp" line="598"/>
         <source>Request Bit Rate ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="614"/>
+        <location filename="ctvclubclient.cpp" line="618"/>
         <source>Set BitRate to %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="635"/>
+        <location filename="ctvclubclient.cpp" line="639"/>
         <source>Request URL for channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="663"/>
+        <location filename="ctvclubclient.cpp" line="667"/>
         <source>Set Streaming Server to %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="684"/>
+        <location filename="ctvclubclient.cpp" line="688"/>
         <source>Set Http Buffer to %1 msec. ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="705"/>
+        <location filename="ctvclubclient.cpp" line="709"/>
         <source>Request EPG for Channel %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="731"/>
+        <location filename="ctvclubclient.cpp" line="735"/>
         <source>Request Archiv URL ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="765"/>
+        <location filename="ctvclubclient.cpp" line="769"/>
         <source>Request VOD Genres ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="785"/>
+        <location filename="ctvclubclient.cpp" line="789"/>
         <source>Request Videos ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="805"/>
+        <location filename="ctvclubclient.cpp" line="809"/>
         <source>Request Video info for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="832"/>
+        <location filename="ctvclubclient.cpp" line="836"/>
         <source>Request Video Url for video %1...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="860"/>
+        <location filename="ctvclubclient.cpp" line="864"/>
         <source>Hide channel(s) %1 from channel list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="883"/>
+        <location filename="ctvclubclient.cpp" line="887"/>
         <source>Show channel(s) %1 in channel list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="906"/>
+        <location filename="ctvclubclient.cpp" line="910"/>
         <source>Request VOD manager data ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="929"/>
+        <location filename="ctvclubclient.cpp" line="933"/>
         <source>Set VOD manager data (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="952"/>
+        <location filename="ctvclubclient.cpp" line="956"/>
         <source>Add VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="979"/>
+        <location filename="ctvclubclient.cpp" line="983"/>
         <source>Remove VOD favourite (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1006"/>
+        <location filename="ctvclubclient.cpp" line="1010"/>
         <source>Get VOD favourites (%1) ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1025"/>
+        <location filename="ctvclubclient.cpp" line="1029"/>
         <source>Change parent code ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1050"/>
+        <location filename="ctvclubclient.cpp" line="1054"/>
         <source>EPG current for Channels: %1 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1073"/>
+        <location filename="ctvclubclient.cpp" line="1077"/>
         <source>Check for available updates ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1091"/>
+        <location filename="ctvclubclient.cpp" line="1095"/>
         <source>Download image ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1110"/>
+        <location filename="ctvclubclient.cpp" line="1114"/>
         <source>Noop Ping</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1126"/>
+        <location filename="ctvclubclient.cpp" line="1130"/>
         <source>Download radio list ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubclient.cpp" line="1151"/>
+        <location filename="ctvclubclient.cpp" line="1155"/>
         <source>Set interface language ...</source>
         <translation></translation>
     </message>
