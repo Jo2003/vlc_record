@@ -562,833 +562,313 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CNovoeClient</name>
     <message>
-        <location filename="cnovoeclient.cpp" line="84"/>
-        <source>Response for request &apos;%1&apos;:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="98"/>
-        <source>Request &apos;%2&apos; done!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="328"/>
-        <source>We&apos;ve got following Cookie: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="346"/>
-        <source>Logout ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="366"/>
-        <source>Request Authentication ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="389"/>
-        <source>Request Channel List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="421"/>
-        <source>Request Stream Server List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="442"/>
-        <source>Request Time Shift ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="463"/>
-        <source>Set TimeShift to %1 hour(s) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="484"/>
-        <source>Request Bit Rate ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="505"/>
-        <source>Set BitRate to %1 kbit/s ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="526"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="554"/>
-        <source>Set Streaming Server to %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="575"/>
-        <source>Set Http Buffer to %1 msec. ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="596"/>
-        <source>Request EPG for Channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="619"/>
-        <source>Request Archiv URL ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="646"/>
-        <source>Request VOD Genres ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="666"/>
-        <source>Request Videos ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="695"/>
-        <source>Request Video info for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="722"/>
-        <source>Request Video Url for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="750"/>
-        <source>Hide channel(s) %1 from channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="773"/>
-        <source>Show channel(s) %1 in channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="796"/>
-        <source>Request VOD manager data ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="819"/>
-        <source>Set VOD manager data (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="842"/>
-        <source>Add VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="869"/>
-        <source>Remove VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="896"/>
-        <source>Get VOD favourites (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="915"/>
-        <source>Change parent code ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="938"/>
-        <source>EPG current for Channels: %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="957"/>
-        <source>Check for available updates ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="975"/>
-        <source>Download image ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeclient.cpp" line="1056"/>
         <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
+        <translation type="obsolete">Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1057"/>
         <source>Incorrect request</source>
-        <translation>Falsche Anfrage</translation>
+        <translation type="obsolete">Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1058"/>
         <source>Wrong login or password</source>
-        <translation>Falsche Login-Daten</translation>
+        <translation type="obsolete">Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1059"/>
         <source>Access denied</source>
-        <translation>Zugriff verboten</translation>
+        <translation type="obsolete">Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1060"/>
         <source>Login incorrect</source>
-        <translation>Falscher Login</translation>
+        <translation type="obsolete">Falscher Login</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1061"/>
         <source>Your contract is inactive</source>
-        <translation>Ihr Vertrag ist nicht aktiv</translation>
+        <translation type="obsolete">Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1062"/>
         <source>Your contract is paused</source>
-        <translation>Ihr Vertrag pausiert</translation>
+        <translation type="obsolete">Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1063"/>
         <source>Channel not found or not allowed</source>
-        <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
+        <translation type="obsolete">Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1064"/>
         <source>Error in request: Bad parameters</source>
-        <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
+        <translation type="obsolete">Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1065"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
+        <translation type="obsolete">Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1066"/>
         <source>Missing parameter (cid)</source>
-        <translation>Fehlender Parameter (cid)</translation>
+        <translation type="obsolete">Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1067"/>
         <source>Another client with your data logged in</source>
-        <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
+        <translation type="obsolete">Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1068"/>
         <source>Authentication error</source>
-        <translation>Authentifizierungsfehler</translation>
+        <translation type="obsolete">Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1069"/>
         <source>Your package expired</source>
-        <translation>Ihr Paket ist abgelaufen</translation>
+        <translation type="obsolete">Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1070"/>
         <source>Unknown API function</source>
-        <translation>Unbekannte API Funktion</translation>
+        <translation type="obsolete">Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1071"/>
         <source>Archive not available</source>
-        <translation>Archiv nicht verfügbar</translation>
+        <translation type="obsolete">Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1072"/>
         <source>Missing parameter (place)</source>
-        <translation>Fehlender Parameter (place)</translation>
+        <translation type="obsolete">Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1073"/>
         <source>Missing parameter (name)</source>
-        <translation>Fehlender Parameter (name)</translation>
+        <translation type="obsolete">Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1074"/>
         <source>Incorrect confirmation code</source>
-        <translation>Falscher Bestätigungscode</translation>
+        <translation type="obsolete">Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1075"/>
         <source>Current code is wrong</source>
-        <translation>Der aktuelle Code ist falsch</translation>
+        <translation type="obsolete">Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1076"/>
         <source>New code is wrong</source>
-        <translation>Neuer Code ist falsch</translation>
+        <translation type="obsolete">Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1077"/>
         <source>Missing parameter (val)</source>
-        <translation>Fehlender Parameter (val)</translation>
+        <translation type="obsolete">Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1078"/>
         <source>Value not allowed</source>
-        <translation>Wert nicht zulässig</translation>
+        <translation type="obsolete">Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1079"/>
         <source>Missing parameter</source>
-        <translation>Fehlende(r) Parameter</translation>
+        <translation type="obsolete">Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1080"/>
         <source>Missing parameter (id)</source>
-        <translation>Fehlender Parameter (id)</translation>
+        <translation type="obsolete">Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1081"/>
         <source>Missing parameter (fileid)</source>
-        <translation>Fehlender Parameter (fileid)</translation>
+        <translation type="obsolete">Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1082"/>
         <source>Missing parameter (type)</source>
-        <translation>Fehlender Parameter (type)</translation>
+        <translation type="obsolete">Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1083"/>
         <source>Missing parameter (query)</source>
-        <translation>Fehlender Parameter (query)</translation>
+        <translation type="obsolete">Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1084"/>
         <source>Bitrate not available</source>
-        <translation>Bitrate nicht verfügbar</translation>
+        <translation type="obsolete">Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1085"/>
         <source>Service not available</source>
-        <translation>Service nicht verfügbar</translation>
+        <translation type="obsolete">Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1086"/>
         <source>Query limit exceeded</source>
-        <translation>Query-Limit überschritten</translation>
+        <translation type="obsolete">Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1087"/>
         <source>Rule already exists</source>
-        <translation>Die Regel existiert bereits</translation>
+        <translation type="obsolete">Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1088"/>
-        <location filename="cnovoeclient.cpp" line="1089"/>
         <source>Missing parameter (cmd)</source>
-        <translation>Fehlender Parameter (cmd)</translation>
+        <translation type="obsolete">Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1090"/>
         <source>Bad value (rate)</source>
-        <translation>Falscher Wert für Einstufung</translation>
+        <translation type="obsolete">Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1091"/>
         <source>Can&apos;t find film</source>
-        <translation>Film nicht gefunden</translation>
+        <translation type="obsolete">Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="cnovoeclient.cpp" line="1092"/>
         <source>Film already added</source>
-        <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
+        <translation type="obsolete">Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
 </context>
 <context>
     <name>CNovoeParser</name>
     <message>
-        <location filename="cnovoeparser.cpp" line="80"/>
-        <location filename="cnovoeparser.cpp" line="179"/>
-        <location filename="cnovoeparser.cpp" line="236"/>
-        <location filename="cnovoeparser.cpp" line="295"/>
-        <location filename="cnovoeparser.cpp" line="375"/>
-        <location filename="cnovoeparser.cpp" line="441"/>
-        <location filename="cnovoeparser.cpp" line="540"/>
         <source>Error in %1</source>
-        <translation>Fehler in %1</translation>
-    </message>
-    <message>
-        <location filename="cnovoeparser.cpp" line="81"/>
-        <location filename="cnovoeparser.cpp" line="180"/>
-        <location filename="cnovoeparser.cpp" line="237"/>
-        <location filename="cnovoeparser.cpp" line="296"/>
-        <location filename="cnovoeparser.cpp" line="376"/>
-        <location filename="cnovoeparser.cpp" line="442"/>
-        <location filename="cnovoeparser.cpp" line="541"/>
-        <source>QtJson parser error in %1 %2():%3</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cnovoeparser.cpp" line="524"/>
-        <source>Update Entries for channel %1:
-</source>
-        <translation></translation>
+        <translation type="obsolete">Fehler in %1</translation>
     </message>
 </context>
 <context>
     <name>COtradaClient</name>
     <message>
-        <location filename="cotradaclient.cpp" line="95"/>
-        <source>Response for request &apos;%1&apos;:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="109"/>
-        <source>Request &apos;%2&apos; done!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="267"/>
-        <source>Patched channel list:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="460"/>
-        <source>We&apos;ve got following Cookie: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="478"/>
-        <source>Logout ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="497"/>
-        <source>Request Authentication ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="521"/>
-        <location filename="cotradaclient.cpp" line="651"/>
-        <source>Request Channel List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="545"/>
-        <source>Request Channel List (language filtered) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="569"/>
-        <source>Request available audio streams ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="674"/>
-        <source>Request Stream Server List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="694"/>
-        <source>Request Time Shift ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="714"/>
-        <source>Set TimeShift to %1 hour(s) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="735"/>
-        <source>Request Bit Rate ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="755"/>
-        <source>Set BitRate to %1 kbit/s ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="776"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="804"/>
-        <source>Set Streaming Server to %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="825"/>
-        <source>Set Http Buffer to %1 msec. ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="846"/>
-        <source>Request EPG for Channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="869"/>
-        <source>Request Archiv URL ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="899"/>
-        <source>Request VOD Genres ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="919"/>
-        <source>Request Videos ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="961"/>
-        <source>Request Video info for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="988"/>
-        <source>Request Video Url for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1016"/>
-        <source>Hide channel(s) %1 from channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1039"/>
-        <source>Show channel(s) %1 in channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1062"/>
-        <source>Request VOD manager data ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1085"/>
-        <source>Set VOD manager data (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1109"/>
-        <source>Add VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1131"/>
-        <source>Remove VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1152"/>
-        <source>Get VOD favourites (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1172"/>
-        <source>Change parent code ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1195"/>
-        <source>EPG current for Channels: %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1213"/>
-        <source>Check for available updates ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1231"/>
-        <source>Download image ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1250"/>
-        <source>Noop Ping</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1266"/>
-        <source>Download radio list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1292"/>
-        <source>Get radio stream Url ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1311"/>
-        <source>Set interface language ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaclient.cpp" line="1395"/>
         <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
+        <translation type="obsolete">Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1396"/>
         <source>Incorrect request</source>
-        <translation>Falsche Anfrage</translation>
+        <translation type="obsolete">Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1397"/>
         <source>Wrong login or password</source>
-        <translation>Falsche Login-Daten</translation>
+        <translation type="obsolete">Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1398"/>
         <source>Access denied</source>
-        <translation>Zugriff verboten</translation>
+        <translation type="obsolete">Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1399"/>
         <source>Login incorrect</source>
-        <translation>Falscher Login</translation>
+        <translation type="obsolete">Falscher Login</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1400"/>
         <source>Your contract is inactive</source>
-        <translation>Ihr Vertrag ist nicht aktiv</translation>
+        <translation type="obsolete">Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1401"/>
         <source>Your contract is paused</source>
-        <translation>Ihr Vertrag pausiert</translation>
+        <translation type="obsolete">Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1402"/>
         <source>Channel not found or not allowed</source>
-        <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
+        <translation type="obsolete">Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1403"/>
         <source>Error in request: Bad parameters</source>
-        <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
+        <translation type="obsolete">Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1404"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
+        <translation type="obsolete">Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1405"/>
         <source>Missing parameter (cid)</source>
-        <translation>Fehlender Parameter (cid)</translation>
+        <translation type="obsolete">Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1406"/>
         <source>Another client with your data logged in</source>
-        <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
+        <translation type="obsolete">Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1407"/>
         <source>Authentication error</source>
-        <translation>Authentifizierungsfehler</translation>
+        <translation type="obsolete">Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1408"/>
         <source>Your package expired</source>
-        <translation>Ihr Paket ist abgelaufen</translation>
+        <translation type="obsolete">Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1409"/>
         <source>Unknown API function</source>
-        <translation>Unbekannte API Funktion</translation>
+        <translation type="obsolete">Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1410"/>
         <source>Archive not available</source>
-        <translation>Archiv nicht verfügbar</translation>
+        <translation type="obsolete">Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1411"/>
         <source>Missing parameter (place)</source>
-        <translation>Fehlender Parameter (place)</translation>
+        <translation type="obsolete">Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1412"/>
         <source>Missing parameter (name)</source>
-        <translation>Fehlender Parameter (name)</translation>
+        <translation type="obsolete">Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1413"/>
         <source>Incorrect confirmation code</source>
-        <translation>Falscher Bestätigungscode</translation>
+        <translation type="obsolete">Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1414"/>
         <source>Current code is wrong</source>
-        <translation>Der aktuelle Code ist falsch</translation>
+        <translation type="obsolete">Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1415"/>
         <source>New code is wrong</source>
-        <translation>Neuer Code ist falsch</translation>
+        <translation type="obsolete">Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1416"/>
         <source>Missing parameter (val)</source>
-        <translation>Fehlender Parameter (val)</translation>
+        <translation type="obsolete">Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1417"/>
         <source>Value not allowed</source>
-        <translation>Wert nicht zulässig</translation>
+        <translation type="obsolete">Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1418"/>
         <source>Missing parameter</source>
-        <translation>Fehlende(r) Parameter</translation>
+        <translation type="obsolete">Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1419"/>
         <source>Missing parameter (id)</source>
-        <translation>Fehlender Parameter (id)</translation>
+        <translation type="obsolete">Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1420"/>
         <source>Missing parameter (fileid)</source>
-        <translation>Fehlender Parameter (fileid)</translation>
+        <translation type="obsolete">Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1421"/>
         <source>Missing parameter (type)</source>
-        <translation>Fehlender Parameter (type)</translation>
+        <translation type="obsolete">Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1422"/>
         <source>Missing parameter (query)</source>
-        <translation>Fehlender Parameter (query)</translation>
+        <translation type="obsolete">Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1423"/>
         <source>Bitrate not available</source>
-        <translation>Bitrate nicht verfügbar</translation>
+        <translation type="obsolete">Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1424"/>
         <source>Service not available</source>
-        <translation>Service nicht verfügbar</translation>
+        <translation type="obsolete">Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1425"/>
         <source>Query limit exceeded</source>
-        <translation>Query-Limit überschritten</translation>
+        <translation type="obsolete">Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1426"/>
         <source>Rule already exists</source>
-        <translation>Die Regel existiert bereits</translation>
+        <translation type="obsolete">Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1427"/>
-        <location filename="cotradaclient.cpp" line="1428"/>
         <source>Missing parameter (cmd)</source>
-        <translation>Fehlender Parameter (cmd)</translation>
+        <translation type="obsolete">Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1429"/>
         <source>Bad value (rate)</source>
-        <translation>Falscher Wert für Einstufung</translation>
+        <translation type="obsolete">Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1430"/>
         <source>Can&apos;t find film</source>
-        <translation>Film nicht gefunden</translation>
+        <translation type="obsolete">Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="cotradaclient.cpp" line="1431"/>
         <source>Film already added</source>
-        <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
+        <translation type="obsolete">Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
 </context>
 <context>
     <name>COtradaParser</name>
     <message>
-        <location filename="cotradaparser.cpp" line="94"/>
-        <location filename="cotradaparser.cpp" line="561"/>
-        <location filename="cotradaparser.cpp" line="693"/>
-        <location filename="cotradaparser.cpp" line="759"/>
-        <location filename="cotradaparser.cpp" line="853"/>
-        <location filename="cotradaparser.cpp" line="939"/>
-        <location filename="cotradaparser.cpp" line="1036"/>
-        <location filename="cotradaparser.cpp" line="1173"/>
-        <location filename="cotradaparser.cpp" line="1266"/>
-        <location filename="cotradaparser.cpp" line="1367"/>
-        <location filename="cotradaparser.cpp" line="1490"/>
-        <location filename="cotradaparser.cpp" line="1551"/>
         <source>Error in %1</source>
-        <translation>Fehler in %1</translation>
+        <translation type="obsolete">Fehler in %1</translation>
     </message>
     <message>
-        <location filename="cotradaparser.cpp" line="95"/>
-        <location filename="cotradaparser.cpp" line="562"/>
-        <location filename="cotradaparser.cpp" line="694"/>
-        <location filename="cotradaparser.cpp" line="760"/>
-        <location filename="cotradaparser.cpp" line="854"/>
-        <location filename="cotradaparser.cpp" line="940"/>
-        <location filename="cotradaparser.cpp" line="1037"/>
-        <location filename="cotradaparser.cpp" line="1174"/>
-        <location filename="cotradaparser.cpp" line="1267"/>
-        <location filename="cotradaparser.cpp" line="1368"/>
-        <location filename="cotradaparser.cpp" line="1491"/>
-        <location filename="cotradaparser.cpp" line="1552"/>
         <source>XML Error String: %1</source>
-        <translation>XML Fehler String: %1</translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="187"/>
-        <location filename="cotradaparser.cpp" line="364"/>
-        <location filename="cotradaparser.cpp" line="440"/>
-        <source>Found unused element %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="193"/>
-        <location filename="cotradaparser.cpp" line="370"/>
-        <source>Found unused child %1: %2 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="643"/>
-        <source>Options: %1 (TV: %2, RADIO: %3, VOD: %4, ARCHIVE: %5)</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="994"/>
-        <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="1019"/>
-        <source>Found Video &apos;%1&apos;; id=%2</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="1162"/>
-        <source>h264</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="1163"/>
-        <source>VOD</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="cotradaparser.cpp" line="1164"/>
-        <source>Video</source>
-        <translation></translation>
+        <translation type="obsolete">XML Fehler String: %1</translation>
     </message>
 </context>
 <context>
@@ -1551,435 +1031,159 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CRodnoeClient</name>
     <message>
-        <location filename="crodnoeclient.cpp" line="93"/>
-        <source>Response for request &apos;%1&apos;:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="107"/>
-        <source>Request &apos;%2&apos; done!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="260"/>
-        <source>Patched channel list:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="453"/>
-        <source>We&apos;ve got following Cookie: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="471"/>
-        <source>Logout ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="490"/>
-        <source>Request Authentication ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="514"/>
-        <location filename="crodnoeclient.cpp" line="583"/>
-        <source>Request Channel List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="538"/>
-        <source>Request Channel List (language filtered) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="562"/>
-        <source>Request available audio streams ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="606"/>
-        <source>Request Stream Server List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="626"/>
-        <source>Request Time Shift ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="646"/>
-        <source>Set TimeShift to %1 hour(s) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="667"/>
-        <source>Request Bit Rate ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="687"/>
-        <source>Set BitRate to %1 kbit/s ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="708"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="736"/>
-        <source>Set Streaming Server to %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="757"/>
-        <source>Set Http Buffer to %1 msec. ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="778"/>
-        <source>Request EPG for Channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="801"/>
-        <source>Request Archiv URL ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="831"/>
-        <source>Request VOD Genres ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="851"/>
-        <source>Request Videos ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="871"/>
-        <source>Request Video info for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="898"/>
-        <source>Request Video Url for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="926"/>
-        <source>Hide channel(s) %1 from channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="949"/>
-        <source>Show channel(s) %1 in channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="972"/>
-        <source>Request VOD manager data ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="995"/>
-        <source>Set VOD manager data (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1018"/>
-        <source>Add VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1045"/>
-        <source>Remove VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1072"/>
-        <source>Get VOD favourites (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1091"/>
-        <source>Change parent code ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1114"/>
-        <source>EPG current for Channels: %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1132"/>
-        <source>Check for available updates ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1150"/>
-        <source>Download image ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1169"/>
-        <source>Noop Ping</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1185"/>
-        <source>Download radio list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1211"/>
-        <source>Get radio stream Url ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1230"/>
-        <source>Set interface language ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeclient.cpp" line="1314"/>
         <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
+        <translation type="obsolete">Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1315"/>
         <source>Incorrect request</source>
-        <translation>Falsche Anfrage</translation>
+        <translation type="obsolete">Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1316"/>
         <source>Wrong login or password</source>
-        <translation>Falsche Login-Daten</translation>
+        <translation type="obsolete">Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1317"/>
         <source>Access denied</source>
-        <translation>Zugriff verboten</translation>
+        <translation type="obsolete">Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1318"/>
         <source>Login incorrect</source>
-        <translation>Falscher Login</translation>
+        <translation type="obsolete">Falscher Login</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1319"/>
         <source>Your contract is inactive</source>
-        <translation>Ihr Vertrag ist nicht aktiv</translation>
+        <translation type="obsolete">Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1320"/>
         <source>Your contract is paused</source>
-        <translation>Ihr Vertrag pausiert</translation>
+        <translation type="obsolete">Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1321"/>
         <source>Channel not found or not allowed</source>
-        <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
+        <translation type="obsolete">Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1322"/>
         <source>Error in request: Bad parameters</source>
-        <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
+        <translation type="obsolete">Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1323"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
+        <translation type="obsolete">Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1324"/>
         <source>Missing parameter (cid)</source>
-        <translation>Fehlender Parameter (cid)</translation>
+        <translation type="obsolete">Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1325"/>
         <source>Another client with your data logged in</source>
-        <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
+        <translation type="obsolete">Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1326"/>
         <source>Authentication error</source>
-        <translation>Authentifizierungsfehler</translation>
+        <translation type="obsolete">Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1327"/>
         <source>Your package expired</source>
-        <translation>Ihr Paket ist abgelaufen</translation>
+        <translation type="obsolete">Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1328"/>
         <source>Unknown API function</source>
-        <translation>Unbekannte API Funktion</translation>
+        <translation type="obsolete">Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1329"/>
         <source>Archive not available</source>
-        <translation>Archiv nicht verfügbar</translation>
+        <translation type="obsolete">Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1330"/>
         <source>Missing parameter (place)</source>
-        <translation>Fehlender Parameter (place)</translation>
+        <translation type="obsolete">Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1331"/>
         <source>Missing parameter (name)</source>
-        <translation>Fehlender Parameter (name)</translation>
+        <translation type="obsolete">Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1332"/>
         <source>Incorrect confirmation code</source>
-        <translation>Falscher Bestätigungscode</translation>
+        <translation type="obsolete">Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1333"/>
         <source>Current code is wrong</source>
-        <translation>Der aktuelle Code ist falsch</translation>
+        <translation type="obsolete">Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1334"/>
         <source>New code is wrong</source>
-        <translation>Neuer Code ist falsch</translation>
+        <translation type="obsolete">Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1335"/>
         <source>Missing parameter (val)</source>
-        <translation>Fehlender Parameter (val)</translation>
+        <translation type="obsolete">Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1336"/>
         <source>Value not allowed</source>
-        <translation>Wert nicht zulässig</translation>
+        <translation type="obsolete">Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1337"/>
         <source>Missing parameter</source>
-        <translation>Fehlende(r) Parameter</translation>
+        <translation type="obsolete">Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1338"/>
         <source>Missing parameter (id)</source>
-        <translation>Fehlender Parameter (id)</translation>
+        <translation type="obsolete">Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1339"/>
         <source>Missing parameter (fileid)</source>
-        <translation>Fehlender Parameter (fileid)</translation>
+        <translation type="obsolete">Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1340"/>
         <source>Missing parameter (type)</source>
-        <translation>Fehlender Parameter (type)</translation>
+        <translation type="obsolete">Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1341"/>
         <source>Missing parameter (query)</source>
-        <translation>Fehlender Parameter (query)</translation>
+        <translation type="obsolete">Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1342"/>
         <source>Bitrate not available</source>
-        <translation>Bitrate nicht verfügbar</translation>
+        <translation type="obsolete">Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1343"/>
         <source>Service not available</source>
-        <translation>Service nicht verfügbar</translation>
+        <translation type="obsolete">Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1344"/>
         <source>Query limit exceeded</source>
-        <translation>Query-Limit überschritten</translation>
+        <translation type="obsolete">Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1345"/>
         <source>Rule already exists</source>
-        <translation>Die Regel existiert bereits</translation>
+        <translation type="obsolete">Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1346"/>
-        <location filename="crodnoeclient.cpp" line="1347"/>
         <source>Missing parameter (cmd)</source>
-        <translation>Fehlender Parameter (cmd)</translation>
+        <translation type="obsolete">Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1348"/>
         <source>Bad value (rate)</source>
-        <translation>Falscher Wert für Einstufung</translation>
+        <translation type="obsolete">Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1349"/>
         <source>Can&apos;t find film</source>
-        <translation>Film nicht gefunden</translation>
+        <translation type="obsolete">Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="crodnoeclient.cpp" line="1350"/>
         <source>Film already added</source>
-        <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
+        <translation type="obsolete">Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
 </context>
 <context>
     <name>CRodnoeParser</name>
     <message>
-        <location filename="crodnoeparser.cpp" line="88"/>
-        <location filename="crodnoeparser.cpp" line="555"/>
-        <location filename="crodnoeparser.cpp" line="673"/>
-        <location filename="crodnoeparser.cpp" line="739"/>
-        <location filename="crodnoeparser.cpp" line="833"/>
-        <location filename="crodnoeparser.cpp" line="919"/>
-        <location filename="crodnoeparser.cpp" line="1014"/>
-        <location filename="crodnoeparser.cpp" line="1154"/>
-        <location filename="crodnoeparser.cpp" line="1247"/>
-        <location filename="crodnoeparser.cpp" line="1348"/>
-        <location filename="crodnoeparser.cpp" line="1471"/>
-        <location filename="crodnoeparser.cpp" line="1532"/>
         <source>Error in %1</source>
-        <translation>Fehler in %1</translation>
+        <translation type="obsolete">Fehler in %1</translation>
     </message>
     <message>
-        <location filename="crodnoeparser.cpp" line="89"/>
-        <location filename="crodnoeparser.cpp" line="556"/>
-        <location filename="crodnoeparser.cpp" line="674"/>
-        <location filename="crodnoeparser.cpp" line="740"/>
-        <location filename="crodnoeparser.cpp" line="834"/>
-        <location filename="crodnoeparser.cpp" line="920"/>
-        <location filename="crodnoeparser.cpp" line="1015"/>
-        <location filename="crodnoeparser.cpp" line="1155"/>
-        <location filename="crodnoeparser.cpp" line="1248"/>
-        <location filename="crodnoeparser.cpp" line="1349"/>
-        <location filename="crodnoeparser.cpp" line="1472"/>
-        <location filename="crodnoeparser.cpp" line="1533"/>
         <source>XML Error String: %1</source>
-        <translation>XML Fehler String: %1</translation>
-    </message>
-    <message>
-        <location filename="crodnoeparser.cpp" line="181"/>
-        <location filename="crodnoeparser.cpp" line="358"/>
-        <location filename="crodnoeparser.cpp" line="434"/>
-        <source>Found unused element %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeparser.cpp" line="187"/>
-        <location filename="crodnoeparser.cpp" line="364"/>
-        <source>Found unused child %1: %2 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="crodnoeparser.cpp" line="974"/>
-        <source>Got Type: %1, Count: %2, Page: %3, Total: %4</source>
-        <translation></translation>
+        <translation type="obsolete">XML Fehler String: %1</translation>
     </message>
 </context>
 <context>
@@ -2999,343 +2203,148 @@ Um den Eltern-Code zu ändern, stellen Sie sicher, dass:
 <context>
     <name>CTelepromClient</name>
     <message>
-        <location filename="ctelepromclient.cpp" line="84"/>
-        <source>Response for request &apos;%1&apos;:
- ==8&lt;==8&lt;==8&lt;==
-%2
- ==&gt;8==&gt;8==&gt;8==</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="98"/>
-        <source>Request &apos;%2&apos; done!</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="328"/>
-        <source>We&apos;ve got following Cookie: %1</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="346"/>
-        <source>Logout ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="366"/>
-        <source>Request Authentication ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="389"/>
-        <source>Request Channel List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="411"/>
-        <source>Request Stream Server List ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="432"/>
-        <source>Request Time Shift ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="453"/>
-        <source>Set TimeShift to %1 hour(s) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="474"/>
-        <source>Request Bit Rate ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="495"/>
-        <source>Set BitRate to %1 kbit/s ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="516"/>
-        <source>Request URL for channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="544"/>
-        <source>Set Streaming Server to %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="565"/>
-        <source>Set Http Buffer to %1 msec. ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="586"/>
-        <source>Request EPG for Channel %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="609"/>
-        <source>Request Archiv URL ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="636"/>
-        <source>Request VOD Genres ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="656"/>
-        <source>Request Videos ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="685"/>
-        <source>Request Video info for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="712"/>
-        <source>Request Video Url for video %1...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="740"/>
-        <source>Hide channel(s) %1 from channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="763"/>
-        <source>Show channel(s) %1 in channel list ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="786"/>
-        <source>Request VOD manager data ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="809"/>
-        <source>Set VOD manager data (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="832"/>
-        <source>Add VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="859"/>
-        <source>Remove VOD favourite (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="886"/>
-        <source>Get VOD favourites (%1) ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="905"/>
-        <source>Change parent code ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="928"/>
-        <source>EPG current for Channels: %1 ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="947"/>
-        <source>Check for available updates ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="965"/>
-        <source>Download image ...</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="ctelepromclient.cpp" line="1046"/>
         <source>Unknown error</source>
-        <translation>Unbekannter Fehler</translation>
+        <translation type="obsolete">Unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1047"/>
         <source>Incorrect request</source>
-        <translation>Falsche Anfrage</translation>
+        <translation type="obsolete">Falsche Anfrage</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1048"/>
         <source>Wrong login or password</source>
-        <translation>Falsche Login-Daten</translation>
+        <translation type="obsolete">Falsche Login-Daten</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1049"/>
         <source>Access denied</source>
-        <translation>Zugriff verboten</translation>
+        <translation type="obsolete">Zugriff verboten</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1050"/>
         <source>Login incorrect</source>
-        <translation>Falscher Login</translation>
+        <translation type="obsolete">Falscher Login</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1051"/>
         <source>Your contract is inactive</source>
-        <translation>Ihr Vertrag ist nicht aktiv</translation>
+        <translation type="obsolete">Ihr Vertrag ist nicht aktiv</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1052"/>
         <source>Your contract is paused</source>
-        <translation>Ihr Vertrag pausiert</translation>
+        <translation type="obsolete">Ihr Vertrag pausiert</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1053"/>
         <source>Channel not found or not allowed</source>
-        <translation>Kanal nicht gefunden oder nicht erlaubt</translation>
+        <translation type="obsolete">Kanal nicht gefunden oder nicht erlaubt</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1054"/>
         <source>Error in request: Bad parameters</source>
-        <translation>Fehler in der Anfrage: Falsche(r) Parameter</translation>
+        <translation type="obsolete">Fehler in der Anfrage: Falsche(r) Parameter</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1055"/>
         <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation>Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
+        <translation type="obsolete">Fehlender Parameter (day) in Form &lt;DDMMYY&gt;</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1056"/>
         <source>Missing parameter (cid)</source>
-        <translation>Fehlender Parameter (cid)</translation>
+        <translation type="obsolete">Fehlender Parameter (cid)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1057"/>
         <source>Another client with your data logged in</source>
-        <translation>Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
+        <translation type="obsolete">Ein anderer Client hat sich mit Ihren Daten eingeloggt</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1058"/>
         <source>Authentication error</source>
-        <translation>Authentifizierungsfehler</translation>
+        <translation type="obsolete">Authentifizierungsfehler</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1059"/>
         <source>Your package expired</source>
-        <translation>Ihr Paket ist abgelaufen</translation>
+        <translation type="obsolete">Ihr Paket ist abgelaufen</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1060"/>
         <source>Unknown API function</source>
-        <translation>Unbekannte API Funktion</translation>
+        <translation type="obsolete">Unbekannte API Funktion</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1061"/>
         <source>Archive not available</source>
-        <translation>Archiv nicht verfügbar</translation>
+        <translation type="obsolete">Archiv nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1062"/>
         <source>Missing parameter (place)</source>
-        <translation>Fehlender Parameter (place)</translation>
+        <translation type="obsolete">Fehlender Parameter (place)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1063"/>
         <source>Missing parameter (name)</source>
-        <translation>Fehlender Parameter (name)</translation>
+        <translation type="obsolete">Fehlender Parameter (name)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1064"/>
         <source>Incorrect confirmation code</source>
-        <translation>Falscher Bestätigungscode</translation>
+        <translation type="obsolete">Falscher Bestätigungscode</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1065"/>
         <source>Current code is wrong</source>
-        <translation>Der aktuelle Code ist falsch</translation>
+        <translation type="obsolete">Der aktuelle Code ist falsch</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1066"/>
         <source>New code is wrong</source>
-        <translation>Neuer Code ist falsch</translation>
+        <translation type="obsolete">Neuer Code ist falsch</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1067"/>
         <source>Missing parameter (val)</source>
-        <translation>Fehlender Parameter (val)</translation>
+        <translation type="obsolete">Fehlender Parameter (val)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1068"/>
         <source>Value not allowed</source>
-        <translation>Wert nicht zulässig</translation>
+        <translation type="obsolete">Wert nicht zulässig</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1069"/>
         <source>Missing parameter</source>
-        <translation>Fehlende(r) Parameter</translation>
+        <translation type="obsolete">Fehlende(r) Parameter</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1070"/>
         <source>Missing parameter (id)</source>
-        <translation>Fehlender Parameter (id)</translation>
+        <translation type="obsolete">Fehlender Parameter (id)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1071"/>
         <source>Missing parameter (fileid)</source>
-        <translation>Fehlender Parameter (fileid)</translation>
+        <translation type="obsolete">Fehlender Parameter (fileid)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1072"/>
         <source>Missing parameter (type)</source>
-        <translation>Fehlender Parameter (type)</translation>
+        <translation type="obsolete">Fehlender Parameter (type)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1073"/>
         <source>Missing parameter (query)</source>
-        <translation>Fehlender Parameter (query)</translation>
+        <translation type="obsolete">Fehlender Parameter (query)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1074"/>
         <source>Bitrate not available</source>
-        <translation>Bitrate nicht verfügbar</translation>
+        <translation type="obsolete">Bitrate nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1075"/>
         <source>Service not available</source>
-        <translation>Service nicht verfügbar</translation>
+        <translation type="obsolete">Service nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1076"/>
         <source>Query limit exceeded</source>
-        <translation>Query-Limit überschritten</translation>
+        <translation type="obsolete">Query-Limit überschritten</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1077"/>
         <source>Rule already exists</source>
-        <translation>Die Regel existiert bereits</translation>
+        <translation type="obsolete">Die Regel existiert bereits</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1078"/>
-        <location filename="ctelepromclient.cpp" line="1079"/>
         <source>Missing parameter (cmd)</source>
-        <translation>Fehlender Parameter (cmd)</translation>
+        <translation type="obsolete">Fehlender Parameter (cmd)</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1080"/>
         <source>Bad value (rate)</source>
-        <translation>Falscher Wert für Einstufung</translation>
+        <translation type="obsolete">Falscher Wert für Einstufung</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1081"/>
         <source>Can&apos;t find film</source>
-        <translation>Film nicht gefunden</translation>
+        <translation type="obsolete">Film nicht gefunden</translation>
     </message>
     <message>
-        <location filename="ctelepromclient.cpp" line="1082"/>
         <source>Film already added</source>
-        <translation>Film wurde schon zu Favoriten hinzugefügt</translation>
+        <translation type="obsolete">Film wurde schon zu Favoriten hinzugefügt</translation>
     </message>
 </context>
 <context>
