@@ -18,6 +18,7 @@
 #include <version_info.h>
 #include "csettingsdlg.h"
 #include "defdef.h"
+#include "cparser.h"
 
 
 namespace Ui {
@@ -34,13 +35,13 @@ namespace Ui {
 class CAboutDialog : public QDialog {
     Q_OBJECT
 public:
-    CAboutDialog(QWidget *parent, QString sExpires);
+    CAboutDialog(QWidget *parent, const cparser::SAccountInfo& aInfo);
     ~CAboutDialog();
     void ConnectSettings (CSettingsDlg *pSet);
 
 protected:
     virtual void changeEvent(QEvent *e);
-    void FillInfo (QString sExpires);
+    void FillInfo (const cparser::SAccountInfo& aInfo);
 
 private:
     Ui::CAboutDialog *ui;

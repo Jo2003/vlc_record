@@ -32,12 +32,12 @@ extern CHtmlWriter *pHtml;
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires) :
+CAboutDialog::CAboutDialog(QWidget *parent, const cparser::SAccountInfo& aInfo) :
     QDialog(parent),
     ui(new Ui::CAboutDialog)
 {
    ui->setupUi(this);
-   FillInfo(sExpires);
+   FillInfo(aInfo);
    ui->textBrowser->setHtml(strAbout);
 }
 
@@ -101,11 +101,11 @@ void CAboutDialog::changeEvent(QEvent *e)
 |  Author: Jo2003
 |  Description: fill about info into string
 |
-|  Parameters: sExpires - string with date and time
+|  Parameters: aInfo ref. to account info
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-void CAboutDialog::FillInfo(QString sExpires)
+void CAboutDialog::FillInfo(const cparser::SAccountInfo& aInfo)
 {
    strAbout = "";
    QString td, rows, link;
@@ -146,15 +146,54 @@ void CAboutDialog::FillInfo(QString sExpires)
    td    = pHtml->tableCell("SDK:"                 , "font-weight: bold;");
    td   += pHtml->tableCell(link                   , "padding-left: 7px;");
    rows += pHtml->tableRow(td);
-   // expires ...
-   td    = pHtml->tableCell(tr("Account expires:") , "font-weight: bold;");
-   td   += pHtml->tableCell(sExpires               , "padding-left: 7px;");
-   rows += pHtml->tableRow(td);
    // icons ...
    link  = pHtml->link("http://dryicons.com", "dryicons.com", "", linkcss);
    td    = pHtml->tableCell("Most icons:"          , "font-weight: bold;");
    td   += pHtml->tableCell(link                   , "padding-left: 7px;");
    rows += pHtml->tableRow(td);
+
+   // row
+   td    = pHtml->tableCell("<hr />", "", 2);
+   rows += pHtml->tableRow(td);
+
+   // spacer
+   td    = pHtml->tableCell("", "", 2);
+   rows += pHtml->tableRow(td);
+
+   td    = pHtml->tableCell(tr("Made for %1").arg(pCustomization->strVal("APP_NAME")), "font-weight: bold; color: #800;", 2, "center");
+   rows += pHtml->tableRow(td);
+
+   // spacer
+   td    = pHtml->tableCell("", "", 2);
+   rows += pHtml->tableRow(td);
+
+   td    = pHtml->tableCell(tr("Account Info:"), "font-weight: bold;", 2);
+   rows += pHtml->tableRow(td);
+
+   td    = pHtml->tableCell(tr("User"));
+   td   += pHtml->tableCell(aInfo.sName, "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
+
+   td    = pHtml->tableCell(tr("E-Mail"));
+   td   += pHtml->tableCell(aInfo.sMail, "padding-left: 7px;");
+   rows += pHtml->tableRow(td);
+
+   // spacer
+   td    = pHtml->tableCell("", "", 2);
+   rows += pHtml->tableRow(td);
+
+   td    = pHtml->tableCell(tr("Packets:"), "font-weight: bold;", 2);
+   rows += pHtml->tableRow(td);
+
+   // Services ...
+   foreach (const QString& key, aInfo.services.keys())
+   {
+       td    = pHtml->tableCell(key);
+       td   += pHtml->tableCell(aInfo.services.value(key), "padding-left: 7px;");
+       rows += pHtml->tableRow(td);
+   }
+
+
 
    // wrap into table ...
    strAbout += pHtml->htmlTag("table", rows) + "<br /> <br />";

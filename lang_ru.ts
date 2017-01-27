@@ -58,29 +58,57 @@ p, li { white-space: pre-wrap; }
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="150"/>
-        <source>Account expires:</source>
-        <translation>Пакет истекает:</translation>
+        <location filename="caboutdialog.cpp" line="163"/>
+        <source>Made for %1</source>
+        <translation>Сделано для %1</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="165"/>
+        <location filename="caboutdialog.cpp" line="170"/>
+        <source>Account Info:</source>
+        <translation>Информация об аккаунте:</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="173"/>
+        <source>User</source>
+        <translation>Абонемент</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="177"/>
+        <source>E-Mail</source>
+        <translation>е-мейл</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="185"/>
+        <source>Packets:</source>
+        <translation>Пакеты:</translation>
+    </message>
+    <message>
+        <source>Account expires:</source>
+        <translation type="obsolete">Пакет истекает:</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="204"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="162"/>
+        <location filename="caboutdialog.cpp" line="201"/>
         <source>This program is free software!</source>
         <oldsource>&lt;b&gt;This program is free software!&lt;/b&gt;</oldsource>
         <translation>Эта программа является бесплатной!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="163"/>
+        <source>Name</source>
+        <translation type="obsolete">Название</translation>
+    </message>
+    <message>
+        <location filename="caboutdialog.cpp" line="202"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если она Вам понравилась, Вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="166"/>
+        <location filename="caboutdialog.cpp" line="205"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
@@ -2156,46 +2184,46 @@ To change the parent code make sure:
 <context>
     <name>CTVClubParser</name>
     <message>
-        <location filename="ctvclubparser.cpp" line="80"/>
-        <source>Found service &apos;%1&apos; (%2) ...</source>
+        <location filename="ctvclubparser.cpp" line="88"/>
+        <source>Found service %2 ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubparser.cpp" line="93"/>
-        <location filename="ctvclubparser.cpp" line="165"/>
-        <location filename="ctvclubparser.cpp" line="212"/>
-        <location filename="ctvclubparser.cpp" line="256"/>
-        <location filename="ctvclubparser.cpp" line="313"/>
-        <location filename="ctvclubparser.cpp" line="372"/>
-        <location filename="ctvclubparser.cpp" line="452"/>
-        <location filename="ctvclubparser.cpp" line="518"/>
-        <location filename="ctvclubparser.cpp" line="619"/>
-        <location filename="ctvclubparser.cpp" line="673"/>
+        <location filename="ctvclubparser.cpp" line="103"/>
+        <location filename="ctvclubparser.cpp" line="175"/>
+        <location filename="ctvclubparser.cpp" line="222"/>
+        <location filename="ctvclubparser.cpp" line="266"/>
+        <location filename="ctvclubparser.cpp" line="323"/>
+        <location filename="ctvclubparser.cpp" line="382"/>
+        <location filename="ctvclubparser.cpp" line="462"/>
+        <location filename="ctvclubparser.cpp" line="528"/>
+        <location filename="ctvclubparser.cpp" line="629"/>
+        <location filename="ctvclubparser.cpp" line="683"/>
         <source>Error in %1</source>
         <translation>Ошибка в %1</translation>
     </message>
     <message>
-        <location filename="ctvclubparser.cpp" line="94"/>
-        <location filename="ctvclubparser.cpp" line="166"/>
-        <location filename="ctvclubparser.cpp" line="213"/>
-        <location filename="ctvclubparser.cpp" line="257"/>
-        <location filename="ctvclubparser.cpp" line="314"/>
-        <location filename="ctvclubparser.cpp" line="373"/>
-        <location filename="ctvclubparser.cpp" line="453"/>
-        <location filename="ctvclubparser.cpp" line="519"/>
-        <location filename="ctvclubparser.cpp" line="620"/>
-        <location filename="ctvclubparser.cpp" line="674"/>
+        <location filename="ctvclubparser.cpp" line="104"/>
+        <location filename="ctvclubparser.cpp" line="176"/>
+        <location filename="ctvclubparser.cpp" line="223"/>
+        <location filename="ctvclubparser.cpp" line="267"/>
+        <location filename="ctvclubparser.cpp" line="324"/>
+        <location filename="ctvclubparser.cpp" line="383"/>
+        <location filename="ctvclubparser.cpp" line="463"/>
+        <location filename="ctvclubparser.cpp" line="529"/>
+        <location filename="ctvclubparser.cpp" line="630"/>
+        <location filename="ctvclubparser.cpp" line="684"/>
         <source>QtJson parser error in %1 %2():%3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubparser.cpp" line="603"/>
+        <location filename="ctvclubparser.cpp" line="613"/>
         <source>Update Entries for channel %1:
 </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="ctvclubparser.cpp" line="659"/>
+        <location filename="ctvclubparser.cpp" line="669"/>
         <source>%1 (%2HP @ %3%)</source>
         <translation>%1 (%2ЛС @ %3%)</translation>
     </message>

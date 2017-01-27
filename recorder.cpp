@@ -721,7 +721,7 @@ void Recorder::on_cbxChannelGroup_activated(int index)
 \----------------------------------------------------------------- */
 void Recorder::on_pushAbout_clicked()
 {
-   CAboutDialog dlg(this, accountInfo.sExpires);
+   CAboutDialog dlg(this, accountInfo);
    dlg.ConnectSettings(&Settings);
    dlg.exec();
 }
@@ -3076,7 +3076,7 @@ void Recorder::slotFavBtnContext(const QPoint &pt)
 \----------------------------------------------------------------- */
 void Recorder::slotSplashScreen()
 {
-   CAboutDialog dlg(this, accountInfo.sExpires);
+   CAboutDialog dlg(this, accountInfo);
    dlg.ConnectSettings(&Settings);
    dlg.exec();
 }

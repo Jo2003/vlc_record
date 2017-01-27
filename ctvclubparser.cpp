@@ -65,19 +65,29 @@ int CTVClubParser::parseCookie (const QString &sResp, QString &sCookie, cparser:
         // check offset ...
         checkTimeOffSet (session.value("now").toUInt());
 
-        // account info ...
+        // account ...
         QtJson::JsonObject account = contentMap.value("account").toMap();
 
         // archive ...
         QtJson::JsonObject options = account.value("options").toMap();
         sInf.bHasArchive = options.value("archive").toBool();
 
+        // account info ...
+        QtJson::JsonObject info = account.value("info").toMap();
+        sInf.sName = info.value("name").toString();
+        sInf.sMail = info.value("mail").toString();
+
         // services ...
         foreach (const QVariant& service, account.value("services").toList())
         {
             QtJson::JsonObject serv = service.toMap();
+            QString servName = QString("%1 (%2)")
+                    .arg(serv.value("name").toString())
+                    .arg(serv.value("type").toString());
 
-            mInfo(tr("Found service '%1' (%2) ...").arg(serv.value("name").toString()).arg(serv.value("type").toString()));
+            mInfo(tr("Found service %2 ...").arg(servName));
+
+            sInf.services[servName] = QDateTime::fromTime_t(serv.value("expire").toUInt()).toString(DEF_TIME_FORMAT);
 
             if (serv.value("id").toInt() == 1)
             {

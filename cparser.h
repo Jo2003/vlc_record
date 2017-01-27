@@ -127,8 +127,11 @@ namespace cparser
    {
       QString   sExpires;
       QDateTime dtExpires;
+      QString   sName;
+      QString   sMail;
       bool      bHasArchive;
       bool      bHasVOD;
+      QMap<QString, QString> services;
    };
 
    struct SGenreInfo
