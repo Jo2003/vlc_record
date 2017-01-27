@@ -16,10 +16,10 @@
 
 #include <QFrame>
 #include <QDragEnterEvent>
-#include <QDragLeaveEvent>
 #include <QDropEvent>
 #include <QDataStream>
 #include <QMap>
+
 
 #include "clogfile.h"
 #include "qchanlistdelegate.h"

@@ -117,7 +117,7 @@
     #define MAX_ARCHIV_AGE    1209000     // < 2 weeks in seconds
 #endif // MAX_ARCHIV_AGE
 #ifndef MAX_NO_FAVOURITES
-    #define MAX_NO_FAVOURITES 10          // max. number of favourites ...
+    #define MAX_NO_FAVOURITES 50          // max. number of favourites ...
 #endif // MAX_NO_FAVOURITES
 
 #define MAX_FAV_IN_ROW    5               // number of favorites in row

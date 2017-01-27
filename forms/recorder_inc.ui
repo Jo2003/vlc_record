@@ -171,7 +171,7 @@ QTabBar::tab:hover {
               <property name="title">
                <string> Channels </string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_6">
+              <layout class="QVBoxLayout" name="verticalLayout_6" stretch="2,0,6">
                <property name="spacing">
                 <number>4</number>
                </property>
@@ -188,62 +188,96 @@ QTabBar::tab:hover {
                 <number>4</number>
                </property>
                <item>
-                <widget class="QFavFrame" name="hFrameFav">
-                 <property name="contextMenuPolicy">
-                  <enum>Qt::DefaultContextMenu</enum>
-                 </property>
-                 <property name="acceptDrops">
+                <widget class="QScrollArea" name="scrollArea">
+                 <property name="widgetResizable">
                   <bool>true</bool>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">QFrame#hFrameFav {
+                 <widget class="QWidget" name="scrollAreaWidgetContents">
+                  <property name="geometry">
+                   <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>233</width>
+                    <height>111</height>
+                   </rect>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_8">
+                   <property name="spacing">
+                    <number>0</number>
+                   </property>
+                   <property name="leftMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
+                   <item>
+                    <widget class="QFavFrame" name="hFrameFav">
+                     <property name="contextMenuPolicy">
+                      <enum>Qt::DefaultContextMenu</enum>
+                     </property>
+                     <property name="acceptDrops">
+                      <bool>true</bool>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QFrame#hFrameFav {
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.7 grey, stop:1 #dedede);
 };</string>
-                 </property>
-                 <property name="frameShape">
-                  <enum>QFrame::Panel</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Raised</enum>
-                 </property>
-                 <layout class="QHBoxLayout" name="hLayoutFavFrame">
-                  <property name="spacing">
-                   <number>0</number>
-                  </property>
-                  <item>
-                   <spacer name="hSpacerLeft">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item>
-                   <layout class="QGridLayout" name="gLayoutFav">
-                    <property name="spacing">
-                     <number>4</number>
-                    </property>
-                   </layout>
-                  </item>
-                  <item>
-                   <spacer name="hlSpacerRight">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
+                     </property>
+                     <property name="frameShape">
+                      <enum>QFrame::Panel</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Raised</enum>
+                     </property>
+                     <layout class="QHBoxLayout" name="hLayoutFavFrame">
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <spacer name="hSpacerLeft">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                      <item>
+                       <layout class="QGridLayout" name="gLayoutFav">
+                        <property name="spacing">
+                         <number>4</number>
+                        </property>
+                       </layout>
+                      </item>
+                      <item>
+                       <spacer name="hlSpacerRight">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
                 </widget>
                </item>
                <item>
@@ -1806,8 +1840,8 @@ border-top: 0px;
   <tabstop>btnVodSearch</tabstop>
  </tabstops>
  <resources>
-  <include location="../common.qrc"/>
   <include location="../lcd.qrc"/>
+  <include location="../common.qrc"/>
  </resources>
  <connections>
   <connection>

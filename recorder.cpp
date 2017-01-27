@@ -3037,31 +3037,31 @@ void Recorder::slotHandleFavAction(QAction *pAct)
 \----------------------------------------------------------------- */
 void Recorder::slotFavBtnContext(const QPoint &pt)
 {
-   QString     sLogoFile;
-   QFileInfo   fInfo;
+    QString     sLogoFile, logo, name;
+    int         gid;
+    QFileInfo   fInfo;
 
-   CleanContextMenu();
+    CleanContextMenu();
 
-   pChanMap->lock();
-   for (int i = 0; i < lFavourites.count(); i++)
-   {
-      pContextAct[i] = new CFavAction(&favContext);
+    for (int i = 0; i < lFavourites.count(); i++)
+    {
+        pContextAct[i] = new CFavAction(&favContext);
 
-      if (pContextAct[i])
-      {
-         fInfo.setFile(pChanMap->value(lFavourites[i]).sIcon);
-         sLogoFile = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
-         pContextAct[i]->setIcon(QIcon(sLogoFile));
-         pContextAct[i]->setText(tr("Remove \"%1\" from favourites").arg(pChanMap->value(lFavourites[i]).sName));
-         pContextAct[i]->setFavData(lFavourites[i], kartinafav::FAV_DEL);
-         favContext.addAction(pContextAct[i]);
-      }
-   }
-   pChanMap->unlock();
+        if (pContextAct[i])
+        {
+            Settings.favData(lFavourites[i], gid, name, logo);
+            fInfo.setFile(logo);
+            sLogoFile = QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName());
+            pContextAct[i]->setIcon(QIcon(sLogoFile));
+            pContextAct[i]->setText(tr("Remove \"%1\" from favourites").arg(name));
+            pContextAct[i]->setFavData(lFavourites[i], kartinafav::FAV_DEL);
+            favContext.addAction(pContextAct[i]);
+        }
+    }
 
-   // display menu over first button since we have no way
-   // to find out on over which button we clicked ...
-   favContext.exec(pFavBtn[0]->mapToGlobal(pt));
+    // display menu over first button since we have no way
+    // to find out on over which button we clicked ...
+    favContext.exec(pFavBtn[0]->mapToGlobal(pt));
 }
 
 /* -----------------------------------------------------------------\
