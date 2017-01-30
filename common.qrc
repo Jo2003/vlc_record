@@ -29,6 +29,7 @@
         <file alias="cam">resources/photo_camera.png</file>
         <file alias="cam2">resources/camera.png</file>
         <file alias="undo_filter">resources/filter_undo.png</file>
+        <file alias="sort">resources/sort.png</file>
     </qresource>
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>

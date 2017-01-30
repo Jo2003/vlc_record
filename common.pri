@@ -71,7 +71,9 @@ SOURCES += main.cpp \
     qhlscontrol.cpp \
     qexpirenotifydlg.cpp \
     qretrydialog.cpp \
-    buildstamp.cc
+    buildstamp.cc \
+    cfavbutton.cpp \
+    cfavsortdlg.cpp
 HEADERS += recorder.h \
     csettingsdlg.h \
     templates.h \
@@ -130,7 +132,9 @@ HEADERS += recorder.h \
     qtimelabel.h \
     qhlscontrol.h \
     qexpirenotifydlg.h \
-    qretrydialog.h
+    qretrydialog.h \
+    cfavbutton.h \
+    cfavsortdlg.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \
@@ -143,7 +147,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/qwatchlistdlg.ui \
     forms/cplayer.ui \
     forms/recorder_inc.ui \
-    forms/qretrydialog.ui
+    forms/qretrydialog.ui \
+    forms/cfavsortdlg.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

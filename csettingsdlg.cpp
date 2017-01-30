@@ -74,7 +74,7 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
 
    // fill in buffer values ...
-   vBuffs << 1.5 << 3 << 5 << 8 << 15 << 20 << 30 << 45 << 60 << 90;
+   vBuffs << 0 << 0.5 << 1.5 << 2 << 3 << 5 << 8 << 15 << 20 << 30 << 45 << 60 << 90;
    qSort(vBuffs);
 
 #ifdef ENABLE_AD_SWITCH
@@ -261,11 +261,6 @@ void CSettingsDlg::readSettings()
    }
 
    m_ui->tabWidget->setTabEnabled(2, pDb->intValue("AdvSet") ? true : false);
-
-   if (m_ui->checkAdvanced->isChecked())
-   {
-      vBuffs.prepend(0.5);
-   }
 
    // fill player module box with available modules ...
    folder.setPath(pFolders->getModDir());

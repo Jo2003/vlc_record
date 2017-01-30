@@ -66,6 +66,7 @@
 #include "qvlcvideowidget.h"
 #include "qhlscontrol.h"
 #include "qretrydialog.h"
+#include "cfavbutton.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -120,6 +121,9 @@ namespace Ui
        DM_NORMAL,
        DM_UNKNOWN
     };
+
+    typedef QVector<CFavButton*> FavVector_t;
+    typedef QList<int>           FavList_t;
 }
 
 /********************************************************************\
@@ -156,11 +160,9 @@ private:
     CVlcCtrl                        vlcCtrl;
     CTranslit                       translit;
     int                             iFontSzChg;
-    QList<int>                      lFavourites;
-    QToolButton                    *pFavBtn[MAX_NO_FAVOURITES];
-    CFavAction                     *pFavAct[MAX_NO_FAVOURITES];
+    Ui::FavList_t                   lFavourites;
+    Ui::FavVector_t                 vFavourites;
     QMenu                           favContext;
-    CFavAction                     *pContextAct[MAX_NO_FAVOURITES];
     IncPlay::ePlayStates            ePlayState;
     QVector<CShortcutEx *>          vShortcutPool;
     int                             iDwnReqId;
@@ -208,7 +210,6 @@ protected:
     void CreateSystray ();
     bool WantToStopRec ();
     void HandleFavourites ();
-    void CleanContextMenu ();
     int  CheckCookie (const QString &cookie);
     int  AllowAction (IncPlay::ePlayStates newState);
     bool TimeJumpAllowed ();
@@ -280,8 +281,6 @@ private slots:
     void slotShutdown ();
     void slotChanListContext (const QPoint &pt);
     void slotChgFavourites (QAction *pAct);
-    void slotHandleFavAction (QAction *pAct);
-    void slotFavBtnContext (const QPoint &pt);
     void slotSplashScreen ();
     void slotIncPlayState (int);
     void slotLogout (const QString &str);
@@ -327,6 +326,12 @@ private slots:
     void slotChanGroups(const QString &str);
     void on_pushUndoFilter_clicked();
     void slotSettings(QString resp);
+
+    // nre fav stuff ...
+    void slotRemoveFav(int cid);
+    void activateFav(int cid);
+    void reorderFavs();
+
 
 signals:
     void sigShow ();

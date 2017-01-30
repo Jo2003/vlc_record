@@ -89,14 +89,14 @@
 "}\n"
 
 #define FAVBTN_STYLE \
-"QToolButton {\n"\
+"QPushButton {\n"\
 "  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
 "  border: 1px solid gray;\n"\
 "  border-radius: 5px;\n"\
 "  min-width: 33px;\n"\
 "  min-height: 33px;\n"\
 "}\n"\
-"QToolButton:pressed {\n"\
+"QPushButton:pressed {\n"\
 "  background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);\n"\
 "  border-bottom-color: white;\n"\
 "}\n"
