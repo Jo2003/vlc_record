@@ -1332,28 +1332,42 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
             // get new gmt value ...
             pos = timer.pos() + iSeconds;
 
-            // trigger request for the new stream position ...
-            QString req = QString("cid=%1&gmt=%2")
-                            .arg(showInfo.channelId()).arg(pos);
-
-            // mark spooling as active ...
-            bSpoolPending = true;
-
-            enableDisablePlayControl (false);
-
-            // save jump time ...
-            showInfo.setLastJumpTime(pos);
-
-            emit sigStopOnDemand();
-
-            pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
-
-            // do we reach another show?
-            if ((pos < mToGmt(missionControl.posMinimum()))
-                || (pos > mToGmt(missionControl.posMaximum())))
+            // make sure we don't spool into future ...
+            if (pos > (QDateTime::currentDateTime().toTime_t() - ARCHIV_OFFSET))
             {
-                // yes --> update show info ...
-                emit sigCheckArchProg(pos);
+                pos = QDateTime::currentDateTime().toTime_t() - ARCHIV_OFFSET;
+            }
+
+            // check if slider position is in 10 sec. limit ...
+            if (abs(pos - timer.pos()) <= 10)
+            {
+                mInfo(tr("Ignore slightly slider position change..."));
+            }
+            else
+            {
+                // trigger request for the new stream position ...
+                QString req = QString("cid=%1&gmt=%2")
+                                .arg(showInfo.channelId()).arg(pos);
+
+                // mark spooling as active ...
+                bSpoolPending = true;
+
+                enableDisablePlayControl (false);
+
+                // save jump time ...
+                showInfo.setLastJumpTime(pos);
+
+                emit sigStopOnDemand();
+
+                pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, showInfo.pCode());
+
+                // do we reach another show?
+                if ((pos < mToGmt(missionControl.posMinimum()))
+                    || (pos > mToGmt(missionControl.posMaximum())))
+                {
+                    // yes --> update show info ...
+                    emit sigCheckArchProg(pos);
+                }
             }
         }
 
@@ -1537,6 +1551,12 @@ void CPlayer::slotSliderPosChanged()
         else
         {
             position = mToGmt(position);
+
+            // make sure we don't spool into future ...
+            if (position > (QDateTime::currentDateTime().toTime_t() - ARCHIV_OFFSET))
+            {
+                position = QDateTime::currentDateTime().toTime_t() - ARCHIV_OFFSET;
+            }
 
             // check if slider position is in 10 sec. limit ...
             if (abs(position - timer.pos()) <= 10)

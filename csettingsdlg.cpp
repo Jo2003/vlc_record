@@ -85,7 +85,9 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    /////////////////////////////////////////////////////////////////////////////
    //               Disable items if no VOD manager is supported              //
    /////////////////////////////////////////////////////////////////////////////
+#ifndef _TASTE_TV_CLUB
    m_ui->groupChanMan->hide();
+#endif
    m_ui->groupVodMan->hide();
    m_ui->vlSetPage->setStretch(0, 0);  // hidden vod and channel manager
    m_ui->vlSetPage->setStretch(1, 10); // parent code and erotik settings
@@ -98,6 +100,10 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    m_ui->btnSaveExitManager->setDisabled(true);
    m_ui->btnSaveExitManager->hide();
 #endif // _HAS_VOD_MANAGER
+
+#ifdef _TASTE_TV_CLUB
+   m_ui->listHide->setAlternatingRowColors(true);
+#endif // _TASTE_TV_CLUB
 
 #ifdef _IS_OEM
    if (m_ui->lineApiServer->isVisible())
@@ -365,6 +371,11 @@ void CSettingsDlg::changeEvent(QEvent *e)
           // set company name ...
           QString s = m_ui->groupAccount->title();
           m_ui->groupAccount->setTitle(s.arg(pCustomization->strVal("COMPANY_NAME")));
+
+#ifdef _TASTE_TV_CLUB
+          m_ui->labelSelectChan->setText(tr("Select Groups to hide:"));
+          m_ui->groupChanMan->setTitle(tr("Group Manager"));
+#endif // _TASTE_TV_CLUB
        }
        break;
     default:
@@ -556,6 +567,10 @@ void CSettingsDlg::on_pushSave_clicked()
       pGrab = (CShortCutGrabber *)m_ui->tableShortCuts->cellWidget(i, 1);
       pDb->setShortCut(pGrab->target(), pGrab->slot(), pGrab->shortCutString());
    }
+
+#ifdef _TASTE_TV_CLUB
+   pDb->setValue("hiddenGroups", hiddenGroups());
+#endif // _TASTE_TV_CLUB
 }
 
 /* -----------------------------------------------------------------\
@@ -1915,6 +1930,90 @@ int CSettingsDlg::setLanguage(const QString &lng)
    }
 
    return (idx > -1) ? 0 : idx;
+}
+
+//---------------------------------------------------------------------------
+/// \brief set channel groups
+/// \param grps groups map
+//---------------------------------------------------------------------------
+void CSettingsDlg::setChanGrps(const QGrpMap &grps)
+{
+    QString hidden = pDb->stringValue("hiddenGroups");
+    QStringList sl = hidden.split(",", QString::SkipEmptyParts);
+    QListWidgetItem *pItem;
+    QPixmap pix(16, 16);
+    int row = 0;
+
+#ifdef __TRACE
+    foreach(const QString& s, sl)
+    {
+        mInfo(tr("Hide group %1 (%2 / %3)")
+              .arg(s)
+              .arg(grps.value(s.toInt()).sName)
+              .arg(grps.value(s.toInt()).sNameEn));
+    }
+#endif
+
+    foreach(int key, grps.keys())
+    {
+        // add channel group entry ...
+        pix.fill(QColor(grps.value(key).sColor));
+
+        pItem = new QListWidgetItem(QIcon(pix), QString("%1 (%2)")
+                                    .arg(grps.value(key).sName)
+                                    .arg(grps.value(key).sNameEn));
+
+        pItem->setData(Qt::UserRole, grps.value(key).iId);
+
+        m_ui->listHide->insertItem(row++, pItem);
+
+        if (sl.contains(QString::number(grps.value(key).iId)))
+        {
+            pItem->setSelected(true);
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+/// \brief check if this group is hidden
+/// \param cid group id
+/// \return true -> hidden; false -> not hidden
+//---------------------------------------------------------------------------
+bool CSettingsDlg::hiddenGroup(int cid)
+{
+    QListWidgetItem *pItem;
+    for (int i = 0; i < m_ui->listHide->count(); i++)
+    {
+        pItem = m_ui->listHide->item(i);
+
+        if (pItem->data(Qt::UserRole).toInt() == cid)
+        {
+            return pItem->isSelected();
+        }
+    }
+
+    return false;
+}
+
+//---------------------------------------------------------------------------
+/// \brief get all hidden groups
+/// \return joined string with hidden ids
+//---------------------------------------------------------------------------
+QString CSettingsDlg::hiddenGroups()
+{
+    QListWidgetItem *pItem;
+    QStringList sl;
+    for (int i = 0; i < m_ui->listHide->count(); i++)
+    {
+        pItem = m_ui->listHide->item(i);
+
+        if (pItem->isSelected())
+        {
+            sl << QString::number(pItem->data(Qt::UserRole).toInt());
+        }
+    }
+
+    return sl.join(",");
 }
 
 //---------------------------------------------------------------------------

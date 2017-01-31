@@ -27,6 +27,7 @@
 #include "cshortcutex.h"
 #include "cshortcutgrabber.h"
 #include "api_inc.h"
+#include "cparser.h"
 
 //===================================================================
 // namespace
@@ -77,6 +78,8 @@ public:
     bool doubleClickToPlay();
     bool useGpuAcc();
     bool showAds();
+    bool hiddenGroup(int cid);
+    QString hiddenGroups();
 
     int GetProxyPort ();
     int GetBufferTime ();
@@ -114,6 +117,7 @@ public:
     void setGeometry(const QByteArray &ba);
     QByteArray getGeometry();
     int setLanguage (const QString& lng);
+    void setChanGrps(const QGrpMap& grps);
 
 protected:
     virtual void changeEvent(QEvent *e);

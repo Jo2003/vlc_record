@@ -4205,6 +4205,8 @@ void Recorder::slotChanGroups(const QString &str)
     {
         if (chanGrps.count() > 0)
         {
+            Settings.setChanGrps(chanGrps);
+
             pChanMap->setGroupMap(chanGrps);
 
             QPixmap pix(16, 16);
@@ -4221,16 +4223,19 @@ void Recorder::slotChanGroups(const QString &str)
 
             foreach(const cparser::SGrp& grp, chanGrps)
             {
-                if (lastGroup == grp.iId)
+                if (!Settings.hiddenGroup(grp.iId))
                 {
-                    idx = cnt;
+                    if (lastGroup == grp.iId)
+                    {
+                        idx = cnt;
+                    }
+
+                    // add channel group entry ...
+                    pix.fill(QColor(grp.sColor));
+                    ui->cbxChannelGroup->addItem(QIcon(pix), grp.sName, grp.iId);
+
+                    cnt ++;
                 }
-
-                // add channel group entry ...
-                pix.fill(QColor(grp.sColor));
-                ui->cbxChannelGroup->addItem(QIcon(pix), grp.sName, grp.iId);
-
-                cnt ++;
             }
 
             ui->cbxChannelGroup->setCurrentIndex(idx);
