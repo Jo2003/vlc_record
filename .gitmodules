@@ -1,0 +1,3 @@
+[submodule "qhc"]
+	path = qhc
+	url = http://github.com/Jo2003/qhc.git
