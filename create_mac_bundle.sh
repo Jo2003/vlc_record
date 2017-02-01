@@ -28,6 +28,9 @@ case $APPNAME in
     iptv-record)
         OFFNAME="Iptv-Record"
         ;;
+    tvclub)
+        OFFNAME="TVClub.us"
+        ;;
     *)
         OFFNAME=$APPNAME
         ;;
