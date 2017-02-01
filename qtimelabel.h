@@ -65,7 +65,7 @@ public:
          int     h, m, s;
          QString lab = (iSec < 0) ? "-" : " ";
 
-         iSec = abs(iSec);
+         iSec = std::abs(iSec);
 
          h =  iSec / 3600;
          m = (iSec % 3600) / 60;

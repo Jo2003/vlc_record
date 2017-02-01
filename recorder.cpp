@@ -347,6 +347,12 @@ Recorder::Recorder(QWidget *parent)
       }
    }
 
+#ifdef Q_OS_MACX
+   // set favourites group layout spacing for Mac
+   ui->gLayoutFav->setHorizontalSpacing(16);
+   ui->gLayoutFav->setVerticalSpacing(16);
+#endif // Q_OS_MACX
+
    // enable button ...
    TouchPlayCtrlBtns(false);
 

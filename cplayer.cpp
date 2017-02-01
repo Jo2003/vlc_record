@@ -1339,7 +1339,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
             }
 
             // check if slider position is in 10 sec. limit ...
-            if (abs(pos - timer.pos()) <= 10)
+            if (std::abs((int)(pos - timer.pos())) <= 10)
             {
                 mInfo(tr("Ignore slightly slider position change..."));
             }
@@ -1559,7 +1559,7 @@ void CPlayer::slotSliderPosChanged()
             }
 
             // check if slider position is in 10 sec. limit ...
-            if (abs(position - timer.pos()) <= 10)
+            if (std::abs((int)(position - timer.pos())) <= 10)
             {
                 mInfo(tr("Ignore slightly slider position change..."));
             }
