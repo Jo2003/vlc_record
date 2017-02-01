@@ -7,7 +7,7 @@
 ; General
 
   ; Version information ...
-  !define STR_VERSION "2.${VER_MINOR}-${DATESTRING}"
+  !define STR_VERSION "${VER_MAJOR}.${VER_MINOR}.${VER_BUILD}${BETA_EXT}-${DATESTRING}"
 
   ;Name and file
   Name "${APPNAME} ${STR_VERSION}"
@@ -76,8 +76,6 @@ Section "VLC-Record" SecInst
   File "${SRCDIR}\release\${BINNAME}"
   File "${SRCDIR}\resources\${INSTICON}"
   File "${SRCDIR}\installer\shortcut.url"
-  File "${QTLIBS}\libgcc_s_dw2-1.dll"
-  File "${QTLIBS}\mingwm10.dll"
 
   SetOutPath "$INSTDIR\language"
   File /r "${SRCDIR}\*.qm"
@@ -107,10 +105,7 @@ SectionEnd
 Section "libVLC Framework" SecFw
    SectionIn RO
    SetOutPath "$INSTDIR"
-   File "${LIBVLCFW}\libvlc.dll"
-   File "${LIBVLCFW}\libvlccore.dll"
-;   File "${LIBVLCFW}\axvlc.dll"
-;   File "${LIBVLCFW}\npvlc.dll"
+   File "${LIBVLCFW}\*.dll"
 
 ; In case of update make sure we delete all old 
 ; VLC plugins!
@@ -141,22 +136,16 @@ SectionEnd
 ; Installer Sections for qt libraries
 Section "qt Framework" SecQt
    SetOutPath "$INSTDIR"
-   File "${QTLIBS}\QtCore4.dll"
-   File "${QTLIBS}\QtSql4.dll"
-   FILE "${QTLIBS}\QtGui4.dll"
-   FILE "${QTLIBS}\QtNetwork4.dll"
-   FILE "${QTLIBS}\QtXml4.dll"
-   FILE "${QTLIBS}\QtHelp4.dll"
-   FILE "${QTLIBS}\QtCLucene4.dll"
+   File "${QTLIBS}\*.dll"
 
    SetOutPath "$INSTDIR\imageformats"
-   File /r "${QTLIBS}\imageformats\*.dll"
+   File "${QTLIBS}\imageformats\*.dll"
 
    SetOutPath "$INSTDIR\sqldrivers"
-   File /r "${QTLIBS}\sqldrivers\*.dll"
+   File "${QTLIBS}\sqldrivers\*.dll"
 
    SetOutPath "$INSTDIR\translations"
-   File /r "${QTLIBS}\translations\*.qm"
+   File "${QTLIBS}\translations\*.qm"
 SectionEnd
 
 ;-------------------------------------------------------
@@ -224,10 +213,6 @@ SectionEnd
 Section "un.Framework"
   ; delete vlc framework ...
   RMDir /r "$INSTDIR\plugins"
-  Delete "$INSTDIR\libvlc.dll"
-  Delete "$INSTDIR\libvlccore.dll"
-;  Delete "$INSTDIR\axvlc.dll"
-;  Delete "$INSTDIR\npvlc.dll"
   Delete "$INSTDIR\cache-gen.exe"
   Delete "$INSTDIR\clearcache.bat"
 
@@ -241,13 +226,7 @@ Section "un.Qt"
   Delete "$INSTDIR\imageformats\*.*"
   Delete "$INSTDIR\sqldrivers\*.*"
   Delete "$INSTDIR\translations\*.*"
-  Delete "$INSTDIR\QtCore4.dll"
-  Delete "$INSTDIR\QtSql4.dll"
-  Delete "$INSTDIR\QtGui4.dll"
-  Delete "$INSTDIR\QtNetwork4.dll"
-  Delete "$INSTDIR\QtXml4.dll"
-  Delete "$INSTDIR\QtHelp4.dll"
-  Delete "$INSTDIR\QtCLucene4.dll"
+  Delete "$INSTDIR\*.dll"
   RMDir  "$INSTDIR\imageformats"
   RMDir  "$INSTDIR\sqldrivers"
   RMDir  "$INSTDIR\translations"
@@ -259,7 +238,6 @@ Section "un.Program"
   ; delete installed language files ...
   Delete "$INSTDIR\language\*.qm"
   Delete "$INSTDIR\doc\*.q??"
-
 
   ; delete installed module files ...
   Delete "$INSTDIR\modules\1_vlc-player.mod"
@@ -282,8 +260,6 @@ Section "un.Program"
 
   ; delete vlc-record itself ...
   Delete "$INSTDIR\${BINNAME}"
-  Delete "$INSTDIR\libgcc_s_dw2-1.dll"
-  Delete "$INSTDIR\mingwm10.dll"
   Delete "$INSTDIR\${INSTICON}"
   Delete "$INSTDIR\shortcut.url"
 

@@ -14,11 +14,11 @@
 
 #include <QtGlobal>
 
-#define APP_NAME      "TVClub"
-#define UPD_CHECK_URL "http://rt.coujo.de/tv_club_ver.xml"
+#define APP_NAME      "TVClub.us"
+#define UPD_CHECK_URL "http://tvclub.us/pc_app.xml"
 #define BIN_NAME      "tvclub"
 #define API_SERVER    "api.iptv.so"
-#define COMPANY_NAME  "TVClub"
+#define COMPANY_NAME  "TVClub.us"
 #define COMPANY_LINK  "<a href='http://tvclub.us'>" COMPANY_NAME "</a>"
 #define VERSION_APPENDIX
 
