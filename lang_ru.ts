@@ -1353,7 +1353,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="csettingsdlg.cpp" line="377"/>
         <source>Group Manager</source>
-        <translation>Менеджер группы</translation>
+        <translation>Менеджер групп</translation>
     </message>
     <message>
         <location filename="csettingsdlg.cpp" line="1548"/>

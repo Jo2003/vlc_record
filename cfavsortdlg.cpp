@@ -53,6 +53,9 @@ void CFavSortDlg::slotRowsInserted(const QModelIndex &parent, int start, int end
 {
 #ifdef __TRACE
     mInfo(tr("parent: %1, start: %2, end: %3").arg(parent.row()).arg(start).arg(end));
+#else
+    Q_UNUSED(end)
+    Q_UNUSED(parent)
 #endif
     mDroppedIdx = start;
 }
@@ -67,6 +70,9 @@ void CFavSortDlg::slotRowsRemoved(const QModelIndex &parent, int start, int end)
 {
 #ifdef __TRACE
     mInfo(tr("parent: %1, start: %2, end: %3").arg(parent.row()).arg(start).arg(end));
+#else
+    Q_UNUSED(end)
+    Q_UNUSED(parent)
 #endif
     mDragIdx = start;
 
