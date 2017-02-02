@@ -26,7 +26,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
 #define VERSION_BUILD 1
-#define BETA_EXT      "B2"
+#define BETA_EXT      "B4"
 
 #define EXPIRES_IN    -1
 
@@ -43,6 +43,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+|
+| 2017-02-01: Version 2.69.1B4
+| - rewrite favorites stuff to support unlimited favorites
+| - position slider doesn't slide into future
+| - help updated
+| - add more buffer time values
+| - add group manager as part of parental control
+|
 | 2017-01-25: Version 2.69.1B2
 | - TVClub.us build
 | - use tv club API
