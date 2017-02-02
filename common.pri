@@ -1,11 +1,25 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-12-27T18:33:08
 # -------------------------------------------------
-QT += network \
+QT += core \
+    network \
     sql \
     xml
 
-CONFIG += help
+greaterThan(QT_MAJOR_VERSION, 4) {
+
+    QT += widgets \
+          help
+    DEFINES += __QT_5
+
+    INCLUDEPATH += qhttp
+}
+else {
+
+    CONFIG += help
+    DEFINES += __QT_4
+}
+
 
 # build debug and release ...
 CONFIG += debug_and_release \
@@ -216,10 +230,17 @@ else:mac {
    QMAKE_POST_LINK = ./create_mac_bundle.sh $$basename(TARGET)
 }
 else:unix {
+
+   contains(QMAKE_HOST.arch, x86_64) {
+       DEFINES += __ARCH__X86_64
+   } else {
+       DEFINES += __ARCH__I386
+   }
+
    LIBS += -lX11
    OTHER_FILES += create_install_mak.sh \
-                  documentation/create_qthelp.sh
-   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET)
+                  create_deb.sh
+   QMAKE_POST_LINK = ./create_install_mak.sh $$basename(TARGET) $$QT_MAJOR_VERSION
 }
 
 #############
