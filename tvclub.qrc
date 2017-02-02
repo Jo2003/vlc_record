@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/unbranded/main">
-        <file alias="icon">resources/tvclub_icon.png</file>
+        <file alias="icon">resources/tvclub.png</file>
         <file alias="live">resources/tvclub_live.png</file>
     </qresource>
     <qresource prefix="/unbranded/video">
-        <file alias="logo">resources/tvclub.png</file>
+        <file alias="logo">resources/tvclub_player.png</file>
     </qresource>
 </RCC>
