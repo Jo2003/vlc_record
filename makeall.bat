@@ -3,7 +3,7 @@
 rem Please insert the needed pathes here ...
 set QTDIR=c:\Qt\4.8.7
 set SEVENZIP=c:\Program Files\7-Zip
-set MINGW=c:\Qt\mingw_4.8.0\mingw32\bin
+set MINGW=c:\Qt\mingw_4.8.0\mingw32
 set NSIS=c:\Program Files\NSIS
 
 rem nothing to change below this line ...
