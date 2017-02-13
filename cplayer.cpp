@@ -840,7 +840,7 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
             ///////////////////////////////////////////////////////////////////////////
             if (pSettings->UseProxy())
             {
-               sMrl = ":http_proxy=http://";
+               sMrl = ":http-proxy=http://";
 
                if (pSettings->GetProxyUser() != "")
                {
@@ -853,7 +853,7 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
 
                if ((pSettings->GetProxyPasswd() != "") && (pSettings->GetProxyUser() != ""))
                {
-                  sMrl = QString(":http_proxy_pwd=%1").arg(pSettings->GetProxyPasswd());
+                  sMrl = QString(":http-proxy-pwd=%1").arg(pSettings->GetProxyPasswd());
                   mInfo(tr("Add MRL Option: :http_proxy_pwd=******"));
                   libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
                }

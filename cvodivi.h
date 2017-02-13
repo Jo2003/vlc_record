@@ -42,6 +42,7 @@ public:
     void setPlayer(CPlayer* pPlayer);
     void setUid(const QString& str);
     CVodBrowser *iviBrowser();
+    void setProxy (const QNetworkProxy& proxy);
 
 private slots:
     void on_cbxIviGenre_activated(int index);

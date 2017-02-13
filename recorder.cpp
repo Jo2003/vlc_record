@@ -210,6 +210,7 @@ Recorder::Recorder(QWidget *parent)
 
       pApiClient->setProxy(proxy);
       streamLoader.setProxy(proxy);
+      ui->iviVod->setProxy(proxy);
    }
 
    // give vlcCtrl needed infos ...
@@ -672,11 +673,13 @@ void Recorder::on_pushSettings_clicked()
 
                 pApiClient->setProxy(proxy);
                 streamLoader.setProxy(proxy);
+                ui->iviVod->setProxy(proxy);
             }
             else
             {
                 pApiClient->setProxy(QNetworkProxy());
                 streamLoader.setProxy(QNetworkProxy());
+                ui->iviVod->setProxy(QNetworkProxy());
             }
         }
 

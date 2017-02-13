@@ -127,6 +127,16 @@ CVodBrowser *CVodIvi::iviBrowser()
 }
 
 //------------------------------------------------------------------------------
+//! @brief      set proxy server
+//
+//! @param[in]  proxy ref. to proxy confguration
+//------------------------------------------------------------------------------
+void CVodIvi::setProxy(const QNetworkProxy &proxy)
+{
+    iviApi.setProxy(proxy);
+}
+
+//------------------------------------------------------------------------------
 //! @brief      genre box was activated
 //!
 //! @param[in]  index  The index
