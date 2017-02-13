@@ -204,7 +204,7 @@ Recorder::Recorder(QWidget *parent)
    // set proxy stuff ...
    if (Settings.UseProxy())
    {
-      QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
+      QNetworkProxy proxy(QNetworkProxy::HttpProxy,
                           Settings.GetProxyHost(), Settings.GetProxyPort(),
                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
@@ -667,7 +667,7 @@ void Recorder::on_pushSettings_clicked()
             // set proxy ...
             if (Settings.UseProxy())
             {
-                QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
+                QNetworkProxy proxy(QNetworkProxy::HttpProxy,
                                     Settings.GetProxyHost(), Settings.GetProxyPort(),
                                     Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
