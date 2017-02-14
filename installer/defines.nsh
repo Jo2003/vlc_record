@@ -8,7 +8,7 @@
 !define VER_MAJOR   "2"
 !define VER_MINOR   "73"
 !define VER_BUILD   "0"
-!define BETA_EXT    "B10"
+!define BETA_EXT    "B11"
 
 ;------------------------------
 ; path defines ...
