@@ -121,6 +121,7 @@
 #endif // MAX_NO_FAVOURITES
 
 #define MAX_FAV_IN_ROW    5               // number of favorites in row
+#define FAV_BTN_WIDTH     52              // favorite button size in px
 #define MIN_CACHE_SIZE    5000000         // < 5 MB ...
 #define TIME_OFFSET       (35 * 365 * 24 * 3600) // make the slider handle gmt
 #define VIDEOS_PER_SITE   20              // number of videos / site

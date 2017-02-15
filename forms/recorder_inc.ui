@@ -171,10 +171,7 @@ QTabBar::tab:hover {
               <property name="title">
                <string> Channels </string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_6" stretch="2,0,6">
-               <property name="spacing">
-                <number>4</number>
-               </property>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
                <property name="leftMargin">
                 <number>4</number>
                </property>
@@ -188,183 +185,199 @@ QTabBar::tab:hover {
                 <number>4</number>
                </property>
                <item>
-                <widget class="QScrollArea" name="scrollArea">
-                 <property name="widgetResizable">
-                  <bool>true</bool>
+                <widget class="QSplitter" name="favSplitter">
+                 <property name="styleSheet">
+                  <string notr="true">QSplitter#favSplitter::handle {
+   image: url(:/png/h_split);
+}
+
+QSplitter#favSplitter::handle:horizontal {
+   width: 5px;
+}
+
+QSplitter#favSplitter::handle:vertical {
+   height: 5px;
+}
+
+QSplitter#favSplitter::handle:hover {
+   image: url(:/png/h_split_hover);
+}
+
+QSplitter#favSplitter::handle:pressed {
+   image: url(:/png/h_split_pressed);
+}
+</string>
                  </property>
-                 <widget class="QWidget" name="scrollAreaWidgetContents">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>233</width>
-                    <height>111</height>
-                   </rect>
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <widget class="QScrollArea" name="scrollArea">
+                  <property name="horizontalScrollBarPolicy">
+                   <enum>Qt::ScrollBarAlwaysOff</enum>
                   </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_8">
-                   <property name="spacing">
-                    <number>0</number>
+                  <property name="widgetResizable">
+                   <bool>true</bool>
+                  </property>
+                  <widget class="QWidget" name="scrollAreaWidgetContents">
+                   <property name="geometry">
+                    <rect>
+                     <x>0</x>
+                     <y>0</y>
+                     <width>234</width>
+                     <height>76</height>
+                    </rect>
                    </property>
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QFavFrame" name="hFrameFav">
-                     <property name="contextMenuPolicy">
-                      <enum>Qt::DefaultContextMenu</enum>
-                     </property>
-                     <property name="acceptDrops">
-                      <bool>true</bool>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QFrame#hFrameFav {
+                   <layout class="QVBoxLayout" name="verticalLayout_8">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QFavFrame" name="hFrameFav">
+                      <property name="contextMenuPolicy">
+                       <enum>Qt::DefaultContextMenu</enum>
+                      </property>
+                      <property name="acceptDrops">
+                       <bool>true</bool>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QFrame#hFrameFav {
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #eee, 	stop:0.7 grey, stop:1 #dedede);
 };</string>
-                     </property>
-                     <property name="frameShape">
-                      <enum>QFrame::Panel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Raised</enum>
-                     </property>
-                     <layout class="QHBoxLayout" name="hLayoutFavFrame">
-                      <property name="spacing">
-                       <number>0</number>
                       </property>
-                      <item>
-                       <spacer name="hSpacerLeft">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item>
-                       <layout class="QGridLayout" name="gLayoutFav">
-                        <property name="spacing">
-                         <number>4</number>
-                        </property>
-                       </layout>
-                      </item>
-                      <item>
-                       <spacer name="hlSpacerRight">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                  </layout>
+                      <property name="frameShape">
+                       <enum>QFrame::Panel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="hLayoutFavFrame">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>2</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>2</number>
+                       </property>
+                       <item>
+                        <layout class="QGridLayout" name="gLayoutFav">
+                         <property name="spacing">
+                          <number>2</number>
+                         </property>
+                        </layout>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
                  </widget>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="hlCbxGroupBtnFilter" stretch="10,1,0">
-                 <property name="spacing">
-                  <number>2</number>
-                 </property>
-                 <item>
-                  <widget class="QComboBox" name="cbxChannelGroup">
-                   <property name="whatsThis">
-                    <string>Channel Group</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushFilter">
-                   <property name="maximumSize">
-                    <size>
-                     <width>24</width>
-                     <height>24</height>
-                    </size>
-                   </property>
-                   <property name="toolTip">
-                    <string>Channel list filter</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="../common.qrc">
-                     <normaloff>:/app/filter</normaloff>:/app/filter</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>20</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                   <property name="flat">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushUndoFilter">
-                   <property name="maximumSize">
-                    <size>
-                     <width>24</width>
-                     <height>24</height>
-                    </size>
-                   </property>
-                   <property name="toolTip">
-                    <string>Undo Channel Filter</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="../common.qrc">
-                     <normaloff>:/app/undo_filter</normaloff>:/app/undo_filter</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>20</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                   <property name="flat">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QListView" name="channelList">
-                 <property name="contextMenuPolicy">
-                  <enum>Qt::CustomContextMenu</enum>
-                 </property>
-                 <property name="toolTip">
-                  <string/>
-                 </property>
-                 <property name="whatsThis">
-                  <string>Channel List</string>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QListView#channelList {
+                 <widget class="QWidget" name="layoutWidget">
+                  <layout class="QVBoxLayout" name="verticalLayout_6">
+                   <item>
+                    <layout class="QHBoxLayout" name="hlCbxGroupBtnFilter" stretch="10,1,0">
+                     <property name="spacing">
+                      <number>2</number>
+                     </property>
+                     <item>
+                      <widget class="QComboBox" name="cbxChannelGroup">
+                       <property name="whatsThis">
+                        <string>Channel Group</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="pushFilter">
+                       <property name="maximumSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
+                       <property name="toolTip">
+                        <string>Channel list filter</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../common.qrc">
+                         <normaloff>:/app/filter</normaloff>:/app/filter</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>20</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                       <property name="flat">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="pushUndoFilter">
+                       <property name="maximumSize">
+                        <size>
+                         <width>24</width>
+                         <height>24</height>
+                        </size>
+                       </property>
+                       <property name="toolTip">
+                        <string>Undo Channel Filter</string>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="../common.qrc">
+                         <normaloff>:/app/undo_filter</normaloff>:/app/undo_filter</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>20</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                       <property name="flat">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QListView" name="channelList">
+                     <property name="contextMenuPolicy">
+                      <enum>Qt::CustomContextMenu</enum>
+                     </property>
+                     <property name="toolTip">
+                      <string/>
+                     </property>
+                     <property name="whatsThis">
+                      <string>Channel List</string>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QListView#channelList {
 show-decoration-selected: 1;
 background-color: rgb(247, 239, 205);
 }
@@ -378,28 +391,32 @@ QListView#channelList::item:hover {
 background-color: rgb(255, 110, 14);
 }
 </string>
-                 </property>
-                 <property name="editTriggers">
-                  <set>QAbstractItemView::NoEditTriggers</set>
-                 </property>
-                 <property name="showDropIndicator" stdset="0">
-                  <bool>false</bool>
-                 </property>
-                 <property name="dragEnabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="dragDropMode">
-                  <enum>QAbstractItemView::DragOnly</enum>
-                 </property>
-                 <property name="alternatingRowColors">
-                  <bool>true</bool>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
+                     </property>
+                     <property name="editTriggers">
+                      <set>QAbstractItemView::NoEditTriggers</set>
+                     </property>
+                     <property name="showDropIndicator" stdset="0">
+                      <bool>false</bool>
+                     </property>
+                     <property name="dragEnabled">
+                      <bool>true</bool>
+                     </property>
+                     <property name="dragDropMode">
+                      <enum>QAbstractItemView::DragOnly</enum>
+                     </property>
+                     <property name="alternatingRowColors">
+                      <bool>true</bool>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>24</width>
+                       <height>24</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
                 </widget>
                </item>
               </layout>

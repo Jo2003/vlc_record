@@ -104,6 +104,7 @@ Recorder::Recorder(QWidget *parent)
    bStayOnTop    =  false;
    mpRetryDlg    =  NULL;
    miMarkFavChan =  -1;
+   miFavsInRow   =  MAX_FAV_IN_ROW;
 
    // auto re-login timer ...
    mtAutoReLogin.setSingleShot(true);
@@ -209,7 +210,7 @@ Recorder::Recorder(QWidget *parent)
    // set proxy stuff ...
    if (Settings.UseProxy())
    {
-      QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
+      QNetworkProxy proxy(QNetworkProxy::HttpProxy,
                           Settings.GetProxyHost(), Settings.GetProxyPort(),
                           Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
@@ -319,6 +320,7 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
    connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
    connect (this,           SIGNAL(sigLockParentalManager()), &Settings, SLOT(slotLockParentalManager()));
+   connect (ui->hFrameFav,  SIGNAL(resized()), this, SLOT(rebuildFavs()));
 
    // HLS play stuff ...
    connect (pApiClient, SIGNAL(sigM3u(int,QString)), pHlsControl, SLOT(slotM3uResp(int,QString)));
@@ -638,7 +640,7 @@ void Recorder::on_pushSettings_clicked()
       // set proxy ...
       if (Settings.UseProxy())
       {
-         QNetworkProxy proxy(QNetworkProxy::HttpCachingProxy,
+         QNetworkProxy proxy(QNetworkProxy::HttpProxy,
                              Settings.GetProxyHost(), Settings.GetProxyPort(),
                              Settings.GetProxyUser(), Settings.GetProxyPasswd());
 
@@ -4369,6 +4371,45 @@ void Recorder::reorderFavs()
     }
 }
 
+//---------------------------------------------------------------------------
+/// \brief rebuild Favs due to resizing ...
+//---------------------------------------------------------------------------
+void Recorder::rebuildFavs()
+{
+    mMtxFavGrid.lock();
+
+    // get with of grid layout ...
+    QRect grid = ui->gLayoutFav->geometry();
+
+    if (ui->gLayoutFav->count())
+    {
+        QWidget *pBtn = (QWidget*)ui->gLayoutFav->itemAt(0)->widget();
+        int      spc  = ui->gLayoutFav->spacing();
+
+        if (grid.width() && pBtn->size().width())
+        {
+            int favsInRow = grid.width() / (pBtn->size().width() + (spc * 2)); // FAV_BTN_WIDTH;
+
+            mInfo(tr("Grid Layout check: %1px / %2px").arg(grid.width()).arg(pBtn->size().width()));
+
+            // not less 3 buttons ...
+            if (favsInRow < 3)
+            {
+                favsInRow = 3;
+            }
+
+            if (favsInRow != miFavsInRow)
+            {
+                // col count changed -> handel favorites .../opt/eldk-4.1-ppc_85xx/usr/bin
+                miFavsInRow = favsInRow;
+                HandleFavourites();
+            }
+        }
+    }
+
+    mMtxFavGrid.unlock();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //                             normal functions                               //
 ////////////////////////////////////////////////////////////////////////////////
@@ -4530,7 +4571,13 @@ void Recorder::initDialog ()
    sSplit = Settings.GetSplitterSizes("spHPlay", &ok);
    if (ok)
    {
-      ui->hSplitterPlayer ->setSizes(sSplit);
+      ui->hSplitterPlayer->setSizes(sSplit);
+   }
+
+   sSplit = Settings.GetSplitterSizes("spHFavs", &ok);
+   if (ok)
+   {
+      ui->favSplitter->setSizes(sSplit);
    }
 
    // display splash screen ...
@@ -4569,6 +4616,7 @@ void Recorder::savePositions()
    Settings.SaveSplitterSizes("spVChanEpg", ui->vSplitterChanEpg->sizes());
    Settings.SaveSplitterSizes("spVChanEpgPlay", ui->vSplitterChanEpgPlay->sizes());
    Settings.SaveSplitterSizes("spHPlay", ui->hSplitterPlayer ->sizes());
+   Settings.SaveSplitterSizes("spHFavs", ui->favSplitter ->sizes());
 }
 
 /* -----------------------------------------------------------------\
@@ -5546,7 +5594,7 @@ void Recorder::HandleFavourites()
 
         // logo ...
         pic.load(QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName()));
-        ico = QIcon(pic.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        ico = QIcon(pic); // .scaled(34, 34, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
         if ((pBtn = new CFavButton(ico, sName, this, lFavourites[i])) != NULL)
         {
@@ -5556,8 +5604,9 @@ void Recorder::HandleFavourites()
 
             pBtn->setToolTip(sName);
             pBtn->setStyleSheet(FAVBTN_STYLE);
+            pBtn->setIconSize(QSize(38, 38));
 
-            ui->gLayoutFav->addWidget(pBtn, i / MAX_FAV_IN_ROW, i % MAX_FAV_IN_ROW, Qt::AlignCenter);
+            ui->gLayoutFav->addWidget(pBtn, i / miFavsInRow, i % miFavsInRow, Qt::AlignCenter);
             vFavourites.append(pBtn);
         }
     }

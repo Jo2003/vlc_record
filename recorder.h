@@ -193,6 +193,8 @@ private:
     QRetryDialog                   *mpRetryDlg;
     QTimer                          mtAutoReLogin;
     int                             miMarkFavChan;
+    int                             miFavsInRow;
+    QMutex                          mMtxFavGrid;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -327,10 +329,11 @@ private slots:
     void on_pushUndoFilter_clicked();
     void slotSettings(QString resp);
 
-    // nre fav stuff ...
+    // new fav stuff ...
     void slotRemoveFav(int cid);
     void activateFav(int cid);
     void reorderFavs();
+    void rebuildFavs();
 
 
 signals:

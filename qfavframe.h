@@ -18,6 +18,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QDataStream>
+#include <QResizeEvent>
 #include <QMap>
 
 
@@ -41,12 +42,14 @@ public:
    virtual ~QFavFrame();
 
 protected:
+   virtual void resizeEvent(QResizeEvent * event);
    virtual void dragEnterEvent (QDragEnterEvent * event);
    virtual void dropEvent (QDropEvent *event);
    int getCidFromMime (const QMimeData *pData);
 
 signals:
    void sigAddFav(int f);
+   void resized();
 
 public slots:
 
