@@ -626,6 +626,9 @@ void Recorder::on_pushSettings_clicked()
 {
    QString sHlp;
 
+   // in case settings will be changed we should return to current channel group ...
+   Settings.saveChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+
    if (Settings.exec() == QDialog::Accepted)
    {
       // if changes where saved, accept it here ...
@@ -2198,6 +2201,9 @@ void Recorder::slotChanList (const QString &str)
     if ((lFavourites.count() > 0) && (ui->gLayoutFav->count() == 0))
     {
         HandleFavourites();
+
+        // rebuild favorites in case the default buttons in row doesn't match ...
+        rebuildFavs();
     }
 
     TouchPlayCtrlBtns();
