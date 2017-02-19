@@ -55,12 +55,14 @@ void CShowInfo::cleanShowInfo()
    sAdUrl         = "";
    sPCode         = "";
    iChannelId     = -1;
+   iChanGrp       = -1;
    iVodId         = -1;
    ePlayState     = IncPlay::PS_STOP;
    eShowType      = ShowInfo::Live;
    uiStart        = 0;
    uiEnd          = 0;
    uiJumpTime     = 0;
+   uiEOL          = 0;
    bStreamLoader  = false;
    bHls           = false;
    ulLastEpgUpd   = 0;
@@ -306,6 +308,42 @@ void CShowInfo::useHls(bool bUse)
 void CShowInfo::setEpgUpdTime(ulong ts)
 {
    ulLastEpgUpd = ts;
+}
+
+//------------------------------------------------------------------
+/// \brief how long will show be available in archive
+/// \param gmt unix time stamp
+//------------------------------------------------------------------
+void CShowInfo::setEndOfLife(uint gmt)
+{
+    uiEOL = gmt;
+}
+
+//------------------------------------------------------------------
+/// \brief CShowInfo::setChanGrp
+/// \param i channel group
+//------------------------------------------------------------------
+void CShowInfo::setChanGrp(int i)
+{
+    iChanGrp = i;
+}
+
+//------------------------------------------------------------------
+/// \brief CShowInfo::chanGrp
+/// \return channel group
+//------------------------------------------------------------------
+const int& CShowInfo::chanGrp() const
+{
+    return iChanGrp;
+}
+
+//------------------------------------------------------------------
+/// \brief CShowInfo::goodUntil
+/// \return unix time stamp for eol
+//------------------------------------------------------------------
+const uint &CShowInfo::endOfLife() const
+{
+    return uiEOL;
 }
 
 /* -----------------------------------------------------------------\

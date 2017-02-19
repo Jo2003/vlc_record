@@ -73,6 +73,8 @@ public:
    void updWithChanEntry (ulong ulTime, const cparser::SChan &entry);
    void setDefAStream(int idx);
    void setLangCode(const QString& lcode);
+   void setEndOfLife(uint gmt);
+   void setChanGrp(int i);
 
    // get values ...
    const QString &showName() const;
@@ -81,9 +83,11 @@ public:
    const QString &adUrl() const;
    const QString &pCode() const;
    const int &channelId() const;
+   const int &chanGrp() const;
    const uint &starts() const;
    const uint &ends() const;
    const uint &lastJump() const;
+   const uint &endOfLife() const;
    const IncPlay::ePlayStates &playState() const;
    const ShowInfo::eProgType &showType() const;
    bool  canCtrlStream() const;
@@ -98,10 +102,12 @@ public:
 private:
    QString              sShowName;
    int                  iChannelId;
+   int                  iChanGrp;
    QString              sChanName;
    uint                 uiStart;
    uint                 uiEnd;
    uint                 uiJumpTime;
+   uint                 uiEOL;
    IncPlay::ePlayStates ePlayState;
    ShowInfo::eProgType  eShowType;
    QString              sDescr;

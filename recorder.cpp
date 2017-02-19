@@ -469,77 +469,103 @@ void Recorder::changeEvent(QEvent *e)
 \----------------------------------------------------------------- */
 void Recorder::closeEvent(QCloseEvent *event)
 {
-   bool bAccept = true;
+    bool bAccept = true;
 
-   // if vlc is running, ask if we want
-   // to close it ...
-   switch (ePlayState)
-   {
-   case IncPlay::PS_RECORD:
-   case IncPlay::PS_TIMER_RECORD:
-   case IncPlay::PS_TIMER_STBY:
-      if (!WantToStopRec())
-      {
-         bAccept = false;
-      }
-      break;
+    // if vlc is running, ask if we want
+    // to close it ...
+    switch (ePlayState)
+    {
+    case IncPlay::PS_RECORD:
+    case IncPlay::PS_TIMER_RECORD:
+    case IncPlay::PS_TIMER_STBY:
+        if (!WantToStopRec())
+        {
+            bAccept = false;
+        }
+        break;
 
-   default:
-      break;
-   }
+    case IncPlay::PS_PLAY:
+        if (ui->player->isPlaying())
+        {
+            QtJson::JsonObject lastPlay;
 
-   if (bAccept)
-   {
-      // close help dialog ..
-      pHelp->close();
+            if (showInfo.showType() == ShowInfo::Live)
+            {
+                // save channel id to be restored on next start ...
+                lastPlay["type"] = QVariant("live");
+                lastPlay["cid"]  = QVariant(showInfo.channelId());
+                lastPlay["gid"]  = QVariant(showInfo.chanGrp());
+            }
+            else if (showInfo.showType() == ShowInfo::Archive)
+            {
+                // save channel id and gmt timestamp to be restored on next start ...
+                lastPlay["type"] = QVariant("archive");
+                lastPlay["cid"]  = QVariant(showInfo.channelId());
+                lastPlay["gid"]  = QVariant(showInfo.chanGrp());
+                lastPlay["gmt"]  = QVariant(ui->player->getSilderPos());
+                lastPlay["eol"]  = QVariant(showInfo.endOfLife());
+            }
+            mInfo(tr("Save last play data: %1").arg(QtJson::serializeStr(lastPlay)));
+            Settings.setLastPlay(QtJson::serializeStr(lastPlay));
+        }
+        break;
 
-      // We want to close program, store all needed values ...
-      // Note: putting this function in destructor doesn't work!
-      if (eCurDMode == Ui::DM_NORMAL)
-      {
-         savePositions();
-      }
+    default:
+        break;
+    }
 
-      // save font size and favorites ...
-      Settings.SetCustFontSize(iFontSzChg);
-      Settings.SaveFavourites(lFavourites);
+    if (bAccept)
+    {
+        // close help dialog ..
+        pHelp->close();
 
-      // save channel and epg position ...
-      Settings.saveChannel(getCurrentCid());
-      Settings.saveChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
-      Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
+        // We want to close program, store all needed values ...
+        // Note: putting this function in destructor doesn't work!
+        if (eCurDMode == Ui::DM_NORMAL)
+        {
+            savePositions();
+        }
 
-      // clear shortcuts ...
-      ClearShortCuts ();
+        // save font size and favorites ...
+        Settings.SetCustFontSize(iFontSzChg);
+        Settings.SaveFavourites(lFavourites);
 
-      // clean favourites ...
-      lFavourites.clear();
-      HandleFavourites();
+        // save channel and epg position ...
+        Settings.saveChannel(getCurrentCid());
+        Settings.saveChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+        Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
 
-      // delete context menu stuff ...
-      favContext.clear();
+        // clear shortcuts ...
+        ClearShortCuts ();
 
-      // are we authenticated ... ?
-      if (pApiClient->cookieSet())
-      {
-         // logout from kartina ...
-          QTimer::singleShot(200, this, SLOT(slotTriggeredLogout()));
+        // clean favourites ...
+        lFavourites.clear();
+        HandleFavourites();
 
-         // ignore event here ...
-         // we'll close app in logout slot ...
-         event->ignore ();
-      }
-      else
-      {
-         // no logout needed ...
-         // close programm right now ...
-         event->accept();
-      }
-   }
-   else
-   {
-      event->ignore();
-   }
+        // delete context menu stuff ...
+        favContext.clear();
+
+        // are we authenticated ... ?
+        if (pApiClient->cookieSet())
+        {
+            // logout from kartina ...
+            QTimer::singleShot(200, this, SLOT(slotTriggeredLogout()));
+
+            // ignore event here ...
+            // we'll close app in logout slot ...
+            event->ignore ();
+        }
+        else
+        {
+            // no logout needed ...
+            // close programm right now ...
+            event->accept();
+        }
+    }
+    else
+    {
+        event->ignore();
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -754,6 +780,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
             if (grantAdultAccess(chan.bIsProtected))
             {
                showInfo.cleanShowInfo();
+               showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
                showInfo.setChanId(cid);
                showInfo.setChanName(chan.sName);
                showInfo.setShowType(ShowInfo::Live);
@@ -1180,6 +1207,7 @@ void Recorder::on_pushLive_clicked()
          if (grantAdultAccess(chan.bIsProtected))
          {
             showInfo.cleanShowInfo();
+            showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
             showInfo.setShowType(ShowInfo::Live);
@@ -1229,6 +1257,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
             if (grantAdultAccess(chan.bIsProtected))
             {
                showInfo.cleanShowInfo();
+               showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
                showInfo.setChanId(cid);
                showInfo.setChanName(chan.sName);
                showInfo.setShowType(ShowInfo::Live);
@@ -1388,6 +1417,7 @@ void Recorder::slotPlay()
             if (grantAdultAccess(chan.bIsProtected))
             {
                showInfo.cleanShowInfo();
+               showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
                showInfo.setChanId(cid);
                showInfo.setChanName(chan.sName);
                showInfo.setShowType(ShowInfo::Live);
@@ -1505,6 +1535,7 @@ void Recorder::slotRecord()
                   }
 
                   showInfo.cleanShowInfo();
+                  showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
                   showInfo.setChanId(cid);
                   showInfo.setChanName(chan.sName);
                   showInfo.setShowType(ShowInfo::Live);
@@ -2452,7 +2483,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    // create request string ...
    QString action = link.queryItemValue("action");
    bool    ok     = false;
-   uint    uiStart, uiEnd;
+   uint    uiStart, uiEnd, uiEol;
    int            cid;
    QString        req;
    cparser::SChan sChan;
@@ -2462,7 +2493,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    {
       if (AllowAction(IncPlay::PS_RECORD))
       {
-         ok = true;
+         ok    = true;
       }
    }
    else if (action == "archivplay")
@@ -2483,13 +2514,15 @@ void Recorder::slotEpgAnchor (const QUrl &link)
    }
    else if(action == "remember")
    {
-      sEpg = ui->textEpg->epgShow(link.queryItemValue("gmt").toUInt());
-      cid  = link.queryItemValue("cid").toInt();
+      sEpg  = ui->textEpg->epgShow(link.queryItemValue("gmt").toUInt());
+      cid   = link.queryItemValue("cid").toInt();
+      uiEol = link.queryItemValue("eol").toUInt();
 
       if (!pChanMap->entry(cid, sChan))
       {
          sChan.uiStart   = sEpg.uiStart;
          sChan.uiEnd     = sEpg.uiEnd;
+         sChan.uiEnd     = uiEol;
          sChan.sProgramm = sEpg.sShowDescr.isEmpty() ? sEpg.sShowName : QString("%1\n%2").arg(sEpg.sShowName).arg(sEpg.sShowDescr);
          pDb->addWatchEntry(sChan);
 
@@ -2516,11 +2549,14 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             }
 
             uiStart = link.queryItemValue("gmt").toUInt();
+            uiEol   = link.queryItemValue("eol").toUInt();
             req     = QString("cid=%1&gmt=%2").arg(cid).arg(uiStart);
             sEpg    = ui->textEpg->epgShow(uiStart);
 
             // store all info about show ...
             showInfo.cleanShowInfo();
+            showInfo.setEndOfLife(uiEol);
+            showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
             showInfo.setEpgMap(ui->textEpg->exportProgMap());
             showInfo.setChanId(cid);
             showInfo.setChanName(sChan.sName);

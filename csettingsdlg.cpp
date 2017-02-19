@@ -1975,6 +1975,32 @@ void CSettingsDlg::setChanGrps(const QGrpMap &grps)
 }
 
 //---------------------------------------------------------------------------
+/// \brief CSettingsDlg::setLastPlay
+/// \param str json string with last play information
+//---------------------------------------------------------------------------
+void CSettingsDlg::setLastPlay(const QString &str)
+{
+    pDb->setValue("lastPlay", str);
+}
+
+//---------------------------------------------------------------------------
+/// \brief CSettingsDlg::lastPlay
+///        when getting lastPlay information
+///        will be deleted from database
+///
+/// \return json string or empty string
+//---------------------------------------------------------------------------
+QString CSettingsDlg::lastPlay()
+{
+    QString lastPlay = pDb->stringValue("lastPlay");
+
+    // replay only once ....
+    pDb->setValue("lastPlay", "");
+
+    return lastPlay;
+}
+
+//---------------------------------------------------------------------------
 /// \brief check if this group is hidden
 /// \param cid group id
 /// \return true -> hidden; false -> not hidden

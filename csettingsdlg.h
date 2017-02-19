@@ -66,6 +66,7 @@ public:
     QString GetCookie ();
     QString GetAPIServer ();
     QString getDeinlMode ();
+    QString lastPlay();
 
     bool UseProxy ();
     bool AllowEros ();
@@ -118,6 +119,7 @@ public:
     QByteArray getGeometry();
     int setLanguage (const QString& lng);
     void setChanGrps(const QGrpMap& grps);
+    void setLastPlay(const QString& str);
 
 protected:
     virtual void changeEvent(QEvent *e);

@@ -160,6 +160,7 @@ void QWatchListDlg::buildWatchTab()
             url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
             url.addQueryItem("start" , QString::number(vE.at(i).uiStart));
             url.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
+            url.addQueryItem("eol"   , QString::number(vE.at(i).uiEol));
             url.addQueryItem("chan"  , vE.at(i).sName);
             url.addQueryItem("show"  , vE.at(i).sProgramm);
 
@@ -175,6 +176,7 @@ void QWatchListDlg::buildWatchTab()
             url.addQueryItem("cid"   , QString::number(vE.at(i).iId));
             url.addQueryItem("start" , QString::number(vE.at(i).uiStart));
             url.addQueryItem("end"   , QString::number(vE.at(i).uiEnd));
+            url.addQueryItem("eol"   , QString::number(vE.at(i).uiEol));
             url.addQueryItem("chan"  , vE.at(i).sName);
             url.addQueryItem("show"  , vE.at(i).sProgramm);
 

@@ -25,7 +25,7 @@
 #include "cparser.h"
 
 #define VLC_REC_DB "vlcrec.db.sqlite"
-#define REC_DB_VER  1
+#define REC_DB_VER  2
 
 /********************************************************************\
 |  Class: CVlcRecDB

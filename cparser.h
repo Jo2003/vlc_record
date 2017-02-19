@@ -31,7 +31,7 @@ namespace cparser
 
    struct SChan
    {
-      SChan():uiStart(0),uiEnd(0),uiDefAud(0),iTs(0),iId(0),iPrimGrp(-1),iArchHours(0),
+      SChan():uiStart(0),uiEnd(0),uiEol(0),uiDefAud(0),iTs(0),iId(0),iPrimGrp(-1),iArchHours(0),
          bIsVideo(false), bIsProtected(false),bHasArchive(false),bIsGroup(false),
          bIsHidden(false),bHasTsInfo(false){}
       QString sName;
@@ -40,6 +40,7 @@ namespace cparser
       QString sLangCode;
       uint    uiStart;
       uint    uiEnd;
+      uint    uiEol;
       uint    uiDefAud;
       int     iTs;
       int     iId;

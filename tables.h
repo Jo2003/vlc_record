@@ -44,6 +44,7 @@
       "cid integer NOT NULL," \
       "t_start unsigned int(10) NOT NULL,"\
       "t_end unsigned int(10) NOT NULL,"\
+      "t_eol unsigned int(10) NOT NULL,"\
       "name VARCHAR(50) NOT NULL,"\
       "prog tiny text NOT NULL," \
       "PRIMARY KEY (cid, t_start))"

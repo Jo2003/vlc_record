@@ -208,6 +208,7 @@ QString CEpgBrowser::createHtmlCode()
             url.addQueryItem("action", "archivplay");
             url.addQueryItem("cid", QString::number(iCid));
             url.addQueryItem("gmt", QString::number(actShow.uiStart));
+            url.addQueryItem("eol", QString::number(mMaxArchAge + actShow.uiStart));
 
             // play button ...
             img = pHtml->image(":/png/play", 16, 16, "", tr("play from archive ..."));
@@ -220,6 +221,7 @@ QString CEpgBrowser::createHtmlCode()
             url.addQueryItem("action", "archivrec");
             url.addQueryItem("cid", QString::number(iCid));
             url.addQueryItem("gmt", QString::number(actShow.uiStart));
+            url.addQueryItem("eol", QString::number(mMaxArchAge + actShow.uiStart));
 
             // rec button ...
             img = pHtml->image(":/png/record", 16, 16, "", tr("record from archive ..."));
@@ -234,6 +236,7 @@ QString CEpgBrowser::createHtmlCode()
          url.addQueryItem("action", "remember");
          url.addQueryItem("cid"  , QString::number(iCid));
          url.addQueryItem("gmt"  , QString::number(actShow.uiStart));
+         url.addQueryItem("eol", QString::number(mMaxArchAge + actShow.uiStart));
 
          // remember button ...
          img = pHtml->image(":/png/remember", 16, 16, "", tr("add to watch list ..."));

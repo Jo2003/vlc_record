@@ -171,6 +171,14 @@ int CVlcRecDB::updateDB()
          iRV |= query.exec("DELETE FROM aspect") ? 0 : -1;
          break;
 
+      case 2:
+          // watchlist needs one more column: eol
+          iRV |= query.exec("ALTER TABLE watchlist RENAME TO watchlistTemp") ? 0 : -1;
+          iRV |= query.exec(TAB_WATCHLIST) ? 0 : -1;
+          iRV |= query.exec("INSERT INTO watchlist (cid, t_start, t_end, name, prog) SELECT cid, t_start, t_end, name, prog FROM watchlistTemp") ? 0 : -1;
+          iRV |= query.exec("DROP TABLE watchlistTemp") ? 0 : -1;
+          break;
+
       // Add any changes needed for version update here.
       // E.g. 'case 2:' for changes from 1 ... 2
       // ...
@@ -641,10 +649,11 @@ int CVlcRecDB::addWatchEntry (const cparser::SChan& entry)
 {
    QSqlQuery query;
 
-   query.prepare("REPLACE INTO watchlist VALUES(?, ?, ?, ?, ?)");
+   query.prepare("REPLACE INTO watchlist VALUES(?, ?, ?, ?, ?, ?)");
    query.addBindValue(entry.iId);
    query.addBindValue(entry.uiStart);
    query.addBindValue(entry.uiEnd);
+   query.addBindValue(entry.uiEol);
    query.addBindValue(entry.sName);
    query.addBindValue(entry.sProgramm);
    return query.exec() ? 0 : -1;
@@ -669,7 +678,7 @@ int CVlcRecDB::getWatchEntries (QVector<cparser::SChan> &vE)
 
    vE.clear();
 
-   query.prepare("SELECT cid, t_start, t_end, name, prog FROM watchlist ORDER BY t_start");
+   query.prepare("SELECT cid, t_start, t_end, t_eol, name, prog FROM watchlist ORDER BY t_start");
 
    iRet = query.exec() ? 0 : -1;
 
@@ -680,8 +689,9 @@ int CVlcRecDB::getWatchEntries (QVector<cparser::SChan> &vE)
          entry.iId       = query.value(0).toInt();
          entry.uiStart   = query.value(1).toUInt();
          entry.uiEnd     = query.value(2).toUInt();
-         entry.sName     = query.value(3).toString();
-         entry.sProgramm = query.value(4).toString();
+         entry.uiEol     = query.value(3).toUInt();
+         entry.sName     = query.value(4).toString();
+         entry.sProgramm = query.value(5).toString();
 
          vE.append(entry);
 
