@@ -353,9 +353,10 @@ Recorder::Recorder(QWidget *parent)
 
 #ifdef Q_OS_MACX
    // set favourites group layout spacing for Mac
-   ui->gLayoutFav->setHorizontalSpacing(16);
-   ui->gLayoutFav->setVerticalSpacing(16);
+   ui->gLayoutFav->setHorizontalSpacing(12);
+   ui->gLayoutFav->setVerticalSpacing(12);
 #endif // Q_OS_MACX
+   ui->gLayoutFav->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
    // enable button ...
    TouchPlayCtrlBtns(false);
@@ -4635,8 +4636,12 @@ void Recorder::rebuildFavs()
     if (ui->gLayoutFav->count())
     {
         QWidget *pBtn = (QWidget*)ui->gLayoutFav->itemAt(0)->widget();
-        int      spc  = ui->gLayoutFav->spacing();
 
+#ifndef Q_OS_MACX
+        int      spc  = ui->gLayoutFav->spacing();
+#else
+        int      spc  = 2;
+#endif
         if (grid.width() && pBtn->size().width())
         {
             int favsInRow = grid.width() / (pBtn->size().width() + (spc * 2)); // FAV_BTN_WIDTH;
