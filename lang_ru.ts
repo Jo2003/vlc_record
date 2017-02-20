@@ -83,10 +83,6 @@ p, li { white-space: pre-wrap; }
         <translation>Пакеты:</translation>
     </message>
     <message>
-        <source>Account expires:</source>
-        <translation type="obsolete">Пакет истекает:</translation>
-    </message>
-    <message>
         <location filename="caboutdialog.cpp" line="204"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
@@ -97,10 +93,6 @@ p, li { white-space: pre-wrap; }
         <source>This program is free software!</source>
         <oldsource>&lt;b&gt;This program is free software!&lt;/b&gt;</oldsource>
         <translation>Эта программа является бесплатной!</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Название</translation>
     </message>
     <message>
         <location filename="caboutdialog.cpp" line="202"/>
@@ -198,7 +190,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="forms/cfavsortdlg.ui" line="14"/>
         <source>Sort Favourites</source>
-        <translation>Сортировать избранных</translation>
+        <translation>Сортировка избранного</translation>
     </message>
     <message>
         <location filename="cfavsortdlg.cpp" line="55"/>
@@ -622,318 +614,6 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>CNovoeClient</name>
-    <message>
-        <source>Unknown error</source>
-        <translation type="obsolete">Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Incorrect request</source>
-        <translation type="obsolete">Неверный запрос</translation>
-    </message>
-    <message>
-        <source>Wrong login or password</source>
-        <translation type="obsolete">Неверный логин или пароль</translation>
-    </message>
-    <message>
-        <source>Access denied</source>
-        <translation type="obsolete">Доступ запрещен</translation>
-    </message>
-    <message>
-        <source>Login incorrect</source>
-        <translation type="obsolete">Неверный логин</translation>
-    </message>
-    <message>
-        <source>Your contract is inactive</source>
-        <translation type="obsolete">Ваш договор неактивен</translation>
-    </message>
-    <message>
-        <source>Your contract is paused</source>
-        <translation type="obsolete">Ваш договор приостановлен</translation>
-    </message>
-    <message>
-        <source>Channel not found or not allowed</source>
-        <translation type="obsolete">Канал не найден или не доступен</translation>
-    </message>
-    <message>
-        <source>Error in request: Bad parameters</source>
-        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cid)</source>
-        <translation type="obsolete">Отсутствует параметр (cid)</translation>
-    </message>
-    <message>
-        <source>Another client with your data logged in</source>
-        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
-    </message>
-    <message>
-        <source>Authentication error</source>
-        <translation type="obsolete">Ошибка идентификации</translation>
-    </message>
-    <message>
-        <source>Your package expired</source>
-        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
-    </message>
-    <message>
-        <source>Unknown API function</source>
-        <translation type="obsolete">Неизвестная функция API</translation>
-    </message>
-    <message>
-        <source>Archive not available</source>
-        <translation type="obsolete">Архив не доступен</translation>
-    </message>
-    <message>
-        <source>Missing parameter (place)</source>
-        <translation type="obsolete">Отсутствует параметр (place)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (name)</source>
-        <translation type="obsolete">Отсутствует параметр (name)</translation>
-    </message>
-    <message>
-        <source>Incorrect confirmation code</source>
-        <translation type="obsolete">Неверный код подтверждения</translation>
-    </message>
-    <message>
-        <source>Current code is wrong</source>
-        <translation type="obsolete">Текущий код неверный</translation>
-    </message>
-    <message>
-        <source>New code is wrong</source>
-        <translation type="obsolete">Новый код неверный</translation>
-    </message>
-    <message>
-        <source>Missing parameter (val)</source>
-        <translation type="obsolete">Отсутствует параметр (val)</translation>
-    </message>
-    <message>
-        <source>Value not allowed</source>
-        <translation type="obsolete">Значение не доступно</translation>
-    </message>
-    <message>
-        <source>Missing parameter</source>
-        <translation type="obsolete">Отсутствует параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (id)</source>
-        <translation type="obsolete">Отсутствует параметр (id)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (fileid)</source>
-        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (type)</source>
-        <translation type="obsolete">Отсутствует параметр (type)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (query)</source>
-        <translation type="obsolete">Отсутствует параметр (query)</translation>
-    </message>
-    <message>
-        <source>Bitrate not available</source>
-        <translation type="obsolete">Битрейт не доступен</translation>
-    </message>
-    <message>
-        <source>Service not available</source>
-        <translation type="obsolete">Сервис не доступен</translation>
-    </message>
-    <message>
-        <source>Query limit exceeded</source>
-        <translation type="obsolete">Превышен лимит запроса</translation>
-    </message>
-    <message>
-        <source>Rule already exists</source>
-        <translation type="obsolete">Правило уже существует</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cmd)</source>
-        <translation type="obsolete">Отсутствует параметр (cmd)</translation>
-    </message>
-    <message>
-        <source>Bad value (rate)</source>
-        <translation type="obsolete">Неверное значение рейтинга</translation>
-    </message>
-    <message>
-        <source>Can&apos;t find film</source>
-        <translation type="obsolete">Невозможно найти фильм</translation>
-    </message>
-    <message>
-        <source>Film already added</source>
-        <translation type="obsolete">Этот фильм уже добавлен в список избранных</translation>
-    </message>
-</context>
-<context>
-    <name>CNovoeParser</name>
-    <message>
-        <source>Error in %1</source>
-        <translation type="obsolete">Ошибка в %1</translation>
-    </message>
-</context>
-<context>
-    <name>COtradaClient</name>
-    <message>
-        <source>Unknown error</source>
-        <translation type="obsolete">Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Incorrect request</source>
-        <translation type="obsolete">Неверный запрос</translation>
-    </message>
-    <message>
-        <source>Wrong login or password</source>
-        <translation type="obsolete">Неверный логин или пароль</translation>
-    </message>
-    <message>
-        <source>Access denied</source>
-        <translation type="obsolete">Доступ запрещен</translation>
-    </message>
-    <message>
-        <source>Login incorrect</source>
-        <translation type="obsolete">Неверный логин</translation>
-    </message>
-    <message>
-        <source>Your contract is inactive</source>
-        <translation type="obsolete">Ваш договор неактивен</translation>
-    </message>
-    <message>
-        <source>Your contract is paused</source>
-        <translation type="obsolete">Ваш договор приостановлен</translation>
-    </message>
-    <message>
-        <source>Channel not found or not allowed</source>
-        <translation type="obsolete">Канал не найден или не доступен</translation>
-    </message>
-    <message>
-        <source>Error in request: Bad parameters</source>
-        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cid)</source>
-        <translation type="obsolete">Отсутствует параметр (cid)</translation>
-    </message>
-    <message>
-        <source>Another client with your data logged in</source>
-        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
-    </message>
-    <message>
-        <source>Authentication error</source>
-        <translation type="obsolete">Ошибка идентификации</translation>
-    </message>
-    <message>
-        <source>Your package expired</source>
-        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
-    </message>
-    <message>
-        <source>Unknown API function</source>
-        <translation type="obsolete">Неизвестная функция API</translation>
-    </message>
-    <message>
-        <source>Archive not available</source>
-        <translation type="obsolete">Архив не доступен</translation>
-    </message>
-    <message>
-        <source>Missing parameter (place)</source>
-        <translation type="obsolete">Отсутствует параметр (place)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (name)</source>
-        <translation type="obsolete">Отсутствует параметр (name)</translation>
-    </message>
-    <message>
-        <source>Incorrect confirmation code</source>
-        <translation type="obsolete">Неверный код подтверждения</translation>
-    </message>
-    <message>
-        <source>Current code is wrong</source>
-        <translation type="obsolete">Текущий код неверный</translation>
-    </message>
-    <message>
-        <source>New code is wrong</source>
-        <translation type="obsolete">Новый код неверный</translation>
-    </message>
-    <message>
-        <source>Missing parameter (val)</source>
-        <translation type="obsolete">Отсутствует параметр (val)</translation>
-    </message>
-    <message>
-        <source>Value not allowed</source>
-        <translation type="obsolete">Значение не доступно</translation>
-    </message>
-    <message>
-        <source>Missing parameter</source>
-        <translation type="obsolete">Отсутствует параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (id)</source>
-        <translation type="obsolete">Отсутствует параметр (id)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (fileid)</source>
-        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (type)</source>
-        <translation type="obsolete">Отсутствует параметр (type)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (query)</source>
-        <translation type="obsolete">Отсутствует параметр (query)</translation>
-    </message>
-    <message>
-        <source>Bitrate not available</source>
-        <translation type="obsolete">Битрейт не доступен</translation>
-    </message>
-    <message>
-        <source>Service not available</source>
-        <translation type="obsolete">Сервис не доступен</translation>
-    </message>
-    <message>
-        <source>Query limit exceeded</source>
-        <translation type="obsolete">Превышен лимит запроса</translation>
-    </message>
-    <message>
-        <source>Rule already exists</source>
-        <translation type="obsolete">Правило уже существует</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cmd)</source>
-        <translation type="obsolete">Отсутствует параметр (cmd)</translation>
-    </message>
-    <message>
-        <source>Bad value (rate)</source>
-        <translation type="obsolete">Неверное значение рейтинга</translation>
-    </message>
-    <message>
-        <source>Can&apos;t find film</source>
-        <translation type="obsolete">Невозможно найти фильм</translation>
-    </message>
-    <message>
-        <source>Film already added</source>
-        <translation type="obsolete">Этот фильм уже добавлен в список избранных</translation>
-    </message>
-</context>
-<context>
-    <name>COtradaParser</name>
-    <message>
-        <source>Error in %1</source>
-        <translation type="obsolete">Ошибка в %1</translation>
-    </message>
-    <message>
-        <source>XML Error String: %1</source>
-        <translation type="obsolete">Ошибка XML строки: %1</translation>
-    </message>
-</context>
-<context>
     <name>CPlayer</name>
     <message>
         <location filename="cplayer.cpp" line="368"/>
@@ -997,7 +677,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="cplayer.cpp" line="697"/>
         <source>Add MRL Option: :http-proxy-pwd=******</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="cplayer.cpp" line="1121"/>
@@ -1096,296 +776,138 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>CRodnoeClient</name>
-    <message>
-        <source>Unknown error</source>
-        <translation type="obsolete">Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Incorrect request</source>
-        <translation type="obsolete">Неверный запрос</translation>
-    </message>
-    <message>
-        <source>Wrong login or password</source>
-        <translation type="obsolete">Неверный логин или пароль</translation>
-    </message>
-    <message>
-        <source>Access denied</source>
-        <translation type="obsolete">Доступ запрещен</translation>
-    </message>
-    <message>
-        <source>Login incorrect</source>
-        <translation type="obsolete">Неверный логин</translation>
-    </message>
-    <message>
-        <source>Your contract is inactive</source>
-        <translation type="obsolete">Ваш договор неактивен</translation>
-    </message>
-    <message>
-        <source>Your contract is paused</source>
-        <translation type="obsolete">Ваш договор приостановлен</translation>
-    </message>
-    <message>
-        <source>Channel not found or not allowed</source>
-        <translation type="obsolete">Канал не найден или не доступен</translation>
-    </message>
-    <message>
-        <source>Error in request: Bad parameters</source>
-        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cid)</source>
-        <translation type="obsolete">Отсутствует параметр (cid)</translation>
-    </message>
-    <message>
-        <source>Another client with your data logged in</source>
-        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
-    </message>
-    <message>
-        <source>Authentication error</source>
-        <translation type="obsolete">Ошибка идентификации</translation>
-    </message>
-    <message>
-        <source>Your package expired</source>
-        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
-    </message>
-    <message>
-        <source>Unknown API function</source>
-        <translation type="obsolete">Неизвестная функция API</translation>
-    </message>
-    <message>
-        <source>Archive not available</source>
-        <translation type="obsolete">Архив не доступен</translation>
-    </message>
-    <message>
-        <source>Missing parameter (place)</source>
-        <translation type="obsolete">Отсутствует параметр (place)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (name)</source>
-        <translation type="obsolete">Отсутствует параметр (name)</translation>
-    </message>
-    <message>
-        <source>Incorrect confirmation code</source>
-        <translation type="obsolete">Неверный код подтверждения</translation>
-    </message>
-    <message>
-        <source>Current code is wrong</source>
-        <translation type="obsolete">Текущий код неверный</translation>
-    </message>
-    <message>
-        <source>New code is wrong</source>
-        <translation type="obsolete">Новый код неверный</translation>
-    </message>
-    <message>
-        <source>Missing parameter (val)</source>
-        <translation type="obsolete">Отсутствует параметр (val)</translation>
-    </message>
-    <message>
-        <source>Value not allowed</source>
-        <translation type="obsolete">Значение не доступно</translation>
-    </message>
-    <message>
-        <source>Missing parameter</source>
-        <translation type="obsolete">Отсутствует параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (id)</source>
-        <translation type="obsolete">Отсутствует параметр (id)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (fileid)</source>
-        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (type)</source>
-        <translation type="obsolete">Отсутствует параметр (type)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (query)</source>
-        <translation type="obsolete">Отсутствует параметр (query)</translation>
-    </message>
-    <message>
-        <source>Bitrate not available</source>
-        <translation type="obsolete">Битрейт не доступен</translation>
-    </message>
-    <message>
-        <source>Service not available</source>
-        <translation type="obsolete">Сервис не доступен</translation>
-    </message>
-    <message>
-        <source>Query limit exceeded</source>
-        <translation type="obsolete">Превышен лимит запроса</translation>
-    </message>
-    <message>
-        <source>Rule already exists</source>
-        <translation type="obsolete">Правило уже существует</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cmd)</source>
-        <translation type="obsolete">Отсутствует параметр (cmd)</translation>
-    </message>
-    <message>
-        <source>Bad value (rate)</source>
-        <translation type="obsolete">Неверное значение рейтинга</translation>
-    </message>
-    <message>
-        <source>Can&apos;t find film</source>
-        <translation type="obsolete">Невозможно найти фильм</translation>
-    </message>
-    <message>
-        <source>Film already added</source>
-        <translation type="obsolete">Этот фильм уже добавлен в список избранных</translation>
-    </message>
-</context>
-<context>
-    <name>CRodnoeParser</name>
-    <message>
-        <source>Error in %1</source>
-        <translation type="obsolete">Ошибка в %1</translation>
-    </message>
-    <message>
-        <source>XML Error String: %1</source>
-        <translation type="obsolete">Ошибка XML строки: %1</translation>
-    </message>
-</context>
-<context>
     <name>CSettingsDlg</name>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="540"/>
+        <location filename="forms/csettingsdlg.ui" line="547"/>
         <source>Log disabled</source>
         <translation>Протокол выкл.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="545"/>
+        <location filename="forms/csettingsdlg.ui" line="552"/>
         <source>Log Errors only</source>
         <translation>Только протокол ошибок</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="550"/>
+        <location filename="forms/csettingsdlg.ui" line="557"/>
         <source>Log Errors and Warnings</source>
         <translation>Протокол ошибок и предупреждений</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="555"/>
+        <location filename="forms/csettingsdlg.ui" line="562"/>
         <source>Log everything</source>
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="461"/>
+        <location filename="csettingsdlg.cpp" line="462"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="456"/>
+        <location filename="csettingsdlg.cpp" line="457"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="458"/>
+        <location filename="csettingsdlg.cpp" line="459"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="501"/>
+        <location filename="csettingsdlg.cpp" line="502"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="711"/>
+        <location filename="csettingsdlg.cpp" line="713"/>
         <source>Mobile</source>
         <translation>Мобильный</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="715"/>
+        <location filename="csettingsdlg.cpp" line="717"/>
         <source>Eco</source>
         <translation>Эко</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="153"/>
         <location filename="forms/csettingsdlg.ui" line="172"/>
-        <location filename="csettingsdlg.cpp" line="719"/>
+        <location filename="csettingsdlg.cpp" line="721"/>
         <source>Standard</source>
         <translation>Стандарт</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="723"/>
+        <location filename="csettingsdlg.cpp" line="725"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="727"/>
+        <location filename="csettingsdlg.cpp" line="729"/>
         <source>%1 Kbit/s</source>
         <oldsource>Bitrate: %1Kbit/s</oldsource>
         <translation>%1 Кбит/с</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1511"/>
+        <location filename="csettingsdlg.cpp" line="1513"/>
         <source>blood</source>
         <translation>кровь</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1512"/>
+        <location filename="csettingsdlg.cpp" line="1514"/>
         <source>violence</source>
         <translation>насилие</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1515"/>
+        <location filename="csettingsdlg.cpp" line="1517"/>
         <source>porn</source>
         <translation>порнография</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1516"/>
+        <location filename="csettingsdlg.cpp" line="1518"/>
         <source>horror</source>
         <translation>ужасы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1513"/>
-        <location filename="csettingsdlg.cpp" line="1514"/>
+        <location filename="csettingsdlg.cpp" line="1515"/>
+        <location filename="csettingsdlg.cpp" line="1516"/>
         <source>obscene</source>
         <translation>непристойности</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="376"/>
+        <location filename="csettingsdlg.cpp" line="377"/>
         <source>Select Groups to hide:</source>
         <translation>Пометить группы, чтобы скрыть:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="377"/>
+        <location filename="csettingsdlg.cpp" line="378"/>
         <source>Group Manager</source>
         <translation>Менеджер групп</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1548"/>
+        <location filename="csettingsdlg.cpp" line="1550"/>
         <source>hide</source>
         <translation>скрывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1549"/>
+        <location filename="csettingsdlg.cpp" line="1551"/>
         <source>show</source>
         <translation>показывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1550"/>
+        <location filename="csettingsdlg.cpp" line="1552"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1742"/>
+        <location filename="csettingsdlg.cpp" line="1744"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1821"/>
+        <location filename="csettingsdlg.cpp" line="1823"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1822"/>
+        <location filename="csettingsdlg.cpp" line="1824"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -1417,18 +939,18 @@ To change the parent code make sure:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1873"/>
+        <location filename="csettingsdlg.cpp" line="1875"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1873"/>
-        <location filename="csettingsdlg.cpp" line="1874"/>
+        <location filename="csettingsdlg.cpp" line="1875"/>
+        <location filename="csettingsdlg.cpp" line="1876"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1950"/>
+        <location filename="csettingsdlg.cpp" line="1952"/>
         <source>Hide group %1 (%2 / %3)</source>
         <translation></translation>
     </message>
@@ -1449,7 +971,7 @@ To change the parent code make sure:
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="43"/>
-        <location filename="forms/csettingsdlg.ui" line="463"/>
+        <location filename="forms/csettingsdlg.ui" line="470"/>
         <source>User: </source>
         <translation>Абонемент:</translation>
     </message>
@@ -1460,17 +982,17 @@ To change the parent code make sure:
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="50"/>
-        <location filename="forms/csettingsdlg.ui" line="477"/>
+        <location filename="forms/csettingsdlg.ui" line="484"/>
         <source>Password: </source>
         <translation>Пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1002"/>
+        <location filename="forms/csettingsdlg.ui" line="1009"/>
         <source>Allow Adult Channels</source>
         <translation>Разрешить каналы для взрослых</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="404"/>
+        <location filename="forms/csettingsdlg.ui" line="411"/>
         <source> Proxy Server </source>
         <translation>Прокси сервер</translation>
     </message>
@@ -1508,7 +1030,7 @@ To change the parent code make sure:
         <translation>Битрэйт:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="517"/>
+        <location filename="forms/csettingsdlg.ui" line="524"/>
         <source>Player Module:</source>
         <translation>Модуль проигрывателя:</translation>
     </message>
@@ -1554,60 +1076,60 @@ To change the parent code make sure:
         <translation>Вкл. допол. настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="398"/>
+        <location filename="forms/csettingsdlg.ui" line="405"/>
         <source>&amp;Advanced</source>
         <oldsource>Advanced</oldsource>
         <translation>&amp;Допол. настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="503"/>
+        <location filename="forms/csettingsdlg.ui" line="510"/>
         <source>API Server: </source>
         <translation>Сервер АПИ: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="527"/>
+        <location filename="forms/csettingsdlg.ui" line="534"/>
         <source>Log Level:</source>
         <translation>Уровень Протокола: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="684"/>
+        <location filename="forms/csettingsdlg.ui" line="691"/>
         <source>Show Ads</source>
         <translation>Показать рекламу</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="810"/>
+        <location filename="forms/csettingsdlg.ui" line="817"/>
         <source>Select Channels to hide:</source>
         <translation>Пометить каналы, чтобы скрыть:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="836"/>
+        <location filename="forms/csettingsdlg.ui" line="843"/>
         <source> VOD Manager </source>
         <oldsource>VOD Manager</oldsource>
         <translation>Менеджер видеотеки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1095"/>
+        <location filename="forms/csettingsdlg.ui" line="1102"/>
         <source>Save and E&amp;xit</source>
         <oldsource>Save and &amp;Exit</oldsource>
         <translation>Сохр&amp;анить и выйти</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="646"/>
+        <location filename="forms/csettingsdlg.ui" line="653"/>
         <source>Minimize to Systray</source>
         <translation>Сворачивать в трей</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="410"/>
+        <location filename="forms/csettingsdlg.ui" line="417"/>
         <source>Enable Proxy</source>
         <translation>Вкл. Прокси</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="423"/>
+        <location filename="forms/csettingsdlg.ui" line="430"/>
         <source>Address: </source>
         <translation>Адрес:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="437"/>
+        <location filename="forms/csettingsdlg.ui" line="444"/>
         <source>Port:</source>
         <translation>Порт:</translation>
     </message>
@@ -1617,194 +1139,199 @@ To change the parent code make sure:
         <translation>Синхронизировать время</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1040"/>
+        <location filename="forms/csettingsdlg.ui" line="1047"/>
         <source>Parent Code: </source>
         <translation>Родительский пароль: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="639"/>
+        <location filename="forms/csettingsdlg.ui" line="646"/>
         <source>Ask for Record Filename</source>
         <translation>Запрос файла записи</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="629"/>
+        <location filename="forms/csettingsdlg.ui" line="636"/>
         <source>Shutdown Command:</source>
         <translation>Команда отключения системы: </translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="660"/>
+        <location filename="forms/csettingsdlg.ui" line="667"/>
         <source>Translit Record Filename</source>
         <translation>Транслит файла записи</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="653"/>
+        <location filename="forms/csettingsdlg.ui" line="660"/>
         <source>Detach Player at startup</source>
         <oldsource>Detach Player on startup</oldsource>
         <translation>Отдели проигр. при запуске</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="306"/>
+        <location filename="forms/csettingsdlg.ui" line="313"/>
         <source>Sh&amp;ortcuts</source>
         <oldsource>Shortcuts</oldsource>
         <translation>Горячие &amp;клавиши</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="325"/>
+        <location filename="forms/csettingsdlg.ui" line="332"/>
         <source>Function</source>
         <translation>Функция</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="330"/>
+        <location filename="forms/csettingsdlg.ui" line="337"/>
         <source>ShortCut</source>
         <translation>Комбинация клавиш</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="385"/>
+        <location filename="forms/csettingsdlg.ui" line="392"/>
         <source>Reset Shortcuts to default</source>
         <oldsource>Reset Shortcuts</oldsource>
         <translation>Вернуть стандартные настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="348"/>
+        <location filename="forms/csettingsdlg.ui" line="355"/>
         <source>Changes in shortcuts take effect only after restarting the program.</source>
         <translation>Изменения в горячих клавишах вступят в силу только после перезагрузки программы.</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="497"/>
+        <location filename="forms/csettingsdlg.ui" line="504"/>
         <source>Advanced Settings</source>
         <translation>Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="667"/>
+        <location filename="forms/csettingsdlg.ui" line="674"/>
         <source>Doubleclick on channel list starts play</source>
         <translation>Двойной щелчок на списке каналов стартует плеер</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="674"/>
+        <location filename="forms/csettingsdlg.ui" line="681"/>
         <source>Use GPU for video decoding</source>
         <translation>GPU декодирует видео</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="578"/>
+        <location filename="forms/csettingsdlg.ui" line="585"/>
         <source>Deinterlacing Mode: </source>
         <oldsource>Deinterlace Mode: </oldsource>
         <translation>Режим деинтерлейсинга:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="586"/>
+        <location filename="forms/csettingsdlg.ui" line="300"/>
+        <source>Start with last Channel / Show</source>
+        <translation>Запуск последней передачи / канала</translation>
+    </message>
+    <message>
+        <location filename="forms/csettingsdlg.ui" line="593"/>
         <source>blend</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="591"/>
+        <location filename="forms/csettingsdlg.ui" line="598"/>
         <source>bob</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="596"/>
+        <location filename="forms/csettingsdlg.ui" line="603"/>
         <source>discard</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="601"/>
+        <location filename="forms/csettingsdlg.ui" line="608"/>
         <source>linear</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="606"/>
+        <location filename="forms/csettingsdlg.ui" line="613"/>
         <source>mean</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="611"/>
+        <location filename="forms/csettingsdlg.ui" line="618"/>
         <source>x</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="616"/>
+        <location filename="forms/csettingsdlg.ui" line="623"/>
         <source>yadif</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="621"/>
+        <location filename="forms/csettingsdlg.ui" line="628"/>
         <source>yadif2x</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="702"/>
+        <location filename="forms/csettingsdlg.ui" line="709"/>
         <source>Parental &amp;Manager</source>
         <oldsource>Parental Manager</oldsource>
         <translation>&amp;Родительский контроль</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="730"/>
+        <location filename="forms/csettingsdlg.ui" line="737"/>
         <source>Please enter your parent code:</source>
         <oldsource>Please enter security code:</oldsource>
         <translation>Пожалуйста, введите родительский пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="746"/>
+        <location filename="forms/csettingsdlg.ui" line="753"/>
         <source>&amp;Enter Site</source>
         <oldsource>Enter Site</oldsource>
         <translation>Дос&amp;туп</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="792"/>
+        <location filename="forms/csettingsdlg.ui" line="799"/>
         <source> Channel Manager </source>
         <oldsource>Channel Manager</oldsource>
         <translation>Менеджер каналов</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="881"/>
+        <location filename="forms/csettingsdlg.ui" line="888"/>
         <source>Parent Code</source>
         <oldsource>Parental Code</oldsource>
         <translation>Родительский пароль</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="890"/>
+        <location filename="forms/csettingsdlg.ui" line="897"/>
         <source>Old Code:</source>
         <translation>Старый пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="897"/>
-        <location filename="forms/csettingsdlg.ui" line="914"/>
-        <location filename="forms/csettingsdlg.ui" line="931"/>
+        <location filename="forms/csettingsdlg.ui" line="904"/>
+        <location filename="forms/csettingsdlg.ui" line="921"/>
+        <location filename="forms/csettingsdlg.ui" line="938"/>
         <source>Number only (0 ... 9)!</source>
         <translation>Использовать только цифры (0 ... 9)!</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="907"/>
+        <location filename="forms/csettingsdlg.ui" line="914"/>
         <source>New Code:</source>
         <translation>Новый пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="924"/>
+        <location filename="forms/csettingsdlg.ui" line="931"/>
         <source>Confirm Code:</source>
         <translation>Подтвердите пароль:</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="956"/>
+        <location filename="forms/csettingsdlg.ui" line="963"/>
         <source>Chan&amp;ge</source>
         <oldsource>&amp;Change</oldsource>
         <translation>Смен&amp;ить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="981"/>
+        <location filename="forms/csettingsdlg.ui" line="988"/>
         <source>Adult Channels</source>
         <translation>Каналы для взрослых</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1024"/>
+        <location filename="forms/csettingsdlg.ui" line="1031"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Please Note:&lt;/span&gt;&lt;br/&gt;If you insert the parental code below you&apos;re able to watch any adult channel without the need to insert the parent code. &lt;/p&gt;&lt;p&gt;Leaving this field blank you&apos;ll have to enter the parent code each time you want to watch an adult channel.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Пожалуста, имейте в виду:&lt;/span&gt;&lt;br/&gt;Если Вы введете родительский пароль внизу, у Вас будет возможность смотреть любой канал для взрослых без необходимости ввода каждый раз родительского пароля. &lt;/p&gt;&lt;p&gt;Если Вы оставите это поле пустым, Вам будет необходимо вводитить родительский пароль каждый раз, когда Вы захотите смотреть канал для взрослых.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1140"/>
+        <location filename="forms/csettingsdlg.ui" line="1147"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="forms/csettingsdlg.ui" line="1160"/>
+        <location filename="forms/csettingsdlg.ui" line="1167"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отменить</translation>
     </message>
@@ -1820,8 +1347,8 @@ To change the parent code make sure:
 <context>
     <name>CShowInfo</name>
     <message>
-        <location filename="cshowinfo.cpp" line="606"/>
-        <location filename="cshowinfo.cpp" line="642"/>
+        <location filename="cshowinfo.cpp" line="625"/>
+        <location filename="cshowinfo.cpp" line="661"/>
         <source>%1 (Archive)</source>
         <translation>%1 (Архив)</translation>
     </message>
@@ -2090,150 +1617,6 @@ To change the parent code make sure:
         <source>Set interface language ...</source>
         <translation></translation>
     </message>
-    <message>
-        <source>Unknown error</source>
-        <translation type="obsolete">Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Incorrect request</source>
-        <translation type="obsolete">Неверный запрос</translation>
-    </message>
-    <message>
-        <source>Wrong login or password</source>
-        <translation type="obsolete">Неверный логин или пароль</translation>
-    </message>
-    <message>
-        <source>Access denied</source>
-        <translation type="obsolete">Доступ запрещен</translation>
-    </message>
-    <message>
-        <source>Login incorrect</source>
-        <translation type="obsolete">Неверный логин</translation>
-    </message>
-    <message>
-        <source>Your contract is inactive</source>
-        <translation type="obsolete">Ваш договор неактивен</translation>
-    </message>
-    <message>
-        <source>Your contract is paused</source>
-        <translation type="obsolete">Ваш договор приостановлен</translation>
-    </message>
-    <message>
-        <source>Channel not found or not allowed</source>
-        <translation type="obsolete">Канал не найден или не доступен</translation>
-    </message>
-    <message>
-        <source>Error in request: Bad parameters</source>
-        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cid)</source>
-        <translation type="obsolete">Отсутствует параметр (cid)</translation>
-    </message>
-    <message>
-        <source>Another client with your data logged in</source>
-        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
-    </message>
-    <message>
-        <source>Authentication error</source>
-        <translation type="obsolete">Ошибка идентификации</translation>
-    </message>
-    <message>
-        <source>Your package expired</source>
-        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
-    </message>
-    <message>
-        <source>Unknown API function</source>
-        <translation type="obsolete">Неизвестная функция API</translation>
-    </message>
-    <message>
-        <source>Archive not available</source>
-        <translation type="obsolete">Архив не доступен</translation>
-    </message>
-    <message>
-        <source>Missing parameter (place)</source>
-        <translation type="obsolete">Отсутствует параметр (place)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (name)</source>
-        <translation type="obsolete">Отсутствует параметр (name)</translation>
-    </message>
-    <message>
-        <source>Incorrect confirmation code</source>
-        <translation type="obsolete">Неверный код подтверждения</translation>
-    </message>
-    <message>
-        <source>Current code is wrong</source>
-        <translation type="obsolete">Текущий код неверный</translation>
-    </message>
-    <message>
-        <source>New code is wrong</source>
-        <translation type="obsolete">Новый код неверный</translation>
-    </message>
-    <message>
-        <source>Missing parameter (val)</source>
-        <translation type="obsolete">Отсутствует параметр (val)</translation>
-    </message>
-    <message>
-        <source>Value not allowed</source>
-        <translation type="obsolete">Значение не доступно</translation>
-    </message>
-    <message>
-        <source>Missing parameter</source>
-        <translation type="obsolete">Отсутствует параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (id)</source>
-        <translation type="obsolete">Отсутствует параметр (id)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (fileid)</source>
-        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (type)</source>
-        <translation type="obsolete">Отсутствует параметр (type)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (query)</source>
-        <translation type="obsolete">Отсутствует параметр (query)</translation>
-    </message>
-    <message>
-        <source>Bitrate not available</source>
-        <translation type="obsolete">Битрейт не доступен</translation>
-    </message>
-    <message>
-        <source>Service not available</source>
-        <translation type="obsolete">Сервис не доступен</translation>
-    </message>
-    <message>
-        <source>Query limit exceeded</source>
-        <translation type="obsolete">Превышен лимит запроса</translation>
-    </message>
-    <message>
-        <source>Rule already exists</source>
-        <translation type="obsolete">Правило уже существует</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cmd)</source>
-        <translation type="obsolete">Отсутствует параметр (cmd)</translation>
-    </message>
-    <message>
-        <source>Bad value (rate)</source>
-        <translation type="obsolete">Неверное значение рейтинга</translation>
-    </message>
-    <message>
-        <source>Can&apos;t find film</source>
-        <translation type="obsolete">Невозможно найти фильм</translation>
-    </message>
-    <message>
-        <source>Film already added</source>
-        <translation type="obsolete">Этот фильм уже добавлен в список избранных</translation>
-    </message>
 </context>
 <context>
     <name>CTVClubParser</name>
@@ -2280,153 +1663,6 @@ To change the parent code make sure:
         <location filename="ctvclubparser.cpp" line="664"/>
         <source>%1 (%2HP @ %3%)</source>
         <translation>%1 (%2ЛС @ %3%)</translation>
-    </message>
-</context>
-<context>
-    <name>CTelepromClient</name>
-    <message>
-        <source>Unknown error</source>
-        <translation type="obsolete">Неизвестная ошибка</translation>
-    </message>
-    <message>
-        <source>Incorrect request</source>
-        <translation type="obsolete">Неверный запрос</translation>
-    </message>
-    <message>
-        <source>Wrong login or password</source>
-        <translation type="obsolete">Неверный логин или пароль</translation>
-    </message>
-    <message>
-        <source>Access denied</source>
-        <translation type="obsolete">Доступ запрещен</translation>
-    </message>
-    <message>
-        <source>Login incorrect</source>
-        <translation type="obsolete">Неверный логин</translation>
-    </message>
-    <message>
-        <source>Your contract is inactive</source>
-        <translation type="obsolete">Ваш договор неактивен</translation>
-    </message>
-    <message>
-        <source>Your contract is paused</source>
-        <translation type="obsolete">Ваш договор приостановлен</translation>
-    </message>
-    <message>
-        <source>Channel not found or not allowed</source>
-        <translation type="obsolete">Канал не найден или не доступен</translation>
-    </message>
-    <message>
-        <source>Error in request: Bad parameters</source>
-        <translation type="obsolete">Ошибка в запросе: Неверный параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (day) in format &lt;DDMMYY&gt;</source>
-        <translation type="obsolete">Отсутствует параметр (day) в формате &lt;DDMMYY&gt;</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cid)</source>
-        <translation type="obsolete">Отсутствует параметр (cid)</translation>
-    </message>
-    <message>
-        <source>Another client with your data logged in</source>
-        <translation type="obsolete">Ваш абонемент используется другим устройством</translation>
-    </message>
-    <message>
-        <source>Authentication error</source>
-        <translation type="obsolete">Ошибка идентификации</translation>
-    </message>
-    <message>
-        <source>Your package expired</source>
-        <translation type="obsolete">Ваша подписка истекла или ещё не активирована</translation>
-    </message>
-    <message>
-        <source>Unknown API function</source>
-        <translation type="obsolete">Неизвестная функция API</translation>
-    </message>
-    <message>
-        <source>Archive not available</source>
-        <translation type="obsolete">Архив не доступен</translation>
-    </message>
-    <message>
-        <source>Missing parameter (place)</source>
-        <translation type="obsolete">Отсутствует параметр (place)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (name)</source>
-        <translation type="obsolete">Отсутствует параметр (name)</translation>
-    </message>
-    <message>
-        <source>Incorrect confirmation code</source>
-        <translation type="obsolete">Неверный код подтверждения</translation>
-    </message>
-    <message>
-        <source>Current code is wrong</source>
-        <translation type="obsolete">Текущий код неверный</translation>
-    </message>
-    <message>
-        <source>New code is wrong</source>
-        <translation type="obsolete">Новый код неверный</translation>
-    </message>
-    <message>
-        <source>Missing parameter (val)</source>
-        <translation type="obsolete">Отсутствует параметр (val)</translation>
-    </message>
-    <message>
-        <source>Value not allowed</source>
-        <translation type="obsolete">Значение не доступно</translation>
-    </message>
-    <message>
-        <source>Missing parameter</source>
-        <translation type="obsolete">Отсутствует параметр</translation>
-    </message>
-    <message>
-        <source>Missing parameter (id)</source>
-        <translation type="obsolete">Отсутствует параметр (id)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (fileid)</source>
-        <translation type="obsolete">Отсутствует параметр (fileid)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (type)</source>
-        <translation type="obsolete">Отсутствует параметр (type)</translation>
-    </message>
-    <message>
-        <source>Missing parameter (query)</source>
-        <translation type="obsolete">Отсутствует параметр (query)</translation>
-    </message>
-    <message>
-        <source>Bitrate not available</source>
-        <translation type="obsolete">Битрейт не доступен</translation>
-    </message>
-    <message>
-        <source>Service not available</source>
-        <translation type="obsolete">Сервис не доступен</translation>
-    </message>
-    <message>
-        <source>Query limit exceeded</source>
-        <translation type="obsolete">Превышен лимит запроса</translation>
-    </message>
-    <message>
-        <source>Rule already exists</source>
-        <translation type="obsolete">Правило уже существует</translation>
-    </message>
-    <message>
-        <source>Missing parameter (cmd)</source>
-        <translation type="obsolete">Отсутствует параметр (cmd)</translation>
-    </message>
-    <message>
-        <source>Bad value (rate)</source>
-        <translation type="obsolete">Неверное значение рейтинга</translation>
-    </message>
-    <message>
-        <source>Can&apos;t find film</source>
-        <translation type="obsolete">Невозможно найти фильм</translation>
-    </message>
-    <message>
-        <source>Film already added</source>
-        <translation type="obsolete">Этот фильм уже добавлен в список избранных</translation>
     </message>
 </context>
 <context>
@@ -3229,10 +2465,6 @@ or start time is later than end time!</source>
 <context>
     <name>QUpdateNotifyDlg</name>
     <message>
-        <source>Remind me: </source>
-        <translation type="obsolete">Напомнить: </translation>
-    </message>
-    <message>
         <location filename="qupdatenotifydlg.cpp" line="37"/>
         <location filename="qupdatenotifydlg.cpp" line="79"/>
         <source>Update Notification</source>
@@ -3316,32 +2548,32 @@ or start time is later than end time!</source>
 <context>
     <name>QWatchListDlg</name>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="133"/>
+        <location filename="qwatchlistdlg.cpp" line="134"/>
         <source>Start</source>
         <translation>Начало</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="134"/>
+        <location filename="qwatchlistdlg.cpp" line="135"/>
         <source>Program</source>
         <translation>Программа</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="167"/>
+        <location filename="qwatchlistdlg.cpp" line="171"/>
         <source>play from archive ...</source>
         <translation>Просмотр архива ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="182"/>
+        <location filename="qwatchlistdlg.cpp" line="187"/>
         <source>record from archive ...</source>
         <translation>Запись архива ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="205"/>
+        <location filename="qwatchlistdlg.cpp" line="210"/>
         <source>delete from list ...</source>
         <translation>Удалить из списка ...</translation>
     </message>
     <message>
-        <location filename="qwatchlistdlg.cpp" line="225"/>
+        <location filename="qwatchlistdlg.cpp" line="230"/>
         <source>%1 min.</source>
         <translation>%1 мин.</translation>
     </message>
@@ -3359,108 +2591,100 @@ or start time is later than end time!</source>
 <context>
     <name>Recorder</name>
     <message>
-        <location filename="recorder.cpp" line="4839"/>
-        <location filename="recorder.cpp" line="4860"/>
+        <location filename="recorder.cpp" line="4922"/>
+        <location filename="recorder.cpp" line="4943"/>
         <source>Mon</source>
         <translation>Пон</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4840"/>
-        <location filename="recorder.cpp" line="4861"/>
+        <location filename="recorder.cpp" line="4923"/>
+        <location filename="recorder.cpp" line="4944"/>
         <source>Tue</source>
         <translation>Вт</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4841"/>
-        <location filename="recorder.cpp" line="4862"/>
+        <location filename="recorder.cpp" line="4924"/>
+        <location filename="recorder.cpp" line="4945"/>
         <source>Wed</source>
         <translation>Ср</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4842"/>
-        <location filename="recorder.cpp" line="4863"/>
+        <location filename="recorder.cpp" line="4925"/>
+        <location filename="recorder.cpp" line="4946"/>
         <source>Thu</source>
         <translation>Чт</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4843"/>
-        <location filename="recorder.cpp" line="4864"/>
+        <location filename="recorder.cpp" line="4926"/>
+        <location filename="recorder.cpp" line="4947"/>
         <source>Fri</source>
         <translation>Пят</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4844"/>
-        <location filename="recorder.cpp" line="4865"/>
+        <location filename="recorder.cpp" line="4927"/>
+        <location filename="recorder.cpp" line="4948"/>
         <source>Sat</source>
         <translation>Суб</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4853"/>
-        <location filename="recorder.cpp" line="4866"/>
+        <location filename="recorder.cpp" line="4936"/>
+        <location filename="recorder.cpp" line="4949"/>
         <source>Sun</source>
         <translation>Воск</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4478"/>
+        <location filename="recorder.cpp" line="4561"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4490"/>
+        <location filename="recorder.cpp" line="4573"/>
         <source>Volume +</source>
         <translation>Громче</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4491"/>
+        <location filename="recorder.cpp" line="4574"/>
         <source>Volume -</source>
         <translation>Тише</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5577"/>
+        <location filename="recorder.cpp" line="5666"/>
         <source>Question</source>
         <translation>Вопрос</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2447"/>
-        <location filename="recorder.cpp" line="2571"/>
-        <location filename="recorder.cpp" line="3745"/>
+        <location filename="recorder.cpp" line="2511"/>
+        <location filename="recorder.cpp" line="2636"/>
+        <location filename="recorder.cpp" line="3810"/>
         <source>Length: %1 min.</source>
         <translation>Длит.: %1 мин.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2448"/>
-        <location filename="recorder.cpp" line="2572"/>
+        <location filename="recorder.cpp" line="2512"/>
+        <location filename="recorder.cpp" line="2637"/>
         <source> (Ar.)</source>
         <oldsource>(Ar.)</oldsource>
         <translation> (Ар.)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5578"/>
+        <location filename="recorder.cpp" line="5667"/>
         <source>Pending Record!&lt;br /&gt; &lt;br /&gt;Do you really want to stop recording now?</source>
         <oldsource>VLC is still running.&lt;br /&gt; &lt;br /&gt;Do you really want to close the VLC Player now?</oldsource>
         <translation>Запись в процессе!&lt;br /&gt; &lt;br /&gt;Вы действительно хотите остановить запись?</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2953"/>
+        <location filename="recorder.cpp" line="3018"/>
         <source>Remove from favourites</source>
         <translation>Удалить из избранных</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2960"/>
+        <location filename="recorder.cpp" line="3025"/>
         <source>Add to favourites</source>
         <translation>Добавить в избранные</translation>
     </message>
     <message>
-        <source>Note</source>
-        <translation type="obsolete">Примечание</translation>
-    </message>
-    <message>
-        <source>Max. number of favourites (%1) reached.</source>
-        <translation type="obsolete">Макс. число избранных (%1) достигнуто.</translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="4796"/>
-        <location filename="recorder.cpp" line="4873"/>
+        <location filename="recorder.cpp" line="4879"/>
+        <location filename="recorder.cpp" line="4956"/>
         <source>1 week backward</source>
         <translation>1 неделю назад</translation>
     </message>
@@ -3500,25 +2724,25 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3153"/>
-        <location filename="recorder.cpp" line="4179"/>
-        <location filename="recorder.cpp" line="4755"/>
+        <location filename="recorder.cpp" line="3218"/>
+        <location filename="recorder.cpp" line="4244"/>
+        <location filename="recorder.cpp" line="4838"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4496"/>
+        <location filename="recorder.cpp" line="4579"/>
         <source>Minimal Interface</source>
         <translation>Мини-интерфейс</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4830"/>
-        <location filename="recorder.cpp" line="4878"/>
+        <location filename="recorder.cpp" line="4913"/>
+        <location filename="recorder.cpp" line="4961"/>
         <source>1 week forward</source>
         <translation>1 неделю вперед</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4477"/>
+        <location filename="recorder.cpp" line="4560"/>
         <source>Play / Pause</source>
         <translation>Воспроизведение / Пауза</translation>
     </message>
@@ -3530,34 +2754,34 @@ dataDir: %1
         <translation>Языковый фильтр</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2441"/>
-        <location filename="recorder.cpp" line="2565"/>
+        <location filename="recorder.cpp" line="2505"/>
+        <location filename="recorder.cpp" line="2630"/>
         <source>%1 (Archive)</source>
         <translation>%1 (Архив)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3671"/>
+        <location filename="recorder.cpp" line="3736"/>
         <source>Program up to date!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4026"/>
+        <location filename="recorder.cpp" line="4091"/>
         <source>Record timer timed out ... end pending record!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4072"/>
+        <location filename="recorder.cpp" line="4137"/>
         <source>Unknown Message: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4702"/>
-        <location filename="recorder.cpp" line="4732"/>
+        <location filename="recorder.cpp" line="4785"/>
+        <location filename="recorder.cpp" line="4815"/>
         <source>My Favourites</source>
         <translation>Избранные фильмы</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3660"/>
+        <location filename="recorder.cpp" line="3725"/>
         <source>There is the new version %1 of %2 available.&lt;br /&gt;Click %3 to download!</source>
         <translation>Новая версия %2 доступна (%1).&lt;br /&gt;Для загрузки нажать %3!</translation>
     </message>
@@ -3573,276 +2797,277 @@ dataDir: %1
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1639"/>
+        <location filename="recorder.cpp" line="1650"/>
         <source>
   --&gt; HTTP Response &apos;%1&apos;, calling &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1872"/>
+        <location filename="recorder.cpp" line="1883"/>
         <source>%1 Client API Error:
 %2 (#%3)</source>
         <translation>%1 API сообщает о ошибке:
 %2 (#%3)</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1924"/>
+        <location filename="recorder.cpp" line="1935"/>
         <source>logout done ...</source>
         <translation></translation>
     </message>
     <message>
-        <source>Information</source>
-        <translation type="obsolete">Информация</translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="2113"/>
+        <location filename="recorder.cpp" line="2124"/>
         <source>Using following timeshift: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2125"/>
+        <location filename="recorder.cpp" line="2136"/>
         <source>Using Bitrate %1 kbit/s ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2134"/>
+        <location filename="recorder.cpp" line="2145"/>
         <source>Active stream server is %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2836"/>
+        <location filename="recorder.cpp" line="2901"/>
         <source>timeRec reports: record done!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2854"/>
+        <location filename="recorder.cpp" line="2919"/>
         <source>timeRec reports: record active!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2878"/>
+        <location filename="recorder.cpp" line="2943"/>
         <source>vlcCtrl reports: vlc player ended!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2898"/>
+        <location filename="recorder.cpp" line="2963"/>
         <source>vlcCtrl reports: vlc player active!</source>
         <translation></translation>
     </message>
     <message>
-        <source>Remove &quot;%1&quot; from favourites</source>
-        <translation type="obsolete">Удалить &quot;%1&quot; из избранных</translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="3121"/>
-        <location filename="recorder.cpp" line="5306"/>
-        <location filename="recorder.cpp" line="5379"/>
+        <location filename="recorder.cpp" line="3186"/>
+        <location filename="recorder.cpp" line="5395"/>
+        <location filename="recorder.cpp" line="5468"/>
         <source>Can&apos;t start player!</source>
         <translation>Не удается запустить плеер!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3127"/>
-        <location filename="recorder.cpp" line="5313"/>
-        <location filename="recorder.cpp" line="5385"/>
+        <location filename="recorder.cpp" line="3192"/>
+        <location filename="recorder.cpp" line="5402"/>
+        <location filename="recorder.cpp" line="5474"/>
         <source>Started player with pid #%1!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="3663"/>
+        <location filename="recorder.cpp" line="3728"/>
         <source>here</source>
         <translation>тут</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2040"/>
+        <location filename="recorder.cpp" line="2051"/>
         <source>Your subscription will end in %1 day(s).</source>
         <oldsource>Your subscription will end in %1 day(s).&lt;br /&gt;Visit %2 to renew it!</oldsource>
         <translation>Ваша подписка истекает через %1 дня/дней.</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="506"/>
-        <source>Save last play data: %1</source>
-        <translation type="unfinished"></translation>
+        <location filename="recorder.cpp" line="512"/>
+        <source>Save last play data: %1 ...</source>
+        <oldsource>Save last play data: %1</oldsource>
+        <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1843"/>
+        <location filename="recorder.cpp" line="1854"/>
         <source>Error %1 in request &apos;%2&apos;: %3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1858"/>
+        <location filename="recorder.cpp" line="1869"/>
         <source>Silent re-login on error #2!</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1949"/>
+        <location filename="recorder.cpp" line="1960"/>
         <source>Authentication error</source>
         <translation>Ошибка идентификации</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="2044"/>
+        <location filename="recorder.cpp" line="2055"/>
         <source>&lt;br /&gt;Visit %1 to renew it!</source>
         <translation>&lt;br /&gt;Посетите %1 продлевать её!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4427"/>
-        <source>Grid Layout check: %1px / %2px</source>
-        <translation type="unfinished"></translation>
+        <location filename="recorder.cpp" line="2311"/>
+        <source>Sorry</source>
+        <translation>Извините</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4479"/>
+        <location filename="recorder.cpp" line="2312"/>
+        <source>The show you watched last time
+was already removed from archive.</source>
+        <oldsource>The show you watched last time
+was already removed from archive.</oldsource>
+        <translation type="unfinished">К сожалению, запрашиваемая передача уже удалена из архива.</translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="4510"/>
+        <source>Grid Layout check: %1px / %2px</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="recorder.cpp" line="4562"/>
         <source>Record</source>
         <translation>Запись</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4482"/>
+        <location filename="recorder.cpp" line="4565"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4483"/>
+        <location filename="recorder.cpp" line="4566"/>
         <source>Search EPG</source>
         <translation>Поиск в программе</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4484"/>
+        <location filename="recorder.cpp" line="4567"/>
         <source>Text Size +</source>
         <translation>Увеличить размер шрифта</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4485"/>
+        <location filename="recorder.cpp" line="4568"/>
         <source>Text Size -</source>
         <translation>Уменьшить размер шрифта</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4487"/>
+        <location filename="recorder.cpp" line="4570"/>
         <source>Toggle Aspect Ratio</source>
         <translation>Формат изображения</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4488"/>
+        <location filename="recorder.cpp" line="4571"/>
         <source>Toggle Crop Geometry</source>
         <translation>Размер кадра</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4489"/>
+        <location filename="recorder.cpp" line="4572"/>
         <source>Toggle Fullscreen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4492"/>
+        <location filename="recorder.cpp" line="4575"/>
         <source>Toggle Mute</source>
         <translation>Включить / Выключить Звук</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4697"/>
-        <location filename="recorder.cpp" line="4717"/>
+        <location filename="recorder.cpp" line="4780"/>
+        <location filename="recorder.cpp" line="4800"/>
         <source>By Name</source>
         <translation>по имени</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5244"/>
+        <location filename="recorder.cpp" line="5333"/>
         <source>Parsed Channel List:
 ===8&lt;===
 %1===8&lt;===</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5972"/>
+        <location filename="recorder.cpp" line="6070"/>
         <source>Playing file &apos;%1&apos; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5978"/>
+        <location filename="recorder.cpp" line="6076"/>
         <source>Don&apos;t show file &apos;%1&apos;&apos; due to silent timer record ...</source>
         <translation></translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1553"/>
-        <location filename="recorder.cpp" line="4495"/>
+        <location filename="recorder.cpp" line="4578"/>
         <source>Screenshot</source>
         <translation>Скриншот</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4497"/>
+        <location filename="recorder.cpp" line="4580"/>
         <source>Next Channel</source>
         <translation>Следующий канал</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4498"/>
+        <location filename="recorder.cpp" line="4581"/>
         <source>Previous Channel</source>
         <translation>Предыдущий канал</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4499"/>
+        <location filename="recorder.cpp" line="4582"/>
         <source>Play Next Channel</source>
         <translation>Просмотр след. канала</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4500"/>
+        <location filename="recorder.cpp" line="4583"/>
         <source>Play Prev. Channel</source>
         <translation>Просмотр пред. канала</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4501"/>
+        <location filename="recorder.cpp" line="4584"/>
         <source>Show EPG / VOD</source>
         <translation>Программа / Видеотека</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4674"/>
+        <location filename="recorder.cpp" line="4757"/>
         <source>&amp;restore %1</source>
         <oldsource>&amp;Restore %1!</oldsource>
         <translation>&amp;показать %1</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1722"/>
-        <location filename="recorder.cpp" line="4503"/>
+        <location filename="recorder.cpp" line="4586"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4696"/>
-        <location filename="recorder.cpp" line="4699"/>
-        <location filename="recorder.cpp" line="4712"/>
-        <location filename="recorder.cpp" line="4722"/>
+        <location filename="recorder.cpp" line="4779"/>
+        <location filename="recorder.cpp" line="4782"/>
+        <location filename="recorder.cpp" line="4795"/>
+        <location filename="recorder.cpp" line="4805"/>
         <source>Newest</source>
         <translation>Последние</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="4700"/>
-        <location filename="recorder.cpp" line="4727"/>
+        <location filename="recorder.cpp" line="4783"/>
+        <location filename="recorder.cpp" line="4810"/>
         <source>Best</source>
         <translation>Лучшие</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5023"/>
+        <location filename="recorder.cpp" line="5112"/>
         <source>Exclude &apos;%1&apos; from channel list (hidden: %2, protected: %3).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5061"/>
+        <location filename="recorder.cpp" line="5150"/>
         <source>Can&apos;t load channel image &quot;%1&quot; ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="5152"/>
+        <location filename="recorder.cpp" line="5241"/>
         <source>Save Stream as</source>
         <translation>Сохранить поток как</translation>
     </message>
     <message>
-        <source>Favourite %1</source>
-        <oldsource>Favoorite %1</oldsource>
-        <translation type="obsolete">Избранное %1</translation>
-    </message>
-    <message>
-        <location filename="recorder.cpp" line="1949"/>
-        <location filename="recorder.cpp" line="3121"/>
-        <location filename="recorder.cpp" line="5306"/>
-        <location filename="recorder.cpp" line="5379"/>
+        <location filename="recorder.cpp" line="1960"/>
+        <location filename="recorder.cpp" line="3186"/>
+        <location filename="recorder.cpp" line="5395"/>
+        <location filename="recorder.cpp" line="5468"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="recorder.cpp" line="1877"/>
+        <location filename="recorder.cpp" line="1888"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
@@ -3911,10 +3136,10 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="850"/>
-        <location filename="recorder.cpp" line="3310"/>
-        <location filename="recorder.cpp" line="5292"/>
-        <location filename="recorder.cpp" line="5365"/>
-        <location filename="recorder.cpp" line="5412"/>
+        <location filename="recorder.cpp" line="3375"/>
+        <location filename="recorder.cpp" line="5381"/>
+        <location filename="recorder.cpp" line="5454"/>
+        <location filename="recorder.cpp" line="5501"/>
         <source>Video On Demand</source>
         <translation>Видеотека</translation>
     </message>
@@ -3960,7 +3185,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1459"/>
-        <location filename="recorder.cpp" line="4502"/>
+        <location filename="recorder.cpp" line="4585"/>
         <source>Watch List</source>
         <oldsource>Open Watch List</oldsource>
         <translation>Отложенные передачи</translation>
@@ -3983,13 +3208,13 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1427"/>
-        <location filename="recorder.cpp" line="4480"/>
+        <location filename="recorder.cpp" line="4563"/>
         <source>Timer Record</source>
         <translation>Планировщик записи</translation>
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1646"/>
-        <location filename="recorder.cpp" line="4481"/>
+        <location filename="recorder.cpp" line="4564"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
@@ -4000,7 +3225,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1760"/>
-        <location filename="recorder.cpp" line="4486"/>
+        <location filename="recorder.cpp" line="4569"/>
         <source>Quit</source>
         <translation>Выключить</translation>
     </message>
@@ -4011,7 +3236,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1316"/>
-        <location filename="recorder.cpp" line="4494"/>
+        <location filename="recorder.cpp" line="4577"/>
         <source>Jump Backward</source>
         <translation>Шаг назад</translation>
     </message>
@@ -4027,7 +3252,7 @@ dataDir: %1
     </message>
     <message>
         <location filename="forms/recorder_inc.ui" line="1391"/>
-        <location filename="recorder.cpp" line="4493"/>
+        <location filename="recorder.cpp" line="4576"/>
         <source>Jump Forward</source>
         <translation>Шаг вперед</translation>
     </message>

@@ -80,6 +80,7 @@ public:
     bool useGpuAcc();
     bool showAds();
     bool hiddenGroup(int cid);
+    bool doLastPlay();
     QString hiddenGroups();
 
     int GetProxyPort ();

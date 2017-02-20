@@ -195,6 +195,7 @@ private:
     int                             miMarkFavChan;
     int                             miFavsInRow;
     QMutex                          mMtxFavGrid;
+    QtJson::JsonObject              mLastPlay;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -234,6 +235,7 @@ protected:
     virtual void hideEvent (QHideEvent * event);
     virtual void closeEvent (QCloseEvent *event);
     virtual void keyPressEvent (QKeyEvent *event);
+    int getCurrentGid();
 
 private slots:
     void slotBwd();

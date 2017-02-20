@@ -485,7 +485,7 @@ void Recorder::closeEvent(QCloseEvent *event)
         break;
 
     case IncPlay::PS_PLAY:
-        if (ui->player->isPlaying())
+        if (ui->player->isPlaying() && Settings.doLastPlay())
         {
             QtJson::JsonObject lastPlay;
 
@@ -499,13 +499,17 @@ void Recorder::closeEvent(QCloseEvent *event)
             else if (showInfo.showType() == ShowInfo::Archive)
             {
                 // save channel id and gmt timestamp to be restored on next start ...
-                lastPlay["type"] = QVariant("archive");
-                lastPlay["cid"]  = QVariant(showInfo.channelId());
-                lastPlay["gid"]  = QVariant(showInfo.chanGrp());
-                lastPlay["gmt"]  = QVariant(ui->player->getSilderPos());
-                lastPlay["eol"]  = QVariant(showInfo.endOfLife());
+                lastPlay["type"]   = QVariant("archive");
+                lastPlay["cid"]    = QVariant(showInfo.channelId());
+                lastPlay["gid"]    = QVariant(showInfo.chanGrp());
+                lastPlay["start"]  = QVariant(showInfo.starts());
+                lastPlay["end"]    = QVariant(showInfo.ends());
+                lastPlay["pos"]    = QVariant(ui->player->getSilderPos());
+                lastPlay["eol"]    = QVariant(showInfo.endOfLife());
+                lastPlay["inf"]    = QVariant(showInfo.htmlDescr());
+                lastPlay["name"]   = QVariant(showInfo.showName());
             }
-            mInfo(tr("Save last play data: %1").arg(QtJson::serializeStr(lastPlay)));
+            mInfo(tr("Save last play data: %1 ...").arg(QtJson::serializeStr(lastPlay).left(15)));
             Settings.setLastPlay(QtJson::serializeStr(lastPlay));
         }
         break;
@@ -532,7 +536,7 @@ void Recorder::closeEvent(QCloseEvent *event)
 
         // save channel and epg position ...
         Settings.saveChannel(getCurrentCid());
-        Settings.saveChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+        Settings.saveChanGrp(getCurrentGid());
         Settings.saveEpgDay(iEpgOffset ? QDate::currentDate().addDays(iEpgOffset).toString("ddMMyyyy") : "");
 
         // clear shortcuts ...
@@ -653,7 +657,7 @@ void Recorder::on_pushSettings_clicked()
    QString sHlp;
 
    // in case settings will be changed we should return to current channel group ...
-   Settings.saveChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+   Settings.saveChanGrp(getCurrentGid());
 
    if (Settings.exec() == QDialog::Accepted)
    {
@@ -780,7 +784,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
             if (grantAdultAccess(chan.bIsProtected))
             {
                showInfo.cleanShowInfo();
-               showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+               showInfo.setChanGrp(getCurrentGid());
                showInfo.setChanId(cid);
                showInfo.setChanName(chan.sName);
                showInfo.setShowType(ShowInfo::Live);
@@ -1207,7 +1211,7 @@ void Recorder::on_pushLive_clicked()
          if (grantAdultAccess(chan.bIsProtected))
          {
             showInfo.cleanShowInfo();
-            showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+            showInfo.setChanGrp(getCurrentGid());
             showInfo.setChanId(cid);
             showInfo.setChanName(chan.sName);
             showInfo.setShowType(ShowInfo::Live);
@@ -1257,7 +1261,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
             if (grantAdultAccess(chan.bIsProtected))
             {
                showInfo.cleanShowInfo();
-               showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+               showInfo.setChanGrp(getCurrentGid());
                showInfo.setChanId(cid);
                showInfo.setChanName(chan.sName);
                showInfo.setShowType(ShowInfo::Live);
@@ -1417,7 +1421,7 @@ void Recorder::slotPlay()
             if (grantAdultAccess(chan.bIsProtected))
             {
                showInfo.cleanShowInfo();
-               showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+               showInfo.setChanGrp(getCurrentGid());
                showInfo.setChanId(cid);
                showInfo.setChanName(chan.sName);
                showInfo.setShowType(ShowInfo::Live);
@@ -1535,7 +1539,7 @@ void Recorder::slotRecord()
                   }
 
                   showInfo.cleanShowInfo();
-                  showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+                  showInfo.setChanGrp(getCurrentGid());
                   showInfo.setChanId(cid);
                   showInfo.setChanName(chan.sName);
                   showInfo.setShowType(ShowInfo::Live);
@@ -2292,6 +2296,59 @@ void Recorder::slotEPG(const QString &str)
                }
             }
 
+            if (!mLastPlay.isEmpty())
+            {
+                QString type = mLastPlay.value("type").toString();
+                if (type == "live")
+                {
+                    on_pushLive_clicked();
+                }
+                else if (type == "archive")
+                {
+                    // eol check ...
+                    if (QDateTime::currentDateTime().toTime_t() > mLastPlay.value("eol").toUInt())
+                    {
+                        QMessageBox::warning(this, tr("Sorry"),
+                                             tr("The show you watched last time\r\nwas already removed from archive."));
+                    }
+                    else
+                    {
+                        // fake play button press ...
+                        if (AllowAction(IncPlay::PS_PLAY))
+                        {
+                           if (grantAdultAccess(chan.bIsProtected))
+                           {
+                              QString req  = QString("cid=%1&gmt=%2").arg(cid).arg(mLastPlay.value("pos").toUInt());
+
+                              showInfo.cleanShowInfo();
+                              showInfo.setChanGrp(getCurrentGid());
+                              showInfo.setChanId(cid);
+                              showInfo.setChanName(chan.sName);
+                              showInfo.setShowType(ShowInfo::Archive);
+                              showInfo.setShowName(mLastPlay.value("name").toString());
+                              showInfo.setStartTime(mLastPlay.value("start").toUInt());
+                              showInfo.setLastJumpTime(mLastPlay.value("pos").toUInt());
+                              showInfo.setEndTime(mLastPlay.value("end").toUInt());
+                              showInfo.setPCode(secCodeDlg.passWd());
+                              showInfo.setPlayState(IncPlay::PS_PLAY);
+                              showInfo.setDefAStream((int)chan.uiDefAud);
+                              showInfo.setLangCode(chan.sLangCode);
+                              showInfo.setHtmlDescr(mLastPlay.value("inf").toString());
+
+                              TouchPlayCtrlBtns(false);
+
+                              stopOnDemand();
+
+                              pApiClient->queueRequest(CIptvDefs::REQ_ARCHIV, req, secCodeDlg.passWd());
+                           }
+                        }
+                    }
+                }
+
+                // was handled -> clear!
+                mLastPlay.clear();
+            }
+
 #ifdef _TASTE_IPTV_RECORD
             // So good that we queue requests ...
             if (pMnLangFilter->actions().isEmpty())
@@ -2556,7 +2613,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             // store all info about show ...
             showInfo.cleanShowInfo();
             showInfo.setEndOfLife(uiEol);
-            showInfo.setChanGrp(ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt());
+            showInfo.setChanGrp(getCurrentGid());
             showInfo.setEpgMap(ui->textEpg->exportProgMap());
             showInfo.setChanId(cid);
             showInfo.setChanName(sChan.sName);
@@ -4263,6 +4320,18 @@ void Recorder::slotChanGroups(const QString &str)
             int     idx = 0, cnt = 0;
             int     lastGroup = Settings.lastChanGrp();
 
+            // get last play info ...
+            QString lastPlay  = Settings.lastPlay();
+
+            if (!lastPlay.isEmpty())
+            {
+                mLastPlay = QtJson::parse(lastPlay).toMap();
+                if (mLastPlay.value("gid").toInt() != -1)
+                {
+                    lastGroup = mLastPlay.value("gid").toInt();
+                }
+            }
+
             // either last group or first group in channel groups map ...
             if (!chanGrps.contains(lastGroup))
             {
@@ -4270,6 +4339,12 @@ void Recorder::slotChanGroups(const QString &str)
             }
 
             ui->cbxChannelGroup->clear();
+
+/*
+            // add favorites ...
+            pix.fill(QColor("#fc0"));
+            ui->cbxChannelGroup->addItem(QIcon(pix), tr("Favourites"), -123);
+*/
 
             foreach(const cparser::SGrp& grp, chanGrps)
             {
@@ -5013,6 +5088,12 @@ int Recorder::FillChannelList (const QVector<cparser::SChan> &chanlist)
     int         iPos;
     uint        now = QDateTime::currentDateTime().toTime_t();
     int         favChanIdx =  0; // default to first entry
+
+    if ((miMarkFavChan == -1) && !mLastPlay.isEmpty())
+    {
+        // double use of channel marker ...
+        miMarkFavChan = mLastPlay.value("cid").toInt();
+    }
 
     // ui->cbxChannelGroup->clear();
     pModel->clear();
@@ -5784,6 +5865,15 @@ int Recorder::getCurrentCid()
    int         cid = idx.isValid() ? qvariant_cast<int>(idx.data(channellist::cidRole)) : -1;
 
    return cid;
+}
+
+//------------------------------------------------------------------
+/// \brief get current group id
+/// \return group id
+//------------------------------------------------------------------
+int Recorder::getCurrentGid()
+{
+    return ui->cbxChannelGroup->itemData(ui->cbxChannelGroup->currentIndex()).toInt();
 }
 
 /* -----------------------------------------------------------------\

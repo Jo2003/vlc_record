@@ -248,6 +248,7 @@ void CSettingsDlg::readSettings()
    m_ui->checkDetach->setCheckState((Qt::CheckState)pDb->intValue("DetachPlayer"));
    m_ui->checkAdvanced->setCheckState((Qt::CheckState)pDb->intValue("AdvSet"));
    m_ui->checkGPUAcc->setCheckState((Qt::CheckState)pDb->intValue("GPUAcc"));
+   m_ui->checkLastPlay->setCheckState((Qt::CheckState)pDb->intValue("doLastPlay"));
    m_ui->checkAds->setCheckState((Qt::CheckState)pDb->intValue("AdsEnabled", &iErr));
 
    // value doesn't exist in database ...
@@ -541,6 +542,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("2ClickPlay", (int)m_ui->check2ClicksToPlay->checkState());
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
+   pDb->setValue("doLastPlay", (int)m_ui->checkLastPlay->checkState());
 
 #ifndef _HAS_VOD_MANAGER
    /////////////////////////////////////////////////////////////////////////////
@@ -2019,6 +2021,15 @@ bool CSettingsDlg::hiddenGroup(int cid)
     }
 
     return false;
+}
+
+//---------------------------------------------------------------------------
+/// \brief CSettingsDlg::doLastPlay
+/// \return true -> use last play; false -> don't use
+//---------------------------------------------------------------------------
+bool CSettingsDlg::doLastPlay()
+{
+    return m_ui->checkLastPlay->isChecked();
 }
 
 //---------------------------------------------------------------------------

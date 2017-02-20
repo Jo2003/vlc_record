@@ -116,6 +116,7 @@ void QWatchListDlg::buildWatchTab()
    QVector<cparser::SChan> vE;
    QStringList sl;
    int i;
+   uint eol;
    QString page, row, tab, line, act, img, len;
    QUrl url;
 
@@ -142,8 +143,10 @@ void QWatchListDlg::buildWatchTab()
          row  = "";
          line = "";
 
+         eol  = vE.at(i).uiEol ? (vE.at(i).uiEol - vE.at(i).uiStart) : MAX_ARCHIV_AGE;
+
          // handle old / very new entries ...
-         if ((iRet = CSmallHelpers::archiveAvailable(vE.at(i).uiStart)) == -2)
+         if ((iRet = CSmallHelpers::archiveAvailable(vE.at(i).uiStart, eol)) == -2)
          {
             // old entries should be deleted already (cleanWatchList())
             // so this shouldn't happen ...

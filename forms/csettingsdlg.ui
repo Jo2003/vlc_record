@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>571</width>
+    <width>620</width>
     <height>562</height>
    </rect>
   </property>
@@ -291,6 +291,13 @@
              <widget class="QCheckBox" name="checkAdvanced">
               <property name="text">
                <string>Enable Advanced Settings</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkLastPlay">
+              <property name="text">
+               <string>Start with last Channel / Show</string>
               </property>
              </widget>
             </item>
@@ -861,8 +868,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>249</width>
-                     <height>229</height>
+                     <width>25</width>
+                     <height>16</height>
                     </rect>
                    </property>
                   </widget>
@@ -1013,8 +1020,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>239</width>
-                     <height>166</height>
+                     <width>76</width>
+                     <height>676</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
