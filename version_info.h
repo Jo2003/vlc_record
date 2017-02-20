@@ -26,7 +26,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
 #define VERSION_BUILD 1
-#define BETA_EXT      "B4"
+#define BETA_EXT      "B5"
 
 #define EXPIRES_IN    -1
 
@@ -43,6 +43,14 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-02-20: Version 2.69.1B5
+| - favorites box uses a splitter
+| - number favorites in row depend on fav box size
+| - enlarge fav buttons
+| - favs can be shown as channel group
+| - fav sorting can be done in channel list
+| - add option to remember last play
+| - many fixes for watchlist
 |
 | 2017-02-01: Version 2.69.1B4
 | - rewrite favorites stuff to support unlimited favorites

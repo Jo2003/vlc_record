@@ -2357,8 +2357,7 @@ void Recorder::slotEPG(const QString &str)
                     // eol check ...
                     if (QDateTime::currentDateTime().toTime_t() > mLastPlay.value("eol").toUInt())
                     {
-                        QMessageBox::warning(this, tr("Sorry"),
-                                             tr("The show you watched last time\r\nwas already removed from archive."));
+                        QMessageBox::warning(this, tr("Sorry"), tr("The show you watched last time was already removed from archive."));
                     }
                     else
                     {
