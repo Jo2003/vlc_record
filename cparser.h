@@ -165,12 +165,21 @@ namespace cparser
       uint    uiEnd;
       QString sShow;
    };
+
+   // used to store additional info about channels
+   struct SEpgChanInf
+   {
+       int  miArchHours;
+       bool mbProtected;
+   };
+
 }
 
 // make life easier ...
 typedef QMap<int, cparser::SChan>                 QChanMap;
 typedef QMap<int, QVector<cparser::SEpgCurrent> > QCurrentMap;
 typedef QMap<int, cparser::SGrp>                  QGrpMap;
+typedef QMap<int, cparser::SEpgChanInf>           QEpgChanInfMap;
 typedef QVector<cparser::SChan>                   QChanList;
 typedef QMap<QString, QString>                    QVodLangMap;
 

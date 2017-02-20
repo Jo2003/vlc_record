@@ -41,6 +41,7 @@ public:
    const QGrpMap& groupMap();
    void update(int key, const cparser::SChan& chan, bool bLock = true);
    QChanList filterChannels(const QString& filter);
+   void updateChannelData(const QEpgChanInfMap& epgChanInf);
 
 private:
    QMutex     m_mtx;

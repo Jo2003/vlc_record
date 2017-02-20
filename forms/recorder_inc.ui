@@ -104,7 +104,7 @@ QTabBar::tab {
 
 QTabBar::tab:selected {
   background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 #eee, stop:0.7 grey, stop:1 #dedede);
-  
+
   border-bottom-color: #eee;
   border-top-color: #fa0;
 }
@@ -785,7 +785,7 @@ color: white;
                       </property>
                       <property name="styleSheet">
                        <string notr="true">QLineEdit#lineSearch {
-  color: #800;   
+  color: #800;
   font: bold;
    background-image: url(:/app/search);
    background-repeat: no-repeat;
@@ -1016,7 +1016,7 @@ color: white;
                </property>
                <property name="styleSheet">
                 <string notr="true">QLineEdit#lineVodSearch {
-  color: #800;   
+  color: #800;
   font: bold;
    background-image: url(:/app/search);
    background-repeat: no-repeat;
@@ -1100,7 +1100,7 @@ QSplitter#hSplitterPlayer::handle:pressed {
              <enum>Qt::Vertical</enum>
             </property>
             <widget class="CPlayer" name="player" native="true"/>
-            <widget class="QWidget" name="layoutWidget">
+            <widget class="QWidget" name="layoutWidget2">
              <layout class="QVBoxLayout" name="vLayoutPlayInfo" stretch="0,80">
               <property name="spacing">
                <number>2</number>

@@ -18,7 +18,6 @@
 #include "qcustparser.h"
 #include "chtmlwriter.h"
 #include "qoverlayicon.h"
-#include "cfavsortdlg.h"
 
 // global customization class ...
 extern QCustParser *pCustomization;
@@ -137,7 +136,7 @@ Recorder::Recorder(QWidget *parent)
    pHlsControl = new QHlsControl(this);
 
    // set channel list model and delegate ...
-   pModel    = new QStandardItemModel(this);
+   pModel    = new CFavItemModel(this);
    pDelegate = new QChanListDelegate(this);
 
    ui->channelList->setItemDelegate(pDelegate);
@@ -321,6 +320,9 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
    connect (this,           SIGNAL(sigLockParentalManager()), &Settings, SLOT(slotLockParentalManager()));
    connect (ui->hFrameFav,  SIGNAL(resized()), this, SLOT(rebuildFavs()));
+
+   connect (pModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(slotRowsInserted(QModelIndex,int,int)));
+   connect (pModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(slotRowsRemoved(QModelIndex,int,int)));
 
    // HLS play stuff ...
    connect (pApiClient, SIGNAL(sigM3u(int,QString)), pHlsControl, SLOT(slotM3uResp(int,QString)));
@@ -740,7 +742,54 @@ void Recorder::on_pushSettings_clicked()
 void Recorder::on_cbxChannelGroup_activated(int index)
 {
     int gid = ui->cbxChannelGroup->itemData(index).toInt();
-    pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, gid);
+
+    if (gid == DEF_FAV_GRP)
+    {
+        int favGid;
+        QString sName, sLogo;
+
+        QtJson::JsonArray  pseudoList;
+        QtJson::JsonObject info;
+        QtJson::JsonObject root;
+        QtJson::JsonObject epg;
+        QtJson::JsonObject channel;
+        QStringList slChans;
+
+        foreach (int cid, lFavourites)
+        {
+            slChans << QString::number(cid);
+
+            // get additional data ...
+            Settings.favData(cid, favGid, sName, sLogo);
+
+            info["id"]     = QVariant(cid);
+            info["groups"] = QVariant(favGid);
+            info["name"]   = QVariant(sName);
+
+            channel["info"] = info;
+            channel["epg"]  = epg;
+
+            pseudoList.append(channel);
+        }
+
+        root["channels"] = pseudoList;
+
+        mInfo(tr("Faked channel list: %1").arg(QtJson::serializeStr(root)));
+        slotChanList(QtJson::serializeStr(root));
+
+        // epg current for favourites ...
+        pApiClient->queueRequest(CIptvDefs::REQ_EPG_CURRENT, slChans.join(","));
+
+        // favourites can be sorted by drag'n'drop ...
+        ui->channelList->setDragDropMode(QAbstractItemView::InternalMove);
+    }
+    else
+    {
+        pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, gid);
+
+        // remove drag'n'drop option ...
+        ui->channelList->setDragDropMode(QAbstractItemView::DragOnly);
+    }
 }
 
 /* -----------------------------------------------------------------\
@@ -2373,62 +2422,80 @@ void Recorder::slotEPG(const QString &str)
 \----------------------------------------------------------------- */
 void Recorder::slotEPGCurrent (const QString &str)
 {
-   QCurrentMap                   currentEpg;
-   QVector<cparser::SEpgCurrent> chanEntries;
-   cparser::SChan                chanMapEntry;
-   int i, j;
+    QCurrentMap                   currentEpg;
+    QVector<cparser::SEpgCurrent> chanEntries;
+    cparser::SChan                chanMapEntry;
+    int i, j;
 
-   if (!pApiParser->parseEpgCurrent(str, currentEpg))
-   {
-      QList<int> keyList = currentEpg.keys();
-
-      for (i = 0; i < keyList.count(); i++)
-      {
-         chanEntries  = currentEpg.value(keyList.at(i));
-         chanMapEntry = pChanMap->value(keyList.at(i), true);
-
-         for (j = 0; j < chanEntries.count(); j++)
-         {
-            if (chanEntries.at(j).uiStart > chanMapEntry.uiStart)
+    if (!pApiParser->parseEpgCurrent(str, currentEpg))
+    {
+#ifdef _TASTE_TV_CLUB
+        // update missing channel data with data from EPG ...
+        if (getCurrentGid() == DEF_FAV_GRP)
+        {
+            QEpgChanInfMap addChanData;
+            if (!((CTVClubParser*)pApiParser)->addChanInfo(addChanData))
             {
-               chanMapEntry.uiStart   = chanEntries.at(j).uiStart;
+                pChanMap->updateChannelData(addChanData);
+            }
+
+            // make sure we update EPG browser with new updated channel data ...
+            cparser::SChan cinfo;
+            if (!pChanMap->entry(getCurrentCid(), cinfo, true))
+            {
+                ui->textEpg->recreateEpgEx(accountInfo.bHasArchive && cinfo.bHasArchive);
+            }
+        }
+#endif
+        QList<int> keyList = currentEpg.keys();
+
+        for (i = 0; i < keyList.count(); i++)
+        {
+            chanEntries  = currentEpg.value(keyList.at(i));
+            chanMapEntry = pChanMap->value(keyList.at(i), true);
+
+            for (j = 0; j < chanEntries.count(); j++)
+            {
+                if (chanEntries.at(j).uiStart > chanMapEntry.uiStart)
+                {
+                    chanMapEntry.uiStart   = chanEntries.at(j).uiStart;
 
 #ifdef _TASTE_IPTV_RECORD
-               chanMapEntry.uiEnd     = chanEntries.at(j).uiEnd;
+                    chanMapEntry.uiEnd     = chanEntries.at(j).uiEnd;
 #else
-               chanMapEntry.uiEnd     = ((j + 1) < chanEntries.count()) ? chanEntries.at(j + 1).uiStart : 0;
+                    chanMapEntry.uiEnd     = ((j + 1) < chanEntries.count()) ? chanEntries.at(j + 1).uiStart : 0;
 #endif // _TASTE_IPTV_RECORD
 
-               chanMapEntry.sProgramm = chanEntries.at(j).sShow;
+                    chanMapEntry.sProgramm = chanEntries.at(j).sShow;
 
-               pChanMap->update(keyList.at(i), chanMapEntry);
+                    pChanMap->update(keyList.at(i), chanMapEntry);
 
-               // leave this for loop ...
-               break;
+                    // leave this for loop ...
+                    break;
+                }
             }
-         }
 
-         // update EPG browser if needed ...
-         if ((keyList.at(i) == ui->textEpg->GetCid()) && !iEpgOffset)
-         {
-            if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < QDateTime::currentDateTime().date())
+            // update EPG browser if needed ...
+            if ((keyList.at(i) == ui->textEpg->GetCid()) && !iEpgOffset)
             {
-               // update EPG ...
-               pApiClient->queueRequest(CIptvDefs::REQ_EPG, keyList.at(i));
+                if (QDateTime::fromTime_t(ui->textEpg->epgTime()).date() < QDateTime::currentDateTime().date())
+                {
+                    // update EPG ...
+                    pApiClient->queueRequest(CIptvDefs::REQ_EPG, keyList.at(i));
+                }
+                else
+                {
+                    // reload EPG ...
+                    ui->textEpg->recreateEpg();
+                }
             }
-            else
-            {
-               // reload EPG ...
-               ui->textEpg->recreateEpg();
-            }
-         }
-      }
+        }
 
-      if (!keyList.isEmpty())
-      {
-         slotUpdateChannelList(keyList);
-      }
-   }
+        if (!keyList.isEmpty())
+        {
+            slotUpdateChannelList(keyList);
+        }
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -3634,7 +3701,10 @@ void Recorder::slotCurrentChannelChanged(const QModelIndex & current)
          }
       }
 
-      setChannelGroup(current.data(channellist::gidRole).toInt());
+      if (getCurrentGid() != DEF_FAV_GRP)
+      {
+         setChannelGroup(current.data(channellist::gidRole).toInt());
+      }
    }
 }
 
@@ -4323,6 +4393,7 @@ void Recorder::slotChanGroups(const QString &str)
             // get last play info ...
             QString lastPlay  = Settings.lastPlay();
 
+            // last play stuff ...
             if (!lastPlay.isEmpty())
             {
                 mLastPlay = QtJson::parse(lastPlay).toMap();
@@ -4333,18 +4404,26 @@ void Recorder::slotChanGroups(const QString &str)
             }
 
             // either last group or first group in channel groups map ...
-            if (!chanGrps.contains(lastGroup))
+            if (!chanGrps.contains(lastGroup) && (lastGroup != DEF_FAV_GRP))
             {
                 lastGroup = chanGrps.keys()[0];
             }
 
             ui->cbxChannelGroup->clear();
 
-/*
-            // add favorites ...
-            pix.fill(QColor("#fc0"));
-            ui->cbxChannelGroup->addItem(QIcon(pix), tr("Favourites"), -123);
-*/
+            if (Settings.favsAsChanGrp())
+            {
+                // add favorites ...
+                pix.fill(QColor("#fc0"));
+                ui->cbxChannelGroup->addItem(QIcon(pix), tr("Favourites"), DEF_FAV_GRP);
+
+                if (lastGroup == DEF_FAV_GRP)
+                {
+                    idx = cnt;
+                }
+
+                cnt ++;
+            }
 
             foreach(const cparser::SGrp& grp, chanGrps)
             {
@@ -4364,8 +4443,9 @@ void Recorder::slotChanGroups(const QString &str)
             }
 
             ui->cbxChannelGroup->setCurrentIndex(idx);
+            on_cbxChannelGroup_activated(idx);
 
-            pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, lastGroup);
+            // pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, lastGroup);
         }
     }
 }
@@ -4386,6 +4466,61 @@ void Recorder::slotUpdWatchListCount()
    QOverlayIcon ico(":/app/watchlist");
    ico.placeInt(pWatchList->count(), QColor("#f00"));
    ui->pushWatchList->setIcon(ico);
+}
+
+// ------------------------------------------------------------------
+/// \brief Recorder::slotRowsInserted
+/// \param parent
+/// \param start inserted index start
+/// \param end inserted index end
+// ------------------------------------------------------------------
+void Recorder::slotRowsInserted(const QModelIndex &parent, int start, int end)
+{
+#ifdef __TRACE
+    mInfo(tr("parent: %1, start: %2, end: %3").arg(parent.row()).arg(start).arg(end));
+#else
+    Q_UNUSED(end)
+    Q_UNUSED(parent)
+#endif
+    mFavDroppedIdx = start;
+}
+
+// ------------------------------------------------------------------
+/// \brief Recorder::slotRowsRemoved
+/// \param parent
+/// \param start removed index start
+/// \param end removed index end
+// ------------------------------------------------------------------
+void Recorder::slotRowsRemoved(const QModelIndex &parent, int start, int end)
+{
+#ifdef __TRACE
+    mInfo(tr("parent: %1, start: %2, end: %3").arg(parent.row()).arg(start).arg(end));
+#else
+    Q_UNUSED(end)
+    Q_UNUSED(parent)
+#endif
+    mFavDragIdx = start;
+
+    // time to make the right selection ...
+    if (mFavDroppedIdx > mFavDragIdx)
+    {
+        // when moving down the channel, we have to reduce
+        // the new row count by 1 since channel was removed
+        // from above
+        mFavDroppedIdx --;
+    }
+
+    QModelIndex midx = ui->channelList->model()->index(mFavDroppedIdx, 0);
+    ui->channelList->setCurrentIndex(midx);
+
+    // re-create favorites stuff ...
+    lFavourites.clear();
+    for (int i = 0; i < pModel->rowCount(); i++)
+    {
+        lFavourites.append(pModel->item(i)->data(channellist::cidRole).toInt());
+    }
+
+    HandleFavourites();
 }
 
 //---------------------------------------------------------------------------

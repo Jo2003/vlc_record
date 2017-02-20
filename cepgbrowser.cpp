@@ -123,6 +123,28 @@ void CEpgBrowser::recreateEpg()
    scrollToAnchor("nowPlaying");
 }
 
+//------------------------------------------------------------------
+/// \brief recreate EPG with some updated data
+/// \param bHasArchiv archive flag
+//------------------------------------------------------------------
+void CEpgBrowser::recreateEpgEx(bool bHasArchiv)
+{
+    bArchive = bHasArchiv;
+    cparser::SChan chanInfo;
+
+    if (pChanMap->entry(iCid, chanInfo, true) == 0)
+    {
+        mMaxArchAge = (uint)chanInfo.iArchHours * (uint)3600;
+        mInfo(tr("%1 has max. archive age of %2 secs ...").arg(sChanName).arg(mMaxArchAge));
+    }
+    else
+    {
+        mMaxArchAge = MAX_ARCHIV_AGE;
+    }
+
+    recreateEpg();
+}
+
 /* -----------------------------------------------------------------\
 |  Method: createHtmlCode
 |  Begin: 24.01.2011 / 14:55

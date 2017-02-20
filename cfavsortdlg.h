@@ -27,6 +27,10 @@ namespace Ui {
 class CFavItemModel : public QStandardItemModel
 {
 public:
+    explicit CFavItemModel(QObject *parent = 0) : QStandardItemModel(parent)
+    {
+    }
+
     virtual Qt::ItemFlags flags(const QModelIndex &index) const
     {
         // Qt::ItemFlags flags; //= QStringListModel::flags(index);

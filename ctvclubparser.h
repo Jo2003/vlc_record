@@ -43,6 +43,10 @@ public:
    virtual int parseVideoInfo (const QString& sResp, cparser::SVodVideo &vidInfo);
    virtual int parseEpgCurrent (const QString& sResp, QCurrentMap &currentEpg);
    virtual int parseSettings(const QString& sResp, CSettingsDlg& settings);
+   virtual int addChanInfo(QEpgChanInfMap& epgChanInf);
+
+protected:
+   QEpgChanInfMap mEpgChanInf;
 };
 
 #endif // __20170115_CTVCLUBPARSER_H

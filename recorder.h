@@ -67,6 +67,7 @@
 #include "qhlscontrol.h"
 #include "qretrydialog.h"
 #include "cfavbutton.h"
+#include "cfavsortdlg.h"
 
 //------------------------------------------------------------------
 /// \name definition of start flags
@@ -166,7 +167,7 @@ private:
     IncPlay::ePlayStates            ePlayState;
     QVector<CShortcutEx *>          vShortcutPool;
     int                             iDwnReqId;
-    QStandardItemModel             *pModel;
+    CFavItemModel                  *pModel;
     QChanListDelegate              *pDelegate;
     QVector<Ui::SShortCuts>         vShortCutTab;
     cparser::SAccountInfo           accountInfo;
@@ -196,6 +197,8 @@ private:
     int                             miFavsInRow;
     QMutex                          mMtxFavGrid;
     QtJson::JsonObject              mLastPlay;
+    int                             mFavDroppedIdx;
+    int                             mFavDragIdx;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -336,7 +339,8 @@ private slots:
     void activateFav(int cid);
     void reorderFavs();
     void rebuildFavs();
-
+    void slotRowsInserted(const QModelIndex& parent, int start, int end);
+    void slotRowsRemoved(const QModelIndex& parent, int start, int end);
 
 signals:
     void sigShow ();

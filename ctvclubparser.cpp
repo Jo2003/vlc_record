@@ -573,9 +573,11 @@ int CTVClubParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEp
     cparser::SEpgCurrent          entry;
     QVector<cparser::SEpgCurrent> vEntries;
     QtJson::JsonObject            contentMap;
+    cparser::SEpgChanInf          chanInf;
 
     // clear vector ...
     currentEpg.clear();
+    mEpgChanInf.clear();
 
     contentMap = QtJson::parse(sResp, bOk).toMap();
 
@@ -588,6 +590,10 @@ int CTVClubParser::parseEpgCurrent (const QString& sResp, QCurrentMap &currentEp
         {
             QtJson::JsonObject chan = rawChan.toMap();
             cid = chan.value("id").toInt();
+
+            chanInf.mbProtected = !!chan.value("protected").toInt();
+            chanInf.miArchHours = chan.value("records").toInt();
+            mEpgChanInf[cid]    = chanInf;
 
             vEntries.clear();
 
@@ -683,4 +689,15 @@ int CTVClubParser::parseSettings(const QString &sResp, CSettingsDlg &settings)
     }
 
     return iRV;
+}
+
+//------------------------------------------------------------
+/// \brief get additional info for channels from EPG
+/// \param epgChanInf buffer for data map
+/// \return 0 -> ok; -1 -> no data
+//------------------------------------------------------------
+int CTVClubParser::addChanInfo(QEpgChanInfMap &epgChanInf)
+{
+    epgChanInf = mEpgChanInf;
+    return epgChanInf.isEmpty() ? -1 : 0;
 }

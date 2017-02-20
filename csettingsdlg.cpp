@@ -249,6 +249,7 @@ void CSettingsDlg::readSettings()
    m_ui->checkAdvanced->setCheckState((Qt::CheckState)pDb->intValue("AdvSet"));
    m_ui->checkGPUAcc->setCheckState((Qt::CheckState)pDb->intValue("GPUAcc"));
    m_ui->checkLastPlay->setCheckState((Qt::CheckState)pDb->intValue("doLastPlay"));
+   m_ui->checkFavGroup->setCheckState((Qt::CheckState)pDb->intValue("favsAsGroup"));
    m_ui->checkAds->setCheckState((Qt::CheckState)pDb->intValue("AdsEnabled", &iErr));
 
    // value doesn't exist in database ...
@@ -543,6 +544,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("GPUAcc", (int)m_ui->checkGPUAcc->checkState());
    pDb->setValue("AdsEnabled", (int)m_ui->checkAds->checkState());
    pDb->setValue("doLastPlay", (int)m_ui->checkLastPlay->checkState());
+   pDb->setValue("favsAsGroup", (int)m_ui->checkFavGroup->checkState());
 
 #ifndef _HAS_VOD_MANAGER
    /////////////////////////////////////////////////////////////////////////////
@@ -2030,6 +2032,15 @@ bool CSettingsDlg::hiddenGroup(int cid)
 bool CSettingsDlg::doLastPlay()
 {
     return m_ui->checkLastPlay->isChecked();
+}
+
+//---------------------------------------------------------------------------
+/// \brief show favorites as channel group
+/// \return true -> yes; false -> no
+//---------------------------------------------------------------------------
+bool CSettingsDlg::favsAsChanGrp()
+{
+    return m_ui->checkFavGroup->isChecked();
 }
 
 //---------------------------------------------------------------------------

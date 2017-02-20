@@ -219,6 +219,29 @@ QChanList QChannelMap::filterChannels(const QString &filter)
 
 //---------------------------------------------------------------------------
 //
+//! \brief   update channel data
+//
+//! \param[in] epgChanInf (const QEpgChanInfMap&) additional channel data
+//
+//---------------------------------------------------------------------------
+void QChannelMap::updateChannelData(const QEpgChanInfMap &epgChanInf)
+{
+    foreach(int cid, epgChanInf.keys())
+    {
+        if (contains(cid))
+        {
+            cparser::SChan chan = value(cid);
+            chan.bHasArchive    = (epgChanInf.value(cid).miArchHours > 0);
+            chan.bIsProtected   = epgChanInf.value(cid).mbProtected;
+            chan.iArchHours     = epgChanInf.value(cid).miArchHours;
+
+            operator [](cid) = chan;
+        }
+    }
+}
+
+//---------------------------------------------------------------------------
+//
 //! \brief   lock channel map
 //
 //! \author  Jo2003

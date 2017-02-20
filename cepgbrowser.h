@@ -49,7 +49,8 @@ public:
                     const QString &sName, int iChanID,
                     uint uiGmt, bool bHasArchiv, int iTs);
 
-    void recreateEpg ();
+    void recreateEpg();
+    void recreateEpgEx(bool bHasArchiv);
 
     int  GetCid () { return iCid; }
     const epg::SShow epgShow (uint uiTimeT);

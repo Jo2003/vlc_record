@@ -81,6 +81,7 @@ public:
     bool showAds();
     bool hiddenGroup(int cid);
     bool doLastPlay();
+    bool favsAsChanGrp();
     QString hiddenGroups();
 
     int GetProxyPort ();
