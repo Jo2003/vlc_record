@@ -4632,18 +4632,18 @@ void Recorder::reorderFavs()
 void Recorder::rebuildFavs()
 {
     // get with of grid layout ...
-    QRect grid = ui->gLayoutFav->geometry();
+    QSize sz = ui->scrollAreaWidgetContents->size();
 
     if (ui->gLayoutFav->count())
     {
         QWidget *pBtn = (QWidget*)ui->gLayoutFav->itemAt(0)->widget();
         int      spc  = 2;
 #ifdef __TRACE
-        mInfo(tr("Grid Layout check: %1px / %2px").arg(grid.width()).arg(pBtn->size().width() + (spc * 2)));
+        mInfo(tr("Grid Layout check: %1px / %2px").arg(sz.width()).arg(pBtn->size().width() + (spc * 2)));
 #endif
-        if (grid.width() && pBtn->size().width())
+        if (sz.width() && pBtn->size().width())
         {
-            int favsInRow = grid.width() / (pBtn->size().width() + (spc * 2)); // FAV_BTN_WIDTH;
+            int favsInRow = sz.width() / (pBtn->size().width() + (spc * 2)); // FAV_BTN_WIDTH;
 
             // not less 3 buttons ...
             if (favsInRow < 3)
