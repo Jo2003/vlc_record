@@ -103,7 +103,7 @@ Recorder::Recorder(QWidget *parent)
    bStayOnTop    =  false;
    mpRetryDlg    =  NULL;
    miMarkFavChan =  -1;
-   miFavsInRow   =  MAX_FAV_IN_ROW;
+   miFavsInRow   =  Settings.favsInRow();
 
    // auto re-login timer ...
    mtAutoReLogin.setSingleShot(true);
@@ -536,6 +536,7 @@ void Recorder::closeEvent(QCloseEvent *event)
         // save font size and favorites ...
         Settings.SetCustFontSize(iFontSzChg);
         Settings.SaveFavourites(lFavourites);
+        Settings.saveFavsInRow(miFavsInRow);
 
         // save channel and epg position ...
         Settings.saveChannel(getCurrentCid());
@@ -2286,9 +2287,6 @@ void Recorder::slotChanList (const QString &str)
     if ((lFavourites.count() > 0) && (ui->gLayoutFav->count() == 0))
     {
         HandleFavourites();
-
-        // rebuild favorites in case the default buttons in row doesn't match ...
-        rebuildFavs();
     }
 
     TouchPlayCtrlBtns();
@@ -3140,14 +3138,7 @@ void Recorder::slotChgFavourites (QAction *pAct)
    }
    else if (action == kartinafav::FAV_DEL)
    {
-      if (lFavourites.contains(iCid))
-      {
-         // remove favourite ...
-         lFavourites.removeOne(iCid);
-         Settings.addFavData(iCid, 0, "", "");
-
-         HandleFavourites();
-      }
+      slotRemoveFav(iCid);
    }
 }
 
@@ -4561,11 +4552,23 @@ void Recorder::slotRemoveFav(int cid)
 {
     if (lFavourites.contains(cid))
     {
-       // remove favourite ...
-       lFavourites.removeOne(cid);
-       Settings.addFavData(cid, 0, "", "");
+        // remove favourite ...
+        lFavourites.removeOne(cid);
+        Settings.addFavData(cid, 0, "", "");
 
-       HandleFavourites();
+        HandleFavourites();
+
+        if (getCurrentGid() == DEF_FAV_GRP)
+        {
+            for (int i = 0; i < pModel->rowCount(); i++)
+            {
+                if (pModel->item(i)->data(channellist::cidRole).toInt() == cid)
+                {
+                    pModel->removeRow(i);
+                    break;
+                }
+            }
+        }
     }
 }
 
@@ -4628,25 +4631,19 @@ void Recorder::reorderFavs()
 //---------------------------------------------------------------------------
 void Recorder::rebuildFavs()
 {
-    mMtxFavGrid.lock();
-
     // get with of grid layout ...
     QRect grid = ui->gLayoutFav->geometry();
 
     if (ui->gLayoutFav->count())
     {
         QWidget *pBtn = (QWidget*)ui->gLayoutFav->itemAt(0)->widget();
-
-#ifndef Q_OS_MACX
-        int      spc  = ui->gLayoutFav->spacing();
-#else
         int      spc  = 2;
+#ifdef __TRACE
+        mInfo(tr("Grid Layout check: %1px / %2px").arg(grid.width()).arg(pBtn->size().width() + (spc * 2)));
 #endif
         if (grid.width() && pBtn->size().width())
         {
             int favsInRow = grid.width() / (pBtn->size().width() + (spc * 2)); // FAV_BTN_WIDTH;
-
-            mInfo(tr("Grid Layout check: %1px / %2px").arg(grid.width()).arg(pBtn->size().width()));
 
             // not less 3 buttons ...
             if (favsInRow < 3)
@@ -4659,11 +4656,16 @@ void Recorder::rebuildFavs()
                 // col count changed -> handel favorites .../opt/eldk-4.1-ppc_85xx/usr/bin
                 miFavsInRow = favsInRow;
                 HandleFavourites();
+#ifdef __TRACE
+                mInfo(tr("Change fav in row count ..."));
+            }
+            else
+            {
+                mInfo(tr("Don't change fav in row count %1 ...").arg(miFavsInRow));
+#endif
             }
         }
     }
-
-    mMtxFavGrid.unlock();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -6230,6 +6232,8 @@ void Recorder::slotPlayHls(const QString &s)
 //---------------------------------------------------------------------------
 void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 {
+   bool touchFavs = false;
+
    // take care for toggle mode ...
    if (newMode == eCurDMode)
    {
@@ -6286,6 +6290,8 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
             // make sure we restore the initial geometry ...
             setGeometry(rectBackup);
+
+            touchFavs = true;
          }
          else if (newMode == Ui::DM_WINDOWED)
          {
@@ -6407,6 +6413,8 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
 
             // make sure we restore the initial geometry ...
             setGeometry(rectBackup);
+
+            touchFavs = true;
          }
          else if (newMode == Ui::DM_FULLSCREEN)
          {
@@ -6429,6 +6437,12 @@ void Recorder::setDisplayMode(Ui::EDisplayMode newMode)
       }
 
       eCurDMode = newMode;
+   }
+
+   if (touchFavs)
+   {
+      // check fav area ...
+      QTimer::singleShot(300, this, SLOT(rebuildFavs()));
    }
 }
 

@@ -2096,6 +2096,34 @@ int CSettingsDlg::favData(int cid, int& gid, QString& name, QString& logo)
     return pDb->favData(cid, gid, name, logo);
 }
 
+//---------------------------------------------------------------------------
+//! \brief      save favs in row count
+//
+//! \param[in]  i (int) fav in row count
+//---------------------------------------------------------------------------
+void CSettingsDlg::saveFavsInRow(int i)
+{
+    pDb->setValue("favsInRow", i);
+}
+
+//---------------------------------------------------------------------------
+//! \brief      restore favs in row count
+//
+//! \return   favs in row
+//---------------------------------------------------------------------------
+int CSettingsDlg::favsInRow()
+{
+    int i;
+    if ((i = pDb->intValue("favsInRow")) == 0)
+    {
+        i = MAX_FAV_IN_ROW;
+    }
+
+    return i;
+}
+
+
+
 /************************* History ***************************\
 | $Log$
 \*************************************************************/

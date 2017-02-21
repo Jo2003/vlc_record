@@ -112,6 +112,8 @@ public:
     int lastChanGrp();
     int addFavData(int cid, int gid, const QString& name, const QString& logo);
     int favData(int cid, int& gid, QString& name, QString& logo);
+    void saveFavsInRow(int i);
+    int  favsInRow();
 
     void saveEpgDay(const QString &dateString);
     QString lastEpgDay();

@@ -195,7 +195,6 @@ private:
     QTimer                          mtAutoReLogin;
     int                             miMarkFavChan;
     int                             miFavsInRow;
-    QMutex                          mMtxFavGrid;
     QtJson::JsonObject              mLastPlay;
     int                             mFavDroppedIdx;
     int                             mFavDragIdx;
