@@ -4621,6 +4621,11 @@ void Recorder::reorderFavs()
                 lFavourites.append(pItem->data().toInt());
             }
 
+            if (getCurrentGid() == DEF_FAV_GRP)
+            {
+                on_cbxChannelGroup_activated(0);
+            }
+
             HandleFavourites();
         }
     }
