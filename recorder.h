@@ -198,6 +198,7 @@ private:
     QtJson::JsonObject              mLastPlay;
     int                             mFavDroppedIdx;
     int                             mFavDragIdx;
+    int                             mFavWidgetWidth;
 
 protected:
     void setDisplayMode(Ui::EDisplayMode newMode);
@@ -337,7 +338,7 @@ private slots:
     void slotRemoveFav(int cid);
     void activateFav(int cid);
     void reorderFavs();
-    void rebuildFavs();
+    void rebuildFavs(QSize oldSz, QSize visibleSize);
     void slotRowsInserted(const QModelIndex& parent, int start, int end);
     void slotRowsRemoved(const QModelIndex& parent, int start, int end);
 

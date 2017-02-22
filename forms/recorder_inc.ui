@@ -211,7 +211,10 @@ QSplitter#favSplitter::handle:pressed {
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
-                 <widget class="QScrollArea" name="scrollArea">
+                 <widget class="QSigScrollArea" name="scrollArea">
+                  <property name="verticalScrollBarPolicy">
+                   <enum>Qt::ScrollBarAsNeeded</enum>
+                  </property>
                   <property name="horizontalScrollBarPolicy">
                    <enum>Qt::ScrollBarAlwaysOff</enum>
                   </property>
@@ -267,19 +270,31 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 #ee
                         <number>0</number>
                        </property>
                        <property name="leftMargin">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <property name="topMargin">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <property name="rightMargin">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <property name="bottomMargin">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <item>
                         <layout class="QGridLayout" name="gLayoutFav">
+                         <property name="leftMargin">
+                          <number>2</number>
+                         </property>
+                         <property name="topMargin">
+                          <number>2</number>
+                         </property>
+                         <property name="rightMargin">
+                          <number>2</number>
+                         </property>
+                         <property name="bottomMargin">
+                          <number>2</number>
+                         </property>
                          <property name="spacing">
                           <number>2</number>
                          </property>
@@ -1825,6 +1840,12 @@ border-top: 0px;
    <class>QComboBoxEx</class>
    <extends>QComboBox</extends>
    <header>qcomboboxex.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QSigScrollArea</class>
+   <extends>QScrollArea</extends>
+   <header>qsigscrollarea.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>

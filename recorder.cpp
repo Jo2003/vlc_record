@@ -103,6 +103,7 @@ Recorder::Recorder(QWidget *parent)
    bStayOnTop    =  false;
    mpRetryDlg    =  NULL;
    miMarkFavChan =  -1;
+   mFavWidgetWidth = 0;
    miFavsInRow   =  Settings.favsInRow();
 
    // auto re-login timer ...
@@ -319,7 +320,7 @@ Recorder::Recorder(QWidget *parent)
    connect (ui->vodBrowser, SIGNAL(anchorClicked(QUrl)), this, SLOT(slotVodAnchor(QUrl)));
    connect (ui->channelList->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(slotCurrentChannelChanged(QModelIndex)));
    connect (this,           SIGNAL(sigLockParentalManager()), &Settings, SLOT(slotLockParentalManager()));
-   connect (ui->hFrameFav,  SIGNAL(resized()), this, SLOT(rebuildFavs()));
+   connect (ui->scrollArea, SIGNAL(resized(QSize,QSize)), this, SLOT(rebuildFavs(QSize,QSize)));
 
    connect (pModel, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(slotRowsInserted(QModelIndex,int,int)));
    connect (pModel, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(slotRowsRemoved(QModelIndex,int,int)));
@@ -4634,41 +4635,70 @@ void Recorder::reorderFavs()
 //---------------------------------------------------------------------------
 /// \brief rebuild Favs due to resizing ...
 //---------------------------------------------------------------------------
-void Recorder::rebuildFavs()
+void Recorder::rebuildFavs(QSize oldSz, QSize visibleSize)
 {
-    // get with of grid layout ...
-    QSize sz = ui->scrollAreaWidgetContents->size();
-
     if (ui->gLayoutFav->count())
     {
-        QWidget *pBtn = (QWidget*)ui->gLayoutFav->itemAt(0)->widget();
-        int      spc  = 2;
-#ifdef __TRACE
-        mInfo(tr("Grid Layout check: %1px / %2px").arg(sz.width()).arg(pBtn->size().width() + (spc * 2)));
-#endif
-        if (sz.width() && pBtn->size().width())
+        QSize buttonSize     = ui->gLayoutFav->itemAt(0)->widget()->size();
+        int   scrollBarWidth = ui->scrollArea->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
+
+        if (ui->scrollArea->verticalScrollBar()->isVisible())
         {
-            int favsInRow = sz.width() / (pBtn->size().width() + (spc * 2)); // FAV_BTN_WIDTH;
+            visibleSize.setWidth(visibleSize.width() + scrollBarWidth);
+        }
 
-            // not less 3 buttons ...
-            if (favsInRow < 3)
+        // debounce ...
+        if (std::abs(mFavWidgetWidth - visibleSize.width()) > 5)
+        {
+            mFavWidgetWidth = visibleSize.width();
+
+            int inRow = (visibleSize.width() - 2) / (buttonSize.width() + 2);
+
+            if (inRow < 2)
             {
-                favsInRow = 3;
+                inRow = 2;
             }
 
-            if (favsInRow != miFavsInRow)
+            int rowCount = ui->gLayoutFav->count() / inRow;
+
+            if (ui->gLayoutFav->count() % inRow)
             {
-                // col count changed -> handel favorites .../opt/eldk-4.1-ppc_85xx/usr/bin
-                miFavsInRow = favsInRow;
+                rowCount++;
+            }
+
+            int minHeight = (rowCount * (buttonSize.height() + 2)) + 2;
+
+            if (minHeight > visibleSize.height())
+            {
+                // we need a scrollbar ...
+                inRow    = (visibleSize.width() - 2 - scrollBarWidth) / (buttonSize.width() + 2);
+            }
+
+            if (inRow < 2)
+            {
+                inRow = 2;
+            }
+
+            if (inRow != miFavsInRow)
+            {
+                // col count changed -> handel favorites ...
+                miFavsInRow = inRow;
                 HandleFavourites();
+            }
+
 #ifdef __TRACE
-                mInfo(tr("Change fav in row count ..."));
-            }
-            else
-            {
-                mInfo(tr("Don't change fav in row count %1 ...").arg(miFavsInRow));
-#endif
-            }
+            mInfo(tr("\n\nViewport: %1px x %2px\nOld Event: %5px x %6px\nButton: %7px x %8px, in Row: %9, Row Count: %10")
+                  .arg(visibleSize.width())
+                  .arg(visibleSize.height())
+                  .arg(oldSz.width())
+                  .arg(oldSz.height())
+                  .arg(buttonSize.width())
+                  .arg(buttonSize.height())
+                  .arg(inRow)
+                  .arg(rowCount));
+#else
+            Q_UNUSED(oldSz)
+#endif //  __TRACE
         }
     }
 }

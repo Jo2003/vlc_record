@@ -26,7 +26,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
 #define VERSION_BUILD 1
-#define BETA_EXT      "B5"
+#define BETA_EXT      "B6"
 
 #define EXPIRES_IN    -1
 
@@ -43,6 +43,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-02-22: Version 2.69.1B6
+| - fix bouncing problem in favorite box
+|
 | 2017-02-20: Version 2.69.1B5
 | - favorites box uses a splitter
 | - number favorites in row depend on fav box size

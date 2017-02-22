@@ -148,7 +148,8 @@ HEADERS += recorder.h \
     qexpirenotifydlg.h \
     qretrydialog.h \
     cfavbutton.h \
-    cfavsortdlg.h
+    cfavsortdlg.h \
+    qsigscrollarea.h
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \
     forms/ctimerrec.ui \

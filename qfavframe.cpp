@@ -104,17 +104,6 @@ void QFavFrame::dropEvent(QDropEvent *event)
    }
 }
 
-//---------------------------------------------------------------------
-/// \brief Recorder::resizeEvent
-//
-/// \param event
-//---------------------------------------------------------------------
-void QFavFrame::resizeEvent(QResizeEvent *event)
-{
-    emit resized();
-    QWidget::resizeEvent(event);
-}
-
 //---------------------------------------------------------------------------
 //
 //! \brief   decode mime data to get cid
