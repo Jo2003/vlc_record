@@ -77,6 +77,15 @@ CSettingsDlg::CSettingsDlg(QWidget *parent) :
    vBuffs << 0 << 0.5 << 1.5 << 2 << 3 << 5 << 8 << 15 << 20 << 30 << 45 << 60 << 90;
    qSort(vBuffs);
 
+   // fill audio language cbx ...
+   QStringList sl;
+   sl << "en" << "de" << "ru" << "fr" << "lt" << "et" << "lv";
+
+   foreach(const QString& s, sl)
+   {
+       m_ui->cbxPrefAudio->addItem(QIcon(":/flags/" + s), s);
+   }
+
 #ifdef ENABLE_AD_SWITCH
    m_ui->checkAds->setEnabled(true);
 #endif // ENABLE_AD_SWITCH
@@ -327,6 +336,15 @@ void CSettingsDlg::readSettings()
    iIdx = m_ui->cbxPlayerMod->findText(s);
    m_ui->cbxPlayerMod->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
 
+   // prefered audio ...
+   iIdx = m_ui->cbxPrefAudio->findText(pDb->stringValue("defAudio"));
+   if (idx < 0)
+   {
+       // default to GUI language ...
+       iIdx = m_ui->cbxPrefAudio->findText(GetLanguage());
+   }
+   m_ui->cbxPrefAudio->setCurrentIndex((iIdx < 0) ? 0 : iIdx);
+
 #ifndef Q_OS_MAC
    // check if hide to systray is supported ...
    // always disable on mac!
@@ -360,6 +378,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
           int iBufIdx = m_ui->cbxBufferSeconds->currentIndex();
           int iModIdx = m_ui->cbxPlayerMod->currentIndex();
           int iDeiIdx = m_ui->cbxDeintlMode->currentIndex();
+          int iAudIdx = m_ui->cbxPrefAudio->currentIndex();
 
           m_ui->retranslateUi(this);
 
@@ -369,6 +388,7 @@ void CSettingsDlg::changeEvent(QEvent *e)
           m_ui->cbxBufferSeconds->setCurrentIndex(iBufIdx);
           m_ui->cbxPlayerMod->setCurrentIndex(iModIdx);
           m_ui->cbxDeintlMode->setCurrentIndex(iDeiIdx);
+          m_ui->cbxPrefAudio->setCurrentIndex(iAudIdx);
 
           // set company name ...
           QString s = m_ui->groupAccount->title();
@@ -563,6 +583,7 @@ void CSettingsDlg::on_pushSave_clicked()
    pDb->setValue("LogLevel", m_ui->cbxLogLevel->currentIndex());
    pDb->setValue("PlayerModule", m_ui->cbxPlayerMod->currentText());
    pDb->setValue("DeintlMode", m_ui->cbxDeintlMode->currentText());
+   pDb->setValue("defAudio", m_ui->cbxPrefAudio->currentText());
 
    // short cuts ...
    CShortCutGrabber *pGrab;
@@ -2005,6 +2026,16 @@ QString CSettingsDlg::lastPlay()
 }
 
 //---------------------------------------------------------------------------
+/// \brief get prefered audio code back
+///
+/// \return language code
+//---------------------------------------------------------------------------
+QString CSettingsDlg::defAudio()
+{
+    return m_ui->cbxPrefAudio->currentText();
+}
+
+//---------------------------------------------------------------------------
 /// \brief check if this group is hidden
 /// \param cid group id
 /// \return true -> hidden; false -> not hidden
@@ -2121,8 +2152,6 @@ int CSettingsDlg::favsInRow()
 
     return i;
 }
-
-
 
 /************************* History ***************************\
 | $Log$

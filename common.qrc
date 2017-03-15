@@ -34,9 +34,12 @@
     <qresource prefix="/flags">
         <file alias="de">resources/de.png</file>
         <file alias="ru">resources/ru.png</file>
-        <file alias="en">resources/us.png</file>
         <file alias="fr">resources/fr.png</file>
         <file alias="pl">resources/pl.png</file>
+        <file alias="en">resources/en.png</file>
+        <file alias="et">resources/et.png</file>
+        <file alias="lt">resources/lt.png</file>
+        <file alias="lv">resources/lv.png</file>
     </qresource>
     <qresource prefix="/png">
         <file alias="back">resources/back.png</file>

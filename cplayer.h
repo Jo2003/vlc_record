@@ -91,7 +91,6 @@ public:
    static QMutex                       _mtxEvt;
    static float                        _flBuffPrt;
    static void eventCallback (const libvlc_event_t *ev, void *userdata);
-   static const langcode::iso639_lang_t mIso639Codes[];
 
 protected:
    virtual void changeEvent(QEvent *e);
@@ -122,6 +121,7 @@ private:
    QVector<QByteArray>          vArgs;
    bool                         bScanAuTrk;
    QLangVector                  vAudTrk;
+   static const langcode::iso639_lang_t mIso639Codes[];
 
 private slots:
    void slotPositionChanged(int value);

@@ -847,7 +847,7 @@ void Recorder::on_channelList_doubleClicked(const QModelIndex & index)
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setDefAStream((int)chan.uiDefAud);
-               showInfo.setLangCode(chan.sLangCode);
+               showInfo.setLangCode(Settings.defAudio());
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
@@ -1274,7 +1274,7 @@ void Recorder::on_pushLive_clicked()
             showInfo.setPCode(secCodeDlg.passWd());
             showInfo.setPlayState(IncPlay::PS_PLAY);
             showInfo.setDefAStream((int)chan.uiDefAud);
-            showInfo.setLangCode(chan.sLangCode);
+            showInfo.setLangCode(Settings.defAudio());
             showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
             TouchPlayCtrlBtns(false);
@@ -1324,7 +1324,7 @@ void Recorder::on_channelList_clicked(QModelIndex index)
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setDefAStream((int)chan.uiDefAud);
-               showInfo.setLangCode(chan.sLangCode);
+               showInfo.setLangCode(Settings.defAudio());
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
@@ -1484,7 +1484,7 @@ void Recorder::slotPlay()
                showInfo.setPlayState(IncPlay::PS_PLAY);
                showInfo.setPCode(secCodeDlg.passWd());
                showInfo.setDefAStream((int)chan.uiDefAud);
-               showInfo.setLangCode(chan.sLangCode);
+               showInfo.setLangCode(Settings.defAudio());
                showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                TouchPlayCtrlBtns(false);
@@ -1602,7 +1602,7 @@ void Recorder::slotRecord()
                   showInfo.setPCode(secCodeDlg.passWd());
                   showInfo.setPlayState(IncPlay::PS_RECORD);
                   showInfo.setDefAStream((int)chan.uiDefAud);
-                  showInfo.setLangCode(chan.sLangCode);
+                  showInfo.setLangCode(Settings.defAudio());
                   showInfo.setHtmlDescr(pHtml->createTooltip(chan.sName, chan.sProgramm, chan.uiStart, chan.uiEnd, chan.iTs));
 
                   TouchPlayCtrlBtns(false);
@@ -2380,7 +2380,7 @@ void Recorder::slotEPG(const QString &str)
                               showInfo.setPCode(secCodeDlg.passWd());
                               showInfo.setPlayState(IncPlay::PS_PLAY);
                               showInfo.setDefAStream((int)chan.uiDefAud);
-                              showInfo.setLangCode(chan.sLangCode);
+                              showInfo.setLangCode(Settings.defAudio());
                               showInfo.setHtmlDescr(mLastPlay.value("inf").toString());
 
                               TouchPlayCtrlBtns(false);
@@ -2566,7 +2566,7 @@ void Recorder::slotWlClick(QUrl url)
             showInfo.setLastJumpTime(0);
             showInfo.setPCode(secCodeDlg.passWd());
             showInfo.setDefAStream((int)chan.uiDefAud);
-            showInfo.setLangCode(chan.sLangCode);
+            showInfo.setLangCode(Settings.defAudio());
 
             showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
                                                           QString("%1\n%2").arg(sl.at(0)).arg((sl.count() > 1) ? sl.at(1) : ""),
@@ -2691,7 +2691,7 @@ void Recorder::slotEpgAnchor (const QUrl &link)
             showInfo.setLastJumpTime(0);
             showInfo.setPCode(secCodeDlg.passWd());
             showInfo.setDefAStream((int)sChan.uiDefAud);
-            showInfo.setLangCode(sChan.sLangCode);
+            showInfo.setLangCode(Settings.defAudio());
 
             showInfo.setHtmlDescr(pHtml->createTooltip(tr("%1 (Archive)").arg(showInfo.chanName()),
                                                           QString("%1\n%2").arg(sEpg.sShowName).arg(sEpg.sShowDescr),

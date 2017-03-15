@@ -67,6 +67,7 @@ public:
     QString GetAPIServer ();
     QString getDeinlMode ();
     QString lastPlay();
+    QString defAudio();
 
     bool UseProxy ();
     bool AllowEros ();
