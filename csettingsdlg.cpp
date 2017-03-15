@@ -338,7 +338,7 @@ void CSettingsDlg::readSettings()
 
    // prefered audio ...
    iIdx = m_ui->cbxPrefAudio->findText(pDb->stringValue("defAudio"));
-   if (idx < 0)
+   if (iIdx < 0)
    {
        // default to GUI language ...
        iIdx = m_ui->cbxPrefAudio->findText(GetLanguage());

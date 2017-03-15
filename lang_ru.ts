@@ -806,116 +806,116 @@ p, li { white-space: pre-wrap; }
         <translation>Все протоколы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="478"/>
+        <location filename="csettingsdlg.cpp" line="483"/>
         <source>VLC Media Player</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="473"/>
+        <location filename="csettingsdlg.cpp" line="478"/>
         <source>Executables (*.exe)</source>
         <translation>Программфайл (*.exe)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="475"/>
+        <location filename="csettingsdlg.cpp" line="480"/>
         <source>Executables (*)</source>
         <translation>Программфайл (*)</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="518"/>
+        <location filename="csettingsdlg.cpp" line="523"/>
         <source>Target Folder</source>
         <translation>Папка для записи</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="731"/>
+        <location filename="csettingsdlg.cpp" line="736"/>
         <source>Mobile</source>
         <translation>Мобильный</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="735"/>
+        <location filename="csettingsdlg.cpp" line="740"/>
         <source>Eco</source>
         <translation>Эко</translation>
     </message>
     <message>
         <location filename="forms/csettingsdlg.ui" line="153"/>
         <location filename="forms/csettingsdlg.ui" line="172"/>
-        <location filename="csettingsdlg.cpp" line="739"/>
+        <location filename="csettingsdlg.cpp" line="744"/>
         <source>Standard</source>
         <translation>Стандарт</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="743"/>
+        <location filename="csettingsdlg.cpp" line="748"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="747"/>
+        <location filename="csettingsdlg.cpp" line="752"/>
         <source>%1 Kbit/s</source>
         <oldsource>Bitrate: %1Kbit/s</oldsource>
         <translation>%1 Кбит/с</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1531"/>
+        <location filename="csettingsdlg.cpp" line="1536"/>
         <source>blood</source>
         <translation>кровь</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1532"/>
+        <location filename="csettingsdlg.cpp" line="1537"/>
         <source>violence</source>
         <translation>насилие</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1535"/>
+        <location filename="csettingsdlg.cpp" line="1540"/>
         <source>porn</source>
         <translation>порнография</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1536"/>
+        <location filename="csettingsdlg.cpp" line="1541"/>
         <source>horror</source>
         <translation>ужасы</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1533"/>
-        <location filename="csettingsdlg.cpp" line="1534"/>
+        <location filename="csettingsdlg.cpp" line="1538"/>
+        <location filename="csettingsdlg.cpp" line="1539"/>
         <source>obscene</source>
         <translation>непристойности</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="393"/>
+        <location filename="csettingsdlg.cpp" line="398"/>
         <source>Select Groups to hide:</source>
         <translation>Пометить группы, чтобы скрыть:</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="394"/>
+        <location filename="csettingsdlg.cpp" line="399"/>
         <source>Group Manager</source>
         <translation>Менеджер групп</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1568"/>
+        <location filename="csettingsdlg.cpp" line="1573"/>
         <source>hide</source>
         <translation>скрывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1569"/>
+        <location filename="csettingsdlg.cpp" line="1574"/>
         <source>show</source>
         <translation>показывать</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1570"/>
+        <location filename="csettingsdlg.cpp" line="1575"/>
         <source>password protected</source>
         <translation>защищен паролем</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1762"/>
+        <location filename="csettingsdlg.cpp" line="1767"/>
         <source>Changed VOD Rate: %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1841"/>
+        <location filename="csettingsdlg.cpp" line="1846"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1842"/>
+        <location filename="csettingsdlg.cpp" line="1847"/>
         <source>&lt;b&gt;Please check the data entered.&lt;/b&gt;
 &lt;br /&gt; &lt;br /&gt;
 To change the parent code make sure:
@@ -947,18 +947,18 @@ To change the parent code make sure:
 &lt;/ul&gt;</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1893"/>
+        <location filename="csettingsdlg.cpp" line="1898"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1893"/>
-        <location filename="csettingsdlg.cpp" line="1894"/>
+        <location filename="csettingsdlg.cpp" line="1898"/>
+        <location filename="csettingsdlg.cpp" line="1899"/>
         <source>Parent Code successfully changed.</source>
         <translation>Родительский пароль успешно изменен.</translation>
     </message>
     <message>
-        <location filename="csettingsdlg.cpp" line="1970"/>
+        <location filename="csettingsdlg.cpp" line="1975"/>
         <source>Hide group %1 (%2 / %3)</source>
         <translation></translation>
     </message>
