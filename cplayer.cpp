@@ -41,6 +41,177 @@ float                        CPlayer::_flBuffPrt = 0.0;
 const char*                  CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
 const char*                  CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
 
+const langcode::iso639_lang_t CPlayer::mIso639Codes[] =
+{
+    { "Afar"                     , "aa", "aar", "aar" },
+    { "Abkhazian"                , "ab", "abk", "abk" },
+    { "Afrikaans"                , "af", "afr", "afr" },
+    { "Albanian"                 , "sq", "sqi", "alb" },
+    { "Amharic"                  , "am", "amh", "amh" },
+    { "Arabic"                   , "ar", "ara", "ara" },
+    { "Armenian"                 , "hy", "hye", "arm" },
+    { "Assamese"                 , "as", "asm", "asm" },
+    { "Avestan"                  , "ae", "ave", "ave" },
+    { "Aymara"                   , "ay", "aym", "aym" },
+    { "Azerbaijani"              , "az", "aze", "aze" },
+    { "Bashkir"                  , "ba", "bak", "bak" },
+    { "Basque"                   , "eu", "eus", "baq" },
+    { "Belarusian"               , "be", "bel", "bel" },
+    { "Bengali"                  , "bn", "ben", "ben" },
+    { "Bihari"                   , "bh", "bih", "bih" },
+    { "Bislama"                  , "bi", "bis", "bis" },
+    { "Bosnian"                  , "bs", "bos", "bos" },
+    { "Breton"                   , "br", "bre", "bre" },
+    { "Bulgarian"                , "bg", "bul", "bul" },
+    { "Burmese"                  , "my", "mya", "bur" },
+    { "Catalan"                  , "ca", "cat", "cat" },
+    { "Chamorro"                 , "ch", "cha", "cha" },
+    { "Chechen"                  , "ce", "che", "che" },
+    { "Chinese"                  , "zh", "zho", "chi" },
+    { "Church Slavic"            , "cu", "chu", "chu" },
+    { "Chuvash"                  , "cv", "chv", "chv" },
+    { "Cornish"                  , "kw", "cor", "cor" },
+    { "Corsican"                 , "co", "cos", "cos" },
+    { "Czech"                    , "cs", "ces", "cze" },
+    { "Danish"                   , "da", "dan", "dan" },
+    { "Dutch"                    , "nl", "nld", "dut" },
+    { "Dzongkha"                 , "dz", "dzo", "dzo" },
+    { "English"                  , "en", "eng", "eng" },
+    { "Esperanto"                , "eo", "epo", "epo" },
+    { "Estonian"                 , "et", "est", "est" },
+    { "Faroese"                  , "fo", "fao", "fao" },
+    { "Fijian"                   , "fj", "fij", "fij" },
+    { "Finnish"                  , "fi", "fin", "fin" },
+    { "French"                   , "fr", "fra", "fre" },
+    { "Frisian"                  , "fy", "fry", "fry" },
+    { "Georgian"                 , "ka", "kat", "geo" },
+    { "German"                   , "de", "deu", "ger" },
+    { "Gaelic (Scots)"           , "gd", "gla", "gla" },
+    { "Irish"                    , "ga", "gle", "gle" },
+    { "Gallegan"                 , "gl", "glg", "glg" },
+    { "Manx"                     , "gv", "glv", "glv" },
+    { "Greek, Modern"            , "el", "gre", "ell" },
+    { "Guarani"                  , "gn", "grn", "grn" },
+    { "Gujarati"                 , "gu", "guj", "guj" },
+    { "Hebrew"                   , "he", "heb", "heb" },
+    { "Herero"                   , "hz", "her", "her" },
+    { "Hindi"                    , "hi", "hin", "hin" },
+    { "Hiri Motu"                , "ho", "hmo", "hmo" },
+    { "Hungarian"                , "hu", "hun", "hun" },
+    { "Icelandic"                , "is", "isl", "ice" },
+    { "Inuktitut"                , "iu", "iku", "iku" },
+    { "Interlingue"              , "ie", "ile", "ile" },
+    { "Interlingua"              , "ia", "ina", "ina" },
+    { "Indonesian"               , "id", "ind", "ind" },
+    { "Inupiaq"                  , "ik", "ipk", "ipk" },
+    { "Italian"                  , "it", "ita", "ita" },
+    { "Javanese"                 , "jv", "jaw", "jav" },
+    { "Japanese"                 , "ja", "jpn", "jpn" },
+    { "Greenlandic, Kalaallisut" , "kl", "kal", "kal" },
+    { "Kannada"                  , "kn", "kan", "kan" },
+    { "Kashmiri"                 , "ks", "kas", "kas" },
+    { "Kazakh"                   , "kk", "kaz", "kaz" },
+    { "Khmer"                    , "km", "khm", "khm" },
+    { "Kikuyu"                   , "ki", "kik", "kik" },
+    { "Kinyarwanda"              , "rw", "kin", "kin" },
+    { "Kirghiz"                  , "ky", "kir", "kir" },
+    { "Komi"                     , "kv", "kom", "kom" },
+    { "Korean"                   , "ko", "kor", "kor" },
+    { "Kuanyama"                 , "kj", "kua", "kua" },
+    { "Kurdish"                  , "ku", "kur", "kur" },
+    { "Lao"                      , "lo", "lao", "lao" },
+    { "Latin"                    , "la", "lat", "lat" },
+    { "Latvian"                  , "lv", "lav", "lav" },
+    { "Lingala"                  , "ln", "lin", "lin" },
+    { "Lithuanian"               , "lt", "lit", "lit" },
+    { "Letzeburgesch"            , "lb", "ltz", "ltz" },
+    { "Macedonian"               , "mk", "mkd", "mac" },
+    { "Marshall"                 , "mh", "mah", "mah" },
+    { "Malayalam"                , "ml", "mal", "mal" },
+    { "Maori"                    , "mi", "mri", "mao" },
+    { "Marathi"                  , "mr", "mar", "mar" },
+    { "Malay"                    , "ms", "msa", "may" },
+    { "Malagasy"                 , "mg", "mlg", "mlg" },
+    { "Maltese"                  , "mt", "mlt", "mlt" },
+    { "Moldavian"                , "mo", "mol", "mol" },
+    { "Mongolian"                , "mn", "mon", "mon" },
+    { "Nauru"                    , "na", "nau", "nau" },
+    { "Navajo"                   , "nv", "nav", "nav" },
+    { "Ndebele, South"           , "nr", "nbl", "nbl" },
+    { "Ndebele, North"           , "nd", "nde", "nde" },
+    { "Ndonga"                   , "ng", "ndo", "ndo" },
+    { "Nepali"                   , "ne", "nep", "nep" },
+    { "Norwegian"                , "no", "nor", "nor" },
+    { "Norwegian Nynorsk"        , "nn", "nno", "nno" },
+    { "Norwegian Bokmaal"        , "nb", "nob", "nob" },
+    { "Chichewa; Nyanja"         , "ny", "nya", "nya" },
+    { "Occitan; Provençal"       , "oc", "oci", "oci" },
+    { "Oriya"                    , "or", "ori", "ori" },
+    { "Oromo"                    , "om", "orm", "orm" },
+    { "On Screen Display"        , "od", "osd", "osd" },
+    { "Ossetian; Ossetic"        , "os", "oss", "oss" },
+    { "Panjabi"                  , "pa", "pan", "pan" },
+    { "Persian"                  , "fa", "fas", "per" },
+    { "Pali"                     , "pi", "pli", "pli" },
+    { "Polish"                   , "pl", "pol", "pol" },
+    { "Portuguese"               , "pt", "por", "por" },
+    { "Pushto"                   , "ps", "pus", "pus" },
+    { "Quechua"                  , "qu", "que", "que" },
+    { "Original audio"           ,   "", "qaa", "qaa" },
+    { "Raeto-Romance"            , "rm", "roh", "roh" },
+    { "Romanian"                 , "ro", "ron", "rum" },
+    { "Rundi"                    , "rn", "run", "run" },
+    { "Russian"                  , "ru", "rus", "rus" },
+    { "Sango"                    , "sg", "sag", "sag" },
+    { "Sanskrit"                 , "sa", "san", "san" },
+    { "Serbian"                  , "sr", "srp", "scc" },
+    { "Croatian"                 , "hr", "hrv", "scr" },
+    { "Sinhalese"                , "si", "sin", "sin" },
+    { "Slovak"                   , "sk", "slk", "slo" },
+    { "Slovenian"                , "sl", "slv", "slv" },
+    { "Northern Sami"            , "se", "sme", "sme" },
+    { "Samoan"                   , "sm", "smo", "smo" },
+    { "Shona"                    , "sn", "sna", "sna" },
+    { "Sindhi"                   , "sd", "snd", "snd" },
+    { "Somali"                   , "so", "som", "som" },
+    { "Sotho, Southern"          , "st", "sot", "sot" },
+    { "Spanish"                  , "es", "spa", "spa" },
+    { "Sardinian"                , "sc", "srd", "srd" },
+    { "Swati"                    , "ss", "ssw", "ssw" },
+    { "Sundanese"                , "su", "sun", "sun" },
+    { "Swahili"                  , "sw", "swa", "swa" },
+    { "Swedish"                  , "sv", "swe", "swe" },
+    { "Tahitian"                 , "ty", "tah", "tah" },
+    { "Tamil"                    , "ta", "tam", "tam" },
+    { "Tatar"                    , "tt", "tat", "tat" },
+    { "Telugu"                   , "te", "tel", "tel" },
+    { "Tajik"                    , "tg", "tgk", "tgk" },
+    { "Tagalog"                  , "tl", "tgl", "tgl" },
+    { "Thai"                     , "th", "tha", "tha" },
+    { "Tibetan"                  , "bo", "bod", "tib" },
+    { "Tigrinya"                 , "ti", "tir", "tir" },
+    { "Tonga (Tonga Islands)"    , "to", "ton", "ton" },
+    { "Tswana"                   , "tn", "tsn", "tsn" },
+    { "Tsonga"                   , "ts", "tso", "tso" },
+    { "Turkish"                  , "tr", "tur", "tur" },
+    { "Turkmen"                  , "tk", "tuk", "tuk" },
+    { "Twi"                      , "tw", "twi", "twi" },
+    { "Uighur"                   , "ug", "uig", "uig" },
+    { "Ukrainian"                , "uk", "ukr", "ukr" },
+    { "Urdu"                     , "ur", "urd", "urd" },
+    { "Uzbek"                    , "uz", "uzb", "uzb" },
+    { "Vietnamese"               , "vi", "vie", "vie" },
+    { "Volapuk"                  , "vo", "vol", "vol" },
+    { "Welsh"                    , "cy", "cym", "wel" },
+    { "Wolof"                    , "wo", "wol", "wol" },
+    { "Xhosa"                    , "xh", "xho", "xho" },
+    { "Yiddish"                  , "yi", "yid", "yid" },
+    { "Yoruba"                   , "yo", "yor", "yor" },
+    { "Zhuang"                   , "za", "zha", "zha" },
+    { "Zulu"                     , "zu", "zul", "zul" },
+    { NULL                       ,   "",    "",    "" }
+};
+
 /* -----------------------------------------------------------------\
 |  Method: CPlayer / constructor
 |  Begin: 24.02.2010 / 12:17:51
@@ -723,30 +894,29 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
          ///////////////////////////////////////////////////////////////////////////
          if (showInfo.channelId() != -1)
          {
-            // so far there is no way to get the language code
-            // of the audio tracks from libVLC (I must do it on my own!).
-            // Since the language index changes from time to time
-            // restoring it from DB doesn't make sense.
-            // So we simply use the default language code as
-            // delivered by the API.
-            // When finding the time we later re-activate this feature
-            // after hacking this feature into libVLC.
+             QString langCode;
+             int     idx = -1;
 
-            /*
-            if ((iAidx = pDb->defAStream(showInfo.channelId())) == -1)
-            {
-               iAidx = showInfo.defAStream();
-            }
+             pDb->defAStream(showInfo.channelId(), idx, langCode);
 
-            sMrl = QString(":audio-track=%1").arg(iAidx);
-            */
-
-            if (showInfo.langCode() != "")
-            {
-                sMrl = QString(":audio-language=%1").arg(showInfo.langCode());
-                mInfo(tr("Add MRL Option: %1").arg(sMrl));
-                libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
-            }
+             if (!langCode.isEmpty()) // best choise
+             {
+                 sMrl = QString(":audio-language=%1").arg(langCode);
+                 mInfo(tr("Add MRL Option: %1").arg(sMrl));
+                 libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+             }
+             else if (idx != -1)      // second best choise
+             {
+                 sMrl = QString(":audio-track=%1").arg(idx);
+                 mInfo(tr("Add MRL Option: %1").arg(sMrl));
+                 libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+             }
+             else if (showInfo.langCode() != "") // global choise
+             {
+                 sMrl = QString(":audio-language=%1").arg(showInfo.langCode());
+                 mInfo(tr("Add MRL Option: %1").arg(sMrl));
+                 libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
+             }
          }
 
          ///////////////////////////////////////////////////////////////////////////
@@ -2101,78 +2271,95 @@ void CPlayer::resetBuffPercent()
 //---------------------------------------------------------------------------
 void CPlayer::slotFinallyPlays(int percent)
 {
-   libvlc_track_description_t* pAuTracks = NULL;
-   libvlc_track_description_t* pCurTrack = NULL;
+    libvlc_track_description_t* pAuTracks = NULL;
+    libvlc_track_description_t* pCurTrack = NULL;
+    QRegExp                     rx("^.*\\[(.*)\\].*$");
 
-   int               iAuIdx;
-   vlcvid::SContLang al;
-   bool              bHaveCurrent = false;
+    int               iAuIdx;
+    vlcvid::SContLang al;
+    bool              bHaveCurrent = false;
+    QString           lang;
 
-   if (percent == 0)
-   {
-      bScanAuTrk = true;
-   }
-   else if ((percent >= 99) && bScanAuTrk)
-   {
-      if (isPlaying())
-      {
-         // clear audio track vector ...
-         vAudTrk.clear();
+    if (percent == 0)
+    {
+        bScanAuTrk = true;
+    }
+    else if ((percent >= 99) && bScanAuTrk)
+    {
+        if (isPlaying())
+        {
+            // clear audio track vector ...
+            vAudTrk.clear();
 
-         // get audio track description ...
-         pAuTracks = libvlc_audio_get_track_description(pMediaPlayer);
+            // get audio track description ...
+            pAuTracks = libvlc_audio_get_track_description(pMediaPlayer);
 
-         // get current index ...
-         iAuIdx    = libvlc_audio_get_track(pMediaPlayer);
+            // get current index ...
+            iAuIdx    = libvlc_audio_get_track(pMediaPlayer);
 
-         if (pAuTracks != NULL)
-         {
-            mInfo(tr("Scan for Audio tracks:"));
-
-            pCurTrack = pAuTracks;
-
-            while (pCurTrack != NULL)
+            if (pAuTracks != NULL)
             {
-               if (pCurTrack->i_id >= 0)
-               {
-                  al.desc    = QString::fromUtf8(pCurTrack->psz_name);
-                  al.id      = pCurTrack->i_id;
-                  al.current = (iAuIdx == pCurTrack->i_id) ? true : false;
+                mInfo(tr("Scan for Audio tracks:"));
 
-                  if (al.current)
-                  {
-                     bHaveCurrent = true;
-                  }
+                pCurTrack = pAuTracks;
 
-                  vAudTrk.append(al);
+                while (pCurTrack != NULL)
+                {
+                    lang = "";
 
-                  mInfo(tr("-> Audio track %1 %2%3")
-                        .arg(pCurTrack->i_id)
-                        .arg(QString::fromUtf8(pCurTrack->psz_name))
-                        .arg((iAuIdx == pCurTrack->i_id) ? " (current)" : ""));
-               }
-               pCurTrack = pCurTrack->p_next;
+                    if (pCurTrack->i_id >= 0)
+                    {
+                        // try to grab language name from track description ...
+                        if (rx.indexIn(QString::fromUtf8(pCurTrack->psz_name)) > -1)
+                        {
+                            lang = rx.cap(1);
+                        }
+                        else
+                        {
+                            // filter doesn't match so give it a understandable name ...
+                            lang = tr("Audio %1").arg(vAudTrk.count() + 1);
+                        }
+
+                        al.desc     = lang;
+                        al.id       = pCurTrack->i_id;
+                        al.langCode = getLangCode(lang);
+                        al.current  = (iAuIdx == pCurTrack->i_id) ? true : false;
+
+                        if (al.current)
+                        {
+                            bHaveCurrent = true;
+                        }
+
+                        vAudTrk.append(al);
+
+                        mInfo(tr("-> Audio track %1 %2[%3]%4")
+                                .arg(al.id)
+                                .arg(al.desc)
+                                .arg(al.langCode)
+                                .arg(al.current ? " (current)" : ""));
+                    }
+                    pCurTrack = pCurTrack->p_next;
+                }
+
+                libvlc_track_description_list_release(pAuTracks);
             }
 
-            libvlc_track_description_list_release(pAuTracks);
-         }
+            if (!vAudTrk.isEmpty() && !bHaveCurrent)
+            {
+                // use first audio stream ...
+                al = vAudTrk.first();
 
-         if (!vAudTrk.isEmpty() && !bHaveCurrent)
-         {
-            // use first audio stream ...
-            al = vAudTrk.first();
+                // this is new current ...
+                al.current = true;
 
-            // this is new current ...
-            al.current = true;
+                // change audio track to first existing ...
+                slotChangeATrack(al.id);
+            }
 
-            // change audio track to first existing ...
-            slotChangeATrack(al.id);
-         }
-
-         emit sigAudioTracks(vAudTrk);
-      }
-      bScanAuTrk = false;
-   }
+            emit sigAudioTracks(vAudTrk);
+        }
+        bScanAuTrk = false;
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -2211,9 +2398,6 @@ void CPlayer::slotChangeATrack(int id)
    int iRet, i = -1;
    if (pMediaPlayer)
    {
-      /* since index may change it makes no
-       * sense to store it in data base!
-       *
       if (showInfo.channelId() != -1)
       {
          // get index of this audio track ...
@@ -2221,13 +2405,12 @@ void CPlayer::slotChangeATrack(int id)
          {
             if (vAudTrk.at(i).id == id)
             {
-               // found track id, store index ...
-               pDb->setDefAStream(showInfo.channelId(), i);
+               // found track id, store index and language code ...
+               pDb->setDefAStream(showInfo.channelId(), i, vAudTrk.at(i).langCode);
                break;
             }
          }
       }
-      */
 
       iRet = libvlc_audio_set_track(pMediaPlayer, id);
 
@@ -2269,7 +2452,31 @@ void CPlayer::slotTakeScreenShot()
 //---------------------------------------------------------------------------
 QVlcVideoWidget*& CPlayer::getVideoWidget()
 {
-   return ui->videoWidget;
+    return ui->videoWidget;
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief     get language code from english language name
+//
+//! \param[in] lang (const QString&) english language name
+//
+//! \return    language code or empty string if not found
+//---------------------------------------------------------------------------
+QString CPlayer::getLangCode(const QString &lang)
+{
+    const langcode::iso639_lang_t* pos = CPlayer::mIso639Codes;
+
+    while (pos->psz_lang_en != NULL)
+    {
+        if (QString::fromUtf8(pos->psz_lang_en) == lang)
+        {
+            return QString(pos->psz_iso639_1);
+        }
+        pos ++;
+    }
+
+    return QString();
 }
 
 /************************* History ***************************\

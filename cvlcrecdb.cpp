@@ -179,6 +179,12 @@ int CVlcRecDB::updateDB()
           iRV |= query.exec("DROP TABLE watchlistTemp") ? 0 : -1;
           break;
 
+      case 3:
+          // default audio track uses either index or language code ...
+          iRV |= query.exec("DROP TABLE astream") ? 0 : -1;
+          iRV |= query.exec(TAB_ASTREAM) ? 0 : -1;
+          break;
+
       // Add any changes needed for version update here.
       // E.g. 'case 2:' for changes from 1 ... 2
       // ...
@@ -745,13 +751,14 @@ int CVlcRecDB::delWatchEntry (int cid, uint uiGmt)
 //
 //! \return  0 -> ok; -1 -> query not successful
 //---------------------------------------------------------------------------
-int CVlcRecDB::setDefAStream (int cid, int idx)
+int CVlcRecDB::setDefAStream (int cid, int idx, const QString& lcode)
 {
    QSqlQuery query;
 
-   query.prepare("REPLACE INTO astream VALUES(?, ?)");
+   query.prepare("REPLACE INTO astream VALUES(?, ?, ?)");
    query.addBindValue(cid);
    query.addBindValue(idx);
+   query.addBindValue(lcode);
    return query.exec() ? 0 : -1;
 }
 
@@ -766,18 +773,20 @@ int CVlcRecDB::setDefAStream (int cid, int idx)
 //
 //! \return  -1 -> no value stored; >-1 stream index
 //---------------------------------------------------------------------------
-int CVlcRecDB::defAStream (int cid)
+int CVlcRecDB::defAStream (int cid, int &idx, QString &lcode)
 {
    int       iRet = -1;
    QSqlQuery query;
 
-   query.prepare("SELECT aidx FROM astream WHERE cid=?");
+   query.prepare("SELECT aidx, code FROM astream WHERE cid=?");
    query.addBindValue(cid);
    query.exec();
 
    if (query.first())
    {
-      iRet = query.value(0).toInt();
+      idx   = query.value(0).toInt();
+      lcode = query.value(1).toString();
+      iRet  = 0;
    }
 
    return iRet;

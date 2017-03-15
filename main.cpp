@@ -129,6 +129,9 @@ bool expired()
 \----------------------------------------------------------------- */
 int main(int argc, char *argv[])
 {
+   // unset language stuff so VLC will use default english ...
+   qputenv("LANG", "");
+
    // bugfix for crash on exit on *nix ...
 #ifdef Q_WS_X11
    XInitThreads();

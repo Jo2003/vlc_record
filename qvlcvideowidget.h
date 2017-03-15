@@ -63,6 +63,7 @@ namespace vlcvid {
    {
       int     id;
       QString desc;
+      QString langCode;
       bool    current;
    };
 }

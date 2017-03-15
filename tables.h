@@ -53,6 +53,7 @@
 "CREATE TABLE \"astream\" ("\
       "\"cid\"  INTEGER NOT NULL,"\
       "\"aidx\"  INTEGER NOT NULL,"\
+      "\"code\"  VARCHAR(10) NOT NULL,"\
       "PRIMARY KEY(\"cid\"),"\
       "UNIQUE(\"cid\"))"
 

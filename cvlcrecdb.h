@@ -25,7 +25,7 @@
 #include "cparser.h"
 
 #define VLC_REC_DB "vlcrec.db.sqlite"
-#define REC_DB_VER  2
+#define REC_DB_VER  3
 
 /********************************************************************\
 |  Class: CVlcRecDB
@@ -83,8 +83,8 @@ public:
    int        addWatchEntry (const cparser::SChan& entry);
    int        getWatchEntries (QVector<cparser::SChan> &vE);
    int        delWatchEntry (int cid, uint uiGmt);
-   int        setDefAStream (int cid, int idx);
-   int        defAStream (int cid);
+   int        setDefAStream (int cid, int idx = -1,  const QString& lcode = QString());
+   int        defAStream (int cid, int& idx, QString& lcode);
    int        addFavData(int cid, int gid, const QString& name, const QString& logo);
    int        favData(int cid, int& gid, QString& name, QString& logo);
 

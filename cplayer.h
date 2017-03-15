@@ -42,6 +42,17 @@ namespace Ui
    class CPlayer;
 }
 
+namespace langcode
+{
+    typedef struct iso639_lang
+    {
+        const char* psz_lang_en;
+        const char* psz_iso639_1;
+        const char* psz_iso639_2T;
+        const char* psz_iso639_2B;
+    } iso639_lang_t;
+}
+
 /********************************************************************\
 |  Class: CPlayer
 |  Date:  14.02.2010 / 11:42:24
@@ -72,12 +83,15 @@ public:
    void resetBuffPercent();
    QVlcVideoWidget*& getVideoWidget();
 
+   static QString getLangCode(const QString& lang);
+
    static QVector<libvlc_event_type_t> _eventQueue;
    static const char*                  _pAspect[];
    static const char*                  _pCrop[];
    static QMutex                       _mtxEvt;
    static float                        _flBuffPrt;
    static void eventCallback (const libvlc_event_t *ev, void *userdata);
+   static const langcode::iso639_lang_t mIso639Codes[];
 
 protected:
    virtual void changeEvent(QEvent *e);

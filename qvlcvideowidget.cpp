@@ -723,13 +723,11 @@ void QVlcVideoWidget::touchContextMenu()
 {
    QAction                *pAct;
    vlcvid::SContextAction  contAct;
-   QRegExp                 rx("^.*\\[(.*)\\].*$");
    int                     i;
    QList<QAction*>         contActions = _contextMenu->actions();
    bool                    bIntl       = false;
    bool                    bOnTop      = false;
    QMenu*                  pSubm       = NULL;
-   QString                 name;
 
    // in case of retranslation or update we should take care of
    // interlaced setting ...
@@ -872,22 +870,12 @@ void QVlcVideoWidget::touchContextMenu()
       // go through language vector and add context menu entries ...
       for (i = 0; i < _langVector.count(); i++)
       {
-         // try to grab language name from track description ...
-         if (rx.indexIn(_langVector.at(i).desc) > -1)
-         {
-            name = rx.cap(1);
-         }
-         else
-         {
-            // filter doesn't match so give it a understandable name ...
-            name = tr("Audio %1").arg(i + 1);
-         }
 #ifndef Q_OS_LINUX
          // create context menu entry ...
-         pAct = pSubm->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), name);
+         pAct = pSubm->addAction(QIcon(_langVector.at(i).current ? ":/player/atrack" : ""), _langVector.at(i).desc);
 #else
          // linux doesn't support icons on context menu within this context ...
-         pAct = pSubm->addAction(name);
+         pAct = pSubm->addAction(_langVector.at(i).desc);
          pAct->setCheckable(true);
          pAct->setChecked(_langVector.at(i).current);
 #endif
