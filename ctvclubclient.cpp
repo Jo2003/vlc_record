@@ -574,10 +574,14 @@ void CTVClubClient::GetTimeShift()
 \-----------------------------------------------------------------------------*/
 void CTVClubClient::SetTimeShift (int iHours)
 {
-   mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
+    Q_UNUSED(iHours)
+    mInfo(tr("Timeshift not supported ..."));
+   /*
+    mInfo(tr("Set TimeShift to %1 hour(s) ...").arg(iHours));
 
-   q_post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "set",
+    q_post((int)CIptvDefs::REQ_TIMESHIFT, sApiUrl + "set",
                QString("var=time_shift&val=%1").arg(iHours));
+    */
 }
 
 /*-----------------------------------------------------------------------------\
