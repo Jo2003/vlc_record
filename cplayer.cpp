@@ -902,19 +902,19 @@ int CPlayer::playMedia(const QString &sCmdLine, const QString &sOpts)
              if (!langCode.isEmpty()) // best choise
              {
                  sMrl = QString(":audio-language=%1").arg(langCode);
-                 mInfo(tr("Add MRL Option: %1").arg(sMrl));
+                 mInfo(tr("Add MRL Option (channel): %1").arg(sMrl));
                  libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
              }
              else if (idx != -1)      // second best choise
              {
                  sMrl = QString(":audio-track=%1").arg(idx);
-                 mInfo(tr("Add MRL Option: %1").arg(sMrl));
+                 mInfo(tr("Add MRL Option (channel): %1").arg(sMrl));
                  libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
              }
              else if (showInfo.langCode() != "") // global choise
              {
                  sMrl = QString(":audio-language=%1").arg(showInfo.langCode());
-                 mInfo(tr("Add MRL Option: %1").arg(sMrl));
+                 mInfo(tr("Add MRL Option (default): %1").arg(sMrl));
                  libvlc_media_add_option(p_md, sMrl.toUtf8().constData());
              }
          }
