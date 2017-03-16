@@ -41,6 +41,7 @@ float                        CPlayer::_flBuffPrt = 0.0;
 const char*                  CPlayer::_pAspect[] = {"", "1:1", "4:3", "16:9", "16:10", "221:100", "5:4"};
 const char*                  CPlayer::_pCrop[]   = {"", "1:1", "4:3", "16:9", "16:10", "185:100", "221:100", "235:100", "239:100", "5:4"};
 
+/// language codes as translated by VLC
 const langcode::iso639_lang_t CPlayer::mIso639Codes[] =
 {
     { "Afar"                     , "aa", "aar", "aar" },

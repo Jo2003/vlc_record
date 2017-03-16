@@ -84,7 +84,6 @@ public:
    QVlcVideoWidget*& getVideoWidget();
 
    static QString getLangCode(const QString& lang);
-
    static QVector<libvlc_event_type_t> _eventQueue;
    static const char*                  _pAspect[];
    static const char*                  _pCrop[];

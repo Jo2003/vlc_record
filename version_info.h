@@ -26,7 +26,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
 #define VERSION_BUILD 1
-#define BETA_EXT      "B6"
+#define BETA_EXT      "B7"
 
 #define EXPIRES_IN    -1
 
@@ -43,6 +43,13 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-03-16: Version 2.69.1B7
+| - fix a timer record problem (time shift not supported)
+| - add audio language management based on
+|   VLCs iso639 translations
+| - increase icon size in channel list
+| - small changes in help
+|
 | 2017-02-22: Version 2.69.1B6
 | - fix bouncing problem in favorite box
 |
