@@ -148,11 +148,6 @@
               <property name="enabled">
                <bool>false</bool>
               </property>
-              <item>
-               <property name="text">
-                <string>Standard</string>
-               </property>
-              </item>
              </widget>
             </item>
             <item row="1" column="0">
@@ -885,8 +880,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>16</width>
-                     <height>16</height>
+                     <width>98</width>
+                     <height>28</height>
                     </rect>
                    </property>
                   </widget>
@@ -1037,8 +1032,8 @@ color: red;
                     <rect>
                      <x>0</x>
                      <y>0</y>
-                     <width>76</width>
-                     <height>676</height>
+                     <width>98</width>
+                     <height>489</height>
                     </rect>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
