@@ -77,6 +77,8 @@ public:
       REQ_NOOP,
       REQ_LOGIN_ONLY,
       REQ_INNER_OPS,
+      REQ_FAVS_GET,
+      REQ_FAVS_SET,
       REQ_UNKNOWN = 255
    };
 

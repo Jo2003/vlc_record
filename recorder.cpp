@@ -334,11 +334,6 @@ Recorder::Recorder(QWidget *parent)
    // trigger read of saved timer records ...
    timeRec.ReadRecordList();
 
-   // -------------------------------------------
-   // get favourites ...
-   // -------------------------------------------
-   lFavourites = Settings.GetFavourites();
-
    // last used EPG day ...
    QString sDate;
    if ((sDate = Settings.lastEpgDay()) != "")
@@ -536,7 +531,6 @@ void Recorder::closeEvent(QCloseEvent *event)
 
         // save font size and favorites ...
         Settings.SetCustFontSize(iFontSzChg);
-        Settings.SaveFavourites(lFavourites);
         Settings.saveFavsInRow(miFavsInRow);
 
         // save channel and epg position ...
@@ -745,44 +739,8 @@ void Recorder::on_pushSettings_clicked()
 void Recorder::on_cbxChannelGroup_activated(int index)
 {
     int gid = ui->cbxChannelGroup->itemData(index).toInt();
-
     if (gid == DEF_FAV_GRP)
     {
-        int favGid;
-        QString sName, sLogo;
-
-        QtJson::JsonArray  pseudoList;
-        QtJson::JsonObject info;
-        QtJson::JsonObject root;
-        QtJson::JsonObject epg;
-        QtJson::JsonObject channel;
-        QStringList slChans;
-
-        foreach (int cid, lFavourites)
-        {
-            slChans << QString::number(cid);
-
-            // get additional data ...
-            Settings.favData(cid, favGid, sName, sLogo);
-
-            info["id"]     = QVariant(cid);
-            info["groups"] = QVariant(favGid);
-            info["name"]   = QVariant(sName);
-
-            channel["info"] = info;
-            channel["epg"]  = epg;
-
-            pseudoList.append(channel);
-        }
-
-        root["channels"] = pseudoList;
-
-        mInfo(tr("Faked channel list: %1").arg(QtJson::serializeStr(root)));
-        slotChanList(QtJson::serializeStr(root));
-
-        // epg current for favourites ...
-        pApiClient->queueRequest(CIptvDefs::REQ_EPG_CURRENT, slChans.join(","));
-
         // favourites can be sorted by drag'n'drop ...
         ui->channelList->setDragDropMode(QAbstractItemView::InternalMove);
     }
@@ -1719,6 +1677,10 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_CHANNELLIST, slotChanList(resp));
 
    ///////////////////////////////////////////////
+   // we've got favorites
+   mkCase(CIptvDefs::REQ_FAVS_GET, slotGotFavs(resp));
+
+   ///////////////////////////////////////////////
    // settings received ...
    mkCase(CIptvDefs::REQ_SETTINGS, slotSettings(resp));
 
@@ -1824,6 +1786,7 @@ void Recorder::slotKartinaResponse(QString resp, int req)
    mkCase(CIptvDefs::REQ_SERVER, slotUnused(resp));
    mkCase(CIptvDefs::REQ_HTTPBUFF, slotUnused(resp));
    mkCase(CIptvDefs::REQ_SET_LANGUAGE, slotUnused(resp));
+   mkCase(CIptvDefs::REQ_FAVS_SET, slotUnused(resp));
    default:
       break;
    }
@@ -2284,12 +2247,6 @@ void Recorder::slotChanList (const QString &str)
         timeRec.StartTimer();
     }
 
-    // create favourite buttons if needed ...
-    if ((lFavourites.count() > 0) && (ui->gLayoutFav->count() == 0))
-    {
-        HandleFavourites();
-    }
-
     TouchPlayCtrlBtns();
 }
 
@@ -2395,6 +2352,11 @@ void Recorder::slotEPG(const QString &str)
 
                 // was handled -> clear!
                 mLastPlay.clear();
+            }
+
+            if (lFavourites.empty())
+            {
+                pApiClient->queueRequest(CIptvDefs::REQ_FAVS_GET);
             }
 
 #ifdef _TASTE_IPTV_RECORD
@@ -3126,12 +3088,20 @@ void Recorder::slotChgFavourites (QAction *pAct)
       if (!lFavourites.contains(iCid))
       {
          cparser::SChan chan;
+         Ui::SFavInfo   favInfo;
 
          if (pChanMap->entry(iCid, chan) == 0)
          {
              // add new favourite ...
-             lFavourites.push_back(iCid);
-             Settings.addFavData(iCid, chan.iPrimGrp, chan.sName, chan.sIcon);
+             lFavourites.append(iCid);
+             favInfo.mCid  = iCid;
+             favInfo.mGid  = chan.iPrimGrp;
+             favInfo.mName = chan.sName;
+             favInfo.mIcon = chan.sIcon;
+
+             mFavInfo[iCid] = favInfo;
+
+             slotStoreFavs();
 
              HandleFavourites();
          }
@@ -3986,9 +3956,17 @@ void Recorder::slotAddFav(int cid)
 
         if (pChanMap->entry(cid, chan) == 0)
         {
+            Ui::SFavInfo favInfo;
+
             // add new favourite ...
             lFavourites.append(cid);
-            Settings.addFavData(cid, chan.iPrimGrp, chan.sName, chan.sIcon);
+            favInfo.mCid  = cid;
+            favInfo.mGid  = chan.iPrimGrp;
+            favInfo.mName = chan.sName;
+            favInfo.mIcon = chan.sIcon;
+            mFavInfo[cid] = favInfo;
+
+            slotStoreFavs();
 
             HandleFavourites();
         }
@@ -4512,7 +4490,60 @@ void Recorder::slotRowsRemoved(const QModelIndex &parent, int start, int end)
         lFavourites.append(pModel->item(i)->data(channellist::cidRole).toInt());
     }
 
+    slotStoreFavs();
+
     HandleFavourites();
+}
+
+//---------------------------------------------------------------------------
+//
+//! \brief      got favorites data [slot]
+//
+//! \param[in]  resp (const QString&) response string
+//
+//---------------------------------------------------------------------------
+void Recorder::slotGotFavs(const QString &resp)
+{
+    QChanList    chanList;
+    Ui::SFavInfo favInfo;
+
+    lFavourites.clear();
+    mFavInfo.clear();
+
+    if (!pApiParser->parseChannelList(resp, chanList, Settings.FixTime()))
+    {
+#ifdef __TRACE
+        dumpChanList(chanList);
+#endif // __TRACE
+
+        foreach(const cparser::SChan& chan, chanList)
+        {
+            lFavourites.append(chan.iId);
+            favInfo.mCid  = chan.iId;
+            favInfo.mGid  = chan.iPrimGrp;
+            favInfo.mName = chan.sName;
+            favInfo.mIcon = chan.sIcon;
+
+            mFavInfo[chan.iId] = favInfo;
+        }
+
+        HandleFavourites();
+    }
+}
+
+//---------------------------------------------------------------------------
+//! \brief   store favorites to server [slot]
+//---------------------------------------------------------------------------
+void Recorder::slotStoreFavs()
+{
+    QStringList sl;
+
+    foreach (int cid, lFavourites)
+    {
+        sl << QString::number(cid);
+    }
+
+    pApiClient->queueRequest(CIptvDefs::REQ_FAVS_SET, sl);
 }
 
 //---------------------------------------------------------------------------
@@ -4555,20 +4586,21 @@ void Recorder::slotRemoveFav(int cid)
     {
         // remove favourite ...
         lFavourites.removeOne(cid);
-        Settings.addFavData(cid, 0, "", "");
+
+        Ui::FavInfoMap_t::iterator it = mFavInfo.find(cid);
+
+        if (it != mFavInfo.end())
+        {
+            mFavInfo.erase(it);
+        }
+
+        slotStoreFavs();
 
         HandleFavourites();
 
         if (getCurrentGid() == DEF_FAV_GRP)
         {
-            for (int i = 0; i < pModel->rowCount(); i++)
-            {
-                if (pModel->item(i)->data(channellist::cidRole).toInt() == cid)
-                {
-                    pModel->removeRow(i);
-                    break;
-                }
-            }
+            pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, DEF_FAV_GRP);
         }
     }
 }
@@ -4579,16 +4611,11 @@ void Recorder::slotRemoveFav(int cid)
 //---------------------------------------------------------------------------
 void Recorder::activateFav(int cid)
 {
-    int     gid;
-    QString name, logo;
-
-    Settings.favData(cid, gid, name, logo);
-
     // fav channel which should be marked ...
     miMarkFavChan = cid;
 
     // mark TV group ... triggers load of channel list as well ...
-    on_cbxChannelGroup_activated(ui->cbxChannelGroup->findData(gid));
+    on_cbxChannelGroup_activated(ui->cbxChannelGroup->findData(mFavInfo[cid].mGid));
 }
 
 //---------------------------------------------------------------------------
@@ -4621,6 +4648,8 @@ void Recorder::reorderFavs()
 
                 lFavourites.append(pItem->data().toInt());
             }
+
+            slotStoreFavs();
 
             if (getCurrentGid() == DEF_FAV_GRP)
             {
@@ -5863,11 +5892,10 @@ bool Recorder::WantToStopRec()
 \----------------------------------------------------------------- */
 void Recorder::HandleFavourites()
 {
-    int            i, gid;
+    int            i = 0;
     QPixmap        pic;
     QIcon          ico;
     QFileInfo      fInfo;
-    QString        sLogo, sName;
     CFavButton*    pBtn;
 
     Ui::FavVector_t::iterator it;
@@ -5885,28 +5913,28 @@ void Recorder::HandleFavourites()
         it = vFavourites.erase(it);
     }
 
-    // re-create all buttons ...
-    for (i = 0; i < lFavourites.count(); i++)
+    foreach(int cid, lFavourites)
     {
-        Settings.favData(lFavourites[i], gid, sName, sLogo);
-        fInfo.setFile(sLogo);
+        fInfo.setFile(mFavInfo[cid].mIcon);
 
         // logo ...
         pic.load(QString("%1/%2").arg(pFolders->getLogoDir()).arg(fInfo.fileName()));
         ico = QIcon(pic); // .scaled(34, 34, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
-        if ((pBtn = new CFavButton(ico, sName, this, lFavourites[i])) != NULL)
+        if ((pBtn = new CFavButton(ico, mFavInfo[cid].mName, this, cid)) != NULL)
         {
             connect(pBtn, SIGNAL(clicked(int)) , this, SLOT(activateFav(int)));
             connect(pBtn, SIGNAL(deleteMe(int)), this, SLOT(slotRemoveFav(int)));
             connect(pBtn, SIGNAL(reorder())    , this, SLOT(reorderFavs()));
 
-            pBtn->setToolTip(sName);
+            pBtn->setToolTip(mFavInfo[cid].mName);
             pBtn->setStyleSheet(FAVBTN_STYLE);
             pBtn->setIconSize(QSize(38, 38));
 
             ui->gLayoutFav->addWidget(pBtn, i / miFavsInRow, i % miFavsInRow, Qt::AlignCenter);
             vFavourites.append(pBtn);
+
+            i++;
         }
     }
 }

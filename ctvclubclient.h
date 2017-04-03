@@ -87,6 +87,8 @@ protected:
    void chanListLang(const QString& lang);
    void audioLang();
    void getSettings();
+   void getFavs();
+   void setFavs(const QStringList& favs);
 
 private:
    QString   sUsr;

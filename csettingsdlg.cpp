@@ -935,29 +935,6 @@ void CSettingsDlg::SaveSplitterSizes (const QString &name, const QList<int> &sz)
 }
 
 /* -----------------------------------------------------------------\
-|  Method: SaveFavourites
-|  Begin: 25.02.2010 / 14:22:39
-|  Author: Jo2003
-|  Description: save favourites
-|
-|  Parameters: list of favourites
-|
-|  Returns: --
-\----------------------------------------------------------------- */
-void CSettingsDlg::SaveFavourites(const QList<int> &favList)
-{
-   QString     sFav;
-   QTextStream str(&sFav);
-
-   for (int i = 0; i < favList.size(); i++)
-   {
-      str << favList[i] << ";";
-   }
-
-   pDb->setValue ("Favorites", sFav);
-}
-
-/* -----------------------------------------------------------------\
 |  Method: GetSplitterSizes
 |  Begin: 18.02.2010 / 11:22:39
 |  Author: Jo2003
@@ -994,45 +971,6 @@ QList<int> CSettingsDlg::GetSplitterSizes(const QString &name, bool *ok)
    }
 
    return sz;
-}
-
-/* -----------------------------------------------------------------\
-|  Method: GetFavourites
-|  Begin: 25.02.2010 / 14:22:39
-|  Author: Jo2003
-|  Description: get favourites
-|
-|  Parameters: pointer to ok flag
-|
-|  Returns:  list of favourites
-\----------------------------------------------------------------- */
-QList<int> CSettingsDlg::GetFavourites(bool *ok)
-{
-   QString    sFav = pDb->stringValue("Favorites");
-   QList<int> lFav;
-
-   if (ok)
-   {
-      *ok = false;
-   }
-
-   if (sFav.length() > 0)
-   {
-      for (int i = 0; i < sFav.count(';'); i++)
-      {
-         lFav << sFav.section(';', i, i).toInt();
-      }
-
-      if (ok)
-      {
-         if (lFav.size() > 0)
-         {
-            *ok = true;
-         }
-      }
-   }
-
-   return lFav;
 }
 
 /* -----------------------------------------------------------------\
@@ -2093,38 +2031,6 @@ QString CSettingsDlg::hiddenGroups()
     }
 
     return sl.join(",");
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief      set additional favourites data
-//
-//! \param[in]  cid (int) channel id
-//! \param[in]  gid (int) group id
-//! \param[in]  name (const QString&) channel name
-//! \param[in]  logo (const QString&) channel logo name
-//
-//! \return  -1 -> error; 0 -> ok
-//---------------------------------------------------------------------------
-int CSettingsDlg::addFavData(int cid, int gid, const QString& name, const QString& logo)
-{
-    return pDb->addFavData(cid, gid, name, logo);
-}
-
-//---------------------------------------------------------------------------
-//
-//! \brief      get additional favourites data
-//
-//! \param[in]  cid (int) channel id
-//! \param[out] gid (int&) buffer for group id
-//! \param[out] name (QString&) buffer for channel name
-//! \param[out] logo (QString&) buffer for channel logo name
-//
-//! \return  -1 -> error; 0 -> ok
-//---------------------------------------------------------------------------
-int CSettingsDlg::favData(int cid, int& gid, QString& name, QString& logo)
-{
-    return pDb->favData(cid, gid, name, logo);
 }
 
 //---------------------------------------------------------------------------

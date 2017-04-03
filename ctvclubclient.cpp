@@ -302,6 +302,12 @@ int CTVClubClient::queueRequest(CIptvDefs::EReq req, const QVariant& par_1, cons
       case CIptvDefs::REQ_SETTINGS:
           getSettings();
           break;
+      case CIptvDefs::REQ_FAVS_GET:
+          getFavs();
+          break;
+      case CIptvDefs::REQ_FAVS_SET:
+          setFavs(par_1.toStringList());
+          break;
       default:
          iRet = -1;
          break;
@@ -442,6 +448,32 @@ void CTVClubClient::GetChannelList (int gid)
 
    // request channel list or channel list for settings ...
    q_get((int)CIptvDefs::REQ_CHANNELLIST, sApiUrl + req);
+}
+
+//---------------------------------------------------------------------------
+/// \brief CTVClubClient::getFavs
+//---------------------------------------------------------------------------
+void CTVClubClient::getFavs()
+{
+   mInfo(tr("Request favourite channels ..."));
+
+   QString req = QString("channels?gid=100&limit=no&%1").arg(sCookie);
+
+   // request channel list or channel list for settings ...
+   q_get((int)CIptvDefs::REQ_FAVS_GET, sApiUrl + req);
+}
+
+//---------------------------------------------------------------------------
+/// \brief CTVClubClient::setFavs
+/// \param favs favorites as string list
+//---------------------------------------------------------------------------
+void CTVClubClient::setFavs(const QStringList &favs)
+{
+    mInfo(tr("Set favourite channels: %1 ...").arg(favs.join(",")));
+
+    QString req = QString("set=%1&%2").arg(favs.join(",")).arg(sCookie);
+
+    q_post((int)CIptvDefs::REQ_FAVS_SET, sApiUrl + "set_favorites", req);
 }
 
 //---------------------------------------------------------------------------

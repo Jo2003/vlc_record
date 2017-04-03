@@ -93,8 +93,6 @@ public:
     QList<int> GetSplitterSizes (const QString &name, bool *ok = NULL);
     int   GetCustFontSize ();
     void  SetCustFontSize (int iSize);
-    void  SaveFavourites (const QList<int> &favList);
-    QList<int> GetFavourites (bool *ok = NULL);
     void  SetStreamServerCbx (const QVector<cparser::SSrv>& vSrvList, const QString& sActSrv);
     void  SetBitrateCbx (const QVector<int>& vValues, int iActrate);
     void  SaveCookie (const QString &str);
@@ -111,8 +109,6 @@ public:
     int lastChannel();
     void saveChanGrp(int gid);
     int lastChanGrp();
-    int addFavData(int cid, int gid, const QString& name, const QString& logo);
-    int favData(int cid, int& gid, QString& name, QString& logo);
     void saveFavsInRow(int i);
     int  favsInRow();
 

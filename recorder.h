@@ -123,8 +123,17 @@ namespace Ui
        DM_UNKNOWN
     };
 
+    struct SFavInfo
+    {
+        int     mCid;
+        int     mGid;
+        QString mName;
+        QString mIcon;
+    };
+
     typedef QVector<CFavButton*> FavVector_t;
     typedef QList<int>           FavList_t;
+    typedef QMap<int, SFavInfo>  FavInfoMap_t;
 }
 
 /********************************************************************\
@@ -163,6 +172,7 @@ private:
     int                             iFontSzChg;
     Ui::FavList_t                   lFavourites;
     Ui::FavVector_t                 vFavourites;
+    Ui::FavInfoMap_t                mFavInfo;
     QMenu                           favContext;
     IncPlay::ePlayStates            ePlayState;
     QVector<CShortcutEx *>          vShortcutPool;
@@ -341,6 +351,9 @@ private slots:
     void rebuildFavs(QSize oldSz, QSize visibleSize);
     void slotRowsInserted(const QModelIndex& parent, int start, int end);
     void slotRowsRemoved(const QModelIndex& parent, int start, int end);
+
+    void slotGotFavs(const QString& resp);
+    void slotStoreFavs();
 
 signals:
     void sigShow ();
