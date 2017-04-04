@@ -353,7 +353,7 @@ private slots:
     void slotRowsRemoved(const QModelIndex& parent, int start, int end);
 
     void slotGotFavs(const QString& resp);
-    void slotStoreFavs();
+    void slotStoreFavs(int lastCid = -1);
 
 signals:
     void sigShow ();

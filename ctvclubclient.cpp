@@ -469,9 +469,18 @@ void CTVClubClient::getFavs()
 //---------------------------------------------------------------------------
 void CTVClubClient::setFavs(const QStringList &favs)
 {
-    mInfo(tr("Set favourite channels: %1 ...").arg(favs.join(",")));
+    QString req;
 
-    QString req = QString("set=%1&%2").arg(favs.join(",")).arg(sCookie);
+    if ((favs.count() == 2) && (favs.at(0) == "0"))
+    {
+        mInfo(tr("Delete last favourite channel: %1 ...").arg(favs.at(1)));
+        req = QString("cid=%1&pos=del&%2").arg(favs.at(1)).arg(sCookie);
+    }
+    else
+    {
+        mInfo(tr("Set favourite channels: %1 ...").arg(favs.join(",")));
+        req = QString("set=%1&%2").arg(favs.join(",")).arg(sCookie);
+    }
 
     q_post((int)CIptvDefs::REQ_FAVS_SET, sApiUrl + "set_favorites", req);
 }
