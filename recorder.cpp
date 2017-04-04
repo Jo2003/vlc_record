@@ -746,11 +746,11 @@ void Recorder::on_cbxChannelGroup_activated(int index)
     }
     else
     {
-        pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, gid);
-
         // remove drag'n'drop option ...
         ui->channelList->setDragDropMode(QAbstractItemView::DragOnly);
     }
+
+    pApiClient->queueRequest(CIptvDefs::REQ_CHANNELLIST, gid);
 }
 
 /* -----------------------------------------------------------------\
