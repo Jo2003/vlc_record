@@ -471,7 +471,7 @@ void CTVClubClient::setFavs(const QStringList &favs)
 {
     mInfo(tr("Set favourite channels: %1 ...").arg(favs.join(",")));
 
-    QString req = QString("set=%1&%2").arg(favs.join(",")).arg(sCookie);
+    QString req = QString("set=%1&%2").arg(favs.empty() ? "0" : favs.join(",")).arg(sCookie);
 
     q_post((int)CIptvDefs::REQ_FAVS_SET, sApiUrl + "set_favorites", req);
 }

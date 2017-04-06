@@ -26,7 +26,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
 #define VERSION_BUILD 1
-#define BETA_EXT      "B7"
+#define BETA_EXT      "B8"
 
 #define EXPIRES_IN    -1
 
@@ -43,6 +43,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-04-06: Version 2.69.1B8
+| - favorites now taken from API server and are handled
+|   only there
+|
 | 2017-03-16: Version 2.69.1B7
 | - fix a timer record problem (time shift not supported)
 | - add audio language management based on
