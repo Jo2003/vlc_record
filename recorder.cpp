@@ -4532,21 +4532,15 @@ void Recorder::slotGotFavs(const QString &resp)
 }
 
 //---------------------------------------------------------------------------
-//! \brief      store favorites to server [slot]
-//! \param[in]  lastCid (int, default -1) last cid to remove ...
+//! \brief   store favorites to server [slot]
 //---------------------------------------------------------------------------
-void Recorder::slotStoreFavs(int lastCid)
+void Recorder::slotStoreFavs()
 {
     QStringList sl;
 
     foreach (int cid, lFavourites)
     {
         sl << QString::number(cid);
-    }
-
-    if (lastCid != -1)
-    {
-        sl << "0" << QString::number(lastCid);
     }
 
     pApiClient->queueRequest(CIptvDefs::REQ_FAVS_SET, sl);
@@ -4600,7 +4594,7 @@ void Recorder::slotRemoveFav(int cid)
             mFavInfo.erase(it);
         }
 
-        slotStoreFavs(lFavourites.empty() ? cid : -1);
+        slotStoreFavs();
 
         HandleFavourites();
 
