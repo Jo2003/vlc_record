@@ -112,6 +112,7 @@ SOURCES += main.cpp \
     civiapi.cpp \
     ccmac_bf.cpp \
     civistats.cpp
+    # $$PWD/ckartinaads.cpp
 
 HEADERS += recorder.h \
     csettingsdlg.h \
@@ -183,6 +184,7 @@ HEADERS += recorder.h \
     ccmac_bf.h \
     ivi_kartina_credits.h \
     civistats.h
+    # $$PWD/ckartinaads.h
 
 FORMS += forms/csettingsdlg.ui \
     forms/caboutdialog.ui \

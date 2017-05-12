@@ -1418,11 +1418,14 @@ void Recorder::on_tabEpgVod_currentChanged(int index)
     {
         if (!mIviInfo.adShown)
         {
-            // show ad ...
-            if (!mIviInfo.url.isEmpty() && AllowAction(IncPlay::PS_ADVERTISING))
+            if (mIviInfo.url.trimmed().isEmpty())
+            {
+                mIviInfo.adShown = true;
+            }
+            else if (AllowAction(IncPlay::PS_ADVERTISING))
             {
                 showInfo.setPlayState(IncPlay::PS_ADVERTISING);
-                StartVlcPlay(mIviInfo.url);
+                StartVlcPlay(mIviInfo.url.trimmed());
                 mIviInfo.adShown = true;
             }
             else
