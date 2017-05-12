@@ -35,7 +35,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 73
 #define VERSION_BUILD 0
-#define BETA_EXT      "B11"
+#define BETA_EXT      "B12"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-05-12: Version 2.73.0B12
+| - fix a problem when ivi doesn't show up
+|   when ivi ad url is empty
+|
 | 2017-02-14: Version 2.73.0B11
 | - a Valentines Goodie!
 | - change proxy type from HttpCachingProxy to HttpProxy
@@ -97,7 +101,7 @@
 | - base support of IVI VOD
 | - missing compilations
 | - search only in gernres
-| 
+|
 | 2015-11-15: Version 2.72.6B
 | - after saving settings make re-login only if needed
 | - re-request current stream after stream server change
