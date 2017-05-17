@@ -50,7 +50,7 @@
 ;-------------------------------------------------------
 ; Pages
 ;  !insertmacro MUI_PAGE_WELCOME
-  !insertmacro MUI_PAGE_LICENSE "$(LICENSE_FILE)"
+;  !insertmacro MUI_PAGE_LICENSE "$(LICENSE_FILE)"
 ;  !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
@@ -67,9 +67,9 @@
 ;  !insertmacro MUI_LANGUAGE "French"
 ;  !insertmacro MUI_LANGUAGE "Polish"
   !insertmacro MUI_RESERVEFILE_LANGDLL
-LicenseLangString LICENSE_FILE ${LANG_RUSSIAN} "..\eula_ru.txt"
-LicenseLangString LICENSE_FILE ${LANG_GERMAN} "..\eula_de.txt"
-LicenseLangString LICENSE_FILE ${LANG_ENGLISH} "..\eula_en.txt"
+; LicenseLangString LICENSE_FILE ${LANG_RUSSIAN} "..\eula_ru.txt"
+; LicenseLangString LICENSE_FILE ${LANG_GERMAN} "..\eula_de.txt"
+; LicenseLangString LICENSE_FILE ${LANG_ENGLISH} "..\eula_en.txt"
 
 ;-------------------------------------------------------
 ; Installer Sections for vlc-record

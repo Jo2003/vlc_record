@@ -35,7 +35,9 @@ CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires, const QString &lan
 #endif // __INFO_WINDOW_CONTENT
    ui->textBrowser->setHtml(strAbout);
 
-   QFile fEula(QString("%1/eula_%2.txt").arg(pFolders->getLangDir()).arg(lang));
+   // QFile fEula(QString("%1/eula_%2.txt").arg(pFolders->getLangDir()).arg(lang));
+   Q_UNUSED(lang)
+   QFile fEula(QString("%1/eula_ru.txt").arg(pFolders->getLangDir()));
 
    if (fEula.open(QIODevice::ReadOnly | QIODevice::Text))
    {

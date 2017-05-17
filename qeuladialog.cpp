@@ -114,8 +114,8 @@ void QEulaDialog::on_cbxLanguage_currentIndexChanged(QString str)
     pAppTransl->load(QString("lang_%1").arg(str), pFolders->getLangDir());
     pQtTransl->load(QString("qt_%1").arg(str), pFolders->getQtLangDir());
 
-    QFile fEula(QString("%1/eula_%2.txt").arg(pFolders->getLangDir()).arg(str));
-
+    // QFile fEula(QString("%1/eula_%2.txt").arg(pFolders->getLangDir()).arg(str));
+    QFile fEula(QString("%1/eula_ru.txt").arg(pFolders->getLangDir()));
     if (fEula.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QString sEula = QString::fromUtf8(fEula.readAll().constData());

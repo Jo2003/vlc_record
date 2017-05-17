@@ -35,7 +35,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 73
 #define VERSION_BUILD 0
-#define BETA_EXT      "B12"
+#define BETA_EXT      "B13"
 
 #define __APPVERSION unsigned long((VERSION_MAJOR << 16) | (VERSION_MINOR << 8) | VERSION_BUILD)
 
@@ -50,6 +50,10 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-05-17: Version 2.73.0B13
+| - add EULA stuff (so far for russian only, but prepared 
+|   for other languages
+|
 | 2017-05-12: Version 2.73.0B12
 | - fix a problem when ivi doesn't show up
 |   when ivi ad url is empty

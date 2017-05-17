@@ -43,60 +43,60 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Danke!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="119"/>
+        <location filename="caboutdialog.cpp" line="121"/>
         <source>Version:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="126"/>
+        <location filename="caboutdialog.cpp" line="128"/>
         <source>libVLC:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
+        <location filename="caboutdialog.cpp" line="134"/>
         <source>Author:</source>
         <translation>Autor:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="138"/>
+        <location filename="caboutdialog.cpp" line="140"/>
         <source>Project Site:</source>
         <translation>Projektseite:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="143"/>
+        <location filename="caboutdialog.cpp" line="145"/>
         <source>Inspired by:</source>
         <translation>Für:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="153"/>
+        <location filename="caboutdialog.cpp" line="155"/>
         <source>Account expires:</source>
         <translation>Abo endet:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="168"/>
+        <location filename="caboutdialog.cpp" line="170"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Spende ein paar $ und / oder &amp;euro; bei PayPal für meine Arbeit.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="165"/>
+        <location filename="caboutdialog.cpp" line="167"/>
         <source>This program is free software!</source>
         <oldsource>&lt;b&gt;This program is free software!&lt;/b&gt;</oldsource>
         <translation>Dieses Programm ist Freeware!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="203"/>
-        <location filename="caboutdialog.cpp" line="214"/>
+        <location filename="caboutdialog.cpp" line="205"/>
+        <location filename="caboutdialog.cpp" line="216"/>
         <source>Order Info</source>
         <translation>Bestellinfo</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="166"/>
+        <location filename="caboutdialog.cpp" line="168"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Aber ... wenn Dir das Programm gefällt, unterstütze mich: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="169"/>
+        <location filename="caboutdialog.cpp" line="171"/>
         <source>Thank you,</source>
         <translation>Danke,</translation>
     </message>

@@ -43,60 +43,60 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Спасибо!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="119"/>
+        <location filename="caboutdialog.cpp" line="121"/>
         <source>Version:</source>
         <translation>Версия:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="126"/>
+        <location filename="caboutdialog.cpp" line="128"/>
         <source>libVLC:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="132"/>
+        <location filename="caboutdialog.cpp" line="134"/>
         <source>Author:</source>
         <translation>Автор:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="138"/>
+        <location filename="caboutdialog.cpp" line="140"/>
         <source>Project Site:</source>
         <translation>Сайт проекта:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="143"/>
+        <location filename="caboutdialog.cpp" line="145"/>
         <source>Inspired by:</source>
         <translation>Для:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="153"/>
+        <location filename="caboutdialog.cpp" line="155"/>
         <source>Account expires:</source>
         <translation>Пакет истекает:</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="168"/>
+        <location filename="caboutdialog.cpp" line="170"/>
         <source>Donate some $ and / or &amp;euro; at Paypal for my work.</source>
         <oldsource>Donate some $ and / or &amp;eur; at Paypal for my work.</oldsource>
         <translation>Поблагодарить в $ и / или &amp;euro; и / или в рублях :-) через PayPal за мою работу.</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="165"/>
+        <location filename="caboutdialog.cpp" line="167"/>
         <source>This program is free software!</source>
         <oldsource>&lt;b&gt;This program is free software!&lt;/b&gt;</oldsource>
         <translation>Эта программа является бесплатной!</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="203"/>
-        <location filename="caboutdialog.cpp" line="214"/>
+        <location filename="caboutdialog.cpp" line="205"/>
+        <location filename="caboutdialog.cpp" line="216"/>
         <source>Order Info</source>
         <translation>Инф. для подключения</translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="166"/>
+        <location filename="caboutdialog.cpp" line="168"/>
         <source>Nevertheless ... if you like this software, please support me: </source>
         <translation>Но ... если она Вам понравилась, Вы можете отблагодарить меня: </translation>
     </message>
     <message>
-        <location filename="caboutdialog.cpp" line="169"/>
+        <location filename="caboutdialog.cpp" line="171"/>
         <source>Thank you,</source>
         <translation>Спасибо,</translation>
     </message>
