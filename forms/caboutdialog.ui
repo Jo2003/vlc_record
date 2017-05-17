@@ -57,6 +57,16 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="eulaTab">
+      <attribute name="title">
+       <string>EULA</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTextBrowser" name="eulaText"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>

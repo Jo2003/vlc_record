@@ -50,7 +50,7 @@
 ;-------------------------------------------------------
 ; Pages
 ;  !insertmacro MUI_PAGE_WELCOME
-;  !insertmacro MUI_PAGE_LICENSE "gpl-3.0.txt"
+  !insertmacro MUI_PAGE_LICENSE "$(LICENSE_FILE)"
 ;  !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
@@ -64,9 +64,12 @@
   !insertmacro MUI_LANGUAGE "Russian" ;first language is the default language
   !insertmacro MUI_LANGUAGE "German"
   !insertmacro MUI_LANGUAGE "English"
-  !insertmacro MUI_LANGUAGE "French"
-  !insertmacro MUI_LANGUAGE "Polish"
+;  !insertmacro MUI_LANGUAGE "French"
+;  !insertmacro MUI_LANGUAGE "Polish"
   !insertmacro MUI_RESERVEFILE_LANGDLL
+LicenseLangString LICENSE_FILE ${LANG_RUSSIAN} "..\eula_ru.txt"
+LicenseLangString LICENSE_FILE ${LANG_GERMAN} "..\eula_de.txt"
+LicenseLangString LICENSE_FILE ${LANG_ENGLISH} "..\eula_en.txt"
 
 ;-------------------------------------------------------
 ; Installer Sections for vlc-record
@@ -79,6 +82,7 @@ Section "VLC-Record" SecInst
 
   SetOutPath "$INSTDIR\language"
   File /r "${SRCDIR}\*.qm"
+  File /r "${SRCDIR}\eula_*.txt"
 
   SetOutPath "$INSTDIR\modules"
   File "${SRCDIR}\modules\1_vlc-player.mod"
@@ -107,7 +111,7 @@ Section "libVLC Framework" SecFw
    SetOutPath "$INSTDIR"
    File "${LIBVLCFW}\*.dll"
 
-; In case of update make sure we delete all old 
+; In case of update make sure we delete all old
 ; VLC plugins!
    RMDir /r "$INSTDIR\plugins"
 
@@ -237,6 +241,7 @@ SectionEnd
 Section "un.Program"
   ; delete installed language files ...
   Delete "$INSTDIR\language\*.qm"
+  Delete "$INSTDIR\language\*.txt"
   Delete "$INSTDIR\doc\*.q??"
 
   ; delete installed module files ...

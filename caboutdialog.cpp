@@ -12,7 +12,7 @@
 #include "caboutdialog.h"
 #include "ui_caboutdialog.h"
 #include "externals_inc.h"
-
+#include <QFile>
 
 /* -----------------------------------------------------------------\
 |  Method: CAboutDialog / constructor
@@ -24,7 +24,7 @@
 |
 |  Returns: --
 \----------------------------------------------------------------- */
-CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires) :
+CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires, const QString &lang) :
     QDialog(parent),
     ui(new Ui::CAboutDialog)
 {
@@ -34,6 +34,14 @@ CAboutDialog::CAboutDialog(QWidget *parent, QString sExpires) :
    addOrderInfo();
 #endif // __INFO_WINDOW_CONTENT
    ui->textBrowser->setHtml(strAbout);
+
+   QFile fEula(QString("%1/eula_%2.txt").arg(pFolders->getLangDir()).arg(lang));
+
+   if (fEula.open(QIODevice::ReadOnly | QIODevice::Text))
+   {
+       QString sEula = QString::fromUtf8(fEula.readAll().constData());
+       ui->eulaText->setPlainText(sEula);
+   }
 }
 
 /* -----------------------------------------------------------------\

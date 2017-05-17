@@ -33,6 +33,7 @@
 #include "civiapi.h"
 #include "civistats.h"
 #include "qurlex.h"
+#include "qeuladialog.h"
 
 #ifdef Q_WS_X11
    #include <X11/Xlib.h>
@@ -166,24 +167,50 @@ int main(int argc, char *argv[])
 
                 if (pDb && pApiClient && pApiParser)
                 {
-                    // check if needed settings are there ...
-                    if ((pDb->stringValue("User") == "")
-                        && (pDb->stringValue("PasswdEnc") == ""))
+                    bool start = false;
+
+                    if (pDb->stringValue("eula_read") != "yes")
                     {
-                        if ((pFTSet = new QFTSettings()) != NULL)
+                        QEulaDialog *pEula = new QEulaDialog();
+
+                        if (pEula)
                         {
-                            pFTSet->exec();
-                            delete pFTSet;
-                            pFTSet = NULL;
+                            if (pEula->exec() == QDialog::Accepted)
+                            {
+                                pDb->setValue("eula_read", "yes");
+                                start = true;
+                            }
+
+                            delete pEula;
+                            pEula = NULL;
                         }
                     }
-
-                    if ((pRec = new Recorder()) != NULL)
+                    else
                     {
-                        pRec->show();
-                        iRV = app.exec ();
-                        delete pRec;
-                        pRec = NULL;
+                        start = true;
+                    }
+
+                    if (start)
+                    {
+                        // check if needed settings are there ...
+                        if ((pDb->stringValue("User") == "")
+                            && (pDb->stringValue("PasswdEnc") == ""))
+                        {
+                            if ((pFTSet = new QFTSettings()) != NULL)
+                            {
+                                pFTSet->exec();
+                                delete pFTSet;
+                                pFTSet = NULL;
+                            }
+                        }
+
+                        if ((pRec = new Recorder()) != NULL)
+                        {
+                            pRec->show();
+                            iRV = app.exec ();
+                            delete pRec;
+                            pRec = NULL;
+                        }
                     }
                 }
 

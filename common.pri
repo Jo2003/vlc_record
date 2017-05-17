@@ -111,7 +111,8 @@ SOURCES += main.cpp \
     cvodivi.cpp \
     civiapi.cpp \
     ccmac_bf.cpp \
-    civistats.cpp
+    civistats.cpp \
+    $$PWD/qeuladialog.cpp
     # $$PWD/ckartinaads.cpp
 
 HEADERS += recorder.h \
@@ -183,7 +184,8 @@ HEADERS += recorder.h \
     civiapi.h \
     ccmac_bf.h \
     ivi_kartina_credits.h \
-    civistats.h
+    civistats.h \
+    $$PWD/qeuladialog.h
     # $$PWD/ckartinaads.h
 
 FORMS += forms/csettingsdlg.ui \
@@ -203,7 +205,8 @@ FORMS += forms/csettingsdlg.ui \
     forms/qstatemessage.ui \
     forms/qstrstandarddlg.ui \
     forms/qspeedtestdlg.ui \
-    forms/cvodivi.ui
+    forms/cvodivi.ui \
+    $$PWD/forms/qeuladialog.ui
 RESOURCES += common.qrc \
     lcd.qrc
 INCLUDEPATH += tastes

@@ -50,6 +50,7 @@ mkdir -p $CONTENTS/PlugIns/modules
 mkdir -p $CONTENTS/Frameworks
 mkdir -p $CONTENTS/translations
 cp ../*.qm $CONTENTS/Resources/language/
+cp ../eula_*.txt $CONTENTS/Resources/language/
 cp ../modules/*.mod $CONTENTS/PlugIns/modules/
 cp ../resources/$APPNAME.icns $CONTENTS/Resources/$APPNAME.icns
 cp ../qhc/$OFFNAME/*.qhc $CONTENTS/Resources/doc/

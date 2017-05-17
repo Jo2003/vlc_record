@@ -34,7 +34,7 @@ namespace Ui {
 class CAboutDialog : public QDialog {
     Q_OBJECT
 public:
-    CAboutDialog(QWidget *parent, QString sExpires);
+    CAboutDialog(QWidget *parent, QString sExpires, const QString& lang = QString());
     ~CAboutDialog();
     void ConnectSettings (CSettingsDlg *pSet);
 

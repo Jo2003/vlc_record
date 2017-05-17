@@ -36,6 +36,7 @@ copy_content() {
     strip -s release/${BIN_NAME}
     cp -f release/${BIN_NAME} "${BUILD_FOLDER}/usr/bin/"
     cp -f *.qm "${BUILD_FOLDER}/usr/share/${BIN_NAME}/language/"
+    cp -f eula_*.txt "${BUILD_FOLDER}/usr/share/${BIN_NAME}/language/"
     cp -f modules/*.mod "${BUILD_FOLDER}/usr/share/${BIN_NAME}/modules/"
     cp -f qhc/${OFF_NAME}/* "${BUILD_FOLDER}/usr/share/${BIN_NAME}/doc/"
     cp -f resources/${BIN_NAME}.png "${BUILD_FOLDER}/usr/share/${BIN_NAME}/"
