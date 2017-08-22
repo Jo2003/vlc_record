@@ -171,7 +171,6 @@ Recorder::Recorder(QWidget *parent)
 
    // set player ...
    ui->iviVod->setPlayer(ui->player);
-   ui->iviVod->setUid(pApiClient->getStbSerial());
 
    // set log level ...
    VlcLog.SetLogLevel(Settings.GetLogLevel());

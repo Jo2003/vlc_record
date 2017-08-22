@@ -107,16 +107,6 @@ void CVodIvi::setPlayer(CPlayer *pPlayer)
 }
 
 //------------------------------------------------------------------------------
-//! @brief      set uid to stats stuff
-//!
-//! @param[in]  str uid as string (unique number generated as MAC addresses)
-//------------------------------------------------------------------------------
-void CVodIvi::setUid(const QString &str)
-{
-    mUid = str;
-}
-
-//------------------------------------------------------------------------------
 //! @brief      get pointer to vod browser
 //!
 //! @return     pointer to vod browser
@@ -536,7 +526,6 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
 
         mPrepContData         = iviApi.getContentData();
         mPrepContData.mFormat = arg1.queryItemValue("content_format").toUtf8();
-        mPrepContData.mUid    = mUid;
     }
     else if (action == "record")
     {
@@ -547,7 +536,6 @@ void CVodIvi::on_iviBrowser_anchorClicked(const QUrl &arg1)
 
         mPrepContData         = iviApi.getContentData();
         mPrepContData.mFormat = arg1.queryItemValue("content_format").toUtf8();
-        mPrepContData.mUid    = mUid;
     }
     else if (action == "add_fav")
     {

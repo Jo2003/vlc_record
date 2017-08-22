@@ -40,6 +40,28 @@ CIviApi::CIviApi(QObject *parent) :
             .arg(pCustomization->strVal("APPLICATION_SHORTCUT"))
             .arg(OP_SYS).arg(SOFTID_DEVELOPER);
 
+    // uid stuff ...
+    mUid = pDb->stringValue("iviuid");
+
+    if (mUid.isEmpty())
+    {
+        for (int s = 0; s < 17; s++)
+        {
+            if (s == 12)
+            {
+                mUid[s] = QChar('.');
+            }
+            else
+            {
+                mUid[s] = QChar('0' + char(qrand() % ('0' - '9')));
+            }
+        }
+
+        pDb->setValue("iviuid", mUid);
+    }
+
+    mContData.mUid = mUid;
+
     connect(this, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
     connect(this, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)), this, SLOT(slotSslError(QNetworkReply*,QList<QSslError>)));
 }
@@ -394,7 +416,8 @@ int CIviApi::getFiles(int id)
     QString postData = QString(IVI_GETCONTENT_TMPL)
             .arg(id)
             .arg(mSessionKey)
-            .arg(mRealAppVer);
+            .arg(mRealAppVer)
+            .arg(mUid);
 
     url += QString("?app_version=%1").arg(mRealAppVer);
     url += QString("&ts=%1").arg(mTs);
@@ -762,7 +785,7 @@ int CIviApi::sendWatched(int cid, QString wid)
             .arg(mHost);
 
     QString content = QString(IVI_CNT_WATCHED_TMPL)
-            .arg(cid).arg(mRealAppVer).arg(mSessionKey).arg(wid);
+            .arg(cid).arg(mRealAppVer).arg(mSessionKey).arg(wid).arg(mUid);
 
     url += QString("?app_version=%1").arg(mRealAppVer);
     url += QString("&ts=%1").arg(mTs);

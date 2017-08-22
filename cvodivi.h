@@ -40,7 +40,6 @@ public:
     void setPixCache(CPixLoader* cache);
     void setIviSession(const QString& str);
     void setPlayer(CPlayer* pPlayer);
-    void setUid(const QString& str);
     CVodBrowser *iviBrowser();
     void setProxy (const QNetworkProxy& proxy);
 
@@ -74,7 +73,6 @@ protected:
     QTimer                 tIviSearch;
     int                    mCompId;
     CPlayer*               mpPlayer;
-    QString                mUid;
     ivistats::SContentData mPrepContData;
 
 private:
