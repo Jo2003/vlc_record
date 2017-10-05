@@ -83,6 +83,21 @@ void QIptvCtrlClient::slotResponse(QNetworkReply* reply)
    // check for error ...
    if (reply->error() == QNetworkReply::NoError)
    {
+      // check for redirect ...
+      if (reply->hasRawHeader("Location"))
+      {
+          QString redir = QString(reply->rawHeader("Location"));
+          mInfo(tr("Redirect to: '%1'").arg(redir));
+
+          get(iReqId, redir, (Iptv::eReqType)iReqType);
+
+          // mark for deletion ...
+          reply->deleteLater();
+
+          // leave function ...
+          return;
+      }
+
       // get data ...
       QByteArray ba = reply->readAll();
 
