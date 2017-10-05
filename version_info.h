@@ -26,7 +26,7 @@
 #define VERSION_MAJOR 2
 #define VERSION_MINOR 69
 #define VERSION_BUILD 1
-#define BETA_EXT      "B8"
+#define BETA_EXT      "B9"
 
 #define EXPIRES_IN    -1
 
@@ -43,6 +43,9 @@
 #endif /* __011910__VERSION_INFO_H */
 /************************* History ***************************\
 | --- new since last version ---
+| 2017-10-05: Version 2.69.1B9
+| - fix http redirect handling
+|
 | 2017-04-06: Version 2.69.1B8
 | - favorites now taken from API server and are handled
 |   only there
