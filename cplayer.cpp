@@ -1296,7 +1296,7 @@ int CPlayer::slotTimeJumpRelative (int iSeconds)
             pos  = libvlc_media_player_get_time(pMediaPlayer);
 
             // make sure we don't go negative ...
-            if ((iSeconds < 0) && (((uint)abs(iSeconds) * 1000) > pos))
+            if ((iSeconds < 0) && (((uint)std::abs(iSeconds) * 1000) > pos))
             {
                 pos = 0;
             }
@@ -1539,7 +1539,7 @@ void CPlayer::slotSliderPosChanged()
             position = mToGmt(position);
 
             // check if slider position is in 10 sec. limit ...
-            if (abs(position - timer.pos()) <= 10)
+            if (std::abs((int)(position - timer.pos())) <= 10)
             {
                 mInfo(tr("Ignore slightly slider position change..."));
             }

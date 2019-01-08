@@ -102,7 +102,7 @@ protected:
          /// the slider / _iHandleRange so we must not click at the 100%
          /// right position to get the "old" normal
          /// slider behavior.
-         if (abs(value() - pos) > (range / _iHandleRange))
+         if (std::abs((int)(value() - pos)) > (range / _iHandleRange))
          {
             setValue(pos);
             emit sigClickNGo(pos);

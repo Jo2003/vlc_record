@@ -1794,8 +1794,8 @@ void Recorder::slotKartinaErr (QString str, int req, int err)
    // to trigger next download
    case CIptvDefs::REQ_DOWN_IMG:
       pixCache.slotImage(QByteArray());
-      // fall through here
-      //  V      V     V
+
+      // fall through
    case CIptvDefs::REQ_UPDATE_CHECK:
       bSilent = true;
       break;
@@ -3125,8 +3125,7 @@ void Recorder::slotIncPlayState(int iState)
       // update play buttons ...
       TouchPlayCtrlBtns(true);
 
-      // fall thru here | |
-      //                V V
+      // fall through
    default:
       emit sigLCDStateChange (iState);
       break;
